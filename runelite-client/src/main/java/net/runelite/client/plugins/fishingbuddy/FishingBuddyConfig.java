@@ -11,7 +11,7 @@ public interface FishingBuddyConfig extends Config
     @ConfigItem(
             position = 0,
             keyName = "enabled",
-            name = "Enable FishingBuddy",
+            name = "Enable Auto Minnow",
             description = "Automatically switch minnow fishing spots"
     )
     default boolean enabled()
@@ -35,7 +35,8 @@ public interface FishingBuddyConfig extends Config
             position = 2,
             keyName = "reactionDelayMin",
             name = "Min reaction delay (ms)",
-            description = "Minimum delay before clicking new fishing spot"
+            description = "Minimum delay before clicking new fishing spot",
+            hidden = true
     )
     default int reactionDelayMin()
     {
@@ -47,7 +48,8 @@ public interface FishingBuddyConfig extends Config
             position = 3,
             keyName = "reactionDelayMax",
             name = "Max reaction delay (ms)",
-            description = "Maximum delay before clicking new fishing spot"
+            description = "Maximum delay before clicking new fishing spot",
+            hidden = true
     )
     default int reactionDelayMax()
     {

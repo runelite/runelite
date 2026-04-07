@@ -2425,4 +2425,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	@Nullable
 	FileDescriptor getSocketFD();
+
+	void menuAction(int i, int i1, MenuAction menuAction, int id, int x, int y);
 }

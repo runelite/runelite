@@ -102,4 +102,5 @@ public interface GameObject extends TileObject
 	 * }</pre>
 	 */
 	int getConfig();
+
 }

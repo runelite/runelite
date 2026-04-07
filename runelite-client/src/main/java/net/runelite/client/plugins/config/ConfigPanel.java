@@ -1,27 +1,3 @@
-/*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package net.runelite.client.plugins.config;
 
 import com.google.common.base.MoreObjects;
@@ -99,6 +75,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.MultiplexingPluginPanel;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.UnitFormatterFactory;
 import net.runelite.client.ui.components.ColorJButton;
@@ -151,16 +128,29 @@ class ConfigPanel extends PluginPanel
 	private final PluginToggleButton pluginToggle;
 
 	private PluginConfigurationDescriptor pluginConfig = null;
+	private MultiplexingPluginPanel overrideMuxer = null;
+
+	void setOverrideMuxer(MultiplexingPluginPanel muxer)
+	{
+		log.debug("setOverrideMuxer aangeroepen: {}", muxer);
+		this.overrideMuxer = muxer;
+	}
+
+	private MultiplexingPluginPanel getActiveMuxer()
+	{
+		log.debug("getActiveMuxer: overrideMuxer={}", overrideMuxer != null ? "SKILLBUDDY" : "NULL");
+		return overrideMuxer != null ? overrideMuxer : pluginList.getMuxer();
+	}
 
 	@Inject
 	private ConfigPanel(
-		PluginListPanel pluginList,
-		ConfigManager configManager,
-		PluginManager pluginManager,
-		ExternalPluginManager externalPluginManager,
-		ColorPickerManager colorPickerManager,
-		Provider<NotificationPanel> notificationPanelProvider,
-		Provider<FontPanel> fontPanelProvider
+			PluginListPanel pluginList,
+			ConfigManager configManager,
+			PluginManager pluginManager,
+			ExternalPluginManager externalPluginManager,
+			ColorPickerManager colorPickerManager,
+			Provider<NotificationPanel> notificationPanelProvider,
+			Provider<FontPanel> fontPanelProvider
 	)
 	{
 		super(false);
@@ -198,7 +188,11 @@ class ConfigPanel extends PluginPanel
 		SwingUtil.removeButtonDecorations(topPanelBackButton);
 		topPanelBackButton.setPreferredSize(new Dimension(22, 0));
 		topPanelBackButton.setBorder(new EmptyBorder(0, 0, 0, 5));
-		topPanelBackButton.addActionListener(e -> pluginList.getMuxer().popState());
+		topPanelBackButton.addActionListener(e ->
+		{
+			log.debug("Back pijl geklikt via: {}", overrideMuxer != null ? "SKILLBUDDY" : "RUNELITE");
+			getActiveMuxer().popState();
+		});
 		topPanelBackButton.setToolTipText("Back");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
@@ -272,10 +266,10 @@ class ConfigPanel extends PluginPanel
 
 		final Map<String, JPanel> sectionWidgets = new HashMap<>();
 		final Map<ConfigObject, JPanel> topLevelPanels = new TreeMap<>((a, b) ->
-			ComparisonChain.start()
-			.compare(a.position(), b.position())
-			.compare(a.name(), b.name())
-			.result());
+				ComparisonChain.start()
+						.compare(a.position(), b.position())
+						.compare(a.name(), b.name())
+						.result());
 
 		for (ConfigSectionDescriptor csd : cd.getSections())
 		{
@@ -289,11 +283,9 @@ class ConfigPanel extends PluginPanel
 			final JPanel sectionHeader = new JPanel();
 			sectionHeader.setLayout(new BorderLayout());
 			sectionHeader.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
-			// For whatever reason, the header extends out by a single pixel when closed. Adding a single pixel of
-			// border on the right only affects the width when closed, fixing the issue.
 			sectionHeader.setBorder(new CompoundBorder(
-				new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
-				new EmptyBorder(0, 0, 3, 1)));
+					new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
+					new EmptyBorder(0, 0, 3, 1)));
 			section.add(sectionHeader, BorderLayout.NORTH);
 
 			final JButton sectionToggle = new JButton(isOpen ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
@@ -314,12 +306,11 @@ class ConfigPanel extends PluginPanel
 			sectionContents.setLayout(new DynamicGridLayout(0, 1, 0, 5));
 			sectionContents.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 			sectionContents.setBorder(new CompoundBorder(
-				new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
-				new EmptyBorder(BORDER_OFFSET, 0, BORDER_OFFSET, 0)));
+					new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
+					new EmptyBorder(BORDER_OFFSET, 0, BORDER_OFFSET, 0)));
 			sectionContents.setVisible(isOpen);
 			section.add(sectionContents, BorderLayout.SOUTH);
 
-			// Add listeners to each part of the header so that it's easier to toggle them
 			final MouseAdapter adapter = new MouseAdapter()
 			{
 				@Override
@@ -333,7 +324,6 @@ class ConfigPanel extends PluginPanel
 			sectionHeader.addMouseListener(adapter);
 
 			sectionWidgets.put(csd.getKey(), sectionContents);
-
 			topLevelPanels.put(csd, section);
 		}
 
@@ -424,14 +414,13 @@ class ConfigPanel extends PluginPanel
 		resetButton.addActionListener((e) ->
 		{
 			final int result = JOptionPane.showOptionDialog(resetButton, "Are you sure you want to reset this plugin's configuration?",
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
+					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, new String[]{"Yes", "No"}, "No");
 
 			if (result == JOptionPane.YES_OPTION)
 			{
 				configManager.setDefaultConfiguration(pluginConfig.getConfig(), true);
 
-				// Reset non-config panel keys
 				Plugin plugin = pluginConfig.getPlugin();
 				if (plugin != null)
 				{
@@ -444,7 +433,11 @@ class ConfigPanel extends PluginPanel
 		mainPanel.add(resetButton);
 
 		JButton backButton = new JButton("Back");
-		backButton.addActionListener(e -> pluginList.getMuxer().popState());
+		backButton.addActionListener(e ->
+		{
+			log.debug("Back knop geklikt via: {}", overrideMuxer != null ? "SKILLBUDDY" : "RUNELITE");
+			getActiveMuxer().popState();
+		});
 		mainPanel.add(backButton);
 
 		revalidate();
@@ -470,7 +463,6 @@ class ConfigPanel extends PluginPanel
 			max = range.max();
 		}
 
-		// Config may previously have been out of range
 		value = Ints.constrainToRange(value, min, max);
 
 		SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
@@ -483,7 +475,6 @@ class ConfigPanel extends PluginPanel
 		Units units = cid.getUnits();
 		if (units != null)
 		{
-			// The existing DefaultFormatterFactory with a NumberEditorFormatter. Its model is the same SpinnerModel above.
 			JFormattedTextField.AbstractFormatterFactory delegate = spinnerTextField.getFormatterFactory();
 			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(delegate, units.value()));
 		}
@@ -505,7 +496,6 @@ class ConfigPanel extends PluginPanel
 		Units units = cid.getUnits();
 		if (units != null)
 		{
-			// The existing DefaultFormatterFactory with a NumberEditorFormatter. Its model is the same SpinnerModel above.
 			JFormattedTextField.AbstractFormatterFactory delegate = spinnerTextField.getFormatterFactory();
 			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(delegate, units.value()));
 		}
@@ -569,10 +559,10 @@ class ConfigPanel extends PluginPanel
 			public void mouseClicked(MouseEvent e)
 			{
 				RuneliteColorPicker colorPicker = colorPickerManager.create(
-					ConfigPanel.this,
-					colorPickerBtn.getColor(),
-					cid.getItem().name(),
-					alphaHidden);
+						ConfigPanel.this,
+						colorPickerBtn.getColor(),
+						cid.getItem().name(),
+						alphaHidden);
 				colorPicker.setLocationRelativeTo(colorPickerBtn);
 				colorPicker.setOnColorChange(c ->
 				{
@@ -609,7 +599,7 @@ class ConfigPanel extends PluginPanel
 		heightSpinnerTextField.setColumns(4);
 
 		ChangeListener listener = e ->
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+				configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
 
 		widthSpinner.addChangeListener(listener);
 		heightSpinner.addChangeListener(listener);
@@ -625,10 +615,7 @@ class ConfigPanel extends PluginPanel
 	{
 		Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
 
-		JComboBox<Enum<?>> box = new JComboBox<Enum<?>>(type.getEnumConstants()); // NOPMD: UseDiamondOperator
-		// set renderer prior to calling box.getPreferredSize(), since it will invoke the renderer
-		// to build components for each combobox element in order to compute the display size of the
-		// combobox
+		JComboBox<Enum<?>> box = new JComboBox<Enum<?>>(type.getEnumConstants());
 		box.setRenderer(listCellRenderer);
 		box.setPreferredSize(new Dimension(box.getPreferredSize().width, 22));
 
@@ -657,8 +644,8 @@ class ConfigPanel extends PluginPanel
 	private HotkeyButton createKeybind(ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
-			cid.getItem().keyName(),
-			(Class<? extends Keybind>) cid.getType());
+				cid.getItem().keyName(),
+				(Class<? extends Keybind>) cid.getType());
 
 		HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
 
@@ -684,7 +671,7 @@ class ConfigPanel extends PluginPanel
 		button.setPreferredSize(new Dimension(25, 0));
 		button.addActionListener(l ->
 		{
-			var muxer = pluginList.getMuxer();
+			var muxer = getActiveMuxer();
 			var notifPanel = notificationPanelProvider.get();
 			notifPanel.init(cd, cid);
 			muxer.pushState(notifPanel);
@@ -706,7 +693,6 @@ class ConfigPanel extends PluginPanel
 		checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 		panel.add(checkbox, BorderLayout.EAST);
 
-		// button visibility is tied to the checkbox
 		button.setVisible(checkbox.isSelected());
 		return panel;
 	}
@@ -721,7 +707,7 @@ class ConfigPanel extends PluginPanel
 		button.setPreferredSize(new Dimension(25, 0));
 		button.addActionListener(l ->
 		{
-			var muxer = pluginList.getMuxer();
+			var muxer = getActiveMuxer();
 			var fontPanel = fontPanelProvider.get();
 			fontPanel.init(cd, cid);
 			muxer.pushState(fontPanel);
@@ -737,17 +723,17 @@ class ConfigPanel extends PluginPanel
 		ParameterizedType parameterizedType = (ParameterizedType) cid.getType();
 		Class<? extends Enum> type = (Class<? extends Enum>) parameterizedType.getActualTypeArguments()[0];
 		Set<? extends Enum> set = configManager.getConfiguration(cd.getGroup().value(), null,
-			cid.getItem().keyName(), parameterizedType);
+				cid.getItem().keyName(), parameterizedType);
 
-		JList<Enum<?>> list = new JList<Enum<?>>(type.getEnumConstants()); // NOPMD: UseDiamondOperator
+		JList<Enum<?>> list = new JList<Enum<?>>(type.getEnumConstants());
 		list.setCellRenderer(listCellRenderer);
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectedIndices(
-			MoreObjects.firstNonNull(set, Collections.emptySet())
-				.stream()
-				.mapToInt(e -> ArrayUtils.indexOf(type.getEnumConstants(), e))
-				.toArray());
+				MoreObjects.firstNonNull(set, Collections.emptySet())
+						.stream()
+						.mapToInt(e -> ArrayUtils.indexOf(type.getEnumConstants(), e))
+						.toArray());
 		list.addFocusListener(new FocusAdapter()
 		{
 			@Override
@@ -767,8 +753,8 @@ class ConfigPanel extends PluginPanel
 		if (!Strings.isNullOrEmpty(configItem.warning()))
 		{
 			final int result = JOptionPane.showOptionDialog(component, configItem.warning(),
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
+					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, new String[]{"Yes", "No"}, "No");
 
 			if (result != JOptionPane.YES_OPTION)
 			{
@@ -811,7 +797,6 @@ class ConfigPanel extends PluginPanel
 		{
 			JList<?> list = (JList<?>) component;
 			List<?> selectedValues = list.getSelectedValuesList();
-
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Sets.newHashSet(selectedValues));
 		}
 	}
@@ -828,7 +813,7 @@ class ConfigPanel extends PluginPanel
 		if (event.getPlugin() == this.pluginConfig.getPlugin())
 		{
 			SwingUtilities.invokeLater(() ->
-				pluginToggle.setSelected(event.isLoaded()));
+					pluginToggle.setSelected(event.isLoaded()));
 		}
 	}
 
@@ -836,9 +821,9 @@ class ConfigPanel extends PluginPanel
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
 	{
 		if (pluginManager.getPlugins().stream()
-			.noneMatch(p -> p == this.pluginConfig.getPlugin()))
+				.noneMatch(p -> p == this.pluginConfig.getPlugin()))
 		{
-			pluginList.getMuxer().popState();
+			getActiveMuxer().popState();
 		}
 		SwingUtilities.invokeLater(this::rebuild);
 	}
@@ -858,7 +843,6 @@ class ConfigPanel extends PluginPanel
 			ConfigGroup configGroup = configDescriptor.getGroup();
 			ConfigItem configItem = configItemDescriptor.getItem();
 
-			// To reset one item we'll just unset it and then apply defaults over the whole group
 			configManager.unsetConfiguration(configGroup.value(), configItem.keyName());
 			configManager.setDefaultConfiguration(pluginConfig.getConfig(), false);
 
