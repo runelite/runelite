@@ -225,14 +225,19 @@ class DevToolsOverlay extends Overlay
 
 	private void renderNpcs(WorldView wv, Graphics2D graphics)
 	{
-		for (NPC npc : wv.npcs()) {
+		for (NPC npc : wv.npcs())
+		{
 			NPCComposition composition = npc.getComposition();
 			Color color = composition.getCombatLevel() > 1 ? YELLOW : ORANGE;
-			if (composition.getConfigs() != null) {
+			if (composition.getConfigs() != null)
+			{
 				NPCComposition transformedComposition = composition.transform();
-				if (transformedComposition == null) {
+				if (transformedComposition == null)
+				{
 					color = GRAY;
-				} else {
+				}
+				else
+				{
 					composition = transformedComposition;
 				}
 			}
@@ -243,17 +248,22 @@ class DevToolsOverlay extends Overlay
 					.append(" (A: ").append(npc.getAnimation()).append(") (P: ").append(npc.getPoseAnimation()).append(") (G: ").append(npc.getGraphic()).append(")");
 
 			var mo = npc.getModelOverrides();
-			if (mo != null) {
-				if (mo.getModelIds() != null) {
+			if (mo != null)
+			{
+				if (mo.getModelIds() != null)
+				{
 					textBuilder.append(" (M: ").append(Arrays.toString(mo.getModelIds())).append(")");
 				}
-				if (mo.getColorToReplaceWith() != null) {
+				if (mo.getColorToReplaceWith() != null)
+				{
 					textBuilder.append(" (C: ").append(Arrays.toString(mo.getColorToReplaceWith())).append(")");
 				}
-				if (mo.getTextureToReplaceWith() != null) {
+				if (mo.getTextureToReplaceWith() != null)
+				{
 					textBuilder.append(" (T: ").append(Arrays.toString(mo.getTextureToReplaceWith())).append(")");
 				}
-				if (mo.useLocalPlayer()) {
+				if (mo.useLocalPlayer())
+				{
 					textBuilder.append(" (LocalPlayer)");
 				}
 			}
@@ -261,7 +271,7 @@ class DevToolsOverlay extends Overlay
 			String text = textBuilder.toString();
 			OverlayUtil.renderActorOverlay(graphics, npc, text, color);
 		}
-		}
+	}
 
 	private void renderTileObjects(WorldView wv, Graphics2D graphics)
 	{
@@ -328,11 +338,11 @@ class DevToolsOverlay extends Overlay
 			WorldPoint worldLocation = WorldPoint.fromLocalInstance(client, tileLocalLocation);
 			byte flags = client.getTileSettings()[tile.getRenderLevel()][tile.getSceneLocation().getX()][tile.getSceneLocation().getY()];
 			String tooltip = String.format("World location: %d, %d, %d<br>" +
-					"Region ID: %d location: %d, %d<br>" +
-					"Flags: %d",
-				worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
-				worldLocation.getRegionID(), worldLocation.getRegionX(), worldLocation.getRegionY(),
-				flags);
+							"Region ID: %d location: %d, %d<br>" +
+							"Flags: %d",
+					worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
+					worldLocation.getRegionID(), worldLocation.getRegionX(), worldLocation.getRegionY(),
+					flags);
 			toolTipManager.add(new Tooltip(tooltip));
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
@@ -468,7 +478,7 @@ class DevToolsOverlay extends Overlay
 
 			String infoString = "(ID: " + graphicsObject.getId() + ")";
 			Point textLocation = Perspective.getCanvasTextLocation(
-				client, graphics, lp, infoString, 0);
+					client, graphics, lp, infoString, 0);
 			if (textLocation != null)
 			{
 				OverlayUtil.renderTextLocation(graphics, textLocation, infoString, Color.WHITE);
