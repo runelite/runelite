@@ -225,48 +225,43 @@ class DevToolsOverlay extends Overlay
 
 	private void renderNpcs(WorldView wv, Graphics2D graphics)
 	{
-		for (NPC npc : wv.npcs())
-		{
+		for (NPC npc : wv.npcs()) {
 			NPCComposition composition = npc.getComposition();
 			Color color = composition.getCombatLevel() > 1 ? YELLOW : ORANGE;
-			if (composition.getConfigs() != null)
-			{
+			if (composition.getConfigs() != null) {
 				NPCComposition transformedComposition = composition.transform();
-				if (transformedComposition == null)
-				{
+				if (transformedComposition == null) {
 					color = GRAY;
-				}
-				else
-				{
+				} else {
 					composition = transformedComposition;
 				}
 			}
 
-			String text = composition.getName() + " (ID:" + composition.getId() + ")" +
-				" (A: " + npc.getAnimation() + ") (P: " + npc.getPoseAnimation() + ") (G: " + npc.getGraphic() + ")";
-			if (npc.getModelOverrides() != null)
-			{
-				var mo = npc.getModelOverrides();
-				if (mo.getModelIds() != null)
-				{
-					text += " (M: " + Arrays.toString(mo.getModelIds()) + ")";
+			String name = composition.getName() != null ? composition.getName().replaceAll("<[^>]*>", "") : "null";
+			StringBuilder textBuilder = new StringBuilder();
+			textBuilder.append(name).append(" (ID:").append(composition.getId()).append(")")
+					.append(" (A: ").append(npc.getAnimation()).append(") (P: ").append(npc.getPoseAnimation()).append(") (G: ").append(npc.getGraphic()).append(")");
+
+			var mo = npc.getModelOverrides();
+			if (mo != null) {
+				if (mo.getModelIds() != null) {
+					textBuilder.append(" (M: ").append(Arrays.toString(mo.getModelIds())).append(")");
 				}
-				if (mo.getColorToReplaceWith() != null)
-				{
-					text += " (C: " + Arrays.toString(mo.getColorToReplaceWith()) + ")";
+				if (mo.getColorToReplaceWith() != null) {
+					textBuilder.append(" (C: ").append(Arrays.toString(mo.getColorToReplaceWith())).append(")");
 				}
-				if (mo.getTextureToReplaceWith() != null)
-				{
-					text += " (T: " + Arrays.toString(mo.getTextureToReplaceWith()) + ")";
+				if (mo.getTextureToReplaceWith() != null) {
+					textBuilder.append(" (T: ").append(Arrays.toString(mo.getTextureToReplaceWith())).append(")");
 				}
-				if (mo.useLocalPlayer())
-				{
-					text += " (LocalPlayer)";
+				if (mo.useLocalPlayer()) {
+					textBuilder.append(" (LocalPlayer)");
 				}
 			}
+
+			String text = textBuilder.toString();
 			OverlayUtil.renderActorOverlay(graphics, npc, text, color);
 		}
-	}
+		}
 
 	private void renderTileObjects(WorldView wv, Graphics2D graphics)
 	{
