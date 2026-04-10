@@ -61,6 +61,9 @@ class HunterTrap
 	private final int objectId;
 
 	@Getter
+	private final int varbitId;
+
+	@Getter
 	private final WorldPoint worldLocation;
 
 	@Setter
@@ -105,6 +108,22 @@ class HunterTrap
 		this.placedOn = Instant.now();
 		this.objectId = gameObject.getId();
 		this.worldLocation = gameObject.getWorldLocation();
+		this.varbitId = -1;
+		this.ignoreTimer = false;
+	}
+
+	/**
+	 * Constructor for a HunterTrap object
+	 *
+	 * @param gameObject The gameobject thats corresponds with this trap.
+	 */
+	HunterTrap(GameObject gameObject, int varbitId)
+	{
+		this.state = State.OPEN;
+		this.placedOn = Instant.now();
+		this.objectId = gameObject.getId();
+		this.worldLocation = gameObject.getWorldLocation();
+		this.varbitId = varbitId;
 		this.ignoreTimer = false;
 	}
 

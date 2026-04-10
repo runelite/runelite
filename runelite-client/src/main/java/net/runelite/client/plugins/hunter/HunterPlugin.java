@@ -42,6 +42,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
@@ -79,26 +80,26 @@ public class HunterPlugin extends Plugin
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
 
 	private static final Map<Integer, Integer> CRAB_TRAP_VARBITS = Map.ofEntries(
-		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_1, VarbitID.CRAB_TRAP_PANDEMONIUM_1),
-		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_2, VarbitID.CRAB_TRAP_PANDEMONIUM_2),
-		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_3, VarbitID.CRAB_TRAP_PANDEMONIUM_3),
-		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_4, VarbitID.CRAB_TRAP_PANDEMONIUM_4),
-		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_5, VarbitID.CRAB_TRAP_PANDEMONIUM_5),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_1, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_1),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_2, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_2),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_3, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_3),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_4, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_4),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_5, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_5),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_1, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_1),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_2, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_2),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_3, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_3),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_4, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_4),
-		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_5, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_5),
-		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_1, VarbitID.CRAB_TRAP_CROWN_JEWEL_1),
-		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_2, VarbitID.CRAB_TRAP_CROWN_JEWEL_2),
-		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_3, VarbitID.CRAB_TRAP_CROWN_JEWEL_3),
-		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_4, VarbitID.CRAB_TRAP_CROWN_JEWEL_4),
-		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_5, VarbitID.CRAB_TRAP_CROWN_JEWEL_5)
+		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_1, ObjectID.CRAB_TRAP_PANDEMONIUM_1),
+		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_2, ObjectID.CRAB_TRAP_PANDEMONIUM_2),
+		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_3, ObjectID.CRAB_TRAP_PANDEMONIUM_3),
+		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_4, ObjectID.CRAB_TRAP_PANDEMONIUM_4),
+		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_5, ObjectID.CRAB_TRAP_PANDEMONIUM_5),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_1, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_1),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_2, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_2),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_3, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_3),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_4, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_4),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_5, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_5),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_1, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_1),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_2, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_2),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_3, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_3),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_4, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_4),
+		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_5, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_5),
+		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_1, ObjectID.CRAB_TRAP_CROWN_JEWEL_1),
+		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_2, ObjectID.CRAB_TRAP_CROWN_JEWEL_2),
+		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_3, ObjectID.CRAB_TRAP_CROWN_JEWEL_3),
+		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_4, ObjectID.CRAB_TRAP_CROWN_JEWEL_4),
+		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_5, ObjectID.CRAB_TRAP_CROWN_JEWEL_5)
 	);
 
 	private WorldPoint lastTickLocalPlayerLocation;
@@ -167,9 +168,11 @@ public class HunterPlugin extends Plugin
 			case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_3:
 			case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_4:
 			case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_5:
+				HunterTrap crabTrap = new HunterTrap(gameObject, getCrabVarbitId(gameObject.getId()));
 				// crab traps do not expire, so we will ignore the pie timer
-				traps.put(trapLocation, new HunterTrap(gameObject));
-				traps.get(trapLocation).setIgnoreTimer(true);
+				crabTrap.setIgnoreTimer(true);
+				updateCrabTrapState(crabTrap);
+				traps.put(trapLocation, crabTrap);
 				break;
 			case ObjectID.HUNTING_IMPTRAP_EMPTY: // Imp box placed
 			case ObjectID.HUNTING_BOXTRAP_EMPTY: // Box trap placed
@@ -349,6 +352,19 @@ public class HunterPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		int varbitId = event.getVarbitId();
+		if (CRAB_TRAP_VARBITS.containsKey(varbitId))
+		{
+			traps.values().stream()
+				.filter(trap -> trap.getVarbitId() == varbitId)
+				.findFirst()
+				.ifPresent(this::updateCrabTrapState);
+		}
+	}
+
 	/**
 	 * Iterates over all the traps that were placed by the local player and
 	 * checks if the trap is still there. If the trap is gone, it removes
@@ -408,30 +424,6 @@ public class HunterPlugin extends Plugin
 					{
 						containsYoungTree = true;
 					}
-
-					if (CRAB_TRAP_VARBITS.containsKey(object.getId()) && traps.containsKey(object.getWorldLocation()))
-					{
-						int stateValue = client.getVarbitValue(CRAB_TRAP_VARBITS.get(object.getId()));
-
-						HunterTrap.State state;
-						if (stateValue == 0)
-						{
-							state = HunterTrap.State.NOT_PLACED;
-						}
-						else if (stateValue == 1)
-						{
-							state = HunterTrap.State.EMPTY;
-						}
-						else if (stateValue == 2)
-						{
-							state = HunterTrap.State.OPEN;
-						}
-						else
-						{
-							state = HunterTrap.State.FULL;
-						}
-						traps.get(object.getWorldLocation()).setState(state);
-					}
 				}
 			}
 
@@ -464,5 +456,44 @@ public class HunterPlugin extends Plugin
 		{
 			overlay.updateConfig();
 		}
+	}
+
+	private void updateCrabTrapState(HunterTrap trap)
+	{
+		int stateValue = client.getVarbitValue(trap.getVarbitId());
+
+		HunterTrap.State state;
+		if (stateValue == 0)
+		{
+			state = HunterTrap.State.NOT_PLACED;
+		}
+		else if (stateValue == 1)
+		{
+			state = HunterTrap.State.EMPTY;
+		}
+		else if (stateValue == 2)
+		{
+			state = HunterTrap.State.OPEN;
+		}
+		else
+		{
+			state = HunterTrap.State.FULL;
+		}
+
+		trap.setState(state);
+	}
+
+	// returns the varbit for a crab trap based on the object id
+	private Integer getCrabVarbitId(int objectId)
+	{
+		for (Map.Entry<Integer, Integer> entry : CRAB_TRAP_VARBITS.entrySet())
+		{
+			if (entry.getValue() == objectId)
+			{
+				return entry.getKey();
+			}
+		}
+
+		return null;
 	}
 }
