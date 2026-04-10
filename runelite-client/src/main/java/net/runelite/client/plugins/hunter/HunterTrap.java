@@ -63,6 +63,10 @@ class HunterTrap
 	@Getter
 	private final WorldPoint worldLocation;
 
+	@Setter
+	@Getter
+	private boolean ignoreTimer;
+
 	/**
 	 * The states a trap can be in.
 	 */
@@ -97,6 +101,7 @@ class HunterTrap
 		this.placedOn = Instant.now();
 		this.objectId = gameObject.getId();
 		this.worldLocation = gameObject.getWorldLocation();
+		this.ignoreTimer = false;
 	}
 
 	/**
