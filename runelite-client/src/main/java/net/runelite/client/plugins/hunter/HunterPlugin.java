@@ -78,6 +78,29 @@ public class HunterPlugin extends Plugin
 	@Getter
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
 
+	private static final Map<Integer, Integer> CRAB_TRAP_VARBITS = Map.ofEntries(
+		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_1, VarbitID.CRAB_TRAP_PANDEMONIUM_1),
+		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_2, VarbitID.CRAB_TRAP_PANDEMONIUM_2),
+		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_3, VarbitID.CRAB_TRAP_PANDEMONIUM_3),
+		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_4, VarbitID.CRAB_TRAP_PANDEMONIUM_4),
+		Map.entry(ObjectID.CRAB_TRAP_PANDEMONIUM_5, VarbitID.CRAB_TRAP_PANDEMONIUM_5),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_1, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_1),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_2, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_2),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_3, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_3),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_4, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_4),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_5, VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_5),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_1, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_1),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_2, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_2),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_3, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_3),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_4, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_4),
+		Map.entry(ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_5, VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_5),
+		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_1, VarbitID.CRAB_TRAP_CROWN_JEWEL_1),
+		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_2, VarbitID.CRAB_TRAP_CROWN_JEWEL_2),
+		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_3, VarbitID.CRAB_TRAP_CROWN_JEWEL_3),
+		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_4, VarbitID.CRAB_TRAP_CROWN_JEWEL_4),
+		Map.entry(ObjectID.CRAB_TRAP_CROWN_JEWEL_5, VarbitID.CRAB_TRAP_CROWN_JEWEL_5)
+	);
+
 	private WorldPoint lastTickLocalPlayerLocation;
 
 	@Provides
@@ -386,335 +409,28 @@ public class HunterPlugin extends Plugin
 						containsYoungTree = true;
 					}
 
-					WorldPoint trapLocation = object.getWorldLocation();
-
-					switch (object.getId())
+					if (CRAB_TRAP_VARBITS.containsKey(object.getId()) && traps.containsKey(object.getWorldLocation()))
 					{
-						// PANDEMONIUM
-						case ObjectID.CRAB_TRAP_PANDEMONIUM_1:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_PANDEMONIUM_1))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_PANDEMONIUM_2:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_PANDEMONIUM_2))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_PANDEMONIUM_3:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_PANDEMONIUM_3))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_PANDEMONIUM_4:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_PANDEMONIUM_4))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_PANDEMONIUM_5:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_PANDEMONIUM_5))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
+						int stateValue = client.getVarbitValue(CRAB_TRAP_VARBITS.get(object.getId()));
 
-							// CONCH
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_1:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_1))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_2:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_2))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_3:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_3))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_4:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_4))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_5:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_5))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_1:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_1))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_2:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_2))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_3:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_3))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_4:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_4))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_5:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_5))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-
-						case ObjectID.CRAB_TRAP_CROWN_JEWEL_1:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_CROWN_JEWEL_1))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_CROWN_JEWEL_2:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_CROWN_JEWEL_2))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_CROWN_JEWEL_3:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_CROWN_JEWEL_3))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_CROWN_JEWEL_4:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_CROWN_JEWEL_4))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
-						case ObjectID.CRAB_TRAP_CROWN_JEWEL_5:
-							switch (client.getVarbitValue(VarbitID.CRAB_TRAP_CROWN_JEWEL_5))
-							{
-								case 1:
-									traps.get(trapLocation).setState(HunterTrap.State.EMPTY);
-									break;
-								case 2:
-									traps.get(trapLocation).setState(HunterTrap.State.OPEN);
-									break;
-								case 3:
-								case 4:
-								case 5:
-									traps.get(trapLocation).setState(HunterTrap.State.FULL);
-									break;
-							}
-							break;
+						HunterTrap.State state;
+						if (stateValue == 0)
+						{
+							state = HunterTrap.State.NOT_PLACED;
+						}
+						else if (stateValue == 1)
+						{
+							state = HunterTrap.State.EMPTY;
+						}
+						else if (stateValue == 2)
+						{
+							state = HunterTrap.State.OPEN;
+						}
+						else
+						{
+							state = HunterTrap.State.FULL;
+						}
+						traps.get(object.getWorldLocation()).setState(state);
 					}
 				}
 			}

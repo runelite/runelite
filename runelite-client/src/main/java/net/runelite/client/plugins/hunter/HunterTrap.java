@@ -87,7 +87,11 @@ class HunterTrap
 		/**
 		 * A trap that is closing.
 		 */
-		TRANSITION
+		TRANSITION,
+		/**
+		 * Not placed
+		 */
+		NOT_PLACED
 	}
 
 	/**
