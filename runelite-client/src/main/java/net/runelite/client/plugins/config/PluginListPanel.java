@@ -82,7 +82,9 @@ class PluginListPanel extends PluginPanel
 		"Notification",
 		"Plugin Hub",
 		"Skilling",
-		"XP"
+		"XP",
+		"Enabled",
+		"Disabled"
 	);
 
 	private final ConfigManager configManager;
