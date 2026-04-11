@@ -131,8 +131,7 @@ public class TelemetryClient
 			.addQueryParameter("osver", System.getProperty("os.version"))
 			.addQueryParameter("osarch", System.getProperty("os.arch"))
 			.addQueryParameter("javaversion", System.getProperty("java.version"))
-			.addQueryParameter("javavendor", System.getProperty("java.vendor"))
-			.addQueryParameter("cpumodel", cpuName());
+			.addQueryParameter("javavendor", System.getProperty("java.vendor"));
 		params.forEach(urlBuilder::addQueryParameter);
 
 		HttpUrl url = urlBuilder.build();
