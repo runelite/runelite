@@ -117,7 +117,7 @@ public class OverlayRenderer extends MouseAdapter
 	private Rectangle chatboxBounds;
 	private boolean chatboxHidden;
 	private boolean isResizeable;
-	private OverlayBounds emptySnapCorners, snapCorners;
+	private SnapCorners snapCorners;
 	private boolean dragWarn;
 
 	@Inject
@@ -221,14 +221,12 @@ public class OverlayRenderer extends MouseAdapter
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-
 			if (shouldInvalidateBounds())
 			{
-				emptySnapCorners = buildSnapCorners();
+				snapCorners = buildSnapCorners();
 			}
 
-			// Create copy of snap corners because overlays will modify them
-			snapCorners = new OverlayBounds(emptySnapCorners);
+			snapCorners.reset();
 		}
 	}
 
@@ -268,14 +266,11 @@ public class OverlayRenderer extends MouseAdapter
 		// Draw snap corners
 		if (inOverlayDraggingMode && layer == OverlayLayer.UNDER_WIDGETS && currentManagedOverlay != null && currentManagedOverlay.isSnappable())
 		{
-			final OverlayBounds translatedSnapCorners = snapCorners.translated(
-				-SNAP_CORNER_SIZE.width,
-				-SNAP_CORNER_SIZE.height);
-
 			final Color previous = graphics.getColor();
 
-			for (final Rectangle corner : translatedSnapCorners.getBounds())
+			for (SnapCorner snapCorner : snapCorners.getSnapCorners())
 			{
+				Rectangle corner = snapCorner.corner(SNAP_CORNER_SIZE);
 				graphics.setColor(corner.contains(mousePosition) ? SNAP_CORNER_ACTIVE_COLOR : SNAP_CORNER_COLOR);
 				graphics.fill(corner);
 			}
@@ -303,30 +298,24 @@ public class OverlayRenderer extends MouseAdapter
 		{
 			final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
 			final Rectangle bounds = overlay.getBounds();
-			final Dimension dimension = bounds.getSize();
 			final Point preferredLocation = overlay.getPreferredLocation();
 			Point location;
-			Rectangle snapCorner = null;
+			SnapCorner snapCorner = null;
 
 			// If the final position is not modified, layout it
 			if (overlayPosition != OverlayPosition.DYNAMIC && overlayPosition != OverlayPosition.TOOLTIP
 				&& overlayPosition != OverlayPosition.DETACHED && preferredLocation == null)
 			{
 				snapCorner = snapCorners.forPosition(overlayPosition);
-				final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension); // offset from corner
-				// Target x/y to draw the overlay
-				int destX = snapCorner.x + translation.x;
-				int destY = snapCorner.y + translation.y;
-				// Clamp the target position to ensure it is on screen or within parent bounds
-				location = clampOverlayLocation(destX, destY, dimension.width, dimension.height, overlay);
+				location = snapCorner.getNextDrawPosition(bounds);
 			}
 			else
 			{
 				location = preferredLocation != null ? preferredLocation : bounds.getLocation();
-
-				// Clamp the overlay position to ensure it is on screen or within parent bounds
-				location = clampOverlayLocation(location.x, location.y, dimension.width, dimension.height, overlay);
 			}
+
+			// Clamp the overlay position to ensure it is on screen or within parent bounds
+			location = clampOverlayLocation(location.x, location.y, bounds.width, bounds.height, overlay);
 
 			if (overlay.getPreferredSize() != null)
 			{
@@ -338,7 +327,7 @@ public class OverlayRenderer extends MouseAdapter
 			// Adjust snap corner based on where the overlay was drawn
 			if (snapCorner != null && bounds.width + bounds.height > 0)
 			{
-				OverlayUtil.shiftSnapCorner(overlayPosition, snapCorner, bounds, PADDING);
+				snapCorner.shift(bounds, PADDING);
 			}
 
 			// Restore graphics2d properties prior to drawing bounds
@@ -662,13 +651,11 @@ public class OverlayRenderer extends MouseAdapter
 		// Check if the overlay is over a snapcorner and snap it if so
 		if (currentManagedOverlay.isSnappable() && inOverlayDraggingMode)
 		{
-			final OverlayBounds snapCorners = this.emptySnapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
-
-			for (Rectangle snapCorner : snapCorners.getBounds())
+			for (SnapCorner snapCorner : snapCorners.getSnapCorners())
 			{
-				if (snapCorner.contains(mousePoint))
+				if (snapCorner.corner(SNAP_CORNER_SIZE).contains(mousePosition))
 				{
-					OverlayPosition position = snapCorners.fromBounds(snapCorner);
+					OverlayPosition position = snapCorner.position;
 
 					if (position == getCorrectedOverlayPosition(currentManagedOverlay))
 					{
@@ -853,7 +840,7 @@ public class OverlayRenderer extends MouseAdapter
 		return client.getWidget(InterfaceID.Toplevel.OVERLAY_HUD);
 	}
 
-	private OverlayBounds buildSnapCorners()
+	private SnapCorners buildSnapCorners()
 	{
 		final Point topLeftPoint = new Point(
 			viewportBounds.x + BORDER,
@@ -866,15 +853,15 @@ public class OverlayRenderer extends MouseAdapter
 
 		final Point topRightPoint = new Point(
 			viewportBounds.x + viewportBounds.width - BORDER,
-			topCenterPoint.y);
+			viewportBounds.y + BORDER);
 
 		final Point bottomLeftPoint = new Point(
-			topLeftPoint.x,
+			viewportBounds.x + BORDER,
 			viewportBounds.y + viewportBounds.height - BORDER);
 
 		final Point bottomRightPoint = new Point(
-			topRightPoint.x,
-			bottomLeftPoint.y);
+			viewportBounds.x + viewportBounds.width - BORDER,
+			viewportBounds.y + viewportBounds.height - BORDER);
 
 		// Check to see if chat box is minimized
 		if (isResizeable && chatboxHidden)
@@ -890,14 +877,14 @@ public class OverlayRenderer extends MouseAdapter
 			(int)client.getRealDimensions().getWidth(),
 			0) : topRightPoint;
 
-		return new OverlayBounds(
-			new Rectangle(topLeftPoint, SNAP_CORNER_SIZE),
-			new Rectangle(topCenterPoint, SNAP_CORNER_SIZE),
-			new Rectangle(topRightPoint, SNAP_CORNER_SIZE),
-			new Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
-			new Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
-			new Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE),
-			new Rectangle(canvasTopRightPoint, SNAP_CORNER_SIZE));
+		return new SnapCorners(
+			topLeftPoint,
+			topCenterPoint,
+			topRightPoint,
+			bottomLeftPoint,
+			bottomRightPoint,
+			rightChatboxPoint,
+			canvasTopRightPoint);
 	}
 
 	/**
