@@ -30,7 +30,7 @@ flatlaf = "3.2.5-rl4"
 guice = "4.1.0"
 lombok = "1.18.30"
 logback = "1.2.9"
-lwjgl = "3.3.2"
+lwjgl = "3.3.6"
 slf4j = "1.7.25"
 antlr = "4.13.1"
 
