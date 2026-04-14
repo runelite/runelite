@@ -40,12 +40,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.BorderFactory;
@@ -270,12 +265,15 @@ class ConfigPanel extends PluginPanel
 
 		ConfigDescriptor cd = pluginConfig.getConfigDescriptor();
 
+		final Comparator<ConfigObject> panelComparator = (a, b) ->
+				ComparisonChain.start()
+				.compare(a.position(), b.position())
+				.compare(a.name(), b.name())
+				.result();
+
 		final Map<String, JPanel> sectionWidgets = new HashMap<>();
-		final Map<ConfigObject, JPanel> topLevelPanels = new TreeMap<>((a, b) ->
-			ComparisonChain.start()
-			.compare(a.position(), b.position())
-			.compare(a.name(), b.name())
-			.result());
+		final Map<ConfigObject, JPanel> topLevelPanels = new TreeMap<>(panelComparator);
+		final Map<String, Map<ConfigObject, JPanel>> subLevelPanels = new HashMap<>();
 
 		for (ConfigSectionDescriptor csd : cd.getSections())
 		{
@@ -334,7 +332,17 @@ class ConfigPanel extends PluginPanel
 
 			sectionWidgets.put(csd.getKey(), sectionContents);
 
-			topLevelPanels.put(csd, section);
+			String parentSection = csd.getSection().parentSection();
+			if (parentSection.isEmpty())
+			{
+				topLevelPanels.put(csd, section);
+			}
+			else
+			{
+                subLevelPanels.computeIfAbsent(parentSection,
+						k -> new TreeMap<>(panelComparator))
+						.put(csd, section);
+            }
 		}
 
 		for (ConfigItemDescriptor cid : cd.getItems())
@@ -407,17 +415,31 @@ class ConfigPanel extends PluginPanel
 				}
 			}
 
-			JPanel section = sectionWidgets.get(cid.getItem().section());
-			if (section == null)
+			String section = cid.getItem().section();
+			if (section.isEmpty())
 			{
 				topLevelPanels.put(cid, item);
 			}
 			else
 			{
-				section.add(item);
+				subLevelPanels.computeIfAbsent(section,
+						k -> new TreeMap<>(panelComparator))
+						.put(cid, item);
 			}
 		}
 
+		for (Map.Entry<String, Map<ConfigObject, JPanel>> subLevelPanel : subLevelPanels.entrySet())
+		{
+			JPanel section = sectionWidgets.get(subLevelPanel.getKey());
+			if (null == section)
+			{
+				topLevelPanels.putAll(subLevelPanel.getValue());
+			}
+			else
+			{
+				subLevelPanel.getValue().values().forEach(section::add);
+			}
+		}
 		topLevelPanels.values().forEach(mainPanel::add);
 
 		JButton resetButton = new JButton("Reset");
