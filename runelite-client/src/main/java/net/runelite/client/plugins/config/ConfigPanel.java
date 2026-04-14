@@ -345,10 +345,10 @@ class ConfigPanel extends PluginPanel
 			}
 			else
 			{
-                subLevelPanels.computeIfAbsent(parentSection,
+				subLevelPanels.computeIfAbsent(parentSection,
 						k -> new TreeMap<>(panelComparator))
 						.put(csd, section);
-            }
+			}
 		}
 
 		for (ConfigItemDescriptor cid : cd.getItems())
