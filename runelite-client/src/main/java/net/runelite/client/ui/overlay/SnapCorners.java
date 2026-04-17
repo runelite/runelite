@@ -24,31 +24,22 @@
  */
 package net.runelite.client.ui.overlay;
 
-import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
 
 class SnapCorners
 {
-	private final SnapCorner topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
+	final SnapCorner topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
 
-	SnapCorners(
-		Point topLeft,
-		Point topCenter,
-		Point topRight,
-		Point bottomLeft,
-		Point bottomRight,
-		Point aboveChatboxRight,
-		Point canvasTopRight
-	)
+	SnapCorners()
 	{
-		this.topLeft = new SnapCorner(OverlayPosition.TOP_LEFT, SnapCorner.EXPAND_DOWN, topLeft);
-		this.topCenter = new SnapCorner(OverlayPosition.TOP_CENTER, SnapCorner.ALIGNMENT_CENTER_HORIZONTAL | SnapCorner.EXPAND_DOWN, topCenter);
-		this.topRight = new SnapCorner(OverlayPosition.TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN, topRight);
-		this.bottomLeft = new SnapCorner(OverlayPosition.BOTTOM_LEFT, SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_RIGHT, bottomLeft);
-		this.bottomRight = new SnapCorner(OverlayPosition.BOTTOM_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_LEFT, bottomRight);
-		this.aboveChatboxRight = new SnapCorner(OverlayPosition.ABOVE_CHATBOX_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_UP, aboveChatboxRight);
-		this.canvasTopRight = new SnapCorner(OverlayPosition.CANVAS_TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN, canvasTopRight);
+		this.topLeft = new SnapCorner(OverlayPosition.TOP_LEFT, SnapCorner.EXPAND_DOWN);
+		this.topCenter = new SnapCorner(OverlayPosition.TOP_CENTER, SnapCorner.ALIGNMENT_CENTER_HORIZONTAL | SnapCorner.EXPAND_DOWN);
+		this.topRight = new SnapCorner(OverlayPosition.TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN);
+		this.bottomLeft = new SnapCorner(OverlayPosition.BOTTOM_LEFT, SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_RIGHT);
+		this.bottomRight = new SnapCorner(OverlayPosition.BOTTOM_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_LEFT);
+		this.aboveChatboxRight = new SnapCorner(OverlayPosition.ABOVE_CHATBOX_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_UP);
+		this.canvasTopRight = new SnapCorner(OverlayPosition.CANVAS_TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN);
 	}
 
 	SnapCorner forPosition(OverlayPosition overlayPosition)

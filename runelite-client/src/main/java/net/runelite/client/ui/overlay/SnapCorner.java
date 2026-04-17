@@ -44,22 +44,33 @@ class SnapCorner
 
 	@MagicConstant(flags = {ALIGNMENT_RIGHT, ALIGNMENT_CENTER_HORIZONTAL, EXPAND_LEFT, EXPAND_RIGHT, EXPAND_UP, EXPAND_DOWN})
 	private final int mode;
-	private final int cx, cy; // corner point
+	private int cx, cy; // corner point
 	private int px, py; // current point
 	final OverlayPosition position;
 
 	SnapCorner(
 		OverlayPosition position,
-		int mode,
-		Point coord
+		int mode
 	)
 	{
 		this.position = position;
 		this.mode = mode;
-		this.cx = coord.x;
-		this.cy = coord.y;
-		this.px = coord.x;
-		this.py = coord.y;
+	}
+
+	void setPosition(int x, int y)
+	{
+		this.cx = x;
+		this.cy = y;
+	}
+
+	int getPositionX()
+	{
+		return this.cx;
+	}
+
+	int getPositionY()
+	{
+		return this.cy;
 	}
 
 	void reset()

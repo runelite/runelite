@@ -112,12 +112,7 @@ public class OverlayRenderer extends MouseAdapter
 	private Overlay curHoveredOverlay; // for building menu entries
 	private Overlay lastHoveredOverlay; // for off-thread access
 
-	// Overlay state validation
-	private Rectangle viewportBounds;
-	private Rectangle chatboxBounds;
-	private boolean chatboxHidden;
-	private boolean isResizeable;
-	private SnapCorners snapCorners;
+	private final SnapCorners snapCorners = new SnapCorners();
 	private boolean dragWarn;
 
 	@Inject
@@ -221,11 +216,7 @@ public class OverlayRenderer extends MouseAdapter
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (shouldInvalidateBounds())
-			{
-				snapCorners = buildSnapCorners();
-			}
-
+			positionSnapcorners();
 			snapCorners.reset();
 		}
 	}
@@ -689,7 +680,7 @@ public class OverlayRenderer extends MouseAdapter
 
 	private Rectangle clipBounds(OverlayLayer layer)
 	{
-		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
+		if (!client.isResized() && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
 		{
 			return new Rectangle(client.getViewportXOffset(),
 				client.getViewportYOffset(),
@@ -753,7 +744,7 @@ public class OverlayRenderer extends MouseAdapter
 			overlayPosition = overlay.getPreferredPosition();
 		}
 
-		if (!isResizeable)
+		if (!client.isResized())
 		{
 			// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
 			// BOTTOM_RIGHT and CANVAS_TOP_RIGHT is same as TOP_RIGHT.
@@ -783,47 +774,6 @@ public class OverlayRenderer extends MouseAdapter
 		clientUI.setCursor(clientUI.getDefaultCursor());
 	}
 
-	private boolean shouldInvalidateBounds()
-	{
-		final Widget chatbox = client.getWidget(InterfaceID.Chatbox.CHATAREA);
-		final boolean resizeableChanged = isResizeable != client.isResized();
-		boolean changed = false;
-
-		if (resizeableChanged)
-		{
-			isResizeable = client.isResized();
-			changed = true;
-		}
-
-		final boolean chatboxBoundsChanged = chatbox == null || !chatbox.getBounds().equals(chatboxBounds);
-
-		if (chatboxBoundsChanged)
-		{
-			chatboxBounds = chatbox != null ? chatbox.getBounds() : new Rectangle();
-			changed = true;
-		}
-
-		final boolean chatboxHiddenChanged = chatboxHidden != (chatbox == null || chatbox.isHidden());
-
-		if (chatboxHiddenChanged)
-		{
-			chatboxHidden = chatbox == null || chatbox.isHidden();
-			changed = true;
-		}
-
-		Widget viewportWidget = getViewportLayer();
-		Rectangle viewport = viewportWidget != null ? viewportWidget.getBounds() : new Rectangle();
-		final boolean viewportChanged = !viewport.equals(viewportBounds);
-
-		if (viewportChanged)
-		{
-			viewportBounds = viewport;
-			changed = true;
-		}
-
-		return changed;
-	}
-
 	private Widget getViewportLayer()
 	{
 		if (client.isResized())
@@ -840,51 +790,50 @@ public class OverlayRenderer extends MouseAdapter
 		return client.getWidget(InterfaceID.Toplevel.OVERLAY_HUD);
 	}
 
-	private SnapCorners buildSnapCorners()
+	private void positionSnapcorners()
 	{
-		final Point topLeftPoint = new Point(
+		final Widget viewportWidget = getViewportLayer();
+		final Rectangle viewportBounds = viewportWidget != null ? viewportWidget.getBounds() : new Rectangle();
+		final boolean isResizeable = client.isResized();
+		final Widget chatbox = client.getWidget(InterfaceID.Chatbox.CHATAREA);
+		final boolean chatboxHidden = chatbox == null || chatbox.isHidden();
+		final Rectangle chatboxBounds = chatbox != null ? chatbox.getBounds() : new Rectangle();
+
+		snapCorners.topLeft.setPosition(
 			viewportBounds.x + BORDER,
 			viewportBounds.y + BORDER_TOP);
 
-		final Point topCenterPoint = new Point(
+		snapCorners.topCenter.setPosition(
 			viewportBounds.x + viewportBounds.width / 2,
 			viewportBounds.y + BORDER
 		);
 
-		final Point topRightPoint = new Point(
+		snapCorners.topRight.setPosition(
 			viewportBounds.x + viewportBounds.width - BORDER,
 			viewportBounds.y + BORDER);
 
-		final Point bottomLeftPoint = new Point(
-			viewportBounds.x + BORDER,
-			viewportBounds.y + viewportBounds.height - BORDER);
-
-		final Point bottomRightPoint = new Point(
-			viewportBounds.x + viewportBounds.width - BORDER,
-			viewportBounds.y + viewportBounds.height - BORDER);
-
+		int bottomLeftX = viewportBounds.x + BORDER, bottomLeftY = viewportBounds.y + viewportBounds.height - BORDER;
 		// Check to see if chat box is minimized
 		if (isResizeable && chatboxHidden)
 		{
-			bottomLeftPoint.y += chatboxBounds.height;
+			bottomLeftX += chatboxBounds.height;
 		}
+		snapCorners.bottomLeft.setPosition(bottomLeftX, bottomLeftY);
 
-		final Point rightChatboxPoint = isResizeable ? new Point(
-			viewportBounds.x + chatboxBounds.width - BORDER,
-			bottomLeftPoint.y) : bottomRightPoint;
+		snapCorners.bottomRight.setPosition(
+			viewportBounds.x + viewportBounds.width - BORDER,
+			viewportBounds.y + viewportBounds.height - BORDER);
 
-		final Point canvasTopRightPoint = isResizeable ? new Point(
-			(int)client.getRealDimensions().getWidth(),
-			0) : topRightPoint;
-
-		return new SnapCorners(
-			topLeftPoint,
-			topCenterPoint,
-			topRightPoint,
-			bottomLeftPoint,
-			bottomRightPoint,
-			rightChatboxPoint,
-			canvasTopRightPoint);
+		if (isResizeable)
+		{
+			snapCorners.aboveChatboxRight.setPosition(viewportBounds.x + chatboxBounds.width - BORDER, bottomLeftY);
+			snapCorners.canvasTopRight.setPosition((int) client.getRealDimensions().getWidth(), 0);
+		}
+		else
+		{
+			snapCorners.aboveChatboxRight.setPosition(snapCorners.bottomRight.getPositionX(), snapCorners.bottomRight.getPositionY());
+			snapCorners.canvasTopRight.setPosition(snapCorners.topRight.getPositionX(), snapCorners.topRight.getPositionY());
+		}
 	}
 
 	/**
