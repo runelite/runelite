@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Set;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -42,6 +43,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+@Slf4j
 class MouseHighlightOverlay extends Overlay
 {
 	/**
@@ -137,12 +139,21 @@ class MouseHighlightOverlay extends Overlay
 				}
 		}
 
+
+
 		if (WIDGET_MENU_ACTIONS.contains(type))
 		{
 			final int widgetId = menuEntry.getParam1();
 			final int groupId = WidgetUtil.componentToInterface(widgetId);
 
+			log.debug(groupId + "");
+
 			if (!config.uiTooltip())
+			{
+				return null;
+			}
+
+			if (groupId == InterfaceID.WELCOME_SCREEN)
 			{
 				return null;
 			}
@@ -153,6 +164,21 @@ class MouseHighlightOverlay extends Overlay
 			}
 
 			if (config.disableSpellbooktooltip() && groupId == InterfaceID.MAGIC_SPELLBOOK)
+			{
+				return null;
+			}
+
+			if (config.disablePrayertooltip() && groupId == InterfaceID.PRAYERBOOK)
+			{
+				return null;
+			}
+
+			if (config.disableMenuStonesTooltip() && (groupId == InterfaceID.TOPLEVEL || groupId == InterfaceID.TOPLEVEL_PRE_EOC || groupId == InterfaceID.TOPLEVEL_OSRS_STRETCH))
+			{
+				return null;
+			}
+
+			if (config.disableOrbsTooltip() && (groupId == InterfaceID.ORBS || groupId == InterfaceID.ORBS_NOMAP))
 			{
 				return null;
 			}
