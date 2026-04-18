@@ -30,7 +30,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Set;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -43,7 +42,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-@Slf4j
 class MouseHighlightOverlay extends Overlay
 {
 	/**
@@ -145,8 +143,6 @@ class MouseHighlightOverlay extends Overlay
 		{
 			final int widgetId = menuEntry.getParam1();
 			final int groupId = WidgetUtil.componentToInterface(widgetId);
-
-			log.debug(groupId + "");
 
 			if (!config.uiTooltip())
 			{
