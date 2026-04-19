@@ -27,10 +27,8 @@ package net.runelite.client.ui.overlay;
 import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -205,62 +203,5 @@ public class OverlayUtil
 	public static void setGraphicProperties(Graphics2D graphics)
 	{
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	}
-
-	static void shiftSnapCorner(OverlayPosition overlayPosition, Rectangle snapCorner, Rectangle bounds, int padding)
-	{
-		// translate corner for padding and also based on where the overlay bounds are now
-		int sX = snapCorner.x, sY = snapCorner.y;
-		switch (overlayPosition)
-		{
-			case BOTTOM_LEFT:
-				sX = Math.max(sX, bounds.x + bounds.width + padding);
-				break;
-			case BOTTOM_RIGHT:
-				sX = Math.min(sX, bounds.x - padding);
-				break;
-			case TOP_LEFT:
-			case TOP_CENTER:
-			case CANVAS_TOP_RIGHT:
-			case TOP_RIGHT:
-				sY = Math.max(sY, bounds.y + bounds.height + padding);
-				break;
-			case ABOVE_CHATBOX_RIGHT:
-				sY = Math.min(sY, bounds.y - padding);
-				break;
-			default:
-				throw new IllegalArgumentException();
-		}
-		snapCorner.x = sX;
-		snapCorner.y = sY;
-	}
-
-	public static java.awt.Point transformPosition(OverlayPosition position, Dimension dimension)
-	{
-		final java.awt.Point result = new java.awt.Point();
-
-		switch (position)
-		{
-			case TOP_LEFT:
-				break;
-			case TOP_CENTER:
-				result.x = -dimension.width / 2;
-				break;
-			case BOTTOM_LEFT:
-				result.y = -dimension.height;
-				break;
-			case BOTTOM_RIGHT:
-			case ABOVE_CHATBOX_RIGHT:
-				result.y = -dimension.height;
-				// FALLTHROUGH
-			case CANVAS_TOP_RIGHT:
-			case TOP_RIGHT:
-				result.x = -dimension.width;
-				break;
-			default:
-				throw new IllegalArgumentException();
-		}
-
-		return result;
 	}
 }

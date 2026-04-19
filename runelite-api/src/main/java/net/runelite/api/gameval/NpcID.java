@@ -58396,10 +58396,6 @@ public final class NpcID
 	 * Agelus
 	 */
 	public static final int FORTIS_SHOP_FARMING = 13339;
-
-	/**
-	 * Floria
-	 */
 	public static final int FORTIS_SHOP_SEAMSTRESS = 13340;
 
 	/**
@@ -67862,6 +67858,96 @@ public final class NpcID
 	 * Lara
 	 */
 	public static final int CANOEING_LARA = 15605;
+
+	/**
+	 * Floria
+	 */
+	public static final int FORTIS_SHOP_SEAMSTRESS_NORMAL = 15606;
+
+	/**
+	 * Floria
+	 */
+	public static final int FORTIS_SHOP_SEAMSTRESS_LEAGUE = 15607;
+
+	/**
+	 * &#60;col=00ffff&#62;Fire
+	 */
+	public static final int LEAGUE_6_YAMA_AGIL_FIRE_NPC = 15608;
+
+	/**
+	 * Leagues Tutor
+	 */
+	public static final int LEAGUE_6_TUTOR = 15609;
+
+	/**
+	 * Black dragon
+	 */
+	public static final int LEAGUE_6_KBD = 15610;
+
+	/**
+	 * Thermonuclear smoke devil
+	 */
+	public static final int LEAGUE_6_SMOKE_DEVIL_BOSS = 15611;
+
+	/**
+	 * Cerberus
+	 */
+	public static final int LEAGUE_6_CERBERUS = 15612;
+
+	/**
+	 * Crystalline Hunllef
+	 */
+	public static final int LEAGUE_6_CRYSTAL_HUNLLEF_MELEE = 15613;
+
+	/**
+	 * Crystalline Hunllef
+	 */
+	public static final int LEAGUE_6_CRYSTAL_HUNLLEF_DEATH = 15614;
+
+	/**
+	 * Hespori
+	 */
+	public static final int LEAGUE_6_HESPORI = 15615;
+
+	/**
+	 * Kalphite Queen
+	 */
+	public static final int LEAGUE_6_KALPHITE_QUEEN = 15616;
+
+	/**
+	 * Kalphite Queen
+	 */
+	public static final int LEAGUE_6_KALPHITE_FLYINGQUEEN = 15617;
+
+	/**
+	 * Dagannoth Supreme
+	 */
+	public static final int LEAGUE_6_DAGCAVE_RANGED_BOSS = 15618;
+
+	/**
+	 * Dagannoth Prime
+	 */
+	public static final int LEAGUE_6_DAGCAVE_MAGIC_BOSS = 15619;
+
+	/**
+	 * Dagannoth Rex
+	 */
+	public static final int LEAGUE_6_DAGCAVE_MELEE_BOSS = 15620;
+
+	/**
+	 * Dusk
+	 */
+	public static final int LEAGUE_6_GG_DUSK_ALIVE = 15621;
+
+	/**
+	 * Dusk
+	 */
+	public static final int LEAGUE_6_GG_DUSK_DEATH = 15622;
+
+	/**
+	 * Dawn
+	 */
+	public static final int LEAGUE_6_GG_DAWN_ALIVE = 15623;
 	public static final int COWBOSS_MAPPED = 15624;
 
 	/**
@@ -67909,5 +67995,168 @@ public final class NpcID
 	 * Wizard Gary
 	 */
 	public static final int _25TH_HOST = 15634;
+
+	/**
+	 * Dawn
+	 */
+	public static final int LEAGUE_6_GG_DAWN_DEATH = 15635;
+
+	/**
+	 * Demon butler
+	 */
+	public static final int LEAGUE_BUTLER = 15636;
+
+	/**
+	 * Demon butler
+	 */
+	public static final int LEAGUE_BUTLER_SCENERY = 15637;
+
+	/**
+	 * Imp
+	 */
+	public static final int MINION_IMP_CHATHEAD = 15638;
+
+	/**
+	 * Sage
+	 */
+	public static final int LEAGUE6_SAGE_DEBUG = 15639;
+
+	/**
+	 * Sage
+	 */
+	public static final int LEAGUE6_SAGE_CAGE_DEBUG = 15640;
+
+	/**
+	 * Sage
+	 */
+	public static final int LEAGUE6_SAGE_CAGE_2_DEBUG = 15641;
+	public static final int DEBUG_THRALL_IMP_MAGIC = 15642;
+	public static final int DEBUG_THRALL_IMP_RANGED = 15643;
+	public static final int DEBUG_THRALL_IMP_MELEE = 15644;
+
+	/**
+	 * Yama
+	 */
+	public static final int LEAGUE6_YAMA_THRONE = 15645;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_RELIC_CARRY_1 = 15646;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_RELIC_CARRY_2 = 15647;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_RELIC_CARRY_3 = 15648;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_RELIC_CARRY_4 = 15649;
+
+	/**
+	 * Imps
+	 */
+	public static final int LEAGUE6_IMP_RELIC_TINKER_1 = 15650;
+
+	/**
+	 * Imps
+	 */
+	public static final int LEAGUE6_IMP_RELIC_TINKER_2 = 15651;
+
+	/**
+	 * Imps
+	 */
+	public static final int LEAGUE6_IMP_RELIC_TINKER_3 = 15652;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_READING_1 = 15653;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_READING_2 = 15654;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_READING_3 = 15655;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_JUMPING_1 = 15656;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_JUMPING_2 = 15657;
+
+	/**
+	 * Imp
+	 */
+	public static final int LEAGUE6_IMP_JUMPING_3 = 15658;
+
+	/**
+	 * Vial
+	 */
+	public static final int LEAGUE6_IMP_GRIDMASTER_WINNER_01 = 15659;
+
+	/**
+	 * Insane
+	 */
+	public static final int LEAGUE6_IMP_GRIDMASTER_WINNER_02 = 15660;
+
+	/**
+	 * Jam
+	 */
+	public static final int LEAGUE6_IMP_GRIDMASTER_WINNER_03 = 15661;
+
+	/**
+	 * Exile
+	 */
+	public static final int LEAGUE_6_EXILE_IMP = 15662;
+
+	/**
+	 * Judge of Yama
+	 */
+	public static final int LEAGUE6_JUDGE_OF_YAMA = 15663;
+
+	/**
+	 * Demon scholar
+	 */
+	public static final int LEAGUE6_GREATER_DEMON_STUDY_01 = 15664;
+
+	/**
+	 * Demon scholar
+	 */
+	public static final int LEAGUE6_GREATER_DEMON_STUDY_02 = 15665;
+
+	/**
+	 * Sageguard Vandred
+	 */
+	public static final int LEAGUE6_GREATER_DEMON_GUARD_01 = 15666;
+
+	/**
+	 * Sageguard Melacar
+	 */
+	public static final int LEAGUE6_GREATER_DEMON_GUARD_02 = 15667;
+
+	/**
+	 * Implimgs
+	 */
+	public static final int LEAGUE6_IMPLIMGS = 15668;
+
+	/**
+	 * &#60;col=00ffff&#62;DPS CALC&#60;/col&#62;
+	 */
+	public static final int DPS_CALC_NPC_RECOIL = 15669;
 /* This file is automatically generated. Do not edit. */
 }
