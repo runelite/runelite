@@ -69,15 +69,4 @@ class SnapCorners
 	{
 		return Arrays.asList(topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight);
 	}
-
-	void reset()
-	{
-		topLeft.reset();
-		topCenter.reset();
-		topRight.reset();
-		bottomLeft.reset();
-		bottomRight.reset();
-		aboveChatboxRight.reset();
-		canvasTopRight.reset();
-	}
 }

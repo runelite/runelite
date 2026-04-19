@@ -61,6 +61,8 @@ class SnapCorner
 	{
 		this.cx = x;
 		this.cy = y;
+		this.px = x;
+		this.py = y;
 	}
 
 	int getPositionX()
@@ -71,12 +73,6 @@ class SnapCorner
 	int getPositionY()
 	{
 		return this.cy;
-	}
-
-	void reset()
-	{
-		px = cx;
-		py = cy;
 	}
 
 	// adjust snapcorner for a drawn overlay

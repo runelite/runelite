@@ -217,7 +217,6 @@ public class OverlayRenderer extends MouseAdapter
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			positionSnapcorners();
-			snapCorners.reset();
 		}
 	}
 
