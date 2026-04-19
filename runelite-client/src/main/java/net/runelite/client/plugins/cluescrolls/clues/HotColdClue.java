@@ -88,11 +88,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private HotColdSolver hotColdSolver;
 	private WorldPoint location;
 
-	public static HotColdClue forText(String text)
-	{
-		return forText(text, null);
-	}
-
 	public static HotColdClue forText(String text, Integer clueItemId)
 	{
 		if (BEGINNER_CLUE.text.equalsIgnoreCase(text))

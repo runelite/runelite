@@ -40,13 +40,13 @@ public class HotColdClueTest
 	@Test
 	public void forTextEmptyString()
 	{
-		assertNull(HotColdClue.forText(""));
+		assertNull(HotColdClue.forText("", null));
 	}
 
 	@Test
 	public void forTextBeginner()
 	{
-		HotColdClue clue = HotColdClue.forText(BEGINNER_CLUE_TEXT);
+		HotColdClue clue = HotColdClue.forText(BEGINNER_CLUE_TEXT, null);
 		assertNotNull(clue);
 		assertTrue(clue.isBeginner());
 	}
@@ -54,7 +54,7 @@ public class HotColdClueTest
 	@Test
 	public void forTextMaster()
 	{
-		HotColdClue clue = HotColdClue.forText(MASTER_CLUE_TEXT);
+		HotColdClue clue = HotColdClue.forText(MASTER_CLUE_TEXT, null);
 		assertNotNull(clue);
 		assertFalse(clue.isBeginner());
 	}
@@ -62,7 +62,7 @@ public class HotColdClueTest
 	@Test
 	public void forTextLeagueTutorWithoutItemId()
 	{
-		assertNull(HotColdClue.forText(LEAGUE_TUTOR_CLUE_TEXT));
+		assertNull(HotColdClue.forText(LEAGUE_TUTOR_CLUE_TEXT, null));
 	}
 
 	@Test
