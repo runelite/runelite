@@ -88,7 +88,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private HotColdSolver hotColdSolver;
 	private WorldPoint location;
 
-	public static HotColdClue forText(String text, Integer clueItemId)
+	public static HotColdClue forText(String text, int clueItemId)
 	{
 		if (BEGINNER_CLUE.text.equalsIgnoreCase(text))
 		{
@@ -102,22 +102,17 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		}
 		else if (LEAGUE_TUTOR_CLUE_TEXT.equalsIgnoreCase(text))
 		{
-			if (clueItemId != null)
+			if (clueItemId == ItemID.TRAIL_CLUE_BEGINNER)
 			{
-				if (clueItemId == ItemID.TRAIL_CLUE_BEGINNER)
-				{
-					LEAGUE_TUTOR_BEGINNER_CLUE.reset();
-					return LEAGUE_TUTOR_BEGINNER_CLUE;
-				}
-
-				if (clueItemId == ItemID.TRAIL_CLUE_MASTER)
-				{
-					LEAGUE_TUTOR_MASTER_CLUE.reset();
-					return LEAGUE_TUTOR_MASTER_CLUE;
-				}
+				LEAGUE_TUTOR_BEGINNER_CLUE.reset();
+				return LEAGUE_TUTOR_BEGINNER_CLUE;
 			}
 
-			return null;
+			if (clueItemId == ItemID.TRAIL_CLUE_MASTER)
+			{
+				LEAGUE_TUTOR_MASTER_CLUE.reset();
+				return LEAGUE_TUTOR_MASTER_CLUE;
+			}
 		}
 
 		return null;
