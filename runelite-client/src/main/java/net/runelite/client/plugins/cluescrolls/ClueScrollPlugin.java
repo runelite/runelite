@@ -885,7 +885,7 @@ public class ClueScrollPlugin extends Plugin
 			return faloTheBardClue;
 		}
 
-		final HotColdClue hotColdClue = HotColdClue.forText(text);
+		final HotColdClue hotColdClue = HotColdClue.forText(text, clueItemId);
 
 		if (hotColdClue != null)
 		{

@@ -24,14 +24,60 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import net.runelite.api.gameval.ItemID;
 import org.junit.Test;
 
 public class HotColdClueTest
 {
+	private static final String BEGINNER_CLUE_TEXT = "Buried beneath the ground, who knows where it's found. Lucky for you, A man called Reldo may have a clue.";
+	private static final String MASTER_CLUE_TEXT = "Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.";
+	private static final String LEAGUE_TUTOR_CLUE_TEXT = "Buried beneath the ground, who knows where it's found. The League Tutor may have a strange device lying around.";
+
 	@Test
 	public void forTextEmptyString()
 	{
 		assertNull(HotColdClue.forText(""));
+	}
+
+	@Test
+	public void forTextBeginner()
+	{
+		HotColdClue clue = HotColdClue.forText(BEGINNER_CLUE_TEXT);
+		assertNotNull(clue);
+		assertTrue(clue.isBeginner());
+	}
+
+	@Test
+	public void forTextMaster()
+	{
+		HotColdClue clue = HotColdClue.forText(MASTER_CLUE_TEXT);
+		assertNotNull(clue);
+		assertFalse(clue.isBeginner());
+	}
+
+	@Test
+	public void forTextLeagueTutorWithoutItemId()
+	{
+		assertNull(HotColdClue.forText(LEAGUE_TUTOR_CLUE_TEXT));
+	}
+
+	@Test
+	public void forTextLeagueTutorBeginnerItemId()
+	{
+		HotColdClue clue = HotColdClue.forText(LEAGUE_TUTOR_CLUE_TEXT, ItemID.TRAIL_CLUE_BEGINNER);
+		assertNotNull(clue);
+		assertTrue(clue.isBeginner());
+	}
+
+	@Test
+	public void forTextLeagueTutorMasterItemId()
+	{
+		HotColdClue clue = HotColdClue.forText(LEAGUE_TUTOR_CLUE_TEXT, ItemID.TRAIL_CLUE_MASTER);
+		assertNotNull(clue);
+		assertFalse(clue.isBeginner());
 	}
 }
