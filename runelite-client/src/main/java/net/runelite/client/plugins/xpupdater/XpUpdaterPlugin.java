@@ -28,7 +28,11 @@ package net.runelite.client.plugins.xpupdater;
 
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -77,6 +81,8 @@ public class XpUpdaterPlugin extends Plugin
 	private String lastDisplayName;
 	private boolean fetchXp;
 	private long lastXp;
+	private boolean updateOnLogin;
+	private final Map<String, List<String>> updateOnLoginEnabledServices = new HashMap<>();
 
 	@Provides
 	XpUpdaterConfig getConfig(ConfigManager configManager)
@@ -89,6 +95,11 @@ public class XpUpdaterPlugin extends Plugin
 	{
 		fetchXp = true;
 		lastAccount = -1L;
+		updateOnLogin = true;
+
+		// Any service added here will have update on login enabled.
+		// Currently available services: "wiseoldman", "templeosrs", "cml" and "runetracker".
+		updateOnLoginEnabledServices.put("wiseoldman", new ArrayList<>());
 	}
 
 	@Subscribe
@@ -113,6 +124,8 @@ public class XpUpdaterPlugin extends Plugin
 				update(lastAccount, lastDisplayName);
 				lastXp = totalXp;
 			}
+
+			updateOnLogin = state == GameState.LOGIN_SCREEN;
 		}
 	}
 
@@ -128,6 +141,56 @@ public class XpUpdaterPlugin extends Plugin
 				lastDisplayName = local.getName();
 			}
 			fetchXp = false;
+		}
+
+		if (updateOnLogin)
+		{
+			Player local = client.getLocalPlayer();
+			if (local == null)
+			{
+				return;
+			}
+
+			String username = local.getName();
+			if (username == null)
+			{
+				return;
+			}
+
+			username = username.replace(" ", "_");
+
+			EnumSet<WorldType> worldTypes = client.getWorldType();
+
+			for (Map.Entry<String, List<String>> entry : updateOnLoginEnabledServices.entrySet())
+			{
+				String service = entry.getKey();
+				List<String> names = entry.getValue();
+
+				if (names.contains(username))
+				{
+					continue;
+				}
+
+				switch (service)
+				{
+					case "cml":
+						updateCml(username, worldTypes);
+						break;
+					case "runetracker":
+						updateRunetracker(username, worldTypes);
+						break;
+					case "templeosrs":
+						updateTempleosrs(lastAccount, username, worldTypes);
+						break;
+					case "wiseoldman":
+						updateWom(lastAccount, username, worldTypes);
+						break;
+				}
+
+				names.add(username);
+			}
+
+			updateOnLogin = false;
 		}
 	}
 
