@@ -92,6 +92,7 @@ import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
+import net.runelite.client.ShiftHotkeyManager;
 
 @Singleton
 @Slf4j
@@ -156,6 +157,7 @@ public class TabInterface
 	private final BankSearch bankSearch;
 	private final ChatboxItemSearch searchProvider;
 	private final ChatMessageManager chatMessageManager;
+	private final ShiftHotkeyManager shiftHotkeyManager;
 
 	private boolean enabled;
 	@Getter
@@ -188,7 +190,8 @@ public class TabInterface
 		final BankTagsConfig config,
 		final BankSearch bankSearch,
 		final ChatboxItemSearch searchProvider,
-		final ChatMessageManager chatMessageManager
+		final ChatMessageManager chatMessageManager,
+		final ShiftHotkeyManager shiftHotkeyManager
 		)
 	{
 		this.client = client;
@@ -203,6 +206,7 @@ public class TabInterface
 		this.bankSearch = bankSearch;
 		this.searchProvider = searchProvider;
 		this.chatMessageManager = chatMessageManager;
+		this.shiftHotkeyManager = shiftHotkeyManager;
 	}
 
 	@Subscribe
@@ -910,7 +914,7 @@ public class TabInterface
 		}
 
 		final boolean isDragging = event.isDraggingWidget();
-		final boolean shiftDown = client.isKeyPressed(KeyCode.KC_SHIFT);
+		final boolean shiftDown = shiftHotkeyManager.isPressed();
 		if (!isDragging || draggedOn == null)
 		{
 			return;

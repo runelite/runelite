@@ -479,4 +479,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return Keybind.ALT;
 	}
+
+	@ConfigItem(
+		keyName = "shiftHotkey",
+		name = "Shift hotkey",
+		description = "Configures the hotkey used instead of Shift for actions like marking tiles and menu entry swapping.",
+		position = 53
+	)
+	default Keybind shiftHotkey()
+	{
+		return Keybind.SHIFT;
+	}
 }

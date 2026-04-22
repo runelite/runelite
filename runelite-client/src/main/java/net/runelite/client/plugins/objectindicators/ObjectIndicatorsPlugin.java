@@ -89,6 +89,7 @@ import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.ShiftHotkeyManager;
 
 @PluginDescriptor(
 	name = "Object Markers",
@@ -130,6 +131,9 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private ShiftHotkeyManager shiftHotkeyManager;
 
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -264,7 +268,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (event.getType() != MenuAction.EXAMINE_OBJECT.getId() || !client.isKeyPressed(KeyCode.KC_SHIFT))
+		if (event.getType() != MenuAction.EXAMINE_OBJECT.getId() || !shiftHotkeyManager.isPressed())
 		{
 			return;
 		}

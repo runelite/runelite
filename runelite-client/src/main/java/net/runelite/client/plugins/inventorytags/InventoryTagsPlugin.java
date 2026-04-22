@@ -55,6 +55,7 @@ import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.ShiftHotkeyManager;
 
 @PluginDescriptor(
 	name = "Inventory Tags",
@@ -85,6 +86,9 @@ public class InventoryTagsPlugin extends Plugin
 
 	@Inject
 	private ColorPickerManager colorPickerManager;
+
+	@Inject
+	private ShiftHotkeyManager shiftHotkeyManager;
 
 	@Provides
 	InventoryTagsConfig provideConfig(ConfigManager configManager)
@@ -163,7 +167,7 @@ public class InventoryTagsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOpened(final MenuOpened event)
 	{
-		if (!client.isKeyPressed(KeyCode.KC_SHIFT))
+		if (!shiftHotkeyManager.isPressed())
 		{
 			return;
 		}

@@ -53,7 +53,6 @@ import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemLayer;
-import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -98,6 +97,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.RSTimeUnit;
 import net.runelite.client.util.Text;
+import net.runelite.client.ShiftHotkeyManager;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -182,6 +182,9 @@ public class GroundItemsPlugin extends Plugin
 
 	@Inject
 	private ColorPickerManager colorPickerManager;
+
+	@Inject
+	private ShiftHotkeyManager shiftHotkeyManager;
 
 	@Getter
 	private final Table<WorldPoint, Integer, GroundItem> collectedGroundItems = HashBasedTable.create();
@@ -470,7 +473,7 @@ public class GroundItemsPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		MenuAction type = MenuAction.of(event.getType());
-		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
+		final boolean hotKeyPressed = shiftHotkeyManager.isPressed();
 		if (type == MenuAction.GROUND_ITEM_FIRST_OPTION || type == MenuAction.GROUND_ITEM_SECOND_OPTION ||
 			type == MenuAction.GROUND_ITEM_THIRD_OPTION || type == MenuAction.GROUND_ITEM_FOURTH_OPTION ||
 			type == MenuAction.GROUND_ITEM_FIFTH_OPTION || type == MenuAction.WIDGET_TARGET_ON_GROUND_ITEM)
