@@ -45,8 +45,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
+import net.runelite.client.ShiftHotkeyManager;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
@@ -115,6 +115,9 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private ColorPickerManager colorPickerManager;
+
+	@Inject
+	private ShiftHotkeyManager shiftHotkeyManager;
 
 	void savePoints(int regionId, Collection<GroundMarkerPoint> points)
 	{
@@ -257,7 +260,7 @@ public class GroundMarkerPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		MenuAction menuAction = event.getMenuEntry().getType();
-		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
+		final boolean hotKeyPressed = shiftHotkeyManager.isPressed();
 		if (hotKeyPressed && (menuAction == MenuAction.WALK || menuAction == MenuAction.SET_HEADING))
 		{
 			int worldId = event.getMenuEntry().getWorldViewId();

@@ -39,6 +39,7 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -102,6 +103,10 @@ public class GroundItemsPluginTest
 	@Mock
 	@Bind
 	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeLiteConfig;
 
 	@Before
 	public void setUp()

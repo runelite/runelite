@@ -54,7 +54,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptEvent;
@@ -89,6 +88,7 @@ import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.VAR_TAG_SUFFIX;
 import net.runelite.client.plugins.banktags.BankTagsService;
 import net.runelite.client.plugins.banktags.TagManager;
+import net.runelite.client.ShiftHotkeyManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
@@ -154,6 +154,7 @@ public class TabInterface
 	private final BankSearch bankSearch;
 	private final ChatboxItemSearch searchProvider;
 	private final ChatMessageManager chatMessageManager;
+	private final ShiftHotkeyManager shiftHotkeyManager;
 
 	private boolean enabled;
 	@Getter
@@ -186,7 +187,8 @@ public class TabInterface
 		final BankTagsConfig config,
 		final BankSearch bankSearch,
 		final ChatboxItemSearch searchProvider,
-		final ChatMessageManager chatMessageManager
+		final ChatMessageManager chatMessageManager,
+		final ShiftHotkeyManager shiftHotkeyManager
 		)
 	{
 		this.client = client;
@@ -201,6 +203,7 @@ public class TabInterface
 		this.bankSearch = bankSearch;
 		this.searchProvider = searchProvider;
 		this.chatMessageManager = chatMessageManager;
+		this.shiftHotkeyManager = shiftHotkeyManager;
 	}
 
 	@Subscribe
@@ -907,7 +910,7 @@ public class TabInterface
 			client.setDraggedOnWidget(null);
 		}
 
-		final boolean shiftDown = client.isKeyPressed(KeyCode.KC_SHIFT);
+		final boolean shiftDown = shiftHotkeyManager.isPressed();
 		if (draggedOn == null)
 		{
 			return;

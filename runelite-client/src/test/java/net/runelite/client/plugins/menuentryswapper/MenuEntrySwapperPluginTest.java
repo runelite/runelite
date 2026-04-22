@@ -40,6 +40,7 @@ import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.PostMenuSort;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.TestMenuEntry;
 import org.junit.After;
@@ -70,6 +71,10 @@ public class MenuEntrySwapperPluginTest
 	@Mock
 	@Bind
 	ConfigManager configManager;
+
+	@Mock
+	@Bind
+	RuneLiteConfig runeLiteConfig;
 
 	@Mock
 	@Bind

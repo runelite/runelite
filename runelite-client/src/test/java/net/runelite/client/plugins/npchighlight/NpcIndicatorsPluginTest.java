@@ -40,6 +40,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.menus.TestMenuEntry;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -79,6 +80,10 @@ public class NpcIndicatorsPluginTest
 	@Mock
 	@Bind
 	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeLiteConfig;
 
 	@Mock
 	@Bind

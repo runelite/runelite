@@ -50,7 +50,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EntityOps;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -82,6 +81,7 @@ import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfi
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.KaramjaGlovesMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.MorytaniaLegsMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.RadasBlessingMode;
+import net.runelite.client.ShiftHotkeyManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -1886,9 +1886,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		list.add(idx < 0 ? -idx - 1 : idx, value);
 	}
 
+	@Inject
+	private ShiftHotkeyManager shiftHotkeyManager;
+
 	private boolean shiftModifier()
 	{
-		return client.isKeyPressed(KeyCode.KC_SHIFT);
+		return shiftHotkeyManager.isPressed();
 	}
 
 	private Integer getObjectSwapConfig(boolean shift, int objectId)

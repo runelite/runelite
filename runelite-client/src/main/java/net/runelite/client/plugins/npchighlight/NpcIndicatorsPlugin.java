@@ -47,7 +47,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicsObject;
-import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -78,6 +77,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
+import net.runelite.client.ShiftHotkeyManager;
 
 @PluginDescriptor(
 	name = "NPC Indicators",
@@ -131,6 +131,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ColorPickerManager colorPickerManager;
+
+	@Inject
+	private ShiftHotkeyManager shiftHotkeyManager;
 
 	/**
 	 * NPCs to highlight
@@ -289,7 +292,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
+		if (menuAction == MenuAction.EXAMINE_NPC && shiftHotkeyManager.isPressed())
 		{
 			// Add tag and tag-all options
 			if (npc.getName() == null)
