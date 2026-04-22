@@ -54,18 +54,17 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
-import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetClosed;
+import net.runelite.api.events.WidgetDrag;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
@@ -124,8 +123,6 @@ public class TabInterface
 	private static final int BUTTON_HEIGHT = 20;
 	private static final int MARGIN = 1;
 	private static final int SCROLL_TICK = 500;
-	private static final int INCINERATOR_WIDTH = 48;
-	private static final int INCINERATOR_HEIGHT = 39;
 	private static final int BANK_BOTTOM_OFFSET = 39; // offset from bottom of BANK_CONTENT_CONTAINER
 	private static final int BANK_ITEM_WIDTH = BankTagsPlugin.BANK_ITEM_WIDTH;
 	private static final int BANK_ITEM_HEIGHT = BankTagsPlugin.BANK_ITEM_HEIGHT;
@@ -894,7 +891,7 @@ public class TabInterface
 	}
 
 	@Subscribe
-	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
+	public void onWidgetDrag(WidgetDrag event)
 	{
 		if (!enabled)
 		{
@@ -913,9 +910,8 @@ public class TabInterface
 			client.setDraggedOnWidget(null);
 		}
 
-		final boolean isDragging = event.isDraggingWidget();
 		final boolean shiftDown = shiftHotkeyManager.isPressed();
-		if (!isDragging || draggedOn == null)
+		if (draggedOn == null)
 		{
 			return;
 		}

@@ -1,5 +1,6 @@
 .id                       806
 .int_arg_count            7
+.long_arg_count           0
 .obj_arg_count            0
    iload                  6
    invoke                 41

@@ -1,5 +1,6 @@
 .id                       1048
 .int_arg_count            3
+.long_arg_count           0
 .obj_arg_count            0
 ; locals
 ; 2 bar size

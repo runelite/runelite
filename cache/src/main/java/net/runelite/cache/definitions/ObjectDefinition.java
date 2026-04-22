@@ -27,6 +27,7 @@ package net.runelite.cache.definitions;
 
 import java.util.Map;
 import lombok.Data;
+import net.runelite.cache.EntityOpsDefinition;
 
 @Data
 public class ObjectDefinition
@@ -53,7 +54,7 @@ public class ObjectDefinition
 	private int varbitID = -1;
 	private int ambient = 0;
 	private int contrast = 0;
-	private String[] actions = new String[5];
+	private EntityOpsDefinition ops = new EntityOpsDefinition();
 	private int interactType = 2;
 	private int mapSceneID = -1;
 	private int blockingMask = 0;

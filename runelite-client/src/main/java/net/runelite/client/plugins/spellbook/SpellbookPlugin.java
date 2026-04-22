@@ -37,9 +37,9 @@ import net.runelite.api.EnumID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ParamID;
 import net.runelite.api.ScriptID;
-import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.WidgetDrag;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -209,9 +209,9 @@ public class SpellbookPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
+	public void onWidgetDrag(WidgetDrag event)
 	{
-		if (event.isDraggingWidget() && client.getMouseCurrentButton() == 0)
+		if (client.getMouseCurrentButton() == 0)
 		{
 			Widget draggedWidget = client.getDraggedWidget();
 			Widget draggedOnWidget = client.getDraggedOnWidget();
@@ -433,8 +433,9 @@ public class SpellbookPlugin extends Plugin
 		Widget w = client.getWidget(InterfaceID.MagicSpellbook.UNIVERSE);
 		if (w != null && w.getOnLoadListener() != null)
 		{
-			client.createScriptEvent(w.getOnLoadListener())
+			client.createScriptEventBuilder(w.getOnLoadListener())
 				.setSource(w)
+				.build()
 				.run();
 		}
 	}
@@ -444,8 +445,9 @@ public class SpellbookPlugin extends Plugin
 		Widget w = client.getWidget(InterfaceID.MagicSpellbook.UNIVERSE);
 		if (w != null && w.getOnInvTransmitListener() != null)
 		{
-			client.createScriptEvent(w.getOnInvTransmitListener())
+			client.createScriptEventBuilder(w.getOnInvTransmitListener())
 				.setSource(w)
+				.build()
 				.run();
 		}
 	}

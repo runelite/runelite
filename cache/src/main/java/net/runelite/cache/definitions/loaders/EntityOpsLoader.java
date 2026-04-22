@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Abex
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.cache.definitions.loaders;
 
-/**
- * A composition that can hold `param` keys. This lets Jagex attach arbitrary constant
- * data to certain items, objects, npcs, or structs for use in cs2
- *
- * @see ParamID
- */
-public interface ParamHolder
+import net.runelite.cache.EntityOpsDefinition;
+import net.runelite.cache.io.InputStream;
+
+public class EntityOpsLoader
 {
-	IterableHashTable<Node> getParams();
+	public void decodeOp(EntityOpsDefinition ops, InputStream is, int index)
+	{
+		var text = is.readString();
+		if (!text.equalsIgnoreCase("Hidden"))
+		{
+			ops.setOp(index, text);
+		}
+	}
 
-	/**
-	 * Gets the value of a given {@link ParamID}, or its default if it is unset
-	 */
-	int getIntValue(int paramID);
+	public void decodeSubOp(EntityOpsDefinition ops, InputStream is)
+	{
+		int index = is.readUnsignedByte();
+		int subID = is.readUnsignedByte();
+		String text = is.readString();
+		ops.setSubOp(index, subID, text);
+	}
 
-	/**
-	 * Sets the value of a given {@link ParamID}
-	 */
-	void setValue(int paramID, int value);
+	public void decodeConditionalOp(EntityOpsDefinition ops, InputStream is)
+	{
+		int index = is.readUnsignedByte();
+		int varp = is.readUnsignedShort();
+		int varb = is.readUnsignedShort();
+		int min = is.readInt();
+		int max = is.readInt();
+		String text = is.readString();
 
-	/**
-	 * Gets the value of a given {@link ParamID}, or its default if it is unset
-	 */
-	String getStringValue(int paramID);
+		ops.setConditionalOp(index, text, varp, varb, min, max);
+	}
 
-	/**
-	 * Sets the value of a given {@link ParamID}
-	 */
-	void setValue(int paramID, String value);
+	public void decodeConditionalSubOp(EntityOpsDefinition ops, InputStream is)
+	{
+		int index = is.readUnsignedByte();
+		int subID = is.readUnsignedShort();
+		int varp = is.readUnsignedShort();
+		int varb = is.readUnsignedShort();
+		int min = is.readInt();
+		int max = is.readInt();
+		String text = is.readString();
 
-	/**
-	 * Gets the value of a given {@link ParamID}, or its default if it is unset
-	 */
-	long getLongValue(int paramID);
-
-	/**
-	 * Sets the value of a given {@link ParamID}
-	 */
-	void setValue(int paramID, long value);
+		ops.setConditionalSubOp(index, subID, text, varp, varb, min, max);
+	}
 }

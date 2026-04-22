@@ -222,7 +222,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	SceneContext context(Scene scene)
 	{
 		int wvid = scene.getWorldViewId();
-		if (wvid == -1)
+		if (wvid == WorldView.TOPLEVEL)
 		{
 			return root;
 		}
@@ -232,7 +232,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	SceneContext context(WorldView wv)
 	{
 		int wvid = wv.getId();
-		if (wvid == -1)
+		if (wvid == WorldView.TOPLEVEL)
 		{
 			return root;
 		}
@@ -1058,7 +1058,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			return;
 		}
 
-		int offset = scene.getWorldViewId() == -1 ? (SCENE_OFFSET >> 3) : 0;
+		int offset = scene.getWorldViewId() == WorldView.TOPLEVEL ? (SCENE_OFFSET >> 3) : 0;
 		z.renderOpaque(zx - offset, zz - offset, ctx.minLevel, ctx.level, ctx.maxLevel, ctx.hideRoofIds);
 
 		checkGLErrors();
@@ -1087,7 +1087,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		updateEntityProjection(entityProjection);
 		glUniform4i(uniEntityTint, scene.getOverrideHue(), scene.getOverrideSaturation(), scene.getOverrideLuminance(), scene.getOverrideAmount());
 
-		int offset = scene.getWorldViewId() == -1 ? (SCENE_OFFSET >> 3) : 0;
+		int offset = scene.getWorldViewId() == WorldView.TOPLEVEL ? (SCENE_OFFSET >> 3) : 0;
 		int dx = ctx.cameraX - ((zx - offset) << 10);
 		int dz = ctx.cameraZ - ((zz - offset) << 10);
 		boolean close = dx * dx + dz * dz < ALPHA_ZSORT_CLOSE * ALPHA_ZSORT_CLOSE;
@@ -1119,7 +1119,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			vaoO.addRange(projection, scene);
 			vaoPO.addRange(projection, scene);
 
-			if (scene.getWorldViewId() == -1)
+			if (scene.getWorldViewId() == WorldView.TOPLEVEL)
 			{
 				glUniform3i(uniBase, 0, 0, 0);
 
@@ -1205,7 +1205,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			if (end > start)
 			{
-				int offset = scene.getWorldViewId() == -1 ? SCENE_OFFSET : 0;
+				int offset = scene.getWorldViewId() == WorldView.TOPLEVEL ? SCENE_OFFSET : 0;
 				int zx = (x >> 10) + (offset >> 3);
 				int zz = (z >> 10) + (offset >> 3);
 				Zone zone = ctx.zones[zx][zz];
@@ -1258,7 +1258,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			if (end > start)
 			{
-				int offset = scene.getWorldViewId() == -1 ? (SCENE_OFFSET >> 3) : 0;
+				int offset = scene.getWorldViewId() == WorldView.TOPLEVEL ? (SCENE_OFFSET >> 3) : 0;
 				int zx = (gameObject.getX() >> 10) + offset;
 				int zz = (gameObject.getY() >> 10) + offset;
 				Zone zone = ctx.zones[zx][zz];
@@ -1600,13 +1600,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void loadScene(WorldView worldView, Scene scene)
 	{
-		if (scene.getWorldViewId() > -1)
+		if (scene.getWorldViewId() != WorldView.TOPLEVEL)
 		{
 			loadSubScene(worldView, scene);
 			return;
 		}
 
-		assert scene.getWorldViewId() == -1;
 		if (nextZones != null)
 		{
 			log.debug("Double zone load!");
@@ -1986,7 +1985,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	public void despawnWorldView(WorldView worldView)
 	{
 		int worldViewId = worldView.getId();
-		if (worldViewId > -1)
+		if (worldViewId != WorldView.TOPLEVEL)
 		{
 			log.debug("WorldView despawn: {}", worldViewId);
 			var sub = subs[worldViewId];
@@ -2003,7 +2002,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void swapScene(Scene scene)
 	{
-		if (scene.getWorldViewId() > -1)
+		if (scene.getWorldViewId() != WorldView.TOPLEVEL)
 		{
 			swapSub(scene);
 			return;

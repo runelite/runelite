@@ -24,16 +24,14 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.EnumDefinition;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.util.ScriptVarType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class EnumLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(EnumLoader.class);
-
 	public EnumDefinition load(int id, byte[] b)
 	{
 		if (b.length == 1 && b[0] == 0)
@@ -106,8 +104,26 @@ public class EnumLoader
 				def.setIntVals(intVals);
 				break;
 			}
+			case 7:
+			{
+				int size = is.readUnsignedShort();
+				int[] keys = new int[size];
+				long[] longVals = new long[size];
+				for (int index = 0; index < size; ++index)
+				{
+					keys[index] = is.readInt();
+					longVals[index] = is.readLong();
+				}
+				def.setSize(size);
+				def.setKeys(keys);
+				def.setLongVals(longVals);
+				break;
+			}
+			case 8:
+				def.setDefaultLong(is.readLong());
+				break;
 			default:
-				logger.warn("Unrecognized opcode {}", opcode);
+				log.warn("Unrecognized opcode {}", opcode);
 				break;
 		}
 	}

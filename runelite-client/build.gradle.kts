@@ -140,6 +140,7 @@ val assemble = tasks.withType<net.runelite.gradle.assemble.AssembleTask> {
     scriptDirectory = file("src/main/scripts")
     outputDirectory = sourceSets.main.map { File(it.output.resourcesDir, "runelite") }
     componentsFile = file("../runelite-api/src/main/interfaces/interfaces.toml")
+    longSupport = true
 }
 
 tasks.withType<net.runelite.gradle.index.IndexTask> {

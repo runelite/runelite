@@ -31,11 +31,11 @@ import org.intellij.lang.annotations.MagicConstant;
 
 public interface WorldView
 {
-	int TOPLEVEL = -1;
+	int TOPLEVEL = 0;
 
 	/**
 	 * Get the world view id
-	 * @return the id, or -1 if this is the top level worldview
+	 * @return the id
 	 */
 	int getId();
 

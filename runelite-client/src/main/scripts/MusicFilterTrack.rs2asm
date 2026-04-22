@@ -1,11 +1,12 @@
 .id                       9291
 .int_arg_count            5
+.long_arg_count           0
 .obj_arg_count            0
    iconst                 -1 ; push return value
    iload                  0  ; push id
    iload                  4  ; push unlocked state
    sconst                 "musicTrackFilter"
-   runelite_callback
+   runelite_callback     
    pop_int                   ; pop unlocked state
    pop_int                   ; pop id
    switch                    ; default value falls through

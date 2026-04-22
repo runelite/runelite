@@ -27,6 +27,7 @@ package net.runelite.cache.definitions;
 
 import java.util.Map;
 import lombok.Data;
+import net.runelite.cache.EntityOpsDefinition;
 
 @Data
 public class NpcDefinition
@@ -56,7 +57,7 @@ public class NpcDefinition
 	public short[] recolorToReplace;
 	public short[] retextureToFind;
 	public short[] retextureToReplace;
-	public String[] actions = new String[5];
+	public EntityOpsDefinition ops = new EntityOpsDefinition();
 	public boolean isMinimapVisible = true;
 	public int combatLevel = -1;
 	public int widthScale = 128;

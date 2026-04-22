@@ -6,6 +6,7 @@
 ; string1 = Convenience fee text
 .id                       5730
 .int_arg_count            2
+.long_arg_count           0
 .obj_arg_count            2
    sconst                 ""
    ostore                 2

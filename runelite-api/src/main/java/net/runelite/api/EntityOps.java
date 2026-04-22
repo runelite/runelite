@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.api;
 
-import lombok.Data;
+import javax.annotation.Nullable;
 
 /**
- * Called every game cycle the client is dragging a widget on
- * the cursor.
+ * Menu options on a TileObject or NPC
  */
-@Data
-public class DraggingWidgetChanged
+public interface EntityOps
 {
-	/**
-	 * Whether a widget is currently being dragged.
-	 */
-	private boolean draggingWidget;
+	int MAX_OPS = 5;
+
+	@Nullable
+	String getOp(int idx);
+
+	int getNumSubOps(int idx);
+
+	int getSubID(int idx, int subIdx);
+
+	@Nullable
+	String getSubOp(int idx, int subIdx);
 }

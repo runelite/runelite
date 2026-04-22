@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.script;
+package net.runelite.api.events;
 
-public class Instruction
+/**
+ * Called each game cycle when a widget is being dragged.
+ */
+public class WidgetDrag
 {
-	private final int opcode;
-	private String name;
-
-	public Instruction(int opcode)
-	{
-		this.opcode = opcode;
-	}
-
-	public int getOpcode()
-	{
-		return opcode;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
 }

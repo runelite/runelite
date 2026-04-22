@@ -45,6 +45,11 @@ public interface ObjectComposition extends ParamHolder
 	String getName();
 
 	/**
+	 * The menu ops associated with this object
+	 */
+	EntityOps getOps();
+
+	/**
 	 * The 5 menuops this object has when in world. Index 0 corresponds to
 	 * {@link MenuAction#GAME_OBJECT_FIRST_OPTION}, Index 2 to
 	 * {@link MenuAction#GAME_OBJECT_SECOND_OPTION} and so on.
