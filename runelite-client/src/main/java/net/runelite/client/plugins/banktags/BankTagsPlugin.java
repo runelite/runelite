@@ -309,7 +309,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 			.mapToObj(ItemVariationMapping::getVariations)
 			.flatMap(Collection::stream)
 			.distinct()
-			.filter(i -> itemManager.getItemComposition(i).isTradeable())
+			.filter(i -> itemManager.getItemComposition(i).isGeTradeable())
 			.limit(MAX_RESULT_COUNT)
 			.collect(Collectors.toCollection(TreeSet::new));
 

@@ -536,6 +536,11 @@ public class Perspective
 		}
 
 		CameraFocusableEntity cameraFocus = client.getCameraFocusEntity();
+		if (cameraFocus == null)
+		{
+			return null;
+		}
+
 		LocalPoint cameraFocusPoint = cameraFocus.getCameraFocus();
 		if (cameraFocusPoint.getWorldView() != WorldView.TOPLEVEL)
 		{

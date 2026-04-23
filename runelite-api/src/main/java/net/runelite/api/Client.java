@@ -2147,21 +2147,6 @@ public interface Client extends OAuthApi, GameEngine
 	int[][][] getInstanceTemplateChunks();
 
 	/**
-	 * Returns a 2D array containing XTEA encryption keys used to decrypt
-	 * map region files.
-	 * <p>
-	 * The array maps the region keys at index {@code n} to the region
-	 * ID held in {@link #getMapRegions()} at {@code n}.
-	 * <p>
-	 * The array of keys for the region make up a 128-bit encryption key
-	 * spread across 4 integers.
-	 *
-	 * @return the XTEA encryption keys
-	 */
-	@Deprecated
-	int[][] getXteaKeys();
-
-	/**
 	 * Checks whether the scene is in an instanced region.
 	 * @see WorldView#isInstance()
 	 */
@@ -2413,6 +2398,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return
 	 */
+	@Nullable
 	CameraFocusableEntity getCameraFocusEntity();
 
 	/**

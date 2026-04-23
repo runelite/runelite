@@ -204,7 +204,7 @@ class GrandExchangeSearchPanel extends JPanel
 		{
 			int itemId = item.getId();
 			ItemComposition itemComp = itemManager.getItemComposition(itemId);
-			if (!itemComp.isTradeable())
+			if (!itemComp.isGeTradeable())
 			{
 				continue;
 			}
