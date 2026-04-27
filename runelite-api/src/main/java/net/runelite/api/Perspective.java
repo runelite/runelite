@@ -31,6 +31,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -111,7 +112,7 @@ public class Perspective
 	@Nullable
 	public static Point localToCanvas(@Nonnull Client client, @Nonnull LocalPoint point, int plane, int heightOffset)
 	{
-		if (point.getWorldView() > -1)
+		if (point.getWorldView() != WorldView.TOPLEVEL)
 		{
 			WorldView wv = client.getTopLevelWorldView();
 			WorldEntity we = wv.worldEntities().byIndex(point.getWorldView());
@@ -121,12 +122,17 @@ public class Perspective
 			}
 
 			LocalPoint entityLocation = we.getLocalLocation();
-			int height = getTileHeight(we.getWorldView(), point.getX(), point.getY(), plane); // height in wv
-			height += getTileHeight(wv, entityLocation.getX(), entityLocation.getY(), wv.getPlane()); // height of we
+			int height = we.getWorldView().getTileHeight(point.getX(), point.getY(), plane); // height in wv
+			height += wv.getTileHeight(entityLocation.getX(), entityLocation.getY(), wv.getPlane()); // height of we
 			height -= heightOffset;
 
 			WorldView subWv = we.getWorldView();
 			Projection projection = subWv.getCanvasProjection();
+			if (projection == null)
+			{
+				return null;
+			}
+
 			float[] p = projection.project(point.getX(), height, point.getY());
 			float x0 = p[0], y0 = p[1], z0 = p[2];
 			final int scale = client.getScale();
@@ -160,7 +166,7 @@ public class Perspective
 
 	public static Point localToCanvas(@Nonnull Client client, int worldId, int x, int y, int z)
 	{
-		if (worldId > -1)
+		if (worldId != WorldView.TOPLEVEL)
 		{
 			WorldView wv = client.getTopLevelWorldView();
 			WorldEntity we = wv.worldEntities().byIndex(worldId);
@@ -171,6 +177,11 @@ public class Perspective
 
 			WorldView subWv = we.getWorldView();
 			Projection projection = subWv.getCanvasProjection();
+			if (projection == null)
+			{
+				return null;
+			}
+
 			float[] p = projection.project(x, z, y);
 			float x0 = p[0], y0 = p[1], z0 = p[2];
 			final int scale = client.getScale();
@@ -302,6 +313,13 @@ public class Perspective
 			zoom3d = client.getScale();
 
 		Projection proj = wv.getCanvasProjection();
+		if (proj == null)
+		{
+			Arrays.fill(x2d, Integer.MIN_VALUE);
+			Arrays.fill(y2d, Integer.MIN_VALUE);
+			return;
+		}
+
 		for (int i = 0; i < end; ++i)
 		{
 			float x = x3d[i];
@@ -505,7 +523,7 @@ public class Perspective
 	@Nullable
 	public static Point localToMinimap(@Nonnull Client client, @Nonnull LocalPoint point, int distance)
 	{
-		if (point.getWorldView() > -1)
+		if (point.getWorldView() != WorldView.TOPLEVEL)
 		{
 			WorldView toplevel = client.getTopLevelWorldView();
 			WorldEntity we = toplevel.worldEntities().byIndex(point.getWorldView());
@@ -519,7 +537,7 @@ public class Perspective
 
 		CameraFocusableEntity cameraFocus = client.getCameraFocusEntity();
 		LocalPoint cameraFocusPoint = cameraFocus.getCameraFocus();
-		if (cameraFocusPoint.getWorldView() > -1)
+		if (cameraFocusPoint.getWorldView() != WorldView.TOPLEVEL)
 		{
 			WorldView toplevel = client.getTopLevelWorldView();
 			WorldView wv = cameraFocus.getWorldView();
@@ -644,30 +662,6 @@ public class Perspective
 	}
 
 	/**
-	 * Get the height of a location, in local coordinates. Interpolates the height from the adjacent tiles.
-	 * Does not account for bridges.
-	 * @return
-	 */
-	private static int getTileHeight(@Nonnull WorldView wv, int localX, int localY, int plane)
-	{
-		int offset = wv.isTopLevel() ? ESCENE_OFFSET : 0;
-		int sceneX = (localX >> LOCAL_COORD_BITS) + offset;
-		int sceneY = (localY >> LOCAL_COORD_BITS) + offset;
-		if (sceneX >= 0 && sceneY >= 0 && sceneX < wv.getSizeX() + offset && sceneY < wv.getSizeY() + offset)
-		{
-			int[][][] tileHeights = wv.getScene().getTileHeights();
-
-			int x = localX & (LOCAL_TILE_SIZE - 1);
-			int y = localY & (LOCAL_TILE_SIZE - 1);
-			int var8 = x * tileHeights[plane][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[plane][sceneX][sceneY] >> LOCAL_COORD_BITS;
-			int var9 = tileHeights[plane][sceneX][sceneY + 1] * (LOCAL_TILE_SIZE - x) + x * tileHeights[plane][sceneX + 1][sceneY + 1] >> LOCAL_COORD_BITS;
-			return (LOCAL_TILE_SIZE - y) * var8 + y * var9 >> LOCAL_COORD_BITS;
-		}
-
-		return 0;
-	}
-
-	/**
 	 * Calculates a tile polygon from offset worldToScreen() points.
 	 *
 	 * @param client the game client
@@ -733,10 +727,11 @@ public class Perspective
 		}
 
 		int offset = wv.isTopLevel() ? ESCENE_OFFSET : 0;
+		int escene = offset << 1;
 		final int msx = localLocation.getSceneX() + offset;
 		final int msy = localLocation.getSceneY() + offset;
 
-		if (msx < 0 || msy < 0 || msx >= wv.getSizeX() + offset || msy >= wv.getSizeY() + offset)
+		if (msx < 0 || msy < 0 || msx >= wv.getSizeX() + escene || msy >= wv.getSizeY() + escene)
 		{
 			// out of scene
 			return null;
@@ -750,10 +745,10 @@ public class Perspective
 		var scene = wv.getScene();
 		final byte[][][] tileSettings = scene.getExtendedTileSettings();
 
-		int tilePlane = level;
+		int mapLevel = level;
 		if (level < Constants.MAX_Z - 1 && (tileSettings[1][msx][msy] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
 		{
-			tilePlane = level + 1;
+			mapLevel = level + 1;
 		}
 
 		final int swX = localLocation.getX() - (sizeX * LOCAL_TILE_SIZE / 2);
@@ -768,10 +763,10 @@ public class Perspective
 		final int nwX = neX;
 		final int nwY = swY;
 
-		final int swHeight = getTileHeight(wv, swX, swY, tilePlane) - heightOffset;
-		final int nwHeight = getTileHeight(wv, nwX, nwY, tilePlane) - heightOffset;
-		final int neHeight = getTileHeight(wv, neX, neY, tilePlane) - heightOffset;
-		final int seHeight = getTileHeight(wv, seX, seY, tilePlane) - heightOffset;
+		final int swHeight = wv.getTileHeight(swX, swY, mapLevel) - heightOffset;
+		final int nwHeight = wv.getTileHeight(nwX, nwY, mapLevel) - heightOffset;
+		final int neHeight = wv.getTileHeight(neX, neY, mapLevel) - heightOffset;
+		final int seHeight = wv.getTileHeight(seX, seY, mapLevel) - heightOffset;
 
 		Point p1 = localToCanvas(client, wv.getId(), swX, swY, swHeight);
 		Point p2 = localToCanvas(client, wv.getId(), nwX, nwY, nwHeight);

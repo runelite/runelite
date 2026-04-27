@@ -26,13 +26,9 @@ package net.runelite.cache.definitions.loaders;
 
 import net.runelite.cache.definitions.SpotAnimDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SpotAnimLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(SpotAnimLoader.class);
-
 	public SpotAnimDefinition load(int id, byte[] b)
 	{
 		SpotAnimDefinition def = new SpotAnimDefinition();
@@ -62,6 +58,10 @@ public class SpotAnimLoader
 		else if (opcode == 2)
 		{
 			def.animationId = stream.readUnsignedShort();
+		}
+		else if (opcode == 3)
+		{
+			def.modelId = stream.readInt();
 		}
 		else if (opcode == 4)
 		{

@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
@@ -134,12 +135,16 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			Widget settingsInit = client.getWidget(InterfaceID.Settings.UNIVERSE);
 			if (settingsInit != null)
 			{
-				client.createScriptEvent(settingsInit.getOnLoadListener())
+				client.createScriptEventBuilder(settingsInit.getOnLoadListener())
 					.setSource(settingsInit)
+					.build()
 					.run();
 			}
 
-			limitsChanged();
+			if (client.getGameState().getState() >= GameState.LOGGED_IN.getState())
+			{
+				limitsChanged();
+			}
 		});
 	}
 
@@ -167,8 +172,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			Widget settingsInit = client.getWidget(InterfaceID.Settings.UNIVERSE);
 			if (settingsInit != null)
 			{
-				client.createScriptEvent(settingsInit.getOnLoadListener())
+				client.createScriptEventBuilder(settingsInit.getOnLoadListener())
 					.setSource(settingsInit)
+					.build()
 					.run();
 			}
 
@@ -328,6 +334,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			{
 				case CANCEL:
 				case WALK:
+				case SET_HEADING:
 					break;
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
@@ -392,7 +399,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			case ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP:
 			{
-				int arg = client.getIntStackSize() - 11;
+				int arg = client.getIntStackSize() - 12;
 				int[] is = client.getIntStack();
 
 				if (is[arg] == SettingID.CAMERA_ZOOM)

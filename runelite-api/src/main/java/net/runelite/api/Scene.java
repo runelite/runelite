@@ -51,7 +51,7 @@ public interface Scene extends Renderable
 
 	/**
 	 * Get the world view id of this scene
-	 * @return the world view id, or -1 if this is the top level scene
+	 * @return the world view id
 	 */
 	int getWorldViewId();
 

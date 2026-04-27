@@ -32,15 +32,16 @@ import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.util.List;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.IndexedObjectSet;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -385,10 +386,22 @@ public class SceneOverlay extends Overlay
 
 	private void renderInteracting(Graphics2D graphics)
 	{
-		Stream.concat(
-			client.getPlayers().stream(),
-			client.getNpcs().stream()
-		).forEach(fa ->
+		WorldView tlwv = client.getTopLevelWorldView();
+		WorldView playerWv = client.getLocalPlayer().getWorldView();
+
+		renderInteracting(graphics, tlwv.players());
+		renderInteracting(graphics, tlwv.npcs());
+
+		if (playerWv != tlwv)
+		{
+			renderInteracting(graphics, playerWv.players());
+			renderInteracting(graphics, playerWv.npcs());
+		}
+	}
+
+	private void renderInteracting(Graphics2D graphics, IndexedObjectSet<? extends Actor> set)
+	{
+		for (var fa : set)
 		{
 			Actor ta = fa.getInteracting();
 			if (ta == null)
@@ -426,6 +439,6 @@ public class SceneOverlay extends Overlay
 			graphics.fill(ARROW_HEAD);
 			graphics.setTransform(ot);
 
-		});
+		}
 	}
 }

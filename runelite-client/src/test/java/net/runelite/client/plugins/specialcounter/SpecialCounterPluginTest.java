@@ -62,6 +62,7 @@ import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -144,7 +145,9 @@ public class SpecialCounterPluginTest
 
 	private static HitsplatApplied hitsplat(Actor target, @HitsplatType int type)
 	{
-		Hitsplat hitsplat = new Hitsplat(type, type == HitsplatID.DAMAGE_ME ? 1 : 0, 42);
+		Hitsplat hitsplat = mock(Hitsplat.class, Mockito.CALLS_REAL_METHODS);
+		when(hitsplat.getHitsplatType()).thenReturn(type);
+		when(hitsplat.getAmount()).thenReturn(type == HitsplatID.DAMAGE_ME ? 1 : 0);
 		HitsplatApplied hitsplatApplied = new HitsplatApplied();
 		hitsplatApplied.setActor(target);
 		hitsplatApplied.setHitsplat(hitsplat);

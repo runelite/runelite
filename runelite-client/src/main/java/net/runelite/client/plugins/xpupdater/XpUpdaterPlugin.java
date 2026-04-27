@@ -74,6 +74,7 @@ public class XpUpdaterPlugin extends Plugin
 	private OkHttpClient okHttpClient;
 
 	private long lastAccount;
+	private String lastDisplayName;
 	private boolean fetchXp;
 	private long lastXp;
 
@@ -104,18 +105,12 @@ public class XpUpdaterPlugin extends Plugin
 		}
 		else if (state == GameState.LOGIN_SCREEN || state == GameState.HOPPING)
 		{
-			Player local = client.getLocalPlayer();
-			if (local == null)
-			{
-				return;
-			}
-
 			long totalXp = client.getOverallExperience();
 			// Don't submit update unless xp threshold is reached
-			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
+			if (lastDisplayName != null && Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
-				log.debug("Submitting update for {} accountHash {}", local.getName(), lastAccount);
-				update(lastAccount, local.getName());
+				log.debug("Submitting update for {} accountHash {}", lastDisplayName, lastAccount);
+				update(lastAccount, lastDisplayName);
 				lastXp = totalXp;
 			}
 		}
@@ -127,6 +122,11 @@ public class XpUpdaterPlugin extends Plugin
 		if (fetchXp)
 		{
 			lastXp = client.getOverallExperience();
+			Player local = client.getLocalPlayer();
+			if (local != null)
+			{
+				lastDisplayName = local.getName();
+			}
 			fetchXp = false;
 		}
 	}

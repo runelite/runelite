@@ -251,6 +251,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Plant a watermelon seed.", item(ItemID.RAKE), item(ItemID.DIBBER), xOfItem(ItemID.WATERMELON_SEED, 3)),
 		new SkillChallengeClue("Activate the Chivalry prayer."),
 		new SkillChallengeClue("Smith a tier 2 or above Shayzien platebody.", "smith a tier 2 or above shayzien platebody.", ANY_HAMMER, xOfItem(ItemID.LOVAKITE_BAR, 4)),
+		new SkillChallengeClue("Mine some nickel.", ANY_PICKAXE),
 		// Master Sherlock Tasks
 		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.ABYSSAL_WHIP_ICE), item(ItemID.ABYSSAL_WHIP_LAVA), item(ItemID.LEAGUE_3_WHIP), item(ItemID.ABYSSAL_TENTACLE), item(ItemID.LEAGUE_3_WHIP_TENTACLE))),
 		new SkillChallengeClue("Smith a runite med helm.", ANY_HAMMER, item(ItemID.RUNITE_BAR)),

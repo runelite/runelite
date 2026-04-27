@@ -49,6 +49,7 @@ public enum MiningAction implements ItemSkillAction
 	BARRONITE_DEPOSIT(ItemID.CAMDOZAAL_BARRONITE_DEPOSIT, 14, 32),
 	IRON_ORE(ItemID.IRON_ORE, 15, 35),
 	SILVER_ORE(ItemID.SILVER_ORE, 20, 40),
+	LEAD_ORE(ItemID.LEAD_ORE, 25, 40.5f),
 	PURE_ESSENCE(ItemID.BLANKRUNE_HIGH, 30, 5)
 	{
 		@Override
@@ -77,12 +78,13 @@ public enum MiningAction implements ItemSkillAction
 		@Override
 		public String getName(final ItemManager itemManager)
 		{
-			return "Calcified Rocks";
+			return "Calcified rocks";
 		}
 	},
 	GRANITE_500G(ItemID.ENAKH_GRANITE_TINY, 45, 50),
 	GRANITE_2KG(ItemID.ENAKH_GRANITE_SMALL, 45, 60),
 	GRANITE_5KG(ItemID.ENAKH_GRANITE_MEDIUM, 45, 75),
+	RUBIUM_SPLINTERS(ItemID.RUBIUM_SPLINTERS, 48, 72),
 	MITHRIL_ORE(ItemID.MITHRIL_ORE, 55, 80),
 	SOFT_CLAY(ItemID.SOFTCLAY, 70, 5)
 	{
@@ -93,6 +95,7 @@ public enum MiningAction implements ItemSkillAction
 		}
 	},
 	ADAMANTITE_ORE(ItemID.ADAMANTITE_ORE, 70, 95),
+	NICKEL_ORE(ItemID.NICKEL_ORE, 74, 80.5f),
 	RUNITE_ORE(ItemID.RUNITE_ORE, 85, 125),
 	AMETHYST(ItemID.AMETHYST, 92, 240),
 	;

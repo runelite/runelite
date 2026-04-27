@@ -179,6 +179,12 @@ public final class OutputStream extends java.io.OutputStream
 		this.getArray()[this.getOffset() - var1 - 1] = (byte) var1;
 	}
 
+	public void writeLong(long l)
+	{
+		ensureRemaining(8);
+		buffer.putLong(l);
+	}
+
 	public void writeString(String str)
 	{
 		writeBytes(str.getBytes(StandardCharsets.ISO_8859_1));

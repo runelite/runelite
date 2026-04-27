@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.itemstats;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -35,6 +37,8 @@ import net.runelite.api.Skill;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.plugins.itemstats.stats.Stats;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -167,6 +171,36 @@ public class ItemStatEffectTest
 	{
 		final Effect item = itemStats.get(ItemID.SANFEW_SALVE_1_DOSE);
 		matchWikiTable(SANFEW_TABLE, item);
+	}
+
+	@Test
+	public void testRockCake()
+	{
+		final Effect dwarvenRockCake = new ItemStatChanges().get(ItemID.HUNDRED_DWARF_COOL_ROCKCAKE);
+
+		assertArrayEquals(new int[] { -1, -13 }, rockCakeChange(121, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -11 }, rockCakeChange(106, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -10 }, rockCakeChange(99, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -10 }, rockCakeChange(90, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -9 }, rockCakeChange(89, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -1 }, rockCakeChange(2, dwarvenRockCake));
+		assertArrayEquals(new int[] { 0, 0 }, rockCakeChange(1, dwarvenRockCake));
+		assertArrayEquals(new int[] { 0, 0 }, rockCakeChange(0, dwarvenRockCake));
+	}
+
+	@Test
+	public void testLocatorOrb()
+	{
+		final Effect locatorOrb = new ItemStatChanges().get(ItemID.DS2_ORB);
+
+		assertEquals(-10, hitpointsChange(99, locatorOrb));
+		assertEquals(-10, hitpointsChange(90, locatorOrb));
+		assertEquals(-10, hitpointsChange(11, locatorOrb));
+		assertEquals(-9, hitpointsChange(10, locatorOrb));
+		assertEquals(-4, hitpointsChange(5, locatorOrb));
+		assertEquals(-1, hitpointsChange(2, locatorOrb));
+		assertEquals(0, hitpointsChange(1, locatorOrb));
+		assertEquals(0, hitpointsChange(0, locatorOrb));
 	}
 
 	private void matchWikiTable(final ImmutableMap<Integer, Integer> table, final Effect item)
@@ -506,6 +540,57 @@ public class ItemStatEffectTest
 		assertEquals(35, skillChange(Skill.HITPOINTS, 99, 99, saradominBrew));
 	}
 
+	@Test
+	public void testHaddock()
+	{
+		final Effect haddock = itemStats.get(ItemID.HADDOCK);
+
+		assertEquals(10, skillChange(Skill.HITPOINTS, 99, 99, haddock));
+		assertEquals(11, skillChange(Skill.HITPOINTS, 99, 98, haddock));
+		assertEquals(18, skillChange(Skill.HITPOINTS, 99, 1, haddock));
+	}
+
+	@Test
+	public void testBlightedOverload()
+	{
+		final Effect blightedOverload = new ItemStatChanges().get(ItemID.DEADMAN4DOSEOVERLOAD);
+
+		assertEquals(-10, skillChange(Skill.HITPOINTS, 49, 44, blightedOverload));
+		assertEquals(-10, skillChange(Skill.HITPOINTS, 64, 64, blightedOverload));
+		assertEquals(-10, skillChange(Skill.HITPOINTS, 99, 77, blightedOverload));
+
+		assertEquals(13, skillChange(Skill.STRENGTH, 36, 36, blightedOverload));
+		assertEquals(17, skillChange(Skill.STRENGTH, 66, 66, blightedOverload));
+		assertEquals(19, skillChange(Skill.STRENGTH, 74, 74, blightedOverload));
+		assertEquals(20, skillChange(Skill.STRENGTH, 83, 83, blightedOverload));
+		assertEquals(22, skillChange(Skill.STRENGTH, 99, 99, blightedOverload));
+
+		assertEquals(0, skillChange(Skill.DEFENCE, 1, 0, blightedOverload));
+		assertEquals(-1, skillChange(Skill.DEFENCE, 1, 1, blightedOverload));
+		assertEquals(-3, skillChange(Skill.DEFENCE, 29, 29, blightedOverload));
+		assertEquals(-6, skillChange(Skill.DEFENCE, 54, 54, blightedOverload));
+		assertEquals(-8, skillChange(Skill.DEFENCE, 71, 71, blightedOverload));
+		assertEquals(-10, skillChange(Skill.DEFENCE, 90, 90, blightedOverload));
+		assertEquals(-9, skillChange(Skill.DEFENCE, 99, 89, blightedOverload));
+		assertEquals(-10, skillChange(Skill.DEFENCE, 99, 99, blightedOverload));
+		assertEquals(-11, skillChange(Skill.DEFENCE, 99, 101, blightedOverload));
+		assertEquals(-12, skillChange(Skill.DEFENCE, 99, 113, blightedOverload));
+
+		assertEquals(7, skillChange(Skill.RANGED, 3, 3, blightedOverload));
+		assertEquals(11, skillChange(Skill.RANGED, 49, 49, blightedOverload));
+		assertEquals(14, skillChange(Skill.RANGED, 72, 72, blightedOverload));
+		assertEquals(15, skillChange(Skill.RANGED, 87, 87, blightedOverload));
+		assertEquals(16, skillChange(Skill.RANGED, 99, 99, blightedOverload));
+
+		assertEquals(1, skillChange(Skill.MAGIC, 8, 8, blightedOverload));
+		assertEquals(3, skillChange(Skill.MAGIC, 28, 28, blightedOverload));
+		assertEquals(7, skillChange(Skill.MAGIC, 68, 68, blightedOverload));
+		assertEquals(9, skillChange(Skill.MAGIC, 80, 80, blightedOverload));
+		assertEquals(9, skillChange(Skill.MAGIC, 89, 89, blightedOverload));
+		assertEquals(10, skillChange(Skill.MAGIC, 99, 89, blightedOverload));
+		assertEquals(9, skillChange(Skill.MAGIC, 99, 100, blightedOverload));
+	}
+
 	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)
 	{
 		if (effect == null)
@@ -520,6 +605,55 @@ public class ItemStatEffectTest
 		for (final StatChange statChange : statsChanges.getStatChanges())
 		{
 			if (!statChange.getStat().getName().equals(skill.getName()))
+			{
+				continue;
+			}
+
+			return statChange.getRelative();
+		}
+
+		return 0;
+	}
+
+	private int[] rockCakeChange(int currentHitpoints, Effect effect)
+	{
+		if (effect == null)
+		{
+			throw new IllegalArgumentException("Applied effect is null");
+		}
+
+		when(client.getBoostedSkillLevel(Skill.HITPOINTS)).thenReturn(currentHitpoints);
+		final StatChange[] statsChanges = effect.calculate(client).getStatChanges();
+		final List<Integer> hitpointsChanges = new ArrayList<>(statsChanges.length);
+
+		for (final StatChange statChange : statsChanges)
+		{
+			if (statChange.getStat() != Stats.HITPOINTS)
+			{
+				throw new RuntimeException("Rock cake yielded non-Hitpoints stat change: " + statChange);
+			}
+
+			hitpointsChanges.add(statChange.getRelative());
+		}
+
+		return hitpointsChanges.stream()
+			.mapToInt(x -> x)
+			.toArray();
+	}
+
+	private int hitpointsChange(int currentHitpoints, Effect effect)
+	{
+		if (effect == null)
+		{
+			throw new IllegalArgumentException("Applied effect is null");
+		}
+
+		when(client.getBoostedSkillLevel(Skill.HITPOINTS)).thenReturn(currentHitpoints);
+		final StatsChanges statsChanges = effect.calculate(client);
+
+		for (final StatChange statChange : statsChanges.getStatChanges())
+		{
+			if (statChange.getStat() != Stats.HITPOINTS)
 			{
 				continue;
 			}

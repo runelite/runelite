@@ -69,8 +69,11 @@ public enum Produce
 	ASGARNIAN("Asgarnian", PatchImplementation.HOPS, ItemID.ASGARNIAN_HOPS, 10, 6, 0, 3),
 	JUTE("Jute", PatchImplementation.HOPS, ItemID.JUTE_FIBRE, 10, 6, 0, 3),
 	YANILLIAN("Yanillian", PatchImplementation.HOPS, ItemID.YANILLIAN_HOPS, 10, 7, 0, 3),
+	FLAX("Flax", PatchImplementation.HOPS, ItemID.FLAX, 20, 4, 0, 3),
 	KRANDORIAN("Krandorian", PatchImplementation.HOPS, ItemID.KRANDORIAN_HOPS, 10, 8, 0, 3),
 	WILDBLOOD("Wildblood", PatchImplementation.HOPS, ItemID.WILDBLOOD_HOPS, 10, 9, 0, 3),
+	HEMP("Hemp", PatchImplementation.HOPS, ItemID.HEMP, 20, 5, 0, 3),
+	COTTON("Cotton", PatchImplementation.HOPS, ItemID.COTTON_BOLL, 20, 6, 0, 3),
 
 	// Herb crops
 	GUAM("Guam", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
@@ -115,11 +118,19 @@ public enum Produce
 	// Hardwood
 	TEAK("Teak", PatchImplementation.HARDWOOD_TREE, ItemID.TEAK_LOGS, 640, 8),
 	MAHOGANY("Mahogany", PatchImplementation.HARDWOOD_TREE, ItemID.MAHOGANY_LOGS, 640, 9),
+	CAMPHOR("Camphor", PatchImplementation.HARDWOOD_TREE, ItemID.CAMPHOR_LOGS, 640, 9),
+	IRONWOOD("Ironwood", PatchImplementation.HARDWOOD_TREE, ItemID.IRONWOOD_LOGS, 640, 9),
+	ROSEWOOD("Rosewood", PatchImplementation.HARDWOOD_TREE, ItemID.ROSEWOOD_LOGS, 640, 10),
 
 	// Anima
 	ATTAS("Attas", PatchImplementation.ANIMA, ItemID.ANIMA_ATTAS, 640, 9),
 	IASOR("Iasor", PatchImplementation.ANIMA, ItemID.ANIMA_IASOR, 640, 9),
 	KRONOS("Kronos", PatchImplementation.ANIMA, ItemID.ANIMA_KRONOS, 640, 9),
+
+	// Coral
+	ELKHORN_CORAL("Elkhorn", PatchImplementation.CORAL, ItemID.CORAL_ELKHORN, 40, 5),
+	PILLAR_CORAL("Pillar", PatchImplementation.CORAL, ItemID.CORAL_PILLAR, 40, 5),
+	UMBRAL_CORAL("Umbral", PatchImplementation.CORAL, ItemID.CORAL_UMBRAL, 40, 5),
 
 	// Special crops
 	SEAWEED("Seaweed", PatchImplementation.SEAWEED, ItemID.GIANT_SEAWEED, 10, 5, 0, 4),

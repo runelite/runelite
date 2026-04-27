@@ -26,6 +26,7 @@ package net.runelite.client.plugins.minimap;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -43,6 +44,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
 	name = "Minimap",
@@ -68,6 +70,9 @@ public class MinimapPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private ConfigManager configManager;
+
 	private SpritePixels[] originalDotSprites;
 
 	@Provides
@@ -83,6 +88,11 @@ public class MinimapPlugin extends Plugin
 		storeOriginalDots();
 		replaceMapDots();
 		client.setMinimapZoom(config.zoom());
+		Double zoomLevel = configManager.getConfiguration(MinimapConfig.GROUP, "zoomLevel", double.class);
+		if (zoomLevel != null && zoomLevel > 0d)
+		{
+			client.setMinimapZoom(zoomLevel);
+		}
 	}
 
 	@Override
@@ -129,6 +139,13 @@ public class MinimapPlugin extends Plugin
 
 		restoreOriginalDots();
 		replaceMapDots();
+	}
+
+	@Schedule(period = 11, unit = ChronoUnit.SECONDS, asynchronous = true)
+	public void saveZoom()
+	{
+		double zoom = client.getMinimapZoom();
+		configManager.setConfiguration(MinimapConfig.GROUP, "zoomLevel", zoom);
 	}
 
 	@Subscribe

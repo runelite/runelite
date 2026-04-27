@@ -100,13 +100,15 @@ void main() {
 #else
   fColor = vec4(rgb, 1.f - a);
 #endif
-  fHsl = float(abhsl & 0xffff);  // only used for texture lighting, which isn't affected by tint
 
   fTextureId = tex.x;  // the texture id + 1
   fUv = vec2(float(tex.y) / 256.f, float(tex.z) / 256.f);
   if (fTextureId > 0) {
     vec2 textureAnim = textureAnimations[min(fTextureId - 1, TEXTURE_COUNT - 1)];
     fUv += float(tick) * textureAnim * TEXTURE_ANIM_UNIT;
+    fHsl = float(abhsl & 0xffff);  // only used for texture lighting, which isn't affected by tint
+  } else {
+    fHsl = float(((int(hsl[0]) & 63) << 10) | ((int(hsl[1]) & 7) << 7) | (int(hsl[2]) & 127));
   }
 
   float fogWest = max(FOG_SCENE_EDGE_MIN, cameraX - drawDistance);

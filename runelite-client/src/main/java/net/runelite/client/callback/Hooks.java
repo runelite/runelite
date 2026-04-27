@@ -51,6 +51,8 @@ import net.runelite.api.MainBufferProvider;
 import net.runelite.api.Player;
 import net.runelite.api.Renderable;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldView;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.FakeXpDrop;
@@ -643,12 +645,13 @@ public class Hooks implements Callbacks
 			}
 
 			String coord = "unk";
-			if (client.getClientThread() == Thread.currentThread())
+			Player player = client.getLocalPlayer();
+			if (player != null)
 			{
-				Player player = client.getLocalPlayer();
-				if (player != null)
+				LocalPoint lp = player.getLocalLocation();
+				if (lp.getWorldView() == WorldView.TOPLEVEL || client.getClientThread() == Thread.currentThread())
 				{
-					WorldPoint p = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+					WorldPoint p = WorldPoint.fromLocalInstance(client, lp);
 					coord = String.format("%d_%d_%d_%d_%d", p.getPlane(), p.getX() / 64, p.getY() / 64, p.getX() & 63, p.getY() & 63);
 				}
 			}

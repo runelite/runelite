@@ -58,24 +58,23 @@ tutorial_button=4
 item_count_top=5
 item_count_bar=6
 item_count_bottom=7
-group_storage_button=8
-content_container=10
-tab_container=11
-item_container=13
-scrollbar=14
-search_button_background=42
-deposit_inventory=44
-deposit_equipment=46
-potion_store=48
-incinerator=49
-incinerator_confirm=50
-potionstore_content=52
-equipment_parent=80
-equipment_set_bonus=121
-settings_button=125
-equipment_button=126
-popup=128
-equipment_stat_bonus=134
+content_container=9
+tab_container=10
+item_container=12
+scrollbar=13
+search_button_background=41
+deposit_inventory=43
+deposit_equipment=45
+potion_store=119
+incinerator=48
+incinerator_confirm=49
+potionstore_content=51
+equipment_parent=54
+equipment_set_bonus=95
+settings_button=99
+equipment_button=100
+popup=102
+equipment_stat_bonus=108
 
 [bank_inventory]
 id=15
@@ -177,16 +176,16 @@ tab_clan=23
 tab_trade=27
 report_text=33
 frame=34
-transparent_background=36
-container=38
-title=42
-full_input=43
-ge_search_results=51
-messages=54
-transparent_background_lines=55
-input=56
-message_lines=57
-first_message=58
+transparent_background=37
+container=39
+title=43
+full_input=44
+ge_search_results=52
+messages=55
+transparent_background_lines=56
+input=57
+message_lines=58
+first_message=59
 
 [clan]
 id=701
@@ -260,7 +259,7 @@ id=13
 
 [deposit_box]
 id=192
-inventory_item_container=23
+inventory_item_container=24
 
 [destroy_item]
 id=584
@@ -602,9 +601,9 @@ solved=8
 [music]
 id=239
 container=0
-scroll_container=4
-list=6
-scrollbar=7
+scroll_container=8
+list=10
+scrollbar=11
 
 [nightmare_pillar_health]
 id=413
@@ -786,11 +785,11 @@ init=1
 
 [settings_side]
 id=116
-camera_zoom_slider_track=57
-music_slider=98
-music_slider_step_holder=110
-sound_effect_slider=112
-area_sound_slider=126
+camera_zoom_slider_track=56
+music_slider=96
+music_slider_step_holder=108
+sound_effect_slider=110
+area_sound_slider=124
 
 [shop]
 id=300
@@ -824,11 +823,11 @@ id=218
 parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
-lumbridge_home_teleport=7
-edgeville_home_teleport=105
-lunar_home_teleport=106
-arceuus_home_teleport=150
-fertile_soil=131
+lumbridge_home_teleport=6
+edgeville_home_teleport=108
+lunar_home_teleport=109
+arceuus_home_teleport=153
+fertile_soil=134
 
 [tempoross]
 id=437
@@ -871,7 +870,7 @@ id=336
 
 [trailblazer_areas]
 id=512
-teleport=80
+teleport=82
 
 [trawler]
 id=366

@@ -165,44 +165,49 @@ public final class DBTableID
 		public static final int COL_SPEEDRUN = 31;
 
 		/**
-		 * integer
+		 * (stat, integer)
 		 */
-		public static final int COL_PREREQUISITE_DIRECT = 33;
+		public static final int COL_STAT_XP_AWARDED = 33;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_PREREQUISITE_INDIRECT = 34;
+		public static final int COL_PREREQUISITE_DIRECT = 34;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_FTUE_STARTER = 35;
+		public static final int COL_PREREQUISITE_INDIRECT = 35;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_FTUE_STARTER = 36;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_CR_CAN_RECOMMEND = 36;
+		public static final int COL_CR_CAN_RECOMMEND = 37;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_CR_EXPERIENCE_PROFILE = 37;
+		public static final int COL_CR_EXPERIENCE_PROFILE = 38;
 
 		/**
 		 * string
 		 */
-		public static final int COL_CR_RECOMMENDATION_REASON = 38;
+		public static final int COL_CR_RECOMMENDATION_REASON = 39;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_CR_RECOMMENDATION_REASON_IS_PRIMARY = 39;
+		public static final int COL_CR_RECOMMENDATION_REASON_IS_PRIMARY = 40;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 47;
+		public static final int COL_RELATED_CONTENT = 48;
 
 		public static final class Row
 		{
@@ -410,13 +415,14 @@ public final class DBTableID
 			public static final int QUEST_EXISTENTIALCRISIS = 5192;
 			public static final int QUEST_IMPENDINGCHAOS = 5193;
 			public static final int MINIQUEST_VALETOTEMS = 5194;
-			public static final int MINIQUEST_TUTORIALISLAND = 7033;
 			public static final int QUEST_PANDEMONIUM = 7103;
 			public static final int QUEST_PRYINGTIMES = 7104;
 			public static final int QUEST_CURRENTAFFAIRS = 7105;
 			public static final int QUEST_TROUBLEDTORTUGANS = 7106;
 			public static final int QUEST_REDREEF = 7107;
 			public static final int QUEST_BURIALATSEA = 7108;
+			public static final int QUEST_LEARNINGTHEROPES = 9643;
+			public static final int QUEST_IDESOFMILK = 9645;
 		}
 	}
 
@@ -438,8 +444,11 @@ public final class DBTableID
 			public static final int HALLOWEEN_2024 = 3935;
 			public static final int XMAS_2024 = 4228;
 			public static final int BIRTHDAY_2025 = 4318;
+			public static final int XMAS_2025 = 4968;
 			public static final int EASTER_2025 = 5107;
 			public static final int HALLOWEEN_2025 = 6989;
+			public static final int BIRTHDAY_2026 = 7033;
+			public static final int EASTER_2026 = 13319;
 		}
 	}
 
@@ -1134,6 +1143,16 @@ public final class DBTableID
 		 * integer
 		 */
 		public static final int COL_RELATED_CONTENT = 12;
+
+		/**
+		 * string
+		 */
+		public static final int COL_LEAGUE_CLUE_TEXT = 13;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_LEAGUE_TARGET = 14;
 
 		public static final class Row
 		{
@@ -1957,9 +1976,9 @@ public final class DBTableID
 			public static final int CLUEHELPER_HOTCOLD_MASTER_VARLAMORE_SUNSET = 3488;
 			public static final int CLUEHELPER_HOTCOLD_MASTER_VARLAMORE_BAZAAR = 3489;
 			public static final int CLUEHELPER_HOTCOLD_MASTER_VARLAMORE_ALDARIN_THEATRE = 3689;
+			public static final int CLUEHELPER_HOTCOLD_MASTER_SAIL_BUCCANEERS_HAVEN = 4963;
 			public static final int CLUEHELPER_HOTCOLD_MASTER_VARLAMORE_RAINFOREST_CENTRE = 5182;
 			public static final int CLUEHELPER_HOTCOLD_MASTER_SAIL_GREAT_CONCH = 7051;
-			public static final int CLUEHELPER_HOTCOLD_MASTER_SAIL_ISLE_OF_SERPENTS = 7052;
 			public static final int CLUEHELPER_HOTCOLD_MASTER_SAIL_DRUMSTICK_ISLE = 7053;
 		}
 	}
@@ -2399,6 +2418,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_NPC_RANULPH = 5185;
 			public static final int CLUEHELPER_TARGET_NPC_SULISAL = 5186;
 			public static final int CLUEHELPER_TARGET_NPC_TORGAN = 7071;
+			public static final int CLUEHELPER_TARGET_NPC_LEAGUE_TUTOR = 13322;
 		}
 	}
 
@@ -3078,6 +3098,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_COORD_0_26_50_30_47 = 3810;
 			public static final int CLUEHELPER_TARGET_COORD_0_25_51_10_38 = 3811;
 			public static final int CLUEHELPER_TARGET_COORD_1_25_83_40_54 = 3936;
+			public static final int CLUEHELPER_TARGET_COORD_0_32_57_30_17 = 4964;
 			public static final int CLUEHELPER_TARGET_COORD_VARLAMORE_RAINFOREST_CENTRE = 5172;
 			public static final int CLUEHELPER_TARGET_COORD_0_20_51_41_59 = 5173;
 			public static final int CLUEHELPER_TARGET_COORD_0_58_60_52_60 = 6152;
@@ -3089,7 +3110,6 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_COORD_0_32_49_33_48 = 7064;
 			public static final int CLUEHELPER_TARGET_COORD_0_30_63_26_42 = 7065;
 			public static final int CLUEHELPER_TARGET_COORD_0_50_36_49_45 = 7066;
-			public static final int CLUEHELPER_TARGET_COORD_0_29_37_0_47 = 7067;
 			public static final int CLUEHELPER_TARGET_COORD_0_33_55_27_42 = 7068;
 			public static final int CLUEHELPER_TARGET_COORD_0_32_40_21_48 = 7069;
 		}
@@ -4102,6 +4122,13 @@ public final class DBTableID
 			public static final int GREENMAN_MASK_MAPLE_TRANSMOG = 5394;
 			public static final int GREENMAN_MASK_YEW_TRANSMOG = 5395;
 			public static final int GREENMAN_MASK_MAGIC_TRANSMOG = 5396;
+			public static final int EASTER26_EGG_COMPANION_ARCHIBALD = 13312;
+			public static final int EASTER26_EGG_COMPANION_GRID = 13313;
+			public static final int EASTER26_EGG_COMPANION_BUNNY = 13314;
+			public static final int EASTER26_EGG_COMPANION_DIAMONDS = 13315;
+			public static final int EASTER26_EGG_COMPANION_CHICK = 13316;
+			public static final int EASTER26_EGG_COMPANION_MELTED = 13317;
+			public static final int EASTER26_EGG_COMPANION_DRAGON = 13318;
 		}
 	}
 
@@ -4143,6 +4170,7 @@ public final class DBTableID
 			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_REVERSED = 3511;
 			public static final int VMQ3_TOWER_LOCK_DATASET_ALPHABETIC = 3783;
 			public static final int COMBINATION_LOCK_DATASET_VMQ4_JANUS_LOCK = 5195;
+			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_EASTER26 = 13320;
 		}
 	}
 
@@ -4422,6 +4450,7 @@ public final class DBTableID
 			public static final int ENT_TOTEMS_SHOP = 5458;
 			public static final int ENT_TOTEMS_SHOP_IRONMAN = 5459;
 			public static final int SAILING_BOAT_SHOP = 8548;
+			public static final int DEADMAN_SKULL_SHOP = 9575;
 		}
 	}
 
@@ -4528,6 +4557,16 @@ public final class DBTableID
 		 * dbrow
 		 */
 		public static final int COL_OMNISHOP_STOCK_DESCRIPTION_DYNAMIC = 22;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_OMNISHOP_STOCK_USE_SHORTNAME = 23;
+
+		/**
+		 * string
+		 */
+		public static final int COL_OMNISHOP_STOCK_SHORTNAME = 24;
 
 		public static final class Row
 		{
@@ -4739,6 +4778,70 @@ public final class DBTableID
 			public static final int SAILING_SHIP_STOCK_RAFT = 8549;
 			public static final int SAILING_SHIP_STOCK_SKIFF = 8550;
 			public static final int SAILING_SHIP_STOCK_SLOOP = 8551;
+			public static final int DEADMAN_SHOP_2026_WEAPON_ORNAMENT_SCROLL = 9572;
+			public static final int DEADMAN_SHOP_2026_POH_ORNAMENT_SCROLL = 9573;
+			public static final int DEADMAN_SHOP_2026_HOME_TELEPORT_SCROLL = 9574;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_AGILE_FORTUNE = 9577;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_HOARDING = 9578;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_DECEPTION = 9579;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_LITHE = 9580;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_FOOD_MASTER = 9581;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_WELL_FED = 9582;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_POTION_MASTER = 9583;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_TREASURE_HUNTER = 9584;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_HUNTER = 9585;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_INFERNAL_CHEF = 9586;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_NATURE = 9587;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_DEVOTION = 9588;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_FAITH = 9589;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_ALCHEMANIAC = 9590;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_RESISTANCE = 9591;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_DEFT_STRIKES = 9592;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_AUGMENTED_THRALL = 9593;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ONSLAUGHT = 9594;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_RESTORATION = 9595;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_TITANIUM = 9596;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_METICULOUSNESS = 9597;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ENHANCED_HARVEST = 9598;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_SLAUGHTER = 9599;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_WOODCRAFT = 9600;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_REMOTE_STORAGE = 9601;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_CONSISTENCY = 9602;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_RIGOROUS_RANGER = 9603;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_METICULOUS_MAGE = 9604;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_LIGHTBEARER = 9605;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_SPECIALISED_STRIKES = 9606;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_PORCUPINE = 9607;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_FORTIFICATION = 9608;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_RUTHLESS_RANGER = 9609;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_FORMIDABLE_FIGHTER = 9610;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_MENACING_MAGE = 9611;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_SWASHBUCKLER = 9612;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_GUNSLINGER = 9613;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ARCANE_SWIFTNESS = 9614;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ADROIT = 9615;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_BARROWS = 9616;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_FINALITY = 9617;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_PIOUS_PROTECTION = 9618;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_AGGRESSION = 9619;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_RAMPAGE = 9620;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_GODS = 9621;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_REVOKED_LIMITATION = 9622;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_CONCLUSION = 9623;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_AUTOMATION = 9624;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ETERNAL_BELIEF = 9625;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_EFFICIENCY = 9626;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_RUINOUS_PRAYER_BOOK = 9627;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_RECIPE_FOR_DISASTER = 9628;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_CAMELOT_STORYLINE = 9629;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_FREMENNIK_STORYLINE = 9630;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_ELF_STORYLINE = 9631;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_GNOME_STORYLINE = 9632;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_KHARIDIAN_STORYLINE = 9633;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_MYREQUE_STORYLINE = 9634;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_DRAGONKIN_STORYLINE = 9635;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_MAHJARRAT_STORYLINE_1 = 9636;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_MAHJARRAT_STORYLINE_2 = 9637;
 		}
 	}
 
@@ -4811,6 +4914,7 @@ public final class DBTableID
 			public static final int OMNISHOP_CURRENCY_CW_TICKETS = 5104;
 			public static final int OMNISHOP_CURRENCY_CW_PLAUDITS = 5105;
 			public static final int OMNISHOP_CURRENCY_ENT_TOTEMS_RESEARCH_POINTS = 5460;
+			public static final int OMNISHOP_CURRENCY_DEADMAN_SKULL_POINTS = 9576;
 		}
 	}
 
@@ -4876,39 +4980,44 @@ public final class DBTableID
 		public static final int COL_VARIABLE = 5;
 
 		/**
-		 * integer
+		 * boolean
 		 */
-		public static final int COL_AREA = 6;
+		public static final int COL_AUTOMATIC_UNLOCK = 6;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_AREA_DEFAULT = 7;
+		public static final int COL_AREA = 7;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_AREA_DEFAULT = 8;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_HIDDEN = 8;
+		public static final int COL_HIDDEN = 9;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_HOLIDAY = 9;
+		public static final int COL_HOLIDAY = 10;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_SECONDARY_TRACK = 10;
+		public static final int COL_SECONDARY_TRACK = 11;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_RELEASE_TYPE = 11;
+		public static final int COL_RELEASE_TYPE = 12;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 12;
+		public static final int COL_RELATED_CONTENT = 13;
 
 		public static final class Row
 		{
@@ -5724,6 +5833,7 @@ public final class DBTableID
 			public static final int MUSIC_THE_HEIST = 3971;
 			public static final int MUSIC_HEAVY_SECURITY = 3972;
 			public static final int MUSIC_THE_PLUNDERED_TOMB = 3973;
+			public static final int MUSIC_CHRISTMAS_2025 = 4969;
 			public static final int MUSIC_YAMA_COMBAT = 5154;
 			public static final int MUSIC_TLATI_RAINFOREST = 5377;
 			public static final int MUSIC_AUBURN_VALLEY_1 = 5378;
@@ -5762,6 +5872,7 @@ public final class DBTableID
 			public static final int MUSIC_GREAT_CONCH_2 = 7094;
 			public static final int MUSIC_GREAT_CONCH_UNDERGROUND = 7095;
 			public static final int MUSIC_SCAPE_SAIL = 7096;
+			public static final int MUSIC_BRUTUS_COW_BOSS = 8662;
 		}
 	}
 
@@ -6562,6 +6673,21 @@ public final class DBTableID
 		}
 	}
 
+	public static final class DynamicBuildersDemoSets
+	{
+		public static final int ID = 76;
+
+		/**
+		 * (struct, integer, integer, string, boolean)
+		 */
+		public static final int COL_BUTTON_STYLES = 0;
+
+		public static final class Row
+		{
+			public static final int DYNAMIC_BUILDERS_DEMO = 4965;
+		}
+	}
+
 	public static final class PrepotDeviceLoadoutUi
 	{
 		public static final int ID = 77;
@@ -6649,6 +6775,8 @@ public final class DBTableID
 			public static final int COMBAT_INTERFACE_PARTISAN = 3968;
 			public static final int COMBAT_INTERFACE_TRIBRID = 4091;
 			public static final int COMBAT_INTERFACE_EGG = 5376;
+			public static final int COMBAT_INTERFACE_SAILING_CANNON = 13321;
+			public static final int COMBAT_INTERFACE_MULTI_MELEE = 16265;
 		}
 	}
 
@@ -6823,6 +6951,7 @@ public final class DBTableID
 			public static final int HISCORES_BOSSES_YAMA = 5130;
 			public static final int HISCORES_BOSSES_DOOM_OF_MOKHAIOTL = 5484;
 			public static final int HISCORES_BOSSES_GRYPHON_BOSS = 9447;
+			public static final int HISCORES_BOSSES_COWBOSS = 9655;
 		}
 	}
 
@@ -6851,44 +6980,54 @@ public final class DBTableID
 		public static final int COL_MAP_COMPONENT = 3;
 
 		/**
-		 * graphic
+		 * component
 		 */
-		public static final int COL_MAP_SHIELD_SPRITE = 4;
+		public static final int COL_NAME_COMPONENT = 4;
+
+		/**
+		 * component
+		 */
+		public static final int COL_SHIELD_COMPONENT = 5;
 
 		/**
 		 * graphic
 		 */
-		public static final int COL_MAP_SHIELD_SPRITE_HIGHLIGHTED = 5;
+		public static final int COL_MAP_SHIELD_SPRITE = 6;
 
 		/**
 		 * graphic
 		 */
-		public static final int COL_MAP_SHIELD_SPRITE_SMALL = 6;
+		public static final int COL_MAP_SHIELD_SPRITE_HIGHLIGHTED = 7;
 
 		/**
 		 * graphic
 		 */
-		public static final int COL_MAP_NAME_SPRITE = 7;
+		public static final int COL_MAP_SHIELD_SPRITE_SMALL = 8;
 
 		/**
 		 * graphic
 		 */
-		public static final int COL_MAP_NAME_SPRITE_HIGHLIGHTED = 8;
+		public static final int COL_MAP_NAME_SPRITE = 9;
+
+		/**
+		 * graphic
+		 */
+		public static final int COL_MAP_NAME_SPRITE_HIGHLIGHTED = 10;
 
 		/**
 		 * enum
 		 */
-		public static final int COL_MAP_SLIDESHOW = 9;
+		public static final int COL_MAP_SLIDESHOW = 11;
 
 		/**
 		 * struct
 		 */
-		public static final int COL_AREA_INFO = 10;
+		public static final int COL_AREA_INFO = 12;
 
 		/**
 		 * coordgrid
 		 */
-		public static final int COL_AREA_TELEPORT_COORD = 11;
+		public static final int COL_AREA_TELEPORT_COORD = 13;
 
 		public static final class Row
 		{
@@ -7001,6 +7140,11 @@ public final class DBTableID
 		 */
 		public static final int COL_REQUIREMENTS = 9;
 
+		/**
+		 * boolean
+		 */
+		public static final int COL_DISABLED = 10;
+
 		public static final class Row
 		{
 			public static final int LEAGUES_ECHO_CERBERUS = 4218;
@@ -7012,6 +7156,7 @@ public final class DBTableID
 			public static final int LEAGUES_ECHO_KBD = 4224;
 			public static final int LEAGUES_ECHO_HESPORI = 4225;
 			public static final int LEAGUES_ECHO_SOL_HEREDIT = 4226;
+			public static final int LEAGUES_ECHO_AMOXLIATL = 16179;
 		}
 	}
 
@@ -7163,6 +7308,7 @@ public final class DBTableID
 			public static final int CHARGES_EYE_OF_AYAK_RUNES = 5188;
 			public static final int CHARGES_HORN_OF_PLENTY = 7039;
 			public static final int CHARGES_SAILORS_AMULET = 7040;
+			public static final int CHARGES_COWBELL_AMULET = 9644;
 		}
 	}
 
@@ -9072,6 +9218,7 @@ public final class DBTableID
 			public static final int POH_TROPHY_HALIBUT = 7125;
 			public static final int POH_TROPHY_BLUEFIN = 7126;
 			public static final int POH_TROPHY_MARLIN = 7127;
+			public static final int POH_GARDEN_CENTREPIECE_6 = 9654;
 		}
 	}
 
@@ -9366,14 +9513,19 @@ public final class DBTableID
 		public static final int COL_EXTENSION_MIN_MAX = 15;
 
 		/**
+		 * (dbrow, integer, integer)
+		 */
+		public static final int COL_EXTENSION_ADDITIVE = 16;
+
+		/**
 		 * dbrow
 		 */
-		public static final int COL_BLOCK_UNLOCK = 16;
+		public static final int COL_BLOCK_UNLOCK = 17;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 17;
+		public static final int COL_RELATED_CONTENT = 18;
 
 		public static final class Row
 		{
@@ -9913,6 +10065,60 @@ public final class DBTableID
 			public static final int NIEVE_AQUANITES = 9411;
 			public static final int NIEVE_FROST_DRAGONS = 9412;
 			public static final int VANNAKA_GRYPHONS = 9413;
+			public static final int LEAGUES_BOSS = 16206;
+			public static final int LEAGUES_CRABS = 16207;
+			public static final int LEAGUES_COWS = 16208;
+			public static final int LEAGUES_GOBLINS = 16209;
+			public static final int LEAGUES_BIRDS = 16210;
+			public static final int LEAGUES_HILLGIANTS = 16211;
+			public static final int LEAGUES_MOSSGIANTS = 16212;
+			public static final int LEAGUES_FIREGIANTS = 16213;
+			public static final int LEAGUES_ANKOU = 16214;
+			public static final int LEAGUES_ABYSSALDEMONS = 16215;
+			public static final int LEAGUES_TZHAAR = 16216;
+			public static final int LEAGUES_LESSERDEMONS = 16217;
+			public static final int LEAGUES_GREATERDEMONS = 16218;
+			public static final int LEAGUES_BLACKDEMONS = 16219;
+			public static final int LEAGUES_TROLLS = 16220;
+			public static final int LEAGUES_GREENDRAGONS = 16221;
+			public static final int LEAGUES_BLUEDRAGONS = 16222;
+			public static final int LEAGUES_REDDRAGONS = 16223;
+			public static final int LEAGUES_BLACKDRAGONS = 16224;
+			public static final int LEAGUES_LAVADRAGONS = 16225;
+			public static final int LEAGUES_DRAKES = 16226;
+			public static final int LEAGUES_WYRMS = 16227;
+			public static final int LEAGUES_HYDRAS = 16228;
+			public static final int LEAGUES_HELLHOUNDS = 16229;
+			public static final int LEAGUES_SKELETALWYVERNS = 16230;
+			public static final int LEAGUES_OGRES = 16231;
+			public static final int LEAGUES_CHAOSDRUIDS = 16232;
+			public static final int LEAGUES_CAVEKRAKEN = 16233;
+			public static final int LEAGUES_SMOKEDEVIL = 16234;
+			public static final int LEAGUES_KALPHITE = 16235;
+			public static final int LEAGUES_DUSTDEVILS = 16236;
+			public static final int LEAGUES_PYREFIENDS = 16237;
+			public static final int LEAGUES_BANDITS = 16238;
+			public static final int LEAGUES_DAGANNOTH = 16239;
+			public static final int LEAGUES_COCKATRICE = 16240;
+			public static final int LEAGUES_JELLIES = 16241;
+			public static final int LEAGUES_BASILISKS = 16242;
+			public static final int LEAGUES_TUROTH = 16243;
+			public static final int LEAGUES_KURASK = 16244;
+			public static final int LEAGUES_BANSHEES = 16245;
+			public static final int LEAGUES_VAMPYRES = 16246;
+			public static final int LEAGUES_BLOODVELD = 16247;
+			public static final int LEAGUES_CAVEHORRORS = 16248;
+			public static final int LEAGUES_GARGOYLES = 16249;
+			public static final int LEAGUES_NECHRYAEL = 16250;
+			public static final int LEAGUES_ARAXYTES = 16251;
+			public static final int LEAGUES_ELVES = 16252;
+			public static final int LEAGUES_WATERFIENDS = 16253;
+			public static final int LEAGUES_DARKBEASTS = 16254;
+			public static final int LEAGUES_REVENANTS = 16255;
+			public static final int LEAGUES_BEARS = 16256;
+			public static final int LEAGUES_SKELETONS = 16257;
+			public static final int LEAGUES_LIZARDMEN = 16258;
+			public static final int LEAGUES_CUSTODIANS = 16259;
 		}
 	}
 
@@ -9934,6 +10140,11 @@ public final class DBTableID
 		 * string
 		 */
 		public static final int COL_AREA_NAME_IN_HELPER = 3;
+
+		/**
+		 * string
+		 */
+		public static final int COL_AREA_HINT = 4;
 
 		/**
 		 * integer
@@ -10163,6 +10374,8 @@ public final class DBTableID
 			public static final int SLAYER_REWARDS_LONGER_AQUANITES = 9418;
 			public static final int SLAYER_REWARDS_LONGER_WYRMS = 9419;
 			public static final int SLAYER_REWARDS_UNLOCK_GRYPHONS = 9420;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_HOODED = 9641;
+			public static final int SLAYER_REWARDS_LONGER_GRYPHONS = 9642;
 		}
 	}
 
@@ -10176,139 +10389,174 @@ public final class DBTableID
 		public static final int COL_ACTION_NAME = 0;
 
 		/**
+		 * string
+		 */
+		public static final int COL_ACTION_DESC = 1;
+
+		/**
 		 * graphic
 		 */
-		public static final int COL_ACTION_DISPLAY_GRAPHIC = 1;
+		public static final int COL_ACTION_DISPLAY_GRAPHIC = 2;
 
 		/**
 		 * obj
 		 */
-		public static final int COL_ACTION_DISPLAY_OBJECT = 2;
+		public static final int COL_ACTION_DISPLAY_OBJECT = 3;
 
 		/**
 		 * (string, string)
 		 */
-		public static final int COL_ACTION_DISPLAY_DESC = 3;
+		public static final int COL_ACTION_DISPLAY_DESC = 4;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_ACTION_DISPLAY_SHOW_DERIVED_DESC = 4;
+		public static final int COL_ACTION_DISPLAY_SHOW_DERIVED_DESC = 5;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_CUSTOM_TRACKING = 7;
+		public static final int COL_CUSTOM_TRACKING = 8;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_BOSS_KILL = 8;
+		public static final int COL_BOSS_KILL = 9;
 
 		/**
 		 * category
 		 */
-		public static final int COL_BOSS_KILL_CATEGORY = 9;
+		public static final int COL_BOSS_KILL_CATEGORY = 10;
 
 		/**
 		 * (boolean, boolean)
 		 */
-		public static final int COL_BOSS_KILL_EXTRAS = 10;
+		public static final int COL_BOSS_KILL_EXTRAS = 11;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_NPC_KILL = 11;
+		public static final int COL_NPC_KILL = 12;
 
 		/**
 		 * category
 		 */
-		public static final int COL_NPC_KILL_CATEGORY = 12;
+		public static final int COL_NPC_KILL_CATEGORY = 13;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_NPC_KILL_SLAYER_CATEGORY = 13;
+		public static final int COL_NPC_KILL_SLAYER_CATEGORY = 14;
 
 		/**
 		 * obj
 		 */
-		public static final int COL_EQUIP_ITEM = 14;
+		public static final int COL_EQUIP_ITEM = 15;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_TOTAL_LEVEL = 15;
+		public static final int COL_TOTAL_LEVEL = 16;
 
 		/**
 		 * (stat, integer)
 		 */
-		public static final int COL_LEVEL = 16;
+		public static final int COL_LEVEL = 17;
 
 		/**
 		 * obj
 		 */
-		public static final int COL_COLLECTION_GENERIC = 17;
+		public static final int COL_COLLECTION_GENERIC = 18;
 
 		/**
 		 * struct
 		 */
-		public static final int COL_COLLECTION_SPECIFIC = 18;
+		public static final int COL_COLLECTION_SPECIFIC = 19;
 
 		/**
 		 * obj
 		 */
-		public static final int COL_LOOT_DROP = 19;
+		public static final int COL_LOOT_DROP = 20;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_LOOT_DROP_SPECIFIC_NPC = 20;
+		public static final int COL_LOOT_DROP_SPECIFIC_NPC = 21;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_QUEST = 21;
+		public static final int COL_QUEST = 22;
 
 		/**
 		 * obj
 		 */
-		public static final int COL_MINE_ORE = 22;
+		public static final int COL_MINE_ORE = 23;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_CATCH_FISH = 24;
 
 		/**
 		 * (obj, boolean)
 		 */
-		public static final int COL_HUNTER = 23;
+		public static final int COL_HUNTER = 25;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_POH_BUILD = 24;
+		public static final int COL_POH_BUILD = 26;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_POH_SET_PORTAL = 25;
+		public static final int COL_POH_SET_PORTAL = 27;
 
 		/**
 		 * obj
 		 */
-		public static final int COL_CREATE_ITEM = 26;
+		public static final int COL_CREATE_ITEM = 28;
 
 		/**
 		 * obj
 		 */
-		public static final int COL_CHOP_LOGS = 27;
-
-		/**
-		 * struct
-		 */
-		public static final int COL_LEAGUES_TASK = 28;
+		public static final int COL_CHOP_LOGS = 29;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_CHILD_ACTION = 29;
+		public static final int COL_LEAGUES_TASK = 30;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_CHILD_ACTION = 31;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ACTION_DIFFICULTY = 32;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_LEAGUE_TRACKING_ID = 33;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_IN_CURRENT_LEAGUE = 34;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_CATEGORY = 35;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_TASK_AREA = 36;
 
 		public static final class Row
 		{
@@ -10405,6 +10653,2087 @@ public final class DBTableID
 			public static final int ACTION_POH_SKILLCAPE_DEPOSIT = 6860;
 			public static final int ACTION_DRINK_STEAMFORGE_BREW_INSIDE_SYO_INN = 6861;
 			public static final int ACTION_EAT_CABBAGE_INFRONT_OF_BRASSICAN_MAGE = 6862;
+			public static final int LEAGUE_TASK_ALL_EASY_COMBAT_ACHIEVEMENTS = 13323;
+			public static final int LEAGUE_TASK_ALL_MEDIUM_COMBAT_ACHIEVEMENTS = 13324;
+			public static final int LEAGUE_TASK_SCURRIUS_COMBAT_ACHIEVEMENTS = 13325;
+			public static final int LEAGUE_TASK_THE_INFERNO_COMBAT_ACHIEVEMENTS = 13326;
+			public static final int LEAGUE_TASK_TZHAARKETRAKS_COMBAT_ACHIEVEMENTS = 13327;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_KARAMJA_DIARY = 13328;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_LUMBRIDGE_DRAYNOR_DIARY = 13329;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_VARROCK_DIARY = 13330;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_KARAMJA_DIARY = 13331;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_LUMBRIDGE_DRAYNOR_DIARY = 13332;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_VARROCK_DIARY = 13333;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_KARAMJA_DIARY = 13334;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_LUMBRIDGE_DRAYNOR_DIARY = 13335;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_VARROCK_DIARY = 13336;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_KARAMJA_DIARY = 13337;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_LUMBRIDGE_DRAYNOR_DIARY = 13338;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_VARROCK_DIARY = 13339;
+			public static final int LEAGUE_TASK_GROTESQUE_GUARDIANS_COMBAT_ACHIEVEMENTS = 13340;
+			public static final int LEAGUE_TASK_PHOSANIS_NIGHTMARE_COMBAT_ACHIEVEMENTS = 13341;
+			public static final int LEAGUE_TASK_KOUREND_AND_KEBOS_ELITE_DIARY_TASKS = 13342;
+			public static final int LEAGUE_TASK_ALCHEMICAL_HYDRA_COMBAT_ACHIEVEMENTS = 13343;
+			public static final int LEAGUE_TASK_THE_NIGHTMARE_COMBAT_ACHIEVEMENTS = 13344;
+			public static final int LEAGUE_TASK_PHANTOM_MUSPAH_COMBAT_ACHIEVEMENTS = 13345;
+			public static final int LEAGUE_TASK_VORKATH_COMBAT_ACHIEVEMENTS = 13346;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_WILDERNESS_DIARY = 13347;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_FREMENNIK_DIARY = 13348;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_ARDOUGNE_DIARY = 13349;
+			public static final int LEAGUE_TASK_DAGANNOTH_KINGS_COMBAT_ACHIEVEMENTS = 13350;
+			public static final int LEAGUE_TASK_ARAXXOR_COMBAT_ACHIEVEMENTS = 13351;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_MORYTANIA_DIARY = 13352;
+			public static final int LEAGUE_TASK_THE_LEVIATHAN_COMBAT_ACHIEVEMENTS = 13353;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_DESERT_DIARY = 13354;
+			public static final int LEAGUE_TASK_PERILOUS_MOONS_COMBAT_ACHIEVEMENTS = 13355;
+			public static final int LEAGUE_TASK_ZULRAH_COMBAT_ACHIEVEMENTS = 13356;
+			public static final int LEAGUE_TASK_DUKE_SUCELLUS_COMBAT_ACHIEVEMENTS = 13357;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_KANDARIN_DIARY = 13358;
+			public static final int LEAGUE_TASK_THE_WHISPERER_COMBAT_ACHIEVEMENTS = 13359;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_WESTERN_PROVINCES_DIARY = 13360;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ELITE_FALADOR_DIARY = 13361;
+			public static final int LEAGUE_TASK_1_COMBAT_ACHIEVEMENT = 13362;
+			public static final int LEAGUE_TASK_1500_COMBAT_ACHIEVEMENT_POINTS = 13363;
+			public static final int LEAGUE_TASK_100_COLLECTION_LOG_SLOTS = 13364;
+			public static final int LEAGUE_TASK_350_COMBAT_ACHIEVEMENTS = 13365;
+			public static final int LEAGUE_TASK_VARDORVIS_COMBAT_ACHIEVEMENTS = 13366;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_FREMENNIK_DIARY = 13367;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_FALADOR_DIARY = 13368;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_MORYTANIA_DIARY = 13369;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_WILDERNESS_DIARY = 13370;
+			public static final int LEAGUE_TASK_400_COMBAT_ACHIEVEMENTS = 13371;
+			public static final int LEAGUE_TASK_100_COMBAT_ACHIEVEMENTS = 13372;
+			public static final int LEAGUE_TASK_800_COMBAT_ACHIEVEMENT_POINTS = 13373;
+			public static final int LEAGUE_TASK_KOUREND_AND_KEBOS_HARD_DIARY_TASKS = 13374;
+			public static final int LEAGUE_TASK_15_COLLECTION_LOG_SLOTS = 13375;
+			public static final int LEAGUE_TASK_150_COMBAT_ACHIEVEMENTS = 13376;
+			public static final int LEAGUE_TASK_200_COLLECTION_LOG_SLOTS = 13377;
+			public static final int LEAGUE_TASK_200_COMBAT_ACHIEVEMENTS = 13378;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_DESERT_DIARY = 13379;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_ARDOUGNE_DIARY = 13380;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_KANDARIN_DIARY = 13381;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HARD_WESTERN_PROVINCES_DIARY = 13382;
+			public static final int LEAGUE_TASK_ROYAL_TITAN_COMBAT_ACHIEVEMENTS = 13383;
+			public static final int LEAGUE_TASK_HUEYCOATL_COMBAT_ACHIEVEMENTS = 13384;
+			public static final int LEAGUE_TASK_TELEPORT_TO_THE_FORTIS_COLOSSEUM = 13385;
+			public static final int LEAGUE_TASK_AMOXLIATL_COMBAT_ACHIEVEMENTS = 13386;
+			public static final int LEAGUE_TASK_GIANT_MOLE_COMBAT_ACHIEVEMENTS = 13387;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_WILDERNESS_DIARY = 13388;
+			public static final int LEAGUE_TASK_THEATRE_OF_BLOOD_COMBAT_ACHIEVEMENTS = 13389;
+			public static final int LEAGUE_TASK_GODWARS_DUNGEON_COMBAT_ACHIEVEMENTS = 13390;
+			public static final int LEAGUE_TASK_KQ_COMBAT_ACHIEVEMENTS = 13391;
+			public static final int LEAGUE_TASK_TOMBS_OF_AMASCUT_COMBAT_ACHIEVEMENTS = 13392;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_DESERT_DIARY = 13393;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_DESERT_DIARY = 13394;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_MORYTANIA_DIARY = 13395;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_MORYTANIA_DIARY = 13396;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_WILDERNESS_DIARY = 13397;
+			public static final int LEAGUE_TASK_THERMONUCLEAR_SMOKE_DEVIL_COMBAT_ACHIEVEMENTS = 13398;
+			public static final int LEAGUE_TASK_100_COMBAT_ACHIEVEMENT_POINTS = 13399;
+			public static final int LEAGUE_TASK_1000_COMBAT_ACHIEVEMENT_POINTS = 13400;
+			public static final int LEAGUE_TASK_1100_COMBAT_ACHIEVEMENT_POINTS = 13401;
+			public static final int LEAGUE_TASK_1250_COMBAT_ACHIEVEMENT_POINTS = 13402;
+			public static final int LEAGUE_TASK_200_COMBAT_ACHIEVEMENT_POINTS = 13403;
+			public static final int LEAGUE_TASK_25_COMBAT_ACHIEVEMENTS = 13404;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_FALADOR_DIARY = 13405;
+			public static final int LEAGUE_TASK_300_COMBAT_ACHIEVEMENT_POINTS = 13406;
+			public static final int LEAGUE_TASK_400_COMBAT_ACHIEVEMENT_POINTS = 13407;
+			public static final int LEAGUE_TASK_500_COMBAT_ACHIEVEMENT_POINTS = 13408;
+			public static final int LEAGUE_TASK_600_COMBAT_ACHIEVEMENT_POINTS = 13409;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_FALADOR_DIARY = 13410;
+			public static final int LEAGUE_TASK_700_COMBAT_ACHIEVEMENT_POINTS = 13411;
+			public static final int LEAGUE_TASK_900_COMBAT_ACHIEVEMENT_POINTS = 13412;
+			public static final int LEAGUE_TASK_ALL_MASTER_COMBAT_ACHIEVEMENTS = 13413;
+			public static final int LEAGUE_TASK_250_COMBAT_ACHIEVEMENTS = 13414;
+			public static final int LEAGUE_TASK_30_COLLECTION_LOG_SLOTS = 13415;
+			public static final int LEAGUE_TASK_COLOSSEUM_COMBAT_ACHIEVEMENTS = 13416;
+			public static final int LEAGUE_TASK_DOOM_OF_MOKHAIOTL_COMBAT_ACHIEVEMENTS = 13417;
+			public static final int LEAGUE_TASK_CHAMBERS_OF_XERIC_COMBAT_ACHIEVEMENTS = 13418;
+			public static final int LEAGUE_TASK_KOUREND_AND_KEBOS_EASY_DIARY_TASKS = 13419;
+			public static final int LEAGUE_TASK_KOUREND_AND_KEBOS_MEDIUM_DIARY_TASKS = 13420;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_FREMENNIK_DIARY = 13421;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_ARDOUGNE_DIARY = 13422;
+			public static final int LEAGUE_TASK_10_COMBAT_ACHIEVEMENTS = 13423;
+			public static final int LEAGUE_TASK_300_COMBAT_ACHIEVEMENTS = 13424;
+			public static final int LEAGUE_TASK_350_COLLECTION_LOG_SLOTS = 13425;
+			public static final int LEAGUE_TASK_5_COLLECTION_LOG_SLOTS = 13426;
+			public static final int LEAGUE_TASK_COMBAT_ACHIEVEMENTS_MASTER_TIER = 13427;
+			public static final int LEAGUE_TASK_50_COLLECTION_LOG_SLOTS = 13428;
+			public static final int LEAGUE_TASK_25_COMBAT_ACHIEVEMENT_POINTS = 13429;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_KANDARIN_DIARY = 13430;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_ARDOUGNE_DIARY = 13431;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_KANDARIN_DIARY = 13432;
+			public static final int LEAGUE_TASK_50_COMBAT_ACHIEVEMENTS = 13433;
+			public static final int LEAGUE_TASK_500_COLLECTION_LOG_SLOTS = 13434;
+			public static final int LEAGUE_TASK_ZALCANO_COMBAT_ACHIEVEMENTS = 13435;
+			public static final int LEAGUE_TASK_50_COMBAT_ACHIEVEMENT_POINTS = 13436;
+			public static final int LEAGUE_TASK_ALL_ELITE_COMBAT_ACHIEVEMENTS = 13437;
+			public static final int LEAGUE_TASK_ALL_GRANDMASTER_COMBAT_ACHIEVEMENTS = 13438;
+			public static final int LEAGUE_TASK_ALL_HARD_COMBAT_ACHIEVEMENTS = 13439;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EASY_WESTERN_PROVINCES_DIARY = 13440;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_WESTERN_PROVINCES_DIARY = 13441;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MEDIUM_FREMENNIK_DIARY = 13442;
+			public static final int LEAGUE_TASK_GAUNTLET_COMBAT_ACHIEVEMENTS = 13443;
+			public static final int LEAGUE_TASK_1000_COLLECTION_LOG_SLOTS = 13444;
+			public static final int LEAGUE_TASK_KRAKEN_COMBAT_ACHIEVEMENTS = 13445;
+			public static final int LEAGUE_TASK_750_COLLECTION_LOG_SLOTS = 13446;
+			public static final int LEAGUE_TASK_ABYSSAL_SIRE_COMBAT_ACHIEVEMENTS = 13447;
+			public static final int LEAGUE_TASK_COMBAT_ACHIEVEMENTS_EASY_TIER = 13448;
+			public static final int LEAGUE_TASK_COMBAT_ACHIEVEMENTS_ELITE_TIER = 13449;
+			public static final int LEAGUE_TASK_COMBAT_ACHIEVEMENTS_HARD_TIER = 13450;
+			public static final int LEAGUE_TASK_COMBAT_ACHIEVEMENTS_MEDIUM_TIER = 13451;
+			public static final int LEAGUE_TASK_COMPLETE_1_SPEED_TASK = 13452;
+			public static final int LEAGUE_TASK_COMPLETE_10_SPEED_TASKS = 13453;
+			public static final int LEAGUE_TASK_COMPLETE_20_SPEED_TASKS = 13454;
+			public static final int LEAGUE_TASK_COMPLETE_30_SPEED_TASKS = 13455;
+			public static final int LEAGUE_TASK_COMPLETE_5_SPEED_TASKS = 13456;
+			public static final int LEAGUE_TASK_COMPLETE_1_BOSSES_COMBAT_ACHIEVEMENTS = 13457;
+			public static final int LEAGUE_TASK_COMPLETE_10_BOSSES_COMBAT_ACHIEVEMENTS = 13458;
+			public static final int LEAGUE_TASK_COMPLETE_3_BOSSES_COMBAT_ACHIEVEMENTS = 13459;
+			public static final int LEAGUE_TASK_COMPLETE_5_BOSSES_COMBAT_ACHIEVEMENTS = 13460;
+			public static final int LEAGUE_TASK_REACH_COMBAT_LEVEL_10 = 13461;
+			public static final int LEAGUE_TASK_RECEIVE_A_SLAYER_TASK = 13462;
+			public static final int LEAGUE_TASK_RESTORE_5_PRAYER_POINTS_AT_AN_ALTAR = 13463;
+			public static final int LEAGUE_TASK_SUPERHUMAN_STRENGTH_AND_IMPROVED_REFLEXES = 13464;
+			public static final int LEAGUE_TASK_VISIT_DEATHS_DOMAIN = 13465;
+			public static final int LEAGUE_TASK_OPEN_1_GRUBBY_CHEST = 13466;
+			public static final int LEAGUE_TASK_SET_A_MUMMY_ABLAZE = 13467;
+			public static final int LEAGUE_TASK_BURY_SOME_BONES = 13468;
+			public static final int LEAGUE_TASK_CHECK_YOUR_SLAYER_TASK = 13469;
+			public static final int LEAGUE_TASK_PRAY_AT_AN_ALTAR_IN_MOLCH_WHILE_POISONED = 13470;
+			public static final int LEAGUE_TASK_GET_YOUR_REVENGE_AGAINST_A_DARK_WIZARD = 13471;
+			public static final int LEAGUE_TASK_KILL_10_LOCUSTS = 13472;
+			public static final int LEAGUE_TASK_RECEIVE_A_KONAR_SLAYER_TASK = 13473;
+			public static final int LEAGUE_TASK_KILL_A_BARBARIAN_IN_THE_BARBARIAN_VILLAGE = 13474;
+			public static final int LEAGUE_TASK_KILL_A_CHICKEN_WITH_YOUR_FISTS = 13475;
+			public static final int LEAGUE_TASK_KILL_A_COW_IN_ONE_HIT = 13476;
+			public static final int LEAGUE_TASK_BRUTALLY_MURDER_CONRAD_KING = 13477;
+			public static final int LEAGUE_TASK_KILL_A_DUCK_WITH_A_FIRE_SPELL = 13478;
+			public static final int LEAGUE_TASK_KILL_A_GOBLIN_HOLDING_A_SPEAR = 13479;
+			public static final int LEAGUE_TASK_KILL_A_JUBSTER = 13480;
+			public static final int LEAGUE_TASK_RECOLOUR_A_PIECE_OF_THE_ANCESTRAL_ROBES = 13481;
+			public static final int LEAGUE_TASK_KILL_A_MUGGER = 13482;
+			public static final int LEAGUE_TASK_RECEIVE_A_SLAYER_TASK_FROM_TURAEL_OR_SPRIA = 13483;
+			public static final int LEAGUE_TASK_KILL_A_RAM = 13484;
+			public static final int LEAGUE_TASK_KILL_A_SEAGULL_IN_THE_DESERT = 13485;
+			public static final int LEAGUE_TASK_KILL_A_SPIDER_BY_KICKING_IT = 13486;
+			public static final int LEAGUE_TASK_OBTAIN_FOSSILISED_DUNG = 13487;
+			public static final int LEAGUE_TASK_OPEN_THE_DARK_CHEST = 13488;
+			public static final int LEAGUE_TASK_RECEIVE_A_SLAYER_TASK_FROM_DURADEL = 13489;
+			public static final int LEAGUE_TASK_RECEIVE_A_SLAYER_TASK_FROM_MAZCHNA = 13490;
+			public static final int LEAGUE_TASK_RECEIVE_A_SLAYER_TASK_FROM_NIEVESTEVE = 13491;
+			public static final int LEAGUE_TASK_RECEIVE_A_SLAYER_TASK_FROM_VANNAKA = 13492;
+			public static final int LEAGUE_TASK_STUN_A_MONSTER = 13493;
+			public static final int LEAGUE_TASK_TRY_AND_FEED_A_STRAY_DOG_SOMETHING_EXOTIC = 13494;
+			public static final int LEAGUE_TASK_ATTACH_A_HOLY_ORNAMENT_KIT_TO_THE_SCYTHE_OF_VITUR = 13495;
+			public static final int LEAGUE_TASK_ATTACH_A_SANGUINE_ORNAMENT_KIT_TO_THE_SCYTHE = 13496;
+			public static final int LEAGUE_TASK_CAST_BLOOD_BARRAGE = 13497;
+			public static final int LEAGUE_TASK_CAST_SHADOW_BARRAGE = 13498;
+			public static final int LEAGUE_TASK_CAST_SMOKE_BARRAGE = 13499;
+			public static final int LEAGUE_TASK_COMPLETE_THE_THEATRE_OF_BLOOD_100_TIMES = 13500;
+			public static final int LEAGUE_TASK_COMPLETE_THE_THEATRE_OF_BLOOD_25_TIMES = 13501;
+			public static final int LEAGUE_TASK_COMPLETE_THE_THEATRE_OF_BLOOD_50_TIMES = 13502;
+			public static final int LEAGUE_TASK_COMPLETE_THE_THEATRE_OF_BLOOD_WITH_NO_DEATHS = 13503;
+			public static final int LEAGUE_TASK_HIT_150_WITH_THE_KERIS_PARTISAN = 13504;
+			public static final int LEAGUE_TASK_COMPLETE_TOMBS_OF_AMASCUT_100_TIMES = 13505;
+			public static final int LEAGUE_TASK_CAST_ICE_BARRAGE = 13506;
+			public static final int LEAGUE_TASK_COMPLETE_TOMBS_OF_AMASCUT_50_TIMES = 13507;
+			public static final int LEAGUE_TASK_LOAD_A_BLOWPIPE_WITH_DRAGON_DARTS = 13508;
+			public static final int LEAGUE_TASK_EAT_EEL_SUSHI = 13509;
+			public static final int LEAGUE_TASK_USE_THE_PIETY_PRAYER = 13510;
+			public static final int LEAGUE_TASK_OBTAIN_A_CRYSTAL_TOOL_SEED = 13511;
+			public static final int LEAGUE_TASK_CRAFT_A_TOXIC_BLOWPIPE = 13512;
+			public static final int LEAGUE_TASK_CRAFT_A_TOXIC_TRIDENT = 13513;
+			public static final int LEAGUE_TASK_DISMANTLE_A_ZULRAH_SCALE_UNIQUE = 13514;
+			public static final int LEAGUE_TASK_OBTAIN_A_FROZEN_CACHE_FROM_A_CACHE = 13515;
+			public static final int LEAGUE_TASK_OBTAIN_20000_GLORY = 13516;
+			public static final int LEAGUE_TASK_OBTAIN_40000_GLORY = 13517;
+			public static final int LEAGUE_TASK_ATTACH_A_TOB_ORNAMENT_KIT = 13518;
+			public static final int ACTION_COMPLETE_1_DEEP_DELVE = 13519;
+			public static final int ACTION_COMPLETE_25_DEEP_DELVES = 13520;
+			public static final int ACTION_COMPLETE_75_DEEP_DELVES = 13521;
+			public static final int LEAGUE_TASK_COMPLETE_WAVE_12_OF_FORTIS_COLOSSEUM = 13522;
+			public static final int LEAGUE_TASK_IMBUE_A_GOD_CAPE = 13523;
+			public static final int LEAGUE_TASK_OPEN_10_MUDDY_CHESTS = 13524;
+			public static final int LEAGUE_TASK_OPEN_15_ZOMBIE_PIRATE_LOCKERS = 13525;
+			public static final int LEAGUE_TASK_OPEN_50_LARRANS_CHESTS = 13526;
+			public static final int LEAGUE_TASK_OPEN_50_ZOMBIE_PIRATE_LOCKERS = 13527;
+			public static final int LEAGUE_TASK_USE_A_TELEPORT_ANCHORING_SCROLL = 13528;
+			public static final int LEAGUE_TASK_CAST_ICE_BLITZ = 13529;
+			public static final int LEAGUE_TASK_ACTIVATE_A_PRAYER_NEAR_AN_ALTAR = 13530;
+			public static final int LEAGUE_TASK_CAST_ICE_BURST = 13531;
+			public static final int LEAGUE_TASK_ACTIVATE_AN_IMBUED_HEART = 13532;
+			public static final int LEAGUE_TASK_CREATE_AN_AMULET_OF_BLOOD_FURY = 13533;
+			public static final int LEAGUE_TASK_10_SKOTIZO_KILLS = 13534;
+			public static final int LEAGUE_TASK_COMPLETE_TOMBS_OF_AMASCUT = 13535;
+			public static final int LEAGUE_TASK_COMPLETE_TOMBS_OF_AMASCUT_25_TIMES = 13536;
+			public static final int LEAGUE_TASK_USE_THE_CHIVALRY_PRAYER = 13537;
+			public static final int LEAGUE_TASK_ACTIVATE_DEADEYE = 13538;
+			public static final int LEAGUE_TASK_ACTIVATE_MYSTIC_VIGOUR = 13539;
+			public static final int LEAGUE_TASK_ACTIVATE_AN_ARCANE_OR_DEXTEROUS_PRAYER_SCROLL = 13540;
+			public static final int LEAGUE_TASK_CAST_A_SURGE_SPELL = 13541;
+			public static final int LEAGUE_TASK_150_AMOXLIATL_KILLS = 13542;
+			public static final int LEAGUE_TASK_150_HUEYCOATL_KILLS = 13543;
+			public static final int LEAGUE_TASK_ASSEMBLE_A_SLAYER_HELM = 13544;
+			public static final int LEAGUE_TASK_USE_THE_BANK_CHEST_INSIDE_FORTIS_COLOSSEUM = 13545;
+			public static final int LEAGUE_TASK_USE_THE_FORTIS_SALUTE_EMOTE = 13546;
+			public static final int LEAGUE_TASK_OBTAIN_EVERY_REVENANT_WEAPON = 13547;
+			public static final int LEAGUE_TASK_COMPLETE_WAVE_6_OF_FORTIS_COLOSSEUM = 13548;
+			public static final int LEAGUE_TASK_25_SKOTIZO_KILLS = 13549;
+			public static final int LEAGUE_TASK_CAST_ICE_RUSH = 13550;
+			public static final int LEAGUE_TASK_CREATE_THE_DIVINE_RUNE_POUCH = 13551;
+			public static final int LEAGUE_TASK_LOOT_A_BARROWS_CHEST = 13552;
+			public static final int LEAGUE_TASK_LOAD_A_BLOWPIPE_WITH_RUNE_DARTS = 13553;
+			public static final int LEAGUE_TASK_OBTAIN_AN_ECUMENICAL_KEY = 13554;
+			public static final int LEAGUE_TASK_OPEN_1_MUDDY_CHEST = 13555;
+			public static final int LEAGUE_TASK_OPEN_1_ZOMBIE_PIRATE_LOCKER = 13556;
+			public static final int LEAGUE_TASK_OPEN_15_LARRANS_CHESTS = 13557;
+			public static final int LEAGUE_TASK_SET_UP_A_DWARF_CANNON = 13558;
+			public static final int LEAGUE_TASK_ADD_A_JAR_TO_A_DISPLAY_CASE = 13559;
+			public static final int LEAGUE_TASK_OPEN_ONE_OF_LARRANS_CHESTS = 13560;
+			public static final int LEAGUE_TASK_COMPLETE_100_SLAYER_TASKS = 13561;
+			public static final int LEAGUE_TASK_COMPLETE_50_SLAYER_TASKS = 13562;
+			public static final int LEAGUE_TASK_CAST_CLAWS_OF_GUTHIX = 13563;
+			public static final int LEAGUE_TASK_DEAL_66_DAMAGE_WITH_ELEMENTAL_SPELL = 13564;
+			public static final int LEAGUE_TASK_TURN_IN_100_MOLE_CLAWS_TO_WYSON_THE_GARDENER = 13565;
+			public static final int LEAGUE_TASK_CAST_FLAMES_OF_ZAMORAK = 13566;
+			public static final int LEAGUE_TASK_CAST_SARADOMIN_STRIKE = 13567;
+			public static final int LEAGUE_TASK_UNLOCK_A_GATE_IN_TAVERLEY_DUNGEON = 13568;
+			public static final int LEAGUE_TASK_CHARGE_AN_AMULET_OF_GLORY_IN_THE_HEROES_GUILD = 13569;
+			public static final int LEAGUE_TASK_CONSUME_A_SARADOMINS_LIGHT = 13570;
+			public static final int LEAGUE_TASK_CAST_SURGE_AT_BLACK_DRAGON_IN_KANDARIN = 13571;
+			public static final int LEAGUE_TASK_ENHANCE_A_TRIDENT_OF_THE_SEAS = 13572;
+			public static final int LEAGUE_TASK_OBTAIN_58000_GLORY = 13573;
+			public static final int LEAGUE_TASK_CREATE_THE_SATURATED_HEART = 13574;
+			public static final int LEAGUE_TASK_KILL_5_SAND_CRABS = 13575;
+			public static final int LEAGUE_TASK_KILL_A_CREATURE_IN_MOUNT_KARUULM = 13576;
+			public static final int LEAGUE_TASK_COMPLETE_WAVE_1_OF_FORTIS_COLOSSEUM = 13577;
+			public static final int LEAGUE_TASK_OBTAIN_THE_TEMPLE_KEY = 13578;
+			public static final int LEAGUE_TASK_OPEN_10_GRUBBY_CHESTS = 13579;
+			public static final int LEAGUE_TASK_OPEN_25_GRUBBY_CHESTS = 13580;
+			public static final int LEAGUE_TASK_KILL_6_COWS_IN_10_SECONDS = 13581;
+			public static final int LEAGUE_TASK_BURY_6_BONES = 13582;
+			public static final int LEAGUE_TASK_BURY_SOME_WYVERN_OR_DRAGON_BONES = 13583;
+			public static final int LEAGUE_TASK_CAST_A_WAVE_SPELL = 13584;
+			public static final int LEAGUE_TASK_CAST_AN_EARTH_BLAST_SPELL = 13585;
+			public static final int LEAGUE_TASK_CAST_A_BLAST_SPELL = 13586;
+			public static final int LEAGUE_TASK_ENTER_THE_RANGING_GUILD = 13587;
+			public static final int LEAGUE_TASK_LOOT_A_LYRE = 13588;
+			public static final int LEAGUE_TASK_ENTER_THE_WIZARDS_GUILD = 13589;
+			public static final int LEAGUE_TASK_OPEN_A_FROZEN_CACHE = 13590;
+			public static final int LEAGUE_TASK_USE_THE_SPECIAL_ATTACK_OF_A_DRAGON_AXE = 13591;
+			public static final int LEAGUE_TASK_CORRUPTED_GAUNTLET_430 = 13592;
+			public static final int LEAGUE_TASK_FULLY_CHARGE_BRACELET_OF_ETHEREUM = 13593;
+			public static final int LEAGUE_TASK_TELEPORT_WITH_GIANTSOUL_AMULET = 13594;
+			public static final int LEAGUE_TASK_BLOW_THE_SOULFLAME_HORN = 13595;
+			public static final int LEAGUE_TASK_UNLOCK_VILE_TRANSFERANCE = 13596;
+			public static final int LEAGUE_TASK_COMPLETE_1_SLAYER_TASK = 13597;
+			public static final int LEAGUE_TASK_COMPLETE_200_SLAYER_TASKS = 13598;
+			public static final int LEAGUE_TASK_EAT_A_PIECE_OF_FOOD_THAT_RESTORES_AT_LEAST_6_HITPOINTS = 13599;
+			public static final int LEAGUE_TASK_GET_A_GEM_FROM_A_GORAK = 13600;
+			public static final int LEAGUE_TASK_OBTAIN_A_BOSS_PET = 13601;
+			public static final int LEAGUE_TASK_OFFER_AN_UNSIRED_TO_THE_FONT_OF_CONSUMPTION = 13602;
+			public static final int LEAGUE_TASK_PERFORM_A_SPECIAL_ATTACK = 13603;
+			public static final int LEAGUE_TASK_REACH_A_PRAYER_BONUS_OF_15 = 13604;
+			public static final int LEAGUE_TASK_REACH_A_PRAYER_BONUS_OF_30 = 13605;
+			public static final int LEAGUE_TASK_REACH_COMBAT_LEVEL_100 = 13606;
+			public static final int LEAGUE_TASK_REACH_COMBAT_LEVEL_110 = 13607;
+			public static final int LEAGUE_TASK_REACH_COMBAT_LEVEL_120 = 13608;
+			public static final int LEAGUE_TASK_REACH_COMBAT_LEVEL_126 = 13609;
+			public static final int LEAGUE_TASK_REACH_COMBAT_LEVEL_25 = 13610;
+			public static final int LEAGUE_TASK_REACH_COMBAT_LEVEL_50 = 13611;
+			public static final int LEAGUE_TASK_REACH_COMBAT_LEVEL_75 = 13612;
+			public static final int LEAGUE_TASK_RESTORE_75_PRAYER_POINTS_AT_AN_ALTAR = 13613;
+			public static final int LEAGUE_TASK_SACRIFICE_SOMETHING_TO_DEATHS_COFFER = 13614;
+			public static final int LEAGUE_TASK_SCRAPE_SOME_BLUE_DRAGONHIDE = 13615;
+			public static final int LEAGUE_TASK_SHOOT_6_IRON_ARROWS = 13616;
+			public static final int LEAGUE_TASK_SLAY_250_CREATURES = 13617;
+			public static final int LEAGUE_TASK_SLAY_AN_ABYSSAL_DEMON = 13618;
+			public static final int LEAGUE_TASK_USE_THE_PROTECT_FROM_MELEE_PRAYER = 13619;
+			public static final int LEAGUE_TASK_CREATE_SILKLINED_HERB_SACK = 13620;
+			public static final int LEAGUE_TASK_100_SUPERIOR_SLAYER_ENCOUNTERS = 13621;
+			public static final int LEAGUE_TASK_25_SUPERIOR_SLAYER_ENCOUNTERS = 13622;
+			public static final int LEAGUE_TASK_75_SUPERIOR_SLAYER_ENCOUNTERS = 13623;
+			public static final int LEAGUE_TASK_KILL_A_PORT_SARIM_PRISONER = 13624;
+			public static final int LEAGUE_TASK_KILL_A_BUFFALO = 13625;
+			public static final int LEAGUE_TASK_KILL_A_BARBARIAN_IN_KOUREND = 13626;
+			public static final int LEAGUE_TASK_KILL_A_GUARD_IN_VARLAMORE_UNDERGROUND = 13627;
+			public static final int LEAGUE_TASK_KILL_A_ROOSTER = 13628;
+			public static final int ACTION_KILL_A_SEAGULL = 13629;
+			public static final int LEAGUE_TASK_KILL_A_BILLY_GOAT = 13630;
+			public static final int ACTION_KILL_A_THIEF = 13631;
+			public static final int LEAGUE_TASK_KILL_A_YAK = 13632;
+			public static final int LEAGUE_TASK_KILL_AN_ICEFIEND_IN_VARLAMORE = 13633;
+			public static final int ACTION_KILL_AN_IMP_IN_A_BASEMENT = 13634;
+			public static final int LEAGUE_TASK_KILL_SALARIN_THE_TWISTED = 13635;
+			public static final int LEAGUE_TASK_300_ALCHEMICAL_HYDRA_KILLS = 13636;
+			public static final int LEAGUE_TASK_KILL_A_SNAKE_IN_KARAMJA = 13637;
+			public static final int LEAGUE_TASK_300_ARAXXOR_KILLS = 13638;
+			public static final int LEAGUE_TASK_KILL_A_ROCK_LOBSTER = 13639;
+			public static final int LEAGUE_TASK_1_ALCHEMICAL_HYDRA_KILL = 13640;
+			public static final int LEAGUE_TASK_1_ARAXXOR_KILL = 13641;
+			public static final int LEAGUE_TASK_150_ARAXXOR_KILLS = 13642;
+			public static final int LEAGUE_TASK_1_MIMIC_KILL = 13643;
+			public static final int LEAGUE_TASK_50_ARAXXOR_KILLS = 13644;
+			public static final int LEAGUE_TASK_1_SKOTIZO_KILL = 13645;
+			public static final int LEAGUE_TASK_KILL_A_FROGEEL = 13646;
+			public static final int LEAGUE_TASK_150_ALCHEMICAL_HYDRA_KILLS = 13647;
+			public static final int LEAGUE_TASK_150_SARACHNIS_KILLS = 13648;
+			public static final int LEAGUE_TASK_300_LIZARDMEN_SHAMAN_KILLS = 13649;
+			public static final int LEAGUE_TASK_300_SARACHNIS_KILLS = 13650;
+			public static final int LEAGUE_TASK_5_MIMIC_KILLS = 13651;
+			public static final int LEAGUE_TASK_50_ALCHEMICAL_HYDRA_KILLS = 13652;
+			public static final int LEAGUE_TASK_KILL_50_ELVES_IN_TIRANNWN = 13653;
+			public static final int ACTION_KILL_THE_DOOM_OF_MOKHIATL = 13654;
+			public static final int LEAGUE_TASK_SUBDUE_THE_MOONS_OF_PERIL_50_TIMES = 13655;
+			public static final int LEAGUE_TASK_50_AMOXLIATL_KILLS = 13656;
+			public static final int LEAGUE_TASK_50_HUEYCOATL_KILLS = 13657;
+			public static final int LEAGUE_TASK_KILL_30_BANDITS = 13658;
+			public static final int LEAGUE_TASK_KILL_A_KALPHITE_WITH_THE_KERIS_PARTISAN = 13659;
+			public static final int LEAGUE_TASK_KILL_A_JUBSTER_WITH_BERET = 13660;
+			public static final int LEAGUE_TASK_KILL_5_SPINNERS = 13661;
+			public static final int LEAGUE_TASK_1_HUEYCOATL_KILL = 13662;
+			public static final int LEAGUE_TASK_1_AMOXLIATL_KILL = 13663;
+			public static final int LEAGUE_TASK_KILL_10_FROST_CRABS = 13664;
+			public static final int LEAGUE_TASK_KILL_A_DIRE_WOLF = 13665;
+			public static final int LEAGUE_TASK_KILL_A_JAGUAR_WITHOUT_TAKING_ANY_DAMAGE = 13666;
+			public static final int LEAGUE_TASK_KILL_A_ORYX_WITH_MELEE = 13667;
+			public static final int LEAGUE_TASK_SUBDUE_THE_MOONS_OF_PERIL = 13668;
+			public static final int LEAGUE_TASK_1_SARACHNIS_KILL = 13669;
+			public static final int LEAGUE_TASK_SUBDUE_THE_MOONS_OF_PERIL_10_TIMES = 13670;
+			public static final int LEAGUE_TASK_SUBDUE_THE_MOONS_OF_PERIL_25_TIMES = 13671;
+			public static final int LEAGUE_TASK_150_LIZARDMEN_SHAMAN_KILLS = 13672;
+			public static final int LEAGUE_TASK_KILL_A_KING_SAND_CRAB = 13673;
+			public static final int LEAGUE_TASK_KILL_A_MOSS_FIRE_HILL_GIANT_IN_KOUREND = 13674;
+			public static final int LEAGUE_TASK_50_LIZARDMEN_SHAMAN_KILLS = 13675;
+			public static final int LEAGUE_TASK_50_SARACHNIS_KILLS = 13676;
+			public static final int LEAGUE_TASK_KILL_8_PENGUINS_WITHIN_5_SECONDS = 13677;
+			public static final int LEAGUE_TASK_KILL_A_BRINE_RAT = 13678;
+			public static final int LEAGUE_TASK_KILL_A_SUQAH = 13679;
+			public static final int LEAGUE_TASK_KILL_A_WALLASALKI = 13680;
+			public static final int LEAGUE_TASK_KILL_A_NEWTROOST = 13681;
+			public static final int LEAGUE_TASK_KILL_A_SWORDCHICK = 13682;
+			public static final int LEAGUE_TASK_KILL_A_BLACK_DRAGON_IN_TIRANNWN = 13683;
+			public static final int LEAGUE_TASK_KILL_A_SPIDINE = 13684;
+			public static final int LEAGUE_TASK_DEFEAT_A_MOSS_GIANT_IN_TIRANNWN = 13685;
+			public static final int LEAGUE_TASK_DEFEAT_A_WEREWOLF_IN_MORYTANIA = 13686;
+			public static final int LEAGUE_TASK_DEFEAT_A_TROLL_IN_ASGARNIA = 13687;
+			public static final int LEAGUE_TASK_DEFEAT_A_WATERFIEND_IN_TIRANNWN = 13688;
+			public static final int LEAGUE_TASK_DEFEAT_A_GOBLIN = 13689;
+			public static final int LEAGUE_TASK_DEFEAT_A_GUARD = 13690;
+			public static final int LEAGUE_TASK_DEFEAT_A_MOSS_GIANT = 13691;
+			public static final int LEAGUE_TASK_DEFEAT_AN_AL_KHARID_WARRIOR = 13692;
+			public static final int LEAGUE_TASK_DEFEAT_A_COCKATRICE_IN_THE_FREMENNIK_PROVINCE = 13693;
+			public static final int LEAGUE_TASK_DEFEAT_A_FIRE_GIANT_IN_KANDARIN = 13694;
+			public static final int LEAGUE_TASK_DEFEAT_A_CHAOS_DWARF_IN_THE_WILDERNESS = 13695;
+			public static final int LEAGUE_TASK_DEFEAT_A_PYREFIEND_IN_THE_FREMENNIK_PROVINCE = 13696;
+			public static final int LEAGUE_TASK_DEFEAT_A_GHAST = 13697;
+			public static final int LEAGUE_TASK_DEFEAT_A_FIRE_GIANT_IN_THE_WILDERNESS = 13698;
+			public static final int LEAGUE_TASK_DEFEAT_A_ROCK_CRAB_IN_THE_FREMENNIK_PROVINCE = 13699;
+			public static final int LEAGUE_TASK_DEFEAT_SNAIL = 13700;
+			public static final int LEAGUE_TASK_DEFEAT_A_MAMMOTH = 13701;
+			public static final int LEAGUE_TASK_DEFEAT_A_ZOMBIE_PIRATE = 13702;
+			public static final int LEAGUE_TASK_DEFEAT_CALLISTO_300_TIMES = 13703;
+			public static final int LEAGUE_TASK_DEFEAT_THE_CORPOREAL_BEAST_150_TIMES = 13704;
+			public static final int LEAGUE_TASK_DEFEAT_THE_CORPOREAL_BEAST_250_TIMES = 13705;
+			public static final int LEAGUE_TASK_DEFEAT_VENENATIS_300_TIMES = 13706;
+			public static final int LEAGUE_TASK_DEFEAT_VETION_300_TIMES = 13707;
+			public static final int LEAGUE_TASK_DEFEAT_NEX_300_TIMES = 13708;
+			public static final int LEAGUE_TASK_DEFEAT_THE_NIGHTMARE_150_TIMES = 13709;
+			public static final int LEAGUE_TASK_DEFEAT_AWAKENED_LEVIATHAN = 13710;
+			public static final int LEAGUE_TASK_DEFEAT_300_DEMONIC_GORILLAS = 13711;
+			public static final int LEAGUE_TASK_THE_FIGHT_CAVES_COMBAT_ACHIEVEMENTS = 13712;
+			public static final int LEAGUE_TASK_COMPLETE_THE_FIGHT_CAVES_10_TIMES = 13713;
+			public static final int LEAGUE_TASK_COMPLETE_THE_FIGHT_CAVES_15_TIMES = 13714;
+			public static final int LEAGUE_TASK_COMPLETE_THE_FIGHT_CAVES_5_TIMES = 13715;
+			public static final int LEAGUE_TASK_DEFEAT_500_DEMONIC_GORILLAS = 13716;
+			public static final int LEAGUE_TASK_DEFEAT_150_TORMENTED_DEMONS = 13717;
+			public static final int LEAGUE_TASK_DEFEAT_300_TORMENTED_DEMONS = 13718;
+			public static final int LEAGUE_TASK_DEFEAT_50_TORMENTED_DEMONS = 13719;
+			public static final int LEAGUE_TASK_DEFEAT_THE_KRAKEN_BOSS_300_TIMES = 13720;
+			public static final int LEAGUE_TASK_DEFEAT_AWAKENED_DUKE_SUCELLUS = 13721;
+			public static final int LEAGUE_TASK_DEFEAT_ANY_GOD_WARS_DUNGEON_BOSS_500_TIMES = 13722;
+			public static final int LEAGUE_TASK_DEFEAT_DUKE_SUCELLUS_300_TIMES = 13723;
+			public static final int LEAGUE_TASK_DEFEAT_A_CROCODILE = 13724;
+			public static final int LEAGUE_TASK_DEFEAT_EACH_DAGANNOTH_KING_300_TIMES = 13725;
+			public static final int LEAGUE_TASK_DEFEAT_LEVIATHAN_300_TIMES = 13726;
+			public static final int LEAGUE_TASK_DEFEAT_THE_NIGHTMARE_50_TIMES = 13727;
+			public static final int LEAGUE_TASK_DEFEAT_A_FOSSIL_ISLAND_WYVERN = 13728;
+			public static final int LEAGUE_TASK_DEFEAT_A_GREATER_DEMON_ON_KARAMJA = 13729;
+			public static final int LEAGUE_TASK_DEFEAT_PHANTOM_MUSPAH_300_TIMES = 13730;
+			public static final int LEAGUE_TASK_DEFEAT_VORKATH_300_TIMES = 13731;
+			public static final int LEAGUE_TASK_DEFEAT_ZALCANO_100_TIMES = 13732;
+			public static final int LEAGUE_TASK_DEFEAT_VORKATH_5_TIMES_WITHOUT_SPECIAL_DAMAGE = 13733;
+			public static final int LEAGUE_TASK_DEFEAT_A_RUNE_DRAGON = 13734;
+			public static final int LEAGUE_TASK_DEFEAT_AWAKENED_WHISPERER = 13735;
+			public static final int LEAGUE_TASK_DEFEAT_A_STEEL_DRAGON_ON_KARAMJA = 13736;
+			public static final int LEAGUE_TASK_DEFEAT_A_TORMENTED_DEMON = 13737;
+			public static final int LEAGUE_TASK_DEFEAT_CERBERUS_300_TIMES = 13738;
+			public static final int LEAGUE_TASK_DEFEAT_A_TZHAAR = 13739;
+			public static final int LEAGUE_TASK_DEFEAT_A_WALL_BEAST = 13740;
+			public static final int LEAGUE_TASK_DEFEAT_ZULRAH_150_TIMES = 13741;
+			public static final int LEAGUE_TASK_DEFEAT_AN_ANCIENT_WYVERN = 13742;
+			public static final int LEAGUE_TASK_DEFEAT_ZULRAH_300_TIMES = 13743;
+			public static final int LEAGUE_TASK_DEFEAT_WHISPERER_300_TIMES = 13744;
+			public static final int LEAGUE_TASK_DEFEAT_BRYOPHYTA = 13745;
+			public static final int LEAGUE_TASK_DEFEAT_CERBERUS_BEFORE_SHE_SUMMONS_SOULS = 13746;
+			public static final int LEAGUE_TASK_DEFEAT_NEX_200_TIMES = 13747;
+			public static final int LEAGUE_TASK_DEFEAT_OBOR = 13748;
+			public static final int LEAGUE_TASK_DEFEAT_ONE_OF_FENKENSTRAINS_EXPERIMENTS = 13749;
+			public static final int LEAGUE_TASK_DEFEAT_SCURRIUS = 13750;
+			public static final int LEAGUE_TASK_DEFEAT_SCURRIUS_10_TIMES = 13751;
+			public static final int LEAGUE_TASK_DEFEAT_SCURRIUS_25_TIMES = 13752;
+			public static final int LEAGUE_TASK_DEFEAT_A_BASILISK_KNIGHT = 13753;
+			public static final int LEAGUE_TASK_KILL_GALVEK = 13754;
+			public static final int LEAGUE_TASK_DEFEAT_THE_LESSER_DEMON_IN_THE_WIZARDS_TOWER = 13755;
+			public static final int LEAGUE_TASK_DEFEAT_THE_THEATRE_OF_BLOOD_HARDMODE = 13756;
+			public static final int LEAGUE_TASK_DEFEAT_PHOSANIS_NIGHTMARE = 13757;
+			public static final int LEAGUE_TASK_DEFEAT_A_URIUM_SHADE = 13758;
+			public static final int LEAGUE_TASK_DEFEAT_THE_THEATRE_OF_BLOOD_HARDMODE_50_TIMES = 13759;
+			public static final int LEAGUE_TASK_DEFEAT_CALLISTO = 13760;
+			public static final int LEAGUE_TASK_DEFEAT_DUKE_SUCELLUS = 13761;
+			public static final int LEAGUE_TASK_DEFEAT_VORKATH_15_TIMES_WITHOUT_LEAVING = 13762;
+			public static final int LEAGUE_TASK_DEFEAT_DUKE_SUCELLUS_150_TIMES = 13763;
+			public static final int LEAGUE_TASK_DEFEAT_DUKE_SUCELLUS_50_TIMES = 13764;
+			public static final int LEAGUE_TASK_DEFEAT_EACH_DAGANNOTH_KING_150_TIMES = 13765;
+			public static final int LEAGUE_TASK_DEFEAT_EACH_DAGANNOTH_KING_50_TIMES = 13766;
+			public static final int LEAGUE_TASK_DEFEAT_ANY_GOD_WARS_DUNGEON_BOSS_100_TIMES = 13767;
+			public static final int LEAGUE_TASK_DEFEAT_ANY_GOD_WARS_DUNGEON_BOSS_250_TIMES = 13768;
+			public static final int LEAGUE_TASK_DEFEAT_CERBERUS = 13769;
+			public static final int LEAGUE_TASK_DEFEAT_CERBERUS_150_TIMES = 13770;
+			public static final int LEAGUE_TASK_DEFEAT_CALLISTO_150_TIMES = 13771;
+			public static final int LEAGUE_TASK_DEFEAT_CALLISTO_50_TIMES = 13772;
+			public static final int LEAGUE_TASK_DEFEAT_SCORPIA = 13773;
+			public static final int LEAGUE_TASK_DEFEAT_PHANTOM_MUSPAH = 13774;
+			public static final int LEAGUE_TASK_DEFEAT_THE_CHAOS_ELEMENTAL = 13775;
+			public static final int LEAGUE_TASK_DEFEAT_THE_CORPOREAL_BEAST = 13776;
+			public static final int LEAGUE_TASK_DEFEAT_PHANTOM_MUSPAH_150_TIMES = 13777;
+			public static final int LEAGUE_TASK_DEFEAT_PHANTOM_MUSPAH_50_TIMES = 13778;
+			public static final int LEAGUE_TASK_DEFEAT_SEREN = 13779;
+			public static final int LEAGUE_TASK_DEFEAT_THE_DAGANNOTH_KINGS_WITHOUT_LEAVING = 13780;
+			public static final int LEAGUE_TASK_DEFEAT_NEX_150_TIMES = 13781;
+			public static final int LEAGUE_TASK_DEFEAT_THE_CORPOREAL_BEAST_50_TIMES = 13782;
+			public static final int LEAGUE_TASK_DEFEAT_VORKATH = 13783;
+			public static final int LEAGUE_TASK_DEFEAT_CERBERUS_50_TIMES = 13784;
+			public static final int LEAGUE_TASK_DEFEAT_VORKATH_150_TIMES = 13785;
+			public static final int LEAGUE_TASK_DEFEAT_VORKATH_50_TIMES = 13786;
+			public static final int LEAGUE_TASK_DEFEAT_THE_KING_BLACK_DRAGON = 13787;
+			public static final int LEAGUE_TASK_DEFEAT_AWAKENED_VARDORVIS = 13788;
+			public static final int LEAGUE_TASK_DEFEAT_COMMANDER_ZILYANA = 13789;
+			public static final int LEAGUE_TASK_DEFEAT_GENERAL_GRAARDOR = 13790;
+			public static final int LEAGUE_TASK_DEFEAT_VENENATIS = 13791;
+			public static final int LEAGUE_TASK_DEFEAT_KREEARRA = 13792;
+			public static final int LEAGUE_TASK_DEFEAT_KRIL_TSUTSAROTH = 13793;
+			public static final int LEAGUE_TASK_DEFEAT_NEX = 13794;
+			public static final int LEAGUE_TASK_DEFEAT_NEX_50_TIMES = 13795;
+			public static final int LEAGUE_TASK_DEFEAT_THE_GIANT_MOLE_300_TIMES = 13796;
+			public static final int LEAGUE_TASK_DEFEAT_WHISPERER = 13797;
+			public static final int LEAGUE_TASK_DEFEAT_WHISPERER_150_TIMES = 13798;
+			public static final int LEAGUE_TASK_DEFEAT_VENENATIS_150_TIMES = 13799;
+			public static final int LEAGUE_TASK_DEFEAT_THE_GROTESQUE_GUARDIANS = 13800;
+			public static final int LEAGUE_TASK_DEFEAT_VARDORVIS_300_TIMES = 13801;
+			public static final int LEAGUE_TASK_DEFEAT_VENENATIS_50_TIMES = 13802;
+			public static final int LEAGUE_TASK_DEFEAT_150_DEMONIC_GORILLAS = 13803;
+			public static final int LEAGUE_TASK_DEFEAT_A_DUST_DEVIL_IN_THE_KHARIDIAN_DESERT = 13804;
+			public static final int LEAGUE_TASK_DEFEAT_A_CAVE_KRAKEN = 13805;
+			public static final int LEAGUE_TASK_DEFEAT_THE_GROTESQUE_GUARDIANS_150_TIMES = 13806;
+			public static final int LEAGUE_TASK_DEFEAT_THE_GROTESQUE_GUARDIANS_50_TIMES = 13807;
+			public static final int LEAGUE_TASK_DEFEAT_LEVIATHAN = 13808;
+			public static final int LEAGUE_TASK_DEFEAT_THE_NIGHTMARE = 13809;
+			public static final int LEAGUE_TASK_DEFEAT_LEVIATHAN_150_TIMES = 13810;
+			public static final int LEAGUE_TASK_DEFEAT_WHISPERER_50_TIMES = 13811;
+			public static final int LEAGUE_TASK_DEFEAT_VETION = 13812;
+			public static final int LEAGUE_TASK_DEFEAT_LEVIATHAN_50_TIMES = 13813;
+			public static final int LEAGUE_TASK_DEFEAT_THE_NIGHTMARE_25_TIMES = 13814;
+			public static final int LEAGUE_TASK_DEFEAT_VETION_150_TIMES = 13815;
+			public static final int LEAGUE_TASK_DEFEAT_VETION_50_TIMES = 13816;
+			public static final int LEAGUE_TASK_DEFEAT_A_DEMONIC_GORILLA = 13817;
+			public static final int LEAGUE_TASK_DEFEAT_NEX_100_TIMES = 13818;
+			public static final int LEAGUE_TASK_DEFEAT_A_MITHRIL_DRAGON = 13819;
+			public static final int LEAGUE_TASK_DEFEAT_A_SMOKE_DEVIL = 13820;
+			public static final int LEAGUE_TASK_DEFEAT_ROYAL_TITANS_SOLO = 13821;
+			public static final int LEAGUE_TASK_DEFEAT_THE_KRAKEN_BOSS_150_TIMES = 13822;
+			public static final int LEAGUE_TASK_DEFEAT_THE_KRAKEN_BOSS_50_TIMES = 13823;
+			public static final int LEAGUE_TASK_DEFEAT_THE_KALPHITE_QUEEN = 13824;
+			public static final int LEAGUE_TASK_DEFEAT_THE_KALPHITE_QUEEN_150_TIMES = 13825;
+			public static final int LEAGUE_TASK_DEFEAT_THE_PENANCE_QUEEN = 13826;
+			public static final int LEAGUE_TASK_DEFEAT_A_RUNITE_GOLEM = 13827;
+			public static final int LEAGUE_TASK_DEFEAT_AN_ABYSSAL_DEMON_IN_MORYTANIA = 13828;
+			public static final int LEAGUE_TASK_KILL_A_ROCK_CRAB_ONE_HIT = 13829;
+			public static final int LEAGUE_TASK_DEFEAT_THE_KALPHITE_QUEEN_50_TIMES = 13830;
+			public static final int LEAGUE_TASK_DEFEAT_A_GARGOYLE_IN_MORYTANIA = 13831;
+			public static final int LEAGUE_TASK_DEFEAT_VARDORVIS = 13832;
+			public static final int LEAGUE_TASK_DEFEAT_VARDORVIS_150_TIMES = 13833;
+			public static final int LEAGUE_TASK_DEFEAT_A_KALPHITE_GUARDIAN = 13834;
+			public static final int LEAGUE_TASK_DEFEAT_A_SCARAB_MAGE = 13835;
+			public static final int LEAGUE_TASK_DEFEAT_NEX_SOLO = 13836;
+			public static final int LEAGUE_TASK_DEFEAT_30_BLACK_DRAGONS_IN_ASGARNIA = 13837;
+			public static final int LEAGUE_TASK_DEFEAT_A_DARK_BEAST_IN_TIRANNWN = 13838;
+			public static final int LEAGUE_TASK_DEFEAT_A_NECHRYAEL_IN_TIRANNWN = 13839;
+			public static final int LEAGUE_TASK_DEFEAT_A_FIYR_SHADE = 13840;
+			public static final int LEAGUE_TASK_DEFEAT_A_VYREWATCH_SENTINEL = 13841;
+			public static final int LEAGUE_TASK_DEFEAT_VARDORVIS_50_TIMES = 13842;
+			public static final int LEAGUE_TASK_DEFEAT_SOME_ANIMATED_RUNE_ARMOUR = 13843;
+			public static final int LEAGUE_TASK_DEFEAT_A_HYDRA = 13844;
+			public static final int LEAGUE_TASK_DEFEAT_ROYAL_TITANS_50_TIMES = 13845;
+			public static final int LEAGUE_TASK_DEFEAT_ZALCANO = 13846;
+			public static final int LEAGUE_TASK_DEFEAT_ZALCANO_50_TIMES = 13847;
+			public static final int LEAGUE_TASK_DEFEAT_ZULRAH = 13848;
+			public static final int LEAGUE_TASK_DEFEAT_ZULRAH_50_TIMES = 13849;
+			public static final int LEAGUE_TASK_DEFEAT_A_SLAYER_BOSS = 13850;
+			public static final int LEAGUE_TASK_DEFEAT_THE_EVIL_CHICKEN = 13851;
+			public static final int LEAGUE_TASK_DEFEAT_A_GANG_BOSS = 13852;
+			public static final int LEAGUE_TASK_DEFEAT_A_BLACK_DEMON_IN_ASGARNIA = 13853;
+			public static final int LEAGUE_TASK_DEFEAT_A_BLUE_DRAGON_IN_ASGARNIA = 13854;
+			public static final int LEAGUE_TASK_DEFEAT_SOL_HEREDIT_10_TIMES = 13855;
+			public static final int LEAGUE_TASK_DEFEAT_SOL_HEREDIT_5_TIMES = 13856;
+			public static final int LEAGUE_TASK_DEFEAT_A_SKELETAL_WYVERN = 13857;
+			public static final int LEAGUE_TASK_DEFEAT_A_BLOODVELD_IN_KANDARIN = 13858;
+			public static final int LEAGUE_TASK_DEFEAT_THE_GIANT_MOLE = 13859;
+			public static final int LEAGUE_TASK_DEFEAT_THE_GIANT_MOLE_150_TIMES = 13860;
+			public static final int LEAGUE_TASK_DEFEAT_A_GREEN_DRAGON_IN_THE_WILDERNESS = 13861;
+			public static final int LEAGUE_TASK_DEFEAT_A_LAVA_DRAGON_IN_THE_WILDERNESS = 13862;
+			public static final int LEAGUE_TASK_DEFEAT_A_LESSER_DEMON = 13863;
+			public static final int LEAGUE_TASK_DEFEAT_AN_ADULT_CHROMATIC_DRAGON = 13864;
+			public static final int LEAGUE_TASK_DEFEAT_THE_CHAOS_FANATIC = 13865;
+			public static final int LEAGUE_TASK_DEFEAT_A_DRAKE = 13866;
+			public static final int LEAGUE_TASK_DEFEAT_THE_CRAZY_ARCHAEOLOGIST = 13867;
+			public static final int LEAGUE_TASK_DEFEAT_A_TORTOISE_WITH_RIDERS_IN_KANDARIN = 13868;
+			public static final int LEAGUE_TASK_DEFEAT_THE_THERMONUCLEAR_SMOKE_DEVIL = 13869;
+			public static final int LEAGUE_TASK_DEFEAT_A_DAGANNOTH_IN_THE_FREMENNIK_PROVINCE = 13870;
+			public static final int LEAGUE_TASK_DEFEAT_A_JELLY_IN_THE_FREMENNIK_PROVINCE = 13871;
+			public static final int LEAGUE_TASK_DEFEAT_A_KURASK_IN_THE_FREMENNIK_PROVINCE = 13872;
+			public static final int LEAGUE_TASK_DEFEAT_A_TROLL_IN_THE_FREMENNIK_PROVINCE = 13873;
+			public static final int LEAGUE_TASK_DEFEAT_A_TUROTH_IN_THE_FREMENNIK_PROVINCE = 13874;
+			public static final int LEAGUE_TASK_DEFEAT_THE_GIANT_MOLE_50_TIMES = 13875;
+			public static final int LEAGUE_TASK_DEFEAT_A_BLOODVELD_IN_TIRANNWN = 13876;
+			public static final int LEAGUE_TASK_DEFEAT_A_KURASK_IN_TIRANNWN = 13877;
+			public static final int LEAGUE_TASK_DEFEAT_A_BLACK_DEMON_ON_KARAMJA = 13878;
+			public static final int LEAGUE_TASK_DEFEAT_6_6_6_JADS = 13879;
+			public static final int LEAGUE_TASK_DEFEAT_ROYAL_TITANS = 13880;
+			public static final int LEAGUE_TASK_DEFEAT_AN_ELF_IN_TIRANNWN = 13881;
+			public static final int LEAGUE_TASK_DEFEAT_A_REVENANT_DRAGON = 13882;
+			public static final int LEAGUE_TASK_KILL_BLACK_KNIGHT = 13883;
+			public static final int LEAGUE_TASK_DEFEAT_10_SUPERIOR_SLAYER_CREATURES = 13884;
+			public static final int LEAGUE_TASK_DEFEAT_20_SUPERIOR_SLAYER_CREATURES = 13885;
+			public static final int LEAGUE_TASK_DEFEAT_50_SUPERIOR_SLAYER_CREATURES = 13886;
+			public static final int ACTION_KILL_A_CHICKEN = 13887;
+			public static final int ACTION_KILL_A_HILL_GIANT = 13888;
+			public static final int LEAGUE_TASK_DEFEAT_A_SUPERIOR_SLAYER_CREATURE = 13889;
+			public static final int LEAGUE_TASK_DEFEAT_THE_ABYSSAL_SIRE = 13890;
+			public static final int LEAGUE_TASK_DEFEAT_THE_ABYSSAL_SIRE_150_TIMES = 13891;
+			public static final int LEAGUE_TASK_DEFEAT_THE_ABYSSAL_SIRE_300_TIMES = 13892;
+			public static final int LEAGUE_TASK_DEFEAT_THE_ABYSSAL_SIRE_50_TIMES = 13893;
+			public static final int LEAGUE_TASK_1_WINTERTODT_KILL = 13894;
+			public static final int LEAGUE_TASK_KILL_1_UNIQUE_ECHO_BOSS = 13895;
+			public static final int LEAGUE_TASK_KILL_150_ECHO_BOSSES = 13896;
+			public static final int LEAGUE_TASK_KILL_2_UNIQUE_ECHO_BOSSES = 13897;
+			public static final int LEAGUE_TASK_KILL_25_ECHO_BOSSES = 13898;
+			public static final int LEAGUE_TASK_KILL_3_UNIQUE_ECHO_BOSSES = 13899;
+			public static final int LEAGUE_TASK_KILL_4_UNIQUE_ECHO_BOSSES = 13900;
+			public static final int LEAGUE_TASK_KILL_5_BUNNIES = 13901;
+			public static final int LEAGUE_TASK_KILL_5_CREATURES_WITH_A_MACE = 13902;
+			public static final int LEAGUE_TASK_KILL_75_ECHO_BOSSES = 13903;
+			public static final int LEAGUE_TASK_KILL_A_FROG = 13904;
+			public static final int LEAGUE_TASK_KILL_A_NECROMANCER = 13905;
+			public static final int LEAGUE_TASK_KILL_A_RAT = 13906;
+			public static final int ACTION_KILL_A_SCORPION = 13907;
+			public static final int LEAGUE_TASK_KILL_A_SCORPION_WITH_A_MITHRIL_SPEAR = 13908;
+			public static final int LEAGUE_TASK_KILL_AN_IMP_WITH_AN_EARTH_SPELL = 13909;
+			public static final int LEAGUE_TASK_KILL_THREE_CHICKENS_IN_6_SECONDS = 13910;
+			public static final int LEAGUE_TASK_50_WINTERTODT_KILLS = 13911;
+			public static final int LEAGUE_TASK_1_TEMPOROSS_KILL = 13912;
+			public static final int LEAGUE_TASK_10_TEMPOROSS_KILLS = 13913;
+			public static final int LEAGUE_TASK_25_TEMPOROSS_KILLS = 13914;
+			public static final int LEAGUE_TASK_10_WINTERTODT_KILLS = 13915;
+			public static final int LEAGUE_TASK_25_WINTERTODT_KILLS = 13916;
+			public static final int LEAGUE_TASK_1_YAMA_KILL = 13917;
+			public static final int LEAGUE_TASK_50_YAMA_KILLS = 13918;
+			public static final int LEAGUE_TASK_150_YAMA_KILLS = 13919;
+			public static final int LEAGUE_TASK_EQUIP_A_PROTEST_BANNER = 13920;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_MITHRIL_SET = 13921;
+			public static final int LEAGUE_TASK_EQUIP_A_MAPLE_SHORTBOW = 13922;
+			public static final int LEAGUE_TASK_EQUIP_A_SPINY_HELMET = 13923;
+			public static final int LEAGUE_TASK_EQUIP_A_STUDDED_BODY_AND_CHAPS = 13924;
+			public static final int LEAGUE_TASK_EQUIP_A_WIZARD_ROBE_AND_HAT = 13925;
+			public static final int LEAGUE_TASK_EQUIP_A_TEAM_CAPE = 13926;
+			public static final int LEAGUE_TASK_EQUIP_A_BONECRUSHER_NECKLACE = 13927;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_HUNTER_CROSSBOW = 13928;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_HUNTER_LANCE = 13929;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_WARHAMMER = 13930;
+			public static final int LEAGUE_TASK_EQUIP_A_GOLDEN_TENCH = 13931;
+			public static final int LEAGUE_TASK_EQUIP_A_KODAI_WAND = 13932;
+			public static final int LEAGUE_TASK_EQUIP_A_PAIR_OF_DRAGON_CLAWS = 13933;
+			public static final int LEAGUE_TASK_EQUIP_A_TWISTED_BUCKLER = 13934;
+			public static final int LEAGUE_TASK_EQUIP_AN_ELDER_MAUL = 13935;
+			public static final int LEAGUE_TASK_EQUIP_ANY_ANCESTRAL_PIECE = 13936;
+			public static final int LEAGUE_TASK_EQUIP_DINHS_BULWARK = 13937;
+			public static final int LEAGUE_TASK_EQUIP_500_BLACK_CHINCHOMPAS = 13938;
+			public static final int LEAGUE_TASK_EQUIP_A_BLESSED_SPIRIT_SHIELD = 13939;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_DAGONHAI_SET = 13940;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_ARCHER_CHOMPY_HAT = 13941;
+			public static final int LEAGUE_TASK_EQUIP_A_FIGHTER_TORSO = 13942;
+			public static final int LEAGUE_TASK_EQUIP_A_MALEDICTION_WARD = 13943;
+			public static final int LEAGUE_TASK_EQUIP_A_HEAVY_BALLISTA = 13944;
+			public static final int LEAGUE_TASK_EQUIP_A_LIGHT_BALLISTA = 13945;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_THE_DAGONHAI_SET = 13946;
+			public static final int LEAGUE_TASK_EQUIP_A_GHRAZI_RAPIER = 13947;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_THE_INQUISITORS_SET = 13948;
+			public static final int LEAGUE_TASK_EQUIP_A_RING_OF_THE_GODS = 13949;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_CHAINBODY_IN_THE_KHARIDIAN_DESERT = 13950;
+			public static final int LEAGUE_TASK_EQUIP_A_THAMMARONS_SCEPTRE = 13951;
+			public static final int LEAGUE_TASK_EQUIP_AN_ABYSSAL_TENTACLE = 13952;
+			public static final int LEAGUE_TASK_EQUIP_A_COMPLETED_GOD_BOOK = 13953;
+			public static final int LEAGUE_TASK_EQUIP_AN_OCCULT_NECKLACE = 13954;
+			public static final int LEAGUE_TASK_EQUIP_SOME_ZENYTE_JEWELRY = 13955;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_CROSSBOW = 13956;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGONBONE_NECKLACE = 13957;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_THE_JUSTICIAR_SET = 13958;
+			public static final int LEAGUE_TASK_EQUIP_A_SANGUINESTI_STAFF = 13959;
+			public static final int LEAGUE_TASK_EQUIP_AN_INQUISITORS_MACE = 13960;
+			public static final int LEAGUE_TASK_EQUIP_SOME_GUARDIAN_BOOTS = 13961;
+			public static final int LEAGUE_TASK_EQUIP_A_MAGES_BOOK = 13962;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_ARMADYL_ARMOUR_SET = 13963;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_BANDOS_ARMOUR_SET = 13964;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGONFIRE_WARD = 13965;
+			public static final int LEAGUE_TASK_EQUIP_A_MASTER_WAND = 13966;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_THE_CARPENTERS_OUTFIT = 13967;
+			public static final int LEAGUE_TASK_EQUIP_A_TREASONOUS_RING = 13968;
+			public static final int LEAGUE_TASK_EQUIP_A_TYRANNICAL_RING = 13969;
+			public static final int LEAGUE_TASK_EQUIP_AN_ODIUM_WARD = 13970;
+			public static final int LEAGUE_TASK_EQUIP_CRAWS_BOW = 13971;
+			public static final int LEAGUE_TASK_EQUIP_A_GODSWORD = 13972;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_THE_ARMADYL_ARMOUR_SET = 13973;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_THE_BANDOS_ARMOUR_SET = 13974;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_TORVA_ARMOUR = 13975;
+			public static final int LEAGUE_TASK_EQUIP_A_STAFF_OF_THE_DEAD = 13976;
+			public static final int LEAGUE_TASK_EQUIP_FULL_RECOLOUR_GRACEFUL_OUTFIT = 13977;
+			public static final int LEAGUE_TASK_EQUIP_A_NEITIZNOT_FACEGUARD = 13978;
+			public static final int LEAGUE_TASK_EQUIP_EVERY_DAGANNOTH_KING_RING = 13979;
+			public static final int LEAGUE_TASK_EQUIP_THE_MAGUS_RING = 13980;
+			public static final int LEAGUE_TASK_EQUIP_THE_VENATOR_BOW = 13981;
+			public static final int LEAGUE_TASK_EQUIP_ICE_SCEPTRE = 13982;
+			public static final int LEAGUE_TASK_EQUIP_A_ZARYTE_CROSSBOW = 13983;
+			public static final int LEAGUE_TASK_EQUIP_AN_ARMADYL_CROSSBOW = 13984;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_MASORI_ARMOUR = 13985;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_THE_INFINITY_ROBE_SET = 13986;
+			public static final int LEAGUE_TASK_EQUIP_OSMUMTENS_FANG = 13987;
+			public static final int LEAGUE_TASK_EQUIP_SOME_PRIMORDIAL_PEGASIAN_OR_ETERNAL_BOOTS = 13988;
+			public static final int LEAGUE_TASK_EQUIP_THE_BELLATOR_RING = 13989;
+			public static final int LEAGUE_TASK_EQUIP_SOME_ZARYTE_VAMBRACES = 13990;
+			public static final int LEAGUE_TASK_EQUIP_THE_AMULET_OF_RANCOUR = 13991;
+			public static final int LEAGUE_TASK_EQUIP_FULL_ELDER_CHAOS_ROBE = 13992;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_GRACEFUL_OUTFIT = 13993;
+			public static final int LEAGUE_TASK_EQUIP_THE_ACCURSED_SCEPTRE = 13994;
+			public static final int LEAGUE_TASK_EQUIP_THE_URSINE_CHAINMACE = 13995;
+			public static final int LEAGUE_TASK_EQUIP_THE_VOIDWAKER = 13996;
+			public static final int LEAGUE_TASK_EQUIP_THE_WEBWEAVER = 13997;
+			public static final int LEAGUE_TASK_EQUIP_VIGGORAS_CHAINMACE = 13998;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_GOLDEN_PROSPECTOR = 13999;
+			public static final int LEAGUE_TASK_EQUIP_AN_INFERNAL_TOOL = 14000;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_TORVA_ARMOUR = 14001;
+			public static final int LEAGUE_TASK_EQUIP_TWINFLAME_STAFF = 14002;
+			public static final int LEAGUE_TASK_EQUIP_THE_NOXIOUS_HALBERD = 14003;
+			public static final int LEAGUE_TASK_EQUIP_THE_ELIDINIS_WARD = 14004;
+			public static final int LEAGUE_TASK_EQUIP_THE_VENATOR_RING = 14005;
+			public static final int LEAGUE_TASK_EQUIP_A_MANIACAL_MONKEY_BACKPACK = 14006;
+			public static final int LEAGUE_TASK_EQUIP_A_CRYSTAL_GRAIL = 14007;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_CRYSTAL_ARMOUR_SET = 14008;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_THE_DRAGONSTONE_ARMOUR_SET = 14009;
+			public static final int LEAGUE_TASK_EQUIP_A_SERPENTINE_HELM = 14010;
+			public static final int LEAGUE_TASK_EQUIP_AN_ENHANCED_CRYSTAL_WEAPON = 14011;
+			public static final int LEAGUE_TASK_EQUIP_AN_ELVEN_SIGNET = 14012;
+			public static final int LEAGUE_TASK_EQUIP_A_CRYSTAL_HALBERD = 14013;
+			public static final int LEAGUE_TASK_EQUIP_A_CRYSTAL_TOOL = 14014;
+			public static final int LEAGUE_TASK_EQUIP_A_DORGESHUUN_CROSSBOW = 14015;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_PLATEBODY_OR_DRAGON_KITESHIELD = 14016;
+			public static final int LEAGUE_TASK_EQUIP_A_FIRE_CAPE = 14017;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_OBSIDIAN_ARMOUR_SET = 14018;
+			public static final int LEAGUE_TASK_EQUIP_A_BERSERKER_RING = 14019;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_BLOODBARK_ARMOUR = 14020;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_RAIMENT_OF_THE_EYE = 14021;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_SWAMPBARK_ARMOUR = 14022;
+			public static final int LEAGUE_TASK_EQUIP_A_BRINE_SABRE = 14023;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_ZEALOTS_ROBES = 14024;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_ROCKSHELL_ARMOUR_SET = 14025;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SKELETAL_ARMOUR_SET = 14026;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_TAI_BWO_WANNAI_VILLAGER_SET = 14027;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_PROSPECTOR_OUTFIT = 14028;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_THE_FORESTRY_OUTFIT = 14029;
+			public static final int LEAGUE_TASK_EQUIP_A_GNOME_SCARF = 14030;
+			public static final int LEAGUE_TASK_EQUIP_A_HEAVY_CASKET = 14031;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SPINED_ARMOUR_SET = 14032;
+			public static final int LEAGUE_TASK_EQUIP_A_HILL_GIANT_CLUB = 14033;
+			public static final int LEAGUE_TASK_EQUIP_A_KRUK_JR_MONKEY_BACKPACK = 14034;
+			public static final int LEAGUE_TASK_EQUIP_A_LARGE_SPADE = 14035;
+			public static final int LEAGUE_TASK_EQUIP_A_LEAFBLADED_BATTLEAXE = 14036;
+			public static final int LEAGUE_TASK_EQUIP_A_SCROLL_SACK = 14037;
+			public static final int LEAGUE_TASK_EQUIP_A_MATCHING_TRIBAL_MASK_AND_BROODOO_SHIELD = 14038;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_ROGUE_OUTFIT = 14039;
+			public static final int LEAGUE_TASK_EQUIP_THE_MASK_OF_REBIRTH = 14040;
+			public static final int LEAGUE_TASK_EQUIP_A_MUD_BATTLESTAFF = 14041;
+			public static final int LEAGUE_TASK_EQUIP_A_SEERCULL = 14042;
+			public static final int LEAGUE_TASK_EQUIP_A_TECU_SALAMANDER = 14043;
+			public static final int ACTION_EQUIP_AVERNIC_TREADS = 14044;
+			public static final int ACTION_EQUIP_THE_CONFLICTION_GAUNTLETS = 14045;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_DEFENDER = 14046;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_VOID_KNIGHT_SET = 14047;
+			public static final int LEAGUE_TASK_EQUIP_A_NIGHTMARE_STAFF = 14048;
+			public static final int LEAGUE_TASK_EQUIP_A_SARADOMIN_SWORD = 14049;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_ZEALOTS_ROBES = 14050;
+			public static final int LEAGUE_TASK_EQUIP_A_PIRATE_HOOK = 14051;
+			public static final int LEAGUE_TASK_EQUIP_A_PRINCE_AWOWOGEI_MONKEY_BACKPACK = 14052;
+			public static final int LEAGUE_TASK_EQUIP_A_RAT_BONE_WEAPON = 14053;
+			public static final int LEAGUE_TASK_EQUIP_A_RED_TOPAZ_MACHETE = 14054;
+			public static final int LEAGUE_TASK_EQUIP_A_RING_OF_ENDURANCE = 14055;
+			public static final int LEAGUE_TASK_EQUIP_AN_AVERNIC_DEFENDER = 14056;
+			public static final int LEAGUE_TASK_EQUIP_ANY_FULL_BARROWS_ARMOUR_SET = 14057;
+			public static final int LEAGUE_TASK_EQUIP_A_ZAMORAKIAN_SPEAR = 14058;
+			public static final int LEAGUE_TASK_EQUIP_ARANEA_BOOTS = 14059;
+			public static final int LEAGUE_TASK_EQUIP_A_SEERS_RING = 14060;
+			public static final int LEAGUE_TASK_EQUIP_A_WARRIOR_RING = 14061;
+			public static final int LEAGUE_TASK_EQUIP_100_BLACK_CHINCHOMPAS = 14062;
+			public static final int ACTION_EQUIP_THE_EYE_OF_AYAK = 14063;
+			public static final int LEAGUE_TASK_EQUIP_250_BLACK_CHINCHOMPAS = 14064;
+			public static final int LEAGUE_TASK_EQUIP_A_TOKTZKETXIL = 14065;
+			public static final int LEAGUE_TASK_EQUIP_A_TOKTZXILAK = 14066;
+			public static final int LEAGUE_TASK_EQUIP_A_TOKTZXILEK = 14067;
+			public static final int LEAGUE_TASK_EQUIP_A_TORMENTED_WEAPON = 14068;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_2HANDED_SWORD_IN_THE_WILDERNESS = 14069;
+			public static final int LEAGUE_TASK_EQUIP_AN_ENCHANTED_SLAYER_STAFF = 14070;
+			public static final int LEAGUE_TASK_EQUIP_A_TZHAARKETOM = 14071;
+			public static final int LEAGUE_TASK_EQUIP_AN_ARCHERS_RING = 14072;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_THE_GOLDEN_PROSPECTOR_SET = 14073;
+			public static final int LEAGUE_TASK_EQUIP_A_PAIR_OF_DRAGON_BOOTS = 14074;
+			public static final int LEAGUE_TASK_EQUIP_A_ZOMBIE_AXE = 14075;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_ANGLERS_OUTFIT = 14076;
+			public static final int LEAGUE_TASK_EQUIP_AN_AMULET_OF_ETERNAL_GLORY = 14077;
+			public static final int LEAGUE_TASK_EQUIP_AN_ANCIENT_WYVERN_SHIELD = 14078;
+			public static final int LEAGUE_TASK_EQUIP_THE_MOONLIGHT_FANATIC_HELMET = 14079;
+			public static final int LEAGUE_TASK_EQUIP_AN_AVAS_ASSEMBLER = 14080;
+			public static final int LEAGUE_TASK_EQUIP_THE_ANCIENT_SCEPTRE = 14081;
+			public static final int LEAGUE_TASK_EQUIP_FULL_AHRIMS_ARMOUR_SET = 14082;
+			public static final int LEAGUE_TASK_EQUIP_THE_ULTOR_RING = 14083;
+			public static final int LEAGUE_TASK_EQUIP_AN_IBANS_STAFF_U = 14084;
+			public static final int LEAGUE_TASK_EQUIP_AN_INFERNAL_CAPE = 14085;
+			public static final int LEAGUE_TASK_EQUIP_FULL_DHAROKS_ARMOUR_SET = 14086;
+			public static final int LEAGUE_TASK_EQUIP_AN_OBSIDIAN_CAPE = 14087;
+			public static final int LEAGUE_TASK_EQUIP_A_KARAMJA_MONKEY_BACKPACK = 14088;
+			public static final int LEAGUE_TASK_EQUIP_TONALZTICS_OF_RALOS = 14089;
+			public static final int LEAGUE_TASK_EQUIP_A_BRIMSTONE_RING = 14090;
+			public static final int LEAGUE_TASK_EQUIP_FULL_GUTHANS_ARMOUR_SET = 14091;
+			public static final int LEAGUE_TASK_EQUIP_FULL_KARILS_ARMOUR_SET = 14092;
+			public static final int LEAGUE_TASK_EQUIP_A_DUST_BATTLESTAFF = 14093;
+			public static final int LEAGUE_TASK_EQUIP_BRYOPHYTAS_STAFF = 14094;
+			public static final int LEAGUE_TASK_EQUIP_BURNING_CLAWS = 14095;
+			public static final int LEAGUE_TASK_EQUIP_A_FISH_SACK = 14096;
+			public static final int LEAGUE_TASK_EQUIP_EVERY_BARROWS_ARMOUR_SET = 14097;
+			public static final int LEAGUE_TASK_EQUIP_EVERY_DRACONIC_SHIELD = 14098;
+			public static final int LEAGUE_TASK_EQUIP_AN_ANCIENT_GODSWORD = 14099;
+			public static final int LEAGUE_TASK_EQUIP_A_SARACHNIS_CUDGEL = 14100;
+			public static final int LEAGUE_TASK_EQUIP_FULL_TORAGS_ARMOUR_SET = 14101;
+			public static final int LEAGUE_TASK_EQUIP_FULL_VERACS_ARMOUR_SET = 14102;
+			public static final int LEAGUE_TASK_EQUIP_MASORI_ASSEMBLER = 14103;
+			public static final int LEAGUE_TASK_EQUIP_SOME_DRAGON_PLATELEGS_OR_A_DRAGON_PLATESKIRT = 14104;
+			public static final int LEAGUE_TASK_EQUIP_SOME_FANCY_BOOTS_OR_FIGHTING_BOOTS = 14105;
+			public static final int LEAGUE_TASK_EQUIP_SOME_MITHRIL_GLOVES = 14106;
+			public static final int LEAGUE_TASK_EQUIP_THE_ABYSSAL_LANTERN = 14107;
+			public static final int LEAGUE_TASK_EQUIP_THE_AMULET_OF_THE_EYE_UNDER_THE_PORTAL = 14108;
+			public static final int LEAGUE_TASK_EQUIP_BOOTS_OF_BRIMSTONE = 14109;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_2HANDED_SWORD = 14110;
+			public static final int LEAGUE_TASK_EQUIP_THE_ELIDINIS_WARD_OR = 14111;
+			public static final int LEAGUE_TASK_EQUIP_FEROCIOUS_GLOVES = 14112;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_THE_SMITHS_OUTFIT = 14113;
+			public static final int LEAGUE_TASK_EQUIP_THE_FARMERS_OUTFIT = 14114;
+			public static final int LEAGUE_TASK_EQUIP_THE_RING_OF_THE_ELEMENTS = 14115;
+			public static final int LEAGUE_TASK_EQUIP_THE_LIGHTBEARER = 14116;
+			public static final int LEAGUE_TASK_EQUIP_A_GRANITE_HAMMER_OR_GRANITE_RING = 14117;
+			public static final int LEAGUE_TASK_EQUIP_A_SPECTRAL_OR_ARCANE_SPIRIT_SHIELD = 14118;
+			public static final int LEAGUE_TASK_EQUIP_AN_ELYSIAN_SPIRIT_SHIELD = 14119;
+			public static final int LEAGUE_TASK_EQUIP_THE_PYROMANCERS_GARB = 14120;
+			public static final int LEAGUE_TASK_EQUIP_TIER_5_SHAYZIEN_ARMOUR = 14121;
+			public static final int LEAGUE_TASK_EQUIP_A_TRIDENT_OF_THE_SEAS = 14122;
+			public static final int LEAGUE_TASK_EQUIP_A_WARPED_SCEPTRE = 14123;
+			public static final int LEAGUE_TASK_EQUIP_AN_OGRE_EXPERT_CHOMPY_HAT = 14124;
+			public static final int LEAGUE_TASK_EQUIP_A_PAIR_OF_DRAGON_BOOTS_IN_ASGARNIA = 14125;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_INQUISITORS_SET = 14126;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_JUSTICIAR_SET = 14127;
+			public static final int LEAGUE_TASK_EQUIP_A_NIGHTMARE_STAFF_WITH_AN_ORB = 14128;
+			public static final int LEAGUE_TASK_EQUIP_EVERY_GODSWORD = 14129;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_INFINITY_ROBE_SET = 14130;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_MASORI = 14131;
+			public static final int LEAGUE_TASK_EQUIP_OSMUMTENS_FANG_OR = 14132;
+			public static final int LEAGUE_TASK_EQUIP_THE_COLOSSAL_BLADE = 14133;
+			public static final int LEAGUE_TASK_EQUIP_THE_TOME_OF_WATER = 14134;
+			public static final int LEAGUE_TASK_EQUIP_SOME_PRIMORDIAL_PEGASIAN_AND_ETERNAL_BOOTS = 14135;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_VYRE_NOBLE = 14136;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_ANY_BARROWS_ARMOUR_SET = 14137;
+			public static final int LEAGUE_TASK_EQUIP_A_SALVE_AMULET_E = 14138;
+			public static final int ACTION_EQUIP_A_FLETCHING_KNIFE = 14139;
+			public static final int ACTION_EQUIP_A_GREENMAN_MASK = 14140;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_SUNFIRE_FANATIC = 14141;
+			public static final int ACTION_EQUIP_AN_ANTLER_GUARD = 14142;
+			public static final int ACTION_EQUIP_AN_EGG = 14143;
+			public static final int LEAGUE_TASK_EQUIP_ECHO_BOOTS = 14144;
+			public static final int LEAGUE_TASK_EQUIP_SOME_GRANITE_LEGS = 14145;
+			public static final int LEAGUE_TASK_EQUIP_FULL_ALCHEMISTS_OUTFIT = 14146;
+			public static final int LEAGUE_TASK_EQUIP_FULL_BLOOD_MOON_ARMOUR = 14147;
+			public static final int LEAGUE_TASK_EQUIP_FULL_BLUE_MOON_ARMOUR = 14148;
+			public static final int LEAGUE_TASK_EQUIP_FULL_ECLIPSE_MOON_ARMOUR = 14149;
+			public static final int LEAGUE_TASK_EQUIP_FULL_GUILD_HUNTER_OUTFIT = 14150;
+			public static final int LEAGUE_TASK_EQUIP_FULL_HUEYCOATL_ARMOUR = 14151;
+			public static final int LEAGUE_TASK_EQUIP_FULL_SUNFIRE_FANATIC = 14152;
+			public static final int LEAGUE_TASK_EQUIP_GLACIAL_TEMOTLI = 14153;
+			public static final int LEAGUE_TASK_EQUIP_A_CRYSTAL_BOW = 14154;
+			public static final int LEAGUE_TASK_EQUIP_A_CRYSTAL_SHIELD = 14155;
+			public static final int LEAGUE_TASK_EQUIP_A_DARK_BOW_IN_TIRANNWN = 14156;
+			public static final int LEAGUE_TASK_EQUIP_ANY_PIECE_OF_CRYSTAL_ARMOUR = 14157;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_PICKAXE = 14158;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_FULL_HELM = 14159;
+			public static final int LEAGUE_TASK_EQUIP_ALL_ZENYTE_JEWELRY = 14160;
+			public static final int LEAGUE_TASK_EQUIP_AN_EXPERT_DRAGON_ARCHER_CHOMPY_HAT = 14161;
+			public static final int LEAGUE_TASK_EQUIP_BLESSED_DIZANAS_QUIVER = 14162;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_ANCESTRAL = 14163;
+			public static final int LEAGUE_TASK_EQUIP_EVERY_COMPLETED_GOD_BOOK = 14164;
+			public static final int LEAGUE_TASK_EQUIP_A_MONKEY_BACKPACK = 14165;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_GILDED_SET = 14166;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_SET_OF_YAKHIDE_ARMOUR = 14167;
+			public static final int LEAGUE_TASK_EQUIP_A_SPOTTIER_CAPE = 14168;
+			public static final int LEAGUE_TASK_EQUIP_A_DEFENDER = 14169;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_ALCHEMISTS_OUTFIT = 14170;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_HUEYCOATL_ARMOUR = 14171;
+			public static final int ACTION_EQUIP_AN_ORANGE = 14172;
+			public static final int LEAGUE_TASK_EQUIP_PENDANT_OF_ATES = 14173;
+			public static final int ACTION_EQUIP_ANY_PIECE_OF_MOONS_OF_PERIL_ARMOUR = 14174;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_DRAGON_SET = 14175;
+			public static final int LEAGUE_TASK_EQUIP_A_PEARL_BARBARIAN_ROD = 14176;
+			public static final int ACTION_EQUIP_A_PIECE_OF_BLOOD_MOON_ARMOUR = 14177;
+			public static final int ACTION_EQUIP_A_PIECE_OF_BLUE_MOON_ARMOUR = 14178;
+			public static final int ACTION_EQUIP_A_PIECE_OF_ECLIPSE_MOON_ARMOUR = 14179;
+			public static final int LEAGUE_TASK_EQUIP_A_FROG_MASK = 14180;
+			public static final int LEAGUE_TASK_EQUIP_A_HARPIE_BUG_LANTERN = 14181;
+			public static final int LEAGUE_TASK_EQUIP_FULL_GRAAHK_LARUPIA_OR_KYATT = 14182;
+			public static final int LEAGUE_TASK_EQUIP_A_BRACELET_OF_ETHEREUM = 14183;
+			public static final int LEAGUE_TASK_EQUIP_A_PEARL_FISHING_ROD = 14184;
+			public static final int LEAGUE_TASK_EQUIP_THE_CURSED_AMULET_OF_MAGIC = 14185;
+			public static final int LEAGUE_TASK_EQUIP_XERICS_TALISMAN = 14186;
+			public static final int LEAGUE_TASK_EQUIP_A_FEDORA = 14187;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_SCIMITAR = 14188;
+			public static final int LEAGUE_TASK_EQUIP_A_GOD_CAPE = 14189;
+			public static final int LEAGUE_TASK_EQUIP_A_DAMAGED_GOD_BOOK = 14190;
+			public static final int LEAGUE_TASK_EQUIP_A_MARKSMAN_CHOMPY_HAT = 14191;
+			public static final int LEAGUE_TASK_EQUIP_A_HELM_OF_NEITIZNOT = 14192;
+			public static final int LEAGUE_TASK_EQUIP_AN_OGRE_FORESTER_CHOMPY_HAT = 14193;
+			public static final int LEAGUE_TASK_EQUIP_A_CORRUPTED_WEAPON = 14194;
+			public static final int LEAGUE_TASK_EQUIP_A_GRANITE_SHIELD = 14195;
+			public static final int LEAGUE_TASK_EQUIP_A_CRYSTAL_CROWN = 14196;
+			public static final int LEAGUE_TASK_EQUIP_KARAMBWAN_POISONED_SPEAR = 14197;
+			public static final int LEAGUE_TASK_EQUIP_A_LAVA_BATTLESTAFF = 14198;
+			public static final int LEAGUE_TASK_EQUIP_AMYS_SAW = 14199;
+			public static final int LEAGUE_TASK_EQUIP_AN_IMCANDO_HAMMER = 14200;
+			public static final int LEAGUE_TASK_EQUIP_A_LEAFBLADED_SWORD = 14201;
+			public static final int LEAGUE_TASK_EQUIP_A_PAIR_OF_DRAGON_BOOTS_IN_WILDERNESS = 14202;
+			public static final int LEAGUE_TASK_EQUIP_COMP_OGRE_BOW = 14203;
+			public static final int LEAGUE_TASK_EQUIP_DRAGON_PICKAXE_IN_DESERT = 14204;
+			public static final int LEAGUE_TASK_EQUIP_GRANITE_SHIELD_IN_FREMENNIK = 14205;
+			public static final int LEAGUE_TASK_EQUIP_A_LEAFBLADED_WEAPON_TIRANNWN = 14206;
+			public static final int LEAGUE_TASK_EQUIP_RADIANT_OATHPLATE = 14207;
+			public static final int LEAGUE_TASK_EQUIP_OATHPLATE_PIECE = 14208;
+			public static final int LEAGUE_TASK_EQUIP_FULL_OATHPLATE = 14209;
+			public static final int LEAGUE_TASK_EQUIP_A_COMBINATION_BATTLESTAFF_OR_MYSTIC_STAFF = 14210;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGON_WEAPON = 14211;
+			public static final int LEAGUE_TASK_EQUIP_A_DRAGONFIRE_SHIELD = 14212;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_ADAMANT_SET = 14213;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_BLACK_DRAGONHIDE_SET = 14214;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_BLUE_DRAGONHIDE_SET = 14215;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_BRONZE_SET = 14216;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_GOD_DRAGONHIDE_SET = 14217;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_GOD_RUNE_SET = 14218;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_GREEN_DRAGONHIDE_SET = 14219;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_RED_DRAGONHIDE_SET = 14220;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_RUNE_SET = 14221;
+			public static final int LEAGUE_TASK_EQUIP_A_FULL_VESTMENT_SET = 14222;
+			public static final int LEAGUE_TASK_EQUIP_A_GILDED_OR_TRIMMED_WIZARD_ITEM = 14223;
+			public static final int LEAGUE_TASK_EQUIP_A_MAGIC_SHORTBOW = 14224;
+			public static final int LEAGUE_TASK_EQUIP_A_MIST_BATTLESTAFF = 14225;
+			public static final int LEAGUE_TASK_EQUIP_A_MITHRIL_WEAPON = 14226;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_A_MYSTIC_SET = 14227;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_BEEKEEPERS_OUTFIT = 14228;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_CAMOUFLAGE_OUTFIT = 14229;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_MIME_OUTFIT = 14230;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_VIRTUS = 14231;
+			public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_ZOMBIE_OUTFIT = 14232;
+			public static final int LEAGUE_TASK_EQUIP_A_RUNE_CROSSBOW = 14233;
+			public static final int LEAGUE_TASK_EQUIP_A_RUNE_WEAPON = 14234;
+			public static final int LEAGUE_TASK_EQUIP_A_SCYTHE_OF_VITUR = 14235;
+			public static final int LEAGUE_TASK_EQUIP_A_TRIMMED_AMULET = 14236;
+			public static final int LEAGUE_TASK_EQUIP_A_TWISTED_BOW = 14237;
+			public static final int LEAGUE_TASK_EQUIP_A_TWOHANDED_AXE = 14238;
+			public static final int ACTION_EQUIP_A_TYRAS_HELM = 14239;
+			public static final int LEAGUE_TASK_EQUIP_A_WILLOW_SHIELD = 14240;
+			public static final int LEAGUE_TASK_EQUIP_A_YEW_SHORTBOW = 14241;
+			public static final int LEAGUE_TASK_EQUIP_AN_ABYSSAL_BLUDGEON = 14242;
+			public static final int LEAGUE_TASK_EQUIP_AN_ABYSSAL_DAGGER = 14243;
+			public static final int LEAGUE_TASK_EQUIP_AN_ABYSSAL_WHIP = 14244;
+			public static final int LEAGUE_TASK_EQUIP_AN_ADAMANT_WEAPON = 14245;
+			public static final int LEAGUE_TASK_EQUIP_AN_ELEMENTAL_BATTLESTAFF_OR_MYSTIC_STAFF = 14246;
+			public static final int LEAGUE_TASK_EQUIP_AN_ELEMENTAL_STAFF = 14247;
+			public static final int LEAGUE_TASK_EQUIP_AN_ETERNAL_SLAYER_RING = 14248;
+			public static final int LEAGUE_TASK_EQUIP_AN_IRON_DAGGER = 14249;
+			public static final int LEAGUE_TASK_EQUIP_AN_ORNAMENT_KIT_ITEM = 14250;
+			public static final int LEAGUE_TASK_EQUIP_FOUR_UNIQUE_ECHO_ITEMS = 14251;
+			public static final int LEAGUE_TASK_EQUIP_FULL_VIRTUS = 14252;
+			public static final int LEAGUE_TASK_EQUIP_ONE_UNIQUE_ECHO_ITEM = 14253;
+			public static final int LEAGUE_TASK_EQUIP_SOME_BLACK_ARMOUR = 14254;
+			public static final int LEAGUE_TASK_EQUIP_SOME_RANGER_BOOTS = 14255;
+			public static final int LEAGUE_TASK_EQUIP_SOME_STEEL_ARMOUR = 14256;
+			public static final int LEAGUE_TASK_EQUIP_THE_FORESTRY_BASKET = 14257;
+			public static final int LEAGUE_TASK_EQUIP_THE_SOULREAPER_AXE = 14258;
+			public static final int LEAGUE_TASK_EQUIP_THE_TUMEKENS_SHADOW = 14259;
+			public static final int LEAGUE_TASK_EQUIP_THREE_UNIQUE_ECHO_ITEMS = 14260;
+			public static final int LEAGUE_TASK_EQUIP_TWO_UNIQUE_ECHO_ITEMS = 14261;
+			public static final int LEAGUE_TASK_EQUIP_SULPHUR_BLADES = 14262;
+			public static final int LEAGUE_TASK_EQUIP_EARTHBOUND_TECPATL = 14263;
+			public static final int LEAGUE_TASK_EQUIP_HOLY_MOLEYS = 14264;
+			public static final int LEAGUE_TASK_1_EASY_CLUE_SCROLL = 14265;
+			public static final int LEAGUE_TASK_1_ELITE_CLUE_SCROLL = 14266;
+			public static final int LEAGUE_TASK_1_HARD_CLUE_SCROLL = 14267;
+			public static final int LEAGUE_TASK_1_MASTER_CLUE_SCROLL = 14268;
+			public static final int LEAGUE_TASK_1_MEDIUM_CLUE_SCROLL = 14269;
+			public static final int LEAGUE_TASK_100_ELITE_CLUE_SCROLLS = 14270;
+			public static final int LEAGUE_TASK_100_MASTER_CLUE_SCROLLS = 14271;
+			public static final int LEAGUE_TASK_25_EASY_CLUE_SCROLLS = 14272;
+			public static final int LEAGUE_TASK_25_ELITE_CLUE_SCROLLS = 14273;
+			public static final int LEAGUE_TASK_25_HARD_CLUE_SCROLLS = 14274;
+			public static final int LEAGUE_TASK_25_MASTER_CLUE_SCROLLS = 14275;
+			public static final int LEAGUE_TASK_25_MEDIUM_CLUE_SCROLLS = 14276;
+			public static final int LEAGUE_TASK_75_EASY_CLUE_SCROLLS = 14277;
+			public static final int LEAGUE_TASK_75_ELITE_CLUE_SCROLLS = 14278;
+			public static final int LEAGUE_TASK_75_HARD_CLUE_SCROLLS = 14279;
+			public static final int LEAGUE_TASK_75_MASTER_CLUE_SCROLLS = 14280;
+			public static final int LEAGUE_TASK_75_MEDIUM_CLUE_SCROLLS = 14281;
+			public static final int LEAGUE_TASK_BURN_SOME_COLOURED_LOGS = 14282;
+			public static final int LEAGUE_TASK_CATCH_200_IMPLINGS_IN_PUROPURO = 14283;
+			public static final int LEAGUE_TASK_CATCH_50_IMPLINGS_IN_PUROPURO = 14284;
+			public static final int LEAGUE_TASK_CHOP_SOME_RISING_ROOTS = 14285;
+			public static final int LEAGUE_TASK_COMPLETE_THE_FLOWERING_BUSH_EVENT = 14286;
+			public static final int LEAGUE_TASK_COMPLETE_THE_PHEASANT_FORESTRY_EVENT = 14287;
+			public static final int LEAGUE_TASK_COMPLETE_THE_RITUAL_FORESTRY_EVENT = 14288;
+			public static final int LEAGUE_TASK_COMPLETE_THE_STRUGGLING_SAPLING_EVENT = 14289;
+			public static final int LEAGUE_TASK_OPEN_A_BRONZE_CHEST = 14290;
+			public static final int LEAGUE_TASK_COMPLETE_AN_EASY_TEMPLE_TREK = 14291;
+			public static final int LEAGUE_TASK_PICK_A_WINTER_SQIRK = 14292;
+			public static final int LEAGUE_TASK_ROOM_1_OF_PYRAMID_PLUNDER = 14293;
+			public static final int LEAGUE_TASK_ROOM_2_OF_PYRAMID_PLUNDER = 14294;
+			public static final int LEAGUE_TASK_ROOM_3_OF_PYRAMID_PLUNDER = 14295;
+			public static final int LEAGUE_TASK_COMPLETE_A_GAME_OF_NOVICE_PEST_CONTROL = 14296;
+			public static final int LEAGUE_TASK_FLOOR_5_OF_THE_HALLOWED_SEPULCHRE = 14297;
+			public static final int LEAGUE_TASK_ROOM_8_OF_PYRAMID_PLUNDER_75_TIMES = 14298;
+			public static final int LEAGUE_TASK_GET_1000_TARGET_POINTS = 14299;
+			public static final int LEAGUE_TASK_REACH_LEVEL_5_IN_ANY_BARBARIAN_ASSAULT_ROLE = 14300;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HALLOWED_SEPULCHRE_IN_630 = 14301;
+			public static final int LEAGUE_TASK_COMPLETE_THE_CORRUPTED_GAUNTLET_50_TIMES = 14302;
+			public static final int LEAGUE_TASK_COMPLETE_THE_CORRUPTED_GAUNTLET_100_TIMES = 14303;
+			public static final int LEAGUE_TASK_TURN_IN_50_SUMMER_SQIRKJUICES_TO_OSMAN = 14304;
+			public static final int LEAGUE_TASK_OBTAIN_THE_FISH_BARREL = 14305;
+			public static final int LEAGUE_TASK_1_CHAMBERS_OF_XERIC_CHALLENGE_MODE = 14306;
+			public static final int LEAGUE_TASK_KEEP_THE_VETERAN_VOID_KNIGHT_ABOVE_150_HITPOINTS = 14307;
+			public static final int LEAGUE_TASK_150_ELITE_CLUE_SCROLLS = 14308;
+			public static final int LEAGUE_TASK_150_MASTER_CLUE_SCROLLS = 14309;
+			public static final int LEAGUE_TASK_READ_A_CLUELESS_SCROLL = 14310;
+			public static final int LEAGUE_TASK_TRANSFORM_INTO_URI = 14311;
+			public static final int LEAGUE_TASK_USE_THE_EXPLORE_EMOTE = 14312;
+			public static final int LEAGUE_TASK_FILL_EVERY_BEGINNER_CLUE_COLLECTION_LOG_SLOT = 14313;
+			public static final int LEAGUE_TASK_OBTAIN_EVERY_HALLOWED_TOOL = 14314;
+			public static final int LEAGUE_TASK_OPEN_A_GOLD_CHEST = 14315;
+			public static final int LEAGUE_TASK_FLOOR_4_OF_THE_HALLOWED_SEPULCHRE = 14316;
+			public static final int LEAGUE_TASK_GIANTS_FOUNDRY_150_QUALITY_SWORD = 14317;
+			public static final int LEAGUE_TASK_1_CHAMBERS_OF_XERIC = 14318;
+			public static final int LEAGUE_TASK_25_CHAMBERS_OF_XERIC = 14319;
+			public static final int LEAGUE_TASK_GIANTS_FOUNDRY_25_HANDINS = 14320;
+			public static final int LEAGUE_TASK_GIANTS_FOUNDRY_100_QUALITY_SWORD = 14321;
+			public static final int LEAGUE_TASK_GIANTS_FOUNDRY_50_HANDINS = 14322;
+			public static final int LEAGUE_TASK_PICK_A_SUMMER_SQIRK = 14323;
+			public static final int LEAGUE_TASK_ROOM_7_OF_PYRAMID_PLUNDER = 14324;
+			public static final int LEAGUE_TASK_ROOM_8_OF_PYRAMID_PLUNDER = 14325;
+			public static final int LEAGUE_TASK_MINE_A_RUNITE_ORE_FRAGMENT = 14326;
+			public static final int LEAGUE_TASK_OBTAIN_A_PUFFERFISH_FROM_DRIFT_NET_FISHING = 14327;
+			public static final int LEAGUE_TASK_ROOM_8_OF_PYRAMID_PLUNDER_25_TIMES = 14328;
+			public static final int LEAGUE_TASK_TURN_IN_25_AUTUMN_SQIRKJUICES_TO_OSMAN = 14329;
+			public static final int LEAGUE_TASK_GIANTS_FOUNDRY_125_QUALITY_SWORD = 14330;
+			public static final int LEAGUE_TASK_50_CHAMBERS_OF_XERIC = 14331;
+			public static final int LEAGUE_TASK_PURCHASE_AN_ECTOPLASMATOR = 14332;
+			public static final int LEAGUE_TASK_GET_750_TARGET_POINTS = 14333;
+			public static final int LEAGUE_TASK_REACH_LEVEL_5_IN_EVERY_BARBARIAN_ASSAULT_ROLE = 14334;
+			public static final int LEAGUE_TASK_RECEIVE_30_AGILITY_ARENA_TICKETS_WITH_NO_MISTAKES = 14335;
+			public static final int LEAGUE_TASK_RECEIVE_AN_AGILITY_ARENA_TICKET = 14336;
+			public static final int LEAGUE_TASK_TURN_IN_A_WINTER_SQIRKJUICE_TO_OSMAN = 14337;
+			public static final int LEAGUE_TASK_ROOM_8_OF_PYRAMID_PLUNDER_150_TIMES = 14338;
+			public static final int LEAGUE_TASK_SACRIFICE_A_FIRE_CAPE_TO_ACCESS_THE_INFERNO = 14339;
+			public static final int LEAGUE_TASK_SURVIVE_A_HIT_FROM_TZTOKJAD_WITHOUT_PRAYER = 14340;
+			public static final int LEAGUE_TASK_TRADE_100_AGILITY_ARENA_TICKETS_FOR_XP = 14341;
+			public static final int LEAGUE_TASK_WIN_A_GAME_OF_SOUL_WARS = 14342;
+			public static final int LEAGUE_TASK_BUY_A_SNAPDRAGON_FROM_PIRATE_JACKIE_THE_FRUIT = 14343;
+			public static final int LEAGUE_TASK_BUY_AN_ASH_COVERED_TOME = 14344;
+			public static final int LEAGUE_TASK_COMPLETE_A_VOLCANIC_MINE_GAME = 14345;
+			public static final int LEAGUE_TASK_COMPLETE_THE_CORRUPTED_GAUNTLET_150_TIMES = 14346;
+			public static final int LEAGUE_TASK_COMPLETE_THE_HALLOWED_SEPULCHRE_IN_800 = 14347;
+			public static final int LEAGUE_TASK_COMPLETE_THE_INFERNO_10_TIMES = 14348;
+			public static final int LEAGUE_TASK_COMPLETE_THE_INFERNO_15_TIMES = 14349;
+			public static final int LEAGUE_TASK_COMPLETE_THE_INFERNO_5_TIMES = 14350;
+			public static final int LEAGUE_TASK_COMPLETE_TZHAARKETRAKS_FIFTH_CHALLENGE = 14351;
+			public static final int LEAGUE_TASK_COMPLETE_TZHAARKETRAKS_FIRST_CHALLENGE = 14352;
+			public static final int LEAGUE_TASK_COMPLETE_TZHAARKETRAKS_FOURTH_CHALLENGE = 14353;
+			public static final int LEAGUE_TASK_COMPLETE_TZHAARKETRAKS_SECOND_CHALLENGE = 14354;
+			public static final int LEAGUE_TASK_COMPLETE_TZHAARKETRAKS_SIXTH_CHALLENGE = 14355;
+			public static final int LEAGUE_TASK_COMPLETE_TZHAARKETRAKS_SPECIAL_CHALLENGE = 14356;
+			public static final int LEAGUE_TASK_COMPLETE_TZHAARKETRAKS_THIRD_CHALLENGE = 14357;
+			public static final int LEAGUE_TASK_FIND_A_GOUT_TUBER = 14358;
+			public static final int LEAGUE_TASK_OPEN_A_BLACK_CHEST = 14359;
+			public static final int LEAGUE_TASK_PURCHASE_A_REWARD_FROM_THE_HALLOWED_SEPULCHRE = 14360;
+			public static final int LEAGUE_TASK_ACHIEVE_100_SHADES_OF_MORTTON_SANCTITY = 14361;
+			public static final int LEAGUE_TASK_GIANTS_FOUNDRY_10_HANDINS = 14362;
+			public static final int LEAGUE_TASK_GIANTS_FOUNDRY_50_QUALITY_SWORD = 14363;
+			public static final int LEAGUE_TASK_COMPLETE_A_HARD_TEMPLE_TREK = 14364;
+			public static final int LEAGUE_TASK_OBTAIN_THE_BIG_HARPOONFISH = 14365;
+			public static final int LEAGUE_TASK_COMPLETE_A_GAME_OF_VETERAN_PEST_CONTROL = 14366;
+			public static final int LEAGUE_TASK_COMPLETE_A_MEDIUM_TEMPLE_TREK = 14367;
+			public static final int LEAGUE_TASK_FLOOR_1_OF_THE_HALLOWED_SEPULCHRE = 14368;
+			public static final int LEAGUE_TASK_PICK_A_AUTUMN_SQIRK = 14369;
+			public static final int LEAGUE_TASK_FLOOR_2_OF_THE_HALLOWED_SEPULCHRE = 14370;
+			public static final int LEAGUE_TASK_FLOOR_3_OF_THE_HALLOWED_SEPULCHRE = 14371;
+			public static final int LEAGUE_TASK_PICK_A_SPRING_SQIRK = 14372;
+			public static final int LEAGUE_TASK_COMPLETE_THE_CORRUPTED_GAUNTLET = 14373;
+			public static final int LEAGUE_TASK_ROOM_4_OF_PYRAMID_PLUNDER = 14374;
+			public static final int LEAGUE_TASK_ROOM_5_OF_PYRAMID_PLUNDER = 14375;
+			public static final int LEAGUE_TASK_100_CHAMBERS_OF_XERIC = 14376;
+			public static final int LEAGUE_TASK_ROOM_6_OF_PYRAMID_PLUNDER = 14377;
+			public static final int LEAGUE_TASK_COMPLETE_THE_GAUNTLET = 14378;
+			public static final int LEAGUE_TASK_25_CHAMBERS_OF_XERIC_CHALLENGE_MODE = 14379;
+			public static final int LEAGUE_TASK_150_HARD_CLUE_SCROLLS = 14380;
+			public static final int LEAGUE_TASK_GAIN_35_UNIQUE_ITEMS_FROM_BEGINNER_CLUES = 14381;
+			public static final int LEAGUE_TASK_COMPLETE_50_MAHOGANY_HOMES_CONTRACTS = 14382;
+			public static final int LEAGUE_TASK_COMPLETE_A_MAHOGANY_HOMES_EXPERT_CONTRACT = 14383;
+			public static final int LEAGUE_TASK_FILL_10_BEGINNER_CLUE_COLLECTION_LOG_SLOTS = 14384;
+			public static final int LEAGUE_TASK_TURN_IN_10_SPRING_SQIRKJUICES_TO_OSMAN = 14385;
+			public static final int LEAGUE_TASK_PURCHASE_GRICOLLERS_CAN = 14386;
+			public static final int LEAGUE_TASK_150_EASY_CLUE_SCROLLS = 14387;
+			public static final int LEAGUE_TASK_150_MEDIUM_CLUE_SCROLLS = 14388;
+			public static final int LEAGUE_TASK_GAIN_10_UNIQUE_ITEMS_FROM_BEGINNER_CLUES = 14389;
+			public static final int LEAGUE_TASK_PURCHASE_A_SEED_BOX = 14390;
+			public static final int LEAGUE_TASK_GAIN_A_UNIQUE_ITEM_FROM_A_BEGINNER_CLUE = 14391;
+			public static final int LEAGUE_TASK_EAT_SOME_PURPLE_SWEETS = 14392;
+			public static final int LEAGUE_TASK_COMPLETE_10_MAHOGANY_HOMES_CONTRACTS = 14393;
+			public static final int LEAGUE_TASK_COMPLETE_25_MAHOGANY_HOMES_CONTRACTS = 14394;
+			public static final int LEAGUE_TASK_COMPLETE_A_MAHOGANY_HOMES_ADEPT_CONTRACT = 14395;
+			public static final int LEAGUE_TASK_COMPLETE_A_MAHOGANY_HOMES_BEGINNER_CONTRACT = 14396;
+			public static final int LEAGUE_TASK_COMPLETE_A_MAHOGANY_HOMES_NOVICE_CONTRACT = 14397;
+			public static final int LEAGUE_TASK_FILL_5_BEGINNER_CLUE_COLLECTION_LOG_SLOTS = 14398;
+			public static final int LEAGUE_TASK_GET_250_TARGET_POINTS = 14399;
+			public static final int LEAGUE_TASK_UNLOCK_FREE_USE_OF_THE_BLAST_FURNACE = 14400;
+			public static final int LEAGUE_TASK_WIN_A_GAME_OF_CASTLE_WARS = 14401;
+			public static final int LEAGUE_TASK_OBTAIN_THE_PLANK_SACK = 14402;
+			public static final int LEAGUE_TASK_OPEN_AN_ORNATE_LOCKBOX = 14403;
+			public static final int LEAGUE_TASK_COMPLETE_A_GAME_OF_INTERMEDIATE_PEST_CONTROL = 14404;
+			public static final int LEAGUE_TASK_COMPLETE_A_FISHING_TRAWLER_GAME = 14405;
+			public static final int LEAGUE_TASK_FILL_10_ELITE_CLUE_COLLECTION_LOG_SLOTS = 14406;
+			public static final int LEAGUE_TASK_FILL_15_HARD_CLUE_COLLECTION_LOG_SLOTS = 14407;
+			public static final int LEAGUE_TASK_FILL_20_EASY_CLUE_COLLECTION_LOG_SLOTS = 14408;
+			public static final int LEAGUE_TASK_FILL_20_MEDIUM_CLUE_COLLECTION_LOG_SLOTS = 14409;
+			public static final int LEAGUE_TASK_FILL_25_ELITE_CLUE_COLLECTION_LOG_SLOTS = 14410;
+			public static final int LEAGUE_TASK_FILL_25_MASTER_CLUE_COLLECTION_LOG_SLOTS = 14411;
+			public static final int LEAGUE_TASK_FILL_3_ELITE_CLUE_COLLECTION_LOG_SLOTS = 14412;
+			public static final int LEAGUE_TASK_FILL_3_HARD_CLUE_COLLECTION_LOG_SLOTS = 14413;
+			public static final int LEAGUE_TASK_FILL_30_HARD_CLUE_COLLECTION_LOG_SLOTS = 14414;
+			public static final int LEAGUE_TASK_FILL_40_MEDIUM_CLUE_COLLECTION_LOG_SLOTS = 14415;
+			public static final int LEAGUE_TASK_FILL_5_EASY_CLUE_COLLECTION_LOG_SLOTS = 14416;
+			public static final int LEAGUE_TASK_FILL_5_MASTER_CLUE_COLLECTION_LOG_SLOTS = 14417;
+			public static final int LEAGUE_TASK_FILL_5_MEDIUM_CLUE_COLLECTION_LOG_SLOTS = 14418;
+			public static final int LEAGUE_TASK_FILL_50_EASY_CLUE_COLLECTION_LOG_SLOTS = 14419;
+			public static final int LEAGUE_TASK_GAIN_10_UNIQUE_ITEMS_FROM_EASY_CLUES = 14420;
+			public static final int LEAGUE_TASK_GAIN_10_UNIQUE_ITEMS_FROM_ELITE_CLUES = 14421;
+			public static final int LEAGUE_TASK_GAIN_10_UNIQUE_ITEMS_FROM_MASTER_CLUES = 14422;
+			public static final int LEAGUE_TASK_GAIN_10_UNIQUE_ITEMS_FROM_MEDIUM_CLUES = 14423;
+			public static final int LEAGUE_TASK_GAIN_20_UNIQUE_ITEMS_FROM_HARD_CLUES = 14424;
+			public static final int LEAGUE_TASK_GAIN_25_UNIQUE_ITEMS_FROM_ELITE_CLUES = 14425;
+			public static final int LEAGUE_TASK_GAIN_25_UNIQUE_ITEMS_FROM_MASTER_CLUES = 14426;
+			public static final int LEAGUE_TASK_GAIN_25_UNIQUE_ITEMS_FROM_MEDIUM_CLUES = 14427;
+			public static final int LEAGUE_TASK_GAIN_35_UNIQUE_ITEMS_FROM_EASY_CLUES = 14428;
+			public static final int LEAGUE_TASK_GAIN_5_UNIQUE_ITEMS_FROM_HARD_CLUES = 14429;
+			public static final int LEAGUE_TASK_GAIN_50_UNIQUE_ITEMS_FROM_HARD_CLUES = 14430;
+			public static final int LEAGUE_TASK_GAIN_A_UNIQUE_ITEM_FROM_A_HARD_CLUE = 14431;
+			public static final int LEAGUE_TASK_GAIN_A_UNIQUE_ITEM_FROM_A_MASTER_CLUE = 14432;
+			public static final int LEAGUE_TASK_GAIN_A_UNIQUE_ITEM_FROM_A_MEDIUM_CLUE = 14433;
+			public static final int LEAGUE_TASK_GAIN_A_UNIQUE_ITEM_FROM_AN_EASY_CLUE = 14434;
+			public static final int LEAGUE_TASK_GAIN_A_UNIQUE_ITEM_FROM_AN_ELITE_CLUE = 14435;
+			public static final int LEAGUE_TASK_GIVE_AN_ENTLING_A_HAIRCUT = 14436;
+			public static final int LEAGUE_TASK_HAVE_A_LEPRECHAUN_SEND_SOMETHING_TO_THE_BANK = 14437;
+			public static final int LEAGUE_TASK_MINE_A_SHOOTING_STAR = 14438;
+			public static final int LEAGUE_TASK_MINE_A_SHOOTING_STAR_LEVEL_8 = 14439;
+			public static final int LEAGUE_TASK_BUY_SOMETHING_FROM_TRADER_CREWMEMBERS = 14440;
+			public static final int LEAGUE_TASK_ATTACK_A_DUMMY = 14441;
+			public static final int LEAGUE_TASK_BUTTER_A_POTATO = 14442;
+			public static final int LEAGUE_TASK_CHURN_SOME_BUTTER = 14443;
+			public static final int LEAGUE_TASK_COMPLETE_THE_EVIL_BOB_RANDOM_EVENT = 14444;
+			public static final int LEAGUE_TASK_COMPLETE_THE_LEAGUES_TUTORIAL = 14445;
+			public static final int LEAGUE_TASK_COMPLETE_THE_MAZE_RANDOM_EVENT = 14446;
+			public static final int LEAGUE_TASK_COMPLETE_THE_PILLORY_RANDOM_EVENT = 14447;
+			public static final int LEAGUE_TASK_COMPLETE_THE_PINBALL_RANDOM_EVENT = 14448;
+			public static final int LEAGUE_TASK_COMPLETE_THE_POSTIE_PETE_RANDOM_EVENT = 14449;
+			public static final int LEAGUE_TASK_COMPLETE_THE_PRISON_PETE_RANDOM_EVENT = 14450;
+			public static final int LEAGUE_TASK_COMPLETE_THE_SURPRISE_EXAM_RANDOM_EVENT = 14451;
+			public static final int LEAGUE_TASK_DYE_A_CAPE_PURPLE = 14452;
+			public static final int LEAGUE_TASK_EAT_A_RABBIT = 14453;
+			public static final int LEAGUE_TASK_EAT_AN_ONION = 14454;
+			public static final int LEAGUE_TASK_TRAVEL_TO_MOLCH_ISLAND = 14455;
+			public static final int LEAGUE_TASK_VISIT_HARMONY_ISLAND = 14456;
+			public static final int LEAGUE_TASK_HAVE_A_CONVERSATION_WITH_A_CAT = 14457;
+			public static final int LEAGUE_TASK_MINE_SOME_ESSENCE = 14458;
+			public static final int LEAGUE_TASK_USE_THE_MINE_CART_TRANSPORTATION_SYSTEM = 14459;
+			public static final int LEAGUE_TASK_PROVE_YOURSELF_TO_PONTS = 14460;
+			public static final int LEAGUE_TASK_SCATTER_SOME_ASHES = 14461;
+			public static final int LEAGUE_TASK_VISIT_MOS_LEHARMLESS = 14462;
+			public static final int LEAGUE_TASK_BANK_AT_LANDS_END = 14463;
+			public static final int LEAGUE_TASK_USE_A_HAT_STAND = 14464;
+			public static final int LEAGUE_TASK_USE_A_HERRING_ON_A_TREE = 14465;
+			public static final int LEAGUE_TASK_CRY_IN_A_WHEAT_FIELD = 14466;
+			public static final int LEAGUE_TASK_DANCE_IN_A_GRAVEYARD = 14467;
+			public static final int LEAGUE_TASK_DYE_A_CAPE_ORANGE = 14468;
+			public static final int LEAGUE_TASK_EAT_A_BANANA = 14469;
+			public static final int LEAGUE_TASK_TALK_TO_THE_MYSTERIOUS_OLD_MAN_IN_FALADOR = 14470;
+			public static final int LEAGUE_TASK_VISIT_PORT_PHASMATYS = 14471;
+			public static final int LEAGUE_TASK_GET_STUNG_BY_BEES = 14472;
+			public static final int LEAGUE_TASK_USE_THE_FALADOR_PARTY_ROOM = 14473;
+			public static final int LEAGUE_TASK_OBTAIN_JACKS_LEGENDARY_ROD = 14474;
+			public static final int LEAGUE_TASK_PICK_WHEAT_IN_CATHERBY = 14475;
+			public static final int LEAGUE_TASK_BALANCE_5_BARRELS_ON_YOUR_HEAD = 14476;
+			public static final int LEAGUE_TASK_RECEIVE_A_GIFT_FROM_ARNOLD = 14477;
+			public static final int LEAGUE_TASK_ENTER_PURO_PURO_FROM_GIELINOR = 14478;
+			public static final int LEAGUE_TASK_VISIT_THE_TREE_GNOME_STRONGHOLD = 14479;
+			public static final int LEAGUE_TASK_BECOME_A_MUSHROOM = 14480;
+			public static final int LEAGUE_TASK_PICK_UP_SNAPEGRASS = 14481;
+			public static final int LEAGUE_TASK_VISIT_THE_TREE_GNOME_VILLAGE = 14482;
+			public static final int LEAGUE_TASK_ENTER_HAUNTED_MINE = 14483;
+			public static final int LEAGUE_TASK_OPEN_A_LOOTING_BAG = 14484;
+			public static final int LEAGUE_TASK_USE_THE_BANK_ON_JATIZSO = 14485;
+			public static final int LEAGUE_TASK_USE_THE_BANK_ON_LUNAR_ISLE = 14486;
+			public static final int LEAGUE_TASK_GIVE_OLI_SOME_STEW = 14487;
+			public static final int LEAGUE_TASK_BANK_AT_MOUNT_QUIDAMORTEM = 14488;
+			public static final int LEAGUE_TASK_MILK_A_BUFFALO = 14489;
+			public static final int LEAGUE_TASK_DRINK_A_LIZARDKICKER = 14490;
+			public static final int LEAGUE_TASK_EAT_A_FIELD_RATION = 14491;
+			public static final int LEAGUE_TASK_PET_A_CAIQUE = 14492;
+			public static final int LEAGUE_TASK_PET_RENU = 14493;
+			public static final int LEAGUE_TASK_USE_THE_BANK_AT_THE_MAGE_ARENA = 14494;
+			public static final int LEAGUE_TASK_PET_XOLO_IN_CIVITAS = 14495;
+			public static final int LEAGUE_TASK_PICK_UP_A_CABBAGE_IN_THE_CITHAREDE_ABBEY = 14496;
+			public static final int LEAGUE_TASK_ENTER_THE_TAVERLEY_DUNGEON = 14497;
+			public static final int LEAGUE_TASK_TALK_TO_ILFEEN_IN_TIRANNWN = 14498;
+			public static final int LEAGUE_TASK_USE_THE_BANK_ON_NEITIZNOT = 14499;
+			public static final int LEAGUE_TASK_TAKE_A_CARPET_RIDE_FROM_POLLNIVNEACH_TO_SOPHANEM = 14500;
+			public static final int LEAGUE_TASK_USE_BROKEN_HANDZS_TELESCOPE = 14501;
+			public static final int LEAGUE_TASK_DEPOSIT_AN_ITEM_USING_PEER_THE_SEER = 14502;
+			public static final int LEAGUE_TASK_PICK_SOME_SWEETCORN_FROM_A_FIELD = 14503;
+			public static final int LEAGUE_TASK_SALUTE_NEXT_TO_A_STATUE_OF_QUOATLOS = 14504;
+			public static final int LEAGUE_TASK_BRIMSTAIL_RUNE_ESSENCE_MINE_TELEPORT = 14505;
+			public static final int LEAGUE_TASK_SCATTER_SOME_ASHES_IN_YAMAS_LAIR = 14506;
+			public static final int LEAGUE_TASK_SHEAR_AN_ALPACA = 14507;
+			public static final int LEAGUE_TASK_USE_THE_BANK_IN_NARDAH = 14508;
+			public static final int LEAGUE_TASK_SIT_NEAR_A_STOLEN_CABBAGE = 14509;
+			public static final int LEAGUE_TASK_STEP_ONTO_AN_ENT_TRAIL = 14510;
+			public static final int LEAGUE_TASK_TALK_TO_A_GLADIATOR = 14511;
+			public static final int LEAGUE_TASK_TRAVEL_IN_ACHILKAS_BOAT = 14512;
+			public static final int LEAGUE_TASK_TRAVEL_TO_ALDARIN_VIA_FAIRY_RING = 14513;
+			public static final int LEAGUE_TASK_TRAVEL_USING_THE_QUETZAL_TRANSPORT_SYSTEM = 14514;
+			public static final int LEAGUE_TASK_USE_THE_BANK_IN_LLETYA = 14515;
+			public static final int LEAGUE_TASK_CHARTER_A_SHIP_FROM_PRIFDDINAS_TO_PORT_TYRAS = 14516;
+			public static final int LEAGUE_TASK_INSPECT_A_GREEN_FLAME = 14517;
+			public static final int LEAGUE_TASK_ADMIRE_SOME_BEAUTIFUL_SCENERY = 14518;
+			public static final int LEAGUE_TASK_BOW_NEAR_A_QUETZAL = 14519;
+			public static final int LEAGUE_TASK_VISIT_FEROX_ENCLAVE = 14520;
+			public static final int LEAGUE_TASK_ENTER_THE_WILDERNESS_GOD_WARS_DUNGEON = 14521;
+			public static final int LEAGUE_TASK_ENTER_THE_WILDERNESS_RESOURCE_AREA = 14522;
+			public static final int LEAGUE_TASK_UNLOCK_ALL_CATACOMBS_ENTRANCES = 14523;
+			public static final int LEAGUE_TASK_ENTER_LEVEL_3_OF_THE_CHASM_OF_FIRE = 14524;
+			public static final int LEAGUE_TASK_PAY_ATLAS_TO_RETRAIN_YOU = 14525;
+			public static final int LEAGUE_TASK_CUT_A_CACTUS_IN_THE_KHARIDIAN_DESERT = 14526;
+			public static final int LEAGUE_TASK_CHARTER_A_SHIP_FROM_SUNSET_COAST_TO_CIVITAS = 14527;
+			public static final int LEAGUE_TASK_CRY_NEAR_A_CHILD = 14528;
+			public static final int LEAGUE_TASK_DANCE_NEAR_A_BARD = 14529;
+			public static final int LEAGUE_TASK_DRINK_A_CUP_OF_TEA_IN_AUBURN_VALLEY = 14530;
+			public static final int LEAGUE_TASK_DRINK_FROM_A_BIRD_BATH = 14531;
+			public static final int LEAGUE_TASK_DRINK_A_POISON_CHALICE = 14532;
+			public static final int LEAGUE_TASK_DRINK_SOME_MOONLITE = 14533;
+			public static final int LEAGUE_TASK_EXIT_CIVITAS_VIA_THE_SECRET_PASSAGE = 14534;
+			public static final int LEAGUE_TASK_FILL_A_BUCKET_WITH_SAND_AT_THE_SUNSET_COAST = 14535;
+			public static final int LEAGUE_TASK_DRINK_SOME_OF_ALIS_TEA = 14536;
+			public static final int LEAGUE_TASK_ENTER_THE_KALPHITE_LAIR = 14537;
+			public static final int LEAGUE_TASK_FILL_SOMETHING_UP_FROM_A_WATER_PUMP = 14538;
+			public static final int LEAGUE_TASK_ACTIVATE_3_SET_EFFECTS = 14539;
+			public static final int LEAGUE_TASK_LOOT_A_DRAGONSTONE_FROM_THE_ROGUES_CASTLE = 14540;
+			public static final int LEAGUE_TASK_OPEN_A_CHEST_WITH_THE_MOON_KEY = 14541;
+			public static final int LEAGUE_TASK_OPEN_THE_VARLAMORE_MOON_CHEST = 14542;
+			public static final int LEAGUE_TASK_TRADE_WITH_BARDUR = 14543;
+			public static final int LEAGUE_TASK_COLLECT_MISCELLANIA_RESOURCES_AT_FULL_APPROVAL = 14544;
+			public static final int LEAGUE_TASK_UNLOCK_PERMANENT_BOAT_TRAVEL_WITH_ANDRAS = 14545;
+			public static final int LEAGUE_TASK_ENTER_THE_MYTHS_GUILD = 14546;
+			public static final int LEAGUE_TASK_FEED_LONGRAMBLE = 14547;
+			public static final int LEAGUE_TASK_FULLY_UNLOCK_THE_MYCELIUM_TRANSPORTATION_SYSTEM = 14548;
+			public static final int LEAGUE_TASK_GET_A_CHAIR_TO_FOLLOW_YOU = 14549;
+			public static final int LEAGUE_TASK_GET_SENT_TO_PORT_SARIM_JAIL = 14550;
+			public static final int LEAGUE_TASK_GO_THROUGH_THE_AL_KHARID_GATE = 14551;
+			public static final int LEAGUE_TASK_HAVE_ELSIE_TELL_YOU_A_STORY = 14552;
+			public static final int LEAGUE_TASK_HAVE_NED_MAKE_YOU_SOME_ROPE = 14553;
+			public static final int LEAGUE_TASK_HAVE_THE_WISE_OLD_MAN_GET_ANGRY_WITH_YOU = 14554;
+			public static final int LEAGUE_TASK_INSULT_AGGIE_THE_WITCH = 14555;
+			public static final int LEAGUE_TASK_MAKE_A_PIE_FOR_ROMILY = 14556;
+			public static final int LEAGUE_TASK_MILK_A_COW = 14557;
+			public static final int LEAGUE_TASK_PAN_FOR_AN_UNCUT_JADE = 14558;
+			public static final int LEAGUE_TASK_PAY_SANIBOCH_FOR_PERMANENT_ACCESS = 14559;
+			public static final int LEAGUE_TASK_PET_A_STRAY_DOG_IN_VARROCK = 14560;
+			public static final int LEAGUE_TASK_PET_THE_MUSEUM_CAMP_DOG = 14561;
+			public static final int LEAGUE_TASK_PICK_A_CABBAGE_IN_VARROCK = 14562;
+			public static final int LEAGUE_TASK_PICK_A_PINEAPPLE_ON_KARAMJA = 14563;
+			public static final int LEAGUE_TASK_PRAY_AT_AN_ALTAR_IN_LUMBRIDGE = 14564;
+			public static final int LEAGUE_TASK_PRAY_AT_THE_SOUTHERN_CHAOS_TEMPLE = 14565;
+			public static final int LEAGUE_TASK_PRAY_AT_THE_WESTERN_CHAOS_TEMPLE = 14566;
+			public static final int LEAGUE_TASK_PROVIDE_TERRY_A_BUCKLE = 14567;
+			public static final int LEAGUE_TASK_PURCHASE_A_HALO_FROM_CASTLEWARS = 14568;
+			public static final int LEAGUE_TASK_PURCHASE_AN_ONYX_IN_MOR_UL_REK = 14569;
+			public static final int LEAGUE_TASK_REACH_THE_LIGHTHOUSE_VIA_STEPPING_STONES = 14570;
+			public static final int LEAGUE_TASK_SCORE_A_GOAL_IN_GNOMEBALL = 14571;
+			public static final int LEAGUE_TASK_ACTIVATE_ALL_STATUES_OF_ATES = 14572;
+			public static final int LEAGUE_TASK_SLASH_A_WEB_IN_VARROCK_SEWERS = 14573;
+			public static final int LEAGUE_TASK_SLEEP_IN_PARAMAYA_INN = 14574;
+			public static final int LEAGUE_TASK_BUILD_ALL_QUETZAL_LANDING_SITES = 14575;
+			public static final int LEAGUE_TASK_STROKE_YOUR_CAT = 14576;
+			public static final int LEAGUE_TASK_TAKE_A_CANOE_TO_CHAMPIONS_GUILD = 14577;
+			public static final int LEAGUE_TASK_TALK_TO_HANS = 14578;
+			public static final int LEAGUE_TASK_TAN_A_COW_HIDE_IN_THE_KHARIDIAN_DESERT = 14579;
+			public static final int LEAGUE_TASK_TASTE_A_DORGESHUUN_DELICACY = 14580;
+			public static final int LEAGUE_TASK_TRADE_IN_A_CAT_FOR_DEATH_RUNES = 14581;
+			public static final int LEAGUE_TASK_TRAVEL_TO_FOSSIL_ISLAND = 14582;
+			public static final int LEAGUE_TASK_UPSET_THE_HOMELESS = 14583;
+			public static final int LEAGUE_TASK_USE_A_DIGSITE_PENDANT_TO_TELEPORT_TO_FOSSIL_ISLAND = 14584;
+			public static final int LEAGUE_TASK_USE_A_FAIRY_RING = 14585;
+			public static final int LEAGUE_TASK_USE_A_LEVER_TO_TELEPORT_TO_EDGEVILLE = 14586;
+			public static final int LEAGUE_TASK_USE_THE_NORTHERN_STAIRCASE_IN_LUMBRIDGE = 14587;
+			public static final int LEAGUE_TASK_HAVE_THE_TAXIDERMIST_STUFF_SOMETHING_FOR_YOU = 14588;
+			public static final int LEAGUE_TASK_BUILD_A_BANK_ON_FOSSIL_ISLAND = 14589;
+			public static final int LEAGUE_TASK_BUY_A_CANDLE_IN_LUMBRIDGE = 14590;
+			public static final int LEAGUE_TASK_CHARM_GERTRUDE = 14591;
+			public static final int LEAGUE_TASK_COMPLETE_A_TASK_FOR_THE_WISE_OLD_MAN = 14592;
+			public static final int LEAGUE_TASK_COMPLETE_THE_NATURAL_HISTORY_QUIZ = 14593;
+			public static final int LEAGUE_TASK_DRINK_A_BEER_IN_THE_LONGHALL = 14594;
+			public static final int LEAGUE_TASK_DRINK_FROM_THE_TEARS_OF_GUTHIX = 14595;
+			public static final int LEAGUE_TASK_EAT_A_MAGIC_CABBAGE = 14596;
+			public static final int LEAGUE_TASK_ENTER_DRAYNOR_MANOR = 14597;
+			public static final int LEAGUE_TASK_ENTER_SOPHANEM = 14598;
+			public static final int LEAGUE_TASK_ENTER_THE_BRIMHAVEN_DUNGEON = 14599;
+			public static final int LEAGUE_TASK_ENTER_THE_TAI_BWO_WANNAI_HARDWOOD_GROVE = 14600;
+			public static final int LEAGUE_TASK_ENTER_ZANARIS = 14601;
+			public static final int LEAGUE_TASK_FEED_A_DRAYNOR_GUARD_SOME_STEW = 14602;
+			public static final int LEAGUE_TASK_PET_FRANK = 14603;
+			public static final int LEAGUE_TASK_BURY_OURG_BONE = 14604;
+			public static final int LEAGUE_TASK_FILL_A_CRATE_WITH_BANANAS = 14605;
+			public static final int LEAGUE_TASK_FLEX_IN_FRONT_OF_THE_GUNS = 14606;
+			public static final int LEAGUE_TASK_OPEN_THE_ENHANCED_CRYSTAL_CHEST = 14607;
+			public static final int LEAGUE_TASK_CRAFT_AN_ETERNAL_TELEPORT_CRYSTAL = 14608;
+			public static final int LEAGUE_TASK_FIND_EVERY_MEMORIAM_CRYSTAL = 14609;
+			public static final int LEAGUE_TASK_MAX_OUT_10_FRAGMENTS = 14610;
+			public static final int LEAGUE_TASK_OBTAIN_A_KEBAB_FROM_THE_CERTER_BROTHERS = 14611;
+			public static final int LEAGUE_TASK_ACTIVATE_2_SET_EFFECTS = 14612;
+			public static final int LEAGUE_TASK_MAX_OUT_ALL_FRAGMENTS = 14613;
+			public static final int LEAGUE_TASK_HAND_IN_CRYSTAL_SEED_FOR_ACORN = 14614;
+			public static final int LEAGUE_TASK_INVESTIGATE_MEZTLAN = 14615;
+			public static final int LEAGUE_TASK_OBTAIN_A_CAKE_FROM_A_NEST = 14616;
+			public static final int LEAGUE_TASK_JUMP_ON_THE_STEPPING_STONES_IN_YAMAS_LAIR_666_TIMES = 14617;
+			public static final int LEAGUE_TASK_ACTIVATE_THE_STATUE_OF_ATES = 14618;
+			public static final int LEAGUE_TASK_HEADBANG_WITH_KETSAL_KUK = 14619;
+			public static final int LEAGUE_TASK_BURY_SOME_WYRM_BONES_NEAR_A_WYRM_SKELETON = 14620;
+			public static final int LEAGUE_TASK_TALK_TO_THE_VOICE_OF_YAMA = 14621;
+			public static final int LEAGUE_TASK_ENTER_A_DARK_CAVE_IN_VARLAMORE = 14622;
+			public static final int LEAGUE_TASK_FILL_A_GRAPE_BARREL_FOR_THE_FOREMAN = 14623;
+			public static final int LEAGUE_TASK_TELEPORT_TO_XERICS_HONOUR = 14624;
+			public static final int LEAGUE_TASK_CAST_KOUREND_CASTLE_TELEPORT = 14625;
+			public static final int LEAGUE_TASK_CREATE_100_JUNIPER_CHARCOAL = 14626;
+			public static final int LEAGUE_TASK_DIG_25_SALTPETRE = 14627;
+			public static final int LEAGUE_TASK_FULLY_DEPLETE_A_BLOOD_ESSENCE = 14628;
+			public static final int LEAGUE_TASK_MAX_OUT_1_FRAGMENT = 14629;
+			public static final int LEAGUE_TASK_SMUGGLE_SOME_RUM = 14630;
+			public static final int LEAGUE_TASK_SPAWN_A_SKELETAL_MAGE = 14631;
+			public static final int LEAGUE_TASK_ACTIVATE_1_SET_EFFECT = 14632;
+			public static final int LEAGUE_TASK_FIND_THE_NEEDLE = 14633;
+			public static final int LEAGUE_TASK_ORDER_A_DRINK_AT_THE_OLD_NITE = 14634;
+			public static final int LEAGUE_TASK_DESTROY_THE_ONE_RING_TO_RULE_THEM_ALL = 14635;
+			public static final int LEAGUE_TASK_ENTER_THE_DEEP_WILDERNESS_DUNGEON = 14636;
+			public static final int LEAGUE_TASK_STORE_10K_BOWSTRINGS_INSIDE_A_BOWSTRING_SPOOL = 14637;
+			public static final int LEAGUE_TASK_FIX_A_RUSTY_SCIMITAR = 14638;
+			public static final int LEAGUE_TASK_HANG_A_PAINTING_OF_A_WATERMILL = 14639;
+			public static final int LEAGUE_TASK_OPEN_THE_CRYSTAL_CHEST = 14640;
+			public static final int LEAGUE_TASK_ENTER_THE_WARRIORS_GUILD = 14641;
+			public static final int LEAGUE_TASK_THROW_A_SHOT_PUT_12_YARDS = 14642;
+			public static final int LEAGUE_TASK_MINE_RUNITE_NEITIZNOT = 14643;
+			public static final int LEAGUE_TASK_FILL_UP_20_BUCKETS_OF_SAND_IN_RELLEKKA = 14644;
+			public static final int LEAGUE_TASK_PRAY_AT_THE_ELIDINIS_STATUETTE = 14645;
+			public static final int LEAGUE_TASK_COMMUNE_A_PHAROAHS_SCEPTRE_TO_THE_NECROPOLIS = 14646;
+			public static final int LEAGUE_TASK_OFFEND_BANDITS = 14647;
+			public static final int LEAGUE_TASK_TELEGRAB_A_BLOODY_BRACER = 14648;
+			public static final int LEAGUE_TASK_PICK_UP_10_WHITEBERRIES_IN_TIRANNWN = 14649;
+			public static final int LEAGUE_TASK_RING_ALL_OF_THE_PRIFDDINAS_BELLS = 14650;
+			public static final int LEAGUE_TASK_USE_AN_ELVEN_TELEPORT_CRYSTAL = 14651;
+			public static final int LEAGUE_TASK_SELL_20_IRON_SHEETS = 14652;
+			public static final int LEAGUE_TASK_USE_A_HERRING_ON_A_MIGHTY_TREE = 14653;
+			public static final int LEAGUE_TASK_FEED_A_GHAST_SOME_SWEETS = 14654;
+			public static final int LEAGUE_TASK_READ_A_PRAYER_BOOK_NEAR_A_LECTERN = 14655;
+			public static final int LEAGUE_TASK_WEAR_MULTIPLE_SNELMS = 14656;
+			public static final int LEAGUE_TASK_HIS_FAITHFUL_SERVANTS = 14657;
+			public static final int LEAGUE_TASK_FEED_A_DOG_SOME_BONES = 14658;
+			public static final int LEAGUE_TASK_GET_A_HAIRCUT = 14659;
+			public static final int LEAGUE_TASK_MAKE_SOME_FLOUR = 14660;
+			public static final int LEAGUE_TASK_OBTAIN_A_KEBAB_FROM_RANDOM_EVENT = 14661;
+			public static final int LEAGUE_TASK_OPEN_THE_LEAGUES_MENU = 14662;
+			public static final int LEAGUE_TASK_OPEN_THE_MYSTERY_BOX = 14663;
+			public static final int LEAGUE_TASK_PICK_6_FLAX = 14664;
+			public static final int LEAGUE_TASK_PICK_6_WHEAT_6_CABBAGES_AND_6_POTATOES = 14665;
+			public static final int LEAGUE_TASK_TALK_TO_ANY_PORT_MASTER = 14666;
+			public static final int LEAGUE_TASK_TRADE_A_HERB_WITH_JEKYLL = 14667;
+			public static final int LEAGUE_TASK_TURN_OFF_YOUR_RUN = 14668;
+			public static final int LEAGUE_TASK_UPSET_SANDWICH_LADY = 14669;
+			public static final int LEAGUE_TASK_COMPLETE_ASCENT_OF_ARCEUUS = 14670;
+			public static final int ACTION_COMPLETE_THE_VALE_TOTEMS_MINIQUEST = 14671;
+			public static final int LEAGUE_TASK_COMPLETE_CLIENT_OF_KOUREND = 14672;
+			public static final int LEAGUE_TASK_COMPLETE_FORSAKEN_TOWER = 14673;
+			public static final int LEAGUE_TASK_COMPLETE_QUEEN_OF_THIEVES = 14674;
+			public static final int LEAGUE_TASK_THE_FROZEN_DOOR = 14675;
+			public static final int LEAGUE_TASK_COMPLETE_LAND_OF_THE_GOBLINS = 14676;
+			public static final int LEAGUE_TASK_COMPLETE_ELEMENTAL_WORKSHOP_II = 14677;
+			public static final int LEAGUE_TASK_COMPLETE_PATH_OF_GLOUPHRIE = 14678;
+			public static final int LEAGUE_TASK_COMPLETE_DEATH_ON_THE_ISLE = 14679;
+			public static final int LEAGUE_TASK_COMPLETE_PERILOUS_MOONS = 14680;
+			public static final int ACTION_COMPLETE_SHADOWS_OF_CUSTODIA = 14681;
+			public static final int ACTION_COMPLETE_THE_FINAL_DAWN = 14682;
+			public static final int ACTION_COMPLETE_THE_HEART_OF_DARKNESS = 14683;
+			public static final int LEAGUE_TASK_ASK_FOR_A_QUEST_FROM_BOB = 14684;
+			public static final int LEAGUE_TASK_COMPLETE_A_KINGDOM_DIVIDED = 14685;
+			public static final int LEAGUE_TASK_COMPLETE_A_SOULS_BANE = 14686;
+			public static final int LEAGUE_TASK_COMPLETE_A_TASTE_OF_HOPE = 14687;
+			public static final int LEAGUE_TASK_COMPLETE_BENEATH_CURSED_SANDS = 14688;
+			public static final int LEAGUE_TASK_COMPLETE_DEFENDER_OF_VARROCK = 14689;
+			public static final int LEAGUE_TASK_COMPLETE_DEMON_SLAYER = 14690;
+			public static final int LEAGUE_TASK_COMPLETE_ELEMENTAL_WORKSHOP_I = 14691;
+			public static final int LEAGUE_TASK_COMPLETE_ENAKHRAS_LAMENT = 14692;
+			public static final int LEAGUE_TASK_COMPLETE_GERTRUDES_CAT = 14693;
+			public static final int LEAGUE_TASK_COMPLETE_GHOSTS_AHOY = 14694;
+			public static final int LEAGUE_TASK_COMPLETE_HAUNTED_MINE = 14695;
+			public static final int LEAGUE_TASK_COMPLETE_ROMEO_JULIET = 14696;
+			public static final int LEAGUE_TASK_COMPLETE_RUNE_MYSTERIES = 14697;
+			public static final int LEAGUE_TASK_COMPLETE_SHADOW_OF_THE_STORM = 14698;
+			public static final int LEAGUE_TASK_COMPLETE_SHEEP_SHEARER = 14699;
+			public static final int LEAGUE_TASK_COMPLETE_SINS_OF_THE_FATHER = 14700;
+			public static final int LEAGUE_TASK_COMPLETE_SLEEPING_GIANTS = 14701;
+			public static final int LEAGUE_TASK_COMPLETE_SPIRITS_OF_THE_ELID = 14702;
+			public static final int LEAGUE_TASK_COMPLETE_THE_GOLEM = 14703;
+			public static final int LEAGUE_TASK_COMPLETE_THE_RESTLESS_GHOST = 14704;
+			public static final int LEAGUE_TASK_COMPLETE_VAMPYRE_SLAYER = 14705;
+			public static final int LEAGUE_TASK_FINISH_CURSE_OF_ARRAV = 14706;
+			public static final int LEAGUE_TASK_COMPLETE_A_PORCINE_OF_INTEREST = 14707;
+			public static final int LEAGUE_TASK_COMPLETE_BELOW_ICE_MOUNTAIN = 14708;
+			public static final int LEAGUE_TASK_COMPLETE_DEATH_TO_THE_DORGESHUUN = 14709;
+			public static final int LEAGUE_TASK_COMPLETE_THE_LOST_TRIBE = 14710;
+			public static final int LEAGUE_TASK_COMPLETE_DEPTHS_OF_DESPAIR = 14711;
+			public static final int LEAGUE_TASK_COMPLETE_A_RIBBITING_TALE = 14712;
+			public static final int LEAGUE_TASK_COMPLETE_MEAT_AND_GREET = 14713;
+			public static final int ACTION_COMPLETE_AT_FIRST_LIGHT_QUEST = 14714;
+			public static final int LEAGUE_TASK_COMPLETE_GETTING_AHEAD = 14715;
+			public static final int LEAGUE_TASK_COMPLETE_THE_GARDEN_OF_DEATH = 14716;
+			public static final int LEAGUE_TASK_COMPLETE_IN_SEARCH_OF_KNOWLEDGE = 14717;
+			public static final int LEAGUE_TASK_COMPLETE_TALE_OF_THE_RIGHTEOUS = 14718;
+			public static final int LEAGUE_TASK_COMPLETE_OLAFS_QUEST = 14719;
+			public static final int LEAGUE_TASK_COMPLETE_ROYAL_TROUBLE = 14720;
+			public static final int LEAGUE_TASK_COMPLETE_THRONE_OF_MISCELLANIA = 14721;
+			public static final int LEAGUE_TASK_COMPLETE_FISHING_CONTEST = 14722;
+			public static final int LEAGUE_TASK_COMPLETE_MONKS_FRIEND = 14723;
+			public static final int LEAGUE_TASK_COMPLETE_SEA_SLUG = 14724;
+			public static final int LEAGUE_TASK_COMPLETE_THE_OBSERVATORY_QUEST = 14725;
+			public static final int LEAGUE_TASK_COMPLETE_TOWER_OF_LIFE = 14726;
+			public static final int LEAGUE_TASK_COMPLETE_THE_GIANT_DWARF = 14727;
+			public static final int LEAGUE_TASK_COMPLETE_WITCHS_POTION = 14728;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_10 = 14729;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_20 = 14730;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_30 = 14731;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_40 = 14732;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_5 = 14733;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_50 = 14734;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_60 = 14735;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_70 = 14736;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_80 = 14737;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_90 = 14738;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_95 = 14739;
+			public static final int LEAGUE_TASK_ACHIEVE_YOUR_FIRST_LEVEL_UP = 14740;
+			public static final int LEAGUE_TASK_ACTIVATE_SMITE = 14741;
+			public static final int LEAGUE_TASK_BEAT_JACKY_JESTER = 14742;
+			public static final int LEAGUE_TASK_BLOW_100_LIGHT_ORBS = 14743;
+			public static final int LEAGUE_TASK_BUILD_A_DEMONIC_THRONE = 14744;
+			public static final int LEAGUE_TASK_BUILD_A_GILDED_ALTAR = 14745;
+			public static final int LEAGUE_TASK_BUILD_A_MAHOGANY_PORTAL = 14746;
+			public static final int LEAGUE_TASK_BUILD_A_ROOM_IN_YOUR_PLAYER_OWNED_HOUSE = 14747;
+			public static final int LEAGUE_TASK_BUILD_A_SPIRIT_TREE_FAIRY_RING = 14748;
+			public static final int LEAGUE_TASK_BUILD_AN_OAK_LARDER = 14749;
+			public static final int LEAGUE_TASK_BURN_100_WILLOW_LOGS = 14750;
+			public static final int LEAGUE_TASK_BURN_100_YEW_LOGS = 14751;
+			public static final int LEAGUE_TASK_BURN_25_MAPLE_LOGS = 14752;
+			public static final int LEAGUE_TASK_BURN_SOME_FOOD = 14753;
+			public static final int LEAGUE_TASK_BURN_SOME_MAGIC_LOGS = 14754;
+			public static final int LEAGUE_TASK_BURN_SOME_NORMAL_LOGS = 14755;
+			public static final int LEAGUE_TASK_BURN_SOME_OAK_LOGS = 14756;
+			public static final int LEAGUE_TASK_CAST_HOME_TELEPORT = 14757;
+			public static final int ACTION_CAST_LOW_LEVEL_ALCHEMY = 14758;
+			public static final int LEAGUE_TASK_CATCH_10_COD = 14759;
+			public static final int LEAGUE_TASK_CATCH_100_SHARK = 14760;
+			public static final int LEAGUE_TASK_CATCH_100_SWORDFISH = 14761;
+			public static final int LEAGUE_TASK_CATCH_100_TUNA = 14762;
+			public static final int LEAGUE_TASK_CATCH_20_MACKEREL = 14763;
+			public static final int LEAGUE_TASK_CATCH_50_TUNA = 14764;
+			public static final int LEAGUE_TASK_CATCH_500_CHINCHOMPAS = 14765;
+			public static final int LEAGUE_TASK_CATCH_75_LOBSTERS = 14766;
+			public static final int LEAGUE_TASK_CATCH_75_TROUT = 14767;
+			public static final int LEAGUE_TASK_CATCH_A_BABY_IMPLING = 14768;
+			public static final int LEAGUE_TASK_CATCH_A_BUTTERFLY = 14769;
+			public static final int LEAGUE_TASK_CATCH_A_DRAGON_IMPLING = 14770;
+			public static final int LEAGUE_TASK_CATCH_A_HERRING = 14771;
+			public static final int LEAGUE_TASK_CATCH_A_SHRIMP = 14772;
+			public static final int LEAGUE_TASK_CATCH_A_SWAMP_LIZARD_OR_SALAMANDER = 14773;
+			public static final int LEAGUE_TASK_CATCH_AN_ANCHOVY = 14774;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_FRUIT_TREE = 14775;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_TREE = 14776;
+			public static final int LEAGUE_TASK_CHOP_100_WILLOW_LOGS = 14777;
+			public static final int LEAGUE_TASK_CHOP_100_YEW_LOGS = 14778;
+			public static final int LEAGUE_TASK_CHOP_75_MAGIC_LOGS = 14779;
+			public static final int LEAGUE_TASK_CHOP_SOME_LOGS = 14780;
+			public static final int LEAGUE_TASK_CHOP_SOME_LOGS_WITH_A_RUNE_AXE = 14781;
+			public static final int LEAGUE_TASK_CHOP_SOME_LOGS_WITH_A_STEEL_AXE = 14782;
+			public static final int LEAGUE_TASK_CLEAN_100_GRIMY_AVANTOE = 14783;
+			public static final int LEAGUE_TASK_CLEAN_15_GRIMY_TARROMIN = 14784;
+			public static final int LEAGUE_TASK_CLEAN_25_GRIMY_GUAM_LEAFS = 14785;
+			public static final int LEAGUE_TASK_CLEAN_50_GRIMY_CADANTINE = 14786;
+			public static final int LEAGUE_TASK_CLEAN_50_GRIMY_LANTADYME = 14787;
+			public static final int LEAGUE_TASK_CLEAN_50_GRIMY_RANARR_WEED = 14788;
+			public static final int LEAGUE_TASK_CLEAN_A_GRIMY_AVANTOE = 14789;
+			public static final int LEAGUE_TASK_CLEAN_A_GRIMY_GUAM = 14790;
+			public static final int ACTION_ALCHEMY_500 = 14791;
+			public static final int LEAGUE_TASK_COOK_100_PIES = 14792;
+			public static final int LEAGUE_TASK_COOK_100_SHARKS = 14793;
+			public static final int LEAGUE_TASK_COOK_100_SWORDFISH = 14794;
+			public static final int LEAGUE_TASK_COOK_25_MEAT_PIES = 14795;
+			public static final int LEAGUE_TASK_COOK_50_TUNA = 14796;
+			public static final int LEAGUE_TASK_COOK_SHRIMP = 14797;
+			public static final int LEAGUE_TASK_COOK_SOMETHING_WITH_AN_APRON_ON = 14798;
+			public static final int LEAGUE_TASK_CRAFT_100_UNPOWERED_ORBS = 14799;
+			public static final int LEAGUE_TASK_CRAFT_20_SILVER_ITEMS = 14800;
+			public static final int LEAGUE_TASK_CRAFT_200_ESSENCE_INTO_RUNES = 14801;
+			public static final int LEAGUE_TASK_CRAFT_2500_ESSENCE_INTO_RUNES = 14802;
+			public static final int LEAGUE_TASK_CRAFT_30_BLUE_DRAGONHIDE_BODIES = 14803;
+			public static final int LEAGUE_TASK_CRAFT_4_RUNES_WITH_1_ESSENCE = 14804;
+			public static final int LEAGUE_TASK_CRAFT_A_DRAGONSTONE_AMULET = 14805;
+			public static final int ACTION_CRAFT_A_SAPPHIRE_AMULET = 14806;
+			public static final int LEAGUE_TASK_CRAFT_AN_EMERALD_RING = 14807;
+			public static final int LEAGUE_TASK_CRAFT_AN_ONYX_AMULET = 14808;
+			public static final int LEAGUE_TASK_CRAFT_ANY_COMBINATION_RUNE = 14809;
+			public static final int ACTION_CRAFT_LEATHER_CHAPS = 14810;
+			public static final int LEAGUE_TASK_CREATE_A_COMPOST_POTION = 14811;
+			public static final int LEAGUE_TASK_CREATE_A_GREEN_DHIDE_SHIELD = 14812;
+			public static final int LEAGUE_TASK_CREATE_A_GUTHIX_REST_TEA = 14813;
+			public static final int LEAGUE_TASK_CREATE_A_MITHRIL_GRAPPLE = 14814;
+			public static final int ACTION_CREATE_A_RED_DHIDE_SHIELD = 14815;
+			public static final int LEAGUE_TASK_CREATE_AN_ANTIPOISON = 14816;
+			public static final int LEAGUE_TASK_CUT_50_MAPLE_LOGS = 14817;
+			public static final int ACTION_CUT_A_RUBY = 14818;
+			public static final int LEAGUE_TASK_DRINK_A_STRENGTH_POTION = 14819;
+			public static final int LEAGUE_TASK_ENTER_YOUR_PLAYER_OWNED_HOUSE = 14820;
+			public static final int LEAGUE_TASK_REPAIR_A_FISHING_CRANE = 14821;
+			public static final int LEAGUE_TASK_TURN_IN_1_LIBRARY_BOOK = 14822;
+			public static final int LEAGUE_TASK_COMPLETE_1_FARMING_CONTRACT = 14823;
+			public static final int LEAGUE_TASK_LOCATE_A_RUNECRAFTING_ALTAR_WITH_A_TALISMAN = 14824;
+			public static final int LEAGUE_TASK_MINE_15_COAL = 14825;
+			public static final int LEAGUE_TASK_MINE_SOME_COPPER_ORE = 14826;
+			public static final int LEAGUE_TASK_CATCH_A_CRIMSON_SWIFT_IN_THE_FELDIP_HILLS = 14827;
+			public static final int LEAGUE_TASK_FERMENT_100_JUGS_OF_WINE = 14828;
+			public static final int LEAGUE_TASK_SWITCH_TO_THE_LUNAR_SPELLBOOK = 14829;
+			public static final int LEAGUE_TASK_CATCH_A_CERULEAN_TWITCH = 14830;
+			public static final int LEAGUE_TASK_CATCH_A_POLAR_KEBBIT = 14831;
+			public static final int LEAGUE_TASK_CATCH_A_WILD_KEBBIT = 14832;
+			public static final int LEAGUE_TASK_CHOP_DOWN_AN_ARCTIC_PINE_TREE = 14833;
+			public static final int LEAGUE_TASK_CUT_THE_SWAYING_TREE = 14834;
+			public static final int LEAGUE_TASK_COMPLETE_THE_GNOME_STRONGHOLD_AGILITY_COURSE = 14835;
+			public static final int LEAGUE_TASK_RAKE_A_FARMING_PATCH = 14836;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_500 = 14837;
+			public static final int LEAGUE_TASK_COOK_A_RABBIT_IN_TIRANNWN = 14838;
+			public static final int LEAGUE_TASK_SMITH_A_BRONZE_FULL_HELM = 14839;
+			public static final int LEAGUE_TASK_SMITH_A_BRONZE_PLATESKIRT = 14840;
+			public static final int LEAGUE_TASK_STEAL_A_CHOCOLATE_SLICE = 14841;
+			public static final int LEAGUE_TASK_STEAL_SOME_SILK = 14842;
+			public static final int LEAGUE_TASK_VISIT_THE_RUNE_ESSENCE_MINE = 14843;
+			public static final int LEAGUE_TASK_GIVE_THURGO_A_REDBERRY_PIE = 14844;
+			public static final int LEAGUE_TASK_FILL_A_BUCKET_WITH_SUPERCOMPOST = 14845;
+			public static final int LEAGUE_TASK_FILL_A_GIANT_POUCH = 14846;
+			public static final int LEAGUE_TASK_FILL_A_HARD_STASH_UNIT = 14847;
+			public static final int LEAGUE_TASK_MOVE_YOUR_HOUSE_TO_TAVERLEY = 14848;
+			public static final int LEAGUE_TASK_CRAFT_AN_AIR_RUNE = 14849;
+			public static final int LEAGUE_TASK_FILL_A_LARGE_POUCH = 14850;
+			public static final int LEAGUE_TASK_FILL_A_MEDIUM_STASH_UNIT = 14851;
+			public static final int LEAGUE_TASK_SMITH_SHAYZIEN_5 = 14852;
+			public static final int LEAGUE_TASK_FLETCH_100_DRAGON_JAVELINS = 14853;
+			public static final int LEAGUE_TASK_FLETCH_1000_ARROW_SHAFTS = 14854;
+			public static final int LEAGUE_TASK_CATCH_150_ANGLERFISH = 14855;
+			public static final int LEAGUE_TASK_FLETCH_150_IRON_ARROWS = 14856;
+			public static final int LEAGUE_TASK_FLETCH_200_MAGIC_LONGBOW_U = 14857;
+			public static final int LEAGUE_TASK_FLETCH_25_MAPLE_LONGBOW_U = 14858;
+			public static final int LEAGUE_TASK_FLETCH_25_OAK_STOCKS = 14859;
+			public static final int LEAGUE_TASK_FLETCH_50_WILLOW_LONGBOW_U = 14860;
+			public static final int LEAGUE_TASK_COMPLETE_A_ROOFTOP_AGILITY_COURSE = 14861;
+			public static final int LEAGUE_TASK_FLETCH_50_YEW_LONGBOW_U = 14862;
+			public static final int LEAGUE_TASK_FLETCH_A_MAGIC_SHIELD = 14863;
+			public static final int LEAGUE_TASK_CRAFT_A_LEATHER_BODY = 14864;
+			public static final int LEAGUE_TASK_CRAFT_ANY_RUNE = 14865;
+			public static final int LEAGUE_TASK_FLETCH_A_RUNE_CROSSBOW = 14866;
+			public static final int LEAGUE_TASK_FLETCH_A_WILLOW_SHORTBOW_U = 14867;
+			public static final int LEAGUE_TASK_FLETCH_AN_OAK_SHORTBOW = 14868;
+			public static final int LEAGUE_TASK_FLETCH_SOME_ARROW_SHAFTS = 14869;
+			public static final int ACTION_MINE_SOME_COAL_FROM_STONE_CUTTER_OUTPOST = 14870;
+			public static final int LEAGUE_TASK_TRIM_YOUR_BEARD_IN_CAM_TORUM = 14871;
+			public static final int LEAGUE_TASK_CHOP_A_TREE_IN_THE_TLATI_RAINFOREST = 14872;
+			public static final int LEAGUE_TASK_CROSS_A_TRAP_IN_ISAFDAR = 14873;
+			public static final int LEAGUE_TASK_CUT_A_SAPPHIRE = 14874;
+			public static final int LEAGUE_TASK_FLETCH_SOME_BROAD_ARROWS_OR_BOLTS = 14875;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_REDWOOD_TREE = 14876;
+			public static final int LEAGUE_TASK_MAKE_50_FORGOTTEN_BREWS = 14877;
+			public static final int LEAGUE_TASK_BLAST_FURNACE_100_RUNITE_BARS = 14878;
+			public static final int LEAGUE_TASK_MINE_1000_ANCIENT_ESSENCE = 14879;
+			public static final int LEAGUE_TASK_MAKE_AN_EXTENDED_ANTIFIRE_POTION = 14880;
+			public static final int LEAGUE_TASK_MINE_SOME_RUNITE_ORE_IN_THE_WILDERNESS = 14881;
+			public static final int LEAGUE_TASK_COOK_A_DARK_CRAB = 14882;
+			public static final int LEAGUE_TASK_TRAVEL_BETWEEN_YOUR_SPIRIT_TREES = 14883;
+			public static final int LEAGUE_TASK_CHOP_500_REDWOOD_LOGS = 14884;
+			public static final int LEAGUE_TASK_COOK_100_ANGLERFISH = 14885;
+			public static final int LEAGUE_TASK_OBTAIN_A_ZALCANO_SHARD = 14886;
+			public static final int LEAGUE_TASK_SMITH_500_RUNITE_BOLTS_UNF_IN_PRIFDDINAS = 14887;
+			public static final int LEAGUE_TASK_CATCH_300_RED_CHINCHOMPAS_IN_TIRANNWN = 14888;
+			public static final int LEAGUE_TASK_CHECK_THE_HEALTH_OF_5_CRYSTAL_TREES = 14889;
+			public static final int LEAGUE_TASK_BAREHAND_CATCH_A_SHARK = 14890;
+			public static final int LEAGUE_TASK_CATCH_150_RED_CHINCHOMPAS_IN_KANDARIN = 14891;
+			public static final int LEAGUE_TASK_CRAFT_100_SOUL_RUNES = 14892;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_DRAGONFRUIT_TREE_IN_CATHERBY = 14893;
+			public static final int LEAGUE_TASK_FLETCH_250_REDWOOD_LOGS_INTO_ARROW_SHAFTS = 14894;
+			public static final int LEAGUE_TASK_COMPLETE_THE_ARDOUGNE_AGILITY_COURSE = 14895;
+			public static final int LEAGUE_TASK_CRAFT_A_WRATH_RUNE = 14896;
+			public static final int LEAGUE_TASK_CREATE_100_DIVINE_RANGING_POTIONS = 14897;
+			public static final int LEAGUE_TASK_MAKE_200_BRUTAL_RUNE_ARROW = 14898;
+			public static final int LEAGUE_TASK_CREATE_100_DIVINE_SUPER_COMBAT_POTIONS = 14899;
+			public static final int LEAGUE_TASK_DISSECT_250_SACRED_EELS = 14900;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_ATTACK_XP = 14901;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_DEFENCE_XP = 14902;
+			public static final int LEAGUE_TASK_MINE_100_RUNITE_ORE_IN_TIRANNWN = 14903;
+			public static final int LEAGUE_TASK_REDEEM_50_WILDERNESS_AGILITY_TICKETS = 14904;
+			public static final int LEAGUE_TASK_MAKE_50_ANTIVENOM__POTIONS = 14905;
+			public static final int LEAGUE_TASK_SACRIFICE_SOME_DRAGON_BONES_AT_THE_CHAOS_TEMPLE = 14906;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_HITPOINTS_XP = 14907;
+			public static final int LEAGUE_TASK_CATCH_100_DARK_CRABS = 14908;
+			public static final int LEAGUE_TASK_PURCHASE_THE_CHUGGING_BARREL = 14909;
+			public static final int LEAGUE_TASK_CATCH_100_TECU_SALAMANDERS = 14910;
+			public static final int LEAGUE_TASK_CATCH_50_MOONLIGHT_ANTELOPES = 14911;
+			public static final int ACTION_FINISH_REDWOOD_ENT_TOTEM_DECORATION = 14912;
+			public static final int LEAGUE_TASK_CROSS_THE_CHAOS_TEMPLE_STONE_SHORTCUT = 14913;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_MAGIC_XP = 14914;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_RANGED_XP = 14915;
+			public static final int LEAGUE_TASK_PURCHASE_A_CELESTIAL_RING = 14916;
+			public static final int LEAGUE_TASK_CRAFT_50_LAW_RUNES = 14917;
+			public static final int LEAGUE_TASK_HARVEST_A_SNAPDRAGON_IN_WEISS = 14918;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_STRENGTH_XP = 14919;
+			public static final int LEAGUE_TASK_TRAP_A_SABRETOOTHED_KYATT = 14920;
+			public static final int LEAGUE_TASK_HARVEST_A_RANARR_WEED = 14921;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_ATTACK_XP = 14922;
+			public static final int LEAGUE_TASK_TURN_IN_50_LIBRARY_BOOKS = 14923;
+			public static final int LEAGUE_TASK_FISH_AN_OLD_BOOT_IN_STRANGLEWOOD = 14924;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_DEFENCE_XP = 14925;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_HITPOINTS_XP = 14926;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_MAGIC_XP = 14927;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_RANGED_XP = 14928;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_STRENGTH_XP = 14929;
+			public static final int LEAGUE_TASK_LAND_A_HOOP_ON_A_STICK = 14930;
+			public static final int LEAGUE_TASK_LIGHT_A_BULLSEYE_LANTERN = 14931;
+			public static final int LEAGUE_TASK_LIGHT_A_TORCH = 14932;
+			public static final int LEAGUE_TASK_MAKE_20_RANGING_POTIONS = 14933;
+			public static final int LEAGUE_TASK_MAKE_20_STAMINA_POTIONS = 14934;
+			public static final int LEAGUE_TASK_MAKE_30_PRAYER_POTIONS = 14935;
+			public static final int LEAGUE_TASK_MAKE_A_4_DOSE_POTION = 14936;
+			public static final int ACTION_MAKE_A_MEAT_PIZZA = 14937;
+			public static final int LEAGUE_TASK_MAKE_A_SARADOMIN_BREW = 14938;
+			public static final int LEAGUE_TASK_MAKE_A_SUPER_COMBAT_POTION = 14939;
+			public static final int LEAGUE_TASK_MAKE_AN_ATTACK_POTION = 14940;
+			public static final int LEAGUE_TASK_MINE_10_SILVER = 14941;
+			public static final int LEAGUE_TASK_MINE_5_TIN_ORE = 14942;
+			public static final int LEAGUE_TASK_MINE_50_ADAMANTITE_ORE = 14943;
+			public static final int LEAGUE_TASK_HARVEST_25_ZAMORAKS_GRAPES = 14944;
+			public static final int LEAGUE_TASK_MINE_50_IRON_ORE = 14945;
+			public static final int LEAGUE_TASK_MINE_50_MITHRIL_ORE = 14946;
+			public static final int LEAGUE_TASK_USE_YOUR_PORTAL_NEXUS_TO_TELEPORT_TO_WEISS = 14947;
+			public static final int LEAGUE_TASK_OBTAIN_RUNITE_ORE_AT_THE_BLAST_MINE = 14948;
+			public static final int ACTION_MINE_SOME_CLAY = 14949;
+			public static final int LEAGUE_TASK_MINE_SOME_ORE_WITH_A_RUNE_PICKAXE = 14950;
+			public static final int LEAGUE_TASK_MINE_SOME_ORE_WITH_A_STEEL_PICKAXE = 14951;
+			public static final int LEAGUE_TASK_OBTAIN_100_MILLION_XP_COMBAT_SKILL = 14952;
+			public static final int LEAGUE_TASK_OBTAIN_100_MILLION_XP_NONCOMBAT_SKILL = 14953;
+			public static final int LEAGUE_TASK_OBTAIN_200_MILLION_XP_COMBAT_SKILL = 14954;
+			public static final int LEAGUE_TASK_OBTAIN_200_MILLION_XP_NONCOMBAT_SKILL = 14955;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_AGILITY_XP = 14956;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_CONSTRUCTION_XP = 14957;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_COOKING_XP = 14958;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_CRAFTING_XP = 14959;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_FARMING_XP = 14960;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_FIREMAKING_XP = 14961;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_FISHING_XP = 14962;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_FLETCHING_XP = 14963;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_HERBLORE_XP = 14964;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_HUNTER_XP = 14965;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_MINING_XP = 14966;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_PRAYER_XP = 14967;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_RUNECRAFT_XP = 14968;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_SLAYER_XP = 14969;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_SMITHING_XP = 14970;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_THIEVING_XP = 14971;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_WOODCUTTING_XP = 14972;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_XP_5_NONCOMBAT_SKILLS = 14973;
+			public static final int LEAGUE_TASK_OBTAIN_25_MILLION_XP_COMBAT_SKILL = 14974;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_AGILITY_XP = 14975;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_CONSTRUCTION_XP = 14976;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_COOKING_XP = 14977;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_CRAFTING_XP = 14978;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_FARMING_XP = 14979;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_FIREMAKING_XP = 14980;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_FISHING_XP = 14981;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_FLETCHING_XP = 14982;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_HERBLORE_XP = 14983;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_HUNTER_XP = 14984;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_MINING_XP = 14985;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_PRAYER_XP = 14986;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_RUNECRAFT_XP = 14987;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_SLAYER_XP = 14988;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_SMITHING_XP = 14989;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_THIEVING_XP = 14990;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_WOODCUTTING_XP = 14991;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_XP_3_NONCOMBAT_SKILLS = 14992;
+			public static final int LEAGUE_TASK_OBTAIN_35_MILLION_XP_COMBAT_SKILL = 14993;
+			public static final int LEAGUE_TASK_STEAL_FROM_A_GEM_STALL_IN_KOUREND = 14994;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_AGILITY_XP = 14995;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_ATTACK_XP = 14996;
+			public static final int LEAGUE_TASK_BUILD_A_GILDED_PORTAL_NEXUS = 14997;
+			public static final int LEAGUE_TASK_BUILD_A_GOLD_SINK = 14998;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_CONSTRUCTION_XP = 14999;
+			public static final int LEAGUE_TASK_BUILD_AN_OBELISK = 15000;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_COOKING_XP = 15001;
+			public static final int LEAGUE_TASK_CATCH_A_LUCKY_IMPLING_BAREHANDED = 15002;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_CRAFTING_XP = 15003;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_DEFENCE_XP = 15004;
+			public static final int LEAGUE_TASK_BLAST_FURNACE_100_MITHRIL_BARS = 15005;
+			public static final int LEAGUE_TASK_PLANT_100_BOLOGANO_SEEDS = 15006;
+			public static final int LEAGUE_TASK_PLANT_100_LOGAVANO_SEEDS = 15007;
+			public static final int LEAGUE_TASK_CAST_FERTILE_SOIL = 15008;
+			public static final int LEAGUE_TASK_PLANT_AN_ANIMA_SEED = 15009;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_HERO = 15010;
+			public static final int LEAGUE_TASK_CAST_MOONCLAN_TELEPORT = 15011;
+			public static final int LEAGUE_TASK_CAST_SPELLBOOK_SWAP = 15012;
+			public static final int LEAGUE_TASK_COMPLETE_25_LAPS_OF_THE_RELLEKKA_AGILITY_COURSE = 15013;
+			public static final int LEAGUE_TASK_BURN_200_REDWOOD_LOGS = 15014;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_KING_WORM = 15015;
+			public static final int LEAGUE_TASK_TRADE_IN_1000_MINNOWS = 15016;
+			public static final int ACTION_FINISH_YEW_ENT_TOTEM_DECORATION = 15017;
+			public static final int LEAGUE_TASK_MAKE_100_PRAYER_REGENERATION_POTIONS = 15018;
+			public static final int LEAGUE_TASK_MAKE_50_GOADING_POTIONS = 15019;
+			public static final int LEAGUE_TASK_CHOP_200_REDWOOD_LOGS = 15020;
+			public static final int LEAGUE_TASK_COMPLETE_50_FARMING_CONTRACTS = 15021;
+			public static final int ACTION_MAKE_A_GREENMAN_CARVING = 15022;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_PAPAYA_TREE_IN_THE_GNOME_STRONGHOLD = 15023;
+			public static final int ACTION_MAKE_A_GREENMAN_STATUE = 15024;
+			public static final int LEAGUE_TASK_OBTAIN_THE_HUNTSMANS_KIT = 15025;
+			public static final int LEAGUE_TASK_COMPLETE_THE_SHAYZIEN_ADVANCED_AGILITY_COURSE = 15026;
+			public static final int LEAGUE_TASK_OPEN_A_MASTER_HUNTERS_LOOT_SACK = 15027;
+			public static final int LEAGUE_TASK_COMPLETE_THE_RELLEKKA_AGILITY_COURSE = 15028;
+			public static final int LEAGUE_TASK_COMPLETE_THE_SEERS_VILLAGE_AGILITY_COURSE = 15029;
+			public static final int LEAGUE_TASK_CRAFT_100_BLOOD_RUNES = 15030;
+			public static final int LEAGUE_TASK_PURCHASE_THE_REAGENTS_POUCH = 15031;
+			public static final int LEAGUE_TASK_FLETCH_100_MAPLE_LONGBOW_U_IN_KANDARIN = 15032;
+			public static final int LEAGUE_TASK_STEAL_A_BLESSED_BONE_STATUETTE = 15033;
+			public static final int LEAGUE_TASK_CREATE_A_CATHERBY_TELEPORT_TABLET = 15034;
+			public static final int LEAGUE_TASK_CREATE_10_DYNAMITE = 15035;
+			public static final int LEAGUE_TASK_CATCH_25_SUNLIGHT_ANTELOPES = 15036;
+			public static final int LEAGUE_TASK_ENTER_THE_FARMING_GUILDS_HIGH_TIER = 15037;
+			public static final int LEAGUE_TASK_PICKPOCKET_CLUE_FROM_HERO = 15038;
+			public static final int LEAGUE_TASK_CHECK_THE_HEALTH_OF_MAHOGANY_TREE_IN_MARCELLUSS_PATCH = 15039;
+			public static final int LEAGUE_TASK_CHOP_20_MAGIC_LOGS_IN_VARLAMORE = 15040;
+			public static final int LEAGUE_TASK_FLETCH_A_REDWOOD_SHIELD = 15041;
+			public static final int LEAGUE_TASK_COMPLETE_50_HUNTER_RUMOURS = 15042;
+			public static final int LEAGUE_TASK_COOK_100_MOONLIGHT_ANTELOPES = 15043;
+			public static final int LEAGUE_TASK_CRAFT_1000_SUNFIRE_RUNES = 15044;
+			public static final int LEAGUE_TASK_CREATE_100_JUGS_OF_BLESSED_SUNFIRE_WINE = 15045;
+			public static final int ACTION_FLETCH_SOME_ATLATL_DARTS = 15046;
+			public static final int LEAGUE_TASK_BLAST_FURNACE_100_ADAMANT_BARS = 15047;
+			public static final int LEAGUE_TASK_CAST_FULL_SINISTER_OFFERING = 15048;
+			public static final int LEAGUE_TASK_CHOP_A_MAGIC_LOG_AT_THE_FORSAKEN_TOWER = 15049;
+			public static final int LEAGUE_TASK_OBTAIN_ADAMANTITE_ORE_AT_THE_BLAST_MINE = 15050;
+			public static final int LEAGUE_TASK_SERVE_20_PIZZAS_IN_THE_MESS_HALL = 15051;
+			public static final int LEAGUE_TASK_CAST_RESURRECT_CROPS = 15052;
+			public static final int LEAGUE_TASK_DAGANNOTH_BONE_POH_ALTAR = 15053;
+			public static final int LEAGUE_TASK_GUARDIANS_OF_THE_RIFT_1_RIFT_CLOSED = 15054;
+			public static final int LEAGUE_TASK_GUARDIANS_OF_THE_RIFT_10_RIFTS_CLOSED = 15055;
+			public static final int LEAGUE_TASK_GUARDIANS_OF_THE_RIFT_25_RIFTS_CLOSED = 15056;
+			public static final int LEAGUE_TASK_HARVEST_SOME_SWEETCORN_IN_PRIFDDINAS = 15057;
+			public static final int LEAGUE_TASK_HAVE_DREW_CREATE_500_BUCKETS = 15058;
+			public static final int LEAGUE_TASK_HAVE_ZAHUR_MAKE_1000_UNFINISHED_POTIONS = 15059;
+			public static final int LEAGUE_TASK_MAKE_20_MAGIC_POTIONS = 15060;
+			public static final int LEAGUE_TASK_MAKE_50_MENAPHITE_REMEDIES = 15061;
+			public static final int LEAGUE_TASK_MAKE_50_TEAK_PLANKS_IN_PRIFDDINAS = 15062;
+			public static final int LEAGUE_TASK_MAKE_A_COMBAT_POTION = 15063;
+			public static final int LEAGUE_TASK_MINE_15_GRANITE_IN_THE_NECROPOLIS = 15064;
+			public static final int LEAGUE_TASK_MINE_200_RUNITE_ORE_IN_TIRANNWN = 15065;
+			public static final int LEAGUE_TASK_MINE_25_PURE_ESSENCE = 15066;
+			public static final int LEAGUE_TASK_MINE_30_CHUNKS_OF_GRANITE = 15067;
+			public static final int LEAGUE_TASK_MINE_5_GEM_ROCKS_IN_A_ROW_WITHOUT_FAILING = 15068;
+			public static final int LEAGUE_TASK_MOVE_YOUR_HOUSE_TO_POLLNIVNEACH = 15069;
+			public static final int LEAGUE_TASK_MOVE_YOUR_HOUSE_TO_RELLEKKA = 15070;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_FARMING_XP = 15071;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_FIREMAKING_XP = 15072;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_FISHING_XP = 15073;
+			public static final int LEAGUE_TASK_OBTAIN_A_MAGIC_SEED_FROM_A_BIRDS_NEST = 15074;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_FLETCHING_XP = 15075;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_HERBLORE_XP = 15076;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_HITPOINTS_XP = 15077;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_HUNTER_XP = 15078;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_MAGIC_XP = 15079;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_MINING_XP = 15080;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_PRAYER_XP = 15081;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_RANGED_XP = 15082;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_RUNECRAFT_XP = 15083;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_SLAYER_XP = 15084;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_SMITHING_XP = 15085;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_STRENGTH_XP = 15086;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_THIEVING_XP = 15087;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_WOODCUTTING_XP = 15088;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_XP_3_NONCOMBAT_SKILLS = 15089;
+			public static final int LEAGUE_TASK_OBTAIN_50_MILLION_XP_COMBAT_SKILL = 15090;
+			public static final int LEAGUE_TASK_OBTAIN_800_COINS_FROM_COIN_POUCHES_AT_ONCE = 15091;
+			public static final int LEAGUE_TASK_BUILD_A_MARBLE_LECTERN = 15092;
+			public static final int LEAGUE_TASK_BUILD_AN_ACHIEVEMENT_GALLERY = 15093;
+			public static final int LEAGUE_TASK_OBTAIN_A_BIRD_NEST = 15094;
+			public static final int LEAGUE_TASK_OBTAIN_A_CASKET_FROM_FISHING = 15095;
+			public static final int LEAGUE_TASK_CATCH_50_GREY_CHINCHOMPAS = 15096;
+			public static final int LEAGUE_TASK_OBTAIN_A_CLUE_GEODE_WHILE_MINING = 15097;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_PALM_TREE = 15098;
+			public static final int LEAGUE_TASK_OBTAIN_A_GEM_WHILE_MINING = 15099;
+			public static final int LEAGUE_TASK_OBTAIN_A_HIGH_LEVEL_SEED_FROM_A_BIRDS_NEST = 15100;
+			public static final int LEAGUE_TASK_CLEAN_100_GRIMY_DWARF_WEED = 15101;
+			public static final int LEAGUE_TASK_OBTAIN_A_SKILLING_PET = 15102;
+			public static final int LEAGUE_TASK_COMPLETE_250_LAPS_OF_A_ROOFTOP_AGILITY_COURSE = 15103;
+			public static final int ACTION_OBTAIN_AN_OLD_BOOT_FROM_A_FISHING_SPOT = 15104;
+			public static final int LEAGUE_TASK_COOK_20_REDBERRY_PIES = 15105;
+			public static final int LEAGUE_TASK_OPEN_28_COIN_POUCHES_AT_ONCE = 15106;
+			public static final int LEAGUE_TASK_CREATE_A_BLACK_DHIDE_SHIELD = 15107;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_CITIZEN = 15108;
+			public static final int LEAGUE_TASK_DIG_UP_SOME_MAGIC_ROOTS = 15109;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_MASTER_FARMER = 15110;
+			public static final int LEAGUE_TASK_PLANT_SEEDS_IN_AN_ALLOTMENT_PATCH = 15111;
+			public static final int LEAGUE_TASK_PROTECT_YOUR_CROPS = 15112;
+			public static final int LEAGUE_TASK_PURCHASE_A_PLAYER_OWNED_HOUSE = 15113;
+			public static final int LEAGUE_TASK_RAKE_A_FLOWER_PATCH = 15114;
+			public static final int LEAGUE_TASK_FLETCH_A_MAGIC_SHORTBOW = 15115;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_10 = 15116;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_20 = 15117;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_30 = 15118;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_BANDIT_IN_THE_BANDIT_CAMP = 15119;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_BULLSEYE_LANTERN_FROM_A_CAVE_GOBLIN = 15120;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_DIAMOND_FROM_A_TZHAAR = 15121;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_HAM_MEMBER = 15122;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_MENAPHITE_THUG_50_TIMES = 15123;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_VARROCK_GUARD = 15124;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_VYRE_50_TIMES = 15125;
+			public static final int LEAGUE_TASK_HARVEST_ANY_HERB_AT_THE_TROLL_STRONGHOLD = 15126;
+			public static final int LEAGUE_TASK_MINE_200_SOFT_CLAY_IN_TIRANNWN = 15127;
+			public static final int LEAGUE_TASK_RECEIVE_A_TORSTOL_FROM_A_HERBIBOAR = 15128;
+			public static final int LEAGUE_TASK_SET_UP_A_MAGIC_BIRD_HOUSE = 15129;
+			public static final int LEAGUE_TASK_SET_UP_A_YEW_BIRD_HOUSE = 15130;
+			public static final int LEAGUE_TASK_SMELT_A_STEEL_BAR_IN_PORT_PHASMATYS = 15131;
+			public static final int LEAGUE_TASK_SMITH_1000_ADAMANT_DART_TIPS = 15132;
+			public static final int LEAGUE_TASK_SMITH_1000_MITHRIL_DART_TIPS = 15133;
+			public static final int LEAGUE_TASK_SMITH_1000_RUNE_DART_TIPS = 15134;
+			public static final int LEAGUE_TASK_SMITH_500_RUNE_DART_TIPS_IN_PRIFDDINAS = 15135;
+			public static final int LEAGUE_TASK_PICKPOCKET_AN_ELF_50_TIMES = 15136;
+			public static final int LEAGUE_TASK_STEAL_A_DIAMOND_IN_DORGESHKAAN = 15137;
+			public static final int LEAGUE_TASK_STEAL_FROM_THE_VARROCK_TEA_STALL = 15138;
+			public static final int ACTION_FINISH_WILLOW_ENT_TOTEM_DECORATION = 15139;
+			public static final int LEAGUE_TASK_RECEIVE_A_DRAGONSTONE_AMULET_FROM_AN_IMPLING = 15140;
+			public static final int LEAGUE_TASK_TAKE_A_SHORTCUT_ACROSS_THE_SHILO_VILLAGE_RIVER = 15141;
+			public static final int LEAGUE_TASK_TAKE_THE_ADVANCED_SHORTCUT_TO_THE_COSMIC_ALTAR = 15142;
+			public static final int LEAGUE_TASK_GIVE_A_DWARF_REDBERRY_ANTELOPE = 15143;
+			public static final int LEAGUE_TASK_MINE_20_MITHRIL_ORE_IN_THE_STONECUTTER_OUTPOST = 15144;
+			public static final int LEAGUE_TASK_USE_A_PRAYER_ALTAR_TO_RESTORE_90_PRAYER_IN_PRIFDDINAS = 15145;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_CRYSTAL_TREE = 15146;
+			public static final int LEAGUE_TASK_MINE_250_BLESSED_BONE_SHARDS = 15147;
+			public static final int LEAGUE_TASK_TURN_IN_A_PYRAMID_TOP_TO_SIMON_TEMPLETON = 15148;
+			public static final int LEAGUE_TASK_CHOP_100_TEAK_LOGS_IN_PRIFDDINAS = 15149;
+			public static final int LEAGUE_TASK_USE_ENRICHED_BONES_ON_THE_STRANGE_MACHINE = 15150;
+			public static final int LEAGUE_TASK_MINE_A_CALCIFIED_DEPOSIT = 15151;
+			public static final int LEAGUE_TASK_USE_THE_RANGE_IN_LUMBRIDGE_CASTLE = 15152;
+			public static final int LEAGUE_TASK_WORSHIP_THE_ECTOFUNTUS = 15153;
+			public static final int LEAGUE_TASK_OPEN_AN_ADEPT_HUNTERS_LOOT_SACK = 15154;
+			public static final int LEAGUE_TASK_PAY_AN_URCHIN_FOR_INFORMATION = 15155;
+			public static final int LEAGUE_TASK_BURN_20_BLISTERWOOD_LOGS = 15156;
+			public static final int LEAGUE_TASK_BURN_20_PYRE_LOGS = 15157;
+			public static final int LEAGUE_TASK_INFERIOR_DEMONBANE_DEMON_KILL = 15158;
+			public static final int LEAGUE_TASK_CAST_BONES_TO_PEACHES = 15159;
+			public static final int LEAGUE_TASK_MINE_50_VOLCANIC_SULPHUR = 15160;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_40 = 15161;
+			public static final int LEAGUE_TASK_HARVEST_AN_IRIT_LEAF = 15162;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_5 = 15163;
+			public static final int LEAGUE_TASK_CAST_PADDEWWA_TELEPORT = 15164;
+			public static final int LEAGUE_TASK_MAKE_50_OAK_PLANKS_IN_KOUREND = 15165;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_50 = 15166;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_60 = 15167;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_70 = 15168;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_80 = 15169;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_90 = 15170;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_KNIGHT_OF_VARLAMORE_20_TIMES = 15171;
+			public static final int LEAGUE_TASK_MAKE_A_PINEAPPLE_PIZZA = 15172;
+			public static final int LEAGUE_TASK_OFFER_AN_EGG_TO_A_SHRINE = 15173;
+			public static final int LEAGUE_TASK_REACH_BASE_LEVEL_95 = 15174;
+			public static final int LEAGUE_TASK_STEAL_100_VALUABLES = 15175;
+			public static final int LEAGUE_TASK_CATCH_30_ORANGE_SALAMANDERS = 15176;
+			public static final int LEAGUE_TASK_CHOP_50_MAGIC_LOGS_IN_TIRANNWN = 15177;
+			public static final int LEAGUE_TASK_CATCH_50_KARAMBWAN = 15178;
+			public static final int LEAGUE_TASK_STEAL_15_HOUSE_KEYS = 15179;
+			public static final int LEAGUE_TASK_OBTAIN_A_MARK_OF_GRACE = 15180;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_AGILITY = 15181;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_GUARD = 15182;
+			public static final int LEAGUE_TASK_COMPLETE_50_LAPS_OF_THE_PRIFDDINAS_AGILITY_COURSE = 15183;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_ATTACK = 15184;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_RANARR_SEED = 15185;
+			public static final int LEAGUE_TASK_CATCH_A_HERBIBOAR_150_TIMES = 15186;
+			public static final int LEAGUE_TASK_CATCH_A_HERBIBOAR_50_TIMES = 15187;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_CONSTRUCTION = 15188;
+			public static final int LEAGUE_TASK_STEAL_25_VALUABLES = 15189;
+			public static final int LEAGUE_TASK_CATCH_A_KARAMBWANJI = 15190;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_COOKING = 15191;
+			public static final int LEAGUE_TASK_STEAL_A_HOUSE_KEY = 15192;
+			public static final int LEAGUE_TASK_CATCH_A_SALMON = 15193;
+			public static final int LEAGUE_TASK_CATCH_A_SALMON_ON_KARAMJA = 15194;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_CRAFTING = 15195;
+			public static final int LEAGUE_TASK_CATCH_A_SWAMP_LIZARD_IN_MORYTANIA = 15196;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_DEFENCE = 15197;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_FARMING = 15198;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_CACTUS = 15199;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_CALQUAT_TREE = 15200;
+			public static final int LEAGUE_TASK_COMPLETE_THE_PRIFDDINAS_AGILITY_COURSE = 15201;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_FIREMAKING = 15202;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_MAGIC_TREE_IN_LUMBRIDGE = 15203;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_MAHOGANY_TREE = 15204;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_FISHING = 15205;
+			public static final int LEAGUE_TASK_COMPLETE_THE_PRIFDDINAS_AGILITY_COURSE_IN_110 = 15206;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_POTATO_CACTUS = 15207;
+			public static final int LEAGUE_TASK_PLANT_100_GOLOVANOVA_SEEDS = 15208;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_FLETCHING = 15209;
+			public static final int LEAGUE_TASK_CRAFT_50_DEATH_RUNES = 15210;
+			public static final int LEAGUE_TASK_STEAL_FROM_THE_FORTIS_SPICE_STALL = 15211;
+			public static final int LEAGUE_TASK_CHOP_100_BLISTERWOOD_LOGS = 15212;
+			public static final int LEAGUE_TASK_CRAFT_A_PIECE_OF_CRYSTAL_ARMOUR = 15213;
+			public static final int LEAGUE_TASK_CREATE_25_DIVINE_SUPER_ATTACK_POTIONS = 15214;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_HERBLORE = 15215;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_HITPOINTS = 15216;
+			public static final int LEAGUE_TASK_RESTORE_14_PRAYER_POINTS_IN_HOSIDIUS = 15217;
+			public static final int LEAGUE_TASK_STORE_SOME_BOWSTRINGS_INSIDE_A_BOWSTRING_SPOOL = 15218;
+			public static final int LEAGUE_TASK_SMELT_A_MITHRIL_BAR_IN_A_VOLCANIC_FISSURE = 15219;
+			public static final int LEAGUE_TASK_SMITH_SHAYZIEN_1 = 15220;
+			public static final int LEAGUE_TASK_CREATE_25_DIVINE_SUPER_STRENGTH_POTIONS = 15221;
+			public static final int LEAGUE_TASK_SMITH_STEEL_IN_KOUREND_CASTLE = 15222;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_HUNTER = 15223;
+			public static final int LEAGUE_TASK_CHOP_A_LOG_FROM_A_POTATO_TREE = 15224;
+			public static final int LEAGUE_TASK_SERVE_20_STEWS_IN_THE_MESS_HALL = 15225;
+			public static final int LEAGUE_TASK_CHOP_A_SULLIUSCEP_CAP = 15226;
+			public static final int LEAGUE_TASK_TELEPORT_TO_CAM_TORUM_USING_A_CALCIFIED_MOTH = 15227;
+			public static final int LEAGUE_TASK_STEAL_A_CHISEL = 15228;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_MAGIC = 15229;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_MINING = 15230;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_PRAYER = 15231;
+			public static final int LEAGUE_TASK_SMITH_A_STEEL_PLATEBODY = 15232;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_RANGED = 15233;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_RUNECRAFT = 15234;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_SLAYER = 15235;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_SMITHING = 15236;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_STRENGTH = 15237;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_THIEVING = 15238;
+			public static final int LEAGUE_TASK_REACH_LEVEL_99_WOODCUTTING = 15239;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_100 = 15240;
+			public static final int LEAGUE_TASK_STEAL_1_ARTEFACT = 15241;
+			public static final int LEAGUE_TASK_STEAL_15_ARTEFACTS = 15242;
+			public static final int LEAGUE_TASK_TELEPORT_TO_CIVITAS_ILLA_FORTIS = 15243;
+			public static final int LEAGUE_TASK_COMPLETE_10_LAPS_OF_THE_DRAYNOR_AGILITY_COURSE = 15244;
+			public static final int LEAGUE_TASK_USE_THE_POTTERY_OVEN_IN_CIVITAS = 15245;
+			public static final int LEAGUE_TASK_COMPLETE_10_LAPS_OF_THE_VARROCK_AGILITY_COURSE = 15246;
+			public static final int LEAGUE_TASK_BREAK_DOWN_10_CALCIFIED_DEPOSITS = 15247;
+			public static final int LEAGUE_TASK_STEAL_A_COW_BELL_IN_RELLEKKA = 15248;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_1000 = 15249;
+			public static final int LEAGUE_TASK_STEAL_A_GOLOVANOVA_FRUIT_TOP = 15250;
+			public static final int LEAGUE_TASK_BUILD_A_QUETZAL_LANDING_SITE = 15251;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_1250 = 15252;
+			public static final int LEAGUE_TASK_DISSECT_50_SACRED_EELS = 15253;
+			public static final int LEAGUE_TASK_CATCH_A_JERBOA = 15254;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_1500 = 15255;
+			public static final int LEAGUE_TASK_COMPLETE_THE_AL_KHARID_AGILITY_COURSE = 15256;
+			public static final int LEAGUE_TASK_COMPLETE_THE_CANIFIS_AGILITY_COURSE = 15257;
+			public static final int LEAGUE_TASK_COMPLETE_THE_DRAYNOR_AGILITY_COURSE = 15258;
+			public static final int LEAGUE_TASK_MAKE_50_ANCIENT_BREWS = 15259;
+			public static final int LEAGUE_TASK_LIGHT_A_PYRE_SHIP = 15260;
+			public static final int LEAGUE_TASK_STEAL_A_FISH = 15261;
+			public static final int LEAGUE_TASK_HARVEST_SOME_SNAPE_GRASS_IN_PRIFDDINAS = 15262;
+			public static final int LEAGUE_TASK_MAKE_100_MAHOGANY_PLANKS_IN_PRIFDDINAS = 15263;
+			public static final int LEAGUE_TASK_STEAL_A_WOODEN_STOCK = 15264;
+			public static final int LEAGUE_TASK_MOVE_YOUR_HOUSE_TO_YANILLE = 15265;
+			public static final int LEAGUE_TASK_TURN_IN_10_LIBRARY_BOOKS = 15266;
+			public static final int LEAGUE_TASK_COMPLETE_THE_VARROCK_AGILITY_COURSE = 15267;
+			public static final int LEAGUE_TASK_COMPLETE_THE_WEREWOLF_AGILITY_COURSE = 15268;
+			public static final int LEAGUE_TASK_SACRIFICE_SOME_BONES_AT_THE_CHAOS_TEMPLE = 15269;
+			public static final int LEAGUE_TASK_CONVERT_2000_DAEYALT_SHARDS_INTO_ESSENCE = 15270;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_1750 = 15271;
+			public static final int LEAGUE_TASK_BUILD_A_WAKA_CANOE = 15272;
+			public static final int LEAGUE_TASK_CAPTURE_10_SANDWORMS = 15273;
+			public static final int LEAGUE_TASK_COOK_100_KARAMBWANS = 15274;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_2000 = 15275;
+			public static final int LEAGUE_TASK_CATCH_A_PYRE_FOX = 15276;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_2100 = 15277;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_2200 = 15278;
+			public static final int ACTION_CAST_HIGH_LEVEL_ALCHEMY = 15279;
+			public static final int LEAGUE_TASK_COOK_20_KARAMBWANS_IN_A_ROW = 15280;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_2277 = 15281;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_250 = 15282;
+			public static final int LEAGUE_TASK_COOK_20_SHARKS_IN_DARKMEYER = 15283;
+			public static final int LEAGUE_TASK_CATCH_10_PIKE = 15284;
+			public static final int LEAGUE_TASK_CATCH_100_LOBSTERS = 15285;
+			public static final int LEAGUE_TASK_USE_THE_ABYSS = 15286;
+			public static final int LEAGUE_TASK_MAKE_100_ANTIVENOM_POTIONS = 15287;
+			public static final int ACTION_TOTAL_LEVEL_666 = 15288;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_750 = 15289;
+			public static final int LEAGUE_TASK_CAST_DEGRIME_SPELL_FULL_CLEAN = 15290;
+			public static final int LEAGUE_TASK_CHOP_15_YEW_LOGS_IN_SHAYZIEN = 15291;
+			public static final int LEAGUE_TASK_REDECORATE_YOUR_PLAYER_OWNED_HOUSE = 15292;
+			public static final int LEAGUE_TASK_COMPLETE_10_HUNTER_RUMOURS = 15293;
+			public static final int LEAGUE_TASK_CATCH_25_SARDINES = 15294;
+			public static final int LEAGUE_TASK_CATCH_50_SALMON = 15295;
+			public static final int LEAGUE_TASK_CATCH_50_SWORDFISH = 15296;
+			public static final int LEAGUE_TASK_USE_SOME_ICY_BASALT_TO_TELEPORT_TO_WEISS = 15297;
+			public static final int LEAGUE_TASK_CRAFT_50_COSMIC_RUNES = 15298;
+			public static final int LEAGUE_TASK_OBTAIN_20_GOLDEN_NUGGETS = 15299;
+			public static final int LEAGUE_TASK_CRAFT_50_NATURE_RUNES = 15300;
+			public static final int LEAGUE_TASK_CRAFT_50_WATER_RUNES = 15301;
+			public static final int LEAGUE_TASK_CRAFT_A_CELESTIAL_SIGNET = 15302;
+			public static final int LEAGUE_TASK_SELL_SOME_SILK_TO_A_SILK_TRADER = 15303;
+			public static final int LEAGUE_TASK_CRAFT_A_FIRE_RUNE = 15304;
+			public static final int LEAGUE_TASK_CRAFT_A_GHORROCK_TELEPORT_TABLET = 15305;
+			public static final int LEAGUE_TASK_CRAFT_A_LAVA_RUNE_AT_THE_FIRE_ALTAR = 15306;
+			public static final int LEAGUE_TASK_CATCH_A_GREY_CHINCHOMPA = 15307;
+			public static final int LEAGUE_TASK_CRAFT_A_RUNE_USING_DAEYALT_ESSENCE = 15308;
+			public static final int LEAGUE_TASK_CRAFT_A_SNELM = 15309;
+			public static final int LEAGUE_TASK_PICKPOCKET_A_KNIGHT_OF_ARDOUGNE_50_TIMES = 15310;
+			public static final int LEAGUE_TASK_CRAFT_AN_AIR_BATTLESTAFF_IN_THE_WILDERNESS = 15311;
+			public static final int LEAGUE_TASK_SMELT_A_BRONZE_BAR = 15312;
+			public static final int LEAGUE_TASK_SMELT_A_RUNITE_BAR = 15313;
+			public static final int LEAGUE_TASK_SMELT_A_STEEL_BAR = 15314;
+			public static final int LEAGUE_TASK_SMELT_AN_IRON_BAR = 15315;
+			public static final int LEAGUE_TASK_CRAFT_SOME_POTTERY_IN_SOPHANEM = 15316;
+			public static final int LEAGUE_TASK_CHOP_25_JUNIPER_LOGS = 15317;
+			public static final int LEAGUE_TASK_COMPLETE_10_LAPS_OF_THE_VARLAMORE_AGILITY_COURSE = 15318;
+			public static final int LEAGUE_TASK_SMITH_10_STEEL_BOLTS_UNF = 15319;
+			public static final int LEAGUE_TASK_CATCH_A_SABRETOOTHED_KEBBIT = 15320;
+			public static final int LEAGUE_TASK_COMPLETE_50_LAPS_OF_A_ROOFTOP_AGILITY_COURSE = 15321;
+			public static final int LEAGUE_TASK_SMITH_150_IRON_ARROWTIPS = 15322;
+			public static final int LEAGUE_TASK_COOK_10_SARDINES = 15323;
+			public static final int LEAGUE_TASK_COOK_100_LOBSTERS = 15324;
+			public static final int LEAGUE_TASK_COMPLETE_25_HUNTER_RUMOURS = 15325;
+			public static final int LEAGUE_TASK_SMITH_250_MITHRIL_BOLTS_UNF = 15326;
+			public static final int LEAGUE_TASK_COOK_20_PIKE = 15327;
+			public static final int LEAGUE_TASK_CREATE_THE_COLOSSAL_RUNE_POUCH = 15328;
+			public static final int LEAGUE_TASK_CREATE_THE_LONG_ROPE_SHORTCUT_IN_DARKMEYER = 15329;
+			public static final int LEAGUE_TASK_MINE_25_GOLD_ROCKS_IN_TIRANNWN = 15330;
+			public static final int LEAGUE_TASK_BURY_SOME_LAVA_DRAGON_BONES = 15331;
+			public static final int LEAGUE_TASK_SMITH_A_DRAGONFIRE_SHIELD = 15332;
+			public static final int LEAGUE_TASK_SMITH_A_RUNE_ITEM = 15333;
+			public static final int ACTION_SMITH_A_STEEL_2H_SWORD = 15334;
+			public static final int LEAGUE_TASK_CATCH_A_SAPPHIRE_GLACIALIS = 15335;
+			public static final int LEAGUE_TASK_SNARE_15_TROPICAL_WAGTAILS = 15336;
+			public static final int LEAGUE_TASK_DISMANTLE_20_FILLED_BIRD_HOUSES = 15337;
+			public static final int LEAGUE_TASK_MOVE_YOUR_HOUSE_TO_PRIFDDINAS = 15338;
+			public static final int LEAGUE_TASK_SUCCESSFULLY_HOP_OVER_THE_TRIPWIRE_IN_TIRANNWN = 15339;
+			public static final int LEAGUE_TASK_CRAFT_A_CHAOS_RUNE_USING_A_CHAOS_CORE = 15340;
+			public static final int LEAGUE_TASK_CRAFT_A_RUBY_AMULET = 15341;
+			public static final int LEAGUE_TASK_ENTER_THE_COOKS_GUILD = 15342;
+			public static final int LEAGUE_TASK_COMPLETE_THE_FALADOR_AGILITY_COURSE = 15343;
+			public static final int LEAGUE_TASK_STEAL_30_ARTEFACTS = 15344;
+			public static final int LEAGUE_TASK_COMPLETE_10_FARMING_CONTRACTS = 15345;
+			public static final int LEAGUE_TASK_COMPLETE_THE_SHAYZIEN_BASIC_AGILITY_COURSE = 15346;
+			public static final int LEAGUE_TASK_STEAL_FROM_A_FUR_STALL = 15347;
+			public static final int LEAGUE_TASK_ENTER_THE_FARMING_GUILDS_MID_TIER = 15348;
+			public static final int LEAGUE_TASK_SNARE_5_CRIMSON_SWIFT = 15349;
+			public static final int LEAGUE_TASK_COMPLETE_A_HUNTER_RUMOUR = 15350;
+			public static final int LEAGUE_TASK_SNARE_A_BIRD = 15351;
+			public static final int LEAGUE_TASK_SNARE_A_BIRD_20_TIMES = 15352;
+			public static final int LEAGUE_TASK_SPIN_A_BALL_OF_WOOL = 15353;
+			public static final int LEAGUE_TASK_STEAL_FROM_A_GEM_STALL = 15354;
+			public static final int ACTION_STEAL_SOME_BREAD = 15355;
+			public static final int LEAGUE_TASK_SUCCESSFULLY_COOK_5_PIECES_OF_FOOD = 15356;
+			public static final int LEAGUE_TASK_SUCCESSFULLY_CUT_A_RED_TOPAZ = 15357;
+			public static final int LEAGUE_TASK_CREATE_A_QUETZAL_WHISTLE = 15358;
+			public static final int LEAGUE_TASK_CAST_RESURRECT_SUPERIOR_GHOST = 15359;
+			public static final int LEAGUE_TASK_SUCCESSFULLY_PICKPOCKET_A_CITIZEN_10_TIMES_IN_A_ROW = 15360;
+			public static final int LEAGUE_TASK_STEAL_FROM_A_SILVER_STALL = 15361;
+			public static final int LEAGUE_TASK_FLETCH_100_YEW_SHORTBOWS = 15362;
+			public static final int LEAGUE_TASK_TELEPORT_USING_LAW_RUNES = 15363;
+			public static final int LEAGUE_TASK_FLETCH_200_DRAGON_DARTS = 15364;
+			public static final int LEAGUE_TASK_TURN_ANY_LOGS_INTO_A_PLANK = 15365;
+			public static final int LEAGUE_TASK_ENTER_THE_FARMING_GUILD = 15366;
+			public static final int LEAGUE_TASK_ENTER_THE_WOODCUTTING_GUILD = 15367;
+			public static final int LEAGUE_TASK_SMITH_AN_IRON_AXE = 15368;
+			public static final int LEAGUE_TASK_SMITH_SOME_BRONZE_CLAWS = 15369;
+			public static final int LEAGUE_TASK_EAT_SOME_COOKED_DASHING_KEBBIT = 15370;
+			public static final int LEAGUE_TASK_EXCHANGE_AN_ENT_SEED_WITH_AN_ENT = 15371;
+			public static final int LEAGUE_TASK_FISH_100_INFERNAL_EELS = 15372;
+			public static final int LEAGUE_TASK_FISH_A_HOUSE_KEY = 15373;
+			public static final int ACTION_FINISH_MAPLE_ENT_TOTEM_DECORATION = 15374;
+			public static final int ACTION_FINISH_OAK_ENT_TOTEM_DECORATION = 15375;
+			public static final int LEAGUE_TASK_CATCH_A_MOONLIGHT_MOTH_BAREHANDED = 15376;
+			public static final int LEAGUE_TASK_GROW_SPIRIT_TREE_ON_KARAMJA = 15377;
+			public static final int LEAGUE_TASK_CHOP_DENSE_JUNGLE = 15378;
+			public static final int LEAGUE_TASK_CRAFT_A_BODY_RUNE = 15379;
+			public static final int LEAGUE_TASK_ENTER_THE_CRAFTING_GUILD = 15380;
+			public static final int LEAGUE_TASK_CATCH_A_SNOWY_KNIGHT = 15381;
+			public static final int LEAGUE_TASK_COMPLETE_THE_PENGUIN_AGILITY_COURSE = 15382;
+			public static final int LEAGUE_TASK_CRAFT_50_ASTRAL_RUNES = 15383;
+			public static final int LEAGUE_TASK_STEAL_FROM_A_SPICE_STALL = 15384;
+			public static final int LEAGUE_TASK_TRAP_A_SPINED_LARUPIA_IN_THE_FELDIP_HILLS = 15385;
+			public static final int LEAGUE_TASK_CATCH_A_MONKFISH = 15386;
+			public static final int LEAGUE_TASK_CATCH_A_RED_SALAMANDER = 15387;
+			public static final int LEAGUE_TASK_COMPLETE_THE_BARBARIAN_OUTPOST_AGILITY_COURSE = 15388;
+			public static final int LEAGUE_TASK_ENTER_THE_FISHING_GUILD = 15389;
+			public static final int LEAGUE_TASK_DRINK_KOVACS_GROG = 15390;
+			public static final int LEAGUE_TASK_LEARN_HOW_TO_MAKE_SWAMPBARK = 15391;
+			public static final int LEAGUE_TASK_LEARN_HOW_TO_MAKE_BLOODBARK = 15392;
+			public static final int LEAGUE_TASK_THIEVE_A_DIAMOND_FROM_A_GEM_STALL_IN_TIRANNWN = 15393;
+			public static final int LEAGUE_TASK_THIEVE_A_TIARA_FROM_A_SILVER_STALL_IN_TIRANNWN = 15394;
+			public static final int LEAGUE_TASK_CATCH_A_CRYSTAL_IMPLING = 15395;
+			public static final int LEAGUE_TASK_CHECK_A_GROWN_PAPAYA_TREE_IN_LLETYA = 15396;
+			public static final int LEAGUE_TASK_CHOP_100_MAPLES_IN_TIRANNWN = 15397;
+			public static final int LEAGUE_TASK_CATCH_A_BLACK_CHINCHOMPA = 15398;
+			public static final int LEAGUE_TASK_CATCH_A_BLACK_SALAMANDER = 15399;
+			public static final int LEAGUE_TASK_COMPLETE_THE_WILDERNESS_AGILITY_COURSE = 15400;
+			public static final int LEAGUE_TASK_CROSS_PILLAR_SHORTCUT_REVENANT_CAVES = 15401;
+			public static final int LEAGUE_TASK_MINE_RUNITE_DRAGON_PICKAXE_IN_WILDERNESS = 15402;
+			public static final int LEAGUE_TASK_CRAFT_100_AETHER_RUNES = 15403;
 		}
 	}
 
@@ -10750,6 +13079,526 @@ public final class DBTableID
 			public static final int CATHERBY_TELEPORT = 7021;
 			public static final int GHORROCK_TELEPORT = 7022;
 			public static final int CARRALLANGAR_TELEPORT = 7023;
+			public static final int TROLLHEIM_TELEPORT = 9646;
+			public static final int PADDEWWA_TELEPORT = 9647;
+			public static final int LASSAR_TELEPORT = 9648;
+			public static final int DAREEYAK_TELEPORT = 9649;
+			public static final int OURANIA_TELEPORT = 9650;
+			public static final int BARBARIAN_TELEPORT = 9651;
+			public static final int KHAZARD_TELEPORT = 9652;
+			public static final int ICEPLATEAU_TELEPORT = 9653;
+			public static final int LEPRECHAUN_AL_KHARID_TELEPORT = 15611;
+			public static final int LEPRECHAUN_ARDOUGNE_MONASTERY_TELEPORT = 15612;
+			public static final int LEPRECHAUN_BRIMHAVEN_TELEPORT = 15613;
+			public static final int LEPRECHAUN_CATHERBY_TELEPORT = 15614;
+			public static final int LEPRECHAUN_CHAMPIONS_GUILD_TELEPORT = 15615;
+			public static final int LEPRECHAUN_CANIFIS_TELEPORT = 15616;
+			public static final int LEPRECHAUN_DRAYNOR_MANOR_TELEPORT = 15617;
+			public static final int LEPRECHAUN_ENTRANA_TELEPORT = 15618;
+			public static final int LEPRECHAUN_ETCETERIA_TELEPORT = 15619;
+			public static final int LEPRECHAUN_FALADOR_FARM_TELEPORT = 15620;
+			public static final int LEPRECHAUN_FALADOR_PARK_TELEPORT = 15621;
+			public static final int LEPRECHAUN_FARMING_GUILD_TELEPORT = 15622;
+			public static final int LEPRECHAUN_FOSSIL_ISLAND_TELEPORT = 15623;
+			public static final int LEPRECHAUN_HARMONY_ISLAND_TELEPORT = 15624;
+			public static final int LEPRECHAUN_HOSIDIUS_ALLOTMENT_TELEPORT = 15625;
+			public static final int LEPRECHAUN_HOSIDIUS_SALTPETRE_TELEPORT = 15626;
+			public static final int LEPRECHAUN_HOSIDIUS_VINERY_TELEPORT = 15627;
+			public static final int LEPRECHAUN_LLETYA_TELEPORT = 15628;
+			public static final int LEPRECHAUN_LUMBRIDGE_TELEPORT = 15629;
+			public static final int LEPRECHAUN_NORTH_OF_ARDOUGNE_TELEPORT = 15630;
+			public static final int LEPRECHAUN_NORTH_OF_MCGRUBORS_WOOD_TELEPORT = 15631;
+			public static final int LEPRECHAUN_NORTH_OF_SETH_GROATS_FARM_TELEPORT = 15632;
+			public static final int LEPRECHAUN_PORT_PHASMATYS_TELEPORT = 15633;
+			public static final int LEPRECHAUN_PORT_SARIM_TELEPORT = 15634;
+			public static final int LEPRECHAUN_PRIFDDINAS_TELEPORT = 15635;
+			public static final int LEPRECHAUN_RIMMINGTON_TELEPORT = 15636;
+			public static final int LEPRECHAUN_TAI_BWO_WANNAI_TELEPORT = 15637;
+			public static final int LEPRECHAUN_TAVERLEY_TELEPORT = 15638;
+			public static final int LEPRECHAUN_TREE_GNOME_STRONGHOLD_EAST_TELEPORT = 15639;
+			public static final int LEPRECHAUN_TREE_GNOME_STRONGHOLD_WEST_TELEPORT = 15640;
+			public static final int LEPRECHAUN_TREE_GNOME_VILLAGE_TELEPORT = 15641;
+			public static final int LEPRECHAUN_TROLL_STRONGHOLD_TELEPORT = 15642;
+			public static final int LEPRECHAUN_UNDERWATER_TELEPORT = 15643;
+			public static final int LEPRECHAUN_VARROCK_TELEPORT = 15644;
+			public static final int LEPRECHAUN_WEISS_TELEPORT = 15645;
+			public static final int LEPRECHAUN_WHITE_WOLF_MOUNTAIN_TELEPORT = 15646;
+			public static final int LEPRECHAUN_YANILLE_TELEPORT = 15647;
+			public static final int LEPRECHAUN_ORTUS_FARM_TELEPORT = 15648;
+			public static final int LEPRECHAUN_LOCUS_OASIS_TELEPORT = 15649;
+			public static final int LEPRECHAUN_ALDARIN_TELEPORT = 15650;
+			public static final int LEPRECHAUN_AUBURNVALE_TELEPORT = 15651;
+			public static final int LEPRECHAUN_KASTORI_NORTH_TELEPORT = 15652;
+			public static final int LEPRECHAUN_KASTORI_SOUTH_TELEPORT = 15653;
+			public static final int LEPRECHAUN_NEMUS_RETREAT_TELEPORT = 15654;
+			public static final int BANK_AL_KHARID_TELEPORT = 15655;
+			public static final int BANK_ALCHEMY_GUILD_TELEPORT = 15656;
+			public static final int BANK_ANCIENT_PRISON_TELEPORT = 15657;
+			public static final int BANK_APE_ATOLL_TELEPORT = 15658;
+			public static final int BANK_ARCEUUS_TELEPORT = 15659;
+			public static final int BANK_ARDOUGNE_NORTH_TELEPORT = 15660;
+			public static final int BANK_ARDOUGNE_SOUTH_TELEPORT = 15661;
+			public static final int BANK_BARBARIAN_OUTPOST_TELEPORT = 15662;
+			public static final int BANK_BLAST_FURNACE_TELEPORT = 15663;
+			public static final int BANK_BLAST_MINE_TELEPORT = 15664;
+			public static final int BANK_BURGH_DE_ROTT_TELEPORT = 15665;
+			public static final int BANK_CAM_TORUM_TELEPORT = 15666;
+			public static final int BANK_CAMDOZAAL_TELEPORT = 15667;
+			public static final int BANK_CANIFIS_TELEPORT = 15668;
+			public static final int BANK_CASTLE_WARS_TELEPORT = 15669;
+			public static final int BANK_CATHERBY_TELEPORT = 15670;
+			public static final int BANK_CHAMBERS_OF_XERIC_TELEPORT = 15671;
+			public static final int BANK_CHARCOAL_CAMP_TELEPORT = 15672;
+			public static final int BANK_CHEST_WRECK_TELEPORT = 15673;
+			public static final int BANK_CIVITAS_ILLA_FORTIS_EAST_TELEPORT = 15674;
+			public static final int BANK_CIVITAS_ILLA_FORTIS_WEST_TELEPORT = 15675;
+			public static final int BANK_COOKS_GUILD_TELEPORT = 15676;
+			public static final int BANK_CORSAIR_COVE_TELEPORT = 15677;
+			public static final int BANK_CRAFTING_GUILD_TELEPORT = 15678;
+			public static final int BANK_DARKMEYER_TELEPORT = 15679;
+			public static final int BANK_DORGESH_KAAN_TELEPORT = 15680;
+			public static final int BANK_DRAYNOR_TELEPORT = 15681;
+			public static final int BANK_EDGEVILLE_TELEPORT = 15682;
+			public static final int BANK_EMIRS_ARENA_TELEPORT = 15683;
+			public static final int BANK_ENT_DUNGEON_TELEPORT = 15684;
+			public static final int BANK_ETCETERIA_TELEPORT = 15685;
+			public static final int BANK_FALADOR_EAST_TELEPORT = 15686;
+			public static final int BANK_FALADOR_WEST_TELEPORT = 15687;
+			public static final int BANK_FARMING_GUILD_TELEPORT = 15688;
+			public static final int BANK_FEROX_ENCLAVE_TELEPORT = 15689;
+			public static final int BANK_FISHING_GUILD_TELEPORT = 15690;
+			public static final int BANK_FORTIS_COLOSSEUM_TELEPORT = 15691;
+			public static final int BANK_FOSSIL_ISLAND_TELEPORT = 15692;
+			public static final int BANK_GAUNTLET_TELEPORT = 15693;
+			public static final int BANK_GNOME_STRONGHOLD_NORTH_TELEPORT = 15694;
+			public static final int BANK_GNOME_STRONGHOLD_SOUTH_TELEPORT = 15695;
+			public static final int BANK_GRAND_EXCHANGE_TELEPORT = 15696;
+			public static final int BANK_GUARDIANS_OF_THE_RIFT_TELEPORT = 15697;
+			public static final int BANK_HALLOWED_SEPULCHRE_TELEPORT = 15698;
+			public static final int BANK_HOSIDIUS_TELEPORT = 15699;
+			public static final int BANK_HOSIDIUS_KITCHEN_TELEPORT = 15700;
+			public static final int BANK_HUNTER_GUILD_TELEPORT = 15701;
+			public static final int BANK_ISLE_OF_SOULS_TELEPORT = 15702;
+			public static final int BANK_JATIZSO_TELEPORT = 15703;
+			public static final int BANK_KELDAGRIM_TELEPORT = 15704;
+			public static final int BANK_KOUREND_CASTLE_TELEPORT = 15705;
+			public static final int BANK_LANDS_END_TELEPORT = 15706;
+			public static final int BANK_LEGENDS_GUILD_TELEPORT = 15707;
+			public static final int BANK_LLETYA_TELEPORT = 15708;
+			public static final int BANK_LOVAKENGJ_TELEPORT = 15709;
+			public static final int BANK_LOVAKENGJ_MINE_TELEPORT = 15710;
+			public static final int BANK_LUMBRIDGE_BASEMENT_TELEPORT = 15711;
+			public static final int BANK_LUMBRIDGE_CASTLE_TELEPORT = 15712;
+			public static final int BANK_LUNAR_ISLE_TELEPORT = 15713;
+			public static final int BANK_MAGE_ARENA_TELEPORT = 15714;
+			public static final int BANK_MAGE_TRAINING_ARENA_TELEPORT = 15715;
+			public static final int BANK_MINING_GUILD_TELEPORT = 15716;
+			public static final int BANK_MISTROCK_TELEPORT = 15717;
+			public static final int BANK_MOR_UL_REK_TELEPORT = 15718;
+			public static final int BANK_MOS_LEHARMLESS_TELEPORT = 15719;
+			public static final int BANK_MOTHERLODE_MINE_TELEPORT = 15720;
+			public static final int BANK_MOUNT_KARUULM_TELEPORT = 15721;
+			public static final int BANK_MYTHS_GUILD_TELEPORT = 15722;
+			public static final int BANK_NARDAH_TELEPORT = 15723;
+			public static final int BANK_NEITIZNOT_TELEPORT = 15724;
+			public static final int BANK_OURANIA_TELEPORT = 15725;
+			public static final int BANK_PEER_THE_SEER_TELEPORT = 15726;
+			public static final int BANK_PISCATORIS_TELEPORT = 15727;
+			public static final int BANK_PORT_KHAZARD_TELEPORT = 15728;
+			public static final int BANK_PORT_PHASMATYS_TELEPORT = 15729;
+			public static final int BANK_PORT_PISCARILIUS_TELEPORT = 15730;
+			public static final int BANK_PORT_SARIM_TELEPORT = 15731;
+			public static final int BANK_PRIFDDINAS_NORTH_TELEPORT = 15732;
+			public static final int BANK_PRIFDDINAS_SOUTH_TELEPORT = 15733;
+			public static final int BANK_RIONASTA_TELEPORT = 15734;
+			public static final int BANK_ROGUES_DEN_TELEPORT = 15735;
+			public static final int BANK_SALTPETRE_MINE_TELEPORT = 15736;
+			public static final int BANK_SEERS_VILLAGE_TELEPORT = 15737;
+			public static final int BANK_SHANTAY_PASS_TELEPORT = 15738;
+			public static final int BANK_SHAYZIEN_TELEPORT = 15739;
+			public static final int BANK_SHAYZIEN_WAR_TENT_TELEPORT = 15740;
+			public static final int BANK_SHILO_VILLAGE_TELEPORT = 15741;
+			public static final int BANK_SOPHANEM_TELEPORT = 15742;
+			public static final int BANK_SULPHUR_MINE_TELEPORT = 15743;
+			public static final int BANK_AUBURNVALE_TELEPORT = 15744;
+			public static final int BANK_TALTEKLAN_TELEPORT = 15745;
+			public static final int BANK_TARNS_LAIR_TELEPORT = 15746;
+			public static final int BANK_TOMBS_OF_AMASCUT_TELEPORT = 15747;
+			public static final int BANK_TRAHAEARN_MINE_TELEPORT = 15748;
+			public static final int BANK_TROUBLE_BREWING_TELEPORT = 15749;
+			public static final int BANK_TZHAAR_CITY_TELEPORT = 15750;
+			public static final int BANK_UNKAH_TELEPORT = 15751;
+			public static final int BANK_VARROCK_EAST_TELEPORT = 15752;
+			public static final int BANK_VARROCK_WEST_TELEPORT = 15753;
+			public static final int BANK_VER_SINHAZA_TELEPORT = 15754;
+			public static final int BANK_VINERY_TELEPORT = 15755;
+			public static final int BANK_VOID_KNIGHTS_OUTPOST_TELEPORT = 15756;
+			public static final int BANK_VOLCANIC_MINE_TELEPORT = 15757;
+			public static final int BANK_WARRIORS_GUILD_TELEPORT = 15758;
+			public static final int BANK_WINTERTODT_TELEPORT = 15759;
+			public static final int BANK_WOODCUTTING_GUILD_TELEPORT = 15760;
+			public static final int BANK_YANILLE_TELEPORT = 15761;
+			public static final int BANK_ZANARIS_TELEPORT = 15762;
+			public static final int BANK_QUETZACALLI_GORGE_TELEPORT = 15763;
+			public static final int BANK_ALDARIN_TELEPORT = 15764;
+			public static final int BANK_HUEYCOATL_TELEPORT = 15765;
+			public static final int BANK_GIANTS_FOUNDRY_TELEPORT = 15766;
+			public static final int BANK_NEMUS_RETREAT_TELEPORT = 15767;
+			public static final int BANK_PANDEMONIUM_TELEPORT = 15768;
+			public static final int BANK_GREAT_CONCH_TELEPORT = 15769;
+			public static final int BANK_CHARRED_ISLAND_TELEPORT = 15770;
+			public static final int BANK_DEEPFIN_POINT_TELEPORT = 15771;
+			public static final int BANK_BUCCANEERS_HAVEN_TELEPORT = 15772;
+			public static final int BANK_PORT_ROBERTS_TELEPORT = 15773;
+			public static final int BANK_SUNBLEAK_ISLAND_TELEPORT = 15774;
+			public static final int BANK_ONYX_CREST_TELEPORT = 15775;
+			public static final int CLUE_AGILITY_PYRAMID_TELEPORT = 15776;
+			public static final int CLUE_AL_KHARID_MINE_TELEPORT = 15777;
+			public static final int CLUE_ANCIENT_CAVERN_TELEPORT = 15778;
+			public static final int CLUE_ARCEUUS_LIBRARY_TELEPORT = 15779;
+			public static final int CLUE_ARDOUGNE_MARKET_TELEPORT = 15780;
+			public static final int CLUE_ARDOUGNE_TRAINING_CAMP_TELEPORT = 15781;
+			public static final int CLUE_ARDOUGNE_WEST_CHAPEL_TELEPORT = 15782;
+			public static final int CLUE_ARDOUGNE_WINDMILL_TELEPORT = 15783;
+			public static final int CLUE_ARDOUGNE_ZOO_TELEPORT = 15784;
+			public static final int CLUE_AVIUM_SAVANNAH_BARDS_TELEPORT = 15785;
+			public static final int CLUE_BARBARIAN_OUTPOST_AGILITY_COURSE_TELEPORT = 15786;
+			public static final int CLUE_BARBARIAN_VILLAGE_TELEPORT = 15787;
+			public static final int CLUE_BARROWS_CHEST_TELEPORT = 15788;
+			public static final int CLUE_CAM_TORUM_ENTRANCE_TELEPORT = 15789;
+			public static final int CLUE_CANIFIS_TELEPORT = 15790;
+			public static final int CLUE_CASTLE_DRAKAN_TELEPORT = 15791;
+			public static final int CLUE_CASTLE_WARS_TELEPORT = 15792;
+			public static final int CLUE_CATACOMBS_OF_KOUREND_TELEPORT = 15793;
+			public static final int CLUE_CATHERBY_ARCHERY_SHOP_TELEPORT = 15794;
+			public static final int CLUE_CATHERBY_BANK_TELEPORT = 15795;
+			public static final int CLUE_CATHERBY_BEEHIVE_TELEPORT = 15796;
+			public static final int CLUE_CATHERBY_FISHING_SHOP_TELEPORT = 15797;
+			public static final int CLUE_CHAOS_TEMPLE_TELEPORT = 15798;
+			public static final int CLUE_CIVITAS_ILLA_FORTIS_GRAND_MUSEUM_TELEPORT = 15799;
+			public static final int CLUE_CIVITAS_ILLA_FORTIS_TEMPLE_TELEPORT = 15800;
+			public static final int CLUE_DEATH_ALTAR_TELEPORT = 15801;
+			public static final int CLUE_DIGSITE_TELEPORT = 15802;
+			public static final int CLUE_DIGSITE_EXAM_CENTRE_TELEPORT = 15803;
+			public static final int CLUE_DRAYNOR_MANOR_TELEPORT = 15804;
+			public static final int CLUE_DRAYNOR_VILLAGE_CROSSROADS_TELEPORT = 15805;
+			public static final int CLUE_DRAYNOR_VILLAGE_JAIL_TELEPORT = 15806;
+			public static final int CLUE_DRAYNOR_VILLAGE_MARKET_TELEPORT = 15807;
+			public static final int CLUE_DRAYNOR_VILLAGE_MISS_SCHISM_TELEPORT = 15808;
+			public static final int CLUE_EDGEVILLE_TELEPORT = 15809;
+			public static final int CLUE_EDGEVILLE_MONESTARY_TELEPORT = 15810;
+			public static final int CLUE_EMIRS_ARENA_TELEPORT = 15811;
+			public static final int CLUE_ENCHANTED_VALLEY_TELEPORT = 15812;
+			public static final int CLUE_ENTRANA_TELEPORT = 15813;
+			public static final int CLUE_FALADOR_GEM_SHOP_TELEPORT = 15814;
+			public static final int CLUE_FALADOR_PARTY_ROOM_TELEPORT = 15815;
+			public static final int CLUE_FALO_THE_BARD_TELEPORT = 15816;
+			public static final int CLUE_FIGHT_ARENA_TELEPORT = 15817;
+			public static final int CLUE_FISHING_GUILD_INSIDE_TELEPORT = 15818;
+			public static final int CLUE_FISHING_GUILD_OUTSIDE_TELEPORT = 15819;
+			public static final int CLUE_FISHING_PLATFORM_TELEPORT = 15820;
+			public static final int CLUE_FREMENNIK_ISLES_MINE_TELEPORT = 15821;
+			public static final int CLUE_GNOME_AGILITY_COURSE_TELEPORT = 15822;
+			public static final int CLUE_GOBLIN_VILLAGE_TELEPORT = 15823;
+			public static final int CLUE_GOD_WARS_DUNGEON_KRILS_ROOM_TELEPORT = 15824;
+			public static final int CLUE_HEROES_GUILD_TELEPORT = 15825;
+			public static final int CLUE_HOSIDIUS_CHARCOAL_BURNERS_TELEPORT = 15826;
+			public static final int CLUE_HOSIDIUS_MESS_TELEPORT = 15827;
+			public static final int CLUE_JIGGIG_TELEPORT = 15828;
+			public static final int CLUE_KEEP_LE_FAYE_TELEPORT = 15829;
+			public static final int CLUE_KHARAZI_JUNGLE_TELEPORT = 15830;
+			public static final int CLUE_KING_BLACK_DRAGON_TELEPORT = 15831;
+			public static final int CLUE_LAVA_DRAGON_ISLE_TELEPORT = 15832;
+			public static final int CLUE_LAVA_MAZE_TELEPORT = 15833;
+			public static final int CLUE_LEGENDS_GUILD_INSIDE_TELEPORT = 15834;
+			public static final int CLUE_LEGENDS_GUILD_OUTSIDE_TELEPORT = 15835;
+			public static final int CLUE_LIGHTHOUSE_TELEPORT = 15836;
+			public static final int CLUE_LIMESTONE_MINE_TELEPORT = 15837;
+			public static final int CLUE_LORD_IORWERTHS_ENCAMPMENT_TELEPORT = 15838;
+			public static final int CLUE_LUMBER_YARD_SAWMILL_TELEPORT = 15839;
+			public static final int CLUE_LUMBRIDGE_BOBS_AXES_TELEPORT = 15840;
+			public static final int CLUE_LUMBRIDGE_SWAMP_CAVES_TELEPORT = 15841;
+			public static final int CLUE_LUMBRIDGE_SWAMP_TELEPORT = 15842;
+			public static final int CLUE_LUMBRIDGE_WINDMILL_TELEPORT = 15843;
+			public static final int CLUE_MORYTANIA_MAUSOLEUM_TELEPORT = 15844;
+			public static final int CLUE_MOUNT_KARUULM_TELEPORT = 15845;
+			public static final int CLUE_MOUNTAIN_CAMP_TELEPORT = 15846;
+			public static final int CLUE_MUDSKIPPER_POINT_TELEPORT = 15847;
+			public static final int CLUE_MUSA_POINT_TELEPORT = 15848;
+			public static final int CLUE_OBSERVATORY_TELEPORT = 15849;
+			public static final int CLUE_OLAF_THE_BARD_TELEPORT = 15850;
+			public static final int CLUE_PORT_SARIM_TELEPORT = 15851;
+			public static final int CLUE_PRIFDDINAS_TELEPORT = 15852;
+			public static final int CLUE_PYRAMID_PLUNDER_TELEPORT = 15853;
+			public static final int CLUE_RIMMINGTON_CROSSROADS_TELEPORT = 15854;
+			public static final int CLUE_RIMMINGTON_MINE_TELEPORT = 15855;
+			public static final int CLUE_SEERS_VILLAGE_TELEPORT = 15856;
+			public static final int CLUE_SHADOW_DUNGEON_TELEPORT = 15857;
+			public static final int CLUE_SHANTAY_PASS_TELEPORT = 15858;
+			public static final int CLUE_SHAYZIEN_COMBAT_RING_TELEPORT = 15859;
+			public static final int CLUE_SHAYZIEN_WAR_TENT_TELEPORT = 15860;
+			public static final int CLUE_SHILO_VILLAGE_TELEPORT = 15861;
+			public static final int CLUE_SINCLAIR_MANSION_TELEPORT = 15862;
+			public static final int CLUE_SLAYER_TOWER_TELEPORT = 15863;
+			public static final int CLUE_SOPHANEM_TELEPORT = 15864;
+			public static final int CLUE_SOUL_ALTAR_TELEPORT = 15865;
+			public static final int CLUE_TAI_BWO_WANNAI_VILLAGE_TELEPORT = 15866;
+			public static final int CLUE_TAVERLY_STONE_CIRLCE_TELEPORT = 15867;
+			public static final int CLUE_TROLLHEIM_TELEPORT = 15868;
+			public static final int CLUE_TROLLWEISS_MOUNTAIN_TELEPORT = 15869;
+			public static final int CLUE_TZHAAR_GEM_STALL_TELEPORT = 15870;
+			public static final int CLUE_TZHAAR_WEAPON_SHOP_TELEPORT = 15871;
+			public static final int CLUE_UNDERGROUND_PASS_TELEPORT = 15872;
+			public static final int CLUE_VARROCK_ARIS_TENT_TELEPORT = 15873;
+			public static final int CLUE_VARROCK_CLOTHES_SHOP_TELEPORT = 15874;
+			public static final int CLUE_VARROCK_GRAND_EXCHANGE_TELEPORT = 15875;
+			public static final int CLUE_VARROCK_PALACE_GARDENS_TELEPORT = 15876;
+			public static final int CLUE_VARROCK_PALACE_LIBRARY_TELEPORT = 15877;
+			public static final int CLUE_VARROCK_RUNE_SHOP_TELEPORT = 15878;
+			public static final int CLUE_WARRIORS_GUILD_TELEPORT = 15879;
+			public static final int CLUE_WATCHTOWER_TELEPORT = 15880;
+			public static final int CLUE_WHITE_WOLF_MOUNTAIN_TELEPORT = 15881;
+			public static final int CLUE_WILDERNESS_AXE_HUT_TELEPORT = 15882;
+			public static final int CLUE_WILDERNESS_BANDIT_CAMP_TELEPORT = 15883;
+			public static final int CLUE_WILDERNESS_VOLCANO_TELEPORT = 15884;
+			public static final int CLUE_WIZARDS_TOWER_TELEPORT = 15885;
+			public static final int CLUE_YANILLE_TELEPORT = 15886;
+			public static final int CLUE_ZUL_ANDRA_TELEPORT = 15887;
+			public static final int CLUE_SALVAGER_OVERLOOK_TELEPORT = 15888;
+			public static final int CLUE_SALVAGER_OVERLOOK_EAST_TELEPORT = 15889;
+			public static final int CLUE_TOWER_OF_ASCENSION_TELEPORT = 15890;
+			public static final int CLUE_TWILIGHT_TEMPLE_TELEPORT = 15891;
+			public static final int BOSS_ABYSSAL_SIRE_TELEPORT = 15892;
+			public static final int BOSS_ALCHEMICAL_HYDRA_TELEPORT = 15893;
+			public static final int BOSS_AMOXLIATL_TELEPORT = 15894;
+			public static final int BOSS_ARAXXOR_TELEPORT = 15895;
+			public static final int BOSS_ARTIO_TELEPORT = 15896;
+			public static final int BOSS_BARROWS_CHEST_TELEPORT = 15897;
+			public static final int BOSS_BARROWS_SURFACE_TELEPORT = 15898;
+			public static final int BOSS_BRYOPHYTA_TELEPORT = 15899;
+			public static final int BOSS_CALLISTO_TELEPORT = 15900;
+			public static final int BOSS_CALVARION_TELEPORT = 15901;
+			public static final int BOSS_CERBERUS_TELEPORT = 15902;
+			public static final int BOSS_CHAMBERS_OF_XERIC_TELEPORT = 15903;
+			public static final int BOSS_CHAOS_ELEMENTAL_TELEPORT = 15904;
+			public static final int BOSS_CHAOS_FANATIC_TELEPORT = 15905;
+			public static final int BOSS_COMMANDER_ZILYANA_TELEPORT = 15906;
+			public static final int BOSS_CORPOREAL_BEAST_TELEPORT = 15907;
+			public static final int BOSS_CRAZY_ARCHAEOLOGIST_TELEPORT = 15908;
+			public static final int BOSS_DAGANNOTH_KINGS_TELEPORT = 15909;
+			public static final int BOSS_DERANGED_ARCHAEOLOGIST_TELEPORT = 15910;
+			public static final int BOSS_DOOM_OF_MOKHAIOTL_TELEPORT = 15911;
+			public static final int BOSS_DUKE_SUCELLUS_TELEPORT = 15912;
+			public static final int BOSS_FIGHT_CAVES_TELEPORT = 15913;
+			public static final int BOSS_FORTIS_COLOSSEUM_TELEPORT = 15914;
+			public static final int BOSS_GENERAL_GRAARDOR_TELEPORT = 15915;
+			public static final int BOSS_GIANT_MOLE_TELEPORT = 15916;
+			public static final int BOSS_GROTESQUE_GUARDIANS_TELEPORT = 15917;
+			public static final int BOSS_HESPORI_TELEPORT = 15918;
+			public static final int BOSS_HUEYCOATL_TELEPORT = 15919;
+			public static final int BOSS_INFERNO_TELEPORT = 15920;
+			public static final int BOSS_KALPHITE_QUEEN_TELEPORT = 15921;
+			public static final int BOSS_KING_BLACK_DRAGON_TELEPORT = 15922;
+			public static final int BOSS_KRAKEN_TELEPORT = 15923;
+			public static final int BOSS_KREEARRA_TELEPORT = 15924;
+			public static final int BOSS_KRIL_TSUTSAROTH_TELEPORT = 15925;
+			public static final int BOSS_MOON_BLOOD_TELEPORT = 15926;
+			public static final int BOSS_MOON_ECLIPSE_TELEPORT = 15927;
+			public static final int BOSS_MOON_BLUE_TELEPORT = 15928;
+			public static final int BOSS_NEX_TELEPORT = 15929;
+			public static final int BOSS_OBOR_TELEPORT = 15930;
+			public static final int BOSS_PHANTOM_MUSPAH_TELEPORT = 15931;
+			public static final int BOSS_ROYAL_TITANS_TELEPORT = 15932;
+			public static final int BOSS_SARACHNIS_TELEPORT = 15933;
+			public static final int BOSS_SCORPIA_TELEPORT = 15934;
+			public static final int BOSS_SCURRIUS_TELEPORT = 15935;
+			public static final int BOSS_SHELLBANE_GRYPHON_TELEPORT = 15936;
+			public static final int BOSS_SKOTIZO_TELEPORT = 15937;
+			public static final int BOSS_SPINDEL_TELEPORT = 15938;
+			public static final int BOSS_TEMPOROSS_TELEPORT = 15939;
+			public static final int BOSS_GAUNTLET_TELEPORT = 15940;
+			public static final int BOSS_LEVIATHAN_TELEPORT = 15941;
+			public static final int BOSS_NIGHTMARE_TELEPORT = 15942;
+			public static final int BOSS_WHISPERER_TELEPORT = 15943;
+			public static final int BOSS_THEATRE_OF_BLOOD_TELEPORT = 15944;
+			public static final int BOSS_THERMONUCLEAR_SMOKE_DEVIL_TELEPORT = 15945;
+			public static final int BOSS_TOMBS_OF_AMASCUT_TELEPORT = 15946;
+			public static final int BOSS_VARDORVIS_TELEPORT = 15947;
+			public static final int BOSS_VENANATIS_TELEPORT = 15948;
+			public static final int BOSS_VETION_TELEPORT = 15949;
+			public static final int BOSS_VORKATH_TELEPORT = 15950;
+			public static final int BOSS_WINTERTODT_TELEPORT = 15951;
+			public static final int BOSS_YAMA_TELEPORT = 15952;
+			public static final int BOSS_MIMIC_TELEPORT = 15953;
+			public static final int BOSS_ZALCANO_TELEPORT = 15954;
+			public static final int BOSS_ZULRAH_TELEPORT = 15955;
+			public static final int BOSS_TZHAAR_KET_RAK_TELEPORT = 15956;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BURTHORPE_TIGHT_GAP = 15957;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DWARF_MINE_CREVICE = 15958;
+			public static final int AGILITY_SHORTCUT_TELEPORT_FALADOR_CRUMBLING_WALL = 15959;
+			public static final int AGILITY_SHORTCUT_TELEPORT_FALADOR_WALL_GRAPPLE = 15960;
+			public static final int AGILITY_SHORTCUT_TELEPORT_FALADOR_WALL_TUNNEL = 15961;
+			public static final int AGILITY_SHORTCUT_TELEPORT_GWD_CRACK = 15962;
+			public static final int AGILITY_SHORTCUT_TELEPORT_GWD_SARA_ROPE = 15963;
+			public static final int AGILITY_SHORTCUT_TELEPORT_GWD_ROCKY_HANDHOLDS = 15964;
+			public static final int AGILITY_SHORTCUT_TELEPORT_HEROES_GUILD_CREVICE = 15965;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ICE_DUNGEON_GIANTS_TUNNEL = 15966;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ICE_DUNGEON_WYVERN_HOBGOBLIN_TUNNEL = 15967;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ICE_DUNGEON_WYVERN_ENTRY_TUNNEL = 15968;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ICE_MOUNTAIN_ROCKS = 15969;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MOTHERLODE_MINE_TUNNEL_NORTH = 15970;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MOTHERLODE_MINE_TUNNEL_SOUTH = 15971;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TAVERLEY_WALL_CLIMB = 15972;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TAVERLEY_DUNGEON_LOOSE_RAILING = 15973;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TAVERLEY_DUNGEON_BLUE_DRAGON_PIPE = 15974;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TAVERLEY_DUNGEON_FLOOR_TRAP = 15975;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TROLL_STRONGHOLD_ROOFTOP_ROCKS = 15976;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TROLLHEIM_EASY_CLIMB = 15977;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TROLLHEIM_MEDIUM_CLIMB = 15978;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TROLLHEIM_ADVANCED_CLIMB = 15979;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TROLLHEIM_HARD_CLIMB = 15980;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TROLLHEIM_WILDERNESS_CLIMB = 15981;
+			public static final int AGILITY_SHORTCUT_TELEPORT_AL_KHARID_PALACE_WINDOW = 15982;
+			public static final int AGILITY_SHORTCUT_TELEPORT_AL_KHARID_MINE_ROCKS = 15983;
+			public static final int AGILITY_SHORTCUT_TELEPORT_AL_KHARID_RIVER_GRAPPLE = 15984;
+			public static final int AGILITY_SHORTCUT_TELEPORT_KALPHITE_LAIR_CREVICE = 15985;
+			public static final int AGILITY_SHORTCUT_KALPHITE_LAIR_STEPPING_STONE = 15986;
+			public static final int AGILITY_SHORTCUT_TELEPORT_NECROPOLIS_STEPPING_STONE = 15987;
+			public static final int AGILITY_SHORTCUT_TELEPORT_POLLNIVNEACH_STEPPING_STONE = 15988;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SLAYER_DUNGEON_TRAPS = 15989;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SLAYER_DUNGEON_CREVICE = 15990;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MISCELLANIA_DOCKS_STEPPING_STONE = 15991;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SINCLAIR_LOG_BALANCE = 15992;
+			public static final int AGILITY_SHORTCUT_TELEPORT_RELEKKA_BROKEN_FENCE = 15993;
+			public static final int AGILITY_SHORTCUT_TELEPORT_RELEKKA_HUNTER_AREA_HANDHOLDS = 15994;
+			public static final int AGILITY_SHORTCUT_TELEPORT_WATERBIRTH_ISLAND_ROCKS = 15995;
+			public static final int AGILITY_SHORTCUT_TELEPORT_WATERBIRTH_ISLAND_CREVICE = 15996;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ARDOUGNE_LOG_BALANCE = 15997;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BASALT_CAUSEWAY = 15998;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CATHERBY_ROCK_GRAPPLE = 15999;
+			public static final int AGILITY_SHORTCUT_TELEPORT_WATER_OBELISK_GRAPPLE = 16000;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CORSAIR_COVE_ROCKS = 16001;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CORSAIR_COVE_RESOURCE_AREA_ROCKS = 16002;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CORSAIR_COVE_CAVE_PILLAR = 16003;
+			public static final int AGILITY_SHORTCUT_TELEPORT_GNOME_STRONGHOLD_CLIMB = 16004;
+			public static final int AGILITY_SHORTCUT_TELEPORT_EAGLES_PEAK_ROCKS = 16005;
+			public static final int AGILITY_SHORTCUT_TELEPORT_COAL_TRUCKS_LOG_BALANCE = 16006;
+			public static final int AGILITY_SHORTCUT_TELEPORT_OBSERVATORY_GRAPPLE = 16007;
+			public static final int AGILITY_SHORTCUT_TELEPORT_STRONGHOLD_SLAYER_CAVE_TUNNEL = 16008;
+			public static final int AGILITY_SHORTCUT_TELEPORT_YANILLE_WALL_CLIMB = 16009;
+			public static final int AGILITY_SHORTCUT_TELEPORT_YANILLE_WALL_TUNNEL = 16010;
+			public static final int AGILITY_SHORTCUT_TELEPORT_YANILLE_WALL_GRAPPLE = 16011;
+			public static final int AGILITY_SHORTCUT_TELEPORT_YANILLE_DUNGEON_LEDGE = 16012;
+			public static final int AGILITY_SHORTCUT_TELEPORT_YANILLE_DUNGEON_PIPE = 16013;
+			public static final int AGILITY_SHORTCUT_TELEPORT_YANILLE_DUNGEON_MONKEYBARS = 16014;
+			public static final int AGILITY_SHORTCUT_TELEPORT_YANILLE_DUNGEON_RUBBLE = 16015;
+			public static final int AGILITY_SHORTCUT_TELEPORT_GUTANOTH_WALL = 16016;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BRIMHAVEN_ROPE_SWING = 16017;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BRIMHAVEN_DUNGEON_MOSS_GIANTS = 16018;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BRIMHAVEN_DUNGEON_LOG_BALANCE = 16019;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BRIMHAVEN_DUNGEON_DEMON_PIPE = 16020;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BRIMHAVEN_DUNGEON_RED_DRAGON_STEPPING_STONES = 16021;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BRIMHAVEN_DUNGEON_VINE = 16022;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CAIRN_ISLE_ROCK_ROCKSLIDE = 16023;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CRANDOR_ROCK_CLIMB = 16024;
+			public static final int AGILITY_SHORTCUT_TELEPORT_KHARAZI_JUNGLE_VINE = 16025;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MUSA_POINT_GRAPPLE = 16026;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SHAMAN_CAVES_CREVICE = 16027;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SHILO_VILLAGE_STEPPING_STONE = 16028;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SHILO_VILLAGE_ROCKS = 16029;
+			public static final int AGILITY_SHORTCUT_TELEPORT_KARAMJA_STEPPING_STONES = 16030;
+			public static final int AGILITY_SHORTCUT_TELEPORT_VIYELDI_CAVES_ROPE = 16031;
+			public static final int AGILITY_SHORTCUT_TELEPORT_HYDRA_PIPE = 16032;
+			public static final int AGILITY_SHORTCUT_TELEPORT_KARUULM_CLIMB = 16033;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DENSE_ESSENCE_MINE_BOULDER_JUMP_NORTH = 16034;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DENSE_ESSENCE_MINE_ROCKS_EAST = 16035;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DENSE_ESSENCE_MINE_ROCKS_NORTH = 16036;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DENSE_ESSENCE_MINE_ROCKS_WEST = 16037;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CATACOMBS_CRACK_NORTH = 16038;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CATACOMBS_CRACK_SOUTH = 16039;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CATACOMBS_DRAGONS_STEPPING_STONES = 16040;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CHASM_OF_FIRE_GAP = 16041;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CHASM_OF_FIRE_CHAIN = 16042;
+			public static final int AGILITY_SHORTCUT_TELEPORT_HOSIDIUS_LAKE_STEPPING_STONES = 16043;
+			public static final int AGILITY_SHORTCUT_TELEPORT_HOSIDIUS_RIVER_STEPPING_STONE = 16044;
+			public static final int AGILITY_SHORTCUT_TELEPORT_FORTHOS_DUNGEON_STRANGE_FLOOR = 16045;
+			public static final int AGILITY_SHORTCUT_TELEPORT_WINTERTODT_GAP = 16046;
+			public static final int AGILITY_SHORTCUT_TELEPORT_COSMIC_ALTAR_PATH = 16047;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DRAYNOR_WALL_TUNNEL = 16048;
+			public static final int AGILITY_SHORTCUT_TELEPORT_RIVER_LUM_STEPPING_STONES = 16049;
+			public static final int AGILITY_SHORTCUT_TELEPORT_EDGEVILLE_MONKEYBARS = 16050;
+			public static final int AGILITY_SHORTCUT_TELEPORT_EDGEVILLE_DUNGEON_MOSS_GIANT_TUNNEL = 16051;
+			public static final int AGILITY_SHORTCUT_TELEPORT_FOSSIL_ISLAND_ROPE_CLIMB = 16052;
+			public static final int AGILITY_SHORTCUT_TELEPORT_FOSSIL_ISLAND_HOLE = 16053;
+			public static final int AGILITY_SHORTCUT_TELEPORT_FOSSIL_ISLAND_ZIPLINE = 16054;
+			public static final int AGILITY_SHORTCUT_TELEPORT_LUMBRIDGE_SWAMP_STEPPING_STONE = 16055;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SWAMP_CAVE_STEPPING_STONES_NORTH = 16056;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SWAMP_CAVE_STEPPING_STONES_SOUTH = 16057;
+			public static final int AGILITY_SHORTCUT_TELEPORT_RIVER_LUM_GRAPPLE = 16058;
+			public static final int AGILITY_SHORTCUT_TELEPORT_VARROCK_CASTLE_TRELLIS = 16059;
+			public static final int AGILITY_SHORTCUT_TELEPORT_GE_UNDERWALL_TUNNEL = 16060;
+			public static final int AGILITY_SHORTCUT_TELEPORT_VARROCK_BROKEN_FENCE = 16061;
+			public static final int AGILITY_SHORTCUT_TELEPORT_PATERDOMUS_RAILING = 16062;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BARROWS_WALL = 16063;
+			public static final int AGILITY_SHORTCUT_TELEPORT_BURGH_DE_ROTT_LOW_FENCE = 16064;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DARKMEYER_WALL_CLIMB = 16065;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DARKMEYER_WALL_ROCKS = 16066;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MAUSOLEUM_BRIDGE_JUMP = 16067;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MEYERDITCH_LAB_CAVE = 16068;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MEYERDITCH_LAB_CAVE_ADVANCED = 16069;
+			public static final int AGILITY_SHORTCUT_TELEPORT_NATURE_GROTTO_BRIDGE = 16070;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MORT_MYRE_STEPPING_STONE = 16071;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MOS_LEHARMLESS_STEPPING_STONE = 16072;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ECTOFUNTUS_WEATHERED_WALL = 16073;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SLAYER_TOWER_BROKEN_WINDOW = 16074;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SLAYER_TOWER_CHAIN_MEDIUM = 16075;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SLAYER_TOWER_CHAIN_HARD = 16076;
+			public static final int AGILITY_SHORTCUT_TELEPORT_SLAYER_TOWER_IVY_CLIMB = 16077;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ARANDAR_ROCKS_1_NORTH = 16078;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ARANDAR_ROCKS_2_MID = 16079;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ARANDAR_ROCKS_3_SOUTH = 16080;
+			public static final int AGILITY_SHORTCUT_TELEPORT_IORWERTH_DUNGEON_GAP_NORTH = 16081;
+			public static final int AGILITY_SHORTCUT_TELEPORT_IORWERTH_DUNGEON_GAP_SOUTH = 16082;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ZUL_ANDRA_STEPPING_STONE = 16083;
+			public static final int AGILITY_SHORTCUT_TELEPORT_ALDARIN_ROCKS = 16084;
+			public static final int AGILITY_SHORTCUT_TELEPORT_NEMUS_RETREAT_NORTH = 16085;
+			public static final int AGILITY_SHORTCUT_TELEPORT_NEMUS_RETREAT_SOUTH = 16086;
+			public static final int AGILITY_SHORTCUT_TELEPORT_NEMUS_RETREAT_EAST = 16087;
+			public static final int AGILITY_SHORTCUT_TELEPORT_AUBURN_VALLEY_LOG_BALANCE_NORTH = 16088;
+			public static final int AGILITY_SHORTCUT_TELEPORT_AUBURN_VALLEY_LOG_BALANCE_SOUTH = 16089;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CUSTODIA_CAVE_SQUEEZE = 16090;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DARKFROST_ROCKS = 16091;
+			public static final int AGILITY_SHORTCUT_TELEPORT_PROUDSPIRE_LOWER_ROCKS = 16092;
+			public static final int AGILITY_SHORTCUT_TELEPORT_PROUDSPIRE_UPPER_ROCKS = 16093;
+			public static final int AGILITY_SHORTCUT_TELEPORT_RALOS_RISE_ROCKS = 16094;
+			public static final int AGILITY_SHORTCUT_TELEPORT_MOKHAIOTL_RUINS_PILLAR = 16095;
+			public static final int AGILITY_SHORTCUT_TELEPORT_STALKER_DEN_STEPPING_STONE = 16096;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TLATI_RAINFOREST_LOG_BALANCE = 16097;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TLATI_RAINFOREST_ROCK_CLIMB = 16098;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TONALI_CAVERN_LOG_BALANCE = 16099;
+			public static final int AGILITY_SHORTCUT_TELEPORT_TONALI_CAVERN_STEPPING_STONE = 16100;
+			public static final int AGILITY_SHORTCUT_TELEPORT_CHAOS_TEMPLE_STEPPING_STONE = 16101;
+			public static final int AGILITY_SHORTCUT_TELEPORT_DEEP_WILDERNESS_DUNGEON_CREVICE = 16102;
+			public static final int AGILITY_SHORTCUT_TELEPORT_LAVA_DRAGON_ISLE_STEPPING_STONE = 16103;
+			public static final int AGILITY_SHORTCUT_TELEPORT_LAVA_MAZE_STEPPING_STONE = 16104;
+			public static final int AGILITY_SHORTCUT_TELEPORT_REVENANT_CAVE_EASY_PILLAR_NORTH = 16105;
+			public static final int AGILITY_SHORTCUT_TELEPORT_REVENANT_CAVE_EASY_PILLAR_SOUTH = 16106;
+			public static final int AGILITY_SHORTCUT_TELEPORT_REVENANT_CAVE_PILLAR_MEDIUM_NORTH_1 = 16107;
+			public static final int AGILITY_SHORTCUT_TELEPORT_REVENANT_CAVE_PILLAR_MEDIUM_NORTH_2 = 16108;
+			public static final int AGILITY_SHORTCUT_TELEPORT_REVENANT_CAVE_PILLAR_MEDIUM_SOUTH = 16109;
+			public static final int AGILITY_SHORTCUT_TELEPORT_REVENANT_CAVE_HARD_PILLAR = 16110;
+			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_GWD_CREVICE = 16111;
+			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_SLAYER_CAVE_JELLIES = 16112;
+			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_SLAYER_CAVE_LESSER_DEMONS = 16113;
+			public static final int LEAGUE_VARROCK_GE_TELEPORT = 16266;
+			public static final int ICE_PLATEAU_TELEPORT = 16267;
+			public static final int BARBARIAN_OUTPOST_TELEPORT = 16268;
+			public static final int LEAGUE_SEERS_VILLAGE_TELEPORT = 16269;
+			public static final int LEAGUE_YANILLE_TELEPORT = 16270;
+			public static final int PORT_KHAZARD_TELEPORT = 16271;
+			public static final int HOUSE_INSIDE_TELEPORT = 16272;
+			public static final int HOUSE_OUTSIDE_TELEPORT = 16273;
+			public static final int APE_ATOLL_TELEPORT = 16274;
 		}
 	}
 
@@ -11908,19 +14757,29 @@ public final class DBTableID
 		public static final int COL_SAILING_SEA = 2;
 
 		/**
+		 * dbrow
+		 */
+		public static final int COL_SAILING_SEA_SECONDARY = 3;
+
+		/**
 		 * boolean
 		 */
-		public static final int COL_GIVE_REPEAT_XP = 3;
+		public static final int COL_GIVE_REPEAT_XP = 4;
 
 		/**
 		 * dbtable
 		 */
-		public static final int COL_CHARTING_TYPE = 4;
+		public static final int COL_CHARTING_TYPE = 5;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_HAZARD = 5;
+		public static final int COL_HAZARD = 6;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_REQUIRED_DOCK = 7;
 
 		public static final class Row
 		{
@@ -12761,34 +15620,39 @@ public final class DBTableID
 		public static final int ID = 162;
 
 		/**
-		 * integer
+		 * obj
 		 */
-		public static final int COL_RANGED_LEVEL_REQUIRED = 3;
+		public static final int COL_DUMMY_OBJ = 2;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_ACCURACY = 4;
+		public static final int COL_RANGED_LEVEL_REQUIRED = 4;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_DAMAGE = 5;
+		public static final int COL_ACCURACY = 5;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_AMMUNITION_MAX_TIER = 6;
+		public static final int COL_DAMAGE = 6;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_ATTACK_RATE = 7;
+		public static final int COL_AMMUNITION_MAX_TIER = 9;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_ATTACK_RANGE = 9;
+		public static final int COL_ATTACK_RATE = 10;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ATTACK_RANGE = 12;
 
 		public static final class Row
 		{
@@ -12844,32 +15708,32 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_BOAT_BASESPEED = 23;
+		public static final int COL_BOAT_CRYSTALHELM_RESISTANCE = 23;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOAT_SPEEDCAP = 24;
+		public static final int COL_BOAT_BASESPEED = 24;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOAT_ACCELERATION = 25;
+		public static final int COL_BOAT_SPEEDCAP = 25;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOAT_SPEEDBOOST_DURATION = 26;
+		public static final int COL_BOAT_ACCELERATION = 26;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOAT_CARGOHOLD_SIZE = 27;
+		public static final int COL_BOAT_SPEEDBOOST_DURATION = 27;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOAT_CARGOHOLD_SIZE_UIM = 28;
+		public static final int COL_BOAT_CARGOHOLD_SIZE = 28;
 
 		/**
 		 * integer
@@ -12895,6 +15759,16 @@ public final class DBTableID
 		 * integer
 		 */
 		public static final int COL_BOAT_MAX_WIND_MOTES = 33;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_BOAT_ADDITIONAL_RECOVERY_COST_PERCENTAGE = 34;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_BOAT_AMMO_SAVE_PERCENTAGE = 35;
 
 		public static final class Row
 		{
@@ -13014,6 +15888,7 @@ public final class DBTableID
 			public static final int SAILING_BOAT_ETERNAL_BRAZIER_STATS = 8261;
 			public static final int SAILING_BOAT_WIND_CATCHER_STATS = 8262;
 			public static final int SAILING_BOAT_GALE_CATCHER_STATS = 8263;
+			public static final int SAILING_BOAT_BALLISTIC_ATTRACTOR_STATS = 13305;
 		}
 	}
 
@@ -13271,6 +16146,21 @@ public final class DBTableID
 		 */
 		public static final int COL_LONG_BUTTON = 7;
 
+		/**
+		 * (boolean, string)
+		 */
+		public static final int COL_OP2 = 8;
+
+		/**
+		 * (boolean, string)
+		 */
+		public static final int COL_OP3 = 9;
+
+		/**
+		 * (boolean, string)
+		 */
+		public static final int COL_OP4 = 10;
+
 		public static final class Row
 		{
 			public static final int SAILING_SIDEPANEL_FACILITY_SAILS_BUTTON_MAIN = 8121;
@@ -13437,6 +16327,8 @@ public final class DBTableID
 			public static final int SAILING_BOAT_LARGE_HOTSPOT_8 = 8542;
 			public static final int SAILING_BOAT_LARGE_HOTSPOT_9 = 8543;
 			public static final int SAILING_BOAT_LARGE_HOTSPOT_10 = 8544;
+			public static final int SAILING_BOAT_LARGE_HOTSPOT_11 = 13308;
+			public static final int SAILING_BOAT_LARGE_HOTSPOT_12 = 13309;
 		}
 	}
 
@@ -13574,6 +16466,11 @@ public final class DBTableID
 		 */
 		public static final int COL_FACILITY_CUSTOMISATION_ORDER = 25;
 
+		/**
+		 * integer
+		 */
+		public static final int COL_FACILITY_BOTTLE_ID = 26;
+
 		public static final class Row
 		{
 			public static final int SAILING_BOAT_FACILITY_BRONZE_CANNON = 8427;
@@ -13672,6 +16569,7 @@ public final class DBTableID
 			public static final int SAILING_BOAT_FACILITY_INOCULATION_STATION_3X8 = 8520;
 			public static final int SAILING_BOAT_FACILITY_TELEPORT_FOCUS = 8521;
 			public static final int SAILING_BOAT_FACILITY_TELEPORT_FOCUS_GREATER = 8522;
+			public static final int SAILING_BOAT_FACILITY_BALLISTIC_ATTRACTOR = 13307;
 		}
 	}
 
@@ -14486,6 +17384,7 @@ public final class DBTableID
 			public static final int SAILING_CUSTOMISATION_TRAWLING_NET_LOC_ANGLES = 8409;
 			public static final int SAILING_CUSTOMISATION_ANCHOR_LOC_ANGLES = 8410;
 			public static final int SAILING_CUSTOMISATION_KEG_LOC_ANGLES = 8411;
+			public static final int SAILING_CUSTOMISATION_BALLISTIC_ATTRACTOR_LOC_ANGLES = 13306;
 		}
 	}
 
@@ -14638,6 +17537,16 @@ public final class DBTableID
 		public static final int COL_INLINE_NAME = 2;
 
 		/**
+		 * integer
+		 */
+		public static final int COL_LEVEL_REQUIRED = 4;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_QUEST_REQUIRED = 5;
+
+		/**
 		 * graphic
 		 */
 		public static final int COL_DOCK_SPRITE_SMALL = 13;
@@ -14727,8 +17636,6 @@ public final class DBTableID
 			public static final int SAILING_NPC_BOAT_BT_TRIAL_MASTER_3_BOAT = 8658;
 			public static final int SAILING_NPC_BOAT_TROUBLED_TORTUGANS_RED_REEF = 8659;
 			public static final int SAILING_NPC_BOAT_RED_REEF_ZENITH = 8660;
-			public static final int SAILING_NPC_BOAT_DYNAMIC_1 = 8661;
-			public static final int SAILING_NPC_BOAT_DYNAMIC_2 = 8662;
 		}
 	}
 
@@ -14878,6 +17785,8 @@ public final class DBTableID
 
 		public static final class Row
 		{
+			public static final int PORT_TASK_RELLEKKA_COURIER_19 = 4966;
+			public static final int PORT_TASK_RELLEKKA_COURIER_20 = 4967;
 			public static final int PORT_TASK_PORT_SARIM_COURIER_0 = 8664;
 			public static final int PORT_TASK_PORT_SARIM_COURIER_1 = 8665;
 			public static final int PORT_TASK_PORT_SARIM_COURIER_2 = 8666;
@@ -15480,6 +18389,8 @@ public final class DBTableID
 			public static final int PORT_TASK_PRYING_TIMES = 9263;
 			public static final int PORT_TASK_BLANK = 9264;
 			public static final int PORT_TASK_LOCKED = 9265;
+			public static final int PORT_TASK_DEEPFIN_POINT_BOUNTY_7 = 13310;
+			public static final int PORT_TASK_PORT_TYRAS_BOUNTY_7 = 13311;
 		}
 	}
 
@@ -15844,6 +18755,4610 @@ public final class DBTableID
 		public static final class Row
 		{
 			public static final int CHARTERING_COSTS = 9454;
+		}
+	}
+
+	public static final class PatchyData
+	{
+		public static final int ID = 208;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ID = 0;
+
+		/**
+		 * namedobj
+		 */
+		public static final int COL_COMBINED = 1;
+
+		/**
+		 * (namedobj, namedobj)
+		 */
+		public static final int COL_INGREDIENTS = 2;
+
+		public static final class Row
+		{
+			public static final int PATCHY_DATA_BIG_HAT_EYEPATCH = 4970;
+			public static final int PATCHY_DATA_SMALL_HAT_EYEPATCH = 5121;
+			public static final int PATCHY_DATA_BANDANA_EYEPATCH_BLUE = 5122;
+			public static final int PATCHY_DATA_BANDANA_EYEPATCH_BROWN = 7052;
+			public static final int PATCHY_DATA_BANDANA_EYEPATCH_RED = 7067;
+			public static final int PATCHY_DATA_BANDANA_EYEPATCH_WHITE = 9455;
+			public static final int PATCHY_DATA_HAT_CAVALIER_MASK = 9456;
+			public static final int PATCHY_DATA_DOUBLE_EYE_PATCH = 9457;
+			public static final int PATCHY_DATA_HAT_BERRET_MIME_MASK = 9458;
+			public static final int PATCHY_DATA_WOM_HEAD = 9459;
+			public static final int PATCHY_DATA_TOPHAT_MONACLE = 9460;
+			public static final int PATCHY_DATA_CRABCLAW_HOOK = 9461;
+			public static final int PATCHY_DATA_DARK_FLIPPERS = 9462;
+		}
+	}
+
+	public static final class SkillGuideV2InlineIcon
+	{
+		public static final int ID = 209;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ID = 0;
+
+		/**
+		 * graphic
+		 */
+		public static final int COL_GRAPHIC = 1;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_SIZE = 2;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_OFFSET = 3;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_MARGIN = 4;
+
+		public static final class Row
+		{
+			public static final int SKILL_GUIDE_V2_ICON_ATTACK = 9463;
+			public static final int SKILL_GUIDE_V2_ICON_STRENGTH = 9464;
+			public static final int SKILL_GUIDE_V2_ICON_DEFENCE = 9465;
+			public static final int SKILL_GUIDE_V2_ICON_RANGED = 9466;
+			public static final int SKILL_GUIDE_V2_ICON_PRAYER = 9467;
+			public static final int SKILL_GUIDE_V2_ICON_MAGIC = 9468;
+			public static final int SKILL_GUIDE_V2_ICON_RUNECRAFT = 9469;
+			public static final int SKILL_GUIDE_V2_ICON_HITPOINTS = 9470;
+			public static final int SKILL_GUIDE_V2_ICON_AGILITY = 9471;
+			public static final int SKILL_GUIDE_V2_ICON_HERBLORE = 9472;
+			public static final int SKILL_GUIDE_V2_ICON_THIEVING = 9473;
+			public static final int SKILL_GUIDE_V2_ICON_CRAFTING = 9474;
+			public static final int SKILL_GUIDE_V2_ICON_FLETCHING = 9475;
+			public static final int SKILL_GUIDE_V2_ICON_MINING = 9476;
+			public static final int SKILL_GUIDE_V2_ICON_SMITHING = 9477;
+			public static final int SKILL_GUIDE_V2_ICON_FISHING = 9478;
+			public static final int SKILL_GUIDE_V2_ICON_COOKING = 9479;
+			public static final int SKILL_GUIDE_V2_ICON_FIREMAKING = 9480;
+			public static final int SKILL_GUIDE_V2_ICON_WOODCUTTING = 9481;
+			public static final int SKILL_GUIDE_V2_ICON_SLAYER = 9482;
+			public static final int SKILL_GUIDE_V2_ICON_FARMING = 9483;
+			public static final int SKILL_GUIDE_V2_ICON_CONSTRUCTION = 9484;
+			public static final int SKILL_GUIDE_V2_ICON_HUNTER = 9485;
+			public static final int SKILL_GUIDE_V2_ICON_SAILING = 9486;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_AGILITY_SHORTCUT = 9487;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ALTAR = 9488;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ANVIL = 9489;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ARCHERY_SHOP = 9490;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_AXE_SHOP = 9491;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_BANK = 9492;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_CLOTHES_SHOP = 9493;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_COOKING_RANGE = 9494;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_CRAFTING_SHOP = 9495;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ESTATE_AGENT = 9496;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_FARMING_PATCH = 9497;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_FARMING_SHOP = 9498;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_FISHING_SHOP = 9499;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_FISHING_SPOT = 9500;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_FURNACE = 9501;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_GENERAL_STORE = 9502;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_GRAND_EXCHANGE = 9503;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_HELMET_SHOP = 9504;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_HERBALIST = 9505;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_HUNTER_STORE = 9506;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_LOOM = 9507;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_MAGIC_SHOP = 9508;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_MINING_SHOP = 9509;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_MINING_SITE = 9510;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_PLATEBODY_SHOP = 9511;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_PLATELEGS_SHOP = 9512;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_PLATESKIRT_SHOP = 9513;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_POH_PORTAL = 9514;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_POTTERY_WHEEL = 9515;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_RARE_TREES = 9516;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_SAWMILL = 9517;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_SWORD_SHOP = 9518;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_SCIMITAR_SHOP = 9519;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_SLAYER_MASTER = 9520;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_SPINNING_WHEEL = 9521;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_STAFF_SHOP = 9522;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_TANNERY = 9523;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_WATER_SOURCE = 9524;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ICON_TUTOR_MINING = 9525;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ICON_TUTOR_FISHING = 9526;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ICON_TUTOR_WOODCUTTING = 9527;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ICON_TUTOR_HUNTER = 9528;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ICON_TUTOR_COMBAT = 9529;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_ICON_GARDEN_SUPPLIER = 9530;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_FORESTRY_SHOP = 9531;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_AGILITY_TRAINING = 9532;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_PORT_TASK_BOARD = 9533;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_SALVAGING_SPOT = 9534;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_BARRACUDA_TRIAL = 9535;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_FISHING_SHOAL = 9536;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_SHIPWRIGHT = 9537;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_DOCKING_POINT = 9538;
+			public static final int SKILL_GUIDE_V2_ICON_MAP_CREW_REGISTRAR = 9539;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_MISS = 9540;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_DAMAGE = 9541;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_MAXHIT = 9542;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_HEAL = 9543;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_POISON = 9544;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_DISEASE_HEALTH = 9545;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_DISEASE_STAT = 9546;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_VENOM = 9547;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_SHIELD = 9548;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_ARMOUR = 9549;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_CHARGE = 9550;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_UNCHARGE = 9551;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_CORRUPTION = 9552;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_DODGE = 9553;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_CHARGE_BLUE = 9554;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_UNCHARGE_BLUE = 9555;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_POISE = 9556;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_PRAYER_DRAIN = 9557;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_BLEED = 9558;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_SANITY_LOSE = 9559;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_SANITY_GAIN = 9560;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_DOOM = 9561;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_BURN = 9562;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_COLD = 9563;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_CORROSION = 9564;
+			public static final int SKILL_GUIDE_V2_ICON_HITMARK_BOAT = 9565;
+			public static final int SKILL_GUIDE_V2_ICON_COMBAT = 9566;
+			public static final int SKILL_GUIDE_V2_ICON_SPELLBOOK = 9567;
+			public static final int SKILL_GUIDE_V2_ICON_WIKI = 9568;
+			public static final int SKILL_GUIDE_V2_ICON_QUEST = 9569;
+			public static final int SKILL_GUIDE_V2_ICON_SAILING_OPTIONS = 9570;
+			public static final int SKILL_GUIDE_V2_ICON_CAPTAINS_LOG = 9571;
+		}
+	}
+
+	public static final class DeadmanskullInterfaceTab
+	{
+		public static final int ID = 210;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_TAB_NUMBER = 1;
+
+		/**
+		 * (struct, dbrow)
+		 */
+		public static final int COL_COMBAT_SIGIL = 2;
+
+		/**
+		 * (struct, dbrow)
+		 */
+		public static final int COL_SKILLING_SIGIL = 3;
+
+		/**
+		 * (struct, dbrow)
+		 */
+		public static final int COL_UTILITY_SIGIL = 4;
+
+		public static final class Row
+		{
+			public static final int DEADMANSKULL_INTERFACE_TAB_PERMANENT = 9638;
+			public static final int DEADMANSKULL_INTERFACE_TAB_TOGGLE = 9639;
+			public static final int DEADMANSKULL_INTERFACE_TAB_ATTUNE = 9640;
+		}
+	}
+
+	public static final class CowbossScenerynpcs
+	{
+		public static final int ID = 211;
+
+		public static final class Row
+		{
+			public static final int COWBOSS_SCENERYNPCS = 8661;
+		}
+	}
+
+	public static final class SkillGuideSubsections
+	{
+		public static final int ID = 212;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_SKILL = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ID = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_HEADER = 2;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_MEMBERSONLY = 3;
+
+		public static final class Row
+		{
+			public static final int SKILL_GUIDE_SUBSECTION_AGILITY_OVERVIEW = 9656;
+			public static final int SKILL_GUIDE_SUBSECTION_AGILITY_COURSES = 9657;
+			public static final int SKILL_GUIDE_SUBSECTION_AGILITY_AREAS = 9658;
+			public static final int SKILL_GUIDE_SUBSECTION_AGILITY_SHORTCUTS = 9659;
+			public static final int SKILL_GUIDE_SUBSECTION_AGILITY_BARBARIAN = 9660;
+			public static final int SKILL_GUIDE_SUBSECTION_AGILITY_OTHER = 9661;
+			public static final int SKILL_GUIDE_SUBSECTION_ATTACK_OVERVIEW = 9861;
+			public static final int SKILL_GUIDE_SUBSECTION_ATTACK_WEAPONS = 9862;
+			public static final int SKILL_GUIDE_SUBSECTION_ATTACK_ARMOUR = 9863;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_OVERVIEW = 9919;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_ROOMS = 9920;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_SKILLS = 9921;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_SURFACES = 9922;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_STORAGE = 9923;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_DECORATIVE = 9924;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_TROPHIES = 9925;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_GAMES = 9926;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_GARDEN = 9927;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_DUNGEON = 9928;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_CHAPEL = 9929;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_OTHER = 9930;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_SERVANTS = 9931;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_HOUSESIZE = 9932;
+			public static final int SKILL_GUIDE_SUBSECTION_CONSTRUCTION_BOATS = 9933;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_OVERVIEW = 10471;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_MEATS = 10472;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_BREAD = 10473;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_PIES = 10474;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_STEWS = 10475;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_PIZZAS = 10476;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_CAKES = 10477;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_WINE = 10478;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_HOTDRINKS = 10479;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_BREWING = 10480;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_VEGETABLE = 10481;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_DAIRY = 10482;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_GNOME = 10483;
+			public static final int SKILL_GUIDE_SUBSECTION_COOKING_OTHER = 10484;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_OVERVIEW = 10694;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_WEAVING = 10695;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_ARMOUR = 10696;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_SPINNING = 10697;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_POTTERY = 10698;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_GLASS = 10699;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_JEWELLERY = 10700;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_WEAPONRY = 10701;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_CRYSTAL = 10702;
+			public static final int SKILL_GUIDE_SUBSECTION_CRAFTING_OTHER = 10703;
+			public static final int SKILL_GUIDE_SUBSECTION_DEFENCE_OVERVIEW = 10913;
+			public static final int SKILL_GUIDE_SUBSECTION_DEFENCE_ARMOUR = 10914;
+			public static final int SKILL_GUIDE_SUBSECTION_DEFENCE_PENANCE = 10915;
+			public static final int SKILL_GUIDE_SUBSECTION_DEFENCE_PRAYERS = 10916;
+			public static final int SKILL_GUIDE_SUBSECTION_DEFENCE_SHIELDS = 10917;
+			public static final int SKILL_GUIDE_SUBSECTION_DEFENCE_OTHER = 10918;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_OVERVIEW = 10971;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_ALLOTMENTS = 10972;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_HOPS = 10973;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_TREES = 10974;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_FRUITTREES = 10975;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_BUSHES = 10976;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_FLOWERS = 10977;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_HERBS = 10978;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_SPECIAL = 10979;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_SCARECROWS = 10980;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_ROOTS = 10981;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_GRICOLLER = 10982;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_RAIDS = 10983;
+			public static final int SKILL_GUIDE_SUBSECTION_FARMING_OTHER = 10984;
+			public static final int SKILL_GUIDE_SUBSECTION_FIREMAKING_OVERVIEW = 11105;
+			public static final int SKILL_GUIDE_SUBSECTION_FIREMAKING_BURNING = 11106;
+			public static final int SKILL_GUIDE_SUBSECTION_FIREMAKING_BARBARIAN = 11107;
+			public static final int SKILL_GUIDE_SUBSECTION_FIREMAKING_EQUIPMENT = 11108;
+			public static final int SKILL_GUIDE_SUBSECTION_FIREMAKING_OTHER = 11109;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_OVERVIEW = 11198;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_SMALLNET = 11199;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_BIGNET = 11200;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_ROD = 11201;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_HARPOON = 11202;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_AERIAL = 11203;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_CAGE = 11204;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_DEEPSEATRAWLING = 11205;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_BARBARIAN = 11206;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_EQUIPMENT = 11207;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_RAIDS = 11208;
+			public static final int SKILL_GUIDE_SUBSECTION_FISHING_OTHER = 11209;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_OVERVIEW = 11301;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_ARROWS = 11302;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_BOWS = 11303;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_BOLTS = 11304;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_DARTS = 11305;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_CROSSBOWS = 11306;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_JAVELINS = 11307;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_SHIELDS = 11308;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_VALETOTEMS = 11309;
+			public static final int SKILL_GUIDE_SUBSECTION_FLETCHING_OTHER = 11310;
+			public static final int SKILL_GUIDE_SUBSECTION_HERBLORE_OVERVIEW = 11431;
+			public static final int SKILL_GUIDE_SUBSECTION_HERBLORE_POTIONS = 11432;
+			public static final int SKILL_GUIDE_SUBSECTION_HERBLORE_HERBS = 11433;
+			public static final int SKILL_GUIDE_SUBSECTION_HERBLORE_BARBARIANPOTIONS = 11434;
+			public static final int SKILL_GUIDE_SUBSECTION_HERBLORE_RAIDS = 11435;
+			public static final int SKILL_GUIDE_SUBSECTION_HERBLORE_OTHER = 11436;
+			public static final int SKILL_GUIDE_SUBSECTION_HITPOINTS_OVERVIEW = 11597;
+			public static final int SKILL_GUIDE_SUBSECTION_HITPOINTS_HEALING = 11598;
+			public static final int SKILL_GUIDE_SUBSECTION_HITPOINTS_EQUIPMENT = 11599;
+			public static final int SKILL_GUIDE_SUBSECTION_HITPOINTS_HITSPLATS = 11600;
+			public static final int SKILL_GUIDE_SUBSECTION_HITPOINTS_MISC = 11601;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_OVERVIEW = 11713;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_TRACKING = 11714;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_BIRDS = 11715;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_BUTTERFLYNET = 11716;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_IMPLINGS = 11717;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_DEADFALL = 11718;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_BOXTRAP = 11719;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_NETTRAP = 11720;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_PITFALLS = 11721;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_CRABTRAPS = 11722;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_AERIAL = 11723;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_BIRDHOUSES = 11724;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_TRAPS = 11725;
+			public static final int SKILL_GUIDE_SUBSECTION_HUNTER_OTHER = 11726;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_OVERVIEW = 11859;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_STANDARDSPELLS = 11860;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_ANCIENTSPELLS = 11861;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_LUNARSPELLS = 11862;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_ARCEUUSSPELLS = 11863;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_ARMOUR = 11864;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_BOLTS = 11865;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_WEAPONS = 11866;
+			public static final int SKILL_GUIDE_SUBSECTION_MAGIC_EQUIPMENT = 11867;
+			public static final int SKILL_GUIDE_SUBSECTION_MINING_OVERVIEW = 12149;
+			public static final int SKILL_GUIDE_SUBSECTION_MINING_ROCKS = 12150;
+			public static final int SKILL_GUIDE_SUBSECTION_MINING_EQUIPMENT = 12151;
+			public static final int SKILL_GUIDE_SUBSECTION_MINING_AREAS = 12152;
+			public static final int SKILL_GUIDE_SUBSECTION_MINING_SHOOTINGSTARS = 12153;
+			public static final int SKILL_GUIDE_SUBSECTION_PRAYER_OVERVIEW = 12222;
+			public static final int SKILL_GUIDE_SUBSECTION_PRAYER_STANDARDPRAYERS = 12223;
+			public static final int SKILL_GUIDE_SUBSECTION_PRAYER_EQUIPMENT = 12224;
+			public static final int SKILL_GUIDE_SUBSECTION_PRAYER_OTHER = 12225;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_OVERVIEW = 12292;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_BOWS = 12293;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_THROWN = 12294;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_CROSSBOWS = 12295;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_ARMOUR = 12296;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_MISCELLANEOUS = 12297;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_SHORTCUTS = 12298;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_SALAMANDERS = 12299;
+			public static final int SKILL_GUIDE_SUBSECTION_RANGED_BOATCANNONS = 12300;
+			public static final int SKILL_GUIDE_SUBSECTION_RUNECRAFT_OVERVIEW = 12417;
+			public static final int SKILL_GUIDE_SUBSECTION_RUNECRAFT_RUNES = 12418;
+			public static final int SKILL_GUIDE_SUBSECTION_RUNECRAFT_MULTIPLERUNES = 12419;
+			public static final int SKILL_GUIDE_SUBSECTION_RUNECRAFT_RUNEPOUCHES = 12420;
+			public static final int SKILL_GUIDE_SUBSECTION_RUNECRAFT_INFUSING = 12421;
+			public static final int SKILL_GUIDE_SUBSECTION_RUNECRAFT_OTHER = 12422;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_OVERVIEW = 12507;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_BOATS = 12508;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_PORTS = 12509;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_MOORINGPOINTS = 12510;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_PORTTASKS = 12511;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_SEACHARTING = 12512;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_SHIPWRECKSALVAGING = 12513;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_BARRACUDATRIALS = 12514;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_COREBOATPARTS = 12515;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_BOATFACILITIES = 12516;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_CREWMATES = 12517;
+			public static final int SKILL_GUIDE_SUBSECTION_SAILING_OTHER = 12518;
+			public static final int SKILL_GUIDE_SUBSECTION_SLAYER_OVERVIEW = 12725;
+			public static final int SKILL_GUIDE_SUBSECTION_SLAYER_MONSTERS = 12726;
+			public static final int SKILL_GUIDE_SUBSECTION_SLAYER_EQUIPMENT = 12727;
+			public static final int SKILL_GUIDE_SUBSECTION_SLAYER_SLAYERMASTERS = 12728;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_OVERVIEW = 12818;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_SMELTING = 12819;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_BRONZE = 12820;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_IRON = 12821;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_STEEL = 12822;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_MITHRIL = 12823;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_ADAMANT = 12824;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_RUNE = 12825;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_LOVAKITE = 12826;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_CRYSTAL = 12827;
+			public static final int SKILL_GUIDE_SUBSECTION_SMITHING_OTHER = 12828;
+			public static final int SKILL_GUIDE_SUBSECTION_STRENGTH_OVERVIEW = 13077;
+			public static final int SKILL_GUIDE_SUBSECTION_STRENGTH_WEAPONS = 13078;
+			public static final int SKILL_GUIDE_SUBSECTION_STRENGTH_ARMOUR = 13079;
+			public static final int SKILL_GUIDE_SUBSECTION_STRENGTH_SHORTCUTS = 13080;
+			public static final int SKILL_GUIDE_SUBSECTION_STRENGTH_AREAS = 13081;
+			public static final int SKILL_GUIDE_SUBSECTION_STRENGTH_BARBARIAN = 13082;
+			public static final int SKILL_GUIDE_SUBSECTION_THIEVING_OVERVIEW = 13121;
+			public static final int SKILL_GUIDE_SUBSECTION_THIEVING_PICKPOCKET = 13122;
+			public static final int SKILL_GUIDE_SUBSECTION_THIEVING_STALLS = 13123;
+			public static final int SKILL_GUIDE_SUBSECTION_THIEVING_CHESTS = 13124;
+			public static final int SKILL_GUIDE_SUBSECTION_THIEVING_OTHER = 13125;
+			public static final int SKILL_GUIDE_SUBSECTION_WOODCUTTING_OVERVIEW = 13206;
+			public static final int SKILL_GUIDE_SUBSECTION_WOODCUTTING_TREES = 13207;
+			public static final int SKILL_GUIDE_SUBSECTION_WOODCUTTING_AXES = 13208;
+			public static final int SKILL_GUIDE_SUBSECTION_WOODCUTTING_FORESTRY = 13209;
+			public static final int SKILL_GUIDE_SUBSECTION_WOODCUTTING_OTHER = 13210;
+		}
+	}
+
+	public static final class SkillFeatures
+	{
+		public static final int ID = 213;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_ICON = 0;
+
+		/**
+		 * (graphic, integer, integer, integer, integer)
+		 */
+		public static final int COL_SPRITE = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_TEXT = 2;
+
+		/**
+		 * (integer, integer, integer)
+		 */
+		public static final int COL_SKILL = 3;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_QUEST = 4;
+
+		/**
+		 * string
+		 */
+		public static final int COL_OTHERREQ = 5;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_MEMBERSONLY = 6;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_OTHERDATA_MAGIC = 7;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_OTHERDATA_SAILING = 8;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_OTHERDATA_CONSTRUCTION = 9;
+
+		public static final class Row
+		{
+			public static final int SKILL_FEATURE_AGILITY_OVERVIEW_0 = 9662;
+			public static final int SKILL_FEATURE_AGILITY_OVERVIEW_1 = 9663;
+			public static final int SKILL_FEATURE_AGILITY_OVERVIEW_2 = 9664;
+			public static final int SKILL_FEATURE_AGILITY_GNOMESTRONGHOLDAGILITYCOURSE = 9665;
+			public static final int SKILL_FEATURE_AGILITY_GNOMEBALLGAME = 9666;
+			public static final int SKILL_FEATURE_AGILITY_LOWLEVELAGILITYARENAOBSTACLES = 9667;
+			public static final int SKILL_FEATURE_AGILITY_SHAYZIENBASICCOURSE = 9668;
+			public static final int SKILL_FEATURE_AGILITY_DRAYNORVILLAGEROOFTOPCOURSE = 9669;
+			public static final int SKILL_FEATURE_AGILITY_ALKHARIDROOFTOPCOURSE = 9670;
+			public static final int SKILL_FEATURE_AGILITY_MEDIUMLEVELAGILITYARENAOBSTACLES = 9671;
+			public static final int SKILL_FEATURE_AGILITY_WEREWOLFSKULLBALLGAME = 9672;
+			public static final int SKILL_FEATURE_AGILITY_AGILITYPYRAMID = 9673;
+			public static final int SKILL_FEATURE_AGILITY_VARROCKROOFTOPCOURSE = 9674;
+			public static final int SKILL_FEATURE_AGILITY_PENGUINAGILITYCOURSE = 9675;
+			public static final int SKILL_FEATURE_AGILITY_BARBARIANOUTPOSTAGILITYCOURSE = 9676;
+			public static final int SKILL_FEATURE_AGILITY_CANIFISROOFTOPCOURSE = 9677;
+			public static final int SKILL_FEATURE_AGILITY_HIGHLEVELAGILITYARENAOBSTACLES = 9678;
+			public static final int SKILL_FEATURE_AGILITY_SHAYZIENADVANCEDCOURSE = 9679;
+			public static final int SKILL_FEATURE_AGILITY_APEATOLLAGILITYCOURSE = 9680;
+			public static final int SKILL_FEATURE_AGILITY_FALADORROOFTOPCOURSE = 9681;
+			public static final int SKILL_FEATURE_AGILITY_COLOSSALWYRMBASICCOURSE = 9682;
+			public static final int SKILL_FEATURE_AGILITY_WILDERNESSCOURSE = 9683;
+			public static final int SKILL_FEATURE_AGILITY_WEREWOLFAGILITYCOURSE = 9684;
+			public static final int SKILL_FEATURE_AGILITY_SEERSVILLAGEROOFTOPCOURSE = 9685;
+			public static final int SKILL_FEATURE_AGILITY_COLOSSALWYRMADVANCEDCOURSE = 9686;
+			public static final int SKILL_FEATURE_AGILITY_CAVESSOUTHOFDORGESHKAAN = 9687;
+			public static final int SKILL_FEATURE_AGILITY_POLLNIVNEACHROOFTOPCOURSE = 9688;
+			public static final int SKILL_FEATURE_AGILITY_PRIFDDINASAGILITYCOURSE = 9689;
+			public static final int SKILL_FEATURE_AGILITY_RELLEKKAROOFTOPCOURSE = 9690;
+			public static final int SKILL_FEATURE_AGILITY_ARDOUGNEROOFTOPCOURSE = 9691;
+			public static final int SKILL_FEATURE_AGILITY_ROPESWINGTOMOSSGIANTISLAND = 9692;
+			public static final int SKILL_FEATURE_AGILITY_STEPPINGSTONESINKARAMJADUNGEON = 9693;
+			public static final int SKILL_FEATURE_AGILITY_MONKEYBARSUNDEREDGEVILLE = 9694;
+			public static final int SKILL_FEATURE_AGILITY_PIPECONTORTIONINKARAMJADUNGEON = 9695;
+			public static final int SKILL_FEATURE_AGILITY_STEPPINGSTONESINSOUTHEASTERNKARAMJA = 9696;
+			public static final int SKILL_FEATURE_AGILITY_PIPESQUEEZEINKARAMJADUNGEON = 9697;
+			public static final int SKILL_FEATURE_AGILITY_ELFAREALOGBALANCE = 9698;
+			public static final int SKILL_FEATURE_AGILITY_CONTORTIONINYANILLEDUNGEONSMALLROOM = 9699;
+			public static final int SKILL_FEATURE_AGILITY_MONKEYBARSUNDERYANILLE = 9700;
+			public static final int SKILL_FEATURE_AGILITY_ACCESSTHEGODWARSDUNGEONAREAVIATHEAGILITYROUTE = 9701;
+			public static final int SKILL_FEATURE_AGILITY_YANILLEDUNGEONSRUBBLECLIMB = 9702;
+			public static final int SKILL_FEATURE_AGILITY_ENTERTHESARADOMINAREAOFTHEGODWARSDUNGEON = 9703;
+			public static final int SKILL_FEATURE_AGILITY_FALADORLOWWALLCLIMB = 9704;
+			public static final int SKILL_FEATURE_AGILITY_CROSSTHERIVERLUMTOALKHARID = 9705;
+			public static final int SKILL_FEATURE_AGILITY_CORSAIRCOVESHORTCUT = 9706;
+			public static final int SKILL_FEATURE_AGILITY_SCALEFALADORWALL = 9707;
+			public static final int SKILL_FEATURE_AGILITY_JUMPFENCESOUTHOFVARROCK = 9708;
+			public static final int SKILL_FEATURE_AGILITY_SCALEGOBLINVILLAGEWALL = 9709;
+			public static final int SKILL_FEATURE_AGILITY_CORSAIRCOVEDUNGEONSHORTCUT = 9710;
+			public static final int SKILL_FEATURE_AGILITY_YANILLEAGILITYSHORTCUT = 9711;
+			public static final int SKILL_FEATURE_AGILITY_KOURENDCATACOMBSAGILITYSHORTCUT = 9712;
+			public static final int SKILL_FEATURE_AGILITY_SLAYERTOWERBANSHEESHORTCUT = 9713;
+			public static final int SKILL_FEATURE_AGILITY_COALTRUCKLOGBALANCE = 9714;
+			public static final int SKILL_FEATURE_AGILITY_GRANDEXCHANGEAGILITYSHORTCUT = 9715;
+			public static final int SKILL_FEATURE_AGILITY_SCALETHEOBSERVATORYCLIFF = 9716;
+			public static final int SKILL_FEATURE_AGILITY_NEMUSRETREATWALLCLIMBS = 9717;
+			public static final int SKILL_FEATURE_AGILITY_EAGLESPEAKAGILITYSHORTCUT = 9718;
+			public static final int SKILL_FEATURE_AGILITY_BURGHDEROTTFENCE = 9719;
+			public static final int SKILL_FEATURE_AGILITY_FALADORAGILITYSHORTCUT = 9720;
+			public static final int SKILL_FEATURE_AGILITY_KOURENDCATACOMBSPILLARJUMPSHORTCUT = 9721;
+			public static final int SKILL_FEATURE_AGILITY_MOUNTKARUULMLOWERCLIFFSIDECLIMB = 9722;
+			public static final int SKILL_FEATURE_AGILITY_CORSAIRCOVERESOURCEAREASHORTCUT = 9723;
+			public static final int SKILL_FEATURE_AGILITY_DRAYNORMANORSTONESTOCHAMPIONSGUILD = 9724;
+			public static final int SKILL_FEATURE_AGILITY_SCALETHECATHERBYCLIFF = 9725;
+			public static final int SKILL_FEATURE_AGILITY_SHILOVILLAGERIVERCROSSING = 9726;
+			public static final int SKILL_FEATURE_AGILITY_ARDOUGNELOGBALANCESHORTCUT = 9727;
+			public static final int SKILL_FEATURE_AGILITY_NEMUSRETREATUNDERGROUNDTUNNEL = 9728;
+			public static final int SKILL_FEATURE_AGILITY_KOURENDCATACOMBSCONTORTIONSHORTCUT = 9729;
+			public static final int SKILL_FEATURE_AGILITY_VARROCKPALACEGARDENTRELLISSHORTCUT = 9730;
+			public static final int SKILL_FEATURE_AGILITY_ESCAPEFROMTHEWATEROBELISKISLAND = 9731;
+			public static final int SKILL_FEATURE_AGILITY_NEMUSRETREATSTEPPINGSTONES = 9732;
+			public static final int SKILL_FEATURE_AGILITY_GNOMESTRONGHOLDSHORTCUT = 9733;
+			public static final int SKILL_FEATURE_AGILITY_ALKHARIDMININGPITCLIFFSIDESCRAMBLE = 9734;
+			public static final int SKILL_FEATURE_AGILITY_SCALEYANILLEWALL = 9735;
+			public static final int SKILL_FEATURE_AGILITY_HOSIDIUSLAKEISLEJUMP = 9736;
+			public static final int SKILL_FEATURE_AGILITY_TLATIRAINFORESTLOGBALANCE = 9737;
+			public static final int SKILL_FEATURE_AGILITY_TROLLHEIMEASYCLIFFSIDESCRAMBLE = 9738;
+			public static final int SKILL_FEATURE_AGILITY_AUBURNVALEROCKSCRAMBLE = 9739;
+			public static final int SKILL_FEATURE_AGILITY_DWARVENMINENARROWCREVICE = 9740;
+			public static final int SKILL_FEATURE_AGILITY_DRAYNORNARROWTUNNEL = 9741;
+			public static final int SKILL_FEATURE_AGILITY_TROLLHEIMMEDIUMCLIFFSIDESCRAMBLE = 9742;
+			public static final int SKILL_FEATURE_AGILITY_TLATIRAINFORESTCLIFFSIDESCRAMBLE = 9743;
+			public static final int SKILL_FEATURE_AGILITY_FREMENNIKSLAYERDUNGEONSPIKEDBLADESJUMP = 9744;
+			public static final int SKILL_FEATURE_AGILITY_TROLLHEIMADVANCEDCLIFFSIDESCRAMBLE = 9745;
+			public static final int SKILL_FEATURE_AGILITY_HOSIDIUSRIVERJUMP = 9746;
+			public static final int SKILL_FEATURE_AGILITY_AUBURNVALLEYLOGBALANCES = 9747;
+			public static final int SKILL_FEATURE_AGILITY_PROUDSPIRELOWERSCRAMBLE = 9748;
+			public static final int SKILL_FEATURE_AGILITY_COSMICTEMPLEMEDIUMNARROWWALKWAY = 9749;
+			public static final int SKILL_FEATURE_AGILITY_DEEPWILDERNESSNARROWTUNNEL = 9750;
+			public static final int SKILL_FEATURE_AGILITY_TONALICAVERNSHORTCUTS = 9751;
+			public static final int SKILL_FEATURE_AGILITY_TROLLHEIMHARDCLIFFSIDESCRAMBLE = 9752;
+			public static final int SKILL_FEATURE_AGILITY_RALOSRISEROCKCLIMB = 9753;
+			public static final int SKILL_FEATURE_AGILITY_LOGBALANCETOFREMENNIKPROVINCE = 9754;
+			public static final int SKILL_FEATURE_AGILITY_ARCEUUSESSENCEMINEBOULDERLEAP = 9755;
+			public static final int SKILL_FEATURE_AGILITY_STEPPINGSTONEINTOMORYTANIANEARTHENATUREGROTTO = 9756;
+			public static final int SKILL_FEATURE_AGILITY_SUMMERSHOREROCKSCRAMBLE = 9757;
+			public static final int SKILL_FEATURE_AGILITY_PIPEFROMEDGEVILLEDUNGEONTOVARROCKSEWERS = 9758;
+			public static final int SKILL_FEATURE_AGILITY_ARCEUUSESSENCEMINEEASTERNSCRAMBLE = 9759;
+			public static final int SKILL_FEATURE_AGILITY_ANGLERSRETREATSTEPPINGSTONE = 9760;
+			public static final int SKILL_FEATURE_AGILITY_GREATCONCHEASTERNPLATEAUROCKSCRAMBLESOUTHWESTSIDE = 9761;
+			public static final int SKILL_FEATURE_AGILITY_KARAMJACROSSINGSOUTHOFVOLCANO = 9762;
+			public static final int SKILL_FEATURE_AGILITY_MOTHERLODEMINEDARKTUNNEL = 9763;
+			public static final int SKILL_FEATURE_AGILITY_WESTERNALDARINCLIFFSCRAMBLE = 9764;
+			public static final int SKILL_FEATURE_AGILITY_STEPPINGSTONEBYMISCELLANIADOCKS = 9765;
+			public static final int SKILL_FEATURE_AGILITY_CAPECONCHROCKSCRAMBLE = 9766;
+			public static final int SKILL_FEATURE_AGILITY_ROCKCLIMBINTHETEMPLEOFTHEEYE = 9767;
+			public static final int SKILL_FEATURE_AGILITY_BRIMHAVENDUNGEONEASTERNSTEPPINGSTONES = 9768;
+			public static final int SKILL_FEATURE_AGILITY_RELLEKKAEASTFENCESHORTCUT = 9769;
+			public static final int SKILL_FEATURE_AGILITY_GREATCONCHEASTERNPLATEAUROCKSCRAMBLENORTHEASTSIDE = 9770;
+			public static final int SKILL_FEATURE_AGILITY_PORTPHASMATYSECTOPOOLSHORTCUT = 9771;
+			public static final int SKILL_FEATURE_AGILITY_ELVENOVERPASSEASYCLIFFSIDESCRAMBLE = 9772;
+			public static final int SKILL_FEATURE_AGILITY_CAVETOTHESTALKERDEN = 9773;
+			public static final int SKILL_FEATURE_AGILITY_WILDERNESSFROMTHEGODWARSDUNGEONAREACLIMB = 9774;
+			public static final int SKILL_FEATURE_AGILITY_ESTUARYCROSSINGONMOSLEHARMLESS = 9775;
+			public static final int SKILL_FEATURE_AGILITY_PILLARSINTHEWINTERTODTSPRISON = 9776;
+			public static final int SKILL_FEATURE_AGILITY_STEPPINGSTONEINTHETOMBSOFAMASCUT = 9777;
+			public static final int SKILL_FEATURE_AGILITY_ASGARNIANICEDUNGEONFROZENTHRONETUNNEL = 9778;
+			public static final int SKILL_FEATURE_AGILITY_SLAYERTOWERMEDIUMSPIKEDCHAINCLIMB = 9779;
+			public static final int SKILL_FEATURE_AGILITY_FREMENNIKSLAYERDUNGEONNARROWCREVICE = 9780;
+			public static final int SKILL_FEATURE_AGILITY_GREATCONCHSTEPPINGSTONE = 9781;
+			public static final int SKILL_FEATURE_AGILITY_LAGUNAAURORAESTEPPINGSTONES = 9782;
+			public static final int SKILL_FEATURE_AGILITY_MOUNTKARUULMUPPERCLIFFSIDECLIMB = 9783;
+			public static final int SKILL_FEATURE_AGILITY_STEPPINGSTONESINTHENECROPOLIS = 9784;
+			public static final int SKILL_FEATURE_AGILITY_TAVERLEYDUNGEONLESSERDEMONFENCESHORTCUT = 9785;
+			public static final int SKILL_FEATURE_AGILITY_DARKMEYERWALLCLIMB = 9786;
+			public static final int SKILL_FEATURE_AGILITY_FORTHOSDUNGEONSPIKEDBLADESJUMP = 9787;
+			public static final int SKILL_FEATURE_AGILITY_TROLLHEIMWILDERNESSROUTE = 9788;
+			public static final int SKILL_FEATURE_AGILITY_ROPETOTHEFOSSILISLANDVOLCANO = 9789;
+			public static final int SKILL_FEATURE_AGILITY_STALKERDENSTEPPINGSTONE = 9790;
+			public static final int SKILL_FEATURE_AGILITY_TEMPLEONTHESALVETOMORYTANIASHORTCUT = 9791;
+			public static final int SKILL_FEATURE_AGILITY_REVENANTCAVEJUMPEASY = 9792;
+			public static final int SKILL_FEATURE_AGILITY_COSMICTEMPLEADVANCEDNARROWWALKWAY = 9793;
+			public static final int SKILL_FEATURE_AGILITY_LUMBRIDGESWAMPTOTHEDESERT = 9794;
+			public static final int SKILL_FEATURE_AGILITY_TAVERLEYWALLSHORTCUT = 9795;
+			public static final int SKILL_FEATURE_AGILITY_HEROESGUILDTUNNEL = 9796;
+			public static final int SKILL_FEATURE_AGILITY_ELVENOVERPASSMEDIUMCLIFFSIDESCRAMBLE = 9797;
+			public static final int SKILL_FEATURE_AGILITY_ICEMOUNTAINWESTERNSCRAMBLE = 9798;
+			public static final int SKILL_FEATURE_AGILITY_ARCEUUSESSENCEMINENORTHERNSCRAMBLE = 9799;
+			public static final int SKILL_FEATURE_AGILITY_MAUSOLEUMBRIDGEJUMP = 9800;
+			public static final int SKILL_FEATURE_AGILITY_TAVERLEYDUNGEONSHORTCUTSTOBLUEDRAGONS = 9801;
+			public static final int SKILL_FEATURE_AGILITY_FOSSILISLANDHARDWOODSHORTCUT = 9802;
+			public static final int SKILL_FEATURE_AGILITY_ALKHARIDPALACESOUTHERNWINDOW = 9803;
+			public static final int SKILL_FEATURE_AGILITY_SLAYERTOWERADVANCEDSPIKEDCHAINCLIMB = 9804;
+			public static final int SKILL_FEATURE_AGILITY_GUTANOTHWALLCLIMB = 9805;
+			public static final int SKILL_FEATURE_AGILITY_POLLNIVNEACHSTEPPINGSTONE = 9806;
+			public static final int SKILL_FEATURE_AGILITY_PROUDSPIREUPPERSCRAMBLE = 9807;
+			public static final int SKILL_FEATURE_AGILITY_STRONGHOLDSLAYERCAVENARROWTUNNEL = 9808;
+			public static final int SKILL_FEATURE_AGILITY_BASICASGARNIANICEDUNGEONWYVERNTUNNEL = 9809;
+			public static final int SKILL_FEATURE_AGILITY_CHAOSTEMPLESTEPPINGSTONE = 9810;
+			public static final int SKILL_FEATURE_AGILITY_BARROWSWALLJUMP = 9811;
+			public static final int SKILL_FEATURE_AGILITY_TROLLSTRONGHOLDWALLCLIMB = 9812;
+			public static final int SKILL_FEATURE_AGILITY_ARCEUUSESSENCEMINEWESTERNDESCENT = 9813;
+			public static final int SKILL_FEATURE_AGILITY_CHASMOFFIREPLATFORMS = 9814;
+			public static final int SKILL_FEATURE_AGILITY_LAVADRAGONISLEJUMP = 9815;
+			public static final int SKILL_FEATURE_AGILITY_FOSSILISLANDZIPLINE = 9816;
+			public static final int SKILL_FEATURE_AGILITY_MEIYERDITCHLABORATORYTUNNELS = 9817;
+			public static final int SKILL_FEATURE_AGILITY_REVENANTCAVEJUMPMEDIUM = 9818;
+			public static final int SKILL_FEATURE_AGILITY_MOKHAIOTLPITJUMP = 9819;
+			public static final int SKILL_FEATURE_AGILITY_ISLANDCROSSINGNEARZULANDRA = 9820;
+			public static final int SKILL_FEATURE_AGILITY_DARKFROSTCLIFFSCRAMBLE = 9821;
+			public static final int SKILL_FEATURE_AGILITY_WILDERNESSSLAYERDUNGEONCREVICES = 9822;
+			public static final int SKILL_FEATURE_AGILITY_IORWERTHDUNGEONNORTHERNSHORTCUT = 9823;
+			public static final int SKILL_FEATURE_AGILITY_SHILOVILLAGEROCKCLIMB = 9824;
+			public static final int SKILL_FEATURE_AGILITY_KHARAZIJUNGLEVINECLIMB = 9825;
+			public static final int SKILL_FEATURE_AGILITY_TAVERLEYDUNGEONSPIKEDBLADESJUMP = 9826;
+			public static final int SKILL_FEATURE_AGILITY_WATERBIRTHDUNGEONCREVICE = 9827;
+			public static final int SKILL_FEATURE_AGILITY_SLAYERTOWERIVYCLIMB = 9828;
+			public static final int SKILL_FEATURE_AGILITY_LAVAMAZENORTHERNJUMP = 9829;
+			public static final int SKILL_FEATURE_AGILITY_ADEPTASGARNIANICEDUNGEONWYVERNTUNNEL = 9830;
+			public static final int SKILL_FEATURE_AGILITY_CHASMOFFIRECHAIN = 9831;
+			public static final int SKILL_FEATURE_AGILITY_GRIMSTONEUNEVENSTONELEDGESCLIMB = 9832;
+			public static final int SKILL_FEATURE_AGILITY_IORWERTHDUNGEONSOUTHERNSHORTCUT = 9833;
+			public static final int SKILL_FEATURE_AGILITY_CRANDORROCKCLIMB = 9834;
+			public static final int SKILL_FEATURE_AGILITY_DEEPFINPOINTDUNGEONCREVICE = 9835;
+			public static final int SKILL_FEATURE_AGILITY_ELVENOVERPASSADVANCEDCLIFFSIDESCRAMBLE = 9836;
+			public static final int SKILL_FEATURE_AGILITY_WATERBIRTHISLANDROCKCLIMB = 9837;
+			public static final int SKILL_FEATURE_AGILITY_KALPHITELAIRSHORTCUT = 9838;
+			public static final int SKILL_FEATURE_AGILITY_DARKMEYERWALLJUMP = 9839;
+			public static final int SKILL_FEATURE_AGILITY_BRIMHAVENDUNGEONVINETOBABYGREENDRAGONS = 9840;
+			public static final int SKILL_FEATURE_AGILITY_KARUULMDUNGEONPIPE = 9841;
+			public static final int SKILL_FEATURE_AGILITY_REVENANTCAVEJUMPHARD = 9842;
+			public static final int SKILL_FEATURE_AGILITY_VIYELDICAVESCLIFFCLIMB = 9843;
+			public static final int SKILL_FEATURE_AGILITY_MEIYERDITCHLABORATORIESADVANCEDSHORTCUT = 9844;
+			public static final int SKILL_FEATURE_AGILITY_VIYELDICAVESCREVICE = 9845;
+			public static final int SKILL_FEATURE_AGILITY_TOSTARTFISHINGLIKEABARBARIAN = 9846;
+			public static final int SKILL_FEATURE_AGILITY_LEAPINGTROUT = 9847;
+			public static final int SKILL_FEATURE_AGILITY_LEAPINGSALMON = 9848;
+			public static final int SKILL_FEATURE_AGILITY_LEAPINGSTURGEON = 9849;
+			public static final int SKILL_FEATURE_AGILITY_CRYSTALWEAPONRY = 9850;
+			public static final int SKILL_FEATURE_AGILITY_CRYSTALHALBERD = 9851;
+			public static final int SKILL_FEATURE_AGILITY_CRYSTALBOW = 9852;
+			public static final int SKILL_FEATURE_AGILITY_HALLOWEDSEPULCHREFLOOR1 = 9853;
+			public static final int SKILL_FEATURE_AGILITY_HALLOWEDSEPULCHREFLOOR2 = 9854;
+			public static final int SKILL_FEATURE_AGILITY_RINGOFENDURANCE = 9855;
+			public static final int SKILL_FEATURE_AGILITY_BOWOFFAERDHINEN = 9856;
+			public static final int SKILL_FEATURE_AGILITY_HALLOWEDSEPULCHREFLOOR3 = 9857;
+			public static final int SKILL_FEATURE_AGILITY_HALLOWEDSEPULCHREFLOOR4 = 9858;
+			public static final int SKILL_FEATURE_AGILITY_HALLOWEDSEPULCHREFLOOR5 = 9859;
+			public static final int SKILL_FEATURE_AGILITY_SKILLCAPE = 9860;
+			public static final int SKILL_FEATURE_ATTACK_OVERVIEW_0 = 9864;
+			public static final int SKILL_FEATURE_ATTACK_OVERVIEW_1 = 9865;
+			public static final int SKILL_FEATURE_ATTACK_OVERVIEW_2 = 9866;
+			public static final int SKILL_FEATURE_ATTACK_BRONZE = 9867;
+			public static final int SKILL_FEATURE_ATTACK_IRON = 9868;
+			public static final int SKILL_FEATURE_ATTACK_STEEL = 9869;
+			public static final int SKILL_FEATURE_ATTACK_BLACK = 9870;
+			public static final int SKILL_FEATURE_ATTACK_WHITE = 9871;
+			public static final int SKILL_FEATURE_ATTACK_MITHRIL = 9872;
+			public static final int SKILL_FEATURE_ATTACK_ADAMANT = 9873;
+			public static final int SKILL_FEATURE_ATTACK_RUNE = 9874;
+			public static final int SKILL_FEATURE_ATTACK_BARRONITE_MACE = 9875;
+			public static final int SKILL_FEATURE_ATTACK_BRINE_SABRE = 9876;
+			public static final int SKILL_FEATURE_ATTACK_IVANDIS_FLAIL = 9877;
+			public static final int SKILL_FEATURE_ATTACK_BLISTERWOOD_FLAIL = 9878;
+			public static final int SKILL_FEATURE_ATTACK_KERIS = 9879;
+			public static final int SKILL_FEATURE_ATTACK_RAT_BONE_MACE = 9880;
+			public static final int SKILL_FEATURE_ATTACK_SULPHUR_BLADES = 9881;
+			public static final int SKILL_FEATURE_ATTACK_GLACIAL_TEMOTLI = 9882;
+			public static final int SKILL_FEATURE_ATTACK_EARTHBOUND_TECPATL = 9883;
+			public static final int SKILL_FEATURE_ATTACK_DRAGON = 9884;
+			public static final int SKILL_FEATURE_ATTACK_ARKAN_BLADE = 9885;
+			public static final int SKILL_FEATURE_ATTACK_BONE_CLAWS = 9886;
+			public static final int SKILL_FEATURE_ATTACK_TZHAAR = 9887;
+			public static final int SKILL_FEATURE_ATTACK_WILD_CAVE_CHAINMACE = 9888;
+			public static final int SKILL_FEATURE_ATTACK_COLOSSAL_BLADE = 9889;
+			public static final int SKILL_FEATURE_ATTACK_TRAIL_FIGHTER_SWORD = 9890;
+			public static final int SKILL_FEATURE_ATTACK_SARACHNIS_CUDGEL = 9891;
+			public static final int SKILL_FEATURE_ATTACK_ZOMBIE_AXE = 9892;
+			public static final int SKILL_FEATURE_ATTACK_BELLES_FOLLY = 9893;
+			public static final int SKILL_FEATURE_ATTACK_KERIS_PARTISAN = 9894;
+			public static final int SKILL_FEATURE_ATTACK_SARADOMIN_SWORD = 9895;
+			public static final int SKILL_FEATURE_ATTACK_ZAMORAK_SPEAR = 9896;
+			public static final int SKILL_FEATURE_ATTACK_ABYSSAL_WHIP = 9897;
+			public static final int SKILL_FEATURE_ATTACK_BARROWS_GUTHAN_WEAPON = 9898;
+			public static final int SKILL_FEATURE_ATTACK_BARROWS_VERAC_WEAPON = 9899;
+			public static final int SKILL_FEATURE_ATTACK_WILD_CAVE_URSINE = 9900;
+			public static final int SKILL_FEATURE_ATTACK_AVERNIC_DEFENDER = 9901;
+			public static final int SKILL_FEATURE_ATTACK_ARCLIGHT = 9902;
+			public static final int SKILL_FEATURE_ATTACK_GODSWORDS = 9903;
+			public static final int SKILL_FEATURE_ATTACK_ABYSSAL_TENTACLE = 9904;
+			public static final int SKILL_FEATURE_ATTACK_BLESSED_SARADOMIN_SWORD = 9905;
+			public static final int SKILL_FEATURE_ATTACK_DINHS_BULWARK = 9906;
+			public static final int SKILL_FEATURE_ATTACK_VESTAS_LONGSWORD = 9907;
+			public static final int SKILL_FEATURE_ATTACK_VOIDWAKER = 9908;
+			public static final int SKILL_FEATURE_ATTACK_EMBERLIGHT = 9909;
+			public static final int SKILL_FEATURE_ATTACK_DRAGONHUNTER_LANCE = 9910;
+			public static final int SKILL_FEATURE_ATTACK_GHRAZI_RAPIER = 9911;
+			public static final int SKILL_FEATURE_ATTACK_INQUISITORS_MACE = 9912;
+			public static final int SKILL_FEATURE_ATTACK_BLADE_OF_SAELDOR = 9913;
+			public static final int SKILL_FEATURE_ATTACK_NOXIOUS_HALBERD = 9914;
+			public static final int SKILL_FEATURE_ATTACK_KERIS_PARTISAN_CORRUPTION = 9915;
+			public static final int SKILL_FEATURE_ATTACK_OSMUMTENS_FANG = 9916;
+			public static final int SKILL_FEATURE_ATTACK_FEROCIOUS_GLOVES = 9917;
+			public static final int SKILL_FEATURE_ATTACK_SKILLCAPE = 9918;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OVERVIEW_0 = 9934;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OVERVIEW_1 = 9935;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OVERVIEW_2 = 9936;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OVERVIEW_3 = 9937;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OVERVIEW_4 = 9938;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_GARDEN = 9939;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_PARLOUR = 9940;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_KITCHEN = 9941;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_DININGROOM = 9942;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_WORKSHOP = 9943;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_BEDROOM = 9944;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_SKILLHALL = 9945;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_LEAGUEHALL = 9946;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_GAMESROOM = 9947;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_COMBATROOM = 9948;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_QUESTHALL = 9949;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_MENAGERIE = 9950;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_STUDY = 9951;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_COSTUMEROOM = 9952;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_CHAPEL = 9953;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_PORTALCHAMBER = 9954;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ADVERTBOARD = 9955;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_FORMALGARDEN = 9956;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_THRONEROOM = 9957;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_OUBLIETTE = 9958;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_SUPERIORGARDEN = 9959;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_DUNGEON = 9960;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_PORTALNEXUS = 9961;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_TREASUREROOM = 9962;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ROOM_ACHIEVEMENTGALLERY = 9963;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FIREPLACE_1 = 9964;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STOVE_1 = 9965;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SINK_1 = 9966;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STOVE_2 = 9967;
+			public static final int SKILL_FEATURE_CONSTRUCTION_REPAIR_BENCH_1 = 9968;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HERALDRY_BENCH_1 = 9969;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CRAFTING_TABLE_1 = 9970;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STOVE_3 = 9971;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WORKBENCH_1 = 9972;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STOVE_4 = 9973;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CRAFTING_TABLE_2 = 9974;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SINK_2 = 9975;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STOVE_5 = 9976;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WORKBENCH_2 = 9977;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FIREPLACE_2 = 9978;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CRAFTING_TABLE_3 = 9979;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STOVE_6 = 9980;
+			public static final int SKILL_FEATURE_CONSTRUCTION_REPAIR_BENCH_2 = 9981;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HERALDRY_BENCH_2 = 9982;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STOVE_7 = 9983;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CRAFTING_TABLE_4 = 9984;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WORKBENCH_3 = 9985;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SINK_3 = 9986;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SINK_4 = 9987;
+			public static final int SKILL_FEATURE_CONSTRUCTION_REPAIR_BENCH_3 = 9988;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WORKBENCH_4 = 9989;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FIREPLACE_3 = 9990;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HERALDRY_BENCH_3 = 9991;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WORKBENCH_5 = 9992;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ALTAR_ANCIENT = 9993;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ALTAR_LUNAR = 9994;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ALTAR_ARCEUUS = 9995;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ALTAR_ECUMENICAL_FROMANCIENT = 9996;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ALTAR_ECUMENICAL_FROMLUNAR = 9997;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ALTAR_ECUMENICAL_FROMARCEUUS = 9998;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ARMCHAIR_1 = 9999;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ARMCHAIR_2 = 10000;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_TABLE_1 = 10001;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_CHAIRS_1 = 10002;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHENTABLE_1 = 10003;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ARMCHAIR_3 = 10004;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ARMCHAIR_4 = 10005;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BED_1 = 10006;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_TABLE_2 = 10007;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_CHAIRS_2 = 10008;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ARMCHAIR_5 = 10009;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BED_2 = 10010;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_TABLE_3 = 10011;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_CHAIRS_3 = 10012;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHENTABLE_2 = 10013;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BED_3 = 10014;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ARMCHAIR_6 = 10015;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_TABLE_4 = 10016;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_CHAIRS_4 = 10017;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BED_4 = 10018;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_CHAIRS_5 = 10019;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_TABLE_5 = 10020;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BED_5 = 10021;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ARMCHAIR_7 = 10022;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_TABLE_6 = 10023;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_CHAIRS_6 = 10024;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHENTABLE_3 = 10025;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BED_6 = 10026;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_1 = 10027;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BED_7 = 10028;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_CHAIRS_7 = 10029;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_2 = 10030;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DINING_TABLE_7 = 10031;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_3 = 10032;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_4 = 10033;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_5 = 10034;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_6 = 10035;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_7 = 10036;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOOKCASE_1 = 10037;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHEN_SHELVES_1 = 10038;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BARREL_1 = 10039;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LARDER_1 = 10040;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BARREL_2 = 10041;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHEN_SHELVES_2 = 10042;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TOOL_STORE_1 = 10043;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BARREL_3 = 10044;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WARDROBE_1 = 10045;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MIRROR_1 = 10046;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHEN_SHELVES_3 = 10047;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TOOL_STORE_2 = 10048;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BARREL_4 = 10049;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WARDROBE_2 = 10050;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOOKCASE_2 = 10051;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MIRROR_2 = 10052;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LARDER_2 = 10053;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHEN_SHELVES_4 = 10054;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TOOL_STORE_3 = 10055;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BARREL_5 = 10056;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETHOUSE_1 = 10057;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MIRROR_3 = 10058;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WARDROBE_3 = 10059;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOOKCASE_3 = 10060;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_MAGIC_WARDROBE_OAK = 10061;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LARDER_3 = 10062;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_FANCY_DRESS_BOX_OAK = 10063;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TOOL_STORE_4 = 10064;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHEN_SHELVES_5 = 10065;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_ARMOUR_CASE_OAK = 10066;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MIRROR_4 = 10067;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BARREL_6 = 10068;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_TREASURE_CHEST_OAK = 10069;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETHOUSE_2 = 10070;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_TOY_BOX_OAK = 10071;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_MAGIC_WARDROBE_CARVED_OAK = 10072;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WARDROBE_4 = 10073;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_CAPE_RACK_OAK = 10074;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TOOL_STORE_5 = 10075;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHEN_SHELVES_6 = 10076;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MIRROR_5 = 10077;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SERVANT_MONEYBAG = 10078;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETHOUSE_3 = 10079;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_MAGIC_WARDROBE_TEAK = 10080;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHEN_RACK_1 = 10081;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_FANCY_DRESS_BOX_TEAK = 10082;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_CAPE_RACK_TEAK = 10083;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WARDROBE_5 = 10084;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_ARMOUR_CASE_TEAK = 10085;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MIRROR_6 = 10086;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_TREASURE_CHEST_TEAK = 10087;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KITCHEN_SHELVES_7 = 10088;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_TOY_BOX_TEAK = 10089;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_MAGIC_WARDROBE_TEAK_CARVED = 10090;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETHOUSE_4 = 10091;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_CAPE_RACK_MAHOGANY = 10092;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MIRROR_7 = 10093;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WARDROBE_6 = 10094;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_MAGIC_WARDROBE_MAHOGANY = 10095;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_FANCY_DRESS_BOX_MAHOGANY = 10096;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_JEWELLERYBOX_1 = 10097;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_CAPE_RACK_MAHOGANY_GILDED = 10098;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETHOUSE_5 = 10099;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_ARMOUR_CASE_MAHOGANY = 10100;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_JEWELLERYBOX_2 = 10101;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_TOY_BOX_MAHOGANY = 10102;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_MAGIC_WARDROBE_MAHOGANY_GILDED = 10103;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WARDROBE_7 = 10104;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_CAPE_RACK_MARBLE = 10105;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_JEWELLERYBOX_3 = 10106;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETHOUSE_6 = 10107;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_MAGIC_WARDROBE_MARBLE = 10108;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_CAPE_RACK_MAGIC_STONE = 10109;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RUG_1 = 10110;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CURTAINS_1 = 10111;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RUG_2 = 10112;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CURTAINS_2 = 10113;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CLOCK_1 = 10114;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RUG_DEADMAN = 10115;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LECTERN_1 = 10116;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CURTAINS_3 = 10117;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALLCHART_4 = 10118;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GLOBE_1 = 10119;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALLCHART_1 = 10120;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TELESCOPE_1 = 10121;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LECTERN_2 = 10122;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LECTERN_3 = 10123;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GLOBE_2 = 10124;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CLOCK_2 = 10125;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LECTERN_4 = 10126;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LECTERN_5 = 10127;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GLOBE_3 = 10128;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALLCHART_2 = 10129;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TELESCOPE_2 = 10130;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RUG_3 = 10131;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LECTERN_6 = 10132;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LECTERN_7 = 10133;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GLOBE_4 = 10134;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_CANDLE = 10135;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_BLOODSTAIN = 10136;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RUG_LEAGUE_5 = 10137;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GLOBE_5 = 10138;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LECTERN_8 = 10139;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALLCHART_3 = 10140;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_PIPE = 10141;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_TORCH = 10142;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TELESCOPE_3 = 10143;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CLOCK_3 = 10144;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GLOBE_6 = 10145;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_SKELETON_DECORATIVE = 10146;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_SKULLTORCH = 10147;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GLOBE_7 = 10148;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALL_CREST_1 = 10149;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_TROPHY_PEDESTAL_SIMPLE = 10150;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_RUG_SIMPLE = 10151;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_RUG_TRAILBLAZER = 10152;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_ARMOUR = 10153;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_BANNERSTAND_SIMPLE = 10154;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_STATUE_SIMPLE = 10155;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_STATUE_TRAILBLAZER = 10156;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_OUTFITSTAND_OAK = 10157;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_PORTRAIT1 = 10158;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_TROPHYCASE_OAK = 10159;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_BASS_DUMMY = 10160;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALL_CREST_2 = 10161;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_HEAD1 = 10162;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAP_1 = 10163;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_RUNECASE = 10164;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_SWORD = 10165;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_LANDSCAPE1 = 10166;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TROPHY_ANTIDRAGONBREATH = 10167;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TROPHY_AMULETOFGLORY = 10168;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TROPHY_LEGENDSCAPE = 10169;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TROPHY_MYTHICAL_CAPE = 10170;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_ACCOMPLISHMENT_SCROLL = 10171;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_PORTRAIT2 = 10172;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALL_CREST_3 = 10173;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_SWORDFISH_DUMMY = 10174;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAP_2 = 10175;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_HEAD2 = 10176;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_TROPHY_PEDESTAL_DECORATIVE = 10177;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_SALMON_DUMMY = 10178;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_RUG_DECORATIVE = 10179;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_LANDSCAPE2 = 10180;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_HARPOON_DUMMY = 10181;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_BANNERSTAND_DECORATIVE = 10182;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALL_CREST_4 = 10183;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_STATUE_DECORATIVE = 10184;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_TROUT_DUMMY = 10185;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMULET_XERIC = 10186;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_OUTFITSTAND_MAHOGANY = 10187;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_PIKE_DUMMY = 10188;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_SHARK_DUMMY = 10189;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALL_CREST_5 = 10190;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEAGUEHALL_TROPHYCASE_MAHOGANY = 10191;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_HEAD3 = 10192;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAP_3 = 10193;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_HERRING_DUMMY = 10194;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_QUESTLIST = 10195;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_MOUNTEDDISPLAY_EMBLEM = 10196;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_MOUNTEDDISPLAY_COINS = 10197;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_MOUNTEDDISPLAY_CAPESTAND = 10198;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMULET_DIGSITE = 10199;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TROPHY_VORKATH = 10200;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TROPHY_ALCHEMICAL_HYDRA_HEAD = 10201;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_SARDINE_DUMMY = 10202;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ADVENTURELOG_1 = 10203;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WALL_CREST_6 = 10204;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PATTERN_COD_DUMMY = 10205;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_BOSSLAIR_BLANK = 10206;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ADVENTURELOG_2 = 10207;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ACHIEVEMENTGALLERY_ADVENTURELOG_3 = 10208;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RANGING_GAME_1 = 10209;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COMBAT_RING_1 = 10210;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WEAPON_RACK_1 = 10211;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PRIZE_CHEST_1 = 10212;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ELEMENTAL_BALANCE_1 = 10213;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PARTY_GAME_1 = 10214;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ATTACK_STONE_1 = 10215;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COMBAT_RING_2 = 10216;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WEAPON_RACK_2 = 10217;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PRIZE_CHEST_2 = 10218;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COMBAT_DUMMY = 10219;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PARTY_GAME_2 = 10220;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COMBAT_RING_3 = 10221;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COMBAT_DUMMY_UNDEADSLAYER = 10222;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RANGING_GAME_2 = 10223;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WEAPON_RACK_3 = 10224;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PRIZE_CHEST_3 = 10225;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ELEMENTAL_BALANCE_2 = 10226;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COMBAT_DUMMY_UPGRADED_1_UNDEAD = 10227;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ATTACK_STONE_2 = 10228;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PARTY_GAME_3 = 10229;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_COMBATRING_1 = 10230;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COMBAT_RING_4 = 10231;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_COMBATRING_2 = 10232;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ELEMENTAL_BALANCE_3 = 10233;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ATTACK_STONE_3 = 10234;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RANGING_GAME_3 = 10235;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COMBAT_RING_5 = 10236;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_COMBATRING_3 = 10237;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GARDEN_CENTREPIECE_1 = 10238;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_PLANT_1 = 10239;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GARDEN_CENTREPIECE_2 = 10240;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREE_1 = 10241;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_PLANT_2 = 10242;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GARDEN_CENTREPIECE_3 = 10243;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREE_2 = 10244;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUIDE_PLANT_3 = 10245;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GARDEN_CENTREPIECE_4 = 10246;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREE_3 = 10247;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREE_4 = 10248;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_HABITAT_1 = 10249;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TIPJAR = 10250;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREE_5 = 10251;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_HABITAT_2 = 10252;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FENCING1 = 10253;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HEDGE1 = 10254;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_HABITAT_3 = 10255;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FENCING2 = 10256;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HEDGE2 = 10257;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREE_6 = 10258;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FENCING3 = 10259;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HEDGE3 = 10260;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FORMAL_GARDEN_CENTREPIECE_2 = 10261;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_POOL_RESTORATION = 10262;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_THEME_ZEN = 10263;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_TOPIARY = 10264;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FLOWERA1 = 10265;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FLOWERB1 = 10266;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_BENCH_TEAK = 10267;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FENCING4 = 10268;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_HABITAT_4 = 10269;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HEDGE4 = 10270;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GARDEN_CENTREPIECE_5 = 10271;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_POOL_REVITALISATION = 10272;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FLOWERA2 = 10273;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FLOWERB2 = 10274;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FENCING5 = 10275;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FORMAL_GARDEN_CENTREPIECE_3 = 10276;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HEDGE5 = 10277;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREE_7 = 10278;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_THEME_ZANARIS = 10279;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_TELEPORT_TREE = 10280;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FORMAL_GARDEN_CENTREPIECE_4 = 10281;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FENCING6 = 10282;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_REDWOOD_FENCE = 10283;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HEDGE6 = 10284;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FLOWERA3 = 10285;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FLOWERB3 = 10286;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_HABITAT_5 = 10287;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_BENCH_MAHOGANY = 10288;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FENCING7 = 10289;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_WILDERNESS_OBELISK = 10290;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_POOL_REJUVENATION = 10291;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HEDGE7 = 10292;
+			public static final int SKILL_FEATURE_CONSTRUCTION_FORMAL_GARDEN_CENTREPIECE_5 = 10293;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_OBSIDIAN_FENCE = 10294;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_TELEPORT_RING = 10295;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_POOL_RECOVERY = 10296;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_THEME_TZHAAR = 10297;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_BENCH_MARBLE = 10298;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_POOL_REGENERATION = 10299;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_TELEPORT_TREERING = 10300;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SUPERIOR_GARDEN_BENCH_OBSIDIAN = 10301;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_ROOM_CAGE_1 = 10302;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CAGE_DUNGEON_OAK = 10303;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OUBLIETTE_SPIKES = 10304;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_ROOM_CAGE_2 = 10305;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CAGE_DUNGEON_OAKSTEEL = 10306;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SKELETON_GUARD = 10307;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OUBLIETTE_POOL = 10308;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SPIKE_TRAP = 10309;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_ROOM_CAGE_3 = 10310;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_DOOR_OAK = 10311;
+			public static final int SKILL_FEATURE_CONSTRUCTION_GUARD_DOG = 10312;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREASURE_WOOD = 10313;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DEMON = 10314;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CAGE_DUNGEON_STEEL = 10315;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAN_TRAP = 10316;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OUBLIETTE_FIRE = 10317;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HOBGOBLIN = 10318;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREASURE_OAK = 10319;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CAGE_DUNGEON_STEELSPIKES = 10320;
+			public static final int SKILL_FEATURE_CONSTRUCTION_VINE_TRAP = 10321;
+			public static final int SKILL_FEATURE_CONSTRUCTION_KALPHITE_SOLDIER = 10322;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_ROOM_CAGE_4 = 10323;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DRAGON = 10324;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREASURE_TEAK = 10325;
+			public static final int SKILL_FEATURE_CONSTRUCTION_OUB_MONSTER1 = 10326;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_DOOR_STEEL = 10327;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MARBLE_TRAP = 10328;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TOK_XIL = 10329;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CAGE_DUNGEON_BONES = 10330;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SPIDER = 10331;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREASURE_MAHOGANY = 10332;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TELEPORT_TRAP = 10333;
+			public static final int SKILL_FEATURE_CONSTRUCTION_THRONE_ROOM_CAGE_5 = 10334;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TROLL = 10335;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DAGGANOTH = 10336;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TREASURE_MAGIC = 10337;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_DOOR_MARBLE = 10338;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HELLHOUND = 10339;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STEEL_DRAGON = 10340;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RUNE_DRAGON = 10341;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ALTAR_OAK = 10342;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TORCHES_STEEL = 10343;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ICON_GNOMECHILD = 10344;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SYMBOL_SARADOMIN = 10345;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SYMBOL_GUTHIX = 10346;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SYMBOL_ZAMORAK = 10347;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TORCHES_WOODEN = 10348;
+			public static final int SKILL_FEATURE_CONSTRUCTION_WINDCHIMES = 10349;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STATUE_SAINT = 10350;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CHAPEL_WINDOW_SHUTTERS = 10351;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ALTAR_TEAK = 10352;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CANDLESTICKS_STEEL = 10353;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ALTAR_TEAK_CLOTH = 10354;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CANDLESTICKS_GILT = 10355;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BELLS = 10356;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ICON_SARADOMIN = 10357;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ICON_GUTHIX = 10358;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ICON_ZAMORAK = 10359;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ALTAR_MAHOGANY = 10360;
+			public static final int SKILL_FEATURE_CONSTRUCTION_INCENSE_BURNER_OAK = 10361;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ALTAR_LIMESTONE = 10362;
+			public static final int SKILL_FEATURE_CONSTRUCTION_INCENSE_BURNER_MAHOGANY = 10363;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STATUE_ANGEL = 10364;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ORGAN = 10365;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CHAPEL_WINDOW_DECORATIVE = 10366;
+			public static final int SKILL_FEATURE_CONSTRUCTION_INCENSE_BURNER_MARBLE = 10367;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ALTAR_MARBLE = 10368;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ICON_BOB = 10369;
+			public static final int SKILL_FEATURE_CONSTRUCTION_ALTAR_MARBLEGILT = 10370;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STATUE_GOD = 10371;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CHAPEL_WINDOW_STAINEDGLASS = 10372;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAHOGANYHOMES1 = 10373;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CAT_BASKET_1 = 10374;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RED_CRAB = 10375;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HH_DUMMY_HIDEYHOLE_BEGINNER = 10376;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_WATER_PUMP = 10377;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CAT_BASKET_2 = 10378;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_COOKING_POT = 10379;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAHOGANYHOMES2 = 10380;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_SPINNING_WHEEL = 10381;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_POTTERY_WHEEL = 10382;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BELLPULL_1 = 10383;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STAIRS_OAK = 10384;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HH_DUMMY_HIDEYHOLE_EASY = 10385;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PISCARILIUSCRANES = 10386;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RAIDS_STORAGE_1 = 10387;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_LOOM = 10388;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CAT_BASKET_3 = 10389;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BELLPULL_2 = 10390;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETFEEDER_1 = 10391;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_POTTERY_OVEN = 10392;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETLIST_1 = 10393;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_SCRATCHINGPOST_1 = 10394;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CRYSTALBALL_1 = 10395;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HH_DUMMY_HIDEYHOLE_MEDIUM = 10396;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_ANVIL = 10397;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STAIRS_TEAK = 10398;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETFEEDER_2 = 10399;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_SCRATCHINGPOST_2 = 10400;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PORTAL_FRAME_1 = 10401;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TELEPORT_CENTREPIECE_1 = 10402;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_ROWBOAT = 10403;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAHOGANYHOMES3 = 10404;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CRYSTALBALL_2 = 10405;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HH_DUMMY_HIDEYHOLE_HARD = 10406;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HALLOWED_TOKEN = 10407;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_FURNACE = 10408;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAUSOLEUMBRIDGE = 10409;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_PETFEEDER_3 = 10410;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MENAGERIE_SCRATCHINGPOST_3 = 10411;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BELLPULL_3 = 10412;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RAIDS_STORAGE_2 = 10413;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TELEPORT_CENTREPIECE_2 = 10414;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PORTAL_FRAME_2 = 10415;
+			public static final int SKILL_FEATURE_CONSTRUCTION_CRYSTALBALL_3 = 10416;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SPIRALSTAIRS_LIMESTONE = 10417;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_LADDER_OAK = 10418;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEVER_OAK = 10419;
+			public static final int SKILL_FEATURE_CONSTRUCTION_MAHOGANYHOMES4 = 10420;
+			public static final int SKILL_FEATURE_CONSTRUCTION_AMENITY_BANKCHEST = 10421;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PORTAL_NEXUS_1 = 10422;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HH_DUMMY_HIDEYHOLE_ELITE = 10423;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_LADDER_TEAK = 10424;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEVER_TEAK = 10425;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PORTAL_FRAME_3 = 10426;
+			public static final int SKILL_FEATURE_CONSTRUCTION_TELEPORT_CENTREPIECE_3 = 10427;
+			public static final int SKILL_FEATURE_CONSTRUCTION_STAIRS_MARBLE = 10428;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PORTAL_NEXUS_2 = 10429;
+			public static final int SKILL_FEATURE_CONSTRUCTION_DUNGEON_LADDER_MAG = 10430;
+			public static final int SKILL_FEATURE_CONSTRUCTION_LEVER_MAG = 10431;
+			public static final int SKILL_FEATURE_CONSTRUCTION_HH_DUMMY_HIDEYHOLE_MASTER = 10432;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RAIDS_STORAGE_3 = 10433;
+			public static final int SKILL_FEATURE_CONSTRUCTION_PORTAL_NEXUS_3 = 10434;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SPIRALSTAIRS_MARBLE = 10435;
+			public static final int SKILL_FEATURE_CONSTRUCTION_RAIDS_STORAGE_4 = 10436;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SERVANT_PREAMBLE = 10437;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SERVANT_RICK = 10438;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SERVANT_MAID = 10439;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SERVANT_COOK = 10440;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SERVANT_BUTLER = 10441;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SERVANT_DEMONBUTLER = 10442;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS1 = 10443;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS2 = 10444;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS3 = 10445;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS4 = 10446;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS5 = 10447;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS6 = 10448;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS7 = 10449;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS8 = 10450;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS9 = 10451;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS10 = 10452;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS11 = 10453;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS12 = 10454;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS13 = 10455;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS14 = 10456;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_ROOMS15 = 10457;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_DIMENSIONS3 = 10458;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_DIMENSIONS4 = 10459;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_DIMENSIONS5 = 10460;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_DIMENSIONS6 = 10461;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SIZE_DIMENSIONS7 = 10462;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOAT_REPAIR_WOOD = 10463;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOAT_REPAIR_OAK = 10464;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOAT_REPAIR_TEAK = 10465;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOAT_REPAIR_MAHOGANY = 10466;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOAT_REPAIR_CAMPHOR = 10467;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOAT_REPAIR_IRONWOOD = 10468;
+			public static final int SKILL_FEATURE_CONSTRUCTION_BOAT_REPAIR_ROSEWOOD = 10469;
+			public static final int SKILL_FEATURE_CONSTRUCTION_SKILLCAPE = 10470;
+			public static final int SKILL_FEATURE_COOKING_OVERVIEW_0 = 10485;
+			public static final int SKILL_FEATURE_COOKING_OVERVIEW_1 = 10486;
+			public static final int SKILL_FEATURE_COOKING_OVERVIEW_2 = 10487;
+			public static final int SKILL_FEATURE_COOKING_OVERVIEW_3 = 10488;
+			public static final int SKILL_FEATURE_COOKING_COOKED_MEAT = 10489;
+			public static final int SKILL_FEATURE_COOKING_XBOWS_SINEW = 10490;
+			public static final int SKILL_FEATURE_COOKING_SHRIMP = 10491;
+			public static final int SKILL_FEATURE_COOKING_COOKED_CHICKEN = 10492;
+			public static final int SKILL_FEATURE_COOKING_COOKED_RABBIT = 10493;
+			public static final int SKILL_FEATURE_COOKING_ANCHOVIES = 10494;
+			public static final int SKILL_FEATURE_COOKING_SARDINE = 10495;
+			public static final int SKILL_FEATURE_COOKING_POORLY_COOKED_KARAMBWAN = 10496;
+			public static final int SKILL_FEATURE_COOKING_UGTHANKI_KEBAB = 10497;
+			public static final int SKILL_FEATURE_COOKING_HERRING = 10498;
+			public static final int SKILL_FEATURE_COOKING_MACKEREL = 10499;
+			public static final int SKILL_FEATURE_COOKING_SPIT_ROASTED_BIRD_MEAT = 10500;
+			public static final int SKILL_FEATURE_COOKING_SNAIL_CORPSE_COOKED1 = 10501;
+			public static final int SKILL_FEATURE_COOKING_TBONE_STEAK = 10502;
+			public static final int SKILL_FEATURE_COOKING_TROUT = 10503;
+			public static final int SKILL_FEATURE_COOKING_SPIDER_ON_STICK = 10504;
+			public static final int SKILL_FEATURE_COOKING_SPIT_ROASTED_RABBIT_MEAT = 10505;
+			public static final int SKILL_FEATURE_COOKING_SNAIL_CORPSE_COOKED2 = 10506;
+			public static final int SKILL_FEATURE_COOKING_COD = 10507;
+			public static final int SKILL_FEATURE_COOKING_PIKE = 10508;
+			public static final int SKILL_FEATURE_COOKING_SPIT_ROASTED_BEAST_MEAT = 10509;
+			public static final int SKILL_FEATURE_COOKING_GIANT_CRAB_MEAT = 10510;
+			public static final int SKILL_FEATURE_COOKING_RED_CRAB = 10511;
+			public static final int SKILL_FEATURE_COOKING_SNAIL_CORPSE_COOKED3 = 10512;
+			public static final int SKILL_FEATURE_COOKING_WILDKEBBIT = 10513;
+			public static final int SKILL_FEATURE_COOKING_SALMON = 10514;
+			public static final int SKILL_FEATURE_COOKING_SLIMY_EEL = 10515;
+			public static final int SKILL_FEATURE_COOKING_TUNA = 10516;
+			public static final int SKILL_FEATURE_COOKING_COOKED_CHOMPY = 10517;
+			public static final int SKILL_FEATURE_COOKING_COOKED_LIZARD = 10518;
+			public static final int SKILL_FEATURE_COOKING_BREAM_FISH = 10519;
+			public static final int SKILL_FEATURE_COOKING_FISHCAKE = 10520;
+			public static final int SKILL_FEATURE_COOKING_LARUPIA = 10521;
+			public static final int SKILL_FEATURE_COOKING_BARBKEBBIT = 10522;
+			public static final int SKILL_FEATURE_COOKING_HUNTING_FISH_SPECIAL = 10523;
+			public static final int SKILL_FEATURE_COOKING_CAVE_EEL = 10524;
+			public static final int SKILL_FEATURE_COOKING_LOBSTER = 10525;
+			public static final int SKILL_FEATURE_COOKING_JUBBLY_MEAT = 10526;
+			public static final int SKILL_FEATURE_COOKING_GRAAHK = 10527;
+			public static final int SKILL_FEATURE_COOKING_BASS = 10528;
+			public static final int SKILL_FEATURE_COOKING_SWORDFISH = 10529;
+			public static final int SKILL_FEATURE_COOKING_BLUE_CRAB = 10530;
+			public static final int SKILL_FEATURE_COOKING_KYATT = 10531;
+			public static final int SKILL_FEATURE_COOKING_LAVA_EEL = 10532;
+			public static final int SKILL_FEATURE_COOKING_SWORDTIP_SQUID = 10533;
+			public static final int SKILL_FEATURE_COOKING_FENNECFOX = 10534;
+			public static final int SKILL_FEATURE_COOKING_MONKFISH = 10535;
+			public static final int SKILL_FEATURE_COOKING_ANTELOPESUN = 10536;
+			public static final int SKILL_FEATURE_COOKING_GIANT_KRILL = 10537;
+			public static final int SKILL_FEATURE_COOKING_JUMBO_SQUID = 10538;
+			public static final int SKILL_FEATURE_COOKING_SNAKEBOSS_EEL = 10539;
+			public static final int SKILL_FEATURE_COOKING_HADDOCK = 10540;
+			public static final int SKILL_FEATURE_COOKING_RAINBOW_CRAN = 10541;
+			public static final int SKILL_FEATURE_COOKING_YELLOWFIN = 10542;
+			public static final int SKILL_FEATURE_COOKING_SHARK = 10543;
+			public static final int SKILL_FEATURE_COOKING_SEATURTLE = 10544;
+			public static final int SKILL_FEATURE_COOKING_DASHINGKEBBIT = 10545;
+			public static final int SKILL_FEATURE_COOKING_HALIBUT = 10546;
+			public static final int SKILL_FEATURE_COOKING_ANGLERFISH = 10547;
+			public static final int SKILL_FEATURE_COOKING_BLUEFIN = 10548;
+			public static final int SKILL_FEATURE_COOKING_DARK_CRAB = 10549;
+			public static final int SKILL_FEATURE_COOKING_MANTARAY = 10550;
+			public static final int SKILL_FEATURE_COOKING_MARLIN = 10551;
+			public static final int SKILL_FEATURE_COOKING_ANTELOPEMOON = 10552;
+			public static final int SKILL_FEATURE_COOKING_BREAD_GUIDE_0 = 10553;
+			public static final int SKILL_FEATURE_COOKING_BREAD_GUIDE_1 = 10554;
+			public static final int SKILL_FEATURE_COOKING_BREAD_GUIDE_2 = 10555;
+			public static final int SKILL_FEATURE_COOKING_BREAD_GUIDE_3 = 10556;
+			public static final int SKILL_FEATURE_COOKING_BREAD_GUIDE_4 = 10557;
+			public static final int SKILL_FEATURE_COOKING_BREAD_GUIDE_5 = 10558;
+			public static final int SKILL_FEATURE_COOKING_BREAD = 10559;
+			public static final int SKILL_FEATURE_COOKING_PITTA_BREAD = 10560;
+			public static final int SKILL_FEATURE_COOKING_REDBERRY_PIE = 10561;
+			public static final int SKILL_FEATURE_COOKING_MEAT_PIE = 10562;
+			public static final int SKILL_FEATURE_COOKING_MUD_PIE = 10563;
+			public static final int SKILL_FEATURE_COOKING_APPLE_PIE = 10564;
+			public static final int SKILL_FEATURE_COOKING_GARDEN_PIE = 10565;
+			public static final int SKILL_FEATURE_COOKING_FISH_PIE = 10566;
+			public static final int SKILL_FEATURE_COOKING_BOTANICAL_PIE = 10567;
+			public static final int SKILL_FEATURE_COOKING_MUSHROOM_PIE = 10568;
+			public static final int SKILL_FEATURE_COOKING_ADMIRAL_PIE = 10569;
+			public static final int SKILL_FEATURE_COOKING_DRAGONFRUIT_PIE = 10570;
+			public static final int SKILL_FEATURE_COOKING_WILD_PIE = 10571;
+			public static final int SKILL_FEATURE_COOKING_SUMMER_PIE = 10572;
+			public static final int SKILL_FEATURE_COOKING_PIE_GUIDE_0 = 10573;
+			public static final int SKILL_FEATURE_COOKING_PIE_GUIDE_1 = 10574;
+			public static final int SKILL_FEATURE_COOKING_PIE_GUIDE_2 = 10575;
+			public static final int SKILL_FEATURE_COOKING_PIE_GUIDE_3 = 10576;
+			public static final int SKILL_FEATURE_COOKING_PIE_GUIDE_4 = 10577;
+			public static final int SKILL_FEATURE_COOKING_PIE_GUIDE_5 = 10578;
+			public static final int SKILL_FEATURE_COOKING_STEW = 10579;
+			public static final int SKILL_FEATURE_COOKING_CURRY = 10580;
+			public static final int SKILL_FEATURE_COOKING_STEW_GUIDE_0 = 10581;
+			public static final int SKILL_FEATURE_COOKING_STEW_GUIDE_1 = 10582;
+			public static final int SKILL_FEATURE_COOKING_STEW_GUIDE_2 = 10583;
+			public static final int SKILL_FEATURE_COOKING_STEW_GUIDE_3 = 10584;
+			public static final int SKILL_FEATURE_COOKING_STEW_GUIDE_4 = 10585;
+			public static final int SKILL_FEATURE_COOKING_STEW_GUIDE_5 = 10586;
+			public static final int SKILL_FEATURE_COOKING_STEW_GUIDE_6 = 10587;
+			public static final int SKILL_FEATURE_COOKING_PLAIN_PIZZA = 10588;
+			public static final int SKILL_FEATURE_COOKING_MEAT_PIZZA = 10589;
+			public static final int SKILL_FEATURE_COOKING_ANCHOVY_PIZZA = 10590;
+			public static final int SKILL_FEATURE_COOKING_PINEAPPLE_PIZZA = 10591;
+			public static final int SKILL_FEATURE_COOKING_PIZZA_GUIDE_0 = 10592;
+			public static final int SKILL_FEATURE_COOKING_PIZZA_GUIDE_1 = 10593;
+			public static final int SKILL_FEATURE_COOKING_PIZZA_GUIDE_2 = 10594;
+			public static final int SKILL_FEATURE_COOKING_PIZZA_GUIDE_3 = 10595;
+			public static final int SKILL_FEATURE_COOKING_PIZZA_GUIDE_4 = 10596;
+			public static final int SKILL_FEATURE_COOKING_PIZZA_GUIDE_5 = 10597;
+			public static final int SKILL_FEATURE_COOKING_CAKE = 10598;
+			public static final int SKILL_FEATURE_COOKING_CHOCOLATE_CAKE = 10599;
+			public static final int SKILL_FEATURE_COOKING_CAKE_GUIDE_0 = 10600;
+			public static final int SKILL_FEATURE_COOKING_CAKE_GUIDE_1 = 10601;
+			public static final int SKILL_FEATURE_COOKING_CAKE_GUIDE_2 = 10602;
+			public static final int SKILL_FEATURE_COOKING_CAKE_GUIDE_3 = 10603;
+			public static final int SKILL_FEATURE_COOKING_WINE = 10604;
+			public static final int SKILL_FEATURE_COOKING_WINE_OF_ZAMORAK = 10605;
+			public static final int SKILL_FEATURE_COOKING_WINE_GUIDE_0 = 10606;
+			public static final int SKILL_FEATURE_COOKING_WINE_GUIDE_1 = 10607;
+			public static final int SKILL_FEATURE_COOKING_WINE_GUIDE_2 = 10608;
+			public static final int SKILL_FEATURE_COOKING_WINE_GUIDE_3 = 10609;
+			public static final int SKILL_FEATURE_COOKING_CUP_OF_NETTLETEA = 10610;
+			public static final int SKILL_FEATURE_COOKING_CUP_DAMIANA_TEA = 10611;
+			public static final int SKILL_FEATURE_COOKING_HOTDRINKS_GUIDE_0 = 10612;
+			public static final int SKILL_FEATURE_COOKING_HOTDRINKS_GUIDE_1 = 10613;
+			public static final int SKILL_FEATURE_COOKING_HOTDRINKS_GUIDE_2 = 10614;
+			public static final int SKILL_FEATURE_COOKING_HOTDRINKS_GUIDE_3 = 10615;
+			public static final int SKILL_FEATURE_COOKING_HOTDRINKS_GUIDE_4 = 10616;
+			public static final int SKILL_FEATURE_COOKING_HOTDRINKS_GUIDE_5 = 10617;
+			public static final int SKILL_FEATURE_COOKING_CIDER = 10618;
+			public static final int SKILL_FEATURE_COOKING_DWARVEN_STOUT = 10619;
+			public static final int SKILL_FEATURE_COOKING_ASGARNIAN_ALE = 10620;
+			public static final int SKILL_FEATURE_COOKING_GREENMANS_ALE = 10621;
+			public static final int SKILL_FEATURE_COOKING_WIZARDS_MIND_BOMB = 10622;
+			public static final int SKILL_FEATURE_COOKING_DRAGON_BITTER = 10623;
+			public static final int SKILL_FEATURE_COOKING_MOONLIGHT_MEAD = 10624;
+			public static final int SKILL_FEATURE_COOKING_AXEMANS_FOLLY = 10625;
+			public static final int SKILL_FEATURE_COOKING_CHEFS_DELIGHT = 10626;
+			public static final int SKILL_FEATURE_COOKING_SLAYERS_RESPITE = 10627;
+			public static final int SKILL_FEATURE_COOKING_POTATO_BAKED = 10628;
+			public static final int SKILL_FEATURE_COOKING_BOWL_CHILLI = 10629;
+			public static final int SKILL_FEATURE_COOKING_BOWL_CHILLICARNE = 10630;
+			public static final int SKILL_FEATURE_COOKING_BOWL_EGG_SCRAMBLED = 10631;
+			public static final int SKILL_FEATURE_COOKING_BOWL_EGGTOMATO = 10632;
+			public static final int SKILL_FEATURE_COOKING_SWEETCORN_COOKED = 10633;
+			public static final int SKILL_FEATURE_COOKING_POTATO_BUTTER = 10634;
+			public static final int SKILL_FEATURE_COOKING_POTATO_CHILLICARNE = 10635;
+			public static final int SKILL_FEATURE_COOKING_BOWL_ONION_FRIED = 10636;
+			public static final int SKILL_FEATURE_COOKING_BOWL_MUSHROOM_FRIED = 10637;
+			public static final int SKILL_FEATURE_COOKING_POTATO_CHEESE = 10638;
+			public static final int SKILL_FEATURE_COOKING_POTATO_EGGTOMATO = 10639;
+			public static final int SKILL_FEATURE_COOKING_BOWL_MUSHROOMONION = 10640;
+			public static final int SKILL_FEATURE_COOKING_POTATO_MUSHROOMONION = 10641;
+			public static final int SKILL_FEATURE_COOKING_BOWL_TUNASWEETCORN = 10642;
+			public static final int SKILL_FEATURE_COOKING_POTATO_TUNASWEETCORN = 10643;
+			public static final int SKILL_FEATURE_COOKING_VEGETABLE_GUIDE_0 = 10644;
+			public static final int SKILL_FEATURE_COOKING_VEGETABLE_GUIDE_1 = 10645;
+			public static final int SKILL_FEATURE_COOKING_VEGETABLE_GUIDE_2 = 10646;
+			public static final int SKILL_FEATURE_COOKING_VEGETABLE_GUIDE_3 = 10647;
+			public static final int SKILL_FEATURE_COOKING_POT_OF_CREAM = 10648;
+			public static final int SKILL_FEATURE_COOKING_POT_OF_BUTTER = 10649;
+			public static final int SKILL_FEATURE_COOKING_CHEESE = 10650;
+			public static final int SKILL_FEATURE_COOKING_DAIRY_GUIDE_0 = 10651;
+			public static final int SKILL_FEATURE_COOKING_DAIRY_GUIDE_1 = 10652;
+			public static final int SKILL_FEATURE_COOKING_DAIRY_GUIDE_2 = 10653;
+			public static final int SKILL_FEATURE_COOKING_DAIRY_GUIDE_3 = 10654;
+			public static final int SKILL_FEATURE_COOKING_FRUIT_BLAST = 10655;
+			public static final int SKILL_FEATURE_COOKING_PINEAPPLE_PUNCH = 10656;
+			public static final int SKILL_FEATURE_COOKING_TOAD_CRUNCHIES = 10657;
+			public static final int SKILL_FEATURE_COOKING_SPICY_CRUNCHIES = 10658;
+			public static final int SKILL_FEATURE_COOKING_WORM_CRUNCHIES = 10659;
+			public static final int SKILL_FEATURE_COOKING_CHOCCHIP_CRUNCHIES = 10660;
+			public static final int SKILL_FEATURE_COOKING_WIZARD_BLIZZARD = 10661;
+			public static final int SKILL_FEATURE_COOKING_SGG = 10662;
+			public static final int SKILL_FEATURE_COOKING_FRUIT_BATTA = 10663;
+			public static final int SKILL_FEATURE_COOKING_TOAD_BATTA = 10664;
+			public static final int SKILL_FEATURE_COOKING_WORM_BATTA = 10665;
+			public static final int SKILL_FEATURE_COOKING_VEGETABLE_BATTA = 10666;
+			public static final int SKILL_FEATURE_COOKING_CHEESETOM_BATTA = 10667;
+			public static final int SKILL_FEATURE_COOKING_WORM_HOLE = 10668;
+			public static final int SKILL_FEATURE_COOKING_DRUNK_DRAGON = 10669;
+			public static final int SKILL_FEATURE_COOKING_CHOCOLATE_DATURDAY = 10670;
+			public static final int SKILL_FEATURE_COOKING_VEG_BALL = 10671;
+			public static final int SKILL_FEATURE_COOKING_BLURBERRY_SPECIAL = 10672;
+			public static final int SKILL_FEATURE_COOKING_TANGLED_TOADS_LEGS = 10673;
+			public static final int SKILL_FEATURE_COOKING_CHOCOLATE_BOMB = 10674;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_FISH0_COOKED = 10675;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_BAT0_COOKED = 10676;
+			public static final int SKILL_FEATURE_COOKING_GUPPY = 10677;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_FISH1_COOKED = 10678;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_BAT1_COOKED = 10679;
+			public static final int SKILL_FEATURE_COOKING_CAVEFISH = 10680;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_FISH2_COOKED = 10681;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_BAT2_COOKED = 10682;
+			public static final int SKILL_FEATURE_COOKING_TETRA = 10683;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_FISH3_COOKED = 10684;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_BAT3_COOKED = 10685;
+			public static final int SKILL_FEATURE_COOKING_CATFISH = 10686;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_FISH4_COOKED = 10687;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_BAT4_COOKED = 10688;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_FISH5_COOKED = 10689;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_BAT5_COOKED = 10690;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_FISH6_COOKED = 10691;
+			public static final int SKILL_FEATURE_COOKING_RAIDS_BAT6_COOKED = 10692;
+			public static final int SKILL_FEATURE_COOKING_SKILLCAPE = 10693;
+			public static final int SKILL_FEATURE_CRAFTING_OVERVIEW_0 = 10704;
+			public static final int SKILL_FEATURE_CRAFTING_OVERVIEW_1 = 10705;
+			public static final int SKILL_FEATURE_CRAFTING_OVERVIEW_2 = 10706;
+			public static final int SKILL_FEATURE_CRAFTING_OVERVIEW_3 = 10707;
+			public static final int SKILL_FEATURE_CRAFTING_WEAVING_BOLT_OF_LINEN = 10708;
+			public static final int SKILL_FEATURE_CRAFTING_WEAVING_SACK = 10709;
+			public static final int SKILL_FEATURE_CRAFTING_WEAVING_DRIFT_NET = 10710;
+			public static final int SKILL_FEATURE_CRAFTING_WEAVING_BASKET = 10711;
+			public static final int SKILL_FEATURE_CRAFTING_WEAVING_BOLT_OF_CANVAS = 10712;
+			public static final int SKILL_FEATURE_CRAFTING_WEAVING_BOLT_OF_COTTON = 10713;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_LEATHER_GLOVES = 10714;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_FORESTRY_PHEASANT_HAT = 10715;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_LEATHER_BOOTS = 10716;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_LEATHER_COWL = 10717;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_LEATHER_VAMBRACES = 10718;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_LEATHER_ARMOUR = 10719;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_XERIC_HAT = 10720;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SNELM_ROUND_SWAMP = 10721;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_CRAB_SHELL_HELM = 10722;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_XERIC_ROBE = 10723;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_LEATHER_CHAPS = 10724;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_XERIC_TOP = 10725;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HARDLEATHER_BODY = 10726;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SPIKED_VAMBRACES = 10727;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BROODOO_SHIELD = 10728;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_COIF = 10729;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_STUDDED_BODY = 10730;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_LEATHER_SHIELD = 10731;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_YAK_HIDE_ARMOUR_GREAVES = 10732;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_STUDDED_CHAPS = 10733;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SNAKESKIN_BOOTS = 10734;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_YAK_HIDE_ARMOUR_BODY = 10735;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SNAKESKIN_VAMBRACES = 10736;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SNAKESKIN_BANDANA = 10737;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SNAKESKIN_CHAPS = 10738;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SERPENTINE_HELM = 10739;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SNAKESKIN_BODY = 10740;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SLAYER_HELM = 10741;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SNAKESKIN_SHIELD = 10742;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_DRAGON_VAMBRACES = 10743;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_DRAGONHIDE_CHAPS = 10744;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SPLITBARK_GAUNTLETS = 10745;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SPLITBARK_GREAVES = 10746;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SPLITBARK_HELM = 10747;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_GREEN_DHIDE_SHIELD = 10748;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SPLITBARK_BODY = 10749;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_SPLITBARK_LEGS = 10750;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_DRAGONHIDE_BODY = 10751;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BLUE_DRAGON_VAMBRACES = 10752;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BLUE_DRAGONHIDE_CHAPS = 10753;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HIDE_CAPE = 10754;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HIDE_BOOTS = 10755;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BLUE_DHIDE_SHIELD = 10756;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BLUE_DRAGONHIDE_BODY = 10757;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HIDE_LEGS = 10758;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HIDE_TOP = 10759;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_RED_DRAGON_VAMBRACES = 10760;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_RED_DRAGONHIDE_CHAPS = 10761;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_RED_DHIDE_SHIELD = 10762;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HUEY_VAMBRACES = 10763;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HUEY_COIF = 10764;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_RED_DRAGONHIDE_BODY = 10765;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HUEY_CHAPS = 10766;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_HUEY_BODY = 10767;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BLACK_DRAGON_VAMBRACES = 10768;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BLACK_DRAGONHIDE_CHAPS = 10769;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BLACK_DHIDE_SHIELD = 10770;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_CONFLICTION_GAUNTLETS = 10771;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_BLACK_DRAGONHIDE_BODY = 10772;
+			public static final int SKILL_FEATURE_CRAFTING_ARMOUR_MASORI_BODY_FORTIFIED = 10773;
+			public static final int SKILL_FEATURE_CRAFTING_SPINNING_BALL_OF_WOOL = 10774;
+			public static final int SKILL_FEATURE_CRAFTING_SPINNING_BOW_STRING = 10775;
+			public static final int SKILL_FEATURE_CRAFTING_SPINNING_CROSSBOW_STRING = 10776;
+			public static final int SKILL_FEATURE_CRAFTING_SPINNING_LINEN_YARN = 10777;
+			public static final int SKILL_FEATURE_CRAFTING_SPINNING_MAGIC_STRING = 10778;
+			public static final int SKILL_FEATURE_CRAFTING_SPINNING_ROPE = 10779;
+			public static final int SKILL_FEATURE_CRAFTING_SPINNING_HEMP_YARN = 10780;
+			public static final int SKILL_FEATURE_CRAFTING_SPINNING_COTTON_YARN = 10781;
+			public static final int SKILL_FEATURE_CRAFTING_POTTERY_POT = 10782;
+			public static final int SKILL_FEATURE_CRAFTING_POTTERY_CUP = 10783;
+			public static final int SKILL_FEATURE_CRAFTING_POTTERY_PIEDISH = 10784;
+			public static final int SKILL_FEATURE_CRAFTING_POTTERY_BOWL = 10785;
+			public static final int SKILL_FEATURE_CRAFTING_POTTERY_PLANTPOT = 10786;
+			public static final int SKILL_FEATURE_CRAFTING_POTTERY_POTLID = 10787;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_BEER_GLASS = 10788;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_CANDLE_LANTERN = 10789;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_OIL_LAMP = 10790;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_OIL_LANTERN = 10791;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_VIAL = 10792;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_FISHBOWL = 10793;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_STAFFORB = 10794;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_BULLSEYE_LANTERN_LENS = 10795;
+			public static final int SKILL_FEATURE_CRAFTING_GLASSBLOWING_DORGESH_LIGHT_BULB = 10796;
+			public static final int SKILL_FEATURE_CRAFTING_OPAL = 10797;
+			public static final int SKILL_FEATURE_CRAFTING_OPAL_RING = 10798;
+			public static final int SKILL_FEATURE_CRAFTING_ANMA_P_BUTTONS = 10799;
+			public static final int SKILL_FEATURE_CRAFTING_GOLD_RING = 10800;
+			public static final int SKILL_FEATURE_CRAFTING_GOLD_NECKLACE = 10801;
+			public static final int SKILL_FEATURE_CRAFTING_GOLD_BRACELET = 10802;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_GOLD_AMULET = 10803;
+			public static final int SKILL_FEATURE_CRAFTING_JADE = 10804;
+			public static final int SKILL_FEATURE_CRAFTING_JADE_RING = 10805;
+			public static final int SKILL_FEATURE_CRAFTING_STRINGSTAR = 10806;
+			public static final int SKILL_FEATURE_CRAFTING_RED_TOPAZ = 10807;
+			public static final int SKILL_FEATURE_CRAFTING_TOPAZ_RING = 10808;
+			public static final int SKILL_FEATURE_CRAFTING_OPAL_NECKLACE = 10809;
+			public static final int SKILL_FEATURE_CRAFTING_STRINGSNAKE = 10810;
+			public static final int SKILL_FEATURE_CRAFTING_SAPPHIRE = 10811;
+			public static final int SKILL_FEATURE_CRAFTING_SAPPHIRE_RING = 10812;
+			public static final int SKILL_FEATURE_CRAFTING_SAPPHIRE_NECKLACE = 10813;
+			public static final int SKILL_FEATURE_CRAFTING_OPAL_BRACELET = 10814;
+			public static final int SKILL_FEATURE_CRAFTING_TIARA = 10815;
+			public static final int SKILL_FEATURE_CRAFTING_SAPPHIRE_BRACELET = 10816;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_SAPPHIRE_AMULET = 10817;
+			public static final int SKILL_FEATURE_CRAFTING_JADE_NECKLACE = 10818;
+			public static final int SKILL_FEATURE_CRAFTING_EMERALD = 10819;
+			public static final int SKILL_FEATURE_CRAFTING_EMERALD_RING = 10820;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_OPAL_AMULET = 10821;
+			public static final int SKILL_FEATURE_CRAFTING_EMERALD_NECKLACE = 10822;
+			public static final int SKILL_FEATURE_CRAFTING_JADE_BRACELET = 10823;
+			public static final int SKILL_FEATURE_CRAFTING_EMERALD_BRACELET = 10824;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_EMERALD_AMULET = 10825;
+			public static final int SKILL_FEATURE_CRAFTING_TOPAZ_NECKLACE = 10826;
+			public static final int SKILL_FEATURE_CRAFTING_RUBY = 10827;
+			public static final int SKILL_FEATURE_CRAFTING_RUBY_RING = 10828;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_JADE_AMULET = 10829;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_RABBIT_FOOT = 10830;
+			public static final int SKILL_FEATURE_CRAFTING_TOPAZ_BRACELET = 10831;
+			public static final int SKILL_FEATURE_CRAFTING_RUBY_NECKLACE = 10832;
+			public static final int SKILL_FEATURE_CRAFTING_RUBY_BRACELET = 10833;
+			public static final int SKILL_FEATURE_CRAFTING_TIARA_GOLD = 10834;
+			public static final int SKILL_FEATURE_CRAFTING_DIAMOND = 10835;
+			public static final int SKILL_FEATURE_CRAFTING_DIAMOND_RING = 10836;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_TOPAZ_AMULET = 10837;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_RUBY_AMULET = 10838;
+			public static final int SKILL_FEATURE_CRAFTING_DRAGONSTONE = 10839;
+			public static final int SKILL_FEATURE_CRAFTING_DRAGONSTONE_RING = 10840;
+			public static final int SKILL_FEATURE_CRAFTING_DIAMOND_NECKLACE = 10841;
+			public static final int SKILL_FEATURE_CRAFTING_DIAMOND_BRACELET = 10842;
+			public static final int SKILL_FEATURE_CRAFTING_ONYX = 10843;
+			public static final int SKILL_FEATURE_CRAFTING_ONYX_RING = 10844;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_DIAMOND_AMULET = 10845;
+			public static final int SKILL_FEATURE_CRAFTING_DRAGONSTONE_NECKLACE = 10846;
+			public static final int SKILL_FEATURE_CRAFTING_DRAGONSTONE_BRACELET = 10847;
+			public static final int SKILL_FEATURE_CRAFTING_SLAYER_RING = 10848;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_DRAGONSTONE_AMULET = 10849;
+			public static final int SKILL_FEATURE_CRAFTING_BERSERKER_ICON = 10850;
+			public static final int SKILL_FEATURE_CRAFTING_DT2_RINGS = 10851;
+			public static final int SKILL_FEATURE_CRAFTING_ONYX_NECKLACE = 10852;
+			public static final int SKILL_FEATURE_CRAFTING_ONYX_BRACELET = 10853;
+			public static final int SKILL_FEATURE_CRAFTING_AMULET_OF_RANCOUR = 10854;
+			public static final int SKILL_FEATURE_CRAFTING_ZENYTE = 10855;
+			public static final int SKILL_FEATURE_CRAFTING_ZENYTE_RING = 10856;
+			public static final int SKILL_FEATURE_CRAFTING_STRUNG_ONYX_AMULET = 10857;
+			public static final int SKILL_FEATURE_CRAFTING_ZENYTE_NECKLACE = 10858;
+			public static final int SKILL_FEATURE_CRAFTING_ZENYTE_BRACELET = 10859;
+			public static final int SKILL_FEATURE_CRAFTING_ZENYTE_AMULET = 10860;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_SILVER_SICKLE = 10861;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_CROSSBOW_BOLTS_SILVER_UNFEATHERED = 10862;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_RAT_BONE_STAFF = 10863;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_WATER_BATTLESTAFF = 10864;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_EARTH_BATTLESTAFF = 10865;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_TOXIC_SOTD = 10866;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_TOXIC_TOTS = 10867;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_FIRE_BATTLESTAFF = 10868;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_AIR_BATTLESTAFF = 10869;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_NOXIOUS_HALBERD = 10870;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_PURGING_STAFF = 10871;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_AMETHYST_BOLT_TIPS = 10872;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_AMETHYST_ARROWHEADS = 10873;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_WILD_CAVE_ACCURSED = 10874;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_AMETHYST_JAVELIN_TIPS = 10875;
+			public static final int SKILL_FEATURE_CRAFTING_WEAPONRY_AMETHYST_DART_TIPS = 10876;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_CELESTIAL_SIGNET = 10877;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_HELMET = 10878;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_PLATELEGS = 10879;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_CHESTPLATE = 10880;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_PICKAXE = 10881;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_AXE = 10882;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_AXE_2H = 10883;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_HARPOON = 10884;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_BOW = 10885;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_HALBERD = 10886;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_SHIELD = 10887;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_PRIF_CRYSTAL_KEY = 10888;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_PRIF_TELEPORT_CRYSTAL = 10889;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_BLADE_OF_SAELDOR = 10890;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_BLADE_OF_SAELDOR_INFINITE = 10891;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_BOW_OF_FAERDHINEN = 10892;
+			public static final int SKILL_FEATURE_CRAFTING_CRYSTAL_BOW_OF_FAERDHINEN_INFINITE = 10893;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_NORMAL = 10894;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_DAMAGED_BALLISTA_ROPE = 10895;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_OAK = 10896;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_WILLOW = 10897;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_TEAK = 10898;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_FURPOUCH_SMALL = 10899;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_MAPLE = 10900;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_MAHOGANY = 10901;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_FURPOUCH_MED = 10902;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_NARWHAL_HORN_KNIFE = 10903;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_DORGESH_LIGHT_BULB = 10904;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_RCU_POUCH_COLOSSAL = 10905;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_YEW = 10906;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_CAMPHOR_CRATE = 10907;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_FURPOUCH_LARGE = 10908;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_MAGIC = 10909;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_DIVINE_RUNE_POUCH = 10910;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_BIRDHOUSE_REDWOOD = 10911;
+			public static final int SKILL_FEATURE_CRAFTING_SKILLCAPE = 10912;
+			public static final int SKILL_FEATURE_DEFENCE_OVERVIEW_0 = 10919;
+			public static final int SKILL_FEATURE_DEFENCE_OVERVIEW_1 = 10920;
+			public static final int SKILL_FEATURE_DEFENCE_BRONZE = 10921;
+			public static final int SKILL_FEATURE_DEFENCE_IRON = 10922;
+			public static final int SKILL_FEATURE_DEFENCE_STEEL = 10923;
+			public static final int SKILL_FEATURE_DEFENCE_BLACK = 10924;
+			public static final int SKILL_FEATURE_DEFENCE_WHITE = 10925;
+			public static final int SKILL_FEATURE_DEFENCE_SLAYER_HELM = 10926;
+			public static final int SKILL_FEATURE_DEFENCE_MITHRIL = 10927;
+			public static final int SKILL_FEATURE_DEFENCE_YAK_HIDE = 10928;
+			public static final int SKILL_FEATURE_DEFENCE_SHAYZIEN = 10929;
+			public static final int SKILL_FEATURE_DEFENCE_ADAMANT = 10930;
+			public static final int SKILL_FEATURE_DEFENCE_SAMURAI = 10931;
+			public static final int SKILL_FEATURE_DEFENCE_RUNE = 10932;
+			public static final int SKILL_FEATURE_DEFENCE_DAGANNOTH_MELEE = 10933;
+			public static final int SKILL_FEATURE_DEFENCE_VIKING_HELMET = 10934;
+			public static final int SKILL_FEATURE_DEFENCE_KINGLY_HELM = 10935;
+			public static final int SKILL_FEATURE_DEFENCE_DRAGON = 10936;
+			public static final int SKILL_FEATURE_DEFENCE_OBSIDIAN = 10937;
+			public static final int SKILL_FEATURE_DEFENCE_BANDOS = 10938;
+			public static final int SKILL_FEATURE_DEFENCE_TRAIL_FIGHTER = 10939;
+			public static final int SKILL_FEATURE_DEFENCE_BARROWS_DHAROK = 10940;
+			public static final int SKILL_FEATURE_DEFENCE_BARROWS_GUTHAN = 10941;
+			public static final int SKILL_FEATURE_DEFENCE_BARROWS_TORAG = 10942;
+			public static final int SKILL_FEATURE_DEFENCE_BARROWS_VERAC = 10943;
+			public static final int SKILL_FEATURE_DEFENCE_CRYSTAL = 10944;
+			public static final int SKILL_FEATURE_DEFENCE_NEITIZNOT_FACEGUARD = 10945;
+			public static final int SKILL_FEATURE_DEFENCE_JUSTICIAR_FACEGUARD = 10946;
+			public static final int SKILL_FEATURE_DEFENCE_SERPENTINE_HELM = 10947;
+			public static final int SKILL_FEATURE_DEFENCE_GUARDIAN_BOOTS = 10948;
+			public static final int SKILL_FEATURE_DEFENCE_ECHO_BOOTS = 10949;
+			public static final int SKILL_FEATURE_DEFENCE_OATHPLATE = 10950;
+			public static final int SKILL_FEATURE_DEFENCE_TORVA = 10951;
+			public static final int SKILL_FEATURE_DEFENCE_MASORI_FORTIFIED = 10952;
+			public static final int SKILL_FEATURE_DEFENCE_PENANCE_FIGHTER_TORSO = 10953;
+			public static final int SKILL_FEATURE_DEFENCE_PENANCE_RUNNER_BOOTS = 10954;
+			public static final int SKILL_FEATURE_DEFENCE_PENANCE_GLOVES = 10955;
+			public static final int SKILL_FEATURE_DEFENCE_PENANCE_FIGHTER_HAT = 10956;
+			public static final int SKILL_FEATURE_DEFENCE_PENANCE_RANGER_HAT = 10957;
+			public static final int SKILL_FEATURE_DEFENCE_PENANCE_HEALER_HAT = 10958;
+			public static final int SKILL_FEATURE_DEFENCE_PENANCE_RUNNER_HAT = 10959;
+			public static final int SKILL_FEATURE_DEFENCE_OAK_SHIELD = 10960;
+			public static final int SKILL_FEATURE_DEFENCE_WILLOW_SHIELD = 10961;
+			public static final int SKILL_FEATURE_DEFENCE_MAPLE_SHIELD = 10962;
+			public static final int SKILL_FEATURE_DEFENCE_YEW_SHIELD = 10963;
+			public static final int SKILL_FEATURE_DEFENCE_MAGIC_SHIELD = 10964;
+			public static final int SKILL_FEATURE_DEFENCE_REDWOOD_SHIELD = 10965;
+			public static final int SKILL_FEATURE_DEFENCE_TZHAAR_SPIKESHIELD = 10966;
+			public static final int SKILL_FEATURE_DEFENCE_ODIUM_WARD = 10967;
+			public static final int SKILL_FEATURE_DEFENCE_CRYSTAL_SHIELD = 10968;
+			public static final int SKILL_FEATURE_DEFENCE_DRAGONFIRE_SHIELD = 10969;
+			public static final int SKILL_FEATURE_DEFENCE_SKILLCAPE = 10970;
+			public static final int SKILL_FEATURE_FARMING_OVERVIEW_0 = 10985;
+			public static final int SKILL_FEATURE_FARMING_OVERVIEW_1 = 10986;
+			public static final int SKILL_FEATURE_FARMING_OVERVIEW_2 = 10987;
+			public static final int SKILL_FEATURE_FARMING_OVERVIEW_3 = 10988;
+			public static final int SKILL_FEATURE_FARMING_OVERVIEW_4 = 10989;
+			public static final int SKILL_FEATURE_FARMING_OVERVIEW_5 = 10990;
+			public static final int SKILL_FEATURE_FARMING_OVERVIEW_6 = 10991;
+			public static final int SKILL_FEATURE_FARMING_ALLOTMENT_POTATO = 10992;
+			public static final int SKILL_FEATURE_FARMING_ALLOTMENT_ONION = 10993;
+			public static final int SKILL_FEATURE_FARMING_ALLOTMENT_CABBAGE = 10994;
+			public static final int SKILL_FEATURE_FARMING_ALLOTMENT_TOMATO = 10995;
+			public static final int SKILL_FEATURE_FARMING_ALLOTMENT_SWEETCORN = 10996;
+			public static final int SKILL_FEATURE_FARMING_ALLOTMENT_STRAWBERRY = 10997;
+			public static final int SKILL_FEATURE_FARMING_ALLOTMENT_WATERMELON = 10998;
+			public static final int SKILL_FEATURE_FARMING_ALLOTMENT_SNAPEGRASS = 10999;
+			public static final int SKILL_FEATURE_FARMING_HOPS_BARLEY = 11000;
+			public static final int SKILL_FEATURE_FARMING_HOPS_HAMMERSTONE_HOPS = 11001;
+			public static final int SKILL_FEATURE_FARMING_HOPS_ASGARNIAN_HOPS = 11002;
+			public static final int SKILL_FEATURE_FARMING_HOPS_JUTE_FIBRE = 11003;
+			public static final int SKILL_FEATURE_FARMING_HOPS_YANILLIAN_HOPS = 11004;
+			public static final int SKILL_FEATURE_FARMING_HOPS_FLAX = 11005;
+			public static final int SKILL_FEATURE_FARMING_HOPS_KRANDORIAN_HOPS = 11006;
+			public static final int SKILL_FEATURE_FARMING_HOPS_WILDBLOOD_HOPS = 11007;
+			public static final int SKILL_FEATURE_FARMING_HOPS_HEMP = 11008;
+			public static final int SKILL_FEATURE_FARMING_HOPS_COTTON_BOLL = 11009;
+			public static final int SKILL_FEATURE_FARMING_OAK_LOGS = 11010;
+			public static final int SKILL_FEATURE_FARMING_WILLOW_LOGS = 11011;
+			public static final int SKILL_FEATURE_FARMING_MAPLE_LOGS = 11012;
+			public static final int SKILL_FEATURE_FARMING_YEW_LOGS = 11013;
+			public static final int SKILL_FEATURE_FARMING_MAGIC_LOGS = 11014;
+			public static final int SKILL_FEATURE_FARMING_FRUIT_COOKING_APPLE = 11015;
+			public static final int SKILL_FEATURE_FARMING_FRUIT_BANANA = 11016;
+			public static final int SKILL_FEATURE_FARMING_FRUIT_ORANGE = 11017;
+			public static final int SKILL_FEATURE_FARMING_FRUIT_CURRY_LEAF = 11018;
+			public static final int SKILL_FEATURE_FARMING_FRUIT_PINEAPPLE = 11019;
+			public static final int SKILL_FEATURE_FARMING_FRUIT_PAPAYA = 11020;
+			public static final int SKILL_FEATURE_FARMING_FRUIT_COCONUT = 11021;
+			public static final int SKILL_FEATURE_FARMING_FRUIT_DRAGONFRUIT = 11022;
+			public static final int SKILL_FEATURE_FARMING_REDBERRIES = 11023;
+			public static final int SKILL_FEATURE_FARMING_CADAVABERRIES = 11024;
+			public static final int SKILL_FEATURE_FARMING_DWELLBERRIES = 11025;
+			public static final int SKILL_FEATURE_FARMING_JANGERBERRIES = 11026;
+			public static final int SKILL_FEATURE_FARMING_WHITE_BERRIES = 11027;
+			public static final int SKILL_FEATURE_FARMING_POISONIVY_BERRIES = 11028;
+			public static final int SKILL_FEATURE_FARMING_MARIGOLD = 11029;
+			public static final int SKILL_FEATURE_FARMING_ROSEMARY = 11030;
+			public static final int SKILL_FEATURE_FARMING_SCARECROW = 11031;
+			public static final int SKILL_FEATURE_FARMING_NASTURTIUM = 11032;
+			public static final int SKILL_FEATURE_FARMING_WOADLEAF_DUMMY = 11033;
+			public static final int SKILL_FEATURE_FARMING_LIMPWURT_ROOT = 11034;
+			public static final int SKILL_FEATURE_FARMING_WHITELILY = 11035;
+			public static final int SKILL_FEATURE_FARMING_HERBS_GUAM_LEAF = 11036;
+			public static final int SKILL_FEATURE_FARMING_HERBS_MARRENTILL = 11037;
+			public static final int SKILL_FEATURE_FARMING_HERBS_TARROMIN = 11038;
+			public static final int SKILL_FEATURE_FARMING_HERBS_HARRALANDER = 11039;
+			public static final int SKILL_FEATURE_FARMING_HERBS_GOUTWEED = 11040;
+			public static final int SKILL_FEATURE_FARMING_HERBS_RANARR_WEED = 11041;
+			public static final int SKILL_FEATURE_FARMING_HERBS_TOADFLAX = 11042;
+			public static final int SKILL_FEATURE_FARMING_HERBS_IRIT_LEAF = 11043;
+			public static final int SKILL_FEATURE_FARMING_HERBS_AVANTOE = 11044;
+			public static final int SKILL_FEATURE_FARMING_HERBS_KWUARM = 11045;
+			public static final int SKILL_FEATURE_FARMING_HERBS_SNAPDRAGON = 11046;
+			public static final int SKILL_FEATURE_FARMING_HERBS_HUASCA = 11047;
+			public static final int SKILL_FEATURE_FARMING_HERBS_CADANTINE = 11048;
+			public static final int SKILL_FEATURE_FARMING_HERBS_LANTADYME = 11049;
+			public static final int SKILL_FEATURE_FARMING_HERBS_DWARF_WEED = 11050;
+			public static final int SKILL_FEATURE_FARMING_HERBS_TORSTOL = 11051;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_GIANT_SEAWEED = 11052;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_CORAL_ELKHORN = 11053;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_TEAK_LOGS = 11054;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_GRAPES = 11055;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_CORAL_PILLAR = 11056;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_BITTERCAP_MUSHROOM = 11057;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_MAHOGANY_LOGS = 11058;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_CACTUS_SPINE = 11059;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_NIGHTSHADE = 11060;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_CACTUS_POTATO = 11061;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_HESPORI = 11062;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_CAMPHOR_LOGS = 11063;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_CALQUAT_FRUIT = 11064;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_PRIF_CRYSTAL_SHARD = 11065;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_ANIMA_KRONOS = 11066;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_ANIMA_IASOR = 11067;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_ANIMA_ATTAS = 11068;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_CORAL_UMBRAL = 11069;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_IRONWOOD_LOGS = 11070;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_1SPIRIT_TREE = 11071;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_CELASTRUS_WOOD = 11072;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_REDWOOD_LOGS = 11073;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_2SPIRIT_TREE = 11074;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_ROSEWOOD_LOGS = 11075;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_3SPIRIT_TREE = 11076;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_4SPIRIT_TREE = 11077;
+			public static final int SKILL_FEATURE_FARMING_SPECIAL_XSPIRIT_TREE = 11078;
+			public static final int SKILL_FEATURE_FARMING_SCARECROW_PAGE = 11079;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_2OAK_ROOTS = 11080;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_3OAK_ROOTS = 11081;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_2WILLOW_ROOTS = 11082;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_4OAK_ROOTS = 11083;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_3WILLOW_ROOTS = 11084;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_2MAPLE_ROOTS = 11085;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_4WILLOW_ROOTS = 11086;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_3MAPLE_ROOTS = 11087;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_2YEW_ROOTS = 11088;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_4MAPLE_ROOTS = 11089;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_3YEW_ROOTS = 11090;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_2MAGIC_ROOTS = 11091;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_4YEW_ROOTS = 11092;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_3MAGIC_ROOTS = 11093;
+			public static final int SKILL_FEATURE_FARMING_ROOTS_4MAGIC_ROOTS = 11094;
+			public static final int SKILL_FEATURE_FARMING_HOSIDIUS_TITHE_FRUIT_A = 11095;
+			public static final int SKILL_FEATURE_FARMING_HOSIDIUS_TITHE_FRUIT_B = 11096;
+			public static final int SKILL_FEATURE_FARMING_HOSIDIUS_TITHE_FRUIT_C = 11097;
+			public static final int SKILL_FEATURE_FARMING_RAIDS_GOLPAR = 11098;
+			public static final int SKILL_FEATURE_FARMING_RAIDS_BUCHULEAF = 11099;
+			public static final int SKILL_FEATURE_FARMING_RAIDS_NOXIFER = 11100;
+			public static final int SKILL_FEATURE_FARMING_GUILD_LOW = 11101;
+			public static final int SKILL_FEATURE_FARMING_GUILD_MID = 11102;
+			public static final int SKILL_FEATURE_FARMING_GUILD_HIGH = 11103;
+			public static final int SKILL_FEATURE_FARMING_SKILLCAPE = 11104;
+			public static final int SKILL_FEATURE_FIREMAKING_OVERVIEW_0 = 11110;
+			public static final int SKILL_FEATURE_FIREMAKING_OVERVIEW_1 = 11111;
+			public static final int SKILL_FEATURE_FIREMAKING_LOGS = 11112;
+			public static final int SKILL_FEATURE_FIREMAKING_ACHEY_TREE_LOGS = 11113;
+			public static final int SKILL_FEATURE_FIREMAKING_LOGS_PYRE = 11114;
+			public static final int SKILL_FEATURE_FIREMAKING_OAK_LOGS = 11115;
+			public static final int SKILL_FEATURE_FIREMAKING_OAK_LOGS_PYRE = 11116;
+			public static final int SKILL_FEATURE_FIREMAKING_WILLOW_LOGS = 11117;
+			public static final int SKILL_FEATURE_FIREMAKING_TEAK_LOGS = 11118;
+			public static final int SKILL_FEATURE_FIREMAKING_WILLOW_LOGS_PYRE = 11119;
+			public static final int SKILL_FEATURE_FIREMAKING_TEAK_LOGS_PYRE = 11120;
+			public static final int SKILL_FEATURE_FIREMAKING_JATOBA_LOGS = 11121;
+			public static final int SKILL_FEATURE_FIREMAKING_ARCTIC_PINE_LOG = 11122;
+			public static final int SKILL_FEATURE_FIREMAKING_MAPLE_LOGS = 11123;
+			public static final int SKILL_FEATURE_FIREMAKING_ARCTIC_PINE_LOGS_PYRE = 11124;
+			public static final int SKILL_FEATURE_FIREMAKING_MAHOGANY_LOGS = 11125;
+			public static final int SKILL_FEATURE_FIREMAKING_MAPLE_LOGS_PYRE = 11126;
+			public static final int SKILL_FEATURE_FIREMAKING_MAHOGANY_LOGS_PYRE = 11127;
+			public static final int SKILL_FEATURE_FIREMAKING_YEW_LOGS = 11128;
+			public static final int SKILL_FEATURE_FIREMAKING_BLISTERWOOD_LOGS = 11129;
+			public static final int SKILL_FEATURE_FIREMAKING_YEW_LOGS_PYRE = 11130;
+			public static final int SKILL_FEATURE_FIREMAKING_CAMPHOR_LOGS = 11131;
+			public static final int SKILL_FEATURE_FIREMAKING_CAMPHOR_LOGS_PYRE = 11132;
+			public static final int SKILL_FEATURE_FIREMAKING_MAGIC_LOGS = 11133;
+			public static final int SKILL_FEATURE_FIREMAKING_MAGIC_LOGS_PYRE = 11134;
+			public static final int SKILL_FEATURE_FIREMAKING_IRONWOOD_LOGS = 11135;
+			public static final int SKILL_FEATURE_FIREMAKING_IRONWOOD_LOGS_PYRE = 11136;
+			public static final int SKILL_FEATURE_FIREMAKING_REDWOOD_LOGS = 11137;
+			public static final int SKILL_FEATURE_FIREMAKING_ROSEWOOD_LOGS = 11138;
+			public static final int SKILL_FEATURE_FIREMAKING_REDWOOD_LOGS_PYRE = 11139;
+			public static final int SKILL_FEATURE_FIREMAKING_ROSEWOOD_LOGS_PYRE = 11140;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_LOGS_PYRE = 11141;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_ACHEY_LOGS_PYRE = 11142;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_LOGS = 11143;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_ACHEY_TREE_LOGS = 11144;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_OAK_LOGS_PYRE = 11145;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_OAK_LOGS = 11146;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_WILLOW_LOGS_PYRE = 11147;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_TEAK_LOGS_PYRE = 11148;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_WILLOW_LOGS = 11149;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_ARCTIC_PINE_LOGS_PYRE = 11150;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_TEAK_LOGS = 11151;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_MAPLE_LOGS_PYRE = 11152;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_JATOBA_LOGS = 11153;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_MAHOGANY_LOGS_PYRE = 11154;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_ARCTIC_PINE_LOG = 11155;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_MAPLE_LOGS = 11156;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_YEW_LOGS_PYRE = 11157;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_MAHOGANY_LOGS = 11158;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_CAMPHOR_LOGS_PYRE = 11159;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_YEW_LOGS = 11160;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_MAGIC_LOGS_PYRE = 11161;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_CAMPHOR_LOGS = 11162;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_IRONWOOD_LOGS_PYRE = 11163;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_MAGIC_LOGS = 11164;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_REDWOOD_LOGS_PYRE = 11165;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_ROSEWOOD_LOGS_PYRE = 11166;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_IRONWOOD_LOGS = 11167;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_REDWOOD_LOGS = 11168;
+			public static final int SKILL_FEATURE_FIREMAKING_BARBARIAN_ROSEWOOD_LOGS = 11169;
+			public static final int SKILL_FEATURE_FIREMAKING_TORCH_UNLIT = 11170;
+			public static final int SKILL_FEATURE_FIREMAKING_UNLIT_CANDLE = 11171;
+			public static final int SKILL_FEATURE_FIREMAKING_ABYSSAL_LANTERN_NORMAL = 11172;
+			public static final int SKILL_FEATURE_FIREMAKING_CANDLE_LANTERN_LIT = 11173;
+			public static final int SKILL_FEATURE_FIREMAKING_OIL_LAMP_LIT = 11174;
+			public static final int SKILL_FEATURE_FIREMAKING_ABYSSAL_LANTERN_OAK = 11175;
+			public static final int SKILL_FEATURE_FIREMAKING_SPIT_IRON = 11176;
+			public static final int SKILL_FEATURE_FIREMAKING_OIL_LANTERN_LIT = 11177;
+			public static final int SKILL_FEATURE_FIREMAKING_ABYSSAL_LANTERN_WILLOW = 11178;
+			public static final int SKILL_FEATURE_FIREMAKING_SLAYER_BUGLAN_ON = 11179;
+			public static final int SKILL_FEATURE_FIREMAKING_ABYSSAL_LANTERN_MAPLE = 11180;
+			public static final int SKILL_FEATURE_FIREMAKING_BULLSEYE_LANTERN_LIT = 11181;
+			public static final int SKILL_FEATURE_FIREMAKING_SAPPHIRE_LANTERN_LIT = 11182;
+			public static final int SKILL_FEATURE_FIREMAKING_EMERALD_LANTERN_LIT = 11183;
+			public static final int SKILL_FEATURE_FIREMAKING_WINT_TORCH = 11184;
+			public static final int SKILL_FEATURE_FIREMAKING_DORGESH_LIGHT_BULB = 11185;
+			public static final int SKILL_FEATURE_FIREMAKING_ABYSSAL_LANTERN_YEW = 11186;
+			public static final int SKILL_FEATURE_FIREMAKING_ABYSSAL_LANTERN_BLISTERWOOD = 11187;
+			public static final int SKILL_FEATURE_FIREMAKING_CAVE_GOBLIN_MINING_HELMET_LIT = 11188;
+			public static final int SKILL_FEATURE_FIREMAKING_ABYSSAL_LANTERN_MAGIC = 11189;
+			public static final int SKILL_FEATURE_FIREMAKING_INFERNAL_AXE = 11190;
+			public static final int SKILL_FEATURE_FIREMAKING_ABYSSAL_LANTERN_REDWOOD = 11191;
+			public static final int SKILL_FEATURE_FIREMAKING_WINT_BRUMA_KINDLING = 11192;
+			public static final int SKILL_FEATURE_FIREMAKING_FIRE_LIGHT = 11193;
+			public static final int SKILL_FEATURE_FIREMAKING_FIRE_HERB = 11194;
+			public static final int SKILL_FEATURE_FIREMAKING_FIRE_GHAST = 11195;
+			public static final int SKILL_FEATURE_FIREMAKING_FIRE_GWD = 11196;
+			public static final int SKILL_FEATURE_FIREMAKING_SKILLCAPE = 11197;
+			public static final int SKILL_FEATURE_FISHING_OVERVIEW_0 = 11210;
+			public static final int SKILL_FEATURE_FISHING_OVERVIEW_1 = 11211;
+			public static final int SKILL_FEATURE_FISHING_OVERVIEW_2 = 11212;
+			public static final int SKILL_FEATURE_FISHING_RAW_SHRIMP = 11213;
+			public static final int SKILL_FEATURE_FISHING_RAW_KARAMBWANJI = 11214;
+			public static final int SKILL_FEATURE_FISHING_RAW_GUPPY = 11215;
+			public static final int SKILL_FEATURE_FISHING_RAW_ANCHOVIES = 11216;
+			public static final int SKILL_FEATURE_FISHING_RAW_CAVEFISH = 11217;
+			public static final int SKILL_FEATURE_FISHING_GIANT_FROGSPAWN = 11218;
+			public static final int SKILL_FEATURE_FISHING_RAW_TETRA = 11219;
+			public static final int SKILL_FEATURE_FISHING_RAW_MONKFISH = 11220;
+			public static final int SKILL_FEATURE_FISHING_MINNOW = 11221;
+			public static final int SKILL_FEATURE_FISHING_RAW_MACKEREL = 11222;
+			public static final int SKILL_FEATURE_FISHING_OYSTERSHELL = 11223;
+			public static final int SKILL_FEATURE_FISHING_CASKET = 11224;
+			public static final int SKILL_FEATURE_FISHING_BREAM_FISH_RAW = 11225;
+			public static final int SKILL_FEATURE_FISHING_RAW_COD = 11226;
+			public static final int SKILL_FEATURE_FISHING_RAW_BASS = 11227;
+			public static final int SKILL_FEATURE_FISHING_RAW_CATFISH = 11228;
+			public static final int SKILL_FEATURE_FISHING_RAW_SARDINE = 11229;
+			public static final int SKILL_FEATURE_FISHING_RAW_HERRING = 11230;
+			public static final int SKILL_FEATURE_FISHING_RAW_TROUT = 11231;
+			public static final int SKILL_FEATURE_FISHING_RAW_PIKE = 11232;
+			public static final int SKILL_FEATURE_FISHING_MORT_SLIMEY_EEL = 11233;
+			public static final int SKILL_FEATURE_FISHING_RAW_SALMON = 11234;
+			public static final int SKILL_FEATURE_FISHING_HUNTING_RAW_FISH = 11235;
+			public static final int SKILL_FEATURE_FISHING_RAW_CAVE_EEL = 11236;
+			public static final int SKILL_FEATURE_FISHING_RAW_LAVA_EEL = 11237;
+			public static final int SKILL_FEATURE_FISHING_SHIMMERINGSHOAL = 11238;
+			public static final int SKILL_FEATURE_FISHING_RAW_GIANT_KRILL = 11239;
+			public static final int SKILL_FEATURE_FISHING_RAW_HADDOCK = 11240;
+			public static final int SKILL_FEATURE_FISHING_GLISTENINGSHOAL = 11241;
+			public static final int SKILL_FEATURE_FISHING_RAW_YELLOWFIN = 11242;
+			public static final int SKILL_FEATURE_FISHING_INFERNAL_EEL = 11243;
+			public static final int SKILL_FEATURE_FISHING_RAW_ANGLERFISH = 11244;
+			public static final int SKILL_FEATURE_FISHING_RAW_HALIBUT = 11245;
+			public static final int SKILL_FEATURE_FISHING_VIBRANTSHOAL = 11246;
+			public static final int SKILL_FEATURE_FISHING_RAW_BLUEFIN = 11247;
+			public static final int SKILL_FEATURE_FISHING_SNAKEBOSS_EEL = 11248;
+			public static final int SKILL_FEATURE_FISHING_RAW_MARLIN = 11249;
+			public static final int SKILL_FEATURE_FISHING_RAW_TUNA = 11250;
+			public static final int SKILL_FEATURE_FISHING_RAW_SWORDFISH = 11251;
+			public static final int SKILL_FEATURE_FISHING_RAW_SWORDTIP_SQUID = 11252;
+			public static final int SKILL_FEATURE_FISHING_RAW_JUMBO_SQUID = 11253;
+			public static final int SKILL_FEATURE_FISHING_RAW_SHARK = 11254;
+			public static final int SKILL_FEATURE_FISHING_BLUEGILL = 11255;
+			public static final int SKILL_FEATURE_FISHING_COMMON_TENCH = 11256;
+			public static final int SKILL_FEATURE_FISHING_MOTTLED_EEL = 11257;
+			public static final int SKILL_FEATURE_FISHING_GREATER_SIREN = 11258;
+			public static final int SKILL_FEATURE_FISHING_RAW_LOBSTER = 11259;
+			public static final int SKILL_FEATURE_FISHING_RAW_DARK_CRAB = 11260;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_PREAMBLE = 11261;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_SHIMMERINGSHOAL = 11262;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_GIANTKRILLSHOAL = 11263;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_HADDOCKSHOAL = 11264;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_GLISTENINGSHOAL = 11265;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_YELLOWFINSHOAL = 11266;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_HALIBUTSHOAL = 11267;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_VIBRANTSHOAL = 11268;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_BLUEFINSHOAL = 11269;
+			public static final int SKILL_FEATURE_FISHING_TRAWLING_MARLINSHOAL = 11270;
+			public static final int SKILL_FEATURE_FISHING_BARBARIAN_RAW_TUNA = 11271;
+			public static final int SKILL_FEATURE_FISHING_BARBARIAN_RAW_HARPOONFISH = 11272;
+			public static final int SKILL_FEATURE_FISHING_BARBARIAN_RAW_SWORDFISH = 11273;
+			public static final int SKILL_FEATURE_FISHING_BARBARIAN_RAW_SHARK = 11274;
+			public static final int SKILL_FEATURE_FISHING_NET = 11275;
+			public static final int SKILL_FEATURE_FISHING_FISHING_ROD = 11276;
+			public static final int SKILL_FEATURE_FISHING_BIG_NET = 11277;
+			public static final int SKILL_FEATURE_FISHING_HARPOON = 11278;
+			public static final int SKILL_FEATURE_FISHING_FLY_FISHING_ROD = 11279;
+			public static final int SKILL_FEATURE_FISHING_LOBSTER_POT = 11280;
+			public static final int SKILL_FEATURE_FISHING_KARAMBWAN_VESSEL = 11281;
+			public static final int SKILL_FEATURE_FISHING_TRAWLER_REWARD_HAT = 11282;
+			public static final int SKILL_FEATURE_FISHING_AERIAL_FISHING_GLOVES = 11283;
+			public static final int SKILL_FEATURE_FISHING_BRUT_FISHING_ROD = 11284;
+			public static final int SKILL_FEATURE_FISHING_DRAGON_HARPOON = 11285;
+			public static final int SKILL_FEATURE_FISHING_CRYSTAL_HARPOON = 11286;
+			public static final int SKILL_FEATURE_FISHING_INFERNAL_HARPOON = 11287;
+			public static final int SKILL_FEATURE_FISHING_RAIDS_0 = 11288;
+			public static final int SKILL_FEATURE_FISHING_RAIDS_1 = 11289;
+			public static final int SKILL_FEATURE_FISHING_RAIDS_2 = 11290;
+			public static final int SKILL_FEATURE_FISHING_RAIDS_3 = 11291;
+			public static final int SKILL_FEATURE_FISHING_RAIDS_4 = 11292;
+			public static final int SKILL_FEATURE_FISHING_RAIDS_5 = 11293;
+			public static final int SKILL_FEATURE_FISHING_RAIDS_6 = 11294;
+			public static final int SKILL_FEATURE_FISHING_TEMPOROSS = 11295;
+			public static final int SKILL_FEATURE_FISHING_DRIFTNET = 11296;
+			public static final int SKILL_FEATURE_FISHING_RAW_KARAMBWAN = 11297;
+			public static final int SKILL_FEATURE_FISHING_RAW_SEATURTLE = 11298;
+			public static final int SKILL_FEATURE_FISHING_RAW_MANTARAY = 11299;
+			public static final int SKILL_FEATURE_FISHING_SKILLCAPE = 11300;
+			public static final int SKILL_FEATURE_FLETCHING_OVERVIEW_0 = 11311;
+			public static final int SKILL_FEATURE_FLETCHING_OVERVIEW_1 = 11312;
+			public static final int SKILL_FEATURE_FLETCHING_OVERVIEW_2 = 11313;
+			public static final int SKILL_FEATURE_FLETCHING_OVERVIEW_3 = 11314;
+			public static final int SKILL_FEATURE_FLETCHING_ARROW_SHAFT_15 = 11315;
+			public static final int SKILL_FEATURE_FLETCHING_BRONZE_ARROW = 11316;
+			public static final int SKILL_FEATURE_FLETCHING_ZOGRE_BRUTAL_BRONZE = 11317;
+			public static final int SKILL_FEATURE_FLETCHING_ARROW_SHAFT_30 = 11318;
+			public static final int SKILL_FEATURE_FLETCHING_IRON_ARROW = 11319;
+			public static final int SKILL_FEATURE_FLETCHING_ZOGRE_BRUTAL_IRON = 11320;
+			public static final int SKILL_FEATURE_FLETCHING_ARROW_SHAFT_45 = 11321;
+			public static final int SKILL_FEATURE_FLETCHING_STEEL_ARROW = 11322;
+			public static final int SKILL_FEATURE_FLETCHING_ZOGRE_BRUTAL_STEEL = 11323;
+			public static final int SKILL_FEATURE_FLETCHING_ZOGRE_BRUTAL_BLACK = 11324;
+			public static final int SKILL_FEATURE_FLETCHING_ARROW_SHAFT_60 = 11325;
+			public static final int SKILL_FEATURE_FLETCHING_MITHRIL_ARROW = 11326;
+			public static final int SKILL_FEATURE_FLETCHING_ZOGRE_BRUTAL_MITHRIL = 11327;
+			public static final int SKILL_FEATURE_FLETCHING_SLAYER_BROAD_ARROWS = 11328;
+			public static final int SKILL_FEATURE_FLETCHING_ARROW_SHAFT_75 = 11329;
+			public static final int SKILL_FEATURE_FLETCHING_ADAMANT_ARROW = 11330;
+			public static final int SKILL_FEATURE_FLETCHING_ZOGRE_BRUTAL_ADAMANT = 11331;
+			public static final int SKILL_FEATURE_FLETCHING_ARROW_SHAFT_90 = 11332;
+			public static final int SKILL_FEATURE_FLETCHING_RUNE_ARROW = 11333;
+			public static final int SKILL_FEATURE_FLETCHING_ZOGRE_BRUTAL_RUNE = 11334;
+			public static final int SKILL_FEATURE_FLETCHING_AMETHYST_ARROW = 11335;
+			public static final int SKILL_FEATURE_FLETCHING_ARROW_SHAFT_105 = 11336;
+			public static final int SKILL_FEATURE_FLETCHING_DRAGON_ARROW = 11337;
+			public static final int SKILL_FEATURE_FLETCHING_SHORTBOW = 11338;
+			public static final int SKILL_FEATURE_FLETCHING_LONGBOW = 11339;
+			public static final int SKILL_FEATURE_FLETCHING_OAK_SHORTBOW = 11340;
+			public static final int SKILL_FEATURE_FLETCHING_OAK_LONGBOW = 11341;
+			public static final int SKILL_FEATURE_FLETCHING_ZOGRE_BOW = 11342;
+			public static final int SKILL_FEATURE_FLETCHING_RAT_BONE_BOW = 11343;
+			public static final int SKILL_FEATURE_FLETCHING_WILLOW_SHORTBOW = 11344;
+			public static final int SKILL_FEATURE_FLETCHING_WILLOW_LONGBOW = 11345;
+			public static final int SKILL_FEATURE_FLETCHING_MAPLE_SHORTBOW = 11346;
+			public static final int SKILL_FEATURE_FLETCHING_MAPLE_LONGBOW = 11347;
+			public static final int SKILL_FEATURE_FLETCHING_YEW_SHORTBOW = 11348;
+			public static final int SKILL_FEATURE_FLETCHING_YEW_LONGBOW = 11349;
+			public static final int SKILL_FEATURE_FLETCHING_SCORCHING_BOW = 11350;
+			public static final int SKILL_FEATURE_FLETCHING_MAGIC_SHORTBOW = 11351;
+			public static final int SKILL_FEATURE_FLETCHING_MAGIC_LONGBOW = 11352;
+			public static final int SKILL_FEATURE_FLETCHING_WEBWEAVER = 11353;
+			public static final int SKILL_FEATURE_FLETCHING_BOLT = 11354;
+			public static final int SKILL_FEATURE_FLETCHING_OPAL_BOLT = 11355;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_BLURITE = 11356;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_BLURITE_TIPPED_JADE = 11357;
+			public static final int SKILL_FEATURE_FLETCHING_HUNTINGBOW_BOLTS = 11358;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_IRON = 11359;
+			public static final int SKILL_FEATURE_FLETCHING_PEARL_BOLT = 11360;
+			public static final int SKILL_FEATURE_FLETCHING_HUNTINGBOW_BIGBOLTS = 11361;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_SILVER = 11362;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_STEEL = 11363;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_STEEL_TIPPED_REDTOPAZ = 11364;
+			public static final int SKILL_FEATURE_FLETCHING_BARBED_BOLT = 11365;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_MITHRIL = 11366;
+			public static final int SKILL_FEATURE_FLETCHING_SLAYER_BROAD_BOLT = 11367;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_MITHRIL_TIPPED_SAPPHIRE = 11368;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_MITHRIL_TIPPED_EMERALD = 11369;
+			public static final int SKILL_FEATURE_FLETCHING_XBOWS_GRAPPLE_TIP_BOLT_MITHRIL = 11370;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_ADAMANTITE = 11371;
+			public static final int SKILL_FEATURE_FLETCHING_SUNLIGHT_ANTELOPE_BOLT = 11372;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_ADAMANTITE_TIPPED_RUBY = 11373;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_ADAMANTITE_TIPPED_DIAMOND = 11374;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_RUNITE = 11375;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_RUNITE_TIPPED_DRAGONSTONE = 11376;
+			public static final int SKILL_FEATURE_FLETCHING_MOONLIGHT_ANTELOPE_BOLT = 11377;
+			public static final int SKILL_FEATURE_FLETCHING_BOLTS_RUNITE_TIPPED_ONYX = 11378;
+			public static final int SKILL_FEATURE_FLETCHING_SLAYER_BROAD_BOLT_AMETHYST = 11379;
+			public static final int SKILL_FEATURE_FLETCHING_DRAGON_BOLTS = 11380;
+			public static final int SKILL_FEATURE_FLETCHING_BRONZE_DART = 11381;
+			public static final int SKILL_FEATURE_FLETCHING_IRON_DART = 11382;
+			public static final int SKILL_FEATURE_FLETCHING_STEEL_DART = 11383;
+			public static final int SKILL_FEATURE_FLETCHING_MITHRIL_DART = 11384;
+			public static final int SKILL_FEATURE_FLETCHING_CAMPHOR_BLOWPIPE = 11385;
+			public static final int SKILL_FEATURE_FLETCHING_ADAMANT_DART = 11386;
+			public static final int SKILL_FEATURE_FLETCHING_IRONWOOD_BLOWPIPE = 11387;
+			public static final int SKILL_FEATURE_FLETCHING_ATLATL_DART = 11388;
+			public static final int SKILL_FEATURE_FLETCHING_TOXIC_BLOWPIPE = 11389;
+			public static final int SKILL_FEATURE_FLETCHING_RUNE_DART = 11390;
+			public static final int SKILL_FEATURE_FLETCHING_ROSEWOOD_BLOWPIPE = 11391;
+			public static final int SKILL_FEATURE_FLETCHING_AMETHYST_DART = 11392;
+			public static final int SKILL_FEATURE_FLETCHING_DRAGON_DART = 11393;
+			public static final int SKILL_FEATURE_FLETCHING_STOCK_WOOD = 11394;
+			public static final int SKILL_FEATURE_FLETCHING_STOCK_OAK = 11395;
+			public static final int SKILL_FEATURE_FLETCHING_STOCK_WILLOW = 11396;
+			public static final int SKILL_FEATURE_FLETCHING_STOCK_TEAK = 11397;
+			public static final int SKILL_FEATURE_FLETCHING_STOCK_MAPLE = 11398;
+			public static final int SKILL_FEATURE_FLETCHING_STOCK_MAHOGANY = 11399;
+			public static final int SKILL_FEATURE_FLETCHING_STOCK_YEW = 11400;
+			public static final int SKILL_FEATURE_FLETCHING_HUNTING_CROSSBOW_SUNLIGHT = 11401;
+			public static final int SKILL_FEATURE_FLETCHING_STOCK_MAGIC = 11402;
+			public static final int SKILL_FEATURE_FLETCHING_BRONZE_JAVELIN = 11403;
+			public static final int SKILL_FEATURE_FLETCHING_IRON_JAVELIN = 11404;
+			public static final int SKILL_FEATURE_FLETCHING_STEEL_JAVELIN = 11405;
+			public static final int SKILL_FEATURE_FLETCHING_LIGHT_BALLISTA = 11406;
+			public static final int SKILL_FEATURE_FLETCHING_MITHRIL_JAVELIN = 11407;
+			public static final int SKILL_FEATURE_FLETCHING_ADAMANT_JAVELIN = 11408;
+			public static final int SKILL_FEATURE_FLETCHING_HEAVY_BALLISTA = 11409;
+			public static final int SKILL_FEATURE_FLETCHING_RUNE_JAVELIN = 11410;
+			public static final int SKILL_FEATURE_FLETCHING_AMETHYST_JAVELIN = 11411;
+			public static final int SKILL_FEATURE_FLETCHING_DRAGON_JAVELIN = 11412;
+			public static final int SKILL_FEATURE_FLETCHING_OAK_SHIELD = 11413;
+			public static final int SKILL_FEATURE_FLETCHING_WILLOW_SHIELD = 11414;
+			public static final int SKILL_FEATURE_FLETCHING_MAPLE_SHIELD = 11415;
+			public static final int SKILL_FEATURE_FLETCHING_YEW_SHIELD = 11416;
+			public static final int SKILL_FEATURE_FLETCHING_MAGIC_SHIELD = 11417;
+			public static final int SKILL_FEATURE_FLETCHING_REDWOOD_SHIELD = 11418;
+			public static final int SKILL_FEATURE_FLETCHING_VALE_OAK = 11419;
+			public static final int SKILL_FEATURE_FLETCHING_VALE_WILLOW = 11420;
+			public static final int SKILL_FEATURE_FLETCHING_VALE_MAPLE = 11421;
+			public static final int SKILL_FEATURE_FLETCHING_VALE_YEW = 11422;
+			public static final int SKILL_FEATURE_FLETCHING_VALE_MAGIC = 11423;
+			public static final int SKILL_FEATURE_FLETCHING_VALE_REDWOOD = 11424;
+			public static final int SKILL_FEATURE_FLETCHING_BATTLESTAFF = 11425;
+			public static final int SKILL_FEATURE_FLETCHING_GREENMAN_STATUE = 11426;
+			public static final int SKILL_FEATURE_FLETCHING_HG_HUNTER_SPEAR = 11427;
+			public static final int SKILL_FEATURE_FLETCHING_GREENMAN_WALL_DECORATION = 11428;
+			public static final int SKILL_FEATURE_FLETCHING_REDWOOD_HIKING_STAFF = 11429;
+			public static final int SKILL_FEATURE_FLETCHING_SKILLCAPE = 11430;
+			public static final int SKILL_FEATURE_HERBLORE_OVERVIEW_0 = 11437;
+			public static final int SKILL_FEATURE_HERBLORE_OVERVIEW_1 = 11438;
+			public static final int SKILL_FEATURE_HERBLORE_OVERVIEW_2 = 11439;
+			public static final int SKILL_FEATURE_HERBLORE_ATTACK = 11440;
+			public static final int SKILL_FEATURE_HERBLORE_ANTIPOISON = 11441;
+			public static final int SKILL_FEATURE_HERBLORE_RELICYMSBALM = 11442;
+			public static final int SKILL_FEATURE_HERBLORE_STRENGTH = 11443;
+			public static final int SKILL_FEATURE_HERBLORE_SERUM207 = 11444;
+			public static final int SKILL_FEATURE_HERBLORE_GUAMTAR = 11445;
+			public static final int SKILL_FEATURE_HERBLORE_COMPOST = 11446;
+			public static final int SKILL_FEATURE_HERBLORE_STATRESTORE = 11447;
+			public static final int SKILL_FEATURE_HERBLORE_GUTHIXBALANCE = 11448;
+			public static final int SKILL_FEATURE_HERBLORE_ENERGY = 11449;
+			public static final int SKILL_FEATURE_HERBLORE_DEFENCE = 11450;
+			public static final int SKILL_FEATURE_HERBLORE_MARRENTILLTAR = 11451;
+			public static final int SKILL_FEATURE_HERBLORE_AGILITY = 11452;
+			public static final int SKILL_FEATURE_HERBLORE_COMBAT = 11453;
+			public static final int SKILL_FEATURE_HERBLORE_PRAYERRESTORE = 11454;
+			public static final int SKILL_FEATURE_HERBLORE_MOONLIGHT = 11455;
+			public static final int SKILL_FEATURE_HERBLORE_TARROMINTAR = 11456;
+			public static final int SKILL_FEATURE_HERBLORE_HARRALANDERTAR = 11457;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERATTACK = 11458;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERANTIPOISON = 11459;
+			public static final int SKILL_FEATURE_HERBLORE_ANTIODOUR = 11460;
+			public static final int SKILL_FEATURE_HERBLORE_FISHING = 11461;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERENERGY = 11462;
+			public static final int SKILL_FEATURE_HERBLORE_HUNTER = 11463;
+			public static final int SKILL_FEATURE_HERBLORE_GOADING = 11464;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERSTRENGTH = 11465;
+			public static final int SKILL_FEATURE_HERBLORE_IRITTAR = 11466;
+			public static final int SKILL_FEATURE_HERBLORE_HAEMOSTATICDRESSING = 11467;
+			public static final int SKILL_FEATURE_HERBLORE_MAGICESSENCE = 11468;
+			public static final int SKILL_FEATURE_HERBLORE_PRAYERREGENERATION = 11469;
+			public static final int SKILL_FEATURE_HERBLORE_WEAPONPOISON = 11470;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERFISHING = 11471;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERRESTORE = 11472;
+			public static final int SKILL_FEATURE_HERBLORE_SANFEWSERUM = 11473;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERDEFENCE = 11474;
+			public static final int SKILL_FEATURE_HERBLORE_EXTREMEENERGY = 11475;
+			public static final int SKILL_FEATURE_HERBLORE_KRAVEN = 11476;
+			public static final int SKILL_FEATURE_HERBLORE_ANTIDOTEPLUS = 11477;
+			public static final int SKILL_FEATURE_HERBLORE_ANTIFIREBREATH = 11478;
+			public static final int SKILL_FEATURE_HERBLORE_DIVINESUPERATTACK = 11479;
+			public static final int SKILL_FEATURE_HERBLORE_DIVINESUPERSTRENGTH = 11480;
+			public static final int SKILL_FEATURE_HERBLORE_DIVINESUPERDEFENCE = 11481;
+			public static final int SKILL_FEATURE_HERBLORE_RANGING = 11482;
+			public static final int SKILL_FEATURE_HERBLORE_WEAPONPOISONPLUS = 11483;
+			public static final int SKILL_FEATURE_HERBLORE_DIVINERANGING = 11484;
+			public static final int SKILL_FEATURE_HERBLORE_MAGIC = 11485;
+			public static final int SKILL_FEATURE_HERBLORE_STAMINA = 11486;
+			public static final int SKILL_FEATURE_HERBLORE_ZAMORAK = 11487;
+			public static final int SKILL_FEATURE_HERBLORE_DIVINEMAGIC = 11488;
+			public static final int SKILL_FEATURE_HERBLORE_ANTIDOTEPLUSPLUS = 11489;
+			public static final int SKILL_FEATURE_HERBLORE_BASTION = 11490;
+			public static final int SKILL_FEATURE_HERBLORE_BATTLEMAGE = 11491;
+			public static final int SKILL_FEATURE_HERBLORE_SARADOMIN = 11492;
+			public static final int SKILL_FEATURE_HERBLORE_SURGE = 11493;
+			public static final int SKILL_FEATURE_HERBLORE_WEAPONPOISONPLUSPLUS = 11494;
+			public static final int SKILL_FEATURE_HERBLORE_EXTENDEDANTIFIRE = 11495;
+			public static final int SKILL_FEATURE_HERBLORE_ANCIENT = 11496;
+			public static final int SKILL_FEATURE_HERBLORE_EXTENDEDSTAMINA = 11497;
+			public static final int SKILL_FEATURE_HERBLORE_DIVINEBASTION = 11498;
+			public static final int SKILL_FEATURE_HERBLORE_DIVINEBATTLEMAGE = 11499;
+			public static final int SKILL_FEATURE_HERBLORE_ANTIVENOM = 11500;
+			public static final int SKILL_FEATURE_HERBLORE_MENAPHITE = 11501;
+			public static final int SKILL_FEATURE_HERBLORE_ARMADYL = 11502;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERCOMBAT = 11503;
+			public static final int SKILL_FEATURE_HERBLORE_FORGOTEN = 11504;
+			public static final int SKILL_FEATURE_HERBLORE_SUPERANTIFIRE = 11505;
+			public static final int SKILL_FEATURE_HERBLORE_ANTIVENOMPLUS = 11506;
+			public static final int SKILL_FEATURE_HERBLORE_EXTENDEDANTIVENOMPLUS = 11507;
+			public static final int SKILL_FEATURE_HERBLORE_DIVINESUPERCOMBAT = 11508;
+			public static final int SKILL_FEATURE_HERBLORE_EXTENDEDSUPERANTIFIRE = 11509;
+			public static final int SKILL_FEATURE_HERBLORE_GUAM_LEAF = 11510;
+			public static final int SKILL_FEATURE_HERBLORE_ROGUES_PURSE = 11511;
+			public static final int SKILL_FEATURE_HERBLORE_SNAKE_WEED = 11512;
+			public static final int SKILL_FEATURE_HERBLORE_MARRENTILL = 11513;
+			public static final int SKILL_FEATURE_HERBLORE_TARROMIN = 11514;
+			public static final int SKILL_FEATURE_HERBLORE_HARRALANDER = 11515;
+			public static final int SKILL_FEATURE_HERBLORE_RANARR_WEED = 11516;
+			public static final int SKILL_FEATURE_HERBLORE_TOADFLAX = 11517;
+			public static final int SKILL_FEATURE_HERBLORE_IRIT_LEAF = 11518;
+			public static final int SKILL_FEATURE_HERBLORE_AVANTOE = 11519;
+			public static final int SKILL_FEATURE_HERBLORE_KWUARM = 11520;
+			public static final int SKILL_FEATURE_HERBLORE_HUASCA = 11521;
+			public static final int SKILL_FEATURE_HERBLORE_SNAPDRAGON = 11522;
+			public static final int SKILL_FEATURE_HERBLORE_CADANTINE = 11523;
+			public static final int SKILL_FEATURE_HERBLORE_LANTADYME = 11524;
+			public static final int SKILL_FEATURE_HERBLORE_DWARF_WEED = 11525;
+			public static final int SKILL_FEATURE_HERBLORE_TORSTOL = 11526;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_OVERVIEW = 11527;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_1ATTACK = 11528;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_ANTIPOISON = 11529;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_RELICYMS_BALM = 11530;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_1STRENGTH = 11531;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_STATRESTORE = 11532;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_1ENERGY = 11533;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_1DEFENSE = 11534;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_1AGILITY = 11535;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_COMBAT = 11536;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_PRAYERRESTORE = 11537;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_2ATTACK = 11538;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_2ANTIPOISON = 11539;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_FISHERSPOTION = 11540;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_2ENERGY = 11541;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_1HUNTING = 11542;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_2STRENGTH = 11543;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_MAGICESS = 11544;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_2RESTORE = 11545;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_2DEFENSE = 11546;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_ANTIDOTEPLUS = 11547;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_1ANTIDRAGON = 11548;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_RANGERSPOTION = 11549;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_1MAGIC = 11550;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_POTIONOFZAMORAK = 11551;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_STAMINA = 11552;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_2ANTIDRAGON = 11553;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_ANCIENTBREW = 11554;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_3ANTIDRAGON = 11555;
+			public static final int SKILL_FEATURE_HERBLORE_BARBARIAN_4ANTIDRAGON = 11556;
+			public static final int SKILL_FEATURE_HERBLORE_RAIDS_OVERVIEW_0 = 11557;
+			public static final int SKILL_FEATURE_HERBLORE_RAIDS_OVERVIEW_1 = 11558;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_WEAK_ELDER = 11559;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_WEAK_KODAI = 11560;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_WEAK_TWISTED = 11561;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_STANDARD_ELDER = 11562;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_STANDARD_KODAI = 11563;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_STANDARD_TWISTED = 11564;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_STRONG_ELDER = 11565;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_STRONG_KODAI = 11566;
+			public static final int SKILL_FEATURE_HERBLORE_GOLPAR_STRONG_TWISTED = 11567;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_WEAK_REVITALISATION = 11568;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_WEAK_XERIC = 11569;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_WEAK_PRAYERENHANCE = 11570;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_STANDARD_REVITALISATION = 11571;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_STANDARD_XERIC = 11572;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_STANDARD_PRAYERENHANCE = 11573;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_STRONG_REVITALISATION = 11574;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_STRONG_XERIC = 11575;
+			public static final int SKILL_FEATURE_HERBLORE_BUCHU_STRONG_PRAYERENHANCE = 11576;
+			public static final int SKILL_FEATURE_HERBLORE_NOXIFER_WEAK_ANTIPOISON = 11577;
+			public static final int SKILL_FEATURE_HERBLORE_NOXIFER_STANDARD_ANTIPOISON = 11578;
+			public static final int SKILL_FEATURE_HERBLORE_NOXIFER_STRONG_ANTIPOISON = 11579;
+			public static final int SKILL_FEATURE_HERBLORE_NOXIFER_WEAK_OVERLOAD = 11580;
+			public static final int SKILL_FEATURE_HERBLORE_NOXIFER_STANDARD_OVERLOAD = 11581;
+			public static final int SKILL_FEATURE_HERBLORE_NOXIFER_STRONG_OVERLOAD = 11582;
+			public static final int SKILL_FEATURE_HERBLORE_RAIDS_OVERVIEW_2 = 11583;
+			public static final int SKILL_FEATURE_HERBLORE_HERB_SACK = 11584;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_MMM_UNFINISHED = 11585;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_AAA_UNFINISHED = 11586;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_LLL_UNFINISHED = 11587;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_MMA_UNFINISHED = 11588;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_MML_UNFINISHED = 11589;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_AAM_UNFINISHED = 11590;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_AAL_UNFINISHED = 11591;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_LLM_UNFINISHED = 11592;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_LLA_UNFINISHED = 11593;
+			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_MAL_UNFINISHED = 11594;
+			public static final int SKILL_FEATURE_HERBLORE_MM_SECONDARY_POUCH = 11595;
+			public static final int SKILL_FEATURE_HERBLORE_SKILLCAPE = 11596;
+			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_0 = 11602;
+			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_1 = 11603;
+			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_2 = 11604;
+			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_3 = 11605;
+			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_4 = 11606;
+			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_5 = 11607;
+			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_6 = 11608;
+			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_7 = 11609;
+			public static final int SKILL_FEATURE_HITPOINTS_TRAIL_SWEETS = 11610;
+			public static final int SKILL_FEATURE_HITPOINTS_ANCHOVIES = 11611;
+			public static final int SKILL_FEATURE_HITPOINTS_SHRIMP = 11612;
+			public static final int SKILL_FEATURE_HITPOINTS_COOKED_CHICKEN = 11613;
+			public static final int SKILL_FEATURE_HITPOINTS_SARDINE = 11614;
+			public static final int SKILL_FEATURE_HITPOINTS_COOKED_MEAT = 11615;
+			public static final int SKILL_FEATURE_HITPOINTS_COOKED_MYSTERY_MEAT = 11616;
+			public static final int SKILL_FEATURE_HITPOINTS_BREAD = 11617;
+			public static final int SKILL_FEATURE_HITPOINTS_HERRING = 11618;
+			public static final int SKILL_FEATURE_HITPOINTS_COOKED_RABBIT = 11619;
+			public static final int SKILL_FEATURE_HITPOINTS_BIM_STEAK_SANDWICH = 11620;
+			public static final int SKILL_FEATURE_HITPOINTS_MACKEREL = 11621;
+			public static final int SKILL_FEATURE_HITPOINTS_BOTANICAL_PIE = 11622;
+			public static final int SKILL_FEATURE_HITPOINTS_MORT_SLIMEY_EEL_COOKED = 11623;
+			public static final int SKILL_FEATURE_HITPOINTS_TROUT = 11624;
+			public static final int SKILL_FEATURE_HITPOINTS_COD = 11625;
+			public static final int SKILL_FEATURE_HITPOINTS_SPIT_ROASTED_RABBIT_MEAT = 11626;
+			public static final int SKILL_FEATURE_HITPOINTS_CAVE_EEL = 11627;
+			public static final int SKILL_FEATURE_HITPOINTS_PIKE = 11628;
+			public static final int SKILL_FEATURE_HITPOINTS_WILDKEBBIT_COOKED = 11629;
+			public static final int SKILL_FEATURE_HITPOINTS_SALMON = 11630;
+			public static final int SKILL_FEATURE_HITPOINTS_REDBERRY_PIE = 11631;
+			public static final int SKILL_FEATURE_HITPOINTS_TBONE_STEAK = 11632;
+			public static final int SKILL_FEATURE_HITPOINTS_TUNA = 11633;
+			public static final int SKILL_FEATURE_HITPOINTS_HUNDRED_PIRATE_GIANT_CRAB_MEAT = 11634;
+			public static final int SKILL_FEATURE_HITPOINTS_HUNDRED_PIRATE_FISHCAKE = 11635;
+			public static final int SKILL_FEATURE_HITPOINTS_JUG_WINE = 11636;
+			public static final int SKILL_FEATURE_HITPOINTS_MEAT_PIE = 11637;
+			public static final int SKILL_FEATURE_HITPOINTS_LAVA_EEL = 11638;
+			public static final int SKILL_FEATURE_HITPOINTS_LARUPIA_COOKED = 11639;
+			public static final int SKILL_FEATURE_HITPOINTS_GARDEN_PIE = 11640;
+			public static final int SKILL_FEATURE_HITPOINTS_FISH_PIE = 11641;
+			public static final int SKILL_FEATURE_HITPOINTS_CAKE = 11642;
+			public static final int SKILL_FEATURE_HITPOINTS_LOBSTER = 11643;
+			public static final int SKILL_FEATURE_HITPOINTS_BARBKEBBIT_COOKED = 11644;
+			public static final int SKILL_FEATURE_HITPOINTS_BASS = 11645;
+			public static final int SKILL_FEATURE_HITPOINTS_SWORDFISH = 11646;
+			public static final int SKILL_FEATURE_HITPOINTS_PLAIN_PIZZA = 11647;
+			public static final int SKILL_FEATURE_HITPOINTS_APPLE_PIE = 11648;
+			public static final int SKILL_FEATURE_HITPOINTS_POTATO_BUTTER = 11649;
+			public static final int SKILL_FEATURE_HITPOINTS_POTATO_CHILLICARNE = 11650;
+			public static final int SKILL_FEATURE_HITPOINTS_GRAAHK_COOKED = 11651;
+			public static final int SKILL_FEATURE_HITPOINTS_CHOCOLATE_CAKE = 11652;
+			public static final int SKILL_FEATURE_HITPOINTS_MONKFISH = 11653;
+			public static final int SKILL_FEATURE_HITPOINTS_ADMIRAL_PIE = 11654;
+			public static final int SKILL_FEATURE_HITPOINTS_MEAT_PIZZA = 11655;
+			public static final int SKILL_FEATURE_HITPOINTS_POTATO_CHEESE = 11656;
+			public static final int SKILL_FEATURE_HITPOINTS_POTATO_EGGTOMATO = 11657;
+			public static final int SKILL_FEATURE_HITPOINTS_KYATT_COOKED = 11658;
+			public static final int SKILL_FEATURE_HITPOINTS_TBWT_COOKED_KARAMBWAN = 11659;
+			public static final int SKILL_FEATURE_HITPOINTS_ANCHOVIE_PIZZA = 11660;
+			public static final int SKILL_FEATURE_HITPOINTS_UGTHANKI_KEBAB = 11661;
+			public static final int SKILL_FEATURE_HITPOINTS_FENNECFOX_COOKED = 11662;
+			public static final int SKILL_FEATURE_HITPOINTS_SHARK = 11663;
+			public static final int SKILL_FEATURE_HITPOINTS_POTATO_MUSHROOMONION = 11664;
+			public static final int SKILL_FEATURE_HITPOINTS_SEATURTLE = 11665;
+			public static final int SKILL_FEATURE_HITPOINTS_ANTELOPESUN_COOKED = 11666;
+			public static final int SKILL_FEATURE_HITPOINTS_MANTARAY = 11667;
+			public static final int SKILL_FEATURE_HITPOINTS_DARK_CRAB = 11668;
+			public static final int SKILL_FEATURE_HITPOINTS_POTATO_TUNASWEETCORN = 11669;
+			public static final int SKILL_FEATURE_HITPOINTS_WILD_PIE = 11670;
+			public static final int SKILL_FEATURE_HITPOINTS_SUMMER_PIE = 11671;
+			public static final int SKILL_FEATURE_HITPOINTS_PINEAPPLE_PIZZA = 11672;
+			public static final int SKILL_FEATURE_HITPOINTS_DASHINGKEBBIT_COOKED = 11673;
+			public static final int SKILL_FEATURE_HITPOINTS_ANTELOPEMOON_COOKED = 11674;
+			public static final int SKILL_FEATURE_HITPOINTS_ANGLERFISH = 11675;
+			public static final int SKILL_FEATURE_HITPOINTS_3DOSEPOTIONOFSARADOMIN = 11676;
+			public static final int SKILL_FEATURE_HITPOINTS_VOIDKNIGHTEQUIPMENT = 11677;
+			public static final int SKILL_FEATURE_HITPOINTS_NIGHTMARESTAFFWITHOUTORB = 11678;
+			public static final int SKILL_FEATURE_HITPOINTS_NIGHTMARESTAFFWITHORB = 11679;
+			public static final int SKILL_FEATURE_HITPOINTS_ENCHANTEDZENYTEJEWELLERY = 11680;
+			public static final int SKILL_FEATURE_HITPOINTS_AMULETOFRANCOUR = 11681;
+			public static final int SKILL_FEATURE_HITPOINTS_CONFLICTIONGAUNTLETS = 11682;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_SUBTITLE_0 = 11683;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_DAMAGE = 11684;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_DAMAGE_MAXHIT = 11685;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_MISS = 11686;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_BOAT = 11687;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_SHIELD = 11688;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_ARMOUR = 11689;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_POISE = 11690;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_CORROSION = 11691;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_SUBTITLE_1 = 11692;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_POISON = 11693;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_VENOM = 11694;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_BLEED = 11695;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_BURN = 11696;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_DISEASE_STAT = 11697;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_DISEASE_HEALTH = 11698;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_DOOM = 11699;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_SUBTITLE_2 = 11700;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_HEAL = 11701;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_PRAYERDRAIN = 11702;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_CORRUPTION = 11703;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_COLD = 11704;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_CHARGE_DEFAULT = 11705;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_UNCHARGE_DEFAULT = 11706;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_CHARGE_BLUE = 11707;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_UNCHARGE_BLUE = 11708;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_SANITY_LOSE = 11709;
+			public static final int SKILL_FEATURE_HITPOINTS_HITSPLATS_SANITY_GAIN = 11710;
+			public static final int SKILL_FEATURE_HITPOINTS_MISC_GWD_ZAMORAK = 11711;
+			public static final int SKILL_FEATURE_HITPOINTS_SKILLCAPE = 11712;
+			public static final int SKILL_FEATURE_HUNTER_OVERVIEW_0 = 11727;
+			public static final int SKILL_FEATURE_HUNTER_OVERVIEW_1 = 11728;
+			public static final int SKILL_FEATURE_HUNTER_OVERVIEW_2 = 11729;
+			public static final int SKILL_FEATURE_HUNTER_POLAR_BEAST = 11730;
+			public static final int SKILL_FEATURE_HUNTER_WOOD_BEAST = 11731;
+			public static final int SKILL_FEATURE_HUNTER_JUNGLE_BEAST = 11732;
+			public static final int SKILL_FEATURE_HUNTER_DESERT_BEAST = 11733;
+			public static final int SKILL_FEATURE_HUNTER_RAZOR2_BEAST = 11734;
+			public static final int SKILL_FEATURE_HUNTER_HERBIBOAR = 11735;
+			public static final int SKILL_FEATURE_HUNTER_JUNGLE_BIRD = 11736;
+			public static final int SKILL_FEATURE_HUNTER_DESERT_BIRD = 11737;
+			public static final int SKILL_FEATURE_HUNTER_WOOD_BIRD = 11738;
+			public static final int SKILL_FEATURE_HUNTER_POLAR_BIRD = 11739;
+			public static final int SKILL_FEATURE_HUNTER_COLOURED_BIRD = 11740;
+			public static final int SKILL_FEATURE_HUNTER_RED_BUTTERFLY = 11741;
+			public static final int SKILL_FEATURE_HUNTER_RED_BUTTERFLY_BAREHANDED = 11742;
+			public static final int SKILL_FEATURE_HUNTER_BLUE_BUTTERFLY = 11743;
+			public static final int SKILL_FEATURE_HUNTER_BLUE_BUTTERFLY_BAREHANDED = 11744;
+			public static final int SKILL_FEATURE_HUNTER_WHITE_BUTTERFLY = 11745;
+			public static final int SKILL_FEATURE_HUNTER_WHITE_BUTTERFLY_BAREHANDED = 11746;
+			public static final int SKILL_FEATURE_HUNTER_BLACK_BUTTERFLY = 11747;
+			public static final int SKILL_FEATURE_HUNTER_BLACK_BUTTERFLY_BAREHANDED = 11748;
+			public static final int SKILL_FEATURE_HUNTER_SUNLIGHT_MOTH = 11749;
+			public static final int SKILL_FEATURE_HUNTER_SUNLIGHT_MOTH_BAREHANDED = 11750;
+			public static final int SKILL_FEATURE_HUNTER_MOONLIGHT_MOTH = 11751;
+			public static final int SKILL_FEATURE_HUNTER_MOONLIGHT_MOTH_BAREHANDED = 11752;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_1 = 11753;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_2 = 11754;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_1_BAREHANDED = 11755;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_3 = 11756;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_2_BAREHANDED = 11757;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_4 = 11758;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_3_BAREHANDED = 11759;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_5 = 11760;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_4_BAREHANDED = 11761;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_6 = 11762;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_5_BAREHANDED = 11763;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_7 = 11764;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_6_BAREHANDED = 11765;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_8 = 11766;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_7_BAREHANDED = 11767;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_9 = 11768;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_8_BAREHANDED = 11769;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_12 = 11770;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_10 = 11771;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_9_BAREHANDED = 11772;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_11 = 11773;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_12_BAREHANDED = 11774;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_10_BAREHANDED = 11775;
+			public static final int SKILL_FEATURE_HUNTER_IMPLING_11_BAREHANDED = 11776;
+			public static final int SKILL_FEATURE_HUNTER_HUNTING_BEAST = 11777;
+			public static final int SKILL_FEATURE_HUNTER_BARBTAILED_BEAST = 11778;
+			public static final int SKILL_FEATURE_HUNTER_RAZOR_BEAST = 11779;
+			public static final int SKILL_FEATURE_HUNTER_SABRE_BEAST = 11780;
+			public static final int SKILL_FEATURE_HUNTER_FENNECFOX = 11781;
+			public static final int SKILL_FEATURE_HUNTER_MANIACAL_MONKEY = 11782;
+			public static final int SKILL_FEATURE_HUNTER_HUNTING_FERRET = 11783;
+			public static final int SKILL_FEATURE_HUNTER_JERBOA = 11784;
+			public static final int SKILL_FEATURE_HUNTER_CHINCHOMPA_CAPTURED = 11785;
+			public static final int SKILL_FEATURE_HUNTER_RED_CHINCHOMPA = 11786;
+			public static final int SKILL_FEATURE_HUNTER_BLACK_CHINCHOMPA = 11787;
+			public static final int SKILL_FEATURE_HUNTER_GREEN_SALAMANDER = 11788;
+			public static final int SKILL_FEATURE_HUNTER_ORANGE_SALAMANDER = 11789;
+			public static final int SKILL_FEATURE_HUNTER_RED_SALAMANDER = 11790;
+			public static final int SKILL_FEATURE_HUNTER_BLACK_SALAMANDER = 11791;
+			public static final int SKILL_FEATURE_HUNTER_MOUNTAIN_SALAMANDER = 11792;
+			public static final int SKILL_FEATURE_HUNTER_JAGUAR = 11793;
+			public static final int SKILL_FEATURE_HUNTER_LEOPARD = 11794;
+			public static final int SKILL_FEATURE_HUNTER_TIGER = 11795;
+			public static final int SKILL_FEATURE_HUNTER_SUN_ANTLERS = 11796;
+			public static final int SKILL_FEATURE_HUNTER_MOON_ANTLERS = 11797;
+			public static final int SKILL_FEATURE_HUNTER_RED_CRAB = 11798;
+			public static final int SKILL_FEATURE_HUNTER_BLUE_CRAB = 11799;
+			public static final int SKILL_FEATURE_HUNTER_RAINBOW_CRAB = 11800;
+			public static final int SKILL_FEATURE_HUNTER_SPEEDY_BEAST = 11801;
+			public static final int SKILL_FEATURE_HUNTER_SILENT_BEAST = 11802;
+			public static final int SKILL_FEATURE_HUNTER_SPEEDIER_BEAST = 11803;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_NORMAL = 11804;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_OAK = 11805;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_WILLOW = 11806;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_TEAK = 11807;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_MAPLE = 11808;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_MAHOGANY = 11809;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_YEW = 11810;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_MAGIC = 11811;
+			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_REDWOOD = 11812;
+			public static final int SKILL_FEATURE_HUNTER_1TRAP = 11813;
+			public static final int SKILL_FEATURE_HUNTER_OJIBWAY_BIRD_SNARE = 11814;
+			public static final int SKILL_FEATURE_HUNTER_NOOSE_WAND = 11815;
+			public static final int SKILL_FEATURE_HUNTER_BUTTERFLY_NET = 11816;
+			public static final int SKILL_FEATURE_HUNTER_2TRAPS = 11817;
+			public static final int SKILL_FEATURE_HUNTER_DEADFALL = 11818;
+			public static final int SKILL_FEATURE_HUNTER_BOX_TRAP = 11819;
+			public static final int SKILL_FEATURE_HUNTER_SNARE = 11820;
+			public static final int SKILL_FEATURE_HUNTER_NET = 11821;
+			public static final int SKILL_FEATURE_HUNTER_TEASING_STICK = 11822;
+			public static final int SKILL_FEATURE_HUNTER_TORCH = 11823;
+			public static final int SKILL_FEATURE_HUNTER_3TRAPS = 11824;
+			public static final int SKILL_FEATURE_HUNTER_FALCONRY = 11825;
+			public static final int SKILL_FEATURE_HUNTER_4TRAPS = 11826;
+			public static final int SKILL_FEATURE_HUNTER_MAGIC_IMP_BOX = 11827;
+			public static final int SKILL_FEATURE_HUNTER_5TRAPS = 11828;
+			public static final int SKILL_FEATURE_HUNTER_RAIDS_BAT0_RAW = 11829;
+			public static final int SKILL_FEATURE_HUNTER_ROBE_POLAR = 11830;
+			public static final int SKILL_FEATURE_HUNTER_ROBE_WOOD = 11831;
+			public static final int SKILL_FEATURE_HUNTER_ROBE_JUNGLE = 11832;
+			public static final int SKILL_FEATURE_HUNTER_ROBE_DESERT = 11833;
+			public static final int SKILL_FEATURE_HUNTER_PISCARILIUS_SANDWORMS = 11834;
+			public static final int SKILL_FEATURE_HUNTER_RAIDS_BAT1_RAW = 11835;
+			public static final int SKILL_FEATURE_HUNTER_RAW_LIZARD = 11836;
+			public static final int SKILL_FEATURE_HUNTER_STRUNG_RABBIT_FOOT = 11837;
+			public static final int SKILL_FEATURE_HUNTER_GIANT_EAGLE = 11838;
+			public static final int SKILL_FEATURE_HUNTER_RABBIT = 11839;
+			public static final int SKILL_FEATURE_HUNTER_HAT_JAGUAR = 11840;
+			public static final int SKILL_FEATURE_HUNTER_RAIDS_BAT2_RAW = 11841;
+			public static final int SKILL_FEATURE_HUNTER_HAT_LEOPARD = 11842;
+			public static final int SKILL_FEATURE_HUNTER_LIGHT_CAPE = 11843;
+			public static final int SKILL_FEATURE_HUNTER_RAIDS_BAT3_RAW = 11844;
+			public static final int SKILL_FEATURE_HUNTER_GUILD = 11845;
+			public static final int SKILL_FEATURE_HUNTER_HORN_OF_PLENTY = 11846;
+			public static final int SKILL_FEATURE_HUNTER_HAT_TIGER = 11847;
+			public static final int SKILL_FEATURE_HUNTER_SILENT_GLOVES = 11848;
+			public static final int SKILL_FEATURE_HUNTER_ADEPT_RUMOURS = 11849;
+			public static final int SKILL_FEATURE_HUNTER_RAIDS_BAT4_RAW = 11850;
+			public static final int SKILL_FEATURE_HUNTER_LIGHTER_CAPE = 11851;
+			public static final int SKILL_FEATURE_HUNTER_IMP = 11852;
+			public static final int SKILL_FEATURE_HUNTER_EXPERT_RUMOURS = 11853;
+			public static final int SKILL_FEATURE_HUNTER_RAIDS_BAT5_RAW = 11854;
+			public static final int SKILL_FEATURE_HUNTER_RAIDS_BAT6_RAW = 11855;
+			public static final int SKILL_FEATURE_HUNTER_MASTER_RUMOURS = 11856;
+			public static final int SKILL_FEATURE_HUNTER_COX_BATS_BAREHANDED = 11857;
+			public static final int SKILL_FEATURE_HUNTER_SKILLCAPE = 11858;
+			public static final int SKILL_FEATURE_MAGIC_OVERVIEW_0 = 11868;
+			public static final int SKILL_FEATURE_MAGIC_OVERVIEW_1 = 11869;
+			public static final int SKILL_FEATURE_MAGIC_OVERVIEW_2 = 11870;
+			public static final int SKILL_FEATURE_MAGIC_OVERVIEW_3 = 11871;
+			public static final int SKILL_FEATURE_MAGIC_STANDARD_48_HOME_TELEPORT = 11872;
+			public static final int SKILL_FEATURE_MAGIC_STANDARD_LEAGUE_TWISTED_HOME_TELEPORT = 11873;
+			public static final int SKILL_FEATURE_MAGIC_STANDARD_LEAGUE_3_HOME_TELEPORT = 11874;
+			public static final int SKILL_FEATURE_MAGIC_01_WIND_STRIKE = 11875;
+			public static final int SKILL_FEATURE_MAGIC_03_CONFUSE = 11876;
+			public static final int SKILL_FEATURE_MAGIC_05_WATER_STRIKE = 11877;
+			public static final int SKILL_FEATURE_MAGIC_07_ENCHANT_AMULET_LVL1 = 11878;
+			public static final int SKILL_FEATURE_MAGIC_09_EARTH_STRIKE = 11879;
+			public static final int SKILL_FEATURE_MAGIC_11_WEAKEN = 11880;
+			public static final int SKILL_FEATURE_MAGIC_13_FIRE_STRIKE = 11881;
+			public static final int SKILL_FEATURE_MAGIC_15_BONES_BANANAS = 11882;
+			public static final int SKILL_FEATURE_MAGIC_17_WIND_BOLT = 11883;
+			public static final int SKILL_FEATURE_MAGIC_19_CURSE = 11884;
+			public static final int SKILL_FEATURE_MAGIC_20_BIND = 11885;
+			public static final int SKILL_FEATURE_MAGIC_21_LOW_ALCHEMY = 11886;
+			public static final int SKILL_FEATURE_MAGIC_23_WATER_BOLT = 11887;
+			public static final int SKILL_FEATURE_MAGIC_25_VARROCK_TELEPORT = 11888;
+			public static final int SKILL_FEATURE_MAGIC_27_ENCHANT_AMULET_LVL2 = 11889;
+			public static final int SKILL_FEATURE_MAGIC_29_EARTH_BOLT = 11890;
+			public static final int SKILL_FEATURE_MAGIC_31_LUMBRIDGE_TELEPORT = 11891;
+			public static final int SKILL_FEATURE_MAGIC_33_TELE_GRAB = 11892;
+			public static final int SKILL_FEATURE_MAGIC_35_FIRE_BOLT = 11893;
+			public static final int SKILL_FEATURE_MAGIC_37_FALADOR_TELEPORT = 11894;
+			public static final int SKILL_FEATURE_MAGIC_39_CRUMBLE_UNDEAD = 11895;
+			public static final int SKILL_FEATURE_MAGIC_67_HOUSE_TELEPORT = 11896;
+			public static final int SKILL_FEATURE_MAGIC_41_WIND_BLAST = 11897;
+			public static final int SKILL_FEATURE_MAGIC_42_MONSTER_INSPECT = 11898;
+			public static final int SKILL_FEATURE_MAGIC_43_SUPERHEAT_ITEM = 11899;
+			public static final int SKILL_FEATURE_MAGIC_45_CAMELOT_TELEPORT = 11900;
+			public static final int SKILL_FEATURE_MAGIC_47_WATER_BLAST = 11901;
+			public static final int SKILL_FEATURE_MAGIC_48_KOUREND_TELEPORT = 11902;
+			public static final int SKILL_FEATURE_MAGIC_49_ENCHANT_AMULET_LVL3 = 11903;
+			public static final int SKILL_FEATURE_MAGIC_50_IBAN_BLAST = 11904;
+			public static final int SKILL_FEATURE_MAGIC_50_SNARE = 11905;
+			public static final int SKILL_FEATURE_MAGIC_50_MAGIC_DART = 11906;
+			public static final int SKILL_FEATURE_MAGIC_51_ARDOUGNE_TELEPORT = 11907;
+			public static final int SKILL_FEATURE_MAGIC_53_EARTH_BLAST = 11908;
+			public static final int SKILL_FEATURE_MAGIC_54_FORTIS_TELEPORT = 11909;
+			public static final int SKILL_FEATURE_MAGIC_55_HIGH_ALCHEMY = 11910;
+			public static final int SKILL_FEATURE_MAGIC_56_CHARGE_WATER_ORB = 11911;
+			public static final int SKILL_FEATURE_MAGIC_56_TELEPORT_BOAT_TO_ME = 11912;
+			public static final int SKILL_FEATURE_MAGIC_57_ENCHANT_AMULET_LVL4 = 11913;
+			public static final int SKILL_FEATURE_MAGIC_58_WATCHTOWER_TELEPORT = 11914;
+			public static final int SKILL_FEATURE_MAGIC_59_FIRE_BLAST = 11915;
+			public static final int SKILL_FEATURE_MAGIC_60_CHARGE_EARTH_ORB = 11916;
+			public static final int SKILL_FEATURE_MAGIC_60_BONES_PEACHES = 11917;
+			public static final int SKILL_FEATURE_MAGIC_60_CLAWS_OF_GUTHIX = 11918;
+			public static final int SKILL_FEATURE_MAGIC_60_FLAMES_OF_ZAMORAK = 11919;
+			public static final int SKILL_FEATURE_MAGIC_60_SARADOMIN_STRIKE = 11920;
+			public static final int SKILL_FEATURE_MAGIC_61_TROLLHEIM_TELEPORT = 11921;
+			public static final int SKILL_FEATURE_MAGIC_62_WIND_WAVE = 11922;
+			public static final int SKILL_FEATURE_MAGIC_63_CHARGE_FIRE_ORB = 11923;
+			public static final int SKILL_FEATURE_MAGIC_64_APE_ATOLL_TELEPORT = 11924;
+			public static final int SKILL_FEATURE_MAGIC_65_WATER_WAVE = 11925;
+			public static final int SKILL_FEATURE_MAGIC_66_CHARGE_AIR_ORB = 11926;
+			public static final int SKILL_FEATURE_MAGIC_66_VULNERABILITY = 11927;
+			public static final int SKILL_FEATURE_MAGIC_67_TELEPORT_ME_TO_BOAT = 11928;
+			public static final int SKILL_FEATURE_MAGIC_68_ENCHANT_AMULET_LVL5 = 11929;
+			public static final int SKILL_FEATURE_MAGIC_70_EARTH_WAVE = 11930;
+			public static final int SKILL_FEATURE_MAGIC_73_ENFEEBLE = 11931;
+			public static final int SKILL_FEATURE_MAGIC_74_TELEOTHER_LUMBRIDGE = 11932;
+			public static final int SKILL_FEATURE_MAGIC_75_FIRE_WAVE = 11933;
+			public static final int SKILL_FEATURE_MAGIC_79_ENTANGLE = 11934;
+			public static final int SKILL_FEATURE_MAGIC_80_STUN = 11935;
+			public static final int SKILL_FEATURE_MAGIC_80_CHARGE = 11936;
+			public static final int SKILL_FEATURE_MAGIC_81_WIND_SURGE = 11937;
+			public static final int SKILL_FEATURE_MAGIC_82_TELEOTHER_FALADOR = 11938;
+			public static final int SKILL_FEATURE_MAGIC_85_WATER_SURGE = 11939;
+			public static final int SKILL_FEATURE_MAGIC_85_TELEPORT_BLOCK = 11940;
+			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL_1 = 11941;
+			public static final int SKILL_FEATURE_MAGIC_87_ENCHANT_AMULET_LVL6 = 11942;
+			public static final int SKILL_FEATURE_MAGIC_90_EARTH_SURGE = 11943;
+			public static final int SKILL_FEATURE_MAGIC_90_TELEOTHER_CAMELOT = 11944;
+			public static final int SKILL_FEATURE_MAGIC_93_ENCHANT_AMULET_LVL7 = 11945;
+			public static final int SKILL_FEATURE_MAGIC_95_FIRE_SURGE = 11946;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_PREAMBLE = 11947;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_01_ZAROS_HOME_TELE = 11948;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_LEAGUE_3_HOME_TELEPORT_2 = 11949;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_50_SMOKE_RUSH = 11950;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_52_SHADOW_RUSH = 11951;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_54_PADDEWWA_TELEPORT = 11952;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_56_BLOOD_RUSH = 11953;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_58_ICE_RUSH = 11954;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_60_SENNTISTEN_TELEPORT = 11955;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_62_SMOKE_BURST = 11956;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_64_SHADOW_BURST = 11957;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_66_KHARYLLYL_TELEPORT = 11958;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_68_BLOOD_BURST = 11959;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_70_ICE_BURST = 11960;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_72_LASSAR_TELEPORT = 11961;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_74_SMOKE_BLITZ = 11962;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_76_SHADOW_BLITZ = 11963;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_78_DAREEYAK_TELEPORT = 11964;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_80_BLOOD_BLITZ = 11965;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_82_ICE_BLITZ = 11966;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_84_CARRALLAGAR_TELEPORT = 11967;
+			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL_2 = 11968;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_86_SMOKE_BARRAGE = 11969;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_88_SHADOW_BARRAGE = 11970;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_90_ANNAKARL_TELEPORT = 11971;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_92_BLOOD_BARRAGE = 11972;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_94_ICE_BARRAGE = 11973;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_96_GHORROCK_TELEPORT = 11974;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_PREAMBLE = 11975;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_01_LUNAR_HOME_TELE = 11976;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_LEAGUE_3_HOME_TELEPORT_3 = 11977;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_65_BAKE_PIE = 11978;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_GEOMANCY = 11979;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_66_CURE_PLANT = 11980;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_66_MONSTER_EXAMINE = 11981;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_67_NPC_CONTACT = 11982;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_68_CURE_OTHER = 11983;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_68_HUMIDIFY = 11984;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_69_TELE_MOONCLAN = 11985;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_70_TELE_MOONCLAN_GROUP = 11986;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_71_CURE_ME = 11987;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_71_HUNTER_KIT = 11988;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_71_TELE_ZMIALTAR = 11989;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_72_TELE_WATERBIRTH = 11990;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_73_TELE_WATERBIRTH_GROUP = 11991;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_74_CURE_GROUP = 11992;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_75_STAT_SPY = 11993;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_75_TELE_BARB_OUTPOST = 11994;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_76_TELE_BARB_OUTPOST_GROUP = 11995;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_76_SPIN_FLAX = 11996;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_77_SUPERGLASS = 11997;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_TANLEATHER = 11998;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_78_TELE_PORT_KHAZARD = 11999;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_79_TELE_PORT_KHAZARD_GROUP = 12000;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_79_DREAM = 12001;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_80_STRING_JEWELRY = 12002;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_81_RES_POT_SHARE = 12003;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_82_MAGIC_IMBUE = 12004;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_83_TREAT_SOIL = 12005;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_84_STATBOOST_POT_SHARE = 12006;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_85_TELE_FISH_GUILD = 12007;
+			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL_3 = 12008;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_86_TELE_FISH_GUILD_GROUP = 12009;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_86_PLANK_MAKE = 12010;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_87_TELE_CATHERBY = 12011;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_88_TELE_CATHERBY_GROUP = 12012;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_89_RECHARGE_DRAGONSTONE = 12013;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_89_TELE_GHORROCK = 12014;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_90_TELE_GHORROCK_GROUP = 12015;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_91_ENERGY_TRANSFER = 12016;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_92_HEAL_OTHER = 12017;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_93_VENGEANCE_OTHER = 12018;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_94_VENGEANCE = 12019;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_95_HEAL_GROUP = 12020;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_96_SPELLBOOK_SWAP = 12021;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_PREAMBLE = 12022;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_01_ARCEUUS_HOME_TELEPORT = 12023;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_LEAGUE_3_HOME_TELEPORT_4 = 12024;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_06_TELEPORT_ARCEUUS = 12025;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_03_REANIMATE_BASIC = 12026;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_17_TELEPORT_DRAYNOR = 12027;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_23_TELEPORT_BATTLEFRONT = 12028;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_28_TELEPORT_MIND_ALTAR = 12029;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_34_ARCEUUS_RESPAWN_TELEPORT = 12030;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_35_GHOSTLY_GRASP = 12031;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_38_RESURRECT_LESSER_GHOST = 12032;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_38_RESURRECT_LESSER_SKELETON = 12033;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_38_RESURRECT_LESSER_ZOMBIE = 12034;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_40_TELEPORT_SALVE = 12035;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_07_REANIMATE_ADEPT = 12036;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_44_INFERIOR_DEMONBANE = 12037;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_47_SHADOW_VEIL = 12038;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_48_TELEPORT_FENK = 12039;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_50_DARK_LURE = 12040;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_56_SKELETAL_GRASP = 12041;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_57_RESURRECT_SUPERIOR_GHOST = 12042;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_57_RESURRECT_SUPERIOR_SKELETON = 12043;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_57_RESURRECT_SUPERIOR_ZOMBIE = 12044;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_59_MARK_OF_DARKNES = 12045;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_61_TELEPORT_WESTARDY = 12046;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_62_SUPERIOR_DEMONBANE = 12047;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_64_LESSER_CORRUPTION = 12048;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_65_TELEPORT_HARMONY = 12049;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_66_VILE_VIGOUR = 12050;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_70_DEGRIME = 12051;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_71_TELEPORT_CEMETERY = 12052;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_12_REANIMATE_EXPERT = 12053;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_73_WARD_OF_ARCEUUS = 12054;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_76_RESURRECT_GREATER_GHOST = 12055;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_76_RESURRECT_GREATER_SKELETON = 12056;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_76_RESURRECT_GREATER_ZOMBIE = 12057;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_78_RESURRECT_CROPS = 12058;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_79_UNDEAD_GRASP = 12059;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_80_DEATH_CHARGE = 12060;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_82_DARK_DEMONBANE = 12061;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_83_TELEPORT_BARROWS = 12062;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_84_DEMONIC_OFFERING = 12063;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_85_GREATER_CORRUPTION = 12064;
+			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL_4 = 12065;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_90_TELEPORT_APE = 12066;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_16_REANIMATE_MASTER = 12067;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_92_SINISTER_OFFERING = 12068;
+			public static final int SKILL_FEATURE_MAGIC_BOOTS_WIZARD = 12069;
+			public static final int SKILL_FEATURE_MAGIC_XERIC_HAT = 12070;
+			public static final int SKILL_FEATURE_MAGIC_ELDERCHAOS_TOP = 12071;
+			public static final int SKILL_FEATURE_MAGIC_MYSTIC_ROBE_TOP = 12072;
+			public static final int SKILL_FEATURE_MAGIC_ENCHANTED_ROBETOP = 12073;
+			public static final int SKILL_FEATURE_MAGIC_ROBE_DARKNESS_TOP = 12074;
+			public static final int SKILL_FEATURE_MAGIC_SPLITBARK_BODY = 12075;
+			public static final int SKILL_FEATURE_MAGIC_SKELETALARMOUR = 12076;
+			public static final int SKILL_FEATURE_MAGIC_MAGICTRAINING_INFINITYTOP = 12077;
+			public static final int SKILL_FEATURE_MAGIC_SWAMPBARK_BODY = 12078;
+			public static final int SKILL_FEATURE_MAGIC_GODCAPES = 12079;
+			public static final int SKILL_FEATURE_MAGIC_BLOODBARK_BODY = 12080;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_TORSO = 12081;
+			public static final int SKILL_FEATURE_MAGIC_TRAIL_MAGE_TORSO = 12082;
+			public static final int SKILL_FEATURE_MAGIC_OCCULT_NECKLACE = 12083;
+			public static final int SKILL_FEATURE_MAGIC_DAGONHAI_ROBE_TOP = 12084;
+			public static final int SKILL_FEATURE_MAGIC_BARROWS_AHRIM_BODY = 12085;
+			public static final int SKILL_FEATURE_MAGIC_BOOTS_OF_BRIMSTONE = 12086;
+			public static final int SKILL_FEATURE_MAGIC_ETERNAL_BOOTS = 12087;
+			public static final int SKILL_FEATURE_MAGIC_FROST_MOON_HELM = 12088;
+			public static final int SKILL_FEATURE_MAGIC_ANCESTRAL_ROBE_TOP = 12089;
+			public static final int SKILL_FEATURE_MAGIC_VIRTUS_TOP = 12090;
+			public static final int SKILL_FEATURE_MAGIC_AVERNIC_TREADS = 12091;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_BRONZE_TIPPED_OPAL_ENCHANTED = 12092;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_MITHRIL_TIPPED_SAPPHIRE_ENCHANTED = 12093;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_BLURITE_TIPPED_JADE_ENCHANTED = 12094;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_IRON_TIPPED_PEARL_ENCHANTED = 12095;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_MITHRIL_TIPPED_EMERALD_ENCHANTED = 12096;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_STEEL_TIPPED_REDTOPAZ_ENCHANTED = 12097;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_ADAMANTITE_TIPPED_RUBY_ENCHANTED = 12098;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_ADAMANTITE_TIPPED_DIAMOND_ENCHANTED = 12099;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_RUNITE_TIPPED_DRAGONSTONE_ENCHANTED = 12100;
+			public static final int SKILL_FEATURE_MAGIC_BOLTS_RUNITE_TIPPED_ONYX_ENCHANTED = 12101;
+			public static final int SKILL_FEATURE_MAGIC_BATTLESTAFF = 12102;
+			public static final int SKILL_FEATURE_MAGIC_NATURE_STAFF_CHARGED = 12103;
+			public static final int SKILL_FEATURE_MAGIC_MYSTIC_AIR_STAFF = 12104;
+			public static final int SKILL_FEATURE_MAGIC_PEST_VOID_KNIGHT_MACE = 12105;
+			public static final int SKILL_FEATURE_MAGIC_MAGICTRAINING_WAND_BEG = 12106;
+			public static final int SKILL_FEATURE_MAGIC_MAGICTRAINING_WAND_APPR = 12107;
+			public static final int SKILL_FEATURE_MAGIC_STAFF_OF_ZAROS = 12108;
+			public static final int SKILL_FEATURE_MAGIC_SLAYER_STAFF = 12109;
+			public static final int SKILL_FEATURE_MAGIC_RAT_BONE_STAFF = 12110;
+			public static final int SKILL_FEATURE_MAGIC_MAGICTRAINING_WAND_TEACH = 12111;
+			public static final int SKILL_FEATURE_MAGIC_MAGICTRAINING_WAND_MASTER = 12112;
+			public static final int SKILL_FEATURE_MAGIC_WILD_CAVE_SCEPTRE_CHARGED = 12113;
+			public static final int SKILL_FEATURE_MAGIC_GUTHIX_STAFF = 12114;
+			public static final int SKILL_FEATURE_MAGIC_TZHAAR_STAFF = 12115;
+			public static final int SKILL_FEATURE_MAGIC_TWINFLAME_STAFF = 12116;
+			public static final int SKILL_FEATURE_MAGIC_WARPED_SCEPTRE = 12117;
+			public static final int SKILL_FEATURE_MAGIC_TRAIL_MAGE_WAND = 12118;
+			public static final int SKILL_FEATURE_MAGIC_DRAGONHUNTER_WAND = 12119;
+			public static final int SKILL_FEATURE_MAGIC_BARROWS_AHRIM_WEAPON = 12120;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_SCEPTRE = 12121;
+			public static final int SKILL_FEATURE_MAGIC_WILD_CAVE_ACCURSED_CHARGED = 12122;
+			public static final int SKILL_FEATURE_MAGIC_SOTD = 12123;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_SCEPTRE_SMOKE = 12124;
+			public static final int SKILL_FEATURE_MAGIC_STAFF_OF_LIGHT = 12125;
+			public static final int SKILL_FEATURE_MAGIC_STAFF_OF_BALANCE = 12126;
+			public static final int SKILL_FEATURE_MAGIC_TOTS = 12127;
+			public static final int SKILL_FEATURE_MAGIC_SLAYER_STAFF_ENCHANTED = 12128;
+			public static final int SKILL_FEATURE_MAGIC_FROSTMOON_SPEAR = 12129;
+			public static final int SKILL_FEATURE_MAGIC_PURGING_STAFF = 12130;
+			public static final int SKILL_FEATURE_MAGIC_TOXIC_TOTS_CHARGED = 12131;
+			public static final int SKILL_FEATURE_MAGIC_KODAI_WAND = 12132;
+			public static final int SKILL_FEATURE_MAGIC_SOULFLAME_HORN = 12133;
+			public static final int SKILL_FEATURE_MAGIC_SANGUINESTI_STAFF = 12134;
+			public static final int SKILL_FEATURE_MAGIC_EYE_OF_AYAK = 12135;
+			public static final int SKILL_FEATURE_MAGIC_TUMEKENS_SHADOW = 12136;
+			public static final int SKILL_FEATURE_MAGIC_TOME_OF_WATER = 12137;
+			public static final int SKILL_FEATURE_MAGIC_TOME_OF_EARTH = 12138;
+			public static final int SKILL_FEATURE_MAGIC_TOME_OF_FIRE = 12139;
+			public static final int SKILL_FEATURE_MAGIC_MAGICTRAINING_BOOKOFMAGIC = 12140;
+			public static final int SKILL_FEATURE_MAGIC_WYVERN_SHIELD_MAKE = 12141;
+			public static final int SKILL_FEATURE_MAGIC_WYVERN_SHIELD_WIELD = 12142;
+			public static final int SKILL_FEATURE_MAGIC_SALAMANDER_GREEN = 12143;
+			public static final int SKILL_FEATURE_MAGIC_SALAMANDER_ORANGE = 12144;
+			public static final int SKILL_FEATURE_MAGIC_SALAMANDER_RED = 12145;
+			public static final int SKILL_FEATURE_MAGIC_SALAMANDER_BLACK = 12146;
+			public static final int SKILL_FEATURE_MAGIC_SALAMANDER_TECU = 12147;
+			public static final int SKILL_FEATURE_MAGIC_SKILLCAPE = 12148;
+			public static final int SKILL_FEATURE_MINING_OVERVIEW_0 = 12154;
+			public static final int SKILL_FEATURE_MINING_OVERVIEW_1 = 12155;
+			public static final int SKILL_FEATURE_MINING_OVERVIEW_2 = 12156;
+			public static final int SKILL_FEATURE_MINING_OVERVIEW_3 = 12157;
+			public static final int SKILL_FEATURE_MINING_CLAY = 12158;
+			public static final int SKILL_FEATURE_MINING_COPPER_ORE = 12159;
+			public static final int SKILL_FEATURE_MINING_TIN_ORE = 12160;
+			public static final int SKILL_FEATURE_MINING_BLANKRUNE = 12161;
+			public static final int SKILL_FEATURE_MINING_BLURITE_ORE = 12162;
+			public static final int SKILL_FEATURE_MINING_LIMESTONE = 12163;
+			public static final int SKILL_FEATURE_MINING_BARRONITE_SHARD = 12164;
+			public static final int SKILL_FEATURE_MINING_IRON_ORE = 12165;
+			public static final int SKILL_FEATURE_MINING_SILVER_ORE = 12166;
+			public static final int SKILL_FEATURE_MINING_FOSSIL_VOLCANIC_ASH = 12167;
+			public static final int SKILL_FEATURE_MINING_LEAD_ORE = 12168;
+			public static final int SKILL_FEATURE_MINING_COAL = 12169;
+			public static final int SKILL_FEATURE_MINING_BLANKRUNE_HIGH = 12170;
+			public static final int SKILL_FEATURE_MINING_PAYDIRT = 12171;
+			public static final int SKILL_FEATURE_MINING_ENAKH_SANDSTONE_LARGE = 12172;
+			public static final int SKILL_FEATURE_MINING_ARCEUUS_ESSENCE_BLOCK = 12173;
+			public static final int SKILL_FEATURE_MINING_GOLD_ORE = 12174;
+			public static final int SKILL_FEATURE_MINING_UNCUT_RED_TOPAZ = 12175;
+			public static final int SKILL_FEATURE_MINING_CALCIFIED_DEPOSIT = 12176;
+			public static final int SKILL_FEATURE_MINING_LOVAKENGJ_SULPHUR = 12177;
+			public static final int SKILL_FEATURE_MINING_GRANITE_MEDIUM = 12178;
+			public static final int SKILL_FEATURE_MINING_MITHRIL_ORE = 12179;
+			public static final int SKILL_FEATURE_MINING_BLANKRUNE_DAEYALT = 12180;
+			public static final int SKILL_FEATURE_MINING_TAINTED_ESSENCE = 12181;
+			public static final int SKILL_FEATURE_MINING_LOVAKITE_ORE = 12182;
+			public static final int SKILL_FEATURE_MINING_ADAMANTITE_ORE = 12183;
+			public static final int SKILL_FEATURE_MINING_SOFTCLAY = 12184;
+			public static final int SKILL_FEATURE_MINING_MY2ARM_SALTS = 12185;
+			public static final int SKILL_FEATURE_MINING_BASALT = 12186;
+			public static final int SKILL_FEATURE_MINING_NICKEL_ORE = 12187;
+			public static final int SKILL_FEATURE_MINING_ANCIENT_ESSENCE = 12188;
+			public static final int SKILL_FEATURE_MINING_INFERNAL_SHALE = 12189;
+			public static final int SKILL_FEATURE_MINING_RUNITE_ORE = 12190;
+			public static final int SKILL_FEATURE_MINING_AMETHYST = 12191;
+			public static final int SKILL_FEATURE_MINING_BRONZE_PICKAXE = 12192;
+			public static final int SKILL_FEATURE_MINING_IRON_PICKAXE = 12193;
+			public static final int SKILL_FEATURE_MINING_STEEL_PICKAXE = 12194;
+			public static final int SKILL_FEATURE_MINING_BLACK_PICKAXE = 12195;
+			public static final int SKILL_FEATURE_MINING_MGUILD_GLOVES_BASIC = 12196;
+			public static final int SKILL_FEATURE_MINING_MITHRIL_PICKAXE = 12197;
+			public static final int SKILL_FEATURE_MINING_ADAMANT_PICKAXE = 12198;
+			public static final int SKILL_FEATURE_MINING_RUNE_PICKAXE = 12199;
+			public static final int SKILL_FEATURE_MINING_GILDED_PICKAXE = 12200;
+			public static final int SKILL_FEATURE_MINING_MGUILD_GLOVES_SUPERIOR = 12201;
+			public static final int SKILL_FEATURE_MINING_DRAGON_PICKAXE = 12202;
+			public static final int SKILL_FEATURE_MINING_3A_PICKAXE = 12203;
+			public static final int SKILL_FEATURE_MINING_INFERNAL_PICKAXE = 12204;
+			public static final int SKILL_FEATURE_MINING_MGUILD_GLOVES_EXPERT = 12205;
+			public static final int SKILL_FEATURE_MINING_CRYSTAL_PICKAXE = 12206;
+			public static final int SKILL_FEATURE_MINING_MLM_ENTRY = 12207;
+			public static final int SKILL_FEATURE_MINING_LOVAKENGJ_DYNAMITE_FUSED = 12208;
+			public static final int SKILL_FEATURE_MINING_FOSSIL_MINE = 12209;
+			public static final int SKILL_FEATURE_MINING_MLM_UPPERAREA = 12210;
+			public static final int SKILL_FEATURE_MINING_GUILD = 12211;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_1 = 12212;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_2 = 12213;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_3 = 12214;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_4 = 12215;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_5 = 12216;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_6 = 12217;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_7 = 12218;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_8 = 12219;
+			public static final int SKILL_FEATURE_MINING_SHOOTINGSTAR_9 = 12220;
+			public static final int SKILL_FEATURE_MINING_SKILLCAPE = 12221;
+			public static final int SKILL_FEATURE_PRAYER_OVERVIEW_0 = 12226;
+			public static final int SKILL_FEATURE_PRAYER_OVERVIEW_1 = 12227;
+			public static final int SKILL_FEATURE_PRAYER_OVERVIEW_2 = 12228;
+			public static final int SKILL_FEATURE_PRAYER_OVERVIEW_3 = 12229;
+			public static final int SKILL_FEATURE_PRAYER_THICKSKIN = 12230;
+			public static final int SKILL_FEATURE_PRAYER_BURSTOFSTRENGTH = 12231;
+			public static final int SKILL_FEATURE_PRAYER_CLARITYOFTHOUGHT = 12232;
+			public static final int SKILL_FEATURE_PRAYER_SHARPEYE = 12233;
+			public static final int SKILL_FEATURE_PRAYER_MYSTICWILL = 12234;
+			public static final int SKILL_FEATURE_PRAYER_ROCKSKIN = 12235;
+			public static final int SKILL_FEATURE_PRAYER_SUPERHUMANSTRENGTH = 12236;
+			public static final int SKILL_FEATURE_PRAYER_IMPROVEDREFLEXES = 12237;
+			public static final int SKILL_FEATURE_PRAYER_RAPIDRESTORE = 12238;
+			public static final int SKILL_FEATURE_PRAYER_RAPIDHEAL = 12239;
+			public static final int SKILL_FEATURE_PRAYER_PROTECTITEM = 12240;
+			public static final int SKILL_FEATURE_PRAYER_HAWKEYE = 12241;
+			public static final int SKILL_FEATURE_PRAYER_MYSTICLORE = 12242;
+			public static final int SKILL_FEATURE_PRAYER_STEELSKIN = 12243;
+			public static final int SKILL_FEATURE_PRAYER_ULTIMATESTRENGTH = 12244;
+			public static final int SKILL_FEATURE_PRAYER_INCREDIBLEREFLEXES = 12245;
+			public static final int SKILL_FEATURE_PRAYER_PROTECTFROMMAGIC = 12246;
+			public static final int SKILL_FEATURE_PRAYER_PROTECTFROMMISSILES = 12247;
+			public static final int SKILL_FEATURE_PRAYER_PROTECTFROMMELEE = 12248;
+			public static final int SKILL_FEATURE_PRAYER_EAGLEEYE = 12249;
+			public static final int SKILL_FEATURE_PRAYER_MYSTICMIGHT = 12250;
+			public static final int SKILL_FEATURE_PRAYER_RETRIBUTION = 12251;
+			public static final int SKILL_FEATURE_PRAYER_REDEMPTION = 12252;
+			public static final int SKILL_FEATURE_PRAYER_SMITE = 12253;
+			public static final int SKILL_FEATURE_PRAYER_PRESERVE = 12254;
+			public static final int SKILL_FEATURE_PRAYER_CHIVALRY = 12255;
+			public static final int SKILL_FEATURE_PRAYER_DEADEYE = 12256;
+			public static final int SKILL_FEATURE_PRAYER_MYSTICVIGOUR = 12257;
+			public static final int SKILL_FEATURE_PRAYER_PIETY = 12258;
+			public static final int SKILL_FEATURE_PRAYER_RIGOUR = 12259;
+			public static final int SKILL_FEATURE_PRAYER_AUGURY = 12260;
+			public static final int SKILL_FEATURE_PRAYER_INITIATEARMOUR = 12261;
+			public static final int SKILL_FEATURE_PRAYER_PROSELYTEARMOUR = 12262;
+			public static final int SKILL_FEATURE_PRAYER_SARADOMIN_ROBE_TOP = 12263;
+			public static final int SKILL_FEATURE_PRAYER_SARADOMIN_ROBE_LEGS = 12264;
+			public static final int SKILL_FEATURE_PRAYER_HOLY_WRAPS = 12265;
+			public static final int SKILL_FEATURE_PRAYER_HOLY_SANDALS = 12266;
+			public static final int SKILL_FEATURE_PRAYER_SARADOMIN_CLOAK = 12267;
+			public static final int SKILL_FEATURE_PRAYER_SARADOMIN_MITRE = 12268;
+			public static final int SKILL_FEATURE_PRAYER_ECTOPLASMATOR = 12269;
+			public static final int SKILL_FEATURE_PRAYER_STRINGSTAR = 12270;
+			public static final int SKILL_FEATURE_PRAYER_GRAPE_BLESSING = 12271;
+			public static final int SKILL_FEATURE_PRAYER_ANTLER_GUARD = 12272;
+			public static final int SKILL_FEATURE_PRAYER_SPIRIT_SHIELD = 12273;
+			public static final int SKILL_FEATURE_PRAYER_SARADOMIN_SCARF = 12274;
+			public static final int SKILL_FEATURE_PRAYER_SARADOMIN_STAFF = 12275;
+			public static final int SKILL_FEATURE_PRAYER_BLESSED_SPIRIT_SHIELD = 12276;
+			public static final int SKILL_FEATURE_PRAYER_DEVOUT_BOOTS = 12277;
+			public static final int SKILL_FEATURE_PRAYER_SUNFIRE_BODY = 12278;
+			public static final int SKILL_FEATURE_PRAYER_3A_DRUIDIC_TOP = 12279;
+			public static final int SKILL_FEATURE_PRAYER_3A_DRUIDIC_STAFF = 12280;
+			public static final int SKILL_FEATURE_PRAYER_ARCANE = 12281;
+			public static final int SKILL_FEATURE_PRAYER_SOUL_CAPE = 12282;
+			public static final int SKILL_FEATURE_PRAYER_DRAGONBONE_NECKLACE = 12283;
+			public static final int SKILL_FEATURE_PRAYER_BONECRUSHER_NECKLACE = 12284;
+			public static final int SKILL_FEATURE_PRAYER_ELYSIAN = 12285;
+			public static final int SKILL_FEATURE_PRAYER_ELIDINIS_WARD = 12286;
+			public static final int SKILL_FEATURE_PRAYER_SUNFIRE_WINE = 12287;
+			public static final int SKILL_FEATURE_PRAYER_HALLOWED_SEPULCHRE = 12288;
+			public static final int SKILL_FEATURE_PRAYER_SUPERIOR_DRAGON_BONES = 12289;
+			public static final int SKILL_FEATURE_PRAYER_ELIDINIS_WARD_FORTIFIED = 12290;
+			public static final int SKILL_FEATURE_PRAYER_SKILLCAPE = 12291;
+			public static final int SKILL_FEATURE_RANGED_OVERVIEW_0 = 12301;
+			public static final int SKILL_FEATURE_RANGED_OVERVIEW_1 = 12302;
+			public static final int SKILL_FEATURE_RANGED_OVERVIEW_2 = 12303;
+			public static final int SKILL_FEATURE_RANGED_BOWS_SHORTBOW = 12304;
+			public static final int SKILL_FEATURE_RANGED_BOWS_OAK_SHORTBOW = 12305;
+			public static final int SKILL_FEATURE_RANGED_BOWS_WILLOW_SHORTBOW = 12306;
+			public static final int SKILL_FEATURE_RANGED_BOWS_MAPLE_SHORTBOW = 12307;
+			public static final int SKILL_FEATURE_RANGED_BOWS_ZOGRE_BOW = 12308;
+			public static final int SKILL_FEATURE_RANGED_BOWS_YEW_SHORTBOW = 12309;
+			public static final int SKILL_FEATURE_RANGED_BOWS_MAGIC_SHORTBOW = 12310;
+			public static final int SKILL_FEATURE_RANGED_BOWS_RAT_BONE_BOW = 12311;
+			public static final int SKILL_FEATURE_RANGED_BOWS_SEERCULL = 12312;
+			public static final int SKILL_FEATURE_RANGED_BOWS_DARKBOW = 12313;
+			public static final int SKILL_FEATURE_RANGED_BOWS_CREW = 12314;
+			public static final int SKILL_FEATURE_RANGED_BOWS_TRAIL_RANGER_BOW = 12315;
+			public static final int SKILL_FEATURE_RANGED_BOWS_WEBWEAVER = 12316;
+			public static final int SKILL_FEATURE_RANGED_BOWS_SCORCHING_BOW = 12317;
+			public static final int SKILL_FEATURE_RANGED_BOWS_VENATOR_BOW = 12318;
+			public static final int SKILL_FEATURE_RANGED_BOWS_TWISTED_BOW = 12319;
+			public static final int SKILL_FEATURE_RANGED_THROWN_BRONZE_KNIFE = 12320;
+			public static final int SKILL_FEATURE_RANGED_THROWN_IRON_KNIFE = 12321;
+			public static final int SKILL_FEATURE_RANGED_THROWN_STEEL_KNIFE = 12322;
+			public static final int SKILL_FEATURE_RANGED_THROWN_BLACK_KNIFE = 12323;
+			public static final int SKILL_FEATURE_RANGED_THROWN_MITHRIL_KNIFE = 12324;
+			public static final int SKILL_FEATURE_RANGED_THROWN_ADAMANT_KNIFE = 12325;
+			public static final int SKILL_FEATURE_RANGED_THROWN_RUNE_KNIFE = 12326;
+			public static final int SKILL_FEATURE_RANGED_THROWN_CAMPHOR_BLOWPIPE = 12327;
+			public static final int SKILL_FEATURE_RANGED_THROWN_CHINCHOMPA = 12328;
+			public static final int SKILL_FEATURE_RANGED_THROWN_AMETHYST_DART = 12329;
+			public static final int SKILL_FEATURE_RANGED_THROWN_CHINCHOMPA_BIG = 12330;
+			public static final int SKILL_FEATURE_RANGED_THROWN_IRONWOOD_BLOWPIPE = 12331;
+			public static final int SKILL_FEATURE_RANGED_THROWN_DRAGON_DART = 12332;
+			public static final int SKILL_FEATURE_RANGED_THROWN_DRAGON_KNIFE = 12333;
+			public static final int SKILL_FEATURE_RANGED_THROWN_TZHAAR_THROWINGRING = 12334;
+			public static final int SKILL_FEATURE_RANGED_THROWN_DRAGON_THROWNAXE = 12335;
+			public static final int SKILL_FEATURE_RANGED_THROWN_CHINCHOMPA_BLACK = 12336;
+			public static final int SKILL_FEATURE_RANGED_THROWN_ROSEWOOD_BLOWPIPE = 12337;
+			public static final int SKILL_FEATURE_RANGED_THROWN_ECLIPSE_ATLATL = 12338;
+			public static final int SKILL_FEATURE_RANGED_THROWN_TOXIC_BLOWPIPE = 12339;
+			public static final int SKILL_FEATURE_RANGED_THROWN_TONALZTICS_OF_RALOS = 12340;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW = 12341;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_PHOENIX_CROSSBOW = 12342;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW_BRONZE = 12343;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW_BLURITE = 12344;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW_IRON = 12345;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_DTTD_BONE_CROSSBOW = 12346;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW_STEEL = 12347;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW_MITHRIL = 12348;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW_ADAMANTITE = 12349;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_HUNTING_CROSSBOW = 12350;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW_RUNITE = 12351;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_CROSSBOW_DRAGON = 12352;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_HUNTING_CROSSBOW_SUNLIGHT = 12353;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_DRAGONHUNTER_XBOW = 12354;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_ACB = 12355;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_KARIL_WEAPON = 12356;
+			public static final int SKILL_FEATURE_RANGED_XBOWS_ZARYTE_XBOW = 12357;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_LEATHER_ARMOUR = 12358;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_HARDLEATHER_BODY = 12359;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_STUDDED_BODY = 12360;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_STUDDED_CHAPS = 12361;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_COIF = 12362;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_LEATHER_SHIELD = 12363;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_FROG_ARMOUR = 12364;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_SNAKESKIN_BODY = 12365;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_SNAKESKIN_SHIELD = 12366;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_ANMA_30_REWARD = 12367;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BOOTS_RANGER = 12368;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_ROBINHOODHAT = 12369;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_RANGER_TUNIC = 12370;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_RANGER_GLOVES = 12371;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_RANGERS_TIGHTS = 12372;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_DAGANNOTH_RANGED_ARMOUR = 12373;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_DRAGON_VAMBRACES = 12374;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_DRAGONHIDE_CHAPS = 12375;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_DRAGONHIDE_BODY = 12376;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_GREEN_DHIDE_SHIELD = 12377;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_ANMA_50_REWARD = 12378;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLUE_DRAGON_VAMBRACES = 12379;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLUE_DRAGONHIDE_CHAPS = 12380;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLUE_DRAGONHIDE_BODY = 12381;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLUE_DHIDE_SHIELD = 12382;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_PENANCE_RANGER_LEGS = 12383;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_RED_DRAGON_VAMBRACES = 12384;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_RED_DRAGONHIDE_CHAPS = 12385;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_RED_DRAGONHIDE_BODY = 12386;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_RED_DHIDE_SHIELD = 12387;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_HIDE_LEGS = 12388;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_HIDE_TOP = 12389;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_TRAIL_RANGER = 12390;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_AVAS_ASSEMBLER = 12391;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLACK_DRAGON_VAMBRACES = 12392;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLACK_DRAGONHIDE_CHAPS = 12393;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLACK_DRAGONHIDE_BODY = 12394;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLACK_DHIDE_SHIELD = 12395;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BLESSED_DHIDE_SHIELDS = 12396;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_TRAIL_GOD_DRAGONHIDE = 12397;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_HUEY_VAMBRACES = 12398;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_HUEY_CHAPS = 12399;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_HUEY_BODY = 12400;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_HUEY_COIF = 12401;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_ARMADYL = 12402;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_BARROWS_KARIL = 12403;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_DRAGONFIRE_WARD = 12404;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_DIZANAS_QUIVER = 12405;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_ECLIPSE_SET = 12406;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_PEGASIAN_BOOTS = 12407;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_TWISTED_BUCKLER = 12408;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_ZARYTE_VAMBRACES = 12409;
+			public static final int SKILL_FEATURE_RANGED_ARMOUR_MASORI = 12410;
+			public static final int SKILL_FEATURE_RANGED_MISC_AQUANITE_HOPPER = 12411;
+			public static final int SKILL_FEATURE_RANGED_MISC_LIGHT_BALLISTA = 12412;
+			public static final int SKILL_FEATURE_RANGED_MISC_GWD_ARMADYI = 12413;
+			public static final int SKILL_FEATURE_RANGED_MISC_HEAVY_BALLISTA = 12414;
+			public static final int SKILL_FEATURE_RANGED_HALLOWED_SEPULCHRE = 12415;
+			public static final int SKILL_FEATURE_RANGED_SKILLCAPE = 12416;
+			public static final int SKILL_FEATURE_RUNECRAFT_OVERVIEW_0 = 12423;
+			public static final int SKILL_FEATURE_RUNECRAFT_OVERVIEW_1 = 12424;
+			public static final int SKILL_FEATURE_RUNECRAFT_OVERVIEW_2 = 12425;
+			public static final int SKILL_FEATURE_RUNECRAFT_1AIRRUNE = 12426;
+			public static final int SKILL_FEATURE_RUNECRAFT_1MINDRUNE = 12427;
+			public static final int SKILL_FEATURE_RUNECRAFT_1WATERRUNE = 12428;
+			public static final int SKILL_FEATURE_RUNECRAFT_1MISTRUNE = 12429;
+			public static final int SKILL_FEATURE_RUNECRAFT_1EARTHRUNE = 12430;
+			public static final int SKILL_FEATURE_RUNECRAFT_1DUSTRUNE = 12431;
+			public static final int SKILL_FEATURE_RUNECRAFT_1MUDRUNE = 12432;
+			public static final int SKILL_FEATURE_RUNECRAFT_1FIRERUNE = 12433;
+			public static final int SKILL_FEATURE_RUNECRAFT_1SMOKERUNE = 12434;
+			public static final int SKILL_FEATURE_RUNECRAFT_1STEAMRUNE = 12435;
+			public static final int SKILL_FEATURE_RUNECRAFT_1BODYRUNE = 12436;
+			public static final int SKILL_FEATURE_RUNECRAFT_1LAVARUNE = 12437;
+			public static final int SKILL_FEATURE_RUNECRAFT_1COSMICRUNE = 12438;
+			public static final int SKILL_FEATURE_RUNECRAFT_1SUNFIRERUNE = 12439;
+			public static final int SKILL_FEATURE_RUNECRAFT_1CHAOSRUNE = 12440;
+			public static final int SKILL_FEATURE_RUNECRAFT_1ASTRALRUNE = 12441;
+			public static final int SKILL_FEATURE_RUNECRAFT_1NATURERUNE = 12442;
+			public static final int SKILL_FEATURE_RUNECRAFT_1LAWRUNE = 12443;
+			public static final int SKILL_FEATURE_RUNECRAFT_1DEATHRUNE = 12444;
+			public static final int SKILL_FEATURE_RUNECRAFT_1BLOODRUNE = 12445;
+			public static final int SKILL_FEATURE_RUNECRAFT_1SOULRUNE = 12446;
+			public static final int SKILL_FEATURE_RUNECRAFT_1AETHERRUNE = 12447;
+			public static final int SKILL_FEATURE_RUNECRAFT_1WRATHRUNE = 12448;
+			public static final int SKILL_FEATURE_RUNECRAFT_MULTIPREAMBLE = 12449;
+			public static final int SKILL_FEATURE_RUNECRAFT_2AIRRUNE = 12450;
+			public static final int SKILL_FEATURE_RUNECRAFT_2MINDRUNE = 12451;
+			public static final int SKILL_FEATURE_RUNECRAFT_2WATERRUNE = 12452;
+			public static final int SKILL_FEATURE_RUNECRAFT_3AIRRUNE = 12453;
+			public static final int SKILL_FEATURE_RUNECRAFT_2EARTHRUNE = 12454;
+			public static final int SKILL_FEATURE_RUNECRAFT_3MINDRUNE = 12455;
+			public static final int SKILL_FEATURE_RUNECRAFT_4AIRRUNE = 12456;
+			public static final int SKILL_FEATURE_RUNECRAFT_2FIRERUNE = 12457;
+			public static final int SKILL_FEATURE_RUNECRAFT_3WATERRUNE = 12458;
+			public static final int SKILL_FEATURE_RUNECRAFT_4MINDRUNE = 12459;
+			public static final int SKILL_FEATURE_RUNECRAFT_5 = 12460;
+			public static final int SKILL_FEATURE_RUNECRAFT_2BODYRUNE = 12461;
+			public static final int SKILL_FEATURE_RUNECRAFT_2SUNFIRERUNE = 12462;
+			public static final int SKILL_FEATURE_RUNECRAFT_3EARTHRUNE = 12463;
+			public static final int SKILL_FEATURE_RUNECRAFT_6AIRRUNE = 12464;
+			public static final int SKILL_FEATURE_RUNECRAFT_5MINDRUNE = 12465;
+			public static final int SKILL_FEATURE_RUNECRAFT_4WATERRUNE = 12466;
+			public static final int SKILL_FEATURE_RUNECRAFT_2COSMICRUNE = 12467;
+			public static final int SKILL_FEATURE_RUNECRAFT_7AIRRUNE = 12468;
+			public static final int SKILL_FEATURE_RUNECRAFT_6MINDRUNE = 12469;
+			public static final int SKILL_FEATURE_RUNECRAFT_3FIRERUNE = 12470;
+			public static final int SKILL_FEATURE_RUNECRAFT_2CHAOSRUNE = 12471;
+			public static final int SKILL_FEATURE_RUNECRAFT_5WATERRUNE = 12472;
+			public static final int SKILL_FEATURE_RUNECRAFT_8AIRRUNE = 12473;
+			public static final int SKILL_FEATURE_RUNECRAFT_4EARTHRUNE = 12474;
+			public static final int SKILL_FEATURE_RUNECRAFT_2ASTRALRUNE = 12475;
+			public static final int SKILL_FEATURE_RUNECRAFT_7MINDRUNE = 12476;
+			public static final int SKILL_FEATURE_RUNECRAFT_9AIRRUNE = 12477;
+			public static final int SKILL_FEATURE_RUNECRAFT_2NATURERUNE = 12478;
+			public static final int SKILL_FEATURE_RUNECRAFT_3BODYRUNE = 12479;
+			public static final int SKILL_FEATURE_RUNECRAFT_6WATERRUNE = 12480;
+			public static final int SKILL_FEATURE_RUNECRAFT_2LAWRUNE = 12481;
+			public static final int SKILL_FEATURE_RUNECRAFT_8MINDRUNE = 12482;
+			public static final int SKILL_FEATURE_RUNECRAFT_3SUNFIRERUNE = 12483;
+			public static final int SKILL_FEATURE_RUNECRAFT_10AIRRUNE = 12484;
+			public static final int SKILL_FEATURE_RUNECRAFT_2DEATHRUNE = 12485;
+			public static final int SKILL_FEATURE_RUNECRAFT_3PREAMBLE = 12486;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_SMALL = 12487;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_MEDIUM = 12488;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_COLOSSAL = 12489;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_LARGE = 12490;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_GIANT = 12491;
+			public static final int SKILL_FEATURE_RUNECRAFT_SWAMPBARK_GREAVES = 12492;
+			public static final int SKILL_FEATURE_RUNECRAFT_SWAMPBARK_HELM = 12493;
+			public static final int SKILL_FEATURE_RUNECRAFT_SWAMPBARK_BODY = 12494;
+			public static final int SKILL_FEATURE_RUNECRAFT_WINT_BURNT_PAGE = 12495;
+			public static final int SKILL_FEATURE_RUNECRAFT_SOAKED_PAGE = 12496;
+			public static final int SKILL_FEATURE_RUNECRAFT_SOILED_PAGE = 12497;
+			public static final int SKILL_FEATURE_RUNECRAFT_ETERNAL_BOOTS = 12498;
+			public static final int SKILL_FEATURE_RUNECRAFT_PEGASIAN_BOOTS = 12499;
+			public static final int SKILL_FEATURE_RUNECRAFT_PRIMORDIAL_BOOTS = 12500;
+			public static final int SKILL_FEATURE_RUNECRAFT_AVERNIC_TREADS = 12501;
+			public static final int SKILL_FEATURE_RUNECRAFT_BLOODBARK_GREAVES = 12502;
+			public static final int SKILL_FEATURE_RUNECRAFT_BLOODBARK_HELM = 12503;
+			public static final int SKILL_FEATURE_RUNECRAFT_BLOODBARK_BODY = 12504;
+			public static final int SKILL_FEATURE_RUNECRAFT_GOTR = 12505;
+			public static final int SKILL_FEATURE_RUNECRAFT_SKILLCAPE = 12506;
+			public static final int SKILL_FEATURE_SAILING_OVERVIEW_0 = 12519;
+			public static final int SKILL_FEATURE_SAILING_OVERVIEW_1 = 12520;
+			public static final int SKILL_FEATURE_SAILING_OVERVIEW_2 = 12521;
+			public static final int SKILL_FEATURE_SAILING_BOAT_1BOAT = 12522;
+			public static final int SKILL_FEATURE_SAILING_BOAT_RAFT = 12523;
+			public static final int SKILL_FEATURE_SAILING_BOAT_2BOATS = 12524;
+			public static final int SKILL_FEATURE_SAILING_BOAT_SKIFF = 12525;
+			public static final int SKILL_FEATURE_SAILING_BOAT_3BOATS = 12526;
+			public static final int SKILL_FEATURE_SAILING_BOAT_SLOOP = 12527;
+			public static final int SKILL_FEATURE_SAILING_BOAT_4BOATS = 12528;
+			public static final int SKILL_FEATURE_SAILING_BOAT_5BOATS = 12529;
+			public static final int SKILL_FEATURE_SAILING_PORTS_PORT_SARIM = 12530;
+			public static final int SKILL_FEATURE_SAILING_PORTS_THE_PANDEMONIUM = 12531;
+			public static final int SKILL_FEATURE_SAILING_PORTS_LANDS_END = 12532;
+			public static final int SKILL_FEATURE_SAILING_PORTS_HOSIDIUS = 12533;
+			public static final int SKILL_FEATURE_SAILING_PORTS_MUSA_POINT = 12534;
+			public static final int SKILL_FEATURE_SAILING_PORTS_PORT_PISCARILLIUS = 12535;
+			public static final int SKILL_FEATURE_SAILING_PORTS_RIMMINGTON = 12536;
+			public static final int SKILL_FEATURE_SAILING_PORTS_CATHERBY = 12537;
+			public static final int SKILL_FEATURE_SAILING_PORTS_BRIMHAVEN = 12538;
+			public static final int SKILL_FEATURE_SAILING_PORTS_ARDOUGNE = 12539;
+			public static final int SKILL_FEATURE_SAILING_PORTS_PORT_KHAZARD = 12540;
+			public static final int SKILL_FEATURE_SAILING_PORTS_WITCHAVEN = 12541;
+			public static final int SKILL_FEATURE_SAILING_PORTS_ENTRANA = 12542;
+			public static final int SKILL_FEATURE_SAILING_PORTS_CIVITAS_ILLA_FORTIS = 12543;
+			public static final int SKILL_FEATURE_SAILING_PORTS_CORSAIR_COVE = 12544;
+			public static final int SKILL_FEATURE_SAILING_PORTS_CAIRN_ISLE = 12545;
+			public static final int SKILL_FEATURE_SAILING_PORTS_SUNSET_COAST = 12546;
+			public static final int SKILL_FEATURE_SAILING_PORTS_THE_SUMMER_SHORE = 12547;
+			public static final int SKILL_FEATURE_SAILING_PORTS_ALDARIN = 12548;
+			public static final int SKILL_FEATURE_SAILING_PORTS_RUINS_OF_UNKAH = 12549;
+			public static final int SKILL_FEATURE_SAILING_PORTS_VOID_KNIGHTS_OUTPOST = 12550;
+			public static final int SKILL_FEATURE_SAILING_PORTS_PORT_ROBERTS = 12551;
+			public static final int SKILL_FEATURE_SAILING_PORTS_RELLEKKA = 12552;
+			public static final int SKILL_FEATURE_SAILING_PORTS_ETCETERIA = 12553;
+			public static final int SKILL_FEATURE_SAILING_PORTS_PORT_TYRAS = 12554;
+			public static final int SKILL_FEATURE_SAILING_PORTS_DEEPFIN_POINT = 12555;
+			public static final int SKILL_FEATURE_SAILING_PORTS_JATIZO = 12556;
+			public static final int SKILL_FEATURE_SAILING_PORTS_NEITIZNOT = 12557;
+			public static final int SKILL_FEATURE_SAILING_PORTS_PRIFDDINAS = 12558;
+			public static final int SKILL_FEATURE_SAILING_PORTS_PISCATORIS = 12559;
+			public static final int SKILL_FEATURE_SAILING_PORTS_LUNAR_ISLE = 12560;
+			public static final int SKILL_FEATURE_SAILING_MOORING_DOGNOSE = 12561;
+			public static final int SKILL_FEATURE_SAILING_MOORING_CHINCHOMPA = 12562;
+			public static final int SKILL_FEATURE_SAILING_MOORING_LITTLEPEARL = 12563;
+			public static final int SKILL_FEATURE_SAILING_MOORING_VATRACHOS = 12564;
+			public static final int SKILL_FEATURE_SAILING_MOORING_ONYXCREST = 12565;
+			public static final int SKILL_FEATURE_SAILING_MOORING_SHIMMERINGATOLL = 12566;
+			public static final int SKILL_FEATURE_SAILING_MOORING_ANGLERSRETREAT = 12567;
+			public static final int SKILL_FEATURE_SAILING_MOORING_MINOTAURSREST = 12568;
+			public static final int SKILL_FEATURE_SAILING_MOORING_ILOVESOULS = 12569;
+			public static final int SKILL_FEATURE_SAILING_MOORING_ILOVEBONES = 12570;
+			public static final int SKILL_FEATURE_SAILING_MOORING_LAGUNAAURORAE = 12571;
+			public static final int SKILL_FEATURE_SAILING_MOORING_CHARREDISLAND = 12572;
+			public static final int SKILL_FEATURE_SAILING_MOORING_TEAROFTHESOUL = 12573;
+			public static final int SKILL_FEATURE_SAILING_MOORING_WINTUMBERISLAND = 12574;
+			public static final int SKILL_FEATURE_SAILING_MOORING_CROWNJEWEL = 12575;
+			public static final int SKILL_FEATURE_SAILING_MOORING_LLEDRITHISLAND = 12576;
+			public static final int SKILL_FEATURE_SAILING_MOORING_RAINBOWSEND = 12577;
+			public static final int SKILL_FEATURE_SAILING_MOORING_SUNBLEAKISLAND = 12578;
+			public static final int SKILL_FEATURE_SAILING_MOORING_YNYSDAIL = 12579;
+			public static final int SKILL_FEATURE_SAILING_MOORING_WATERBIRTHISLAND = 12580;
+			public static final int SKILL_FEATURE_SAILING_MOORING_BUCCANEERSHAVEN = 12581;
+			public static final int SKILL_FEATURE_SAILING_MOORING_DRUMSTICK = 12582;
+			public static final int SKILL_FEATURE_SAILING_MOORING_WEISS = 12583;
+			public static final int SKILL_FEATURE_SAILING_MOORING_BRITTLE = 12584;
+			public static final int SKILL_FEATURE_SAILING_MOORING_GRIMSTONE = 12585;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_1TASK = 12586;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_COURIER = 12587;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_PORT_SARIM = 12588;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_THE_PANDEMONIUM = 12589;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_LANDS_END = 12590;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_2TASKS = 12591;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_MUSA_POINT = 12592;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_PORT_PISCARILLIUS = 12593;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_CATHERBY = 12594;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_BRIMHAVEN = 12595;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_3TASKS = 12596;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_BOUNTY = 12597;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_PORT_KHAZARD = 12598;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_CIVITAS_ILLA_FORTIS = 12599;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_CORSAIR_COVE = 12600;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_THE_SUMMER_SHORE = 12601;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_ALDARIN = 12602;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_RUINS_OF_UNKAH = 12603;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_VOID_KNIGHTS_OUTPOST = 12604;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_PORT_ROBERTS = 12605;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_4TASKS = 12606;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_RELLEKKA = 12607;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_ETCETERIA = 12608;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_PORT_TYRAS = 12609;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_DEEPFIN_POINT = 12610;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_PRIFDDINAS = 12611;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_SAILING_SKILLGUIDE_PORTS_LUNAR_ISLE = 12612;
+			public static final int SKILL_FEATURE_SAILING_PORTTASKS_5TASKS = 12613;
+			public static final int SKILL_FEATURE_SAILING_CHARTING_SAILING_LOG = 12614;
+			public static final int SKILL_FEATURE_SAILING_CHARTING_SPYGLASS = 12615;
+			public static final int SKILL_FEATURE_SAILING_CHARTING_CROWBAR = 12616;
+			public static final int SKILL_FEATURE_SAILING_CHARTING_CURRENT_DUCK = 12617;
+			public static final int SKILL_FEATURE_SAILING_CHARTING_DIVING = 12618;
+			public static final int SKILL_FEATURE_SAILING_CHARTING_WEATHER_STATION_EMPTY = 12619;
+			public static final int SKILL_FEATURE_SAILING_SHIPWRECKS_SMALL_SHIPWRECK_SALVAGE = 12620;
+			public static final int SKILL_FEATURE_SAILING_SHIPWRECKS_FISHERMAN_SHIPWRECK_SALVAGE = 12621;
+			public static final int SKILL_FEATURE_SAILING_SHIPWRECKS_BARRACUDA_SHIPWRECK_SALVAGE = 12622;
+			public static final int SKILL_FEATURE_SAILING_SHIPWRECKS_LARGE_SHIPWRECK_SALVAGE = 12623;
+			public static final int SKILL_FEATURE_SAILING_SHIPWRECKS_PIRATE_SHIPWRECK_SALVAGE = 12624;
+			public static final int SKILL_FEATURE_SAILING_SHIPWRECKS_MERCENARY_SHIPWRECK_SALVAGE = 12625;
+			public static final int SKILL_FEATURE_SAILING_SHIPWRECKS_FREMENNIK_SHIPWRECK_SALVAGE = 12626;
+			public static final int SKILL_FEATURE_SAILING_SHIPWRECKS_MERCHANT_SHIPWRECK_SALVAGE = 12627;
+			public static final int SKILL_FEATURE_SAILING_TRIALS_TT = 12628;
+			public static final int SKILL_FEATURE_SAILING_TRIALS_JJ = 12629;
+			public static final int SKILL_FEATURE_SAILING_TRIALS_GG = 12630;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_REGULAR_HULL = 12631;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_REGULAR_HULLPARTS = 12632;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_HELM_BRONZE = 12633;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAST_WOODEN = 12634;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_KEEL_BRONZE = 12635;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_HELM_IRON = 12636;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_OAK_HULL = 12637;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_OAK_HULLPARTS = 12638;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_KEEL_IRON = 12639;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAST_OAK = 12640;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_FLAG = 12641;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_BOAT_TRIM = 12642;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_TEAK_HULL = 12643;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_TEAK_HULLPARTS = 12644;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAST_TEAK = 12645;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_HELM_STEEL = 12646;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_KEEL_STEEL = 12647;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAHOGANY_HULL = 12648;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAHOGANY_HULLPARTS = 12649;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAST_MAHOGANY = 12650;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_KEEL_MITHRIL = 12651;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_HELM_MITHRIL = 12652;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_KEEL_ADAMANT = 12653;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_CAMPHOR_HULL = 12654;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_CAMPHOR_HULLPARTS = 12655;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAST_CAMPHOR = 12656;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_HELM_ADAMANT = 12657;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_IRONWOOD_HULL = 12658;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_IRONWOOD_HULLPARTS = 12659;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAST_IRONWOOD = 12660;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_KEEL_RUNE = 12661;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_HELM_RUNE = 12662;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_ROSEWOOD_HULL = 12663;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_ROSEWOOD_HULLPARTS = 12664;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_MAST_ROSEWOOD = 12665;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_HELM_DRAGON = 12666;
+			public static final int SKILL_FEATURE_SAILING_BOATPARTS_KEEL_DRAGON = 12667;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOAT_CARGO_HOLD_REGULAR = 12668;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_SALVAGING_HOOK_BRONZE = 12669;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_RANGE = 12670;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOAT_CARGO_HOLD_OAK = 12671;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_SALVAGING_HOOK_IRON = 12672;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_SALVAGING_HOOK_STEEL = 12673;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BRONZE_CANNON = 12674;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOAT_CARGO_HOLD_TEAK = 12675;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_KEG = 12676;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_IRON_CANNON = 12677;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_ANCHOR = 12678;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_FACILITY_INOCULATION_STATION = 12679;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_SALVAGING_STATION = 12680;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_SALVAGING_HOOK_MITHRIL = 12681;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOAT_CARGO_HOLD_MAHOGANY = 12682;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_STEEL_CANNON = 12683;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_WIND_CATCHER = 12684;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_TELEPORTATION_FOCUS = 12685;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_ROPE_TRAWLING_NET = 12686;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_CHUM_STATION = 12687;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_MITHRIL_CANNON = 12688;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_SALVAGING_HOOK_ADAMANT = 12689;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOAT_CARGO_HOLD_CAMPHOR = 12690;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_LINEN_TRAWLING_NET = 12691;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_CHUM_STATION_ADVANCED = 12692;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_ADAMANT_CANNON = 12693;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_FATHOM_STONE = 12694;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_CRYSTAL_EXTRACTOR = 12695;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_SALVAGING_HOOK_RUNE = 12696;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_TELEPORTATION_FOCUS_GREATER = 12697;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOAT_ETERNAL_BRAZIER = 12698;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_GALE_CATCHER = 12699;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_HEMP_TRAWLING_NET = 12700;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOAT_CARGO_HOLD_IRONWOOD = 12701;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_RUNE_CANNON = 12702;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_CHUM_SPREADER = 12703;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_COTTON_TRAWLING_NET = 12704;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_SALVAGING_HOOK_DRAGON = 12705;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOAT_CARGO_HOLD_ROSEWOOD = 12706;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_FATHOM_PEARL = 12707;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_DRAGON_CANNON = 12708;
+			public static final int SKILL_FEATURE_SAILING_CREW_1CREW = 12709;
+			public static final int SKILL_FEATURE_SAILING_CREW_JOBLESSJIM = 12710;
+			public static final int SKILL_FEATURE_SAILING_CREW_SIAD = 12711;
+			public static final int SKILL_FEATURE_SAILING_CREW_2CREW = 12712;
+			public static final int SKILL_FEATURE_SAILING_CREW_ADA = 12713;
+			public static final int SKILL_FEATURE_SAILING_CREW_JENKINS = 12714;
+			public static final int SKILL_FEATURE_SAILING_CREW_OLGA = 12715;
+			public static final int SKILL_FEATURE_SAILING_CREW_3CREW = 12716;
+			public static final int SKILL_FEATURE_SAILING_CREW_JITTERYJIM = 12717;
+			public static final int SKILL_FEATURE_SAILING_CREW_ZARAH = 12718;
+			public static final int SKILL_FEATURE_SAILING_CREW_4CREW = 12719;
+			public static final int SKILL_FEATURE_SAILING_CREW_JOLLYJIM = 12720;
+			public static final int SKILL_FEATURE_SAILING_CREW_VIRGINIA = 12721;
+			public static final int SKILL_FEATURE_SAILING_CREW_5CREW = 12722;
+			public static final int SKILL_FEATURE_SAILING_CREW_JAKOB = 12723;
+			public static final int SKILL_FEATURE_SAILING_SKILLCAPE = 12724;
+			public static final int SKILL_FEATURE_SLAYER_OVERVIEW_0 = 12729;
+			public static final int SKILL_FEATURE_SLAYER_OVERVIEW_1 = 12730;
+			public static final int SKILL_FEATURE_SLAYER_OVERVIEW_2 = 12731;
+			public static final int SKILL_FEATURE_SLAYER_CRAWLINGHAND = 12732;
+			public static final int SKILL_FEATURE_SLAYER_SWAMP_CAVE_BUG = 12733;
+			public static final int SKILL_FEATURE_SLAYER_CAVECRAWLER = 12734;
+			public static final int SKILL_FEATURE_SLAYER_BANSHEE = 12735;
+			public static final int SKILL_FEATURE_SLAYER_SWAMP_CAVE_SLIME = 12736;
+			public static final int SKILL_FEATURE_SLAYER_ROCKSLUG = 12737;
+			public static final int SKILL_FEATURE_SLAYER_LIZARD = 12738;
+			public static final int SKILL_FEATURE_SLAYER_COCKATRICE = 12739;
+			public static final int SKILL_FEATURE_SLAYER_PYREFIEND = 12740;
+			public static final int SKILL_FEATURE_SLAYER_MOGRE = 12741;
+			public static final int SKILL_FEATURE_SLAYER_SWARM = 12742;
+			public static final int SKILL_FEATURE_SLAYER_SWAMP_WALLBEAST = 12743;
+			public static final int SKILL_FEATURE_SLAYER_KILLERWATT = 12744;
+			public static final int SKILL_FEATURE_SLAYER_PICKPOCKET_GUIDE_VYRE = 12745;
+			public static final int SKILL_FEATURE_SLAYER_MOLANISK = 12746;
+			public static final int SKILL_FEATURE_SLAYER_BASILISK = 12747;
+			public static final int SKILL_FEATURE_SLAYER_SEASNAKE = 12748;
+			public static final int SKILL_FEATURE_SLAYER_TERRORDOG = 12749;
+			public static final int SKILL_FEATURE_SLAYER_FEVER_SPIDER = 12750;
+			public static final int SKILL_FEATURE_SLAYER_SULPHURLIZARDS = 12751;
+			public static final int SKILL_FEATURE_SLAYER_INFERNALMAGE = 12752;
+			public static final int SKILL_FEATURE_SLAYER_BRINE_RAT = 12753;
+			public static final int SKILL_FEATURE_SLAYER_LESSER_NAGUA = 12754;
+			public static final int SKILL_FEATURE_SLAYER_BLOODVELD = 12755;
+			public static final int SKILL_FEATURE_SLAYER_GRYPHON = 12756;
+			public static final int SKILL_FEATURE_SLAYER_JELLY = 12757;
+			public static final int SKILL_FEATURE_SLAYER_CUSTODIAN_STALKER_JUVENILE = 12758;
+			public static final int SKILL_FEATURE_SLAYER_TUROTH = 12759;
+			public static final int SKILL_FEATURE_SLAYER_POG_SLAYER_DUMMY_WARPED_TERRORBIRD = 12760;
+			public static final int SKILL_FEATURE_SLAYER_ZYGOMITE_OBJECT = 12761;
+			public static final int SKILL_FEATURE_SLAYER_HARMLESS_CAVE_HORROR = 12762;
+			public static final int SKILL_FEATURE_SLAYER_ABERRANTSPECTER = 12763;
+			public static final int SKILL_FEATURE_SLAYER_BASILISK_KNIGHT = 12764;
+			public static final int SKILL_FEATURE_SLAYER_WYRM = 12765;
+			public static final int SKILL_FEATURE_SLAYER_GODWARS_SPIRITUAL_RANGER = 12766;
+			public static final int SKILL_FEATURE_SLAYER_DUSTDEVIL = 12767;
+			public static final int SKILL_FEATURE_SLAYER_FOSSILWYVERN = 12768;
+			public static final int SKILL_FEATURE_SLAYER_CUSTODIAN_STALKER_MATURE = 12769;
+			public static final int SKILL_FEATURE_SLAYER_GODWARS_SPIRITUAL_WARRIOR = 12770;
+			public static final int SKILL_FEATURE_SLAYER_KURASK = 12771;
+			public static final int SKILL_FEATURE_SLAYER_SKELETALWYVERN = 12772;
+			public static final int SKILL_FEATURE_SLAYER_GARGOYLE = 12773;
+			public static final int SKILL_FEATURE_SLAYER_CUSTODIAN_STALKER_ELDER = 12774;
+			public static final int SKILL_FEATURE_SLAYER_BRUTAL_BLACK = 12775;
+			public static final int SKILL_FEATURE_SLAYER_AQUANITE = 12776;
+			public static final int SKILL_FEATURE_SLAYER_NECHRYAEL = 12777;
+			public static final int SKILL_FEATURE_SLAYER_FOSSILANCIENTWYVERN = 12778;
+			public static final int SKILL_FEATURE_SLAYER_GODWARS_SPIRITUAL_MAGE = 12779;
+			public static final int SKILL_FEATURE_SLAYER_DRAKE = 12780;
+			public static final int SKILL_FEATURE_SLAYER_ABYSSALDEMON = 12781;
+			public static final int SKILL_FEATURE_SLAYER_CAVEKRAKEN = 12782;
+			public static final int SKILL_FEATURE_SLAYER_DARK_BEAST = 12783;
+			public static final int SKILL_FEATURE_SLAYER_CERBERUS = 12784;
+			public static final int SKILL_FEATURE_SLAYER_ARAXYTE = 12785;
+			public static final int SKILL_FEATURE_SLAYER_SMOKEDEVIL = 12786;
+			public static final int SKILL_FEATURE_SLAYER_HYDRA = 12787;
+			public static final int SKILL_FEATURE_SLAYER_WALLBEAST_SPIKE_HELMET = 12788;
+			public static final int SKILL_FEATURE_SLAYER_ROCK_HAMMER = 12789;
+			public static final int SKILL_FEATURE_SLAYER_REINFORCED_GOGGLES = 12790;
+			public static final int SKILL_FEATURE_SLAYER_FACEMASK = 12791;
+			public static final int SKILL_FEATURE_SLAYER_EARMUFFS = 12792;
+			public static final int SKILL_FEATURE_SLAYER_MIRROR_SHIELD = 12793;
+			public static final int SKILL_FEATURE_SLAYER_SLAYERGUIDE_FISHING_EXPLOSIVE = 12794;
+			public static final int SKILL_FEATURE_SLAYER_WITCHWOOD_ICON = 12795;
+			public static final int SKILL_FEATURE_SLAYER_BOOTS = 12796;
+			public static final int SKILL_FEATURE_SLAYER_MOLANISK_BELL = 12797;
+			public static final int SKILL_FEATURE_SLAYER_DEAL_SLAYER_GLOVES = 12798;
+			public static final int SKILL_FEATURE_SLAYER_BOOTS_OF_STONE = 12799;
+			public static final int SKILL_FEATURE_SLAYER_LEAFBLADED_SPEAR = 12800;
+			public static final int SKILL_FEATURE_SLAYER_LEAFBLADED_BATTLEAXE = 12801;
+			public static final int SKILL_FEATURE_SLAYER_BROAD_ARROWS = 12802;
+			public static final int SKILL_FEATURE_SLAYER_BROAD_BOLTS = 12803;
+			public static final int SKILL_FEATURE_SLAYER_SPRAY_PUMP = 12804;
+			public static final int SKILL_FEATURE_SLAYER_NOSEPEG = 12805;
+			public static final int SKILL_FEATURE_SLAYER_V_SHIELD = 12806;
+			public static final int SKILL_FEATURE_SLAYER_AMETHYST_BROAD_BOLTS = 12807;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_WILDERNESS = 12808;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_DRAYNOR = 12809;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_BURTHORPE = 12810;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_CANIFIS = 12811;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_EDGEVILLE = 12812;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_ZANARIS = 12813;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_KARUULM = 12814;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_GNOMESTRONGHOLD = 12815;
+			public static final int SKILL_FEATURE_SLAYER_MASTER_SHILO = 12816;
+			public static final int SKILL_FEATURE_SLAYER_SKILLCAPE = 12817;
+			public static final int SKILL_FEATURE_SMITHING_OVERVIEW_0 = 12829;
+			public static final int SKILL_FEATURE_SMITHING_OVERVIEW_1 = 12830;
+			public static final int SKILL_FEATURE_SMITHING_OVERVIEW_2 = 12831;
+			public static final int SKILL_FEATURE_SMITHING_OVERVIEW_3 = 12832;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_BAR = 12833;
+			public static final int SKILL_FEATURE_SMITHING_BLURITE_BAR = 12834;
+			public static final int SKILL_FEATURE_SMITHING_IRON_BAR = 12835;
+			public static final int SKILL_FEATURE_SMITHING_SILVER_BAR = 12836;
+			public static final int SKILL_FEATURE_SMITHING_LEAD_BAR = 12837;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_BAR = 12838;
+			public static final int SKILL_FEATURE_SMITHING_GOLD_BAR = 12839;
+			public static final int SKILL_FEATURE_SMITHING_LOVAKITE_BAR = 12840;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_BAR = 12841;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANTITE_BAR = 12842;
+			public static final int SKILL_FEATURE_SMITHING_CUPRONICKEL_BAR = 12843;
+			public static final int SKILL_FEATURE_SMITHING_RUNITE_BAR = 12844;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_DAGGER = 12845;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_AXE = 12846;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_AXE_2H = 12847;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_MACE = 12848;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_MED_HELM = 12849;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_BOLTS_BRONZE = 12850;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_SWORD = 12851;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_DART_TIP = 12852;
+			public static final int SKILL_FEATURE_SMITHING_BRONZECRAFTWIRE = 12853;
+			public static final int SKILL_FEATURE_SMITHING_NAILS_BRONZE = 12854;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_SCIMITAR = 12855;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_SPEAR = 12856;
+			public static final int SKILL_FEATURE_SMITHING_BRUT_BRONZE_SPEAR = 12857;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_ARROWHEADS = 12858;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_CANNONBALL = 12859;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_LIMBS_BRONZE = 12860;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_LONGSWORD = 12861;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_JAVELINTIPS = 12862;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_FULL_HELM = 12863;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_KNIFE = 12864;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_SQ_SHIELD = 12865;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_WARHAMMER = 12866;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_BATTLEAXE = 12867;
+			public static final int SKILL_FEATURE_SMITHING_SAILING_BOAT_KEEL_PART_BRONZE = 12868;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_CHAINBODY = 12869;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_KITESHIELD = 12870;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_CLAWS = 12871;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_2H_SWORD = 12872;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_PLATELEGS = 12873;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_PLATESKIRT = 12874;
+			public static final int SKILL_FEATURE_SMITHING_BRONZE_PLATEBODY = 12875;
+			public static final int SKILL_FEATURE_SMITHING_IRON_AXE_2H = 12876;
+			public static final int SKILL_FEATURE_SMITHING_IRON_DAGGER = 12877;
+			public static final int SKILL_FEATURE_SMITHING_IRON_AXE = 12878;
+			public static final int SKILL_FEATURE_SMITHING_IRON_MACE = 12879;
+			public static final int SKILL_FEATURE_SMITHING_SPIT_IRON = 12880;
+			public static final int SKILL_FEATURE_SMITHING_IRON_MED_HELM = 12881;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_BOLTS_IRON = 12882;
+			public static final int SKILL_FEATURE_SMITHING_IRON_SWORD = 12883;
+			public static final int SKILL_FEATURE_SMITHING_IRON_DART_TIP = 12884;
+			public static final int SKILL_FEATURE_SMITHING_NAILS_IRON = 12885;
+			public static final int SKILL_FEATURE_SMITHING_IRON_SCIMITAR = 12886;
+			public static final int SKILL_FEATURE_SMITHING_IRON_SPEAR = 12887;
+			public static final int SKILL_FEATURE_SMITHING_BRUT_IRON_SPEAR = 12888;
+			public static final int SKILL_FEATURE_SMITHING_IRON_ARROWHEADS = 12889;
+			public static final int SKILL_FEATURE_SMITHING_IRON_CANNONBALL = 12890;
+			public static final int SKILL_FEATURE_SMITHING_IRON_LONGSWORD = 12891;
+			public static final int SKILL_FEATURE_SMITHING_IRON_JAVELINTIPS = 12892;
+			public static final int SKILL_FEATURE_SMITHING_IRON_FULL_HELM = 12893;
+			public static final int SKILL_FEATURE_SMITHING_IRON_KNIFE = 12894;
+			public static final int SKILL_FEATURE_SMITHING_SAILING_BOAT_KEEL_PART_IRON = 12895;
+			public static final int SKILL_FEATURE_SMITHING_IRON_SQ_SHIELD = 12896;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_LIMBS_IRON = 12897;
+			public static final int SKILL_FEATURE_SMITHING_IRON_WARHAMMER = 12898;
+			public static final int SKILL_FEATURE_SMITHING_IRON_BATTLEAXE = 12899;
+			public static final int SKILL_FEATURE_SMITHING_IRON_CHAINBODY = 12900;
+			public static final int SKILL_FEATURE_SMITHING_OIL_LANTERN_FRAME = 12901;
+			public static final int SKILL_FEATURE_SMITHING_IRON_KITESHIELD = 12902;
+			public static final int SKILL_FEATURE_SMITHING_IRON_CLAWS = 12903;
+			public static final int SKILL_FEATURE_SMITHING_IRON_2H_SWORD = 12904;
+			public static final int SKILL_FEATURE_SMITHING_IRON_PLATELEGS = 12905;
+			public static final int SKILL_FEATURE_SMITHING_IRON_PLATESKIRT = 12906;
+			public static final int SKILL_FEATURE_SMITHING_IRON_PLATEBODY = 12907;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_AXE_2H = 12908;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_DAGGER = 12909;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_AXE = 12910;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_MACE = 12911;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_MED_HELM = 12912;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_BOLTS_STEEL = 12913;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_SWORD = 12914;
+			public static final int SKILL_FEATURE_SMITHING_NAILS_STEEL = 12915;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_DART_TIP = 12916;
+			public static final int SKILL_FEATURE_SMITHING_CHAIN = 12917;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_SCIMITAR = 12918;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_SPEAR = 12919;
+			public static final int SKILL_FEATURE_SMITHING_BRUT_STEEL_SPEAR = 12920;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_ARROWHEADS = 12921;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_CANNONBALL = 12922;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_LIMBS_STEEL = 12923;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_LONGSWORD = 12924;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_JAVELINTIPS = 12925;
+			public static final int SKILL_FEATURE_SMITHING_STUDS = 12926;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_FULL_HELM = 12927;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_KNIFE = 12928;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_SQ_SHIELD = 12929;
+			public static final int SKILL_FEATURE_SMITHING_SAILING_BOAT_KEEL_PART_STEEL = 12930;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_WARHAMMER = 12931;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_BATTLEAXE = 12932;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_CHAINBODY = 12933;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_KITESHIELD = 12934;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_CLAWS = 12935;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_2H_SWORD = 12936;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_PLATELEGS = 12937;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_PLATESKIRT = 12938;
+			public static final int SKILL_FEATURE_SMITHING_STEEL_PLATEBODY = 12939;
+			public static final int SKILL_FEATURE_SMITHING_BULLSEYE_LANTERN_NOLENS = 12940;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_AXE_2H = 12941;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_DAGGER = 12942;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_AXE = 12943;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_MACE = 12944;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_MED_HELM = 12945;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_BOLTS_MITHRIL = 12946;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_SWORD = 12947;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_DART_TIP = 12948;
+			public static final int SKILL_FEATURE_SMITHING_NAILS_MITHRIL = 12949;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_SCIMITAR = 12950;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_SPEAR = 12951;
+			public static final int SKILL_FEATURE_SMITHING_BRUT_MITHRIL_SPEAR = 12952;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_ARROWHEADS = 12953;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_CANNONBALL = 12954;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_LIMBS_MITHRIL = 12955;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_LONGSWORD = 12956;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_JAVELINTIPS = 12957;
+			public static final int SKILL_FEATURE_SMITHING_SAILING_BOAT_KEEL_PART_MITHRIL = 12958;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_FULL_HELM = 12959;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_KNIFE = 12960;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_SQ_SHIELD = 12961;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_WARHAMMER = 12962;
+			public static final int SKILL_FEATURE_SMITHING_XBOWS_GRAPPLE_TIP_MITHRIL = 12963;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_BATTLEAXE = 12964;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_CHAINBODY = 12965;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_KITESHIELD = 12966;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_CLAWS = 12967;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_2H_SWORD = 12968;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_PLATELEGS = 12969;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_PLATESKIRT = 12970;
+			public static final int SKILL_FEATURE_SMITHING_MITHRIL_PLATEBODY = 12971;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_AXE_2H = 12972;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_DAGGER = 12973;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_AXE = 12974;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_MACE = 12975;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_MED_HELM = 12976;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_BOLTS_ADAMANTITE = 12977;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_SWORD = 12978;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_DART_TIP = 12979;
+			public static final int SKILL_FEATURE_SMITHING_NAILS_ADAMANT = 12980;
+			public static final int SKILL_FEATURE_SMITHING_SAILING_BOAT_KEEL_PART_ADAMANT = 12981;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_SCIMITAR = 12982;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_SPEAR = 12983;
+			public static final int SKILL_FEATURE_SMITHING_BRUT_ADAMANT_SPEAR = 12984;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_ARROWHEADS = 12985;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_CANNONBALL = 12986;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_LIMBS_ADAMANTITE = 12987;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_LONGSWORD = 12988;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_JAVELINTIPS = 12989;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_FULL_HELM = 12990;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_KNIFE = 12991;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_SQ_SHIELD = 12992;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_WARHAMMER = 12993;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_BATTLEAXE = 12994;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_CHAINBODY = 12995;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_KITESHIELD = 12996;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_CLAWS = 12997;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_2H_SWORD = 12998;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_PLATELEGS = 12999;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_PLATESKIRT = 13000;
+			public static final int SKILL_FEATURE_SMITHING_ADAMANT_PLATEBODY = 13001;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_AXE_2H = 13002;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_DAGGER = 13003;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_AXE = 13004;
+			public static final int SKILL_FEATURE_SMITHING_SAILING_BOAT_KEEL_PART_RUNE = 13005;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_MACE = 13006;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_MED_HELM = 13007;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_BOLTS_RUNITE = 13008;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_SWORD = 13009;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_DART_TIP = 13010;
+			public static final int SKILL_FEATURE_SMITHING_NAILS_RUNE = 13011;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_SCIMITAR = 13012;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_SPEAR = 13013;
+			public static final int SKILL_FEATURE_SMITHING_BRUT_RUNE_SPEAR = 13014;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_ARROWHEADS = 13015;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_CANNONBALL = 13016;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_LIMBS_RUNITE = 13017;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_LONGSWORD = 13018;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_JAVELINTIPS = 13019;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_FULL_HELM = 13020;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_KNIFE = 13021;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_SQ_SHIELD = 13022;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_WARHAMMER = 13023;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_BATTLEAXE = 13024;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_CHAINBODY = 13025;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_KITESHIELD = 13026;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_CLAWS = 13027;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_2H_SWORD = 13028;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_PLATELEGS = 13029;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_PLATESKIRT = 13030;
+			public static final int SKILL_FEATURE_SMITHING_RUNE_PLATEBODY = 13031;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_GLOVES_1 = 13032;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BOOTS_1 = 13033;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_HELM_1 = 13034;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_LEGS_1 = 13035;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BODY_1 = 13036;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_GLOVES_2 = 13037;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BOOTS_2 = 13038;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_HELM_2 = 13039;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_LEGS_2 = 13040;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BODY_2 = 13041;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_GLOVES_3 = 13042;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BOOTS_3 = 13043;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_HELM_3 = 13044;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_LEGS_3 = 13045;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BODY_3 = 13046;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_GLOVES_4 = 13047;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BOOTS_4 = 13048;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_HELM_4 = 13049;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_LEGS_4 = 13050;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BODY_4 = 13051;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_GLOVES_5 = 13052;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BOOTS_5 = 13053;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_HELM_5 = 13054;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_LEGS_5 = 13055;
+			public static final int SKILL_FEATURE_SMITHING_SHAYZIEN_BODY_5 = 13056;
+			public static final int SKILL_FEATURE_SMITHING_CRYSTAL_AXE_2H = 13057;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_BOLTS_BLURITE = 13058;
+			public static final int SKILL_FEATURE_SMITHING_BLACK_AXE_2H = 13059;
+			public static final int SKILL_FEATURE_SMITHING_CROSSBOW_LIMBS_BLURITE = 13060;
+			public static final int SKILL_FEATURE_SMITHING_BARRONITE_DEPOSIT = 13061;
+			public static final int SKILL_FEATURE_SMITHING_RAT_BONE_MACE = 13062;
+			public static final int SKILL_FEATURE_SMITHING_DRAGON_SQ_SHIELD = 13063;
+			public static final int SKILL_FEATURE_SMITHING_AQUANITE_HOPPER = 13064;
+			public static final int SKILL_FEATURE_SMITHING_DRAGON_AXE_2H = 13065;
+			public static final int SKILL_FEATURE_SMITHING_3A_AXE_2H = 13066;
+			public static final int SKILL_FEATURE_SMITHING_WYVERN_SHIELD = 13067;
+			public static final int SKILL_FEATURE_SMITHING_ZOMBIE_AXE = 13068;
+			public static final int SKILL_FEATURE_SMITHING_CONFLICTION_GAUNTLETS = 13069;
+			public static final int SKILL_FEATURE_SMITHING_EMBERLIGHT = 13070;
+			public static final int SKILL_FEATURE_SMITHING_DRAGON_KITESHIELD = 13071;
+			public static final int SKILL_FEATURE_SMITHING_OATHPLATE_HELM = 13072;
+			public static final int SKILL_FEATURE_SMITHING_DRAGON_PLATEBODY = 13073;
+			public static final int SKILL_FEATURE_SMITHING_NAILS_DRAGON = 13074;
+			public static final int SKILL_FEATURE_SMITHING_SAILING_BOAT_KEEL_PART_DRAGON = 13075;
+			public static final int SKILL_FEATURE_SMITHING_SKILLCAPE = 13076;
+			public static final int SKILL_FEATURE_STRENGTH_OVERVIEW_0 = 13083;
+			public static final int SKILL_FEATURE_STRENGTH_OVERVIEW_1 = 13084;
+			public static final int SKILL_FEATURE_STRENGTH_BRONZE_WARHAMMER = 13085;
+			public static final int SKILL_FEATURE_STRENGTH_IRON_WARHAMMER = 13086;
+			public static final int SKILL_FEATURE_STRENGTH_STEEL_WARHAMMER = 13087;
+			public static final int SKILL_FEATURE_STRENGTH_BLACK_HALBERD = 13088;
+			public static final int SKILL_FEATURE_STRENGTH_WHITE_HALBERD = 13089;
+			public static final int SKILL_FEATURE_STRENGTH_BLACK_WARHAMMER = 13090;
+			public static final int SKILL_FEATURE_STRENGTH_WHITE_WARHAMMER = 13091;
+			public static final int SKILL_FEATURE_STRENGTH_MITHRIL_HALBERD = 13092;
+			public static final int SKILL_FEATURE_STRENGTH_ADAMANT_HALBERD = 13093;
+			public static final int SKILL_FEATURE_STRENGTH_MITHRIL_WARHAMMER = 13094;
+			public static final int SKILL_FEATURE_STRENGTH_RUNE_HALBERD = 13095;
+			public static final int SKILL_FEATURE_STRENGTH_ADAMANT_WARHAMMER = 13096;
+			public static final int SKILL_FEATURE_STRENGTH_HUNTER_SPEAR = 13097;
+			public static final int SKILL_FEATURE_STRENGTH_DRAGON_HALBERD = 13098;
+			public static final int SKILL_FEATURE_STRENGTH_RUNE_WARHAMMER = 13099;
+			public static final int SKILL_FEATURE_STRENGTH_ANCHOR = 13100;
+			public static final int SKILL_FEATURE_STRENGTH_GRANITE_MAUL = 13101;
+			public static final int SKILL_FEATURE_STRENGTH_GRANITE_LONGSWORD = 13102;
+			public static final int SKILL_FEATURE_STRENGTH_TZHAAR_MAUL = 13103;
+			public static final int SKILL_FEATURE_STRENGTH_DRAGON_WARHAMMER = 13104;
+			public static final int SKILL_FEATURE_STRENGTH_DHAROK_WEAPON = 13105;
+			public static final int SKILL_FEATURE_STRENGTH_TORAG_WEAPON = 13106;
+			public static final int SKILL_FEATURE_STRENGTH_ABYSSAL_BLUDGEON = 13107;
+			public static final int SKILL_FEATURE_STRENGTH_ELDER_MAUL = 13108;
+			public static final int SKILL_FEATURE_STRENGTH_DUAL_MACUAHUITL = 13109;
+			public static final int SKILL_FEATURE_STRENGTH_SOULREAPER = 13110;
+			public static final int SKILL_FEATURE_STRENGTH_SCYTHE_OF_VITUR = 13111;
+			public static final int SKILL_FEATURE_STRENGTH_GRANITE_HELM = 13112;
+			public static final int SKILL_FEATURE_STRENGTH_ZOMBIE_HELMET = 13113;
+			public static final int SKILL_FEATURE_STRENGTH_INQUISITORS = 13114;
+			public static final int SKILL_FEATURE_STRENGTH_PRIMORDIAL_BOOTS = 13115;
+			public static final int SKILL_FEATURE_STRENGTH_BLOODRAGER = 13116;
+			public static final int SKILL_FEATURE_STRENGTH_CROSSDORGESHKAANCAVE = 13117;
+			public static final int SKILL_FEATURE_STRENGTH_GWD_ACCESS = 13118;
+			public static final int SKILL_FEATURE_STRENGTH_GWD_BANDOS = 13119;
+			public static final int SKILL_FEATURE_STRENGTH_SKILLCAPE = 13120;
+			public static final int SKILL_FEATURE_THIEVING_OVERVIEW_0 = 13126;
+			public static final int SKILL_FEATURE_THIEVING_OVERVIEW_1 = 13127;
+			public static final int SKILL_FEATURE_THIEVING_MAN = 13128;
+			public static final int SKILL_FEATURE_THIEVING_FARMER = 13129;
+			public static final int SKILL_FEATURE_THIEVING_FHAM = 13130;
+			public static final int SKILL_FEATURE_THIEVING_WARRIOR = 13131;
+			public static final int SKILL_FEATURE_THIEVING_VILLAGER = 13132;
+			public static final int SKILL_FEATURE_THIEVING_ROGUE = 13133;
+			public static final int SKILL_FEATURE_THIEVING_DORGESH = 13134;
+			public static final int SKILL_FEATURE_THIEVING_MASTER_FARMER = 13135;
+			public static final int SKILL_FEATURE_THIEVING_GUARD = 13136;
+			public static final int SKILL_FEATURE_THIEVING_FREMENNIK_CITIZEN = 13137;
+			public static final int SKILL_FEATURE_THIEVING_FEUD_ARABIAN_GUARD2 = 13138;
+			public static final int SKILL_FEATURE_THIEVING_WEALTHY_CITIZEN = 13139;
+			public static final int SKILL_FEATURE_THIEVING_DESERT_BANDIT = 13140;
+			public static final int SKILL_FEATURE_THIEVING_KNIGHT = 13141;
+			public static final int SKILL_FEATURE_THIEVING_FEUD_ARABIAN_GUARD1 = 13142;
+			public static final int SKILL_FEATURE_THIEVING_PIRATE = 13143;
+			public static final int SKILL_FEATURE_THIEVING_WATCHMAN = 13144;
+			public static final int SKILL_FEATURE_THIEVING_FEUD_EGYPTIAN_DOORMAN = 13145;
+			public static final int SKILL_FEATURE_THIEVING_PALADIN = 13146;
+			public static final int SKILL_FEATURE_THIEVING_GNOME = 13147;
+			public static final int SKILL_FEATURE_THIEVING_HERO = 13148;
+			public static final int SKILL_FEATURE_THIEVING_VYRE = 13149;
+			public static final int SKILL_FEATURE_THIEVING_WOODELF = 13150;
+			public static final int SKILL_FEATURE_THIEVING_TZHAAR = 13151;
+			public static final int SKILL_FEATURE_THIEVING_CABBAGE = 13152;
+			public static final int SKILL_FEATURE_THIEVING_CAKE = 13153;
+			public static final int SKILL_FEATURE_THIEVING_CUP_OF_TEA = 13154;
+			public static final int SKILL_FEATURE_THIEVING_CHISEL = 13155;
+			public static final int SKILL_FEATURE_THIEVING_BANANA = 13156;
+			public static final int SKILL_FEATURE_THIEVING_SILK = 13157;
+			public static final int SKILL_FEATURE_THIEVING_RAG_BOTTLE_WINE = 13158;
+			public static final int SKILL_FEATURE_THIEVING_GOLOVANOVA_TOP = 13159;
+			public static final int SKILL_FEATURE_THIEVING_SEEDS_SKILLGUIDE = 13160;
+			public static final int SKILL_FEATURE_THIEVING_FUR = 13161;
+			public static final int SKILL_FEATURE_THIEVING_RAW_SALMON = 13162;
+			public static final int SKILL_FEATURE_THIEVING_XBOWS_CROSSBOW_BRONZE = 13163;
+			public static final int SKILL_FEATURE_THIEVING_SILVER_ORE = 13164;
+			public static final int SKILL_FEATURE_THIEVING_AIRRUNE = 13165;
+			public static final int SKILL_FEATURE_THIEVING_IRON_SCIMITAR = 13166;
+			public static final int SKILL_FEATURE_THIEVING_SPICESPOT = 13167;
+			public static final int SKILL_FEATURE_THIEVING_SAPPHIRE = 13168;
+			public static final int SKILL_FEATURE_THIEVING_RUNITE_ORE = 13169;
+			public static final int SKILL_FEATURE_THIEVING_MCANNONBALL = 13170;
+			public static final int SKILL_FEATURE_THIEVING_ARDOUGNERELLEKKAANDTHEWILDERNESS = 13171;
+			public static final int SKILL_FEATURE_THIEVING_UPSTAIRSINARDOUGNEANDRELLEKKA = 13172;
+			public static final int SKILL_FEATURE_THIEVING_ISLEOFSOULS = 13173;
+			public static final int SKILL_FEATURE_THIEVING_RUSTYPIRATECHESTS = 13174;
+			public static final int SKILL_FEATURE_THIEVING_ALDARINVILLAS = 13175;
+			public static final int SKILL_FEATURE_THIEVING_UPSTAIRSINARDOUGNE = 13176;
+			public static final int SKILL_FEATURE_THIEVING_HEMENSTERANDRELLEKKA = 13177;
+			public static final int SKILL_FEATURE_THIEVING_DORGESHKAANAVERAGECHESTS = 13178;
+			public static final int SKILL_FEATURE_THIEVING_TARNISHEDPIRATECHESTS = 13179;
+			public static final int SKILL_FEATURE_THIEVING_CHAOSDRUIDTOWER = 13180;
+			public static final int SKILL_FEATURE_THIEVING_LIZARDMANTEMPLE = 13181;
+			public static final int SKILL_FEATURE_THIEVING_ARDOUGNECASTLE = 13182;
+			public static final int SKILL_FEATURE_THIEVING_REINFORCEDPIRATECHESTS = 13183;
+			public static final int SKILL_FEATURE_THIEVING_DORGESHKAANRICHCHESTS = 13184;
+			public static final int SKILL_FEATURE_THIEVING_WILDERNESSROGUESCASTLE = 13185;
+			public static final int SKILL_FEATURE_THIEVING_WINTER_ICON = 13186;
+			public static final int SKILL_FEATURE_THIEVING_PENG_COWBELL = 13187;
+			public static final int SKILL_FEATURE_THIEVING_IVORY_COMB = 13188;
+			public static final int SKILL_FEATURE_THIEVING_SPRING_ICON = 13189;
+			public static final int SKILL_FEATURE_THIEVING_SCARAB_POTTERY = 13190;
+			public static final int SKILL_FEATURE_THIEVING_STATUETTE_POTTERY = 13191;
+			public static final int SKILL_FEATURE_THIEVING_DORGESH_WIRE = 13192;
+			public static final int SKILL_FEATURE_THIEVING_AUTUMN_ICON = 13193;
+			public static final int SKILL_FEATURE_THIEVING_PISCARILIUS_STOLEN_PENDANT = 13194;
+			public static final int SKILL_FEATURE_THIEVING_ROGUESDEN = 13195;
+			public static final int SKILL_FEATURE_THIEVING_VARLAMORE_THIEVING_HOUSE_KEY_2 = 13196;
+			public static final int SKILL_FEATURE_THIEVING_SEAL_STONE = 13197;
+			public static final int SKILL_FEATURE_THIEVING_HOSDUN_GRUBBY_KEY = 13198;
+			public static final int SKILL_FEATURE_THIEVING_STATUETTE_STONE = 13199;
+			public static final int SKILL_FEATURE_THIEVING_SUMMER_ICON = 13200;
+			public static final int SKILL_FEATURE_THIEVING_HALLOWED_TOKEN = 13201;
+			public static final int SKILL_FEATURE_THIEVING_SEAL_GOLD = 13202;
+			public static final int SKILL_FEATURE_THIEVING_SCARAB_GOLD = 13203;
+			public static final int SKILL_FEATURE_THIEVING_STATUETTE_GOLD = 13204;
+			public static final int SKILL_FEATURE_THIEVING_SKILLCAPE = 13205;
+			public static final int SKILL_FEATURE_WOODCUTTING_OVERVIEW_0 = 13211;
+			public static final int SKILL_FEATURE_WOODCUTTING_OVERVIEW_1 = 13212;
+			public static final int SKILL_FEATURE_WOODCUTTING_OVERVIEW_2 = 13213;
+			public static final int SKILL_FEATURE_WOODCUTTING_LOGS = 13214;
+			public static final int SKILL_FEATURE_WOODCUTTING_ACHEY_TREE_LOGS = 13215;
+			public static final int SKILL_FEATURE_WOODCUTTING_THATCHING_SPAR_LIGHT = 13216;
+			public static final int SKILL_FEATURE_WOODCUTTING_OAK_LOGS = 13217;
+			public static final int SKILL_FEATURE_WOODCUTTING_THATCHING_SPAR_MED = 13218;
+			public static final int SKILL_FEATURE_WOODCUTTING_WILLOW_LOGS = 13219;
+			public static final int SKILL_FEATURE_WOODCUTTING_THATCHING_SPAR_DENSE = 13220;
+			public static final int SKILL_FEATURE_WOODCUTTING_TEAK_LOGS = 13221;
+			public static final int SKILL_FEATURE_WOODCUTTING_JATOBA_LOGS = 13222;
+			public static final int SKILL_FEATURE_WOODCUTTING_JUNIPER_LOGS = 13223;
+			public static final int SKILL_FEATURE_WOODCUTTING_MAPLE_LOGS = 13224;
+			public static final int SKILL_FEATURE_WOODCUTTING_HOLLOW_BARK = 13225;
+			public static final int SKILL_FEATURE_WOODCUTTING_MAHOGANY_LOGS = 13226;
+			public static final int SKILL_FEATURE_WOODCUTTING_ARCTIC_PINE_LOG = 13227;
+			public static final int SKILL_FEATURE_WOODCUTTING_YEW_LOGS = 13228;
+			public static final int SKILL_FEATURE_WOODCUTTING_BLISTERWOOD_LOGS = 13229;
+			public static final int SKILL_FEATURE_WOODCUTTING_FOSSIL_SULLIUSCEP_CAP = 13230;
+			public static final int SKILL_FEATURE_WOODCUTTING_CAMPHOR_LOGS = 13231;
+			public static final int SKILL_FEATURE_WOODCUTTING_MAGIC_LOGS = 13232;
+			public static final int SKILL_FEATURE_WOODCUTTING_IRONWOOD_LOGS = 13233;
+			public static final int SKILL_FEATURE_WOODCUTTING_DEMON_TEAR = 13234;
+			public static final int SKILL_FEATURE_WOODCUTTING_REDWOOD_LOGS = 13235;
+			public static final int SKILL_FEATURE_WOODCUTTING_ROSEWOOD_LOGS = 13236;
+			public static final int SKILL_FEATURE_WOODCUTTING_BRONZE_AXE = 13237;
+			public static final int SKILL_FEATURE_WOODCUTTING_BRONZE_AXE_2H = 13238;
+			public static final int SKILL_FEATURE_WOODCUTTING_IRON_AXE = 13239;
+			public static final int SKILL_FEATURE_WOODCUTTING_IRON_AXE_2H = 13240;
+			public static final int SKILL_FEATURE_WOODCUTTING_STEEL_AXE = 13241;
+			public static final int SKILL_FEATURE_WOODCUTTING_STEEL_AXE_2H = 13242;
+			public static final int SKILL_FEATURE_WOODCUTTING_BLACK_AXE = 13243;
+			public static final int SKILL_FEATURE_WOODCUTTING_BLACK_AXE_2H = 13244;
+			public static final int SKILL_FEATURE_WOODCUTTING_MITHRIL_AXE = 13245;
+			public static final int SKILL_FEATURE_WOODCUTTING_MITHRIL_AXE_2H = 13246;
+			public static final int SKILL_FEATURE_WOODCUTTING_ADAMANT_AXE = 13247;
+			public static final int SKILL_FEATURE_WOODCUTTING_ADAMANT_AXE_2H = 13248;
+			public static final int SKILL_FEATURE_WOODCUTTING_RUNE_AXE = 13249;
+			public static final int SKILL_FEATURE_WOODCUTTING_RUNE_AXE_2H = 13250;
+			public static final int SKILL_FEATURE_WOODCUTTING_TRAIL_GILDED_AXE = 13251;
+			public static final int SKILL_FEATURE_WOODCUTTING_DRAGON_AXE = 13252;
+			public static final int SKILL_FEATURE_WOODCUTTING_DRAGON_AXE_2H = 13253;
+			public static final int SKILL_FEATURE_WOODCUTTING_3A_AXE = 13254;
+			public static final int SKILL_FEATURE_WOODCUTTING_3A_AXE_2H = 13255;
+			public static final int SKILL_FEATURE_WOODCUTTING_CRYSTAL_AXE = 13256;
+			public static final int SKILL_FEATURE_WOODCUTTING_CRYSTAL_AXE_2H = 13257;
+			public static final int SKILL_FEATURE_WOODCUTTING_FORESTRY_KIT = 13258;
+			public static final int SKILL_FEATURE_WOODCUTTING_FORESTRY_RATION = 13259;
+			public static final int SKILL_FEATURE_WOODCUTTING_FORESTRY_SECATEURS_ATTACHMENT = 13260;
+			public static final int SKILL_FEATURE_WOODCUTTING_FORESTRY_CLOTHES_POUCH = 13261;
+			public static final int SKILL_FEATURE_WOODCUTTING_NATURE_OFFERINGS = 13262;
+			public static final int SKILL_FEATURE_WOODCUTTING_FORESTRY_STURDY_HARNESS = 13263;
+			public static final int SKILL_FEATURE_WOODCUTTING_LOG_CANOE = 13264;
+			public static final int SKILL_FEATURE_WOODCUTTING_DUGOUT_CANOE = 13265;
+			public static final int SKILL_FEATURE_WOODCUTTING_STABLE_DUGOUT_CANOE = 13266;
+			public static final int SKILL_FEATURE_WOODCUTTING_RAMBLE_LUMBERJACK_TOP = 13267;
+			public static final int SKILL_FEATURE_WOODCUTTING_FREMMENIK_ROUND_SHIELD = 13268;
+			public static final int SKILL_FEATURE_WOODCUTTING_ARCTIC_PINE_SPLIT = 13269;
+			public static final int SKILL_FEATURE_WOODCUTTING_WAKA_CANOE = 13270;
+			public static final int SKILL_FEATURE_WOODCUTTING_SKILLCAPE = 13271;
+			public static final int SKILL_FEATURE_MAGIC_STANDARD_MINIGAME_TELEPORT = 13293;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_MINIGAME_TELEPORT = 13294;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_MINIGAME_TELEPORT = 13295;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_MINIGAME_TELEPORT = 13296;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BALLISTIC_ATTRACTOR = 13297;
+			public static final int SKILL_FEATURE_AGILITY_LEAGUES_6_YAMA_STONE = 16260;
+			public static final int SKILL_FEATURE_MAGIC_STANDARD_LEAGUES_6_HOME_TELEPORT = 16261;
+			public static final int SKILL_FEATURE_MAGIC_ANCIENT_LEAGUES_6_HOME_TELEPORT = 16262;
+			public static final int SKILL_FEATURE_MAGIC_LUNAR_LEAGUES_6_HOME_TELEPORT = 16263;
+			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_LEAGUES_6_HOME_TELEPORT = 16264;
+		}
+	}
+
+	public static final class MinigameTeleport
+	{
+		public static final int ID = 214;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ID = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 1;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_MEMBERS_ONLY = 2;
+
+		/**
+		 * graphic
+		 */
+		public static final int COL_MINIGAME_ICON = 3;
+
+		public static final class Row
+		{
+			public static final int MINIGAME_BARBARIAN_ASSAULT = 13272;
+			public static final int MINIGAME_BLAST_FURNACE = 13273;
+			public static final int MINIGAME_BURTHORPE_GAMES_ROOM = 13274;
+			public static final int MINIGAME_BOUNTY_HUNTER = 13275;
+			public static final int MINIGAME_CASTLE_WARS = 13276;
+			public static final int MINIGAME_CLAN_WARS = 13277;
+			public static final int MINIGAME_FISHING_TRAWLER = 13278;
+			public static final int MINIGAME_GIANTS_FOUNDRY = 13279;
+			public static final int MINIGAME_GUARDIANS_OF_THE_RIFT = 13280;
+			public static final int MINIGAME_LAST_MAN_STANDING = 13281;
+			public static final int MINIGAME_MAGE_TRAINING_ARENA = 13282;
+			public static final int MINIGAME_MASTERING_MIXOLOGY = 13283;
+			public static final int MINIGAME_NIGHTMARE_ZONE = 13284;
+			public static final int MINIGAME_PEST_CONTROL = 13285;
+			public static final int MINIGAME_RAT_PITS = 13286;
+			public static final int MINIGAME_SHADES_OF_MORTTON = 13287;
+			public static final int MINIGAME_SORCERESSS_GARDEN = 13288;
+			public static final int MINIGAME_SOUL_WARS = 13289;
+			public static final int MINIGAME_TITHE_FARM = 13290;
+			public static final int MINIGAME_TROUBLE_BREWING = 13291;
+			public static final int MINIGAME_TZHAAR_FIGHT_PIT = 13292;
+		}
+	}
+
+	public static final class SailingGunPorts
+	{
+		public static final int ID = 215;
+
+		public static final class Row
+		{
+			public static final int SAILING_GUN_PORT_WOODEN = 13298;
+			public static final int SAILING_GUN_PORT_OAK = 13299;
+			public static final int SAILING_GUN_PORT_TEAK = 13300;
+			public static final int SAILING_GUN_PORT_MAHOGANY = 13301;
+			public static final int SAILING_GUN_PORT_CAMPHOR = 13302;
+			public static final int SAILING_GUN_PORT_IRONWOOD = 13303;
+			public static final int SAILING_GUN_PORT_ROSEWOOD = 13304;
+		}
+	}
+
+	public static final class TalentTree
+	{
+		public static final int ID = 216;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_DRAW_COORD = 0;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_LINKED_NODES = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 2;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_EFFECT = 3;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_NODE_TYPE = 4;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_NODE_SIZE = 5;
+
+		/**
+		 * graphic
+		 */
+		public static final int COL_NODE_SPRITE = 6;
+
+		/**
+		 * string
+		 */
+		public static final int COL_DEBUG_NAME = 7;
+
+		public static final class Row
+		{
+			public static final int NODE1 = 15404;
+			public static final int NODE2 = 15405;
+			public static final int NODE3 = 15406;
+			public static final int NODE4 = 15407;
+			public static final int NODE5 = 15408;
+			public static final int NODE6 = 15409;
+			public static final int NODE7 = 15410;
+			public static final int NODE8 = 15411;
+			public static final int NODE9 = 15412;
+			public static final int NODE10 = 15413;
+			public static final int NODE11 = 15414;
+			public static final int NODE12 = 15415;
+			public static final int NODE13 = 15416;
+			public static final int NODE14 = 15417;
+			public static final int NODE15 = 15418;
+			public static final int NODE16 = 15419;
+			public static final int NODE17 = 15420;
+			public static final int NODE18 = 15421;
+			public static final int NODE19 = 15422;
+			public static final int NODE20 = 15423;
+			public static final int NODE21 = 15424;
+			public static final int NODE22 = 15425;
+			public static final int NODE23 = 15426;
+			public static final int NODE24 = 15427;
+			public static final int NODE25 = 15428;
+			public static final int NODE26 = 15429;
+			public static final int NODE27 = 15430;
+			public static final int NODE28 = 15431;
+			public static final int NODE29 = 15432;
+			public static final int NODE30 = 15433;
+			public static final int NODE31 = 15434;
+			public static final int NODE32 = 15435;
+			public static final int NODE33 = 15436;
+			public static final int NODE34 = 15437;
+			public static final int NODE38 = 15438;
+			public static final int NODE39 = 15439;
+			public static final int NODE43 = 15440;
+			public static final int NODE44 = 15441;
+			public static final int NODE45 = 15442;
+			public static final int NODE46 = 15443;
+			public static final int NODE47 = 15444;
+			public static final int NODE48 = 15445;
+			public static final int NODE53 = 15446;
+			public static final int NODE54 = 15447;
+			public static final int NODE55 = 15448;
+			public static final int NODE56 = 15449;
+			public static final int NODE57 = 15450;
+			public static final int NODE58 = 15451;
+			public static final int NODE59 = 15452;
+			public static final int NODE60 = 15453;
+			public static final int NODE61 = 15454;
+			public static final int NODE62 = 15455;
+			public static final int NODE63 = 15456;
+			public static final int NODE64 = 15457;
+			public static final int NODE65 = 15458;
+			public static final int NODE66 = 15459;
+			public static final int NODE67 = 15460;
+			public static final int NODE68 = 15461;
+			public static final int NODE69 = 15462;
+			public static final int NODE70 = 15463;
+			public static final int NODE71 = 15464;
+			public static final int NODE72 = 15465;
+			public static final int NODE73 = 15466;
+			public static final int NODE74 = 15467;
+			public static final int NODE79 = 15468;
+			public static final int NODE80 = 15469;
+			public static final int NODE81 = 15470;
+			public static final int NODE82 = 15471;
+			public static final int NODE83 = 15472;
+			public static final int NODE84 = 15473;
+			public static final int NODE85 = 15474;
+			public static final int NODE86 = 15475;
+			public static final int NODE87 = 15476;
+			public static final int NODE88 = 15477;
+			public static final int NODE91 = 15478;
+			public static final int NODE92 = 15479;
+			public static final int NODE93 = 15480;
+			public static final int NODE94 = 15481;
+			public static final int NODE95 = 15482;
+			public static final int NODE96 = 15483;
+			public static final int NODE97 = 15484;
+			public static final int NODE98 = 15485;
+			public static final int NODE99 = 15486;
+			public static final int NODE100 = 15487;
+			public static final int NODE101 = 15488;
+			public static final int NODE102 = 15489;
+			public static final int NODE103 = 15490;
+			public static final int NODE106 = 15491;
+			public static final int NODE107 = 15492;
+			public static final int NODE108 = 15493;
+			public static final int NODE109 = 15494;
+			public static final int NODE111 = 15495;
+			public static final int NODE112 = 15496;
+			public static final int NODE113 = 15497;
+			public static final int NODE114 = 15498;
+			public static final int NODE117 = 15499;
+			public static final int NODE118 = 15500;
+			public static final int NODE119 = 15501;
+			public static final int NODE122 = 15502;
+			public static final int NODE123 = 15503;
+			public static final int NODE124 = 15504;
+			public static final int NODE127 = 15505;
+			public static final int NODE128 = 15506;
+			public static final int NODE129 = 15507;
+			public static final int NODE131 = 15508;
+			public static final int NODE133 = 15509;
+			public static final int NODE134 = 15510;
+			public static final int NODE135 = 15511;
+			public static final int NODE136 = 15512;
+			public static final int NODE139 = 15513;
+			public static final int NODE140 = 15514;
+			public static final int NODE141 = 15515;
+			public static final int NODE142 = 15516;
+			public static final int NODE143 = 15517;
+			public static final int NODE144 = 15518;
+			public static final int NODE145 = 15519;
+			public static final int NODE146 = 15520;
+			public static final int NODE150 = 15521;
+			public static final int NODE151 = 15522;
+			public static final int NODE152 = 15523;
+			public static final int NODE153 = 15524;
+			public static final int NODE154 = 15525;
+			public static final int NODE155 = 15526;
+			public static final int NODE156 = 15527;
+			public static final int NODE157 = 15528;
+			public static final int NODE161 = 15529;
+			public static final int NODE162 = 15530;
+			public static final int NODE163 = 15531;
+			public static final int NODE164 = 15532;
+			public static final int NODE165 = 15533;
+			public static final int NODE166 = 15534;
+			public static final int NODE167 = 15535;
+		}
+	}
+
+	public static final class TalentDebug
+	{
+		public static final int ID = 217;
+
+		public static final class Row
+		{
+			public static final int TALENT_BUILD_FIRE_10 = 15536;
+			public static final int TALENT_BUILD_FIRE_20 = 15537;
+			public static final int TALENT_BUILD_FIRE_30 = 15538;
+			public static final int TALENT_BUILD_AIR_10 = 15539;
+			public static final int TALENT_BUILD_AIR_20 = 15540;
+			public static final int TALENT_BUILD_AIR_30 = 15541;
+			public static final int TALENT_BUILD_EARTH_10 = 15542;
+			public static final int TALENT_BUILD_EARTH_20 = 15543;
+			public static final int TALENT_BUILD_EARTH_30 = 15544;
+			public static final int TALENT_BUILD_WATER_10 = 15545;
+			public static final int TALENT_BUILD_WATER_20 = 15546;
+			public static final int TALENT_BUILD_WATER_30 = 15547;
+			public static final int TALENT_BUILD_STEAM_20 = 15548;
+			public static final int TALENT_BUILD_STEAM_30 = 15549;
+			public static final int TALENT_BUILD_STEAM_35 = 15550;
+			public static final int TALENT_BUILD_SMOKE_20 = 15551;
+			public static final int TALENT_BUILD_SMOKE_30 = 15552;
+			public static final int TALENT_BUILD_SMOKE_35 = 15553;
+			public static final int TALENT_BUILD_TRIDENTS_10 = 15554;
+			public static final int TALENT_BUILD_TRIDENTS_20 = 15555;
+			public static final int TALENT_BUILD_TRIDENTS_30 = 15556;
+			public static final int TALENT_BUILD_TRIDENTS_35 = 15557;
+			public static final int TALENT_BUILD_HALBERD_10 = 15558;
+			public static final int TALENT_BUILD_HALBERD_20 = 15559;
+			public static final int TALENT_BUILD_HALBERD_ECHOES_30 = 15560;
+			public static final int TALENT_BUILD_HALBERD_ECHOES_35 = 15561;
+			public static final int TALENT_BUILD_HALBERD_ECHOES_40 = 15562;
+			public static final int TALENT_BUILD_MELEE_RANGE_10 = 15563;
+			public static final int TALENT_BUILD_MELEE_RANGE_20 = 15564;
+			public static final int TALENT_BUILD_MELEE_RANGE_30 = 15565;
+			public static final int TALENT_BUILD_MELEE_RANGE_35 = 15566;
+			public static final int TALENT_BUILD_MELEE_RANGE_40 = 15567;
+			public static final int TALENT_BUILD_LIGHT_10 = 15568;
+			public static final int TALENT_BUILD_LIGHT_20 = 15569;
+			public static final int TALENT_BUILD_LIGHT_30 = 15570;
+			public static final int TALENT_BUILD_LIGHT_35 = 15571;
+			public static final int TALENT_BUILD_RECOIL_10 = 15572;
+			public static final int TALENT_BUILD_RECOIL_20 = 15573;
+			public static final int TALENT_BUILD_RECOIL_30 = 15574;
+			public static final int TALENT_BUILD_RECOIL_35 = 15575;
+			public static final int TALENT_BUILD_RECOIL_40 = 15576;
+			public static final int LEAGUE_BUILD_KINGS_BARRAGE_HEALING_40 = 15577;
+			public static final int LEAGUE_BUILD_TBOW_SHADOW_A_40 = 15578;
+			public static final int LEAGUE_BUILD_TBOW_SHADOW_B_40 = 15579;
+			public static final int LEAGUE_BUILD_TBOW_SCYTHE_40 = 15580;
+			public static final int LEAGUE_BUILD_SHADOW_SCYTHE_40 = 15581;
+			public static final int TALENT_BUILD_BOWS_10 = 15582;
+			public static final int TALENT_BUILD_BOWS_20 = 15583;
+			public static final int TALENT_BUILD_BOWS_30 = 15584;
+			public static final int TALENT_BUILD_BOWS_35 = 15585;
+			public static final int TALENT_BUILD_CROSSBOWS_10 = 15586;
+			public static final int TALENT_BUILD_CROSSBOWS_20 = 15587;
+			public static final int TALENT_BUILD_CROSSBOWS_30 = 15588;
+			public static final int TALENT_BUILD_CROSSBOWS_35 = 15589;
+			public static final int TALENT_BUILD_BLOWPIPES_CAPSTONE_10 = 15590;
+			public static final int TALENT_BUILD_BLOWPIPES_10 = 15591;
+			public static final int TALENT_BUILD_BLOWPIPES_20 = 15592;
+			public static final int TALENT_BUILD_BLOWPIPES_30 = 15593;
+			public static final int TALENT_BUILD_BLOWPIPES_SPEC_35 = 15594;
+			public static final int TALENT_BUILD_BLOWPIPES_35 = 15595;
+			public static final int TALENT_BUILD_THROWN_SPEC_35 = 15596;
+		}
+	}
+
+	public static final class LeagueRelicTeleportItem
+	{
+		public static final int ID = 218;
+
+		/**
+		 * string
+		 */
+		public static final int COL_TITLE = 0;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_ITEM = 1;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_LOCATION = 2;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_RESPECT_WILDY_RESTRICTIONS = 3;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_AGILITY_MAP_COORDS_GENERIC = 15597;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_ASGARNIA = 15598;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_DESERT = 15599;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_FREMENNIK = 15600;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_KANDARIN = 15601;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_KARAMJA = 15602;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_KOUREND = 15603;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_MISTHALIN = 15604;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_MORYTANIA = 15605;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_TIRANNWN = 15606;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_VARLAMORE = 15607;
+			public static final int LEAGUE_AGILITY_MAP_COORDS_WILDERNESS = 15608;
+			public static final int LEAGUE_FAIRYS_FLIGHT_LEPRECHAUN_COORDS = 16114;
+			public static final int LEAGUE_GLOBETROTTER_COORDS = 16115;
+			public static final int LEAGUE_BANK_HEIST_COORDS_GENERIC = 16116;
+			public static final int LEAGUE_BANK_HEIST_COORDS_ASGARNIA = 16117;
+			public static final int LEAGUE_BANK_HEIST_COORDS_DESERT = 16118;
+			public static final int LEAGUE_BANK_HEIST_COORDS_FREMENNIK = 16119;
+			public static final int LEAGUE_BANK_HEIST_COORDS_KANDARIN = 16120;
+			public static final int LEAGUE_BANK_HEIST_COORDS_KARAMJA = 16121;
+			public static final int LEAGUE_BANK_HEIST_COORDS_KOUREND = 16122;
+			public static final int LEAGUE_BANK_HEIST_COORDS_MISTHALIN = 16123;
+			public static final int LEAGUE_BANK_HEIST_COORDS_MORYTANIA = 16124;
+			public static final int LEAGUE_BANK_HEIST_COORDS_TIRANNWN = 16125;
+			public static final int LEAGUE_BANK_HEIST_COORDS_VARLAMORE = 16126;
+			public static final int LEAGUE_BANK_HEIST_COORDS_WILDERNESS = 16127;
+			public static final int LEAGUE_BANK_HEIST_COORDS = 16128;
+			public static final int LEAGUE_CLUE_COMPASS_COORDS = 16129;
+			public static final int LEAGUE_EVIL_EYE_COORDS_GENERIC = 16130;
+			public static final int LEAGUE_EVIL_EYE_COORDS_ASGARNIA = 16131;
+			public static final int LEAGUE_EVIL_EYE_COORDS_DESERT = 16132;
+			public static final int LEAGUE_EVIL_EYE_COORDS_FREMENNIK = 16133;
+			public static final int LEAGUE_EVIL_EYE_COORDS_KANDARIN = 16134;
+			public static final int LEAGUE_EVIL_EYE_COORDS_KARAMJA = 16135;
+			public static final int LEAGUE_EVIL_EYE_COORDS_KOUREND = 16136;
+			public static final int LEAGUE_EVIL_EYE_COORDS_MISTHALIN = 16137;
+			public static final int LEAGUE_EVIL_EYE_COORDS_MORYTANIA = 16138;
+			public static final int LEAGUE_EVIL_EYE_COORDS_TIRANNWN = 16139;
+			public static final int LEAGUE_EVIL_EYE_COORDS_VARLAMORE = 16140;
+			public static final int LEAGUE_EVIL_EYE_COORDS_WILDERNESS = 16141;
+			public static final int LEAGUE_EVIL_EYE_COORDS = 16142;
+		}
+	}
+
+	public static final class LeagueRelicClueDirectTeleportItem
+	{
+		public static final int ID = 219;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_ITEM = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NULL_CLUE_TEXT = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NULL_CLUE_COORD_TEXT = 2;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_CLUE_TELEPORT_ITEM_CLUE_COMPASS = 15609;
+			public static final int LEAGUE_CLUE_TELEPORT_ITEM_CLUE_CONTRACT = 15610;
+		}
+	}
+
+	public static final class LeagueRelicEffectToggleList
+	{
+		public static final int ID = 220;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_TOGGLE = 0;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_RELIC_ENDLESS_HARVEST_TOGGLE_LIST = 16143;
+			public static final int LEAGUE_RELIC_BARBARIAN_GATHERING_TOGGLE_LIST = 16144;
+			public static final int LEAGUE_RELIC_SOUL_HARVEST_TOGGLE_LIST = 16145;
+			public static final int LEAGUE_RELIC_ABUNDANCE_TOGGLE_LIST = 16146;
+			public static final int LEAGUE_RELIC_WOODSMAN_TOGGLE_LIST = 16147;
+			public static final int LEAGUE_RELIC_TRANSMUTATION_TOGGLE_LIST = 16148;
+		}
+	}
+
+	public static final class LeagueRelicEffectToggle
+	{
+		public static final int ID = 221;
+
+		/**
+		 * string
+		 */
+		public static final int COL_TOGGLE_DEBUGNAME = 0;
+
+		/**
+		 * struct
+		 */
+		public static final int COL_TOGGLE_RELIC = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_TOGGLE_DESC = 2;
+
+		/**
+		 * string
+		 */
+		public static final int COL_TOGGLE_ON_MESSAGE = 3;
+
+		/**
+		 * string
+		 */
+		public static final int COL_TOGGLE_OFF_MESSAGE = 4;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_TOGGLE_INVERT = 5;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_TOGGLE_BIT = 6;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_RELIC_ENDLESS_HARVEST_TOGGLE_BANK = 16149;
+			public static final int LEAGUE_RELIC_BARBARIAN_GATHERING_TOGGLE_DISPOSE_EFFECT = 16150;
+			public static final int LEAGUE_RELIC_ABUNDANCE_TOGGLE_COINS_INV = 16151;
+			public static final int LEAGUE_RELIC_WOODSMAN_TOGGLE_BANK = 16152;
+			public static final int LEAGUE_RELIC_WOODSMAN_TOGGLE_BURN = 16153;
+			public static final int LEAGUE_RELIC_TRANSMUTATION_ALCHEMY_TOGGLE = 16154;
+			public static final int LEAGUE_RELIC_TRANSMUTATION_BANK_TOGGLE = 16155;
+			public static final int LEAGUE_RELIC_SOUL_HARVEST_TOGGLE_BONES = 16156;
+		}
+	}
+
+	public static final class LeagueGuardianData
+	{
+		public static final int ID = 222;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_MINION = 16157;
+			public static final int LEAGUE_TRAILBLAZER_GUARDIAN = 16162;
+			public static final int LEAGUE_ECHO_GUARDIAN = 16168;
+			public static final int LEAGUE_BINGO_GUARDIAN = 16174;
+		}
+	}
+
+	public static final class LeagueGuardianBodyData
+	{
+		public static final int ID = 223;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_MINION_BODY_DATA = 16158;
+			public static final int LEAGUE_TRAILBLAZER_BODY_DATA = 16163;
+			public static final int LEAGUE_ECHO_BODY_DATA = 16169;
+			public static final int LEAGUE_BINGO_BODY_DATA = 16175;
+		}
+	}
+
+	public static final class LeagueGuardianAnimData
+	{
+		public static final int ID = 224;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_MINION_MAGIC_ANIM_DATA = 16159;
+			public static final int LEAGUE_MINION_RANGED_ANIM_DATA = 16160;
+			public static final int LEAGUE_MINION_MELEE_ANIM_DATA = 16161;
+			public static final int LEAGUE_TRAILBLAZER_MAGIC_ANIM_DATA = 16164;
+			public static final int LEAGUE_TRAILBLAZER_RANGED_ANIM_DATA = 16165;
+			public static final int LEAGUE_TRAILBLAZER_MELEE_ANIM_DATA = 16166;
+			public static final int LEAGUE_TRAILBLAZER_STAB_ANIM_DATA = 16167;
+			public static final int LEAGUE_ECHO_MAGIC_ANIM_DATA = 16170;
+			public static final int LEAGUE_ECHO_RANGED_ANIM_DATA = 16171;
+			public static final int LEAGUE_ECHO_MELEE_ANIM_DATA = 16172;
+			public static final int LEAGUE_ECHO_STAB_ANIM_DATA = 16173;
+			public static final int LEAGUE_BINGO_MAGIC_ANIM_DATA = 16176;
+			public static final int LEAGUE_BINGO_RANGED_ANIM_DATA = 16177;
+			public static final int LEAGUE_BINGO_MELEE_ANIM_DATA = 16178;
+		}
+	}
+
+	public static final class Transmutation
+	{
+		public static final int ID = 225;
+
+		/**
+		 * (namedobj, obj)
+		 */
+		public static final int COL_TIER_ITEM = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 1;
+
+		public static final class Row
+		{
+			public static final int TRANSMUTE_LOGS_NORMAL = 16180;
+			public static final int TRANSMUTE_LOGS_PYRE = 16181;
+			public static final int TRANSMUTE_RAW_FISH = 16182;
+			public static final int TRANSMUTE_BONES_ZOGRE = 16183;
+			public static final int TRANSMUTE_BONES = 16184;
+			public static final int TRANSMUTE_ORE_CRAFTING = 16185;
+			public static final int TRANSMUTE_ORE_NORMAL = 16186;
+			public static final int TRANSMUTE_SEEDS_ALLOTMENT = 16187;
+			public static final int TRANSMUTE_SEEDS_FLOWER = 16188;
+			public static final int TRANSMUTE_SEEDS_HERBS = 16189;
+			public static final int TRANSMUTE_SEEDS_HOPS = 16190;
+			public static final int TRANSMUTE_SEEDS_BUSH = 16191;
+			public static final int TRANSMUTE_SEEDS_TREE = 16192;
+			public static final int TRANSMUTE_SEEDS_FRUIT_TREE = 16193;
+			public static final int TRANSMUTE_SEEDS_HARDWOOD = 16194;
+			public static final int TRANSMUTE_SEEDS_CACTUS = 16195;
+			public static final int TRANSMUTE_COMPOST = 16196;
+			public static final int TRANSMUTE_GEMS_UNCUT = 16197;
+			public static final int TRANSMUTE_ASHES = 16198;
+			public static final int TRANSMUTE_RUNES = 16199;
+			public static final int TRANSMUTE_HIDES = 16200;
+		}
+	}
+
+	public static final class ButlersBellActions
+	{
+		public static final int ID = 226;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ACTION_ID = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_RAW_NOUN = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_PROCESSED_NOUN = 2;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_PROCESSED_XP = 3;
+
+		/**
+		 * stat
+		 */
+		public static final int COL_XP_SKILL = 4;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_GATHER_BASE_RATE = 5;
+
+		public static final class Row
+		{
+			public static final int BUTLERS_BELL_WOOD = 16201;
+			public static final int BUTLERS_BELL_ORE = 16202;
+			public static final int BUTLERS_BELL_FLAX = 16203;
+			public static final int BUTLERS_BELL_HERBS = 16204;
+			public static final int BUTLERS_BELL_FISH = 16205;
+		}
+	}
+
+	public static final class SpellOverrideList
+	{
+		public static final int ID = 227;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_OVERRIDE = 0;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_6_SPELL_OVERRIDES = 16275;
+		}
+	}
+
+	public static final class SpellOverride
+	{
+		public static final int ID = 228;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_BASE_SPELL = 0;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_OVERRIDE_SPELL = 1;
+
+		/**
+		 * struct
+		 */
+		public static final int COL_RELIC_UNLOCK = 2;
+
+		public static final class Row
+		{
+			public static final int LEAGUE_6_HOME_TELEPORT_OVERRIDE_STANDARD = 16276;
+			public static final int LEAGUE_6_HOME_TELEPORT_OVERRIDE_ANCIENT = 16277;
+			public static final int LEAGUE_6_HOME_TELEPORT_OVERRIDE_LUNAR = 16278;
+			public static final int LEAGUE_6_HOME_TELEPORT_OVERRIDE_ARCEUUS = 16279;
+			public static final int LEAGUE_6_OVERRIDE_LOW_ALCH = 16280;
+			public static final int LEAGUE_6_OVERRIDE_HIGH_ALCH = 16281;
 		}
 	}
 /* This file is automatically generated. Do not edit. */

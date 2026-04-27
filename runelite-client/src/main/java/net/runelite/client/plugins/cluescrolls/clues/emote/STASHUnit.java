@@ -149,6 +149,7 @@ public enum STASHUnit
 	OUTSIDE_TWILIGHT_TEMPLE(ObjectID.HH_HARD_EXP7, new WorldPoint(1693, 3243, 0)),
 	PANDEMONIUM_BAR(ObjectID.HH_EASY_SAIL, new WorldPoint(3045, 2963, 0)),
 	WINTUMBER_ISLAND(ObjectID.HH_ELITE_SAIL, new WorldPoint(2072, 2608, 0)),
+	BRITTLE_ISLE(ObjectID.HH_MASTER_SAIL, new WorldPoint(1952, 4074, 0)),
 	;
 
 	private final int objectId;

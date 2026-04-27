@@ -26,6 +26,7 @@ package net.runelite.cache.definitions;
 
 import java.util.Map;
 import lombok.Data;
+import net.runelite.cache.EntityOpsDefinition;
 
 @Data
 public class ItemDefinition
@@ -70,10 +71,11 @@ public class ItemDefinition
 	public int[] countCo;
 	public int[] countObj;
 
-	public String[] options = new String[]{null, null, "Take", null, null};
-	public String[][] subops;
+	public EntityOpsDefinition groundOps = new EntityOpsDefinition()
+		.setOp(2, "Take");
 
 	public String[] interfaceOptions = new String[]{null, null, null, null, "Drop"};
+	public String[][] subops;
 
 	public int maleModel0 = -1;
 	public int maleModel1 = -1;
@@ -153,7 +155,7 @@ public class ItemDefinition
 		this.femaleHeadModel = var2.femaleHeadModel;
 		this.femaleHeadModel2 = var2.femaleHeadModel2;
 		this.team = var2.team;
-		this.options = var2.options;
+		this.groundOps = var2.groundOps;
 		this.interfaceOptions = new String[5];
 		if (var2.interfaceOptions != null)
 		{

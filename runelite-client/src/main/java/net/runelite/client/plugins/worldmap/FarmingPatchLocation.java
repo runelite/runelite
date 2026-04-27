@@ -62,10 +62,14 @@ enum FarmingPatchLocation
 	),
 	CALQUAT("Calquat",
 		new WorldPoint(2793, 3099, 0),
-		new WorldPoint(1365, 3035, 0)
+		new WorldPoint(1365, 3035, 0),
+		new WorldPoint(3125, 2403, 0)
 	),
 	CELASTRUS_FRUIT_TREE("Celastrus/Fruit Tree",
 		new WorldPoint(1242, 3755, 0)
+	),
+	CORAL("Coral",
+		new WorldPoint(3296, 8861, 0)
 	),
 	CRYSTAL_TREE("Crystal Tree",
 		new WorldPoint(3292, 6120, 0)
@@ -82,7 +86,8 @@ enum FarmingPatchLocation
 	GRAPES("Grapes", new WorldPoint(1807, 3555, 0)),
 	HARDWOOD("Hardwood",
 		new WorldPoint(3707, 3838, 0),
-		new WorldPoint(1683, 2971, 0)
+		new WorldPoint(1683, 2971, 0),
+		new WorldPoint(2472, 2705, 0)
 	),
 	HERB("Herb",
 		new WorldPoint(3789, 2840, 0),

@@ -784,6 +784,24 @@ public final class SpriteID
 	public static final int MINIMAP_BOAT_SLOOP = 7290;
 	public static final int MINIMAP_BOAT_COLOSSAL = 7291;
 	public static final int MINIMAP_BOAT_CLASSIC_LARGE = 7292;
+	public static final int STOP_OUTLINED = 7426;
+	public static final int TITLEBUTTON_ARROWS_47X41 = 7529;
+	public static final int TITLE_ICON_STAR_12X12 = 7530;
+	public static final int LEAGUE_5_LARGEMAP_VARLAMORE_6 = 7531;
+	public static final int LEAGUE_5_LARGEMAP_VARLAMORE_7 = 7532;
+	public static final int LEAGUE_6_MAP_EMPTY = 8059;
+	public static final int LEAGUE_6_MAP_MISTHALIN = 8060;
+	public static final int LEAGUE_6_MAP_KARAMJA = 8061;
+	public static final int LEAGUE_6_MAP_WILDERNESS = 8062;
+	public static final int LEAGUE_6_MAP_ASGARNIA = 8063;
+	public static final int LEAGUE_6_MAP_KANDARIN = 8064;
+	public static final int LEAGUE_6_MAP_DESERT = 8065;
+	public static final int LEAGUE_6_MAP_FREMENNIK = 8066;
+	public static final int LEAGUE_6_MAP_TIRANNWN = 8067;
+	public static final int LEAGUE_6_MAP_MORYTANIA = 8068;
+	public static final int LEAGUE_6_MAP_KOUREND = 8069;
+	public static final int LEAGUE_6_MAP_VARLAMORE = 8070;
+	public static final int LEAGUE_6_PROGRESS_BAR_INDICATOR = 8319;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -1825,6 +1843,31 @@ public final class SpriteID
 		public static final int _47 = 366;
 		public static final int _48 = 367;
 		public static final int _49 = 368;
+		public static final int _50 = 7479;
+		public static final int _51 = 7480;
+		public static final int _52 = 7481;
+		public static final int _53 = 7482;
+		public static final int _54 = 7483;
+		public static final int _55 = 7484;
+		public static final int _56 = 7485;
+		public static final int _57 = 7486;
+		public static final int _58 = 7487;
+		public static final int _59 = 7488;
+		public static final int _60 = 7489;
+		public static final int _61 = 7490;
+		public static final int _62 = 7491;
+		public static final int _63 = 7492;
+		public static final int _64 = 7493;
+		public static final int _65 = 7494;
+		public static final int _66 = 7495;
+		public static final int _67 = 7496;
+		public static final int _68 = 7497;
+		public static final int _69 = 7498;
+		public static final int _70 = 7499;
+		public static final int _71 = 7500;
+		public static final int _72 = 7501;
+		public static final int _73 = 7502;
+		public static final int _74 = 7503;
 
 		public static final int BIND = _0;
 		public static final int SNARE = _1;
@@ -1928,6 +1971,31 @@ public final class SpriteID
 		public static final int _47 = 416;
 		public static final int _48 = 417;
 		public static final int _49 = 418;
+		public static final int _50 = 7504;
+		public static final int _51 = 7505;
+		public static final int _52 = 7506;
+		public static final int _53 = 7507;
+		public static final int _54 = 7508;
+		public static final int _55 = 7509;
+		public static final int _56 = 7510;
+		public static final int _57 = 7511;
+		public static final int _58 = 7512;
+		public static final int _59 = 7513;
+		public static final int _60 = 7514;
+		public static final int _61 = 7515;
+		public static final int _62 = 7516;
+		public static final int _63 = 7517;
+		public static final int _64 = 7518;
+		public static final int _65 = 7519;
+		public static final int _66 = 7520;
+		public static final int _67 = 7521;
+		public static final int _68 = 7522;
+		public static final int _69 = 7523;
+		public static final int _70 = 7524;
+		public static final int _71 = 7525;
+		public static final int _72 = 7526;
+		public static final int _73 = 7527;
+		public static final int _74 = 7528;
 
 		public static final int BIND = _0;
 		public static final int SNARE = _1;
@@ -4454,6 +4522,13 @@ public final class SpriteID
 		public static final int _144 = 7285;
 		public static final int _145 = 7286;
 		public static final int _146 = 7287;
+		public static final int _147 = 7311;
+		public static final int _148 = 7312;
+		public static final int _149 = 7313;
+		public static final int _150 = 7314;
+		public static final int _151 = 7315;
+		public static final int _152 = 7316;
+		public static final int _153 = 7317;
 
 		public static final int GENERAL_STORE = _0;
 		public static final int SWORD_SHOP = _1;
@@ -5917,6 +5992,7 @@ public final class SpriteID
 		public static final int _1 = 2594;
 		public static final int _2 = 5272;
 		public static final int _3 = 6300;
+		public static final int _4 = 8330;
 	}
 
 	public static final class LeagueTinyRelic
@@ -5926,6 +6002,11 @@ public final class SpriteID
 		public static final int _2 = 3744;
 		public static final int _3 = 5274;
 		public static final int _4 = 6303;
+		public static final int _5 = 8332;
+		public static final int _6 = 8333;
+		public static final int _7 = 8334;
+		public static final int _8 = 8335;
+		public static final int _9 = 8336;
 	}
 
 	public static final class LeagueTutorial
@@ -6695,6 +6776,7 @@ public final class SpriteID
 		public static final int _2 = 3388;
 		public static final int _3 = 3389;
 		public static final int _4 = 3390;
+		public static final int _5 = 7318;
 	}
 
 	public static final class CaProgressBar
@@ -7741,6 +7823,7 @@ public final class SpriteID
 		public static final int YAMA = _63;
 		public static final int DOOM_OF_MOKHAIOTL = _64;
 		public static final int SHELLBANE_GRYPHON = _66;
+		public static final int BRUTUS = _69;
 	}
 
 	public static final class IconBoss50x50
@@ -10177,6 +10260,7 @@ public final class SpriteID
 	{
 		public static final int _0 = 6301;
 		public static final int _1 = 6302;
+		public static final int _2 = 8331;
 	}
 
 	public static final class IconYama34x34
@@ -10518,6 +10602,24 @@ public final class SpriteID
 		public static final int _15 = 6855;
 		public static final int _16 = 6856;
 		public static final int _17 = 6857;
+		public static final int _18 = 7293;
+		public static final int _19 = 7294;
+		public static final int _20 = 7295;
+		public static final int _21 = 7296;
+		public static final int _22 = 7297;
+		public static final int _23 = 7298;
+		public static final int _24 = 7299;
+		public static final int _25 = 7300;
+		public static final int _26 = 7301;
+		public static final int _27 = 7302;
+		public static final int _28 = 7303;
+		public static final int _29 = 7304;
+		public static final int _30 = 7305;
+		public static final int _31 = 7306;
+		public static final int _32 = 7307;
+		public static final int _33 = 7308;
+		public static final int _34 = 7309;
+		public static final int _35 = 7310;
 	}
 
 	public static final class IconChevron16x16
@@ -10873,5 +10975,1142 @@ public final class SpriteID
 	{
 		public static final int _0 = 6838;
 		public static final int _1 = 6839;
+	}
+
+	public static final class Sideicons18x18
+	{
+		public static final int _0 = 7319;
+		public static final int _1 = 7320;
+		public static final int _2 = 7321;
+	}
+
+	public static final class DeadmanSigilCombatIconsLargeInactive
+	{
+		public static final int _0 = 7322;
+		public static final int _1 = 7323;
+		public static final int _2 = 7324;
+		public static final int _3 = 7325;
+		public static final int _4 = 7326;
+		public static final int _5 = 7327;
+		public static final int _6 = 7328;
+		public static final int _7 = 7329;
+		public static final int _8 = 7330;
+		public static final int _9 = 7331;
+		public static final int _10 = 7332;
+		public static final int _11 = 7333;
+		public static final int _12 = 7334;
+		public static final int _13 = 7335;
+		public static final int _14 = 7336;
+		public static final int _15 = 7337;
+		public static final int _16 = 7338;
+		public static final int _17 = 7339;
+		public static final int _18 = 7340;
+		public static final int _19 = 7341;
+		public static final int _20 = 7342;
+		public static final int _21 = 7343;
+		public static final int _22 = 7344;
+		public static final int _23 = 7345;
+		public static final int _24 = 7346;
+		public static final int _25 = 7347;
+		public static final int _26 = 7348;
+		public static final int _27 = 7349;
+		public static final int _28 = 7350;
+		public static final int _29 = 7351;
+		public static final int _30 = 7352;
+		public static final int _31 = 7353;
+	}
+
+	public static final class DeadmanSigilSkillingIconsLargeInactive
+	{
+		public static final int _0 = 7354;
+		public static final int _1 = 7355;
+		public static final int _2 = 7356;
+		public static final int _3 = 7357;
+		public static final int _4 = 7358;
+		public static final int _5 = 7359;
+		public static final int _6 = 7360;
+		public static final int _7 = 7361;
+		public static final int _8 = 7362;
+		public static final int _9 = 7363;
+		public static final int _10 = 7364;
+		public static final int _11 = 7365;
+		public static final int _12 = 7366;
+		public static final int _13 = 7367;
+		public static final int _14 = 7368;
+		public static final int _15 = 7369;
+		public static final int _16 = 7370;
+		public static final int _17 = 7371;
+		public static final int _18 = 7372;
+		public static final int _19 = 7373;
+		public static final int _20 = 7374;
+		public static final int _21 = 7375;
+		public static final int _22 = 7376;
+		public static final int _23 = 7377;
+		public static final int _24 = 7378;
+		public static final int _25 = 7379;
+		public static final int _26 = 7380;
+		public static final int _27 = 7381;
+		public static final int _28 = 7382;
+		public static final int _29 = 7383;
+		public static final int _30 = 7384;
+		public static final int _31 = 7385;
+	}
+
+	public static final class DeadmanSigilUtilityIconsLargeInactive
+	{
+		public static final int _0 = 7386;
+		public static final int _1 = 7387;
+		public static final int _2 = 7388;
+		public static final int _3 = 7389;
+		public static final int _4 = 7390;
+		public static final int _5 = 7391;
+		public static final int _6 = 7392;
+		public static final int _7 = 7393;
+		public static final int _8 = 7394;
+		public static final int _9 = 7395;
+		public static final int _10 = 7396;
+		public static final int _11 = 7397;
+		public static final int _12 = 7398;
+		public static final int _13 = 7399;
+		public static final int _14 = 7400;
+		public static final int _15 = 7401;
+		public static final int _16 = 7402;
+		public static final int _17 = 7403;
+		public static final int _18 = 7404;
+		public static final int _19 = 7405;
+		public static final int _20 = 7406;
+		public static final int _21 = 7407;
+		public static final int _22 = 7408;
+		public static final int _23 = 7409;
+		public static final int _24 = 7410;
+		public static final int _25 = 7411;
+		public static final int _26 = 7412;
+		public static final int _27 = 7413;
+		public static final int _28 = 7414;
+		public static final int _29 = 7415;
+		public static final int _30 = 7416;
+		public static final int _31 = 7417;
+	}
+
+	public static final class BankStorage
+	{
+		public static final int _0 = 7418;
+		public static final int _1 = 7419;
+		public static final int _2 = 7420;
+		public static final int _3 = 7421;
+		public static final int _4 = 7422;
+		public static final int _5 = 7423;
+		public static final int _6 = 7424;
+		public static final int _7 = 7425;
+	}
+
+	public static final class MusicIcons
+	{
+		public static final int _0 = 7427;
+		public static final int _1 = 7428;
+		public static final int _2 = 7429;
+		public static final int _3 = 7430;
+	}
+
+	public static final class StatSilhouette
+	{
+		public static final int _0 = 7431;
+		public static final int _1 = 7432;
+		public static final int _2 = 7433;
+		public static final int _3 = 7434;
+		public static final int _4 = 7435;
+		public static final int _5 = 7436;
+		public static final int _6 = 7437;
+		public static final int _7 = 7438;
+		public static final int _8 = 7439;
+		public static final int _9 = 7440;
+		public static final int _10 = 7441;
+		public static final int _11 = 7442;
+		public static final int _12 = 7443;
+		public static final int _13 = 7444;
+		public static final int _14 = 7445;
+		public static final int _15 = 7446;
+		public static final int _16 = 7447;
+		public static final int _17 = 7448;
+		public static final int _18 = 7449;
+		public static final int _19 = 7450;
+		public static final int _20 = 7451;
+		public static final int _21 = 7452;
+		public static final int _22 = 7453;
+		public static final int _23 = 7454;
+	}
+
+	public static final class IconMinigames64x64
+	{
+		public static final int _0 = 7455;
+		public static final int _1 = 7456;
+		public static final int _2 = 7457;
+		public static final int _3 = 7458;
+		public static final int _4 = 7459;
+		public static final int _5 = 7460;
+		public static final int _6 = 7461;
+		public static final int _7 = 7462;
+		public static final int _8 = 7463;
+		public static final int _9 = 7464;
+		public static final int _10 = 7465;
+		public static final int _11 = 7466;
+		public static final int _12 = 7467;
+		public static final int _13 = 7468;
+		public static final int _14 = 7469;
+		public static final int _15 = 7470;
+		public static final int _16 = 7471;
+		public static final int _17 = 7472;
+		public static final int _18 = 7473;
+		public static final int _19 = 7474;
+		public static final int _20 = 7475;
+		public static final int _21 = 7476;
+		public static final int _22 = 7477;
+		public static final int _23 = 7478;
+	}
+
+	public static final class League6CombatMasterySmall
+	{
+		public static final int _0 = 7533;
+		public static final int _1 = 7534;
+		public static final int _2 = 7535;
+		public static final int _3 = 7536;
+		public static final int _4 = 7537;
+		public static final int _5 = 7538;
+		public static final int _6 = 7539;
+		public static final int _7 = 7540;
+		public static final int _8 = 7541;
+		public static final int _9 = 7542;
+		public static final int _10 = 7543;
+		public static final int _11 = 7544;
+		public static final int _12 = 7545;
+		public static final int _13 = 7546;
+		public static final int _14 = 7547;
+		public static final int _15 = 7548;
+		public static final int _16 = 7549;
+		public static final int _17 = 7550;
+		public static final int _18 = 7551;
+		public static final int _19 = 7552;
+		public static final int _20 = 7553;
+		public static final int _21 = 7554;
+		public static final int _22 = 7555;
+		public static final int _23 = 7556;
+		public static final int _24 = 7557;
+		public static final int _25 = 7558;
+		public static final int _26 = 7559;
+		public static final int _27 = 7560;
+		public static final int _28 = 7561;
+		public static final int _29 = 7562;
+		public static final int _30 = 7563;
+		public static final int _31 = 7564;
+		public static final int _32 = 7565;
+		public static final int _33 = 7566;
+		public static final int _34 = 7567;
+		public static final int _35 = 7568;
+		public static final int _36 = 7569;
+		public static final int _37 = 7570;
+		public static final int _38 = 7571;
+		public static final int _39 = 7572;
+		public static final int _40 = 7573;
+		public static final int _41 = 7574;
+		public static final int _42 = 7575;
+		public static final int _43 = 7576;
+		public static final int _44 = 7577;
+		public static final int _45 = 7578;
+		public static final int _46 = 7579;
+		public static final int _47 = 7580;
+		public static final int _48 = 7581;
+		public static final int _49 = 7582;
+		public static final int _50 = 7583;
+		public static final int _51 = 7584;
+		public static final int _52 = 7585;
+		public static final int _53 = 7586;
+		public static final int _54 = 7587;
+		public static final int _55 = 7588;
+		public static final int _56 = 7589;
+		public static final int _57 = 7590;
+		public static final int _58 = 7591;
+		public static final int _59 = 7592;
+		public static final int _60 = 7593;
+		public static final int _61 = 7594;
+		public static final int _62 = 7595;
+		public static final int _63 = 7596;
+		public static final int _64 = 7597;
+		public static final int _65 = 7598;
+		public static final int _66 = 7599;
+		public static final int _67 = 7600;
+		public static final int _68 = 7601;
+		public static final int _69 = 7602;
+		public static final int _70 = 7603;
+		public static final int _71 = 7604;
+		public static final int _72 = 7605;
+		public static final int _73 = 7606;
+		public static final int _74 = 7607;
+		public static final int _75 = 7608;
+		public static final int _76 = 7609;
+		public static final int _77 = 7610;
+		public static final int _78 = 7611;
+		public static final int _79 = 7612;
+		public static final int _80 = 7613;
+		public static final int _81 = 7614;
+		public static final int _82 = 7615;
+		public static final int _83 = 7616;
+		public static final int _84 = 7617;
+		public static final int _85 = 7618;
+		public static final int _86 = 7619;
+		public static final int _87 = 7620;
+		public static final int _88 = 7621;
+		public static final int _89 = 7622;
+		public static final int _90 = 7623;
+		public static final int _91 = 7624;
+		public static final int _92 = 7625;
+		public static final int _93 = 7626;
+		public static final int _94 = 7627;
+		public static final int _95 = 7628;
+		public static final int _96 = 7629;
+		public static final int _97 = 7630;
+		public static final int _98 = 7631;
+		public static final int _99 = 7632;
+		public static final int _100 = 7633;
+		public static final int _101 = 7634;
+		public static final int _102 = 7635;
+		public static final int _103 = 7636;
+		public static final int _104 = 7637;
+		public static final int _105 = 7638;
+		public static final int _106 = 7639;
+		public static final int _107 = 7640;
+	}
+
+	public static final class League6CombatMasteryTinyBacking01
+	{
+		public static final int _0 = 7641;
+		public static final int _1 = 7642;
+		public static final int _2 = 7643;
+		public static final int _3 = 7644;
+		public static final int _4 = 7645;
+	}
+
+	public static final class League6CombatMasteryMediumBacking01
+	{
+		public static final int _0 = 7646;
+		public static final int _1 = 7647;
+		public static final int _2 = 7648;
+		public static final int _3 = 7649;
+		public static final int _4 = 7650;
+	}
+
+	public static final class League6CombatMasterySmallBacking01
+	{
+		public static final int _0 = 7651;
+		public static final int _1 = 7652;
+		public static final int _2 = 7653;
+		public static final int _3 = 7654;
+		public static final int _4 = 7655;
+	}
+
+	public static final class League6CombatMasterySmallBacking02
+	{
+		public static final int _0 = 7656;
+		public static final int _1 = 7657;
+		public static final int _2 = 7658;
+		public static final int _3 = 7659;
+		public static final int _4 = 7660;
+	}
+
+	public static final class League6CombatMasteryLargeBacking01
+	{
+		public static final int _0 = 7661;
+		public static final int _1 = 7662;
+		public static final int _2 = 7663;
+		public static final int _3 = 7664;
+		public static final int _4 = 7665;
+	}
+
+	public static final class League6CombatMasteryLargeBacking02
+	{
+		public static final int _0 = 7666;
+		public static final int _1 = 7667;
+		public static final int _2 = 7668;
+		public static final int _3 = 7669;
+		public static final int _4 = 7670;
+	}
+
+	public static final class League6CombatMasteryGenericActiveTiny
+	{
+		public static final int _0 = 7671;
+		public static final int _1 = 7672;
+		public static final int _2 = 7673;
+		public static final int _3 = 7674;
+		public static final int _4 = 7675;
+		public static final int _5 = 7676;
+		public static final int _6 = 7677;
+	}
+
+	public static final class League6CombatMasteryGenericInactiveTiny
+	{
+		public static final int _0 = 7678;
+		public static final int _1 = 7679;
+		public static final int _2 = 7680;
+		public static final int _3 = 7681;
+		public static final int _4 = 7682;
+		public static final int _5 = 7683;
+		public static final int _6 = 7684;
+	}
+
+	public static final class League6CombatMasteryGenericActiveMedium
+	{
+		public static final int _0 = 7685;
+		public static final int _1 = 7686;
+		public static final int _2 = 7687;
+		public static final int _3 = 7688;
+		public static final int _4 = 7689;
+		public static final int _5 = 7690;
+		public static final int _6 = 7691;
+	}
+
+	public static final class League6CombatMasteryGenericInactiveMedium
+	{
+		public static final int _0 = 7692;
+		public static final int _1 = 7693;
+		public static final int _2 = 7694;
+		public static final int _3 = 7695;
+		public static final int _4 = 7696;
+		public static final int _5 = 7697;
+		public static final int _6 = 7698;
+	}
+
+	public static final class League6CombatMasteryGenericActiveLarge
+	{
+		public static final int _0 = 7699;
+		public static final int _1 = 7700;
+		public static final int _2 = 7701;
+		public static final int _3 = 7702;
+		public static final int _4 = 7703;
+		public static final int _5 = 7704;
+		public static final int _6 = 7705;
+		public static final int _7 = 7706;
+		public static final int _8 = 7707;
+		public static final int _9 = 7708;
+		public static final int _10 = 7709;
+		public static final int _11 = 7710;
+		public static final int _12 = 7711;
+		public static final int _13 = 7712;
+		public static final int _14 = 7713;
+		public static final int _15 = 7714;
+		public static final int _16 = 7715;
+		public static final int _17 = 7716;
+		public static final int _18 = 7717;
+		public static final int _19 = 7718;
+	}
+
+	public static final class League6CombatMasteryGenericInactiveLarge
+	{
+		public static final int _0 = 7719;
+		public static final int _1 = 7720;
+		public static final int _2 = 7721;
+		public static final int _3 = 7722;
+		public static final int _4 = 7723;
+		public static final int _5 = 7724;
+		public static final int _6 = 7725;
+		public static final int _7 = 7726;
+		public static final int _8 = 7727;
+		public static final int _9 = 7728;
+		public static final int _10 = 7729;
+		public static final int _11 = 7730;
+		public static final int _12 = 7731;
+		public static final int _13 = 7732;
+		public static final int _14 = 7733;
+		public static final int _15 = 7734;
+		public static final int _16 = 7735;
+		public static final int _17 = 7736;
+		public static final int _18 = 7737;
+		public static final int _19 = 7738;
+	}
+
+	public static final class League6CombatMasteryMagicActiveLarge
+	{
+		public static final int _0 = 7739;
+		public static final int _1 = 7740;
+		public static final int _2 = 7741;
+		public static final int _3 = 7742;
+		public static final int _4 = 7743;
+		public static final int _5 = 7744;
+		public static final int _6 = 7745;
+		public static final int _7 = 7746;
+		public static final int _8 = 7747;
+		public static final int _9 = 7748;
+		public static final int _10 = 7749;
+		public static final int _11 = 7750;
+		public static final int _12 = 7751;
+		public static final int _13 = 7752;
+		public static final int _14 = 7753;
+		public static final int _15 = 7754;
+		public static final int _16 = 7755;
+		public static final int _17 = 7756;
+		public static final int _18 = 7757;
+		public static final int _19 = 7758;
+		public static final int _20 = 7759;
+		public static final int _21 = 7760;
+		public static final int _22 = 7761;
+		public static final int _23 = 7762;
+		public static final int _24 = 7763;
+		public static final int _25 = 7764;
+		public static final int _26 = 7765;
+		public static final int _27 = 7766;
+		public static final int _28 = 7767;
+		public static final int _29 = 7768;
+	}
+
+	public static final class League6CombatMasteryMagicInactiveLarge
+	{
+		public static final int _0 = 7769;
+		public static final int _1 = 7770;
+		public static final int _2 = 7771;
+		public static final int _3 = 7772;
+		public static final int _4 = 7773;
+		public static final int _5 = 7774;
+		public static final int _6 = 7775;
+		public static final int _7 = 7776;
+		public static final int _8 = 7777;
+		public static final int _9 = 7778;
+		public static final int _10 = 7779;
+		public static final int _11 = 7780;
+		public static final int _12 = 7781;
+		public static final int _13 = 7782;
+		public static final int _14 = 7783;
+		public static final int _15 = 7784;
+		public static final int _16 = 7785;
+		public static final int _17 = 7786;
+		public static final int _18 = 7787;
+		public static final int _19 = 7788;
+		public static final int _20 = 7789;
+		public static final int _21 = 7790;
+		public static final int _22 = 7791;
+		public static final int _23 = 7792;
+		public static final int _24 = 7793;
+		public static final int _25 = 7794;
+		public static final int _26 = 7795;
+		public static final int _27 = 7796;
+		public static final int _28 = 7797;
+		public static final int _29 = 7798;
+	}
+
+	public static final class League6CombatMasteryMeleeActiveLarge
+	{
+		public static final int _0 = 7799;
+		public static final int _1 = 7800;
+		public static final int _2 = 7801;
+		public static final int _3 = 7802;
+		public static final int _4 = 7803;
+		public static final int _5 = 7804;
+		public static final int _6 = 7805;
+		public static final int _7 = 7806;
+		public static final int _8 = 7807;
+		public static final int _9 = 7808;
+		public static final int _10 = 7809;
+		public static final int _11 = 7810;
+		public static final int _12 = 7811;
+		public static final int _13 = 7812;
+		public static final int _14 = 7813;
+		public static final int _15 = 7814;
+		public static final int _16 = 7815;
+		public static final int _17 = 7816;
+		public static final int _18 = 7817;
+		public static final int _19 = 7818;
+	}
+
+	public static final class League6CombatMasteryMeleeInactiveLarge
+	{
+		public static final int _0 = 7819;
+		public static final int _1 = 7820;
+		public static final int _2 = 7821;
+		public static final int _3 = 7822;
+		public static final int _4 = 7823;
+		public static final int _5 = 7824;
+		public static final int _6 = 7825;
+		public static final int _7 = 7826;
+		public static final int _8 = 7827;
+		public static final int _9 = 7828;
+		public static final int _10 = 7829;
+		public static final int _11 = 7830;
+		public static final int _12 = 7831;
+		public static final int _13 = 7832;
+		public static final int _14 = 7833;
+		public static final int _15 = 7834;
+		public static final int _16 = 7835;
+		public static final int _17 = 7836;
+		public static final int _18 = 7837;
+		public static final int _19 = 7838;
+	}
+
+	public static final class League6CombatMasteryRangedActiveLarge
+	{
+		public static final int _0 = 7839;
+		public static final int _1 = 7840;
+		public static final int _2 = 7841;
+		public static final int _3 = 7842;
+		public static final int _4 = 7843;
+		public static final int _5 = 7844;
+		public static final int _6 = 7845;
+		public static final int _7 = 7846;
+		public static final int _8 = 7847;
+		public static final int _9 = 7848;
+		public static final int _10 = 7849;
+		public static final int _11 = 7850;
+		public static final int _12 = 7851;
+		public static final int _13 = 7852;
+		public static final int _14 = 7853;
+		public static final int _15 = 7854;
+		public static final int _16 = 7855;
+		public static final int _17 = 7856;
+		public static final int _18 = 7857;
+		public static final int _19 = 7858;
+	}
+
+	public static final class League6CombatMasteryRangedInactiveLarge
+	{
+		public static final int _0 = 7859;
+		public static final int _1 = 7860;
+		public static final int _2 = 7861;
+		public static final int _3 = 7862;
+		public static final int _4 = 7863;
+		public static final int _5 = 7864;
+		public static final int _6 = 7865;
+		public static final int _7 = 7866;
+		public static final int _8 = 7867;
+		public static final int _9 = 7868;
+		public static final int _10 = 7869;
+		public static final int _11 = 7870;
+		public static final int _12 = 7871;
+		public static final int _13 = 7872;
+		public static final int _14 = 7873;
+		public static final int _15 = 7874;
+		public static final int _16 = 7875;
+		public static final int _17 = 7876;
+		public static final int _18 = 7877;
+		public static final int _19 = 7878;
+	}
+
+	public static final class League6CombatMasteryGenericActiveSmall
+	{
+		public static final int _0 = 7879;
+		public static final int _1 = 7880;
+		public static final int _2 = 7881;
+		public static final int _3 = 7882;
+		public static final int _4 = 7883;
+		public static final int _5 = 7884;
+		public static final int _6 = 7885;
+		public static final int _7 = 7886;
+		public static final int _8 = 7887;
+		public static final int _9 = 7888;
+		public static final int _10 = 7889;
+		public static final int _11 = 7890;
+		public static final int _12 = 7891;
+		public static final int _13 = 7892;
+		public static final int _14 = 7893;
+		public static final int _15 = 7894;
+		public static final int _16 = 7895;
+		public static final int _17 = 7896;
+		public static final int _18 = 7897;
+		public static final int _19 = 7898;
+	}
+
+	public static final class League6CombatMasteryGenericInactiveSmall
+	{
+		public static final int _0 = 7899;
+		public static final int _1 = 7900;
+		public static final int _2 = 7901;
+		public static final int _3 = 7902;
+		public static final int _4 = 7903;
+		public static final int _5 = 7904;
+		public static final int _6 = 7905;
+		public static final int _7 = 7906;
+		public static final int _8 = 7907;
+		public static final int _9 = 7908;
+		public static final int _10 = 7909;
+		public static final int _11 = 7910;
+		public static final int _12 = 7911;
+		public static final int _13 = 7912;
+		public static final int _14 = 7913;
+		public static final int _15 = 7914;
+		public static final int _16 = 7915;
+		public static final int _17 = 7916;
+		public static final int _18 = 7917;
+		public static final int _19 = 7918;
+	}
+
+	public static final class League6CombatMasteryMagicActiveSmall
+	{
+		public static final int _0 = 7919;
+		public static final int _1 = 7920;
+		public static final int _2 = 7921;
+		public static final int _3 = 7922;
+		public static final int _4 = 7923;
+		public static final int _5 = 7924;
+		public static final int _6 = 7925;
+		public static final int _7 = 7926;
+		public static final int _8 = 7927;
+		public static final int _9 = 7928;
+		public static final int _10 = 7929;
+		public static final int _11 = 7930;
+		public static final int _12 = 7931;
+		public static final int _13 = 7932;
+		public static final int _14 = 7933;
+		public static final int _15 = 7934;
+		public static final int _16 = 7935;
+		public static final int _17 = 7936;
+		public static final int _18 = 7937;
+		public static final int _19 = 7938;
+		public static final int _20 = 7939;
+		public static final int _21 = 7940;
+		public static final int _22 = 7941;
+		public static final int _23 = 7942;
+		public static final int _24 = 7943;
+		public static final int _25 = 7944;
+		public static final int _26 = 7945;
+		public static final int _27 = 7946;
+		public static final int _28 = 7947;
+		public static final int _29 = 7948;
+	}
+
+	public static final class League6CombatMasteryMagicInactiveSmall
+	{
+		public static final int _0 = 7949;
+		public static final int _1 = 7950;
+		public static final int _2 = 7951;
+		public static final int _3 = 7952;
+		public static final int _4 = 7953;
+		public static final int _5 = 7954;
+		public static final int _6 = 7955;
+		public static final int _7 = 7956;
+		public static final int _8 = 7957;
+		public static final int _9 = 7958;
+		public static final int _10 = 7959;
+		public static final int _11 = 7960;
+		public static final int _12 = 7961;
+		public static final int _13 = 7962;
+		public static final int _14 = 7963;
+		public static final int _15 = 7964;
+		public static final int _16 = 7965;
+		public static final int _17 = 7966;
+		public static final int _18 = 7967;
+		public static final int _19 = 7968;
+		public static final int _20 = 7969;
+		public static final int _21 = 7970;
+		public static final int _22 = 7971;
+		public static final int _23 = 7972;
+		public static final int _24 = 7973;
+		public static final int _25 = 7974;
+		public static final int _26 = 7975;
+		public static final int _27 = 7976;
+		public static final int _28 = 7977;
+		public static final int _29 = 7978;
+	}
+
+	public static final class League6CombatMasteryMeleeActiveSmall
+	{
+		public static final int _0 = 7979;
+		public static final int _1 = 7980;
+		public static final int _2 = 7981;
+		public static final int _3 = 7982;
+		public static final int _4 = 7983;
+		public static final int _5 = 7984;
+		public static final int _6 = 7985;
+		public static final int _7 = 7986;
+		public static final int _8 = 7987;
+		public static final int _9 = 7988;
+		public static final int _10 = 7989;
+		public static final int _11 = 7990;
+		public static final int _12 = 7991;
+		public static final int _13 = 7992;
+		public static final int _14 = 7993;
+		public static final int _15 = 7994;
+		public static final int _16 = 7995;
+		public static final int _17 = 7996;
+		public static final int _18 = 7997;
+		public static final int _19 = 7998;
+	}
+
+	public static final class League6CombatMasteryMeleeInactiveSmall
+	{
+		public static final int _0 = 7999;
+		public static final int _1 = 8000;
+		public static final int _2 = 8001;
+		public static final int _3 = 8002;
+		public static final int _4 = 8003;
+		public static final int _5 = 8004;
+		public static final int _6 = 8005;
+		public static final int _7 = 8006;
+		public static final int _8 = 8007;
+		public static final int _9 = 8008;
+		public static final int _10 = 8009;
+		public static final int _11 = 8010;
+		public static final int _12 = 8011;
+		public static final int _13 = 8012;
+		public static final int _14 = 8013;
+		public static final int _15 = 8014;
+		public static final int _16 = 8015;
+		public static final int _17 = 8016;
+		public static final int _18 = 8017;
+		public static final int _19 = 8018;
+	}
+
+	public static final class League6CombatMasteryRangedActiveSmall
+	{
+		public static final int _0 = 8019;
+		public static final int _1 = 8020;
+		public static final int _2 = 8021;
+		public static final int _3 = 8022;
+		public static final int _4 = 8023;
+		public static final int _5 = 8024;
+		public static final int _6 = 8025;
+		public static final int _7 = 8026;
+		public static final int _8 = 8027;
+		public static final int _9 = 8028;
+		public static final int _10 = 8029;
+		public static final int _11 = 8030;
+		public static final int _12 = 8031;
+		public static final int _13 = 8032;
+		public static final int _14 = 8033;
+		public static final int _15 = 8034;
+		public static final int _16 = 8035;
+		public static final int _17 = 8036;
+		public static final int _18 = 8037;
+		public static final int _19 = 8038;
+	}
+
+	public static final class League6CombatMasteryRangedInactiveSmall
+	{
+		public static final int _0 = 8039;
+		public static final int _1 = 8040;
+		public static final int _2 = 8041;
+		public static final int _3 = 8042;
+		public static final int _4 = 8043;
+		public static final int _5 = 8044;
+		public static final int _6 = 8045;
+		public static final int _7 = 8046;
+		public static final int _8 = 8047;
+		public static final int _9 = 8048;
+		public static final int _10 = 8049;
+		public static final int _11 = 8050;
+		public static final int _12 = 8051;
+		public static final int _13 = 8052;
+		public static final int _14 = 8053;
+		public static final int _15 = 8054;
+		public static final int _16 = 8055;
+		public static final int _17 = 8056;
+		public static final int _18 = 8057;
+		public static final int _19 = 8058;
+	}
+
+	public static final class League6MapShields01
+	{
+		public static final int _0 = 8071;
+		public static final int _1 = 8072;
+		public static final int _2 = 8073;
+		public static final int _3 = 8074;
+		public static final int _4 = 8075;
+		public static final int _5 = 8076;
+		public static final int _6 = 8077;
+		public static final int _7 = 8078;
+		public static final int _8 = 8079;
+		public static final int _9 = 8080;
+		public static final int _10 = 8081;
+		public static final int _11 = 8082;
+		public static final int _12 = 8083;
+		public static final int _13 = 8084;
+		public static final int _14 = 8085;
+		public static final int _15 = 8086;
+		public static final int _16 = 8087;
+		public static final int _17 = 8088;
+		public static final int _18 = 8089;
+		public static final int _19 = 8090;
+		public static final int _20 = 8091;
+		public static final int _21 = 8092;
+		public static final int _22 = 8093;
+		public static final int _23 = 8094;
+	}
+
+	public static final class League6MapShields02
+	{
+		public static final int _0 = 8095;
+		public static final int _1 = 8096;
+		public static final int _2 = 8097;
+		public static final int _3 = 8098;
+		public static final int _4 = 8099;
+		public static final int _5 = 8100;
+		public static final int _6 = 8101;
+		public static final int _7 = 8102;
+		public static final int _8 = 8103;
+		public static final int _9 = 8104;
+		public static final int _10 = 8105;
+		public static final int _11 = 8106;
+		public static final int _12 = 8107;
+		public static final int _13 = 8108;
+		public static final int _14 = 8109;
+		public static final int _15 = 8110;
+		public static final int _16 = 8111;
+		public static final int _17 = 8112;
+		public static final int _18 = 8113;
+		public static final int _19 = 8114;
+		public static final int _20 = 8115;
+		public static final int _21 = 8116;
+		public static final int _22 = 8117;
+		public static final int _23 = 8118;
+		public static final int _24 = 8119;
+		public static final int _25 = 8120;
+		public static final int _26 = 8121;
+		public static final int _27 = 8122;
+		public static final int _28 = 8123;
+		public static final int _29 = 8124;
+		public static final int _30 = 8125;
+		public static final int _31 = 8126;
+		public static final int _32 = 8127;
+		public static final int _33 = 8128;
+		public static final int _34 = 8129;
+		public static final int _35 = 8130;
+	}
+
+	public static final class League6MapNames
+	{
+		public static final int _0 = 8131;
+		public static final int _1 = 8132;
+		public static final int _2 = 8133;
+		public static final int _3 = 8134;
+		public static final int _4 = 8135;
+		public static final int _5 = 8136;
+		public static final int _6 = 8137;
+		public static final int _7 = 8138;
+		public static final int _8 = 8139;
+		public static final int _9 = 8140;
+		public static final int _10 = 8141;
+		public static final int _11 = 8142;
+		public static final int _12 = 8143;
+		public static final int _13 = 8144;
+		public static final int _14 = 8145;
+		public static final int _15 = 8146;
+		public static final int _16 = 8147;
+		public static final int _17 = 8148;
+		public static final int _18 = 8149;
+		public static final int _19 = 8150;
+		public static final int _20 = 8151;
+		public static final int _21 = 8152;
+		public static final int _22 = 8153;
+		public static final int _23 = 8154;
+	}
+
+	public static final class League6RelicsLarge
+	{
+		public static final int _0 = 8155;
+		public static final int _1 = 8156;
+		public static final int _2 = 8157;
+		public static final int _3 = 8158;
+		public static final int _4 = 8159;
+		public static final int _5 = 8160;
+		public static final int _6 = 8161;
+		public static final int _7 = 8162;
+		public static final int _8 = 8163;
+		public static final int _9 = 8164;
+		public static final int _10 = 8165;
+		public static final int _11 = 8166;
+		public static final int _12 = 8167;
+		public static final int _13 = 8168;
+		public static final int _14 = 8169;
+		public static final int _15 = 8170;
+		public static final int _16 = 8171;
+		public static final int _17 = 8172;
+		public static final int _18 = 8173;
+		public static final int _19 = 8174;
+		public static final int _20 = 8175;
+		public static final int _21 = 8176;
+		public static final int _22 = 8177;
+		public static final int _23 = 8178;
+		public static final int _24 = 8179;
+		public static final int _25 = 8180;
+		public static final int _26 = 8181;
+	}
+
+	public static final class League6Relics
+	{
+		public static final int _0 = 8182;
+		public static final int _1 = 8183;
+		public static final int _2 = 8184;
+		public static final int _3 = 8185;
+		public static final int _4 = 8186;
+		public static final int _5 = 8187;
+		public static final int _6 = 8188;
+		public static final int _7 = 8189;
+		public static final int _8 = 8190;
+		public static final int _9 = 8191;
+		public static final int _10 = 8192;
+		public static final int _11 = 8193;
+		public static final int _12 = 8194;
+		public static final int _13 = 8195;
+		public static final int _14 = 8196;
+		public static final int _15 = 8197;
+		public static final int _16 = 8198;
+		public static final int _17 = 8199;
+		public static final int _18 = 8200;
+		public static final int _19 = 8201;
+		public static final int _20 = 8202;
+		public static final int _21 = 8203;
+		public static final int _22 = 8204;
+		public static final int _23 = 8205;
+		public static final int _24 = 8206;
+		public static final int _25 = 8207;
+		public static final int _26 = 8208;
+	}
+
+	public static final class League6RelicsOff
+	{
+		public static final int _0 = 8209;
+		public static final int _1 = 8210;
+		public static final int _2 = 8211;
+		public static final int _3 = 8212;
+		public static final int _4 = 8213;
+		public static final int _5 = 8214;
+		public static final int _6 = 8215;
+		public static final int _7 = 8216;
+		public static final int _8 = 8217;
+		public static final int _9 = 8218;
+		public static final int _10 = 8219;
+		public static final int _11 = 8220;
+		public static final int _12 = 8221;
+		public static final int _13 = 8222;
+		public static final int _14 = 8223;
+		public static final int _15 = 8224;
+		public static final int _16 = 8225;
+		public static final int _17 = 8226;
+		public static final int _18 = 8227;
+		public static final int _19 = 8228;
+		public static final int _20 = 8229;
+		public static final int _21 = 8230;
+		public static final int _22 = 8231;
+		public static final int _23 = 8232;
+		public static final int _24 = 8233;
+		public static final int _25 = 8234;
+		public static final int _26 = 8235;
+	}
+
+	public static final class League6RelicsMedium
+	{
+		public static final int _0 = 8236;
+		public static final int _1 = 8237;
+		public static final int _2 = 8238;
+		public static final int _3 = 8239;
+		public static final int _4 = 8240;
+		public static final int _5 = 8241;
+		public static final int _6 = 8242;
+		public static final int _7 = 8243;
+		public static final int _8 = 8244;
+		public static final int _9 = 8245;
+		public static final int _10 = 8246;
+		public static final int _11 = 8247;
+		public static final int _12 = 8248;
+		public static final int _13 = 8249;
+		public static final int _14 = 8250;
+		public static final int _15 = 8251;
+		public static final int _16 = 8252;
+		public static final int _17 = 8253;
+		public static final int _18 = 8254;
+		public static final int _19 = 8255;
+		public static final int _20 = 8256;
+		public static final int _21 = 8257;
+		public static final int _22 = 8258;
+		public static final int _23 = 8259;
+		public static final int _24 = 8260;
+		public static final int _25 = 8261;
+		public static final int _26 = 8262;
+	}
+
+	public static final class League6RelicsMediumOff
+	{
+		public static final int _0 = 8263;
+		public static final int _1 = 8264;
+		public static final int _2 = 8265;
+		public static final int _3 = 8266;
+		public static final int _4 = 8267;
+		public static final int _5 = 8268;
+		public static final int _6 = 8269;
+		public static final int _7 = 8270;
+		public static final int _8 = 8271;
+		public static final int _9 = 8272;
+		public static final int _10 = 8273;
+		public static final int _11 = 8274;
+		public static final int _12 = 8275;
+		public static final int _13 = 8276;
+		public static final int _14 = 8277;
+		public static final int _15 = 8278;
+		public static final int _16 = 8279;
+		public static final int _17 = 8280;
+		public static final int _18 = 8281;
+		public static final int _19 = 8282;
+		public static final int _20 = 8283;
+		public static final int _21 = 8284;
+		public static final int _22 = 8285;
+		public static final int _23 = 8286;
+		public static final int _24 = 8287;
+		public static final int _25 = 8288;
+		public static final int _26 = 8289;
+	}
+
+	public static final class League6RelicsTli
+	{
+		public static final int _0 = 8290;
+		public static final int _1 = 8291;
+		public static final int _2 = 8292;
+		public static final int _3 = 8293;
+		public static final int _4 = 8294;
+		public static final int _5 = 8295;
+		public static final int _6 = 8296;
+		public static final int _7 = 8297;
+		public static final int _8 = 8298;
+		public static final int _9 = 8299;
+		public static final int _10 = 8300;
+		public static final int _11 = 8301;
+		public static final int _12 = 8302;
+		public static final int _13 = 8303;
+		public static final int _14 = 8304;
+		public static final int _15 = 8305;
+		public static final int _16 = 8306;
+		public static final int _17 = 8307;
+		public static final int _18 = 8308;
+		public static final int _19 = 8309;
+		public static final int _20 = 8310;
+		public static final int _21 = 8311;
+		public static final int _22 = 8312;
+		public static final int _23 = 8313;
+		public static final int _24 = 8314;
+		public static final int _25 = 8315;
+		public static final int _26 = 8316;
+	}
+
+	public static final class League6ProgressBar
+	{
+		public static final int _0 = 8317;
+		public static final int _1 = 8318;
+	}
+
+	public static final class LeaguePactTiers
+	{
+		public static final int _0 = 8320;
+		public static final int _1 = 8321;
+		public static final int _2 = 8322;
+		public static final int _3 = 8323;
+		public static final int _4 = 8324;
+		public static final int _5 = 8325;
+		public static final int _6 = 8326;
+		public static final int _7 = 8327;
+		public static final int _8 = 8328;
+		public static final int _9 = 8329;
+	}
+
+	public static final class League6Tutorial
+	{
+		public static final int _0 = 8337;
+		public static final int _1 = 8338;
+		public static final int _2 = 8339;
+		public static final int _3 = 8340;
+		public static final int _4 = 8341;
+		public static final int _5 = 8342;
 	}
 }

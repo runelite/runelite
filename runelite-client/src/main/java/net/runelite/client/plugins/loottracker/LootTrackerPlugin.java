@@ -167,6 +167,9 @@ public class LootTrackerPlugin extends Plugin
 	static final String ZOMBIE_PIRATE_LOCKER_EVENT = "Zombie Pirate's Locker";
 	private static final Pattern ZOMBIE_PIRATE_LOCKER_PATTERN = Pattern.compile("You loot the locker and receive <col=[\\da-f]{6}>(?<qty>[\\d,]+) x (?<item>.+)</col>\\.");
 
+	// Shipwreck salvaging
+	private static final Pattern SALVAGE_PATTERN = Pattern.compile("You sort through the\\s+(?<tier>\\S+)\\s+salvage.*");
+
 	// Seed Pack loot handling
 	private static final String SEEDPACK_EVENT = "Seed pack";
 
@@ -201,6 +204,12 @@ public class LootTrackerPlugin extends Plugin
 		put(5422, "Chest (Aldarin Villas)").
 		put(6550, "Chest (Moon key)").
 		put(5521, "Chest (Alchemist's signet)").
+		put(12073, "Rusty chest").
+		put(7470, "Rusty chest").
+		put(6187, "Tarnished chest").
+		put(6953, "Tarnished chest").
+		put(7743, "Reinforced chest").
+		put(8758, "Reinforced chest").
 		build();
 
 	// Chests opened with keys from slayer tasks
@@ -672,7 +681,7 @@ public class LootTrackerPlugin extends Plugin
 			queuedLoots.add(lootRecord);
 		}
 
-		eventBus.post(new LootReceived(name, combatLevel, type, items, amount));
+		eventBus.post(new LootReceived(name, combatLevel, type, items, amount, metadata));
 	}
 
 	private Integer getLootWorldId()
@@ -1015,6 +1024,15 @@ public class LootTrackerPlugin extends Plugin
 		if (zombiePirateLockerMatcher.matches())
 		{
 			processZombiePirateLockerLoot(zombiePirateLockerMatcher);
+		}
+
+		final Matcher shipwreckSalvagingMatcher = SALVAGE_PATTERN.matcher(message);
+		if (shipwreckSalvagingMatcher.matches())
+		{
+			String tier = shipwreckSalvagingMatcher.group("tier");
+			String eventName = WordUtils.capitalizeFully(tier) + " salvage";
+			onInvChange(collectInvItems(LootRecordType.EVENT, eventName));
+			return;
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))

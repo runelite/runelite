@@ -42,6 +42,7 @@ import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldView;
 import net.runelite.client.callback.RenderCallbackManager;
 
 @Slf4j
@@ -177,7 +178,7 @@ class SceneUploader
 		int[][][] roofs = scene.getRoofs();
 		Tile[][][] tiles = scene.getExtendedTiles();
 
-		int offset = scene.getWorldViewId() == -1 ? GpuPlugin.SCENE_OFFSET >> 3 : 0;
+		int offset = scene.getWorldViewId() == WorldView.TOPLEVEL ? GpuPlugin.SCENE_OFFSET >> 3 : 0;
 		this.basex = (mzx - offset) << 10;
 		this.basez = (mzz - offset) << 10;
 
@@ -322,7 +323,7 @@ class SceneUploader
 			uploadZoneRenderable(renderable, zone, 0, decorativeObject.getX() + decorativeObject.getXOffset(), decorativeObject.getZ(), decorativeObject.getY() + decorativeObject.getYOffset(), -1, -1, -1, -1, decorativeObject.getId(), vertexBuffer, ab);
 
 			Renderable renderable2 = decorativeObject.getRenderable2();
-			uploadZoneRenderable(renderable2, zone, 0, decorativeObject.getX(), decorativeObject.getZ(), decorativeObject.getY(), -1, -1, -1, -1, decorativeObject.getId(), vertexBuffer, ab);
+			uploadZoneRenderable(renderable2, zone, 0, decorativeObject.getX() + decorativeObject.getXOffset2(), decorativeObject.getZ(), decorativeObject.getY() + decorativeObject.getYOffset2(), -1, -1, -1, -1, decorativeObject.getId(), vertexBuffer, ab);
 		}
 
 		GroundObject groundObject = t.getGroundObject();
@@ -449,8 +450,8 @@ class SceneUploader
 
 	private int upload(Scene scene, SceneTilePaint tile, int tileZ, int tileX, int tileY, GpuIntBuffer vertexBuffer, int lx, int lz)
 	{
-		tileX += scene.getWorldViewId() == -1 ? GpuPlugin.SCENE_OFFSET : 0;
-		tileY += scene.getWorldViewId() == -1 ? GpuPlugin.SCENE_OFFSET : 0;
+		tileX += scene.getWorldViewId() == WorldView.TOPLEVEL ? GpuPlugin.SCENE_OFFSET : 0;
+		tileY += scene.getWorldViewId() == WorldView.TOPLEVEL ? GpuPlugin.SCENE_OFFSET : 0;
 
 		final int[][][] tileHeights = scene.getTileHeights();
 		final int swHeight = tileHeights[tileZ][tileX][tileY];
@@ -698,7 +699,7 @@ class SceneUploader
 	}
 
 	// temp draw
-	static int uploadTempModel(Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer)
+	int uploadTempModel(Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer)
 	{
 		final int triangleCount = model.getFaceCount();
 		final int vertexCount = model.getVerticesCount();
@@ -865,9 +866,9 @@ class SceneUploader
 		return (hue << 10 | sat << 7 | lum) & 65535;
 	}
 
-	static float u0, u1, u2, v0, v1, v2;
+	float u0, u1, u2, v0, v1, v2;
 
-	static void computeFaceUvs(Model model, int face)
+	void computeFaceUvs(Model model, int face)
 	{
 		final float[] vertexX = model.getVerticesX();
 		final float[] vertexY = model.getVerticesY();

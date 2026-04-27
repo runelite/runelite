@@ -313,6 +313,8 @@ public class MiningPlugin extends Plugin
 				case ObjectID.ROCKS1:
 				case ObjectID.ROCKS2:
 				case ObjectID.ROCKS3:
+				case ObjectID.LEADROCK1_EMPTY:
+				case ObjectID.NICKELROCK1_EMPTY:
 				case ObjectID.MY2ARM_SALTROCK_EMPTY: // Basalt etc
 				case ObjectID.PRIF_MINE_ROCKS1_EMPTY: // Trahaearn mine
 				case ObjectID.FOSSIL_ASHPILE_EMPTY:

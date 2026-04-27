@@ -122,13 +122,13 @@ public class ExaminePlugin extends Plugin
 			return;
 		}
 
-		PendingExamine pendingExamine = pending.poll();
+		PendingExamine pendingExamine = pending.peek();
 		if (pendingExamine.getResponseType() != event.getType())
 		{
 			log.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getResponseType(), event.getType());
-			pending.clear(); // eh
 			return;
 		}
+		pending.pop();
 
 		log.debug("Got examine type {} {}: {}", pendingExamine.getResponseType(), pendingExamine.getId(), event.getMessage());
 

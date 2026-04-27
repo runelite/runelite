@@ -125,11 +125,6 @@ public class FairyRingPlugin extends Plugin
 		if (widgetLoaded.getGroupId() == InterfaceID.FAIRYRINGS_LOG)
 		{
 			setWidgetTextToDestination();
-
-			if (config.autoOpen())
-			{
-				clientThread.invokeLater(() -> openSearch());
-			}
 		}
 	}
 
@@ -156,11 +151,13 @@ public class FairyRingPlugin extends Plugin
 
 	private void openSearch()
 	{
-		var widget = client.getWidget(InterfaceID.FairyringsLog.TITLEBOX_GRAPHIC2);
+		var widget = client.getWidget(InterfaceID.FairyringsLog.SEARCH);
 		if (widget != null)
 		{
-			client.createScriptEvent(widget.getOnOpListener())
+			client.setVarcStrValue(VarClientID.MESLAYERINPUT, "");
+			client.createScriptEventBuilder(widget.getOnOpListener())
 				.setOp(1)
+				.build()
 				.run();
 		}
 	}
@@ -193,7 +190,7 @@ public class FairyRingPlugin extends Plugin
 				tags = ring.getTags();
 			}
 
-			var filter = client.getVarcStrValue(VarClientID.MESLAYERINPUT).toLowerCase();
+			var filter = client.getVarcStrValue(VarClientID.FAIRYRINGS_SEARCHSTRING).toLowerCase();
 
 			if (code.toLowerCase().contains(filter)
 				|| tags != null && tags.contains(filter)
@@ -270,10 +267,7 @@ public class FairyRingPlugin extends Plugin
 			.onDone(s ->
 			{
 				setConfigTags(code, s);
-				if (config.autoOpen())
-				{
-					clientThread.invokeLater(this::openSearch);
-				}
+				clientThread.invokeLater(() -> clientThread.invokeLater(this::openSearch));
 			})
 			.build();
 	}

@@ -8169,6 +8169,11 @@ public final class ObjectID extends ObjectID1
 	public static final int DRAGONSHIPLADDERTOP = 2590;
 
 	/**
+	 * Bunk bed
+	 */
+	public static final int AKD_SHAYZIEN_BUNKBED_SMALL = 2591;
+
+	/**
 	 * Ladder
 	 */
 	public static final int DRAGONSHIPLADDER = 2592;
@@ -38558,9 +38563,9 @@ public final class ObjectID extends ObjectID1
 	public static final int GRAPEVINE_CLICKZONE_DEAD = 11760;
 
 	/**
-	 * Fairy ring
+	 * Glowing portal
 	 */
-	public static final int POH_FAIRY_RING_LAST_AIP = 11761;
+	public static final int LEAGUE_6_YAMA_EXIT = 11761;
 
 	/**
 	 * Scaregull
@@ -39688,22 +39693,22 @@ public final class ObjectID extends ObjectID1
 	public static final int CANOEING_WAKA_CANOEING_STATION_IN_WATER = 12158;
 
 	/**
-	 * A Sinking Canoe
+	 * Sinking canoe
 	 */
 	public static final int CANOEING_LOG_SINKING = 12159;
 
 	/**
-	 * A Sinking Canoe
+	 * Sinking canoe
 	 */
 	public static final int CANOEING_DUGOUT_SINKING = 12160;
 
 	/**
-	 * A Sinking Canoe
+	 * Sinking canoe
 	 */
 	public static final int CANOEING_CATAMARAN_SINKING = 12161;
 
 	/**
-	 * A Sinking Canoe
+	 * Sinking canoe
 	 */
 	public static final int CANOEING_WAKA_SINKING = 12162;
 	public static final int CANOEING_CANOESTATION_LUMBRIDGE = 12163;
@@ -44406,9 +44411,9 @@ public final class ObjectID extends ObjectID1
 	public static final int POH_PORTAL_TEAK_YANILLE = 13620;
 
 	/**
-	 * Fairy ring
+	 * Stone
 	 */
-	public static final int POH_FAIRY_RING_LAST_AIS = 13621;
+	public static final int LEAGUE_6_YAMA_STEPPINGSTONE = 13621;
 	public static final int POH_PORTAL_MAG_VARROCK = 13622;
 
 	/**
@@ -44429,9 +44434,9 @@ public final class ObjectID extends ObjectID1
 	public static final int POH_PORTAL_MAG_YANILLE = 13627;
 
 	/**
-	 * Fairy ring
+	 * Info Board
 	 */
-	public static final int POH_FAIRY_RING_LAST_AIR = 13628;
+	public static final int LEAGUE_6_BASALT_BOARD01 = 13628;
 	public static final int POH_PORTAL_MARBLE_VARROCK = 13629;
 
 	/**
@@ -44452,9 +44457,9 @@ public final class ObjectID extends ObjectID1
 	public static final int POH_PORTAL_MARBLE_YANILLE = 13634;
 
 	/**
-	 * Fairy ring
+	 * Runestone basalt
 	 */
-	public static final int POH_FAIRY_RING_LAST_AIQ = 13635;
+	public static final int LEAGUE_6_BASALT_RUNE01 = 13635;
 
 	/**
 	 * Portal frame
@@ -81314,9 +81319,9 @@ public final class ObjectID extends ObjectID1
 	 * Lever
 	 */
 	public static final int FAI_FALADOR_PARTY_ROOM_LEVER = 26194;
-	public static final int BIRTHDAYBANNERL = 26195;
-	public static final int BIRTHDAYBANNERR = 26196;
-	public static final int BIRTHDAYBANNERM = 26197;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_WOOD = 26195;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_WOOD = 26196;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_WOOD = 26197;
 
 	/**
 	 * Birthday cake
@@ -83892,6 +83897,10 @@ public final class ObjectID extends ObjectID1
 	 * Exit portal
 	 */
 	public static final int CLANCUP_PORTAL_FROM_BATTLEAREA = 27096;
+
+	/**
+	 * Spiritual Fairy Tree
+	 */
 	public static final int LEAGUE_5_POH_SPIRIT_RING = 27097;
 
 	/**
@@ -90783,7 +90792,15 @@ public final class ObjectID extends ObjectID1
 	 * Spirit Tree
 	 */
 	public static final int POH_SPIRIT_TREE = 29227;
+
+	/**
+	 * Fairy Ring
+	 */
 	public static final int POH_FAIRY_RING = 29228;
+
+	/**
+	 * Spiritual Fairy Tree
+	 */
 	public static final int POH_SPIRIT_RING = 29229;
 
 	/**
@@ -91335,624 +91352,442 @@ public final class ObjectID extends ObjectID1
 	public static final int POH_PORTAL_MARBLE_KOUREND = 29361;
 
 	/**
-	 * Fairy ring
+	 * Runestone basalt
 	 */
-	public static final int POH_FAIRY_RING_LAST_ALP = 29362;
+	public static final int LEAGUE_6_BASALT_RUNE02 = 29362;
 
 	/**
-	 * Fairy ring
+	 * Runestone basalt
 	 */
-	public static final int POH_FAIRY_RING_LAST_ALS = 29363;
+	public static final int LEAGUE_6_BASALT_RUNE03 = 29363;
 
 	/**
-	 * Fairy ring
+	 * Runestone basalt
 	 */
-	public static final int POH_FAIRY_RING_LAST_ALR = 29364;
+	public static final int LEAGUE_6_BASALT_RUNE04 = 29364;
 
 	/**
-	 * Fairy ring
+	 * Runestone basalt
 	 */
-	public static final int POH_FAIRY_RING_LAST_ALQ = 29365;
+	public static final int LEAGUE_6_BASALT_GROUP01 = 29365;
 
 	/**
-	 * Fairy ring
+	 * Runestone basalt
 	 */
-	public static final int POH_FAIRY_RING_LAST_AKP = 29366;
+	public static final int LEAGUE_6_BASALT_GROUP02 = 29366;
 
 	/**
-	 * Fairy ring
+	 * Runestone basalt
 	 */
-	public static final int POH_FAIRY_RING_LAST_AKS = 29367;
+	public static final int LEAGUE_6_BASALT_GROUP03 = 29367;
+	public static final int LEAGUE_6_YAMA_BLOCKING = 29368;
+	public static final int LEAGUE_6_YAMA_ROOTS = 29369;
+	public static final int LEAGUE_6_YAMA_ROOTS_CORNER = 29370;
 
 	/**
-	 * Fairy ring
+	 * Rock
 	 */
-	public static final int POH_FAIRY_RING_LAST_AKR = 29368;
+	public static final int LEAGUE_6_YAMA_BLOCK_2X2 = 29371;
 
 	/**
-	 * Fairy ring
+	 * Rock
 	 */
-	public static final int POH_FAIRY_RING_LAST_AKQ = 29369;
+	public static final int LEAGUE_6_YAMA_BLOCK_2X2_B = 29372;
 
 	/**
-	 * Fairy ring
+	 * Rock
 	 */
-	public static final int POH_FAIRY_RING_LAST_AJP = 29370;
+	public static final int LEAGUE_6_YAMA_BLOCK_2X1 = 29373;
 
 	/**
-	 * Fairy ring
+	 * Rock
 	 */
-	public static final int POH_FAIRY_RING_LAST_AJS = 29371;
+	public static final int LEAGUE_6_YAMA_BLOCK_1X1 = 29374;
 
 	/**
-	 * Fairy ring
+	 * Archway
 	 */
-	public static final int POH_FAIRY_RING_LAST_AJR = 29372;
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W = 29375;
 
 	/**
-	 * Fairy ring
+	 * Archway
 	 */
-	public static final int POH_FAIRY_RING_LAST_AJQ = 29373;
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W_2 = 29376;
 
 	/**
-	 * Fairy ring
+	 * Archway
 	 */
-	public static final int POH_FAIRY_RING_LAST_DIP = 29374;
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W_3 = 29377;
 
 	/**
-	 * Fairy ring
+	 * Archway
 	 */
-	public static final int POH_FAIRY_RING_LAST_DIS = 29375;
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W_4 = 29378;
 
 	/**
-	 * Fairy ring
+	 * Archway
 	 */
-	public static final int POH_FAIRY_RING_LAST_DIR = 29376;
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W_5 = 29379;
 
 	/**
-	 * Fairy ring
+	 * Archway
 	 */
-	public static final int POH_FAIRY_RING_LAST_DIQ = 29377;
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_E = 29380;
 
 	/**
-	 * Fairy ring
+	 * Archway
 	 */
-	public static final int POH_FAIRY_RING_LAST_DLP = 29378;
+	public static final int LEAGUE_6_YAMA_GATEWAY_KANDARIN_N = 29381;
 
 	/**
-	 * Fairy ring
+	 * Archway
 	 */
-	public static final int POH_FAIRY_RING_LAST_DLS = 29379;
+	public static final int LEAGUE_6_YAMA_GATEWAY_KANDARIN_E = 29382;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DLR = 29380;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_ASGARNIA = 29383;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DLQ = 29381;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_MISTHALIN = 29384;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DKP = 29382;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_KANDARIN = 29385;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DKS = 29383;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_FREMENNIK = 29386;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DKR = 29384;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_DESERT = 29387;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DKQ = 29385;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_MORYTANIA = 29388;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DJP = 29386;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_TIRANNWN = 29389;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DJS = 29387;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_KARAMJA = 29390;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DJR = 29388;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_WILDERNESS = 29391;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_DJQ = 29389;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_KOUREND = 29392;
 
 	/**
-	 * Fairy ring
+	 * Waystone
 	 */
-	public static final int POH_FAIRY_RING_LAST_CIP = 29390;
+	public static final int LEAGUE_6_YAMA_WAYSTONE_VARLAMORE = 29393;
 
 	/**
-	 * Fairy ring
+	 * Throne
 	 */
-	public static final int POH_FAIRY_RING_LAST_CIS = 29391;
+	public static final int LEAGUE_6_DEMONIC_CHAIR01 = 29394;
 
 	/**
-	 * Fairy ring
+	 * Stone desk
 	 */
-	public static final int POH_FAIRY_RING_LAST_CIR = 29392;
+	public static final int LEAGUE_6_SKULLS_DESK01_SCROLLS01 = 29395;
 
 	/**
-	 * Fairy ring
+	 * Stone desk
 	 */
-	public static final int POH_FAIRY_RING_LAST_CIQ = 29393;
+	public static final int LEAGUE_6_SKULLS_DESK01_RUNE01 = 29396;
 
 	/**
-	 * Fairy ring
+	 * Little helper
 	 */
-	public static final int POH_FAIRY_RING_LAST_CLP = 29394;
+	public static final int LEAGUE_6_IMP01 = 29397;
 
 	/**
-	 * Fairy ring
+	 * Little helper
 	 */
-	public static final int POH_FAIRY_RING_LAST_CLS = 29395;
+	public static final int LEAGUE_6_IMP02 = 29398;
 
 	/**
-	 * Fairy ring
+	 * Little helper
 	 */
-	public static final int POH_FAIRY_RING_LAST_CLR = 29396;
+	public static final int LEAGUE_6_IMP03 = 29399;
 
 	/**
-	 * Fairy ring
+	 * Rubble
 	 */
-	public static final int POH_FAIRY_RING_LAST_CLQ = 29397;
+	public static final int LEAGUE_6_RUNE01_SHARDS01 = 29400;
 
 	/**
-	 * Fairy ring
+	 * Runes
 	 */
-	public static final int POH_FAIRY_RING_LAST_CKP = 29398;
+	public static final int LEAGUE_6_RUNE01_STACK01 = 29401;
+	public static final int LEAGUE_6_RUG01_END01 = 29402;
+	public static final int LEAGUE_6_RUG01_END02 = 29403;
+	public static final int LEAGUE_6_RUG01_SIDE01 = 29404;
+	public static final int LEAGUE_6_RUG01_SIDE02 = 29405;
+	public static final int LEAGUE_6_RUG01_MIDDLE01 = 29406;
+	public static final int LEAGUE_6_RUG01_MIDDLE01_A = 29407;
+	public static final int LEAGUE_6_DECOR01_SCROLLS01 = 29408;
+	public static final int LEAGUE_6_DECOR01_SCROLLS02 = 29409;
 
 	/**
-	 * Fairy ring
+	 * Gibbet
 	 */
-	public static final int POH_FAIRY_RING_LAST_CKS = 29399;
+	public static final int SAGE_CAGE = 29410;
 
 	/**
-	 * Fairy ring
+	 * Sage's Halo
 	 */
-	public static final int POH_FAIRY_RING_LAST_CKR = 29400;
+	public static final int SAGE05_HALO01 = 29411;
 
 	/**
-	 * Fairy ring
+	 * Icy pool
 	 */
-	public static final int POH_FAIRY_RING_LAST_CKQ = 29401;
+	public static final int AMOXLIATL_ICE_ECHO = 29412;
+	public static final int BGSOUND_LEAGUES_6_YAMA_LAIR_RUMBLING_LOOP = 29413;
+	public static final int RANDOMSOUND_L6_YAMA_CAVE_AMBIENCE = 29414;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_CJP = 29402;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_BRONZE = 29415;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_CJS = 29403;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_IRON = 29416;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_CJR = 29404;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_STEEL = 29417;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_CJQ = 29405;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_MITHRIL = 29418;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BIP = 29406;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_ADAMANT = 29419;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BIS = 29407;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_RUNE = 29420;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BIR = 29408;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_DRAGON = 29421;
 
 	/**
-	 * Fairy ring
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BIQ = 29409;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_BRONZE = 29422;
 
 	/**
-	 * Fairy ring
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BLP = 29410;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_IRON = 29423;
 
 	/**
-	 * Fairy ring
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BLS = 29411;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_STEEL = 29424;
 
 	/**
-	 * Fairy ring
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BLR = 29412;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_MITHRIL = 29425;
 
 	/**
-	 * Fairy ring
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BLQ = 29413;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_ADAMANT = 29426;
 
 	/**
-	 * Fairy ring
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BKP = 29414;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_RUNE = 29427;
 
 	/**
-	 * Fairy ring
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BKS = 29415;
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_DRAGON = 29428;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BKR = 29416;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_BRONZE = 29429;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BKQ = 29417;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_IRON = 29430;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BJP = 29418;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_STEEL = 29431;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BJS = 29419;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_MITHRIL = 29432;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BJR = 29420;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_ADAMANT = 29433;
 
 	/**
-	 * Fairy ring
+	 * Trophy pedestal
 	 */
-	public static final int POH_FAIRY_RING_LAST_BJQ = 29421;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_RUNE = 29434;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AIP = 29422;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_DRAGON = 29435;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AIS = 29423;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_BRONZE = 29436;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AIR = 29424;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_IRON = 29437;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AIQ = 29425;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_STEEL = 29438;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_ALP = 29426;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_MITHRIL = 29439;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_ALS = 29427;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_ADAMANT = 29440;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_ALR = 29428;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_RUNE = 29441;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_ALQ = 29429;
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_DRAGON = 29442;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AKP = 29430;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_BRONZE = 29443;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AKS = 29431;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_IRON = 29444;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AKR = 29432;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_STEEL = 29445;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AKQ = 29433;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_MITHRIL = 29446;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AJP = 29434;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_ADAMANT = 29447;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AJS = 29435;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_RUNE = 29448;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AJR = 29436;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_DRAGON = 29449;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_AJQ = 29437;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_BRONZE = 29450;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DIP = 29438;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_IRON = 29451;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DIS = 29439;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_STEEL = 29452;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DIR = 29440;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_MITHRIL = 29453;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DIQ = 29441;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_ADAMANT = 29454;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DLP = 29442;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_RUNE = 29455;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate trophy pedestal
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DLS = 29443;
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_DRAGON = 29456;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Banner stand
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DLR = 29444;
+	public static final int POH_LEAGUEHALL_BANNERSTAND_SIMPLE_LEAGUE06 = 29457;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Ornate banner stand
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DLQ = 29445;
+	public static final int POH_LEAGUEHALL_BANNERSTAND_DECORATIVE_LEAGUE06 = 29458;
 
 	/**
-	 * Spiritual Fairy Tree
+	 * Throne
 	 */
-	public static final int POH_SPIRIT_RING_LAST_DKP = 29446;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_DKS = 29447;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_DKR = 29448;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_DKQ = 29449;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_DJP = 29450;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_DJS = 29451;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_DJR = 29452;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_DJQ = 29453;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CIP = 29454;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CIS = 29455;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CIR = 29456;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CIQ = 29457;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CLP = 29458;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CLS = 29459;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CLR = 29460;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CLQ = 29461;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CKP = 29462;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CKS = 29463;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CKR = 29464;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CKQ = 29465;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CJP = 29466;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CJS = 29467;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CJR = 29468;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_CJQ = 29469;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BIP = 29470;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BIS = 29471;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BIR = 29472;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BIQ = 29473;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BLP = 29474;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BLS = 29475;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BLR = 29476;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BLQ = 29477;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BKP = 29478;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BKS = 29479;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BKR = 29480;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BKQ = 29481;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BJP = 29482;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BJS = 29483;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BJR = 29484;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int POH_SPIRIT_RING_LAST_BJQ = 29485;
+	public static final int POH_THRONE_8 = 29459;
 
 	/**
 	 * Gate
@@ -91994,648 +91829,16 @@ public final class ObjectID extends ObjectID1
 	 * Skeleton
 	 */
 	public static final int HILLGIANT_BOSS_CORPSE3 = 29494;
+
+	/**
+	 * Fairy ring
+	 */
 	public static final int FAIRYRING_MINORHUB = 29495;
 
 	/**
 	 * Fairy ring
 	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AIP = 29496;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AIS = 29497;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AIR = 29498;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AIQ = 29499;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_ALP = 29500;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_ALS = 29501;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_ALR = 29502;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_ALQ = 29503;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AKP = 29504;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AKS = 29505;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AKR = 29506;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AKQ = 29507;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AJP = 29508;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AJS = 29509;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AJR = 29510;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_AJQ = 29511;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DIP = 29512;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DIS = 29513;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DIR = 29514;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DIQ = 29515;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DLP = 29516;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DLS = 29517;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DLR = 29518;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DLQ = 29519;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DKP = 29520;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DKS = 29521;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DKR = 29522;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DKQ = 29523;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DJP = 29524;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DJS = 29525;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DJR = 29526;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_DJQ = 29527;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CIP = 29528;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CIS = 29529;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CIR = 29530;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CIQ = 29531;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CLP = 29532;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CLS = 29533;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CLR = 29534;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CLQ = 29535;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CKP = 29536;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CKS = 29537;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CKR = 29538;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CKQ = 29539;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CJP = 29540;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CJS = 29541;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CJR = 29542;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_CJQ = 29543;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BIP = 29544;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BIS = 29545;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BIR = 29546;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BIQ = 29547;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BLP = 29548;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BLS = 29549;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BLR = 29550;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BLQ = 29551;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BKP = 29552;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BKS = 29553;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BKR = 29554;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BKQ = 29555;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BJP = 29556;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BJS = 29557;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BJR = 29558;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_MINORHUB_LAST_BJQ = 29559;
 	public static final int FAIRYRING_HOMEHUB = 29560;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AIP = 29561;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AIS = 29562;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AIR = 29563;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AIQ = 29564;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_ALP = 29565;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_ALS = 29566;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_ALR = 29567;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_ALQ = 29568;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AKP = 29569;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AKS = 29570;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AKR = 29571;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AKQ = 29572;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AJP = 29573;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AJS = 29574;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AJR = 29575;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_AJQ = 29576;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DIP = 29577;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DIS = 29578;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DIR = 29579;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DIQ = 29580;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DLP = 29581;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DLS = 29582;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DLR = 29583;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DLQ = 29584;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DKP = 29585;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DKS = 29586;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DKR = 29587;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DKQ = 29588;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DJP = 29589;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DJS = 29590;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DJR = 29591;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_DJQ = 29592;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CIP = 29593;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CIS = 29594;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CIR = 29595;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CIQ = 29596;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CLP = 29597;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CLS = 29598;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CLR = 29599;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CLQ = 29600;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CKP = 29601;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CKS = 29602;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CKR = 29603;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CKQ = 29604;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CJP = 29605;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CJS = 29606;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CJR = 29607;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_CJQ = 29608;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BIP = 29609;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BIS = 29610;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BIR = 29611;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BIQ = 29612;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BLP = 29613;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BLS = 29614;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BLR = 29615;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BLQ = 29616;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BKP = 29617;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BKS = 29618;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BKR = 29619;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BKQ = 29620;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BJP = 29621;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BJS = 29622;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BJR = 29623;
-
-	/**
-	 * Fairy ring
-	 */
-	public static final int FAIRYRING_HOMEHUB_LAST_BJQ = 29624;
 
 	/**
 	 * Mounted Max Cape

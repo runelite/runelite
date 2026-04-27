@@ -26,24 +26,17 @@ package net.runelite.client.plugins.gpu;
 
 import java.nio.IntBuffer;
 import java.util.Arrays;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.Client;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Projection;
 
-@Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 class FacePrioritySorter
 {
 	static final int[] distances;
-	static final char[] distanceFaceCount;
-	static final char[][] distanceToFaces;
+	static final char[] zsortHead, zsortTail, zsortNext;
 
-	private static final float[] modelCanvasX;
-	private static final float[] modelCanvasY;
+	private static final float[] modelProjectedX;
+	private static final float[] modelProjectedY;
 
 	static final float[] modelLocalX;
 	static final float[] modelLocalY;
@@ -55,19 +48,23 @@ class FacePrioritySorter
 	private static final int[] lt10;
 	static final int[][] orderedFaces;
 
+	private static final int[] vertexBuffer;
+
 	static final int MAX_VERTEX_COUNT = 6500;
-	private static final int MAX_DIAMETER = 6000;
-	private static final int ZSORT_GROUP_SIZE = 1024; // was 512
+	static final int MAX_FACE_COUNT = 8192; // was 6500
+	static final int MAX_DIAMETER = 6000;
 	private static final int MAX_FACES_PER_PRIORITY = 4000; // was 2500
+	private static final int FACE_SIZE = (VAO.VERT_SIZE >> 2) * 3;
 
 	static
 	{
 		distances = new int[MAX_VERTEX_COUNT];
-		distanceFaceCount = new char[MAX_DIAMETER];
-		distanceToFaces = new char[MAX_DIAMETER][ZSORT_GROUP_SIZE];
+		zsortHead = new char[MAX_DIAMETER];
+		zsortTail = new char[MAX_DIAMETER];
+		zsortNext = new char[MAX_FACE_COUNT];
 
-		modelCanvasX = new float[MAX_VERTEX_COUNT];
-		modelCanvasY = new float[MAX_VERTEX_COUNT];
+		modelProjectedX = new float[MAX_VERTEX_COUNT];
+		modelProjectedY = new float[MAX_VERTEX_COUNT];
 
 		modelLocalX = new float[MAX_VERTEX_COUNT];
 		modelLocalY = new float[MAX_VERTEX_COUNT];
@@ -78,9 +75,16 @@ class FacePrioritySorter
 		eq11 = new int[MAX_FACES_PER_PRIORITY];
 		lt10 = new int[12];
 		orderedFaces = new int[12][MAX_FACES_PER_PRIORITY];
+
+		vertexBuffer = new int[MAX_FACE_COUNT * FACE_SIZE];
 	}
 
-	private final Client client;
+	private final SceneUploader sceneUploader;
+
+	FacePrioritySorter(SceneUploader sceneUploader)
+	{
+		this.sceneUploader = sceneUploader;
+	}
 
 	int uploadSortedModel(Projection proj, Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer, IntBuffer alphaBuffer)
 	{
@@ -89,17 +93,20 @@ class FacePrioritySorter
 		final float[] verticesY = model.getVerticesY();
 		final float[] verticesZ = model.getVerticesZ();
 
-		final int faceCount = model.getFaceCount();
+		final int faceCount = Math.min(model.getFaceCount(), MAX_FACE_COUNT);
 		final int[] indices1 = model.getFaceIndices1();
 		final int[] indices2 = model.getFaceIndices2();
 		final int[] indices3 = model.getFaceIndices3();
 
+		final int[] faceColors1 = model.getFaceColors1();
+		final int[] faceColors2 = model.getFaceColors2();
 		final int[] faceColors3 = model.getFaceColors3();
 		final byte[] faceRenderPriorities = model.getFaceRenderPriorities();
 
-		final int centerX = client.getCenterX();
-		final int centerY = client.getCenterY();
-		final int zoom = client.get3dZoom();
+		final short[] faceTextures = model.getFaceTextures();
+
+		final byte[] transparencies = model.getFaceTransparencies();
+		final byte[] bias = model.getFaceBias();
 
 		float orientSine = 0;
 		float orientCosine = 0;
@@ -140,41 +147,116 @@ class FacePrioritySorter
 				return 0;
 			}
 
-			modelCanvasX[v] = centerX + p[0] * zoom / p[2];
-			modelCanvasY[v] = centerY + p[1] * zoom / p[2];
+			modelProjectedX[v] = p[0] / p[2];
+			modelProjectedY[v] = p[1] / p[2];
 			distances[v] = (int) p[2] - zero;
 		}
 
 		final int diameter = model.getDiameter();
 		final int radius = model.getRadius();
-		if (diameter >= 6000)
+		if (diameter >= MAX_DIAMETER)
 		{
 			return 0;
 		}
 
-		Arrays.fill(distanceFaceCount, 0, diameter, (char) 0);
+		Arrays.fill(zsortHead, 0, diameter, (char) -1);
+		Arrays.fill(zsortTail, 0, diameter, (char) -1);
 
-		for (char i = 0; i < faceCount; ++i)
+		int minFz = diameter, maxFz = 0;
+		for (char faceIdx = 0; faceIdx < faceCount; ++faceIdx)
 		{
-			if (faceColors3[i] != -2)
+			if (faceColors3[faceIdx] != -2)
 			{
-				final int v1 = indices1[i];
-				final int v2 = indices2[i];
-				final int v3 = indices3[i];
+				final int v1 = indices1[faceIdx];
+				final int v2 = indices2[faceIdx];
+				final int v3 = indices3[faceIdx];
 
 				final float
-					aX = modelCanvasX[v1],
-					aY = modelCanvasY[v1],
-					bX = modelCanvasX[v2],
-					bY = modelCanvasY[v2],
-					cX = modelCanvasX[v3],
-					cY = modelCanvasY[v3];
+					aX = modelProjectedX[v1],
+					aY = modelProjectedY[v1],
+					bX = modelProjectedX[v2],
+					bY = modelProjectedY[v2],
+					cX = modelProjectedX[v3],
+					cY = modelProjectedY[v3];
 
 				if ((aX - bX) * (cY - bY) - (cX - bX) * (aY - bY) > 0)
 				{
 					int distance = radius + (distances[v1] + distances[v2] + distances[v3]) / 3;
 					assert distance >= 0 && distance < diameter;
-					distanceToFaces[distance][distanceFaceCount[distance]++] = i;
+
+					if (zsortTail[distance] == (char) -1)
+					{
+						zsortHead[distance] = zsortTail[distance] = faceIdx;
+						zsortNext[faceIdx] = (char) -1;
+					}
+					else
+					{
+						char lastFace = zsortTail[distance];
+						zsortNext[lastFace] = faceIdx;
+						zsortNext[faceIdx] = (char) -1;
+						zsortTail[distance] = faceIdx;
+					}
+
+					minFz = Math.min(minFz, distance);
+					maxFz = Math.max(maxFz, distance);
+
+					sceneUploader.computeFaceUvs(model, faceIdx);
+
+					int su0 = (int) (sceneUploader.u0 * 256f);
+					int sv0 = (int) (sceneUploader.v0 * 256f);
+
+					int su1 = (int) (sceneUploader.u1 * 256f);
+					int sv1 = (int) (sceneUploader.v1 * 256f);
+
+					int su2 = (int) (sceneUploader.u2 * 256f);
+					int sv2 = (int) (sceneUploader.v2 * 256f);
+
+					int color1 = faceColors1[faceIdx];
+					int color2 = faceColors2[faceIdx];
+					int color3 = faceColors3[faceIdx];
+
+					if (color3 == -1)
+					{
+						color2 = color3 = color1;
+					}
+
+					// HSL override is not applied to textured faces
+					if (faceTextures == null || faceTextures[faceIdx] == -1)
+					{
+						if (model.getOverrideAmount() > 0)
+						{
+							color1 = SceneUploader.interpolateHSL(color1, model.getOverrideHue(), model.getOverrideSaturation(), model.getOverrideLuminance(), model.getOverrideAmount());
+							color2 = SceneUploader.interpolateHSL(color2, model.getOverrideHue(), model.getOverrideSaturation(), model.getOverrideLuminance(), model.getOverrideAmount());
+							color3 = SceneUploader.interpolateHSL(color3, model.getOverrideHue(), model.getOverrideSaturation(), model.getOverrideLuminance(), model.getOverrideAmount());
+						}
+					}
+
+					int alphaBias = 0;
+					alphaBias |= transparencies != null ? (transparencies[faceIdx] & 0xff) << 24 : 0;
+					alphaBias |= bias != null ? (bias[faceIdx] & 0xff) << 16 : 0;
+					int texture = faceTextures != null ? faceTextures[faceIdx] + 1 : 0;
+
+					int vbOff = faceIdx * FACE_SIZE;
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalX[v1]);
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalY[v1]);
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalZ[v1]);
+					vertexBuffer[vbOff++] = alphaBias | color1;
+					vertexBuffer[vbOff++] = ((su0 & 0xffff) << 16 | (texture & 0xffff));
+					vertexBuffer[vbOff++] = sv0 & 0xffff;
+
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalX[v2]);
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalY[v2]);
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalZ[v2]);
+					vertexBuffer[vbOff++] = alphaBias | color2;
+					vertexBuffer[vbOff++] = ((su1 & 0xffff) << 16 | (texture & 0xffff));
+					vertexBuffer[vbOff++] = sv1 & 0xffff;
+
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalX[v3]);
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalY[v3]);
+					vertexBuffer[vbOff++] = Float.floatToIntBits(modelLocalZ[v3]);
+					vertexBuffer[vbOff++] = alphaBias | color3;
+					vertexBuffer[vbOff++] = ((su2 & 0xffff) << 16 | (texture & 0xffff));
+					vertexBuffer[vbOff++] = sv2 & 0xffff;
 				}
 			}
 		}
@@ -182,18 +264,12 @@ class FacePrioritySorter
 		int len = 0;
 		if (faceRenderPriorities == null)
 		{
-			for (int i = diameter - 1; i >= 0; --i)
+			for (int i = maxFz; i >= minFz; --i)
 			{
-				final int cnt = distanceFaceCount[i];
-				if (cnt > 0)
+				for (char face = zsortHead[i]; face != (char) -1; face = zsortNext[face])
 				{
-					final char[] faces = distanceToFaces[i];
-
-					for (int faceIdx = 0; faceIdx < cnt; ++faceIdx)
-					{
-						final int face = faces[faceIdx];
-						len += pushFace(model, face, opaqueBuffer, alphaBuffer);
-					}
+					var b = transparencies != null && transparencies[face] != 0 ? alphaBuffer : opaqueBuffer;
+					b.put(vertexBuffer, face * FACE_SIZE, FACE_SIZE);
 				}
 			}
 		}
@@ -202,32 +278,25 @@ class FacePrioritySorter
 			Arrays.fill(numOfPriority, 0);
 			Arrays.fill(lt10, 0);
 
-			for (int i = diameter - 1; i >= 0; --i)
+			for (int i = maxFz; i >= minFz; --i)
 			{
-				final int cnt = distanceFaceCount[i];
-				if (cnt > 0)
+				for (char face = zsortHead[i]; face != (char) -1; face = zsortNext[face])
 				{
-					final char[] faces = distanceToFaces[i];
+					final byte pri = faceRenderPriorities[face];
+					final int distIdx = numOfPriority[pri]++;
 
-					for (int faceIdx = 0; faceIdx < cnt; ++faceIdx)
+					orderedFaces[pri][distIdx] = face;
+					if (pri < 10)
 					{
-						final int face = faces[faceIdx];
-						final byte pri = faceRenderPriorities[face];
-						final int distIdx = numOfPriority[pri]++;
-
-						orderedFaces[pri][distIdx] = face;
-						if (pri < 10)
-						{
-							lt10[pri] += i;
-						}
-						else if (pri == 10)
-						{
-							eq10[distIdx] = i;
-						}
-						else
-						{
-							eq11[distIdx] = i;
-						}
+						lt10[pri] += i;
+					}
+					else if (pri == 10)
+					{
+						eq10[distIdx] = i;
+					}
+					else
+					{
+						eq11[distIdx] = i;
 					}
 				}
 			}
@@ -277,7 +346,8 @@ class FacePrioritySorter
 				while (pri == 0 && currFaceDistance > avg12)
 				{
 					final int face = dynFaces[drawnFaces++];
-					len += pushFace(model, face, opaqueBuffer, alphaBuffer);
+					var b = transparencies != null && transparencies[face] != 0 ? alphaBuffer : opaqueBuffer;
+					b.put(vertexBuffer, face * FACE_SIZE, FACE_SIZE);
 
 					if (drawnFaces == numDynFaces && dynFaces != orderedFaces[11])
 					{
@@ -300,7 +370,8 @@ class FacePrioritySorter
 				while (pri == 3 && currFaceDistance > avg34)
 				{
 					final int face = dynFaces[drawnFaces++];
-					len += pushFace(model, face, opaqueBuffer, alphaBuffer);
+					var b = transparencies != null && transparencies[face] != 0 ? alphaBuffer : opaqueBuffer;
+					b.put(vertexBuffer, face * FACE_SIZE, FACE_SIZE);
 
 					if (drawnFaces == numDynFaces && dynFaces != orderedFaces[11])
 					{
@@ -323,7 +394,8 @@ class FacePrioritySorter
 				while (pri == 5 && currFaceDistance > avg68)
 				{
 					final int face = dynFaces[drawnFaces++];
-					len += pushFace(model, face, opaqueBuffer, alphaBuffer);
+					var b = transparencies != null && transparencies[face] != 0 ? alphaBuffer : opaqueBuffer;
+					b.put(vertexBuffer, face * FACE_SIZE, FACE_SIZE);
 
 					if (drawnFaces == numDynFaces && dynFaces != orderedFaces[11])
 					{
@@ -349,14 +421,16 @@ class FacePrioritySorter
 				for (int faceIdx = 0; faceIdx < priNum; ++faceIdx)
 				{
 					final int face = priFaces[faceIdx];
-					len += pushFace(model, face, opaqueBuffer, alphaBuffer);
+					var b = transparencies != null && transparencies[face] != 0 ? alphaBuffer : opaqueBuffer;
+					b.put(vertexBuffer, face * FACE_SIZE, FACE_SIZE);
 				}
 			}
 
 			while (currFaceDistance != -1000)
 			{
 				final int face = dynFaces[drawnFaces++];
-				len += pushFace(model, face, opaqueBuffer, alphaBuffer);
+				var b = transparencies != null && transparencies[face] != 0 ? alphaBuffer : opaqueBuffer;
+				b.put(vertexBuffer, face * FACE_SIZE, FACE_SIZE);
 
 				if (drawnFaces == numDynFaces && dynFaces != orderedFaces[11])
 				{
@@ -378,93 +452,5 @@ class FacePrioritySorter
 		}
 
 		return len;
-	}
-
-	private int pushFace(Model model, int face, IntBuffer opaqueBuffer, IntBuffer alphaBuffer)
-	{
-		final int[] indices1 = model.getFaceIndices1();
-		final int[] indices2 = model.getFaceIndices2();
-		final int[] indices3 = model.getFaceIndices3();
-
-		final int[] faceColors1 = model.getFaceColors1();
-		final int[] faceColors2 = model.getFaceColors2();
-		final int[] faceColors3 = model.getFaceColors3();
-
-		final byte overrideAmount = model.getOverrideAmount();
-		final byte overrideHue = model.getOverrideHue();
-		final byte overrideSat = model.getOverrideSaturation();
-		final byte overrideLum = model.getOverrideLuminance();
-
-		final short[] faceTextures = model.getFaceTextures();
-
-		final byte[] transparencies = model.getFaceTransparencies();
-		final byte[] bias = model.getFaceBias();
-
-		final int triangleA = indices1[face];
-		final int triangleB = indices2[face];
-		final int triangleC = indices3[face];
-
-		int color1 = faceColors1[face];
-		int color2 = faceColors2[face];
-		int color3 = faceColors3[face];
-
-		boolean alpha = (transparencies != null && transparencies[face] != 0);
-
-		if (color3 == -1)
-		{
-			color2 = color3 = color1;
-		}
-
-		// HSL override is not applied to textured faces
-		if (faceTextures == null || faceTextures[face] == -1)
-		{
-			if (overrideAmount > 0)
-			{
-				color1 = SceneUploader.interpolateHSL(color1, overrideHue, overrideSat, overrideLum, overrideAmount);
-				color2 = SceneUploader.interpolateHSL(color2, overrideHue, overrideSat, overrideLum, overrideAmount);
-				color3 = SceneUploader.interpolateHSL(color3, overrideHue, overrideSat, overrideLum, overrideAmount);
-			}
-		}
-
-		float vx1 = modelLocalX[triangleA];
-		float vy1 = modelLocalY[triangleA];
-		float vz1 = modelLocalZ[triangleA];
-
-		float vx2 = modelLocalX[triangleB];
-		float vy2 = modelLocalY[triangleB];
-		float vz2 = modelLocalZ[triangleB];
-
-		float vx3 = modelLocalX[triangleC];
-		float vy3 = modelLocalY[triangleC];
-		float vz3 = modelLocalZ[triangleC];
-
-		SceneUploader.computeFaceUvs(model, face);
-
-		int su0 = (int) (SceneUploader.u0 * 256f);
-		int sv0 = (int) (SceneUploader.v0 * 256f);
-
-		int su1 = (int) (SceneUploader.u1 * 256f);
-		int sv1 = (int) (SceneUploader.v1 * 256f);
-
-		int su2 = (int) (SceneUploader.u2 * 256f);
-		int sv2 = (int) (SceneUploader.v2 * 256f);
-
-		int alphaBias = 0;
-		alphaBias |= transparencies != null ? (transparencies[face] & 0xff) << 24 : 0;
-		alphaBias |= bias != null ? (bias[face] & 0xff) << 16 : 0;
-		int texture = faceTextures != null ? faceTextures[face] + 1 : 0;
-
-		var vb = alpha ? alphaBuffer : opaqueBuffer;
-
-		SceneUploader.putfff4(vb, vx1, vy1, vz1, alphaBias | color1);
-		SceneUploader.put2222(vb, texture, su0, sv0, 0);
-
-		SceneUploader.putfff4(vb, vx2, vy2, vz2, alphaBias | color2);
-		SceneUploader.put2222(vb, texture, su1, sv1, 0);
-
-		SceneUploader.putfff4(vb, vx3, vy3, vz3, alphaBias | color3);
-		SceneUploader.put2222(vb, texture, su2, sv2, 0);
-
-		return 3;
 	}
 }

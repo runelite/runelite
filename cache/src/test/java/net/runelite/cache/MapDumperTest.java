@@ -32,127 +32,40 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.LocationsDefinition;
 import net.runelite.cache.definitions.MapDefinition;
-import net.runelite.cache.definitions.loaders.LocationsLoader;
-import net.runelite.cache.definitions.loaders.MapLoader;
-import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.Index;
-import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.region.RegionLoader;
 import net.runelite.cache.util.XteaKeyManager;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class MapDumperTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(MapDumperTest.class);
-
-	private static final int MAX_REGIONS = 32768;
+	private static final int MAX_REGIONS = 25287;
 	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
-	@Test
-	@Ignore
-	public void dumpRaw() throws IOException
-	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
-		XteaKeyManager keyManager = new XteaKeyManager();
-
-		try (Store store = new Store(base))
-		{
-			store.load();
-
-			Storage storage = store.getStorage();
-			Index index = store.getIndex(IndexType.MAPS);
-
-			for (int i = 0; i < MAX_REGIONS; i++)
-			{
-				int[] keys = keyManager.getKey(i);
-
-				int x = i >> 8;
-				int y = i & 0xFF;
-
-				Archive map = index.findArchiveByName("m" + x + "_" + y);
-				Archive land = index.findArchiveByName("l" + x + "_" + y);
-
-				assert (map == null) == (land == null);
-
-				if (map == null || land == null)
-				{
-					continue;
-				}
-
-				byte[] data = map.decompress(storage.loadArchive(map));
-
-				Files.write(data, new File(outDir, "m" + x + "_" + y + ".dat"));
-
-				if (keys != null)
-				{
-					try
-					{
-						data = land.decompress(storage.loadArchive(land), keys);
-					}
-					catch (IOException ex)
-					{
-						logger.info("Unable to decompress and load land " + x + "," + y + " (bad keys?)", ex);
-						continue;
-					}
-
-					logger.info("Decrypted region {} coords {},{}", i, x, y);
-
-					Files.write(data, new File(outDir, "l" + x + "_" + y + ".dat"));
-				}
-			}
-		}
-	}
-
 	private Map<MapDefinition, LocationsDefinition> loadRegions(Store store) throws IOException
 	{
 		Map<MapDefinition, LocationsDefinition> mapMap = new HashMap<>();
-		Storage storage = store.getStorage();
-		Index index = store.getIndex(IndexType.MAPS);
 		XteaKeyManager keyManager = new XteaKeyManager();
+		var regionLoader = new RegionLoader(store, keyManager);
 
 		for (int i = 0; i < MAX_REGIONS; ++i)
 		{
-			int x = i >> 8;
-			int y = i & 0xFF;
+			var mapDef = regionLoader.loadMapDef(i);
+			var locDef = regionLoader.loadLocDef(i);
 
-			Archive map = index.findArchiveByName("m" + x + "_" + y);
-			Archive land = index.findArchiveByName("l" + x + "_" + y);
-
-			assert (map == null) == (land == null);
-
-			if (map == null || land == null)
+			if (mapDef == null || locDef == null)
 			{
 				continue;
-			}
-
-			byte[] data = map.decompress(storage.loadArchive(map));
-			MapDefinition mapDef = new MapLoader().load(x, y, data);
-			LocationsDefinition locDef = null;
-
-			int[] keys = keyManager.getKey(i);
-			if (keys != null)
-			{
-				try
-				{
-					data = land.decompress(storage.loadArchive(land), keys);
-				}
-				catch (IOException ex)
-				{
-					continue;
-				}
-
-				locDef = new LocationsLoader().load(x, y, data);
 			}
 
 			mapMap.put(mapDef, locDef);
@@ -189,6 +102,6 @@ public class MapDumperTest
 			}
 		}
 
-		logger.info("Dumped regions to {}", outDir);
+		log.info("Dumped regions to {}", outDir);
 	}
 }

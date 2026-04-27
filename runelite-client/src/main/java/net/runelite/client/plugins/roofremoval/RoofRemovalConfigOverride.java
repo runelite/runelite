@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 @Getter
 enum RoofRemovalConfigOverride
 {
-	POH(RoofRemovalConfig::overridePOH, 7257, 7513, 7514, 7769, 7770, 8025, 8026);
+	POH(RoofRemovalConfig::overridePOH, 7257, 7534, 7535, 7790, 7791, 8046, 8047, 8302, 8303);
 
 	private final Predicate<RoofRemovalConfig> enabled;
 	private final List<Integer> regions;

@@ -273,17 +273,16 @@ public class RoofRemovalPlugin extends Plugin
 			return;
 		}
 
-		Tile[][][] tiles = scene.getTiles();
+		Tile[][][] tiles = scene.getExtendedTiles();
 		// the extended tile settings control what is actually drawn, the normal
 		// tile settings are just a copy
 		byte[][][] settings = scene.getExtendedTileSettings();
-		final int SCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 
 		for (int z = 0; z < Constants.MAX_Z; z++)
 		{
-			for (int x = 0; x < Constants.SCENE_SIZE; x++)
+			for (int x = 0; x < Constants.EXTENDED_SCENE_SIZE; x++)
 			{
-				for (int y = 0; y < Constants.SCENE_SIZE; y++)
+				for (int y = 0; y < Constants.EXTENDED_SCENE_SIZE; y++)
 				{
 					Tile tile = tiles[z][x][y];
 					if (tile == null)
@@ -297,7 +296,7 @@ public class RoofRemovalPlugin extends Plugin
 					int regionAndPlane = wp.getRegionID() << 2 | wp.getPlane();
 					if (configOverrideRegions.contains(wp.getRegionID()))
 					{
-						settings[z][x + SCENE_OFFSET][y + SCENE_OFFSET] |= Constants.TILE_FLAG_UNDER_ROOF;
+						settings[z][x][y] |= Constants.TILE_FLAG_UNDER_ROOF;
 					}
 					else if (overrides.containsKey(regionAndPlane))
 					{
@@ -306,7 +305,7 @@ public class RoofRemovalPlugin extends Plugin
 						long[] region = overrides.get(regionAndPlane);
 						if ((region[ry] & (1L << rx)) != 0)
 						{
-							settings[z][x + SCENE_OFFSET][y + SCENE_OFFSET] |= Constants.TILE_FLAG_UNDER_ROOF;
+							settings[z][x][y] |= Constants.TILE_FLAG_UNDER_ROOF;
 						}
 					}
 				}

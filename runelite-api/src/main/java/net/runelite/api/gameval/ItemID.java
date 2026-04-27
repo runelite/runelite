@@ -24140,6 +24140,10 @@ public final class ItemID
 	public static final int _100_JOURNAL_HEAD_GUIDE = 7502;
 	public static final int _100_JOURNAL_HEAD_MONKEY = 7503;
 	public static final int _100_JOURNAL_HEAD_OSMAN = 7504;
+
+	/**
+	 * Red crab
+	 */
 	public static final int _100_JOURNAL_HEAD_PIRATE = 7505;
 	public static final int _100_JOURNAL_HEAD_SIR = 7506;
 	public static final int _100_JOURNAL_HEAD_SKRACH = 7507;
@@ -29608,22 +29612,22 @@ public final class ItemID
 	public static final int WITCHWOOD_ICON = 8923;
 
 	/**
-	 * Bandana eyepatch
+	 * Bandana eyepatch (white)
 	 */
 	public static final int PIRATE_BANDANA_EYEPATCH = 8924;
 
 	/**
-	 * Bandana eyepatch
+	 * Bandana eyepatch (red)
 	 */
 	public static final int PIRATE_BANDANA_EYEPATCH_RED = 8925;
 
 	/**
-	 * Bandana eyepatch
+	 * Bandana eyepatch (blue)
 	 */
 	public static final int PIRATE_BANDANA_EYEPATCH_BLUE = 8926;
 
 	/**
-	 * Bandana eyepatch
+	 * Bandana eyepatch (brown)
 	 */
 	public static final int PIRATE_BANDANA_EYEPATCH_BROWN = 8927;
 
@@ -68887,7 +68891,7 @@ public final class ItemID
 	public static final int BR_ZARYTE_XBOW = 27186;
 
 	/**
-	 * Bow of faerdhinen
+	 * Bow of faerdhinen (c)
 	 */
 	public static final int BR_BOW_OF_FAERDHINEN = 27187;
 
@@ -72799,12 +72803,12 @@ public final class ItemID
 	public static final int SIGIL_OF_THE_FOOD_MASTER_UNATTUNED = 28496;
 
 	/**
-	 * Sigil of the well-fed
+	 * Sigil of the well fed
 	 */
 	public static final int SIGIL_OF_THE_WELL_FED_ATTUNED = 28498;
 
 	/**
-	 * Sigil of the well-fed
+	 * Sigil of the well fed
 	 */
 	public static final int SIGIL_OF_THE_WELL_FED_UNATTUNED = 28499;
 
@@ -72949,22 +72953,22 @@ public final class ItemID
 	public static final int DEADMAN_BLIGHTED_TUMEKENS_SHADOW_UNCHARGED = 28549;
 
 	/**
-	 * Quest lamp
+	 * Fremennik quest lamp
 	 */
 	public static final int DEADMAN_QUEST_LAMP_TIER_1 = 28551;
 
 	/**
-	 * Quest lamp
+	 * Elf quest lamp
 	 */
 	public static final int DEADMAN_QUEST_LAMP_TIER_2 = 28552;
 
 	/**
-	 * Quest lamp
+	 * Gnome quest lamp
 	 */
 	public static final int DEADMAN_QUEST_LAMP_TIER_3 = 28553;
 
 	/**
-	 * Quest lamp
+	 * Mahjarrat 1 quest lamp
 	 */
 	public static final int DEADMAN_QUEST_LAMP_TIER_4 = 28554;
 
@@ -73500,12 +73504,12 @@ public final class ItemID
 	public static final int LEAGUE_BANKERS_NOTE = 28767;
 
 	/**
-	 * Guardian horn
+	 * Minion whistle
 	 */
 	public static final int LEAGUE_GUARDIAN_SUMMON = 28769;
 
 	/**
-	 * Sage's greaves
+	 * Searing boots
 	 */
 	public static final int LEAGUE_RELIC_AGILITY_BOOTS = 28771;
 
@@ -75830,12 +75834,12 @@ public final class ItemID
 	public static final int SIGIL_OF_REVOKED_LIMITATION_UNATTUNED = 29652;
 
 	/**
-	 * Sigil of rampart
+	 * Sigil of the rampart
 	 */
 	public static final int SIGIL_OF_RAMPART_ATTUNED = 29654;
 
 	/**
-	 * Sigil of rampart
+	 * Sigil of the rampart
 	 */
 	public static final int SIGIL_OF_RAMPART_UNATTUNED = 29655;
 
@@ -75850,22 +75854,22 @@ public final class ItemID
 	public static final int SIGIL_OF_DECEPTION_UNATTUNED = 29658;
 
 	/**
-	 * Sigil of lithe
+	 * Sigil of litheness
 	 */
 	public static final int SIGIL_OF_LITHE_ATTUNED = 29660;
 
 	/**
-	 * Sigil of lithe
+	 * Sigil of litheness
 	 */
 	public static final int SIGIL_OF_LITHE_UNATTUNED = 29661;
 
 	/**
-	 * Sigil of adroit
+	 * Sigil of the adroit
 	 */
 	public static final int SIGIL_OF_ADROIT_ATTUNED = 29663;
 
 	/**
-	 * Sigil of adroit
+	 * Sigil of the adroit
 	 */
 	public static final int SIGIL_OF_ADROIT_UNATTUNED = 29664;
 
@@ -75890,22 +75894,22 @@ public final class ItemID
 	public static final int SIGIL_OF_RESTORATION_UNATTUNED = 29670;
 
 	/**
-	 * Sigil of swashbuckler
+	 * Sigil of the swashbuckler
 	 */
 	public static final int SIGIL_OF_SWASHBUCKLER_ATTUNED = 29672;
 
 	/**
-	 * Sigil of swashbuckler
+	 * Sigil of the swashbuckler
 	 */
 	public static final int SIGIL_OF_SWASHBUCKLER_UNATTUNED = 29673;
 
 	/**
-	 * Sigil of gunslinger
+	 * Sigil of the gunslinger
 	 */
 	public static final int SIGIL_OF_GUNSLINGER_ATTUNED = 29675;
 
 	/**
-	 * Sigil of gunslinger
+	 * Sigil of the gunslinger
 	 */
 	public static final int SIGIL_OF_GUNSLINGER_UNATTUNED = 29676;
 
@@ -80918,12 +80922,12 @@ public final class ItemID
 	public static final int PLANK_ROSEWOOD = 31438;
 
 	/**
-	 * Teleport boat to me
+	 * Summon boat
 	 */
 	public static final int POH_TABLET_TELEPORTBOATTOME = 31441;
 
 	/**
-	 * Teleport me to boat
+	 * Teleport to boat
 	 */
 	public static final int POH_TABLET_TELEPORTMETOBOAT = 31443;
 
@@ -81519,22 +81523,22 @@ public final class ItemID
 	public static final int GURTOBS_FABRIC_ROLL = 31746;
 
 	/**
-	 * Nifty hat
+	 * Swamp cruiser's hat
 	 */
 	public static final int JUBBLY_JIVE_COSMETIC_HEAD = 31748;
 
 	/**
-	 * Nifty jacket
+	 * Swamp cruiser's jacket
 	 */
 	public static final int JUBBLY_JIVE_COSMETIC_CHEST = 31750;
 
 	/**
-	 * Nifty trousers
+	 * Swamp cruiser's trousers
 	 */
 	public static final int JUBBLY_JIVE_COSMETIC_LEGS = 31752;
 
 	/**
-	 * Nifty shoes
+	 * Swamp cruiser's shoes
 	 */
 	public static final int JUBBLY_JIVE_COSMETIC_FEET = 31754;
 
@@ -81554,22 +81558,22 @@ public final class ItemID
 	public static final int GWYNAS_FABRIC_ROLL = 31758;
 
 	/**
-	 * Sleek hat
+	 * Crystal glider's hat
 	 */
 	public static final int GWENITH_GLIDE_COSMETIC_HEAD = 31760;
 
 	/**
-	 * Sleek jacket
+	 * Crystal glider's jacket
 	 */
 	public static final int GWENITH_GLIDE_COSMETIC_CHEST = 31762;
 
 	/**
-	 * Sleek trousers
+	 * Crystal glider's trousers
 	 */
 	public static final int GWENITH_GLIDE_COSMETIC_LEGS = 31764;
 
 	/**
-	 * Sleek shoes
+	 * Crystal glider's shoes
 	 */
 	public static final int GWENITH_GLIDE_COSMETIC_FEET = 31766;
 
@@ -82708,12 +82712,12 @@ public final class ItemID
 	public static final int SAILING_SKILLGUIDE_MAST_MAHOGANY = 32169;
 
 	/**
-	 * Mahogany mast and linen sails
+	 * Mahogany mast and canvas sails
 	 */
 	public static final int SAILING_SKILLGUIDE_MAST_MAHOGANY_SKIFF = 32170;
 
 	/**
-	 * Mahogany mast and linen sails
+	 * Mahogany mast and canvas sails
 	 */
 	public static final int SAILING_SKILLGUIDE_MAST_MAHOGANY_SLOOP = 32171;
 
@@ -83698,7 +83702,7 @@ public final class ItemID
 	public static final int LOST_SCHEMATIC_KEY_BUCCANEERS = 32413;
 
 	/**
-	 * Small key (ynsdail)
+	 * Small key (ynysdail)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_LLEDRITH = 32414;
 
@@ -86045,6 +86049,1309 @@ public final class ItemID
 	public static final int SALVAGE_SPOT_ICON_DUMMY = 32918;
 	public static final int SALVAGE_TABLE_ICON_DUMMY = 32919;
 	public static final int TRAWLING_ICON_DUMMY = 32920;
+
+	/**
+	 * Jar of feathers
+	 */
+	public static final int JAR_OF_FEATHERS = 32921;
+
+	/**
+	 * Steel nails
+	 */
+	public static final int ANY_NAILS = 32923;
+
+	/**
+	 * Crate of arrowtips
+	 */
+	public static final int CARGO_CRATE_ARROWTIPS_RELLEKKA = 32924;
+
+	/**
+	 * Crate of clothes
+	 */
+	public static final int CARGO_CRATE_CLOTHES_VOID_KNIGHTS_OUTPOST = 32925;
+
+	/**
+	 * Null
+	 */
+	public static final int XMAS25_SERVING_PLATTER = 32926;
+
+	/**
+	 * Lovley jubbly bib
+	 */
+	public static final int XMAS25_BIB = 32928;
+
+	/**
+	 * Beer belly sweater
+	 */
+	public static final int XMAS25_BEER_BELLY_SWEATER = 32930;
+
+	/**
+	 * Jad jumper
+	 */
+	public static final int XMAS25_CONTEST_JUMPER = 32932;
+
+	/**
+	 * Christmas dinner
+	 */
+	public static final int XMAS25_CHRISTMAS_DINNER = 32934;
+
+	/**
+	 * Crate of furs
+	 */
+	public static final int CARGO_CRATE_FURS_ALDARIN_1 = 32936;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_ARDOUGNE_1 = 32937;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_ARDOUGNE_2 = 32938;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_ARDOUGNE_3 = 32939;
+
+	/**
+	 * Crate of sand
+	 */
+	public static final int CARGO_CRATE_SAND_ARDOUGNE_1 = 32940;
+
+	/**
+	 * Crate of red coral
+	 */
+	public static final int CARGO_CRATE_RED_CORAL_ARDOUGNE_1 = 32941;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_BRIMHAVEN_1 = 32942;
+
+	/**
+	 * Crate of spices
+	 */
+	public static final int CARGO_CRATE_SPICES_BRIMHAVEN_1 = 32943;
+
+	/**
+	 * Crate of jewellery
+	 */
+	public static final int CARGO_CRATE_JEWELLERY_BRIMHAVEN_1 = 32944;
+
+	/**
+	 * Crate of bait
+	 */
+	public static final int CARGO_CRATE_BAIT_CATHERBY_1 = 32945;
+
+	/**
+	 * Crate of coconuts
+	 */
+	public static final int CARGO_CRATE_COCONUTS_CATHERBY_1 = 32946;
+
+	/**
+	 * Crate of arrowtips
+	 */
+	public static final int CARGO_CRATE_ARROWTIPS_CATHERBY_1 = 32947;
+
+	/**
+	 * Crate of pineapples
+	 */
+	public static final int CARGO_CRATE_PINEAPPLES_CIVITAS_ILLA_FORTIS_1 = 32948;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_DEEPFIN_POINT_1 = 32949;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_DEEPFIN_POINT_1 = 32950;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_DEEPFIN_POINT_2 = 32951;
+
+	/**
+	 * Crate of alpaca wool
+	 */
+	public static final int CARGO_CRATE_ALPACA_WOOL_DEEPFIN_POINT_1 = 32952;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_DEEPFIN_POINT_2 = 32953;
+
+	/**
+	 * Crate of fabrics
+	 */
+	public static final int CARGO_CRATE_FABRICS_DEEPFIN_POINT_1 = 32954;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_DEEPFIN_POINT_3 = 32955;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_DEEPFIN_POINT_3 = 32956;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_DEEPFIN_POINT_4 = 32957;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_LANDS_END_1 = 32958;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_LANDS_END_2 = 32959;
+
+	/**
+	 * Crate of gems
+	 */
+	public static final int CARGO_CRATE_GEMS_LANDS_END_1 = 32960;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_LUNAR_ISLE_1 = 32961;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_LUNAR_ISLE_2 = 32962;
+
+	/**
+	 * Crate of potions
+	 */
+	public static final int CARGO_CRATE_POTIONS_LUNAR_ISLE_1 = 32963;
+
+	/**
+	 * Crate of furs
+	 */
+	public static final int CARGO_CRATE_FURS_PISCATORIS_1 = 32964;
+
+	/**
+	 * Crate of swamp paste
+	 */
+	public static final int CARGO_CRATE_SWAMP_PASTE_PORT_KHAZARD_1 = 32965;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_PORT_PISCARILIUS_1 = 32966;
+
+	/**
+	 * Crate of books
+	 */
+	public static final int CARGO_CRATE_BOOKS_PORT_PISCARILIUS_1 = 32967;
+
+	/**
+	 * Crate of books
+	 */
+	public static final int CARGO_CRATE_BOOKS_PORT_PISCARILIUS_2 = 32968;
+
+	/**
+	 * Crate of jewellery
+	 */
+	public static final int CARGO_CRATE_JEWELLERY_PORT_PISCARILIUS_1 = 32969;
+
+	/**
+	 * Crate of jewellery
+	 */
+	public static final int CARGO_CRATE_JEWELLERY_PORT_PISCARILIUS_2 = 32970;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_PORT_PISCARILIUS_2 = 32971;
+
+	/**
+	 * Crate of furs
+	 */
+	public static final int CARGO_CRATE_FURS_PORT_PISCARILIUS_1 = 32972;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_ROBERTS_1 = 32973;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_ROBERTS_2 = 32974;
+
+	/**
+	 * Crate of silk
+	 */
+	public static final int CARGO_CRATE_SILK_PORT_ROBERTS_1 = 32975;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_ROBERTS_3 = 32976;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_PORT_SARIM_1 = 32977;
+
+	/**
+	 * Crate of swords
+	 */
+	public static final int CARGO_CRATE_SWORDS_PORT_SARIM_1 = 32978;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_SARIM_1 = 32979;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_SARIM_2 = 32980;
+
+	/**
+	 * Crate of seeds
+	 */
+	public static final int CARGO_CRATE_SEEDS_PORT_SARIM_1 = 32981;
+
+	/**
+	 * Crate of swords
+	 */
+	public static final int CARGO_CRATE_SWORDS_PORT_TYRAS_1 = 32982;
+
+	/**
+	 * Crate of platebodies
+	 */
+	public static final int CARGO_CRATE_PLATEBODIES_PORT_TYRAS_1 = 32983;
+
+	/**
+	 * Crate of swords
+	 */
+	public static final int CARGO_CRATE_SWORDS_PORT_TYRAS_2 = 32984;
+
+	/**
+	 * Crate of ores
+	 */
+	public static final int CARGO_CRATE_ORES_PORT_TYRAS_1 = 32985;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_PRIFDDINAS_1 = 32986;
+
+	/**
+	 * Crate of potions
+	 */
+	public static final int CARGO_CRATE_POTIONS_PRIFDDINAS_1 = 32987;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_RED_ROCK_1 = 32988;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_RED_ROCK_2 = 32989;
+
+	/**
+	 * Crate of runes
+	 */
+	public static final int CARGO_CRATE_RUNES_RED_ROCK_1 = 32990;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_RED_ROCK_3 = 32991;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_RELLEKKA_1 = 32992;
+
+	/**
+	 * Crate of teak logs
+	 */
+	public static final int CARGO_CRATE_TEAK_LOGS_RELLEKKA_1 = 32993;
+
+	/**
+	 * Crate of runes
+	 */
+	public static final int CARGO_CRATE_RUNES_RUINS_OF_UNKAH_1 = 32994;
+
+	/**
+	 * Crate of cocktails
+	 */
+	public static final int CARGO_CRATE_COCKTAILS_RUINS_OF_UNKAH_1 = 32995;
+
+	/**
+	 * Crate of ship parts
+	 */
+	public static final int CARGO_CRATE_SHIP_PARTS_RUINS_OF_UNKAH_1 = 32996;
+
+	/**
+	 * Crate of rum
+	 */
+	public static final int CARGO_CRATE_RUM_THE_PANDEMONIUM_1 = 32997;
+
+	/**
+	 * Crate of javelins
+	 */
+	public static final int CARGO_CRATE_JAVELINS_THE_SUMMER_SHORE_1 = 32998;
+
+	/**
+	 * Crate of potions
+	 */
+	public static final int CARGO_CRATE_POTIONS_VOID_KNIGHTS_OUTPOST_1 = 32999;
+
+	/**
+	 * Crate of ores
+	 */
+	public static final int CARGO_CRATE_ORES_VOID_KNIGHTS_OUTPOST_1 = 33000;
+
+	/**
+	 * Crate of potions
+	 */
+	public static final int CARGO_CRATE_POTIONS_VOID_KNIGHTS_OUTPOST_2 = 33001;
+
+	/**
+	 * Holy moleys
+	 */
+	public static final int HOLY_MOLEYS = 33002;
+
+	/**
+	 * Kharidian quest lamp
+	 */
+	public static final int DEADMAN_QUEST_LAMP_TIER_5 = 33004;
+
+	/**
+	 * Myreque quest lamp
+	 */
+	public static final int DEADMAN_QUEST_LAMP_TIER_6 = 33005;
+
+	/**
+	 * Dragonkin quest lamp
+	 */
+	public static final int DEADMAN_QUEST_LAMP_TIER_7 = 33006;
+
+	/**
+	 * Mahjarrat 2 quest lamp
+	 */
+	public static final int DEADMAN_QUEST_LAMP_TIER_8 = 33007;
+
+	/**
+	 * Camelot quest lamp
+	 */
+	public static final int DEADMAN_QUEST_LAMP_TIER_9 = 33008;
+
+	/**
+	 * Recipe for disaster quest lamp
+	 */
+	public static final int DEADMAN_QUEST_LAMP_TIER_10 = 33009;
+
+	/**
+	 * Ruinous powers
+	 */
+	public static final int DEADMAN_RUINOUS_POWERS_BOOK = 33010;
+
+	/**
+	 * Annihilation weapon scroll
+	 */
+	public static final int DEADMAN_2026_WEAPON_ORNAMENT_SCROLL = 33012;
+
+	/**
+	 * Annihilation blueprints
+	 */
+	public static final int DEADMAN_2026_POH_ORNAMENT_SCROLL = 33015;
+
+	/**
+	 * Annihilation teleport scroll
+	 */
+	public static final int DEADMAN_2026_HOME_TELEPORT_SCROLL = 33018;
+
+	/**
+	 * Bow of faerdhinen (c)
+	 */
+	public static final int BOW_OF_FAERDHINEN_INFINITE_DEADMAN = 33021;
+
+	/**
+	 * Crystal body
+	 */
+	public static final int CRYSTAL_CHESTPLATE_DEADMAN = 33023;
+
+	/**
+	 * Crystal body (inactive)
+	 */
+	public static final int CRYSTAL_CHESTPLATE_INACTIVE_DEADMAN = 33025;
+
+	/**
+	 * Crystal legs
+	 */
+	public static final int CRYSTAL_PLATELEGS_DEADMAN = 33027;
+
+	/**
+	 * Crystal legs (inactive)
+	 */
+	public static final int CRYSTAL_PLATELEGS_INACTIVE_DEADMAN = 33029;
+
+	/**
+	 * Crystal helm
+	 */
+	public static final int CRYSTAL_HELMET_DEADMAN = 33031;
+
+	/**
+	 * Crystal helm (inactive)
+	 */
+	public static final int CRYSTAL_HELMET_INACTIVE_DEADMAN = 33033;
+
+	/**
+	 * Toxic staff (uncharged)
+	 */
+	public static final int TOXIC_SOTD_DEADMAN = 33035;
+
+	/**
+	 * Toxic staff (deadman)
+	 */
+	public static final int TOXIC_SOTD_CHARGED_DEADMAN = 33036;
+
+	/**
+	 * The dogsword
+	 */
+	public static final int DEADMAN_DOGSWORD = 33038;
+
+	/**
+	 * Thunder khopesh
+	 */
+	public static final int DEADMAN_THUNDER_KHOPESH = 33041;
+
+	/**
+	 * Trinket of avarice
+	 */
+	public static final int MAGIC_ROCK_OF_AVARICE = 33044;
+
+	/**
+	 * Trinket of fortuity (inactive)
+	 */
+	public static final int MAGIC_ROCK_OF_FORTUITY_INACTIVE = 33047;
+
+	/**
+	 * Trinket of fortuity (active)
+	 */
+	public static final int MAGIC_ROCK_OF_FORTUITY_ACTIVE = 33050;
+
+	/**
+	 * Sigil of the gods
+	 */
+	public static final int SIGIL_OF_THE_GODS_ATTUNED = 33053;
+
+	/**
+	 * Sigil of the gods
+	 */
+	public static final int SIGIL_OF_THE_GODS_UNATTUNED = 33054;
+
+	/**
+	 * Sigil of conclusion
+	 */
+	public static final int SIGIL_OF_CONCLUSION_ATTUNED = 33055;
+
+	/**
+	 * Sigil of conclusion
+	 */
+	public static final int SIGIL_OF_CONCLUSION_UNATTUNED = 33056;
+
+	/**
+	 * Sigil of automation
+	 */
+	public static final int SIGIL_OF_AUTOMATION_ATTUNED = 33057;
+
+	/**
+	 * Sigil of automation
+	 */
+	public static final int SIGIL_OF_AUTOMATION_UNATTUNED = 33058;
+
+	/**
+	 * Sigil of eternal belief
+	 */
+	public static final int SIGIL_OF_ETERNAL_BELIEF_ATTUNED = 33059;
+
+	/**
+	 * Sigil of eternal belief
+	 */
+	public static final int SIGIL_OF_ETERNAL_BELIEF_UNATTUNED = 33060;
+
+	/**
+	 * Sigil of efficiency
+	 */
+	public static final int SIGIL_OF_EFFICIENCY_ATTUNED = 33061;
+
+	/**
+	 * Sigil of efficiency
+	 */
+	public static final int SIGIL_OF_EFFICIENCY_UNATTUNED = 33062;
+
+	/**
+	 * Starter cape
+	 */
+	public static final int DEADMAN_STARTER_CAPE = 33063;
+
+	/**
+	 * Deadman's skull
+	 */
+	public static final int DEADMAN_SKULL = 33065;
+
+	/**
+	 * Hooded slayer helmet
+	 */
+	public static final int SLAYER_HELM_HOODED = 33066;
+
+	/**
+	 * Hooded slayer helmet (i)
+	 */
+	public static final int SLAYER_HELM_I_HOODED = 33068;
+
+	/**
+	 * Hooded slayer helmet (i)
+	 */
+	public static final int SW_SLAYER_HELM_I_HOODED = 33070;
+
+	/**
+	 * Hooded slayer helmet (i)
+	 */
+	public static final int PVPA_SLAYER_HELM_I_HOODED = 33072;
+
+	/**
+	 * Facility bottle (empty)
+	 */
+	public static final int SAILING_FACILITY_BOTTLE_EMPTY = 33074;
+
+	/**
+	 * Facility bottle (full)
+	 */
+	public static final int SAILING_FACILITY_BOTTLE_FULL = 33077;
+
+	/**
+	 * 25th anniversary helmet
+	 */
+	public static final int _25TH_ANNIVERSARY_HELMET = 33080;
+
+	/**
+	 * 25th anniversary warrior tabard
+	 */
+	public static final int _25TH_ANNIVERSARY_TABARD_1 = 33082;
+
+	/**
+	 * 25th anniversary skeleton tabard
+	 */
+	public static final int _25TH_ANNIVERSARY_TABARD_2 = 33084;
+
+	/**
+	 * 25th anniversary 5x5 hat
+	 */
+	public static final int _25TH_ANNIVERSARY_HAT = 33086;
+
+	/**
+	 * Null
+	 */
+	public static final int _25TH_HOST_FOLLOWER = 33088;
+
+	/**
+	 * Bottomless milk bucket
+	 */
+	public static final int BOTTOMLESS_MILK_BUCKET_FILLED = 33089;
+
+	/**
+	 * Bottomless milk bucket (empty)
+	 */
+	public static final int BOTTOMLESS_MILK_BUCKET = 33091;
+
+	/**
+	 * Cow slippers
+	 */
+	public static final int COW_SLIPPERS = 33093;
+
+	/**
+	 * Cow slippers
+	 */
+	public static final int COW_SLIPPERS_RECOL_1 = 33096;
+
+	/**
+	 * Cow slippers
+	 */
+	public static final int COW_SLIPPERS_RECOL_2 = 33097;
+
+	/**
+	 * Cow slippers
+	 */
+	public static final int COW_SLIPPERS_RECOL_3 = 33098;
+
+	/**
+	 * Brutus slippers
+	 */
+	public static final int COW_SLIPPERS_RECOL_4 = 33099;
+
+	/**
+	 * Mooleta
+	 */
+	public static final int MOOLETA = 33101;
+
+	/**
+	 * Cowbell amulet
+	 */
+	public static final int COWBELL_AMULET_EMPTY = 33103;
+
+	/**
+	 * Cowbell amulet
+	 */
+	public static final int COWBELL_AMULET = 33104;
+
+	/**
+	 * Raw t-bone steak
+	 */
+	public static final int RAW_TBONE_STEAK = 33106;
+
+	/**
+	 * Cooked t-bone steak
+	 */
+	public static final int TBONE_STEAK = 33109;
+
+	/**
+	 * Burnt t-bone steak
+	 */
+	public static final int TBONE_STEAK_BURNED = 33112;
+
+	/**
+	 * Bull bones
+	 */
+	public static final int BULL_BONES = 33115;
+
+	/**
+	 * Magic lamp
+	 */
+	public static final int COWBOSS_REWARD_LAMP = 33117;
+
+	/**
+	 * Abyssal potato
+	 */
+	public static final int DEMONIC_POTATO = 33118;
+
+	/**
+	 * Perfected quetzal whistle(i)
+	 */
+	public static final int HG_QUETZALWHISTLE_PERFECTED_INFINITE = 33120;
+
+	/**
+	 * Annihilation exit portal blueprints
+	 */
+	public static final int POH_EXIT_PORTAL_WILDERNESS_THEME = 33122;
+
+	/**
+	 * Beef
+	 */
+	public static final int COWBOSSPET = 33124;
+
+	/**
+	 * The groats principles
+	 */
+	public static final int COWQUEST_HUSBANDRY_BOOK = 33126;
+
+	/**
+	 * Milk sample
+	 */
+	public static final int COWQUEST_MILK_SAMPLE_1 = 33128;
+
+	/**
+	 * Milk sample
+	 */
+	public static final int COWQUEST_MILK_SAMPLE_2 = 33130;
+
+	/**
+	 * Exit portal
+	 */
+	public static final int POH_GARDEN_CENTREPIECE_6 = 33132;
+
+	/**
+	 * Pristine spider silk
+	 */
+	public static final int SLAYER_SPIDER_SILK = 33133;
+
+	/**
+	 * Silklined herb sack
+	 */
+	public static final int SLAYER_HERB_SACK_SILK = 33135;
+
+	/**
+	 * Open silklined herb sack
+	 */
+	public static final int SLAYER_HERB_SACK_SILK_OPEN = 33137;
+	public static final int MINIGAME_TELEPORT = 33138;
+	public static final int ANCIENT_MINIGAME_TELEPORT = 33139;
+	public static final int ARCEUUS_MINIGAME_TELEPORT = 33140;
+	public static final int LUNAR_MINIGAME_TELEPORT = 33141;
+
+	/**
+	 * Ballistic attractor
+	 */
+	public static final int SAILING_SKILLGUIDE_BALLISTIC_ATTRACTOR = 33142;
+
+	/**
+	 * Ballistic attractor schematic
+	 */
+	public static final int LOST_SCHEMATIC_BALLISTIC_ATTRACTOR = 33143;
+
+	/**
+	 * Veiled kraken tentacle
+	 */
+	public static final int SAILING_VEILED_KRAKEN_TENTACLE = 33144;
+
+	/**
+	 * Veiled kraken ink sac
+	 */
+	public static final int SAILING_VEILED_KRAKEN_INK_SAC = 33145;
+
+	/**
+	 * Scribbled notes
+	 */
+	public static final int EASTER26_CLUE_STACK = 33146;
+
+	/**
+	 * Egg box
+	 */
+	public static final int EASTER26_SECOND_LOCATION_EGG_BOX = 33147;
+
+	/**
+	 * Egg box
+	 */
+	public static final int EASTER26_SIXTH_LOCATION_EGG_BOX = 33148;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_RUNAWAY_EGG = 33149;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION = 33151;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION02 = 33153;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION03 = 33155;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION04 = 33157;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION05 = 33159;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION06 = 33161;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION07 = 33163;
+
+	/**
+	 * Crystal body
+	 */
+	public static final int BR_CRYSTAL_CHESTPLATE = 33166;
+
+	/**
+	 * Crystal legs
+	 */
+	public static final int BR_CRYSTAL_PLATELEGS = 33168;
+
+	/**
+	 * Crystal helm
+	 */
+	public static final int BR_CRYSTAL_HELMET = 33170;
+
+	/**
+	 * Avernic treads (max)
+	 */
+	public static final int BR_AVERNIC_TREADS = 33172;
+
+	/**
+	 * Osmumten's fang
+	 */
+	public static final int BR_OSMUMTENS_FANG = 33174;
+
+	/**
+	 * Elidinis' ward (f)
+	 */
+	public static final int BR_ELIDINIS_WARD_FORTIFIED = 33176;
+
+	/**
+	 * Noxious halberd
+	 */
+	public static final int BR_NOXIOUS_HALBERD = 33178;
+
+	/**
+	 * Magus ring
+	 */
+	public static final int BR_MAGUS_RING = 33180;
+
+	/**
+	 * Ultor ring
+	 */
+	public static final int BR_ULTOR_RING = 33182;
+
+	/**
+	 * Purging staff
+	 */
+	public static final int BR_PURGING_STAFF = 33184;
+
+	/**
+	 * Dragonfire shield
+	 */
+	public static final int BR_DRAGONFIRE_SHIELD = 33186;
+
+	/**
+	 * Twisted buckler
+	 */
+	public static final int BR_TWISTED_BUCKLER = 33188;
+
+	/**
+	 * Masori body (f)
+	 */
+	public static final int BR_MASORI_BODY_FORTIFIED = 33190;
+
+	/**
+	 * Masori chaps (f)
+	 */
+	public static final int BR_MASORI_CHAPS_FORTIFIED = 33192;
+
+	/**
+	 * Torva platelegs
+	 */
+	public static final int BR_TORVA_LEGS = 33194;
+
+	/**
+	 * Virtus robe top
+	 */
+	public static final int BR_VIRTUS_TOP = 33196;
+
+	/**
+	 * Virtus robe bottom
+	 */
+	public static final int BR_VIRTUS_LEGS = 33198;
+
+	/**
+	 * Burning claws
+	 */
+	public static final int BR_BONE_CLAWS = 33200;
+
+	/**
+	 * Aranea boots
+	 */
+	public static final int BR_ARANEA_BOOTS = 33202;
+
+	/**
+	 * Bronze cannon
+	 */
+	public static final int SAILING_COMBAT_BRONZE_CANNON_DUMMY = 33204;
+
+	/**
+	 * Iron cannon
+	 */
+	public static final int SAILING_COMBAT_IRON_CANNON_DUMMY = 33205;
+
+	/**
+	 * Steel cannon
+	 */
+	public static final int SAILING_COMBAT_STEEL_CANNON_DUMMY = 33206;
+
+	/**
+	 * Mithril cannon
+	 */
+	public static final int SAILING_COMBAT_MITHRIL_CANNON_DUMMY = 33207;
+
+	/**
+	 * Adamant cannon
+	 */
+	public static final int SAILING_COMBAT_ADAMANT_CANNON_DUMMY = 33208;
+
+	/**
+	 * Rune cannon
+	 */
+	public static final int SAILING_COMBAT_RUNE_CANNON_DUMMY = 33209;
+
+	/**
+	 * Dragon cannon
+	 */
+	public static final int SAILING_COMBAT_DRAGON_CANNON_DUMMY = 33210;
+	public static final int TALENT_MELEE_RANGE_ECHO = 33211;
+	public static final int TALENT_THORNS = 33212;
+	public static final int TALENT_MISC_DAMAGE = 33213;
+
+	/**
+	 * Cabbage
+	 */
+	public static final int LEAGUE_6_LEAGUE_POINTS = 33214;
+	public static final int BOUGHT_LEAGUE_6_LEAGUE_POINTS = 33215;
+
+	/**
+	 * Cabbage
+	 */
+	public static final int LEAGUE_6_LEAGUE_POINTS_NEGATIVE = 33216;
+	public static final int BOUGHT_LEAGUE_6_LEAGUE_POINTS_NEGATIVE = 33217;
+
+	/**
+	 * Knapsack
+	 */
+	public static final int BARBARIAN_KNAPSACK = 33218;
+
+	/**
+	 * Knapsack
+	 */
+	public static final int BARBARIAN_KNAPSACK_CLOSED = 33220;
+
+	/**
+	 * Barbarian arm
+	 */
+	public static final int LEAGUE_BARBARIAN_ARM = 33221;
+	public static final int LEAGUE_6_HOME_TELEPORT_STANDARD = 33223;
+	public static final int LEAGUE_6_HOME_TELEPORT_ANCIENT = 33224;
+	public static final int LEAGUE_6_HOME_TELEPORT_LUNAR = 33225;
+	public static final int LEAGUE_6_HOME_TELEPORT_ARCEUUS = 33226;
+
+	/**
+	 * Evil eye
+	 */
+	public static final int LEAGUE_EVIL_EYE_NECKLACE = 33227;
+
+	/**
+	 * Transmutation ledger
+	 */
+	public static final int LEAGUE_TRANSMUTE_BOOK = 33229;
+
+	/**
+	 * Soul shard
+	 */
+	public static final int LEAGUE_SOUL_SHARD = 33231;
+
+	/**
+	 * Map of alacrity
+	 */
+	public static final int LEAGUE_AGILITY_MAP = 33233;
+
+	/**
+	 * Clue contract
+	 */
+	public static final int LEAGUE_CLUE_CONTRACT = 33235;
+
+	/**
+	 * Butler's bell
+	 */
+	public static final int LEAGUE_BUTLERS_BELL = 33237;
+
+	/**
+	 * Flask of fervour
+	 */
+	public static final int LEAGUE_FLASK_OF_FERVOUR = 33239;
+
+	/**
+	 * Flask of fervour
+	 */
+	public static final int LEAGUE_FLASK_OF_FERVOUR_EMPTY = 33241;
+
+	/**
+	 * Infernal tecpatl
+	 */
+	public static final int INFERNAL_TECPATL = 33243;
+
+	/**
+	 * Nature's recurve
+	 */
+	public static final int NATURES_RECURVE = 33245;
+
+	/**
+	 * V's helm
+	 */
+	public static final int V_HELM = 33247;
+
+	/**
+	 * Fang of the hound
+	 */
+	public static final int FANG_OF_THE_HOUND = 33249;
+
+	/**
+	 * King's barrage
+	 */
+	public static final int KINGS_BARRAGE = 33251;
+
+	/**
+	 * Shadowflame quadrant
+	 */
+	public static final int SHADOWFLAME_QUADRANT = 33253;
+
+	/**
+	 * Lithic sceptre
+	 */
+	public static final int LITHIC_SCEPTRE_CHARGED = 33255;
+
+	/**
+	 * Lithic sceptre (uncharged)
+	 */
+	public static final int LITHIC_SCEPTRE_UNCHARGED = 33257;
+	public static final int LITHIC_SCEPTRE_SHATTER_DUMMY = 33259;
+
+	/**
+	 * Demonic hood (t1)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T1 = 33260;
+
+	/**
+	 * Demonic robe top (t1)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_TOP_T1 = 33263;
+
+	/**
+	 * Demonic robe bottom (t1)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T1 = 33266;
+
+	/**
+	 * Demonic boots (t1)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T1 = 33269;
+
+	/**
+	 * Demonic hood (t2)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T2 = 33272;
+
+	/**
+	 * Demonic robe top (t2)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_TOP_T2 = 33275;
+
+	/**
+	 * Demonic robe bottom (t2)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T2 = 33278;
+
+	/**
+	 * Demonic boots (t2)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T2 = 33281;
+
+	/**
+	 * Demonic hood (t3)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T3 = 33284;
+
+	/**
+	 * Demonic robe top (t3)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_TOP_T3 = 33287;
+
+	/**
+	 * Demonic robe bottom (t3)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T3 = 33290;
+
+	/**
+	 * Demonic boots (t3)
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T3 = 33293;
+
+	/**
+	 * Demonic sceptre
+	 */
+	public static final int LEAGUE_6_RELIC_HUNTER_SCEPTRE = 33296;
+
+	/**
+	 * Demonic pacts banner
+	 */
+	public static final int LEAGUE_6_BANNER = 33299;
+
+	/**
+	 * Demonic skin contract
+	 */
+	public static final int DEMONIC_SKIN_ORNAMENT_KIT = 33302;
+
+	/**
+	 * Demonic axe ornament kit
+	 */
+	public static final int DEMONIC_AXE_ORNAMENT_KIT = 33305;
+
+	/**
+	 * Demonic staff ornament kit
+	 */
+	public static final int DEMONIC_STAFF_ORNAMENT_KIT = 33308;
+
+	/**
+	 * Demonic trident ornament kit
+	 */
+	public static final int DEMONIC_TRIDENT_ORNAMENT_KIT = 33311;
+
+	/**
+	 * Trident of the swamp (o)
+	 */
+	public static final int TOXIC_TOTS_CHARGED_ORN = 33314;
+
+	/**
+	 * Uncharged toxic trident (o)
+	 */
+	public static final int TOXIC_TOTS_UNCHARGED_ORN = 33316;
+
+	/**
+	 * Trident of the swamp (e) (o)
+	 */
+	public static final int TOXIC_TOTS_I_CHARGED_ORN = 33318;
+
+	/**
+	 * Uncharged toxic trident (e)
+	 */
+	public static final int TOXIC_TOTS_I_UNCHARGED_ORN = 33320;
+
+	/**
+	 * Trident of the seas (o)
+	 */
+	public static final int TOTS_CHARGED_ORN = 33322;
+
+	/**
+	 * Trident of the seas (full) (o)
+	 */
+	public static final int TOTS_ORN = 33323;
+
+	/**
+	 * Trident of the seas (e) (o)
+	 */
+	public static final int TOTS_I_CHARGED_ORN = 33326;
+
+	/**
+	 * Uncharged trident (e) (o)
+	 */
+	public static final int TOTS_I_UNCHARGED_ORN = 33328;
+
+	/**
+	 * Iban's staff
+	 */
+	public static final int IBAN_STAFF_ORN = 33330;
+
+	/**
+	 * Iban's staff (u) (o)
+	 */
+	public static final int IBAN_STAFF_UPGRADED_ORN = 33332;
+
+	/**
+	 * Iban's staff (o)
+	 */
+	public static final int BROKEN_IBAN_STAFF_ORN = 33333;
+
+	/**
+	 * Soulreaper axe (o)
+	 */
+	public static final int SOULREAPER_AXE_ORN = 33335;
+
+	/**
+	 * Demonic slayer helmet
+	 */
+	public static final int LEAGUE_6_SLAYER_HELM1 = 33338;
+
+	/**
+	 * Demonic slayer helmet
+	 */
+	public static final int LEAGUE_6_SLAYER_HELM2 = 33340;
+
+	/**
+	 * Demonic quill
+	 */
+	public static final int LEAGUE_6_DEMONIC_QUILL = 33342;
+
+	/**
+	 * Demonic pacts dragon trophy
+	 */
+	public static final int LEAGUE_6_DRAGON_TROPHY = 33345;
+
+	/**
+	 * Demonic pacts rune trophy
+	 */
+	public static final int LEAGUE_6_RUNE_TROPHY = 33347;
+
+	/**
+	 * Demonic pacts adamant trophy
+	 */
+	public static final int LEAGUE_6_ADAMANT_TROPHY = 33349;
+
+	/**
+	 * Demonic pacts mithril trophy
+	 */
+	public static final int LEAGUE_6_MITHRIL_TROPHY = 33351;
+
+	/**
+	 * Demonic pacts steel trophy
+	 */
+	public static final int LEAGUE_6_STEEL_TROPHY = 33353;
+
+	/**
+	 * Demonic pacts iron trophy
+	 */
+	public static final int LEAGUE_6_IRON_TROPHY = 33355;
+
+	/**
+	 * Demonic pacts bronze trophy
+	 */
+	public static final int LEAGUE_6_BRONZE_TROPHY = 33357;
+
+	/**
+	 * Impish ritual kit
+	 */
+	public static final int LEAGUE_6_RITUAL_KIT = 33359;
+
+	/**
+	 * Demonic pacts throne scroll
+	 */
+	public static final int LEAGUE_6_THRONE = 33362;
+
+	/**
+	 * Impish whistle
+	 */
+	public static final int LEAGUE_6_THRALL_CONTRACT = 33365;
+
+	/**
+	 * Demonic pacts demon butler scroll
+	 */
+	public static final int LEAGUE_6_BUTLER_SCROLL = 33368;
+
+	/**
+	 * Mark of grace
+	 */
+	public static final int GRACE_HOTFOOT = 33371;
+
+	/**
+	 * Demonic contractor throne
+	 */
+	public static final int POH_THRONE_8 = 33373;
+	public static final int KINGS_BARRAGE_ICE_ATTACK = 33374;
+	public static final int TRANSMUTE_UPGRADE = 33375;
+	public static final int TRANSMUTE_DOWNGRADE = 33376;
+	public static final int FANG_OF_THE_HOUND_FIRE = 33377;
 
 	public static final class Cert
 	{
@@ -90014,59 +91321,6 @@ public final class ItemID
 		public static final int RAW_BOAR_MEAT = 25834;
 		public static final int PRIF_WEAPON_SEED_ENHANCED = 25860;
 		public static final int BOW_OF_FAERDHINEN_INACTIVE = 25863;
-		public static final int SIGIL_OF_RESILIENCE_UNATTUNED = 25992;
-		public static final int SIGIL_OF_CONSISTENCY_UNATTUNED = 25995;
-		public static final int SIGIL_OF_THE_FORMIDABLE_FIGHTER_UNATTUNED = 25998;
-		public static final int SIGIL_OF_THE_RIGOROUS_RANGER_UNATTUNED = 26001;
-		public static final int SIGIL_OF_THE_METICULOUS_MAGE_UNATTUNED = 26004;
-		public static final int SIGIL_OF_FORTIFICATION_UNATTUNED = 26007;
-		public static final int SIGIL_OF_BARROWS_UNATTUNED = 26010;
-		public static final int SIGIL_OF_DEFT_STRIKES_UNATTUNED = 26013;
-		public static final int SIGIL_OF_FREEDOM_UNATTUNED = 26016;
-		public static final int SIGIL_OF_ENHANCED_HARVEST_UNATTUNED = 26019;
-		public static final int SIGIL_OF_STORAGE_UNATTUNED = 26022;
-		public static final int SIGIL_OF_THE_SMITH_UNATTUNED = 26025;
-		public static final int SIGIL_OF_THE_ALCHEMIST_UNATTUNED = 26028;
-		public static final int SIGIL_OF_THE_FLETCHER_UNATTUNED = 26031;
-		public static final int SIGIL_OF_THE_CHEF_UNATTUNED = 26034;
-		public static final int SIGIL_OF_THE_CRAFTER_UNATTUNED = 26037;
-		public static final int SIGIL_OF_THE_ABYSS_UNATTUNED = 26040;
-		public static final int SIGIL_OF_STAMINA_UNATTUNED = 26043;
-		public static final int SIGIL_OF_THE_POTION_MASTER_UNATTUNED = 26046;
-		public static final int SIGIL_OF_THE_ETERNAL_JEWELLER_UNATTUNED = 26049;
-		public static final int SIGIL_OF_THE_TREASURE_HUNTER_UNATTUNED = 26052;
-		public static final int SIGIL_OF_MOBILITY_UNATTUNED = 26055;
-		public static final int SIGIL_OF_EXAGGERATION_UNATTUNED = 26058;
-		public static final int SIGIL_OF_SPECIALISED_STRIKES_UNATTUNED = 26061;
-		public static final int SIGIL_OF_THE_PORCUPINE_UNATTUNED = 26064;
-		public static final int SIGIL_OF_BINDING_UNATTUNED = 26067;
-		public static final int SIGIL_OF_ESCAPING_UNATTUNED = 26070;
-		public static final int SIGIL_OF_THE_RUTHLESS_RANGER_UNATTUNED = 26073;
-		public static final int SIGIL_OF_THE_FERAL_FIGHTER_UNATTUNED = 26076;
-		public static final int SIGIL_OF_THE_MENACING_MAGE_UNATTUNED = 26079;
-		public static final int SIGIL_OF_PROSPERITY_UNATTUNED = 26082;
-		public static final int SIGIL_OF_THE_DWARVES_UNATTUNED = 26085;
-		public static final int SIGIL_OF_THE_ELVES_UNATTUNED = 26088;
-		public static final int SIGIL_OF_THE_BARBARIANS_UNATTUNED = 26091;
-		public static final int SIGIL_OF_THE_GNOMES_UNATTUNED = 26094;
-		public static final int SIGIL_OF_NATURE_UNATTUNED = 26097;
-		public static final int SIGIL_OF_DEVOTION_UNATTUNED = 26100;
-		public static final int SIGIL_OF_THE_FORAGER_UNATTUNED = 26103;
-		public static final int SIGIL_OF_GARMENTS_UNATTUNED = 26106;
-		public static final int SIGIL_OF_SLAUGHTER_UNATTUNED = 26109;
-		public static final int SIGIL_OF_THE_FORTUNE_FARMER_UNATTUNED = 26112;
-		public static final int SIGIL_OF_VERSATILITY_UNATTUNED = 26115;
-		public static final int SIGIL_OF_THE_SERPENT_UNATTUNED = 26118;
-		public static final int SIGIL_OF_SUPREME_STAMINA_UNATTUNED = 26121;
-		public static final int SIGIL_OF_PRESERVATION_UNATTUNED = 26124;
-		public static final int SIGIL_OF_FINALITY_UNATTUNED = 26127;
-		public static final int SIGIL_OF_PIOUS_PROTECTION_UNATTUNED = 26130;
-		public static final int SIGIL_OF_AGGRESSION_UNATTUNED = 26133;
-		public static final int SIGIL_OF_RAMPAGE_UNATTUNED = 26136;
-		public static final int SIGIL_OF_THE_SKILLER_UNATTUNED = 26139;
-		public static final int SIGIL_OF_REMOTE_STORAGE_UNATTUNED = 26142;
-		public static final int SIGIL_OF_LAST_RECALL_UNATTUNED = 26145;
-		public static final int SIGIL_OF_THE_GUARDIAN_ANGEL_UNATTUNED = 26148;
 		public static final int POH_CONDENSED_GOLD = 26267;
 		public static final int BRUTAL_2DOSEANCIENTBREW = 26351;
 		public static final int BRUTAL_1DOSEANCIENTBREW = 26354;
@@ -90211,24 +91465,6 @@ public final class ItemID
 		public static final int DT2_AWAKENERS_ORB = 28335;
 		public static final int SOULREAPER = 28339;
 		public static final int DT2_STRANGLEWOOD_SURVIVAL_BARRICADE = 28391;
-		public static final int SIGIL_OF_SUSTENANCE_UNATTUNED = 28479;
-		public static final int SIGIL_OF_HOARDING_UNATTUNED = 28482;
-		public static final int SIGIL_OF_THE_ALCHEMANIAC_UNATTUNED = 28485;
-		public static final int SIGIL_OF_THE_HUNTER_UNATTUNED = 28488;
-		public static final int SIGIL_OF_RESISTANCE_UNATTUNED = 28491;
-		public static final int SIGIL_OF_AGILE_FORTUNE_UNATTUNED = 28494;
-		public static final int SIGIL_OF_THE_FOOD_MASTER_UNATTUNED = 28497;
-		public static final int SIGIL_OF_THE_WELL_FED_UNATTUNED = 28500;
-		public static final int SIGIL_OF_THE_INFERNAL_CHEF_UNATTUNED = 28503;
-		public static final int SIGIL_OF_THE_INFERNAL_SMITH_UNATTUNED = 28506;
-		public static final int SIGIL_OF_THE_LIGHTBEARER_UNATTUNED = 28509;
-		public static final int SIGIL_OF_THE_BLOODHOUND_UNATTUNED = 28512;
-		public static final int SIGIL_OF_PRECISION_UNATTUNED = 28515;
-		public static final int SIGIL_OF_THE_AUGMENTED_THRALL_UNATTUNED = 28518;
-		public static final int SIGIL_OF_FAITH_UNATTUNED = 28521;
-		public static final int SIGIL_OF_TITANIUM_UNATTUNED = 28524;
-		public static final int SIGIL_OF_THE_NINJA_UNATTUNED = 28527;
-		public static final int SIGIL_OF_WOODCRAFT_UNATTUNED = 28530;
 		public static final int DEADMAN_BLIGHTED_VOIDWAKER = 28532;
 		public static final int DEADMAN_BLIGHTED_DRAGON_CLAWS = 28535;
 		public static final int DEADMAN_BLIGHTED_AGS = 28538;
@@ -90375,17 +91611,6 @@ public final class ItemID
 		public static final int DEADMAN2DOSEOVERLOAD = 29638;
 		public static final int DEADMAN1DOSEOVERLOAD = 29641;
 		public static final int DEADMAN_OVERLOAD_CHITIN = 29644;
-		public static final int SIGIL_OF_METICULOUSNESS_UNATTUNED = 29650;
-		public static final int SIGIL_OF_REVOKED_LIMITATION_UNATTUNED = 29653;
-		public static final int SIGIL_OF_RAMPART_UNATTUNED = 29656;
-		public static final int SIGIL_OF_DECEPTION_UNATTUNED = 29659;
-		public static final int SIGIL_OF_LITHE_UNATTUNED = 29662;
-		public static final int SIGIL_OF_ADROIT_UNATTUNED = 29665;
-		public static final int SIGIL_OF_ONSLAUGHT_UNATTUNED = 29668;
-		public static final int SIGIL_OF_RESTORATION_UNATTUNED = 29671;
-		public static final int SIGIL_OF_SWASHBUCKLER_UNATTUNED = 29674;
-		public static final int SIGIL_OF_GUNSLINGER_UNATTUNED = 29677;
-		public static final int SIGIL_OF_ARCANE_SWIFTNESS_UNATTUNED = 29680;
 		public static final int NOXIOUS_HALBERD = 29797;
 		public static final int AMULET_OF_RANCOUR = 29802;
 		public static final int ARANEA_BOOTS = 29807;
@@ -90700,6 +91925,69 @@ public final class ItemID
 		public static final int CAMPHOR_LOGS = 32905;
 		public static final int IRONWOOD_LOGS = 32908;
 		public static final int ROSEWOOD_LOGS = 32911;
+		public static final int DEADMAN_2026_WEAPON_ORNAMENT_SCROLL = 33013;
+		public static final int DEADMAN_2026_POH_ORNAMENT_SCROLL = 33016;
+		public static final int DEADMAN_2026_HOME_TELEPORT_SCROLL = 33019;
+		public static final int DEADMAN_DOGSWORD = 33039;
+		public static final int DEADMAN_THUNDER_KHOPESH = 33042;
+		public static final int MAGIC_ROCK_OF_AVARICE = 33045;
+		public static final int MAGIC_ROCK_OF_FORTUITY_INACTIVE = 33048;
+		public static final int MAGIC_ROCK_OF_FORTUITY_ACTIVE = 33051;
+		public static final int SAILING_FACILITY_BOTTLE_EMPTY = 33075;
+		public static final int BREW_RED_RUM = 33078;
+		public static final int BREW_BLUE_RUM = 33079;
+		public static final int COW_SLIPPERS = 33094;
+		public static final int RAW_TBONE_STEAK = 33107;
+		public static final int TBONE_STEAK = 33110;
+		public static final int TBONE_STEAK_BURNED = 33113;
+		public static final int BR_BOW_OF_FAERDHINEN = 33165;
+		public static final int BR_CRYSTAL_CHESTPLATE = 33167;
+		public static final int BR_CRYSTAL_PLATELEGS = 33169;
+		public static final int BR_CRYSTAL_HELMET = 33171;
+		public static final int BR_AVERNIC_TREADS = 33173;
+		public static final int BR_OSMUMTENS_FANG = 33175;
+		public static final int BR_ELIDINIS_WARD_FORTIFIED = 33177;
+		public static final int BR_NOXIOUS_HALBERD = 33179;
+		public static final int BR_MAGUS_RING = 33181;
+		public static final int BR_ULTOR_RING = 33183;
+		public static final int BR_PURGING_STAFF = 33185;
+		public static final int BR_DRAGONFIRE_SHIELD = 33187;
+		public static final int BR_TWISTED_BUCKLER = 33189;
+		public static final int BR_MASORI_BODY_FORTIFIED = 33191;
+		public static final int BR_MASORI_CHAPS_FORTIFIED = 33193;
+		public static final int BR_TORVA_LEGS = 33195;
+		public static final int BR_VIRTUS_TOP = 33197;
+		public static final int BR_VIRTUS_LEGS = 33199;
+		public static final int BR_BONE_CLAWS = 33201;
+		public static final int BR_ARANEA_BOOTS = 33203;
+		public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T1 = 33261;
+		public static final int LEAGUE_6_RELIC_HUNTER_TOP_T1 = 33264;
+		public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T1 = 33267;
+		public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T1 = 33270;
+		public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T2 = 33273;
+		public static final int LEAGUE_6_RELIC_HUNTER_TOP_T2 = 33276;
+		public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T2 = 33279;
+		public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T2 = 33282;
+		public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T3 = 33285;
+		public static final int LEAGUE_6_RELIC_HUNTER_TOP_T3 = 33288;
+		public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T3 = 33291;
+		public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T3 = 33294;
+		public static final int LEAGUE_6_RELIC_HUNTER_SCEPTRE = 33297;
+		public static final int LEAGUE_6_BANNER = 33300;
+		public static final int DEMONIC_SKIN_ORNAMENT_KIT = 33303;
+		public static final int DEMONIC_AXE_ORNAMENT_KIT = 33306;
+		public static final int DEMONIC_STAFF_ORNAMENT_KIT = 33309;
+		public static final int DEMONIC_TRIDENT_ORNAMENT_KIT = 33312;
+		public static final int TOXIC_TOTS_UNCHARGED_ORN = 33317;
+		public static final int TOXIC_TOTS_I_UNCHARGED_ORN = 33321;
+		public static final int TOTS_ORN = 33324;
+		public static final int TOTS_I_UNCHARGED_ORN = 33329;
+		public static final int SOULREAPER_AXE_ORN = 33336;
+		public static final int LEAGUE_6_DEMONIC_QUILL = 33343;
+		public static final int LEAGUE_6_RITUAL_KIT = 33360;
+		public static final int LEAGUE_6_THRONE = 33363;
+		public static final int LEAGUE_6_THRALL_CONTRACT = 33366;
+		public static final int LEAGUE_6_BUTLER_SCROLL = 33369;
 	}
 
 	public static final class Placeholder
@@ -100124,6 +101412,124 @@ public final class ItemID
 		public static final int CAMPHOR_LOGS = 32906;
 		public static final int IRONWOOD_LOGS = 32909;
 		public static final int ROSEWOOD_LOGS = 32912;
+		public static final int JAR_OF_FEATHERS = 32922;
+		public static final int XMAS25_BIB = 32929;
+		public static final int XMAS25_BEER_BELLY_SWEATER = 32931;
+		public static final int XMAS25_CONTEST_JUMPER = 32933;
+		public static final int XMAS25_CHRISTMAS_DINNER = 32935;
+		public static final int HOLY_MOLEYS = 33003;
+		public static final int DEADMAN_RUINOUS_POWERS_BOOK = 33011;
+		public static final int DEADMAN_2026_WEAPON_ORNAMENT_SCROLL = 33014;
+		public static final int DEADMAN_2026_POH_ORNAMENT_SCROLL = 33017;
+		public static final int DEADMAN_2026_HOME_TELEPORT_SCROLL = 33020;
+		public static final int BOW_OF_FAERDHINEN_INFINITE_DEADMAN = 33022;
+		public static final int CRYSTAL_CHESTPLATE_DEADMAN = 33024;
+		public static final int CRYSTAL_CHESTPLATE_INACTIVE_DEADMAN = 33026;
+		public static final int CRYSTAL_PLATELEGS_DEADMAN = 33028;
+		public static final int CRYSTAL_PLATELEGS_INACTIVE_DEADMAN = 33030;
+		public static final int CRYSTAL_HELMET_DEADMAN = 33032;
+		public static final int CRYSTAL_HELMET_INACTIVE_DEADMAN = 33034;
+		public static final int TOXIC_SOTD_CHARGED_DEADMAN = 33037;
+		public static final int DEADMAN_DOGSWORD = 33040;
+		public static final int DEADMAN_THUNDER_KHOPESH = 33043;
+		public static final int MAGIC_ROCK_OF_AVARICE = 33046;
+		public static final int MAGIC_ROCK_OF_FORTUITY_INACTIVE = 33049;
+		public static final int MAGIC_ROCK_OF_FORTUITY_ACTIVE = 33052;
+		public static final int DEADMAN_STARTER_CAPE = 33064;
+		public static final int SLAYER_HELM_HOODED = 33067;
+		public static final int SLAYER_HELM_I_HOODED = 33069;
+		public static final int SW_SLAYER_HELM_I_HOODED = 33071;
+		public static final int PVPA_SLAYER_HELM_I_HOODED = 33073;
+		public static final int SAILING_FACILITY_BOTTLE_EMPTY = 33076;
+		public static final int _25TH_ANNIVERSARY_HELMET = 33081;
+		public static final int _25TH_ANNIVERSARY_TABARD_1 = 33083;
+		public static final int _25TH_ANNIVERSARY_TABARD_2 = 33085;
+		public static final int _25TH_ANNIVERSARY_HAT = 33087;
+		public static final int BOTTOMLESS_MILK_BUCKET_FILLED = 33090;
+		public static final int BOTTOMLESS_MILK_BUCKET = 33092;
+		public static final int COW_SLIPPERS = 33095;
+		public static final int COW_SLIPPERS_RECOL_4 = 33100;
+		public static final int MOOLETA = 33102;
+		public static final int COWBELL_AMULET = 33105;
+		public static final int RAW_TBONE_STEAK = 33108;
+		public static final int TBONE_STEAK = 33111;
+		public static final int TBONE_STEAK_BURNED = 33114;
+		public static final int BULL_BONES = 33116;
+		public static final int DEMONIC_POTATO = 33119;
+		public static final int HG_QUETZALWHISTLE_PERFECTED_INFINITE = 33121;
+		public static final int POH_EXIT_PORTAL_WILDERNESS_THEME = 33123;
+		public static final int COWBOSSPET = 33125;
+		public static final int COWQUEST_HUSBANDRY_BOOK = 33127;
+		public static final int COWQUEST_MILK_SAMPLE_1 = 33129;
+		public static final int COWQUEST_MILK_SAMPLE_2 = 33131;
+		public static final int SLAYER_SPIDER_SILK = 33134;
+		public static final int SLAYER_HERB_SACK_SILK = 33136;
+		public static final int EASTER26_RUNAWAY_EGG = 33150;
+		public static final int EASTER26_EGG_COMPANION = 33152;
+		public static final int EASTER26_EGG_COMPANION02 = 33154;
+		public static final int EASTER26_EGG_COMPANION03 = 33156;
+		public static final int EASTER26_EGG_COMPANION04 = 33158;
+		public static final int EASTER26_EGG_COMPANION05 = 33160;
+		public static final int EASTER26_EGG_COMPANION06 = 33162;
+		public static final int EASTER26_EGG_COMPANION07 = 33164;
+		public static final int BARBARIAN_KNAPSACK = 33219;
+		public static final int LEAGUE_BARBARIAN_ARM = 33222;
+		public static final int LEAGUE_EVIL_EYE_NECKLACE = 33228;
+		public static final int LEAGUE_TRANSMUTE_BOOK = 33230;
+		public static final int LEAGUE_SOUL_SHARD = 33232;
+		public static final int LEAGUE_AGILITY_MAP = 33234;
+		public static final int LEAGUE_CLUE_CONTRACT = 33236;
+		public static final int LEAGUE_BUTLERS_BELL = 33238;
+		public static final int LEAGUE_FLASK_OF_FERVOUR = 33240;
+		public static final int LEAGUE_FLASK_OF_FERVOUR_EMPTY = 33242;
+		public static final int INFERNAL_TECPATL = 33244;
+		public static final int NATURES_RECURVE = 33246;
+		public static final int V_HELM = 33248;
+		public static final int FANG_OF_THE_HOUND = 33250;
+		public static final int KINGS_BARRAGE = 33252;
+		public static final int SHADOWFLAME_QUADRANT = 33254;
+		public static final int LITHIC_SCEPTRE_CHARGED = 33256;
+		public static final int LITHIC_SCEPTRE_UNCHARGED = 33258;
+		public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T1 = 33262;
+		public static final int LEAGUE_6_RELIC_HUNTER_TOP_T1 = 33265;
+		public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T1 = 33268;
+		public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T1 = 33271;
+		public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T2 = 33274;
+		public static final int LEAGUE_6_RELIC_HUNTER_TOP_T2 = 33277;
+		public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T2 = 33280;
+		public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T2 = 33283;
+		public static final int LEAGUE_6_RELIC_HUNTER_HOOD_T3 = 33286;
+		public static final int LEAGUE_6_RELIC_HUNTER_TOP_T3 = 33289;
+		public static final int LEAGUE_6_RELIC_HUNTER_LEGS_T3 = 33292;
+		public static final int LEAGUE_6_RELIC_HUNTER_BOOTS_T3 = 33295;
+		public static final int LEAGUE_6_RELIC_HUNTER_SCEPTRE = 33298;
+		public static final int LEAGUE_6_BANNER = 33301;
+		public static final int DEMONIC_SKIN_ORNAMENT_KIT = 33304;
+		public static final int DEMONIC_AXE_ORNAMENT_KIT = 33307;
+		public static final int DEMONIC_STAFF_ORNAMENT_KIT = 33310;
+		public static final int DEMONIC_TRIDENT_ORNAMENT_KIT = 33313;
+		public static final int TOXIC_TOTS_CHARGED_ORN = 33315;
+		public static final int TOXIC_TOTS_I_CHARGED_ORN = 33319;
+		public static final int TOTS_ORN = 33325;
+		public static final int TOTS_I_CHARGED_ORN = 33327;
+		public static final int IBAN_STAFF_ORN = 33331;
+		public static final int BROKEN_IBAN_STAFF_ORN = 33334;
+		public static final int SOULREAPER_AXE_ORN = 33337;
+		public static final int LEAGUE_6_SLAYER_HELM1 = 33339;
+		public static final int LEAGUE_6_SLAYER_HELM2 = 33341;
+		public static final int LEAGUE_6_DEMONIC_QUILL = 33344;
+		public static final int LEAGUE_6_DRAGON_TROPHY = 33346;
+		public static final int LEAGUE_6_RUNE_TROPHY = 33348;
+		public static final int LEAGUE_6_ADAMANT_TROPHY = 33350;
+		public static final int LEAGUE_6_MITHRIL_TROPHY = 33352;
+		public static final int LEAGUE_6_STEEL_TROPHY = 33354;
+		public static final int LEAGUE_6_IRON_TROPHY = 33356;
+		public static final int LEAGUE_6_BRONZE_TROPHY = 33358;
+		public static final int LEAGUE_6_RITUAL_KIT = 33361;
+		public static final int LEAGUE_6_THRONE = 33364;
+		public static final int LEAGUE_6_THRALL_CONTRACT = 33367;
+		public static final int LEAGUE_6_BUTLER_SCROLL = 33370;
+		public static final int GRACE_HOTFOOT = 33372;
 	}
 /* This file is automatically generated. Do not edit. */
 }

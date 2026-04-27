@@ -47,28 +47,12 @@ public interface ScriptEvent
 	Widget getSource();
 
 	/**
-	 * Sets the widget the {@link #WIDGET_ID} and {@link #WIDGET_INDEX} args
-	 * are substituted with. This is useful for running widget listeners
-	 *
-	 * @see Widget#getOnLoadListener()
-	 */
-	ScriptEvent setSource(Widget widget);
-
-	/**
 	 * Gets the {@link Widget} target. This is only used for the drag complete listener
 	 * @see Widget#setOnDragCompleteListener(Object...)
 	 * @return
 	 */
 	@Nullable
 	Widget getTarget();
-
-	/**
-	 * Sets the {@link Widget} target. This is only used for the drag complete listener.
-	 * @param target
-	 * @see Widget#setOnDragCompleteListener(Object...)
-	 * @return
-	 */
-	ScriptEvent setTarget(Widget target);
 
 	/**
 	 * Arguments passed to the script. Index 0 is the script being run and is not an argument.
@@ -82,13 +66,6 @@ public interface ScriptEvent
 	 * @return the menu op
 	 */
 	int getOp();
-
-	/**
-	 * Set the menu op of the event
-	 *
-	 * @param op
-	 */
-	ScriptEvent setOp(int op);
 
 	/**
 	 * Gets the target of the menu option

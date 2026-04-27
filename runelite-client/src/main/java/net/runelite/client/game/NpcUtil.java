@@ -270,6 +270,8 @@ public class NpcUtil
 					break;
 				}
 				// intentional fallthrough
+			// The Shellbane Gryphon has a non-standard death that does not work with isDead() so instead check the animation
+			case AnimationID.GRYPHON_BOSS_DEATH01:
 			case AnimationID.TOP_SPIDER_MAGIC_DEATH_DETONATE:
 			case AnimationID.TOP_SPIDER_RANGED_DEATH_DETONATE:
 			case AnimationID.TOP_SPIDER_MELEE_DEATH_DETONATE:

@@ -442,7 +442,7 @@ enum DiscordGameEventType
 	REGION_OURANIA_HUNTER("Ourania Hunter Area", DiscordAreaType.REGIONS, 9778),
 	REGION_PIRATES_COVE("Pirates' Cove", DiscordAreaType.REGIONS, 8763),
 	REGION_PISCATORIS_HUNTER_AREA("Piscatoris Hunter Area", DiscordAreaType.REGIONS, 9015, 9016, 9271, 9272, 9528),
-	REGION_POH("Player Owned House", DiscordAreaType.REGIONS, 7513, 7514, 7769, 7770),
+	REGION_POH("Player Owned House", DiscordAreaType.REGIONS, 7534, 7535, 7790, 7791, 8046, 8047, 8302, 8303),
 	REGION_POISON_WASTE("Poison Waste", DiscordAreaType.REGIONS, 8752, 9008),
 	REGION_PORT_TYRAS("Port Tyras", DiscordAreaType.REGIONS, 8496),
 	REGION_PURO_PURO("Puro-Puro", DiscordAreaType.REGIONS, 10307),

@@ -28,11 +28,9 @@ import net.runelite.api.Client;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.hiscore.HiscoreClient;
 import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
-import net.runelite.client.hiscore.HiscoreEndpoint;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class HiscorePanelTest
 {
@@ -40,7 +38,6 @@ public class HiscorePanelTest
 	public void testConstructor()
 	{
 		HiscorePlugin plugin = mock(HiscorePlugin.class);
-		when(plugin.getWorldEndpoint()).thenReturn(HiscoreEndpoint.NORMAL);
 		new HiscorePanel(mock(Client.class), plugin, mock(HiscoreConfig.class),
 			mock(NameAutocompleter.class), mock(HiscoreClient.class), mock(SpriteManager.class));
 	}

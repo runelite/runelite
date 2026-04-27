@@ -72,7 +72,8 @@ public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(ItemID.GAUNTLETS_OF_COOKING)),
 		new FaloTheBardClue("They come from some time ago, from a land unto the east. Fossilised they have become, this small and gentle beast.", item(ItemID.FOSSIL_NUMULITE)),
 		new FaloTheBardClue("To slay a dragon you must first do, before this chest piece can be put on you.", item(ItemID.RUNE_PLATEBODY)),
-		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ItemID.BURGH_ROD_COMMAND_FINAL_10, ItemID.BURGH_ROD_COMMAND_FINAL_1), item(ItemID.IVANDIS_FLAIL), item(ItemID.BLISTERWOOD_FLAIL)))
+		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ItemID.BURGH_ROD_COMMAND_FINAL_10, ItemID.BURGH_ROD_COMMAND_FINAL_1), item(ItemID.IVANDIS_FLAIL), item(ItemID.BLISTERWOOD_FLAIL))),
+		new FaloTheBardClue("You won't bring me to heel, unless you have a bright red keel.", item(ItemID.SAILING_BOAT_KEEL_PART_DRAGON))
 	);
 
 	private static final WorldPoint LOCATION = new WorldPoint(2689, 3550, 0);

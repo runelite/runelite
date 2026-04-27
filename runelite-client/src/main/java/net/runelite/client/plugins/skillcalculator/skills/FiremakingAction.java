@@ -47,6 +47,7 @@ public enum FiremakingAction implements ItemSkillAction
 	WILLOW_LOGS(ItemID.WILLOW_LOGS, 30, 90, FiremakingMethod.NORMAL_LOGS),
 	WILLOW_PYRE_LOGS(ItemID.WILLOW_LOGS_PYRE, 35, 100, FiremakingMethod.PYRE_LOGS),
 	TEAK_LOGS(ItemID.TEAK_LOGS, 35, 105, FiremakingMethod.NORMAL_LOGS),
+	JATOBA_LOGS(ItemID.JATOBA_LOGS, 40, 120, FiremakingMethod.NORMAL_LOGS),
 	TEAK_PYRE_LOGS(ItemID.TEAK_LOGS_PYRE, 40, 120, FiremakingMethod.PYRE_LOGS),
 	ARCTIC_PINE_LOGS(ItemID.ARCTIC_PINE_LOG, 42, 125, FiremakingMethod.NORMAL_LOGS),
 	MAPLE_LOGS(ItemID.MAPLE_LOGS, 45, 135, FiremakingMethod.NORMAL_LOGS),
@@ -57,10 +58,40 @@ public enum FiremakingAction implements ItemSkillAction
 	YEW_LOGS(ItemID.YEW_LOGS, 60, 202.5f, FiremakingMethod.NORMAL_LOGS),
 	BLISTERWOOD_LOGS(ItemID.BLISTERWOOD_LOGS, 62, 96, FiremakingMethod.NORMAL_LOGS),
 	YEW_PYRE_LOGS(ItemID.YEW_LOGS_PYRE, 65, 255, FiremakingMethod.PYRE_LOGS),
+	CAMPHOR_LOGS(ItemID.CAMPHOR_LOGS, 66, 180, FiremakingMethod.NORMAL_LOGS),
+	CAMPHOR_PYRE_LOGS(ItemID.CAMPHOR_LOGS_PYRE, 71, 320, FiremakingMethod.PYRE_LOGS),
 	MAGIC_LOGS(ItemID.MAGIC_LOGS, 75, 303.8f, FiremakingMethod.NORMAL_LOGS),
+	IRONWOOD_LOGS(ItemID.IRONWOOD_LOGS, 80, 220.5f, FiremakingMethod.NORMAL_LOGS),
 	MAGIC_PYRE_LOGS(ItemID.MAGIC_LOGS_PYRE, 80, 404.5f, FiremakingMethod.PYRE_LOGS),
+	IRONWOOD_PYRE_LOGS(ItemID.IRONWOOD_LOGS_PYRE, 85, 435, FiremakingMethod.PYRE_LOGS),
+	CAMPHOR_LOGS_BARBARIAN(ItemID.CAMPHOR_LOGS, 86, 245, FiremakingMethod.NORMAL_LOGS)
+		{
+			@Override
+			public String getName(final ItemManager itemManager)
+			{
+				return "Camphor logs (barbarian)";
+			}
+		},
 	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 350, FiremakingMethod.NORMAL_LOGS),
+	ROSEWOOD_LOGS(ItemID.ROSEWOOD_LOGS, 92, 268, FiremakingMethod.NORMAL_LOGS),
 	REDWOOD_PYRE_LOGS(ItemID.REDWOOD_LOGS_PYRE, 95, 500, FiremakingMethod.PYRE_LOGS),
+	ROSEWOOD_PYRE_LOGS(ItemID.ROSEWOOD_LOGS_PYRE, 97, 580, FiremakingMethod.PYRE_LOGS),
+	IRONWOOD_LOGS_BARBARIAN(ItemID.IRONWOOD_LOGS, 99, 320, FiremakingMethod.NORMAL_LOGS)
+		{
+			@Override
+			public String getName(final ItemManager itemManager)
+			{
+				return "Ironwood logs (barbarian)";
+			}
+		},
+	ROSEWOOD_LOGS_BARBARIAN(ItemID.ROSEWOOD_LOGS, 99, 420, FiremakingMethod.NORMAL_LOGS)
+		{
+			@Override
+			public String getName(final ItemManager itemManager)
+			{
+				return "Rosewood logs (barbarian)";
+			}
+		},
 	;
 
 	private final int itemId;
