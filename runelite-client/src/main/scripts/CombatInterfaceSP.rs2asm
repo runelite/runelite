@@ -16,7 +16,8 @@
    iconst                 3784
    iconst                 4600
    iconst                 284
-   iconst                 5
+   iconst                 5533
+   iconst                 6
    sconst                 "iY"
    iload                  0
    if_setonvartransmit   

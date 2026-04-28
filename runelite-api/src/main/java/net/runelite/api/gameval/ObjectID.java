@@ -38563,6 +38563,11 @@ public final class ObjectID extends ObjectID1
 	public static final int GRAPEVINE_CLICKZONE_DEAD = 11760;
 
 	/**
+	 * Glowing portal
+	 */
+	public static final int LEAGUE_6_YAMA_EXIT = 11761;
+
+	/**
 	 * Scaregull
 	 */
 	public static final int HOS_GRAPE_SCARECROW = 11762;
@@ -39688,22 +39693,22 @@ public final class ObjectID extends ObjectID1
 	public static final int CANOEING_WAKA_CANOEING_STATION_IN_WATER = 12158;
 
 	/**
-	 * A Sinking Canoe
+	 * Sinking canoe
 	 */
 	public static final int CANOEING_LOG_SINKING = 12159;
 
 	/**
-	 * A Sinking Canoe
+	 * Sinking canoe
 	 */
 	public static final int CANOEING_DUGOUT_SINKING = 12160;
 
 	/**
-	 * A Sinking Canoe
+	 * Sinking canoe
 	 */
 	public static final int CANOEING_CATAMARAN_SINKING = 12161;
 
 	/**
-	 * A Sinking Canoe
+	 * Sinking canoe
 	 */
 	public static final int CANOEING_WAKA_SINKING = 12162;
 	public static final int CANOEING_CANOESTATION_LUMBRIDGE = 12163;
@@ -44404,6 +44409,11 @@ public final class ObjectID extends ObjectID1
 	 */
 	public static final int POH_PORTAL_TEAK_ARDOUGNE = 13619;
 	public static final int POH_PORTAL_TEAK_YANILLE = 13620;
+
+	/**
+	 * Stone
+	 */
+	public static final int LEAGUE_6_YAMA_STEPPINGSTONE = 13621;
 	public static final int POH_PORTAL_MAG_VARROCK = 13622;
 
 	/**
@@ -44422,6 +44432,11 @@ public final class ObjectID extends ObjectID1
 	 */
 	public static final int POH_PORTAL_MAG_ARDOUGNE = 13626;
 	public static final int POH_PORTAL_MAG_YANILLE = 13627;
+
+	/**
+	 * Info Board
+	 */
+	public static final int LEAGUE_6_BASALT_BOARD01 = 13628;
 	public static final int POH_PORTAL_MARBLE_VARROCK = 13629;
 
 	/**
@@ -44440,6 +44455,11 @@ public final class ObjectID extends ObjectID1
 	 */
 	public static final int POH_PORTAL_MARBLE_ARDOUGNE = 13633;
 	public static final int POH_PORTAL_MARBLE_YANILLE = 13634;
+
+	/**
+	 * Runestone basalt
+	 */
+	public static final int LEAGUE_6_BASALT_RUNE01 = 13635;
 
 	/**
 	 * Portal frame
@@ -91330,6 +91350,444 @@ public final class ObjectID extends ObjectID1
 	 * Kourend Portal
 	 */
 	public static final int POH_PORTAL_MARBLE_KOUREND = 29361;
+
+	/**
+	 * Runestone basalt
+	 */
+	public static final int LEAGUE_6_BASALT_RUNE02 = 29362;
+
+	/**
+	 * Runestone basalt
+	 */
+	public static final int LEAGUE_6_BASALT_RUNE03 = 29363;
+
+	/**
+	 * Runestone basalt
+	 */
+	public static final int LEAGUE_6_BASALT_RUNE04 = 29364;
+
+	/**
+	 * Runestone basalt
+	 */
+	public static final int LEAGUE_6_BASALT_GROUP01 = 29365;
+
+	/**
+	 * Runestone basalt
+	 */
+	public static final int LEAGUE_6_BASALT_GROUP02 = 29366;
+
+	/**
+	 * Runestone basalt
+	 */
+	public static final int LEAGUE_6_BASALT_GROUP03 = 29367;
+	public static final int LEAGUE_6_YAMA_BLOCKING = 29368;
+	public static final int LEAGUE_6_YAMA_ROOTS = 29369;
+	public static final int LEAGUE_6_YAMA_ROOTS_CORNER = 29370;
+
+	/**
+	 * Rock
+	 */
+	public static final int LEAGUE_6_YAMA_BLOCK_2X2 = 29371;
+
+	/**
+	 * Rock
+	 */
+	public static final int LEAGUE_6_YAMA_BLOCK_2X2_B = 29372;
+
+	/**
+	 * Rock
+	 */
+	public static final int LEAGUE_6_YAMA_BLOCK_2X1 = 29373;
+
+	/**
+	 * Rock
+	 */
+	public static final int LEAGUE_6_YAMA_BLOCK_1X1 = 29374;
+
+	/**
+	 * Archway
+	 */
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W = 29375;
+
+	/**
+	 * Archway
+	 */
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W_2 = 29376;
+
+	/**
+	 * Archway
+	 */
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W_3 = 29377;
+
+	/**
+	 * Archway
+	 */
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W_4 = 29378;
+
+	/**
+	 * Archway
+	 */
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_W_5 = 29379;
+
+	/**
+	 * Archway
+	 */
+	public static final int LEAGUE_6_YAMA_GATEWAY_MISTHALIN_E = 29380;
+
+	/**
+	 * Archway
+	 */
+	public static final int LEAGUE_6_YAMA_GATEWAY_KANDARIN_N = 29381;
+
+	/**
+	 * Archway
+	 */
+	public static final int LEAGUE_6_YAMA_GATEWAY_KANDARIN_E = 29382;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_ASGARNIA = 29383;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_MISTHALIN = 29384;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_KANDARIN = 29385;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_FREMENNIK = 29386;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_DESERT = 29387;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_MORYTANIA = 29388;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_TIRANNWN = 29389;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_KARAMJA = 29390;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_WILDERNESS = 29391;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_KOUREND = 29392;
+
+	/**
+	 * Waystone
+	 */
+	public static final int LEAGUE_6_YAMA_WAYSTONE_VARLAMORE = 29393;
+
+	/**
+	 * Throne
+	 */
+	public static final int LEAGUE_6_DEMONIC_CHAIR01 = 29394;
+
+	/**
+	 * Stone desk
+	 */
+	public static final int LEAGUE_6_SKULLS_DESK01_SCROLLS01 = 29395;
+
+	/**
+	 * Stone desk
+	 */
+	public static final int LEAGUE_6_SKULLS_DESK01_RUNE01 = 29396;
+
+	/**
+	 * Little helper
+	 */
+	public static final int LEAGUE_6_IMP01 = 29397;
+
+	/**
+	 * Little helper
+	 */
+	public static final int LEAGUE_6_IMP02 = 29398;
+
+	/**
+	 * Little helper
+	 */
+	public static final int LEAGUE_6_IMP03 = 29399;
+
+	/**
+	 * Rubble
+	 */
+	public static final int LEAGUE_6_RUNE01_SHARDS01 = 29400;
+
+	/**
+	 * Runes
+	 */
+	public static final int LEAGUE_6_RUNE01_STACK01 = 29401;
+	public static final int LEAGUE_6_RUG01_END01 = 29402;
+	public static final int LEAGUE_6_RUG01_END02 = 29403;
+	public static final int LEAGUE_6_RUG01_SIDE01 = 29404;
+	public static final int LEAGUE_6_RUG01_SIDE02 = 29405;
+	public static final int LEAGUE_6_RUG01_MIDDLE01 = 29406;
+	public static final int LEAGUE_6_RUG01_MIDDLE01_A = 29407;
+	public static final int LEAGUE_6_DECOR01_SCROLLS01 = 29408;
+	public static final int LEAGUE_6_DECOR01_SCROLLS02 = 29409;
+
+	/**
+	 * Gibbet
+	 */
+	public static final int SAGE_CAGE = 29410;
+
+	/**
+	 * Sage's Halo
+	 */
+	public static final int SAGE05_HALO01 = 29411;
+
+	/**
+	 * Icy pool
+	 */
+	public static final int AMOXLIATL_ICE_ECHO = 29412;
+	public static final int BGSOUND_LEAGUES_6_YAMA_LAIR_RUMBLING_LOOP = 29413;
+	public static final int RANDOMSOUND_L6_YAMA_CAVE_AMBIENCE = 29414;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_BRONZE = 29415;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_IRON = 29416;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_STEEL = 29417;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_MITHRIL = 29418;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_ADAMANT = 29419;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_RUNE = 29420;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_SIMPLE_LEAGUE_6_DRAGON = 29421;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_BRONZE = 29422;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_IRON = 29423;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_STEEL = 29424;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_MITHRIL = 29425;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_ADAMANT = 29426;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_RUNE = 29427;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_1_DECORATIVE_LEAGUE_6_DRAGON = 29428;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_BRONZE = 29429;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_IRON = 29430;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_STEEL = 29431;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_MITHRIL = 29432;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_ADAMANT = 29433;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_RUNE = 29434;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_SIMPLE_LEAGUE_6_DRAGON = 29435;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_BRONZE = 29436;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_IRON = 29437;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_STEEL = 29438;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_MITHRIL = 29439;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_ADAMANT = 29440;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_RUNE = 29441;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_2_DECORATIVE_LEAGUE_6_DRAGON = 29442;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_BRONZE = 29443;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_IRON = 29444;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_STEEL = 29445;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_MITHRIL = 29446;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_ADAMANT = 29447;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_RUNE = 29448;
+
+	/**
+	 * Trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_SIMPLE_LEAGUE_6_DRAGON = 29449;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_BRONZE = 29450;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_IRON = 29451;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_STEEL = 29452;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_MITHRIL = 29453;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_ADAMANT = 29454;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_RUNE = 29455;
+
+	/**
+	 * Ornate trophy pedestal
+	 */
+	public static final int POH_LEAGUEHALL_PEDESTAL_3_DECORATIVE_LEAGUE_6_DRAGON = 29456;
+
+	/**
+	 * Banner stand
+	 */
+	public static final int POH_LEAGUEHALL_BANNERSTAND_SIMPLE_LEAGUE06 = 29457;
+
+	/**
+	 * Ornate banner stand
+	 */
+	public static final int POH_LEAGUEHALL_BANNERSTAND_DECORATIVE_LEAGUE06 = 29458;
+
+	/**
+	 * Throne
+	 */
+	public static final int POH_THRONE_8 = 29459;
 
 	/**
 	 * Gate

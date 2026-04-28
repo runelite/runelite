@@ -823,11 +823,11 @@ id=218
 parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
-lumbridge_home_teleport=7
-edgeville_home_teleport=109
-lunar_home_teleport=110
-arceuus_home_teleport=154
-fertile_soil=135
+lumbridge_home_teleport=6
+edgeville_home_teleport=108
+lunar_home_teleport=109
+arceuus_home_teleport=153
+fertile_soil=134
 
 [tempoross]
 id=437
@@ -870,7 +870,7 @@ id=336
 
 [trailblazer_areas]
 id=512
-teleport=80
+teleport=82
 
 [trawler]
 id=366
