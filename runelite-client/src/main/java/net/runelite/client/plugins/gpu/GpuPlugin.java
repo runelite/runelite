@@ -1195,7 +1195,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			int start = a.vbo.vb.position();
 			try
 			{
-				facePrioritySorter.uploadSortedModel(worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb);
+				facePrioritySorter.uploadSortedModel(worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb, false);
 			}
 			catch (Exception ex)
 			{
@@ -1248,7 +1248,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			m.calculateBoundsCylinder();
 			try
 			{
-				facePrioritySorter.uploadSortedModel(worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb);
+				facePrioritySorter.uploadSortedModel(worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb, true);
 			}
 			catch (Exception ex)
 			{
