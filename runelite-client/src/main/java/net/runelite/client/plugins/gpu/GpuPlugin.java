@@ -1248,7 +1248,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			m.calculateBoundsCylinder();
 			try
 			{
-				facePrioritySorter.uploadSortedModel(worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb, true);
+				facePrioritySorter.uploadSortedModel(worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb, renderMode == Renderable.RENDERMODE_SORTED_NO_DEPTH);
 			}
 			catch (Exception ex)
 			{
