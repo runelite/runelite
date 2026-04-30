@@ -28,6 +28,8 @@ package net.runelite.client.plugins.music;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -39,11 +41,17 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.ScriptID;
+import net.runelite.api.SettingID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.AmbientSoundEffectCreated;
 import net.runelite.api.events.AreaSoundEffectPlayed;
+import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -52,6 +60,7 @@ import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -65,6 +74,8 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @PluginDescriptor(
 	name = "Music",
@@ -121,6 +132,9 @@ public class MusicPlugin extends Plugin
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
+	@Inject
+	private TooltipManager tooltipManager;
+
 	private ChatboxTextInput searchInput;
 
 	private Widget musicSearchButton;
@@ -131,12 +145,25 @@ public class MusicPlugin extends Plugin
 	@Nullable
 	private MusicState currentMusicFilter = null;
 
+	private Tooltip sliderTooltip;
+
+	private final Map<Integer, VolumeSlider> volumeSliders = new HashMap<>();
+
+	@AllArgsConstructor
+	private static class VolumeSlider
+	{
+		private final Widget widget;
+		private final int varPlayerId;
+		private final String name;
+	}
+
 	@Override
 	protected void startUp()
 	{
 		clientThread.invoke(() ->
 		{
 			addMusicButtons();
+			addTooltips();
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				if (musicConfig.muteAmbientSounds())
@@ -162,6 +189,7 @@ public class MusicPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
+			removeTooltips();
 			if (musicConfig.muteAmbientSounds())
 			{
 				// Reload the scene to reapply ambient sounds
@@ -171,6 +199,8 @@ public class MusicPlugin extends Plugin
 				}
 			}
 		});
+		sliderTooltip = null;
+		volumeSliders.clear();
 	}
 
 	@Provides
@@ -187,6 +217,7 @@ public class MusicPlugin extends Plugin
 		{
 			// Reset music filter on logout
 			currentMusicFilter = null;
+			volumeSliders.clear();
 		}
 		else if (gameState == GameState.LOGGED_IN)
 		{
@@ -207,6 +238,10 @@ public class MusicPlugin extends Plugin
 			// It is too early here to call updateFilter()
 			currentMusicFilter = null;
 			addMusicButtons();
+		}
+		else if (widgetLoaded.getGroupId() == InterfaceID.SETTINGS_SIDE)
+		{
+			addTooltips();
 		}
 	}
 
@@ -459,6 +494,123 @@ public class MusicPlugin extends Plugin
 		if (musicConfig.muteAmbientSounds())
 		{
 			client.getAmbientSoundEffects().clear();
+		}
+	}
+
+	private void addTooltips()
+	{
+		volumeSliders.clear();
+		addVolumeSlider(InterfaceID.SettingsSide.MUSIC_SLIDER_BOBBLE, VarPlayerID.OPTION_MUSIC, "Music");
+		addVolumeSlider(InterfaceID.SettingsSide.MUSIC_ZOOM_CONTAINER, VarPlayerID.OPTION_MUSIC, "Music");
+
+		addVolumeSlider(InterfaceID.SettingsSide.SOUND_SLIDER_BOBBLE, VarPlayerID.OPTION_SOUNDS, "Sound Effects");
+		addVolumeSlider(InterfaceID.SettingsSide.SOUND_ZOOM_CONTAINER, VarPlayerID.OPTION_SOUNDS, "Sound Effects");
+
+		addVolumeSlider(InterfaceID.SettingsSide.AREASOUNDS_SLIDER_BOBBLE, VarPlayerID.OPTION_AREASOUNDS, "Area Sounds");
+		addVolumeSlider(InterfaceID.SettingsSide.AREASOUNDS_ZOOM_CONTAINER, VarPlayerID.OPTION_AREASOUNDS, "Area Sounds");
+
+		addVolumeSlider(InterfaceID.SettingsSide.MASTER_SLIDER_BOBBLE, VarPlayerID.OPTION_MASTER_VOLUME, "Master Volume");
+		addVolumeSlider(InterfaceID.SettingsSide.MASTER_ZOOM_CONTAINER, VarPlayerID.OPTION_MASTER_VOLUME, "Master Volume");
+	}
+
+	private void addVolumeSlider(int widgetId, int varPlayerId, String name)
+	{
+		Widget w = client.getWidget(widgetId);
+		if (w != null)
+		{
+			volumeSliders.put(widgetId, new VolumeSlider(w, varPlayerId, name));
+			w.setOnMouseRepeatListener((JavaScriptCallback) ev -> sliderTooltip = makeVolumeTooltip(varPlayerId, name));
+		}
+	}
+
+	private void removeTooltips()
+	{
+		for (VolumeSlider slider : volumeSliders.values())
+		{
+			if (slider.widget != null)
+			{
+				slider.widget.setOnMouseRepeatListener((Object[]) null);
+			}
+		}
+		volumeSliders.clear();
+	}
+
+	private Tooltip makeVolumeTooltip(int varPlayerId, String name)
+	{
+		int value = client.getVarpValue(varPlayerId);
+		return new Tooltip(name + ": " + value + "%");
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		sliderTooltip = null;
+
+		if (client.getMouseCurrentButton() != 0 && !volumeSliders.isEmpty())
+		{
+			Point mousePos = client.getMouseCanvasPosition();
+			for (VolumeSlider slider : volumeSliders.values())
+			{
+				if (slider.widget != null && !slider.widget.isHidden() && slider.widget.getBounds().contains(mousePos.getX(), mousePos.getY()))
+				{
+					sliderTooltip = makeVolumeTooltip(slider.varPlayerId, slider.name);
+					break;
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onBeforeRender(BeforeRender event)
+	{
+		if (sliderTooltip != null)
+		{
+			tooltipManager.add(sliderTooltip);
+		}
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired ev)
+	{
+		if (ev.getScriptId() == ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP)
+		{
+			int arg = client.getIntStackSize() - 12;
+			int[] is = client.getIntStack();
+			int settingId = is[arg];
+			Widget activeWidget = client.getScriptActiveWidget();
+
+			if (activeWidget != null)
+			{
+				if (settingId == SettingID.MUSIC_VOLUME)
+				{
+					volumeSliders.put(activeWidget.getId(), new VolumeSlider(activeWidget, VarPlayerID.OPTION_MUSIC, "Music"));
+				}
+				else if (settingId == SettingID.EFFECT_VOLUME)
+				{
+					volumeSliders.put(activeWidget.getId(), new VolumeSlider(activeWidget, VarPlayerID.OPTION_SOUNDS, "Sound Effects"));
+				}
+				else if (settingId == SettingID.AREA_VOLUME)
+				{
+					volumeSliders.put(activeWidget.getId(), new VolumeSlider(activeWidget, VarPlayerID.OPTION_AREASOUNDS, "Area Sounds"));
+				}
+				else if (settingId == SettingID.MASTER_VOLUME)
+				{
+					volumeSliders.put(activeWidget.getId(), new VolumeSlider(activeWidget, VarPlayerID.OPTION_MASTER_VOLUME, "Master Volume"));
+				}
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.SETTINGS_SLIDER_ONDRAG)
+		{
+			Widget activeWidget = client.getScriptActiveWidget();
+
+			if (activeWidget != null)
+			{
+				VolumeSlider slider = volumeSliders.get(activeWidget.getId());
+				if (slider != null)
+				{
+					sliderTooltip = makeVolumeTooltip(slider.varPlayerId, slider.name);
+				}
+			}
 		}
 	}
 }
