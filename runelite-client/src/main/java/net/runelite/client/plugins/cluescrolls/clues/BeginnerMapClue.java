@@ -35,7 +35,7 @@ public class BeginnerMapClue extends MapClue implements LocationClueScroll
 	private static final ImmutableList<BeginnerMapClue> CLUES = ImmutableList.of(
 		new BeginnerMapClue(InterfaceID.TRAIL_MAP01, new WorldPoint(3167, 3360, 0), MapClue.CHAMPIONS_GUILD),
 		new BeginnerMapClue(InterfaceID.TRAIL_MAP02, new WorldPoint(3290, 3373, 0), MapClue.VARROCK_EAST_MINE),
-		new BeginnerMapClue(InterfaceID.TRAIL_MAP03, new WorldPoint(3093, 3226, 0), MapClue.SOUTH_OF_DRAYNOR_BANK),
+		new BeginnerMapClue(InterfaceID.TRAIL_MAP03, new WorldPoint(3092, 3226, 0), MapClue.SOUTH_OF_DRAYNOR_BANK),
 		new BeginnerMapClue(InterfaceID.TRAIL_MAP06, new WorldPoint(3043, 3398, 0), MapClue.STANDING_STONES),
 		new BeginnerMapClue(InterfaceID.TRAIL_MAP11, new WorldPoint(3110, 3152, 0), MapClue.WIZARDS_TOWER_DIS)
 	);
