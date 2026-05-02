@@ -117,6 +117,10 @@ public class ItemLoader
 		{
 			def.wearPos2 = stream.readByte();
 		}
+		else if (opcode == 15)
+		{
+			def.tradeable = false;
+		}
 		else if (opcode == 16)
 		{
 			def.members = true;
@@ -258,7 +262,7 @@ public class ItemLoader
 		}
 		else if (opcode == 65)
 		{
-			def.isTradeable = true;
+			def.geTradeable = true;
 		}
 		else if (opcode == 75)
 		{
