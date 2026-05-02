@@ -37,7 +37,7 @@ public class BeginnerMapClue extends MapClue implements LocationClueScroll
 		new BeginnerMapClue(InterfaceID.TRAIL_MAP02, new WorldPoint(3290, 3373, 0), MapClue.VARROCK_EAST_MINE),
 		new BeginnerMapClue(InterfaceID.TRAIL_MAP03, new WorldPoint(3092, 3226, 0), MapClue.SOUTH_OF_DRAYNOR_BANK),
 		new BeginnerMapClue(InterfaceID.TRAIL_MAP06, new WorldPoint(3043, 3399, 0), MapClue.STANDING_STONES),
-		new BeginnerMapClue(InterfaceID.TRAIL_MAP11, new WorldPoint(3110, 3152, 0), MapClue.WIZARDS_TOWER_DIS)
+		new BeginnerMapClue(InterfaceID.TRAIL_MAP11, new WorldPoint(3109, 3153, 0), MapClue.WIZARDS_TOWER_DIS)
 	);
 
 	private final int widgetGroupID;
