@@ -30,6 +30,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import net.runelite.api.Constants;
 import net.runelite.client.ui.ContainableFrame;
+import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.util.OSType;
 
@@ -489,5 +490,16 @@ public interface RuneLiteConfig extends Config
 	default Keybind shiftHotkey()
 	{
 		return Keybind.SHIFT;
+	}
+
+	@ConfigItem(
+		keyName = "spaceHotkey",
+		name = "Space hotkey",
+		description = "Configures the key used to continue chat dialogs (\"Click here to continue\"). Does not affect typing.",
+		position = 54
+	)
+	default ModifierlessKeybind spaceHotkey()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_SPACE, 0);
 	}
 }
