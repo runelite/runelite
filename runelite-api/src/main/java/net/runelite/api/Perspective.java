@@ -637,20 +637,7 @@ public class Perspective
 
 	public static int getFootprintTileHeight(@Nonnull Client client, @Nonnull LocalPoint p, int level, int footprintSize)
 	{
-		final var wv = client.getWorldView(p.getWorldView());
 		final int x = p.getX(), z = p.getY();
-
-		int mapLevel = level;
-		if (level < Constants.MAX_Z - 1 && (wv.getTileSettings()[1][x >> LOCAL_COORD_BITS][z >> LOCAL_COORD_BITS] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
-		{
-			mapLevel = level + 1;
-		}
-
-		if (footprintSize == 0)
-		{
-			return wv.getTileHeight(x, z, mapLevel);
-		}
-
 		int halfFootprint = footprintSize / 2;
 		int lx = x - halfFootprint;
 		int lz = z - halfFootprint;
@@ -666,15 +653,15 @@ public class Perspective
 		{
 			for (int tz = lsz; tz <= usz; ++tz)
 			{
-				h = Math.min(h, wv.getTileHeight(tx << LOCAL_COORD_BITS, tz << LOCAL_COORD_BITS, mapLevel));
+				h = Math.min(h, getTileHeight(client, new LocalPoint(tx << LOCAL_COORD_BITS, tz << LOCAL_COORD_BITS, p.getWorldView()), level));
 			}
 		}
 
-		h = Math.min(h, wv.getTileHeight(x, z, mapLevel));
-		h = Math.min(h, wv.getTileHeight(x - halfFootprint, z - halfFootprint, mapLevel));
-		h = Math.min(h, wv.getTileHeight(x - halfFootprint, z + halfFootprint, mapLevel));
-		h = Math.min(h, wv.getTileHeight(x + halfFootprint, z - halfFootprint, mapLevel));
-		h = Math.min(h, wv.getTileHeight(x + halfFootprint, z + halfFootprint, mapLevel));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x, z, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x - halfFootprint, z - halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x - halfFootprint, z + halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x + halfFootprint, z - halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x + halfFootprint, z + halfFootprint, p.getWorldView()), level));
 
 		return h;
 	}
