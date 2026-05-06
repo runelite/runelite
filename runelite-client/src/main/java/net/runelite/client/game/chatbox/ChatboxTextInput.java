@@ -36,11 +36,14 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
+import java.util.function.ToIntBiFunction;
 import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
@@ -82,6 +85,14 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		private final String text;
 	}
 
+	@AllArgsConstructor
+	private static class HistoryEntry
+	{
+		private final String text;
+		private final int cursorStart;
+		private final int cursorEnd;
+	}
+
 	@Getter
 	private String prompt;
 
@@ -98,6 +109,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	private int selectionStart = -1;
 	private int selectionEnd = -1;
+
+	private static final int MAX_UNDO_HISTORY = 100;
+	private final Deque<HistoryEntry> undoHistory = new ArrayDeque<>();
+	private final Deque<HistoryEntry> redoHistory = new ArrayDeque<>();
+	private boolean lastActionWasTyping = false;
+	private boolean lastActionWasDeleting = false;
 
 	@Getter
 	private IntPredicate charValidator = getDefaultCharValidator();
@@ -119,7 +136,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	// These are lambdas for atomic updates
 	private Predicate<MouseEvent> isInBounds = null;
-	private ToIntFunction<Integer> getLineOffset = null;
+	private ToIntBiFunction<Integer, Integer> getLineOffset = null;
 	private ToIntFunction<Point> getPointCharOffset = null;
 
 	@Inject
@@ -264,6 +281,16 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	{
 		this.fontID = fontID;
 		return this;
+	}
+
+	private void pushUndoSnapshot()
+	{
+		undoHistory.push(new HistoryEntry(value.toString(), cursorStart, cursorEnd));
+		while (undoHistory.size() > MAX_UNDO_HISTORY)
+		{
+			undoHistory.removeLast();
+		}
+		redoHistory.clear();
 	}
 
 	protected void update()
@@ -521,35 +548,48 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			return line.start + charIndex;
 		};
 
-		getLineOffset = code ->
+		getLineOffset = (code, fromPos) ->
 		{
 			if (editLines.size() < 2)
 			{
-				return cursorStart;
+				return code == KeyEvent.VK_UP ? 0 : value.length();
 			}
 
 			int currentLine = -1;
 			for (int i = 0; i < editLines.size(); i++)
 			{
 				Line l = editLines.get(i);
-				if (cursorOnLine(cursorStart, l.start, l.end)
-					|| (cursorOnLine(cursorStart, l.start, l.end + 1) && i == editLines.size() - 1))
+				if (cursorOnLine(fromPos, l.start, l.end)
+					|| (cursorOnLine(fromPos, l.start, l.end + 1) && i == editLines.size() - 1))
 				{
 					currentLine = i;
 					break;
 				}
 			}
 
-			if (currentLine == -1
-				|| (code == KeyEvent.VK_UP && currentLine == 0)
-				|| (code == KeyEvent.VK_DOWN && currentLine == editLines.size() - 1))
+			if (currentLine == -1)
 			{
-				return cursorStart;
+				return fromPos;
+			}
+			if (code == KeyEvent.VK_UP && currentLine == 0)
+			{
+				return 0;
+			}
+			if (code == KeyEvent.VK_DOWN && currentLine == editLines.size() - 1)
+			{
+				return value.length();
 			}
 
+			// Compute the canvas X position for fromPos on its line, matching the centering
+			// logic used by getPointCharOffset so the projected point lands correctly.
 			final Line line = editLines.get(currentLine);
+			final int charOffsetInLine = Ints.constrainToRange(fromPos - line.start, 0, line.text.length());
+			final int fullLineWidth = font.getTextWidth(line.text);
+			final int lineTextX = ox + (w > 0 ? (w - fullLineWidth) / 2 : 0);
+			final int charPixelX = lineTextX + font.getTextWidth(Text.escapeJagex(line.text.substring(0, charOffsetInLine)));
+
 			final int direction = code == KeyEvent.VK_UP ? -1 : 1;
-			final Point dest = new Point(cursor.getCanvasLocation().getX(), cursor.getCanvasLocation().getY() + (direction * oh));
+			final Point dest = new Point(ccl.getX() + charPixelX, ccl.getY() + oy + (currentLine + direction) * oh);
 			final int charOffset = getPointCharOffset.applyAsInt(dest);
 
 			// Place cursor on right line if whitespace keep it on the same line or skip a line
@@ -567,6 +607,58 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	private boolean cursorOnLine(final int cursor, final int start, final int end)
 	{
 		return (cursor >= start) && (cursor <= end);
+	}
+
+	private static boolean isWordChar(char c)
+	{
+		return Character.isLetterOrDigit(c) || c == '_';
+	}
+
+	private int findWordBoundaryLeft(int pos)
+	{
+		if (pos == 0)
+		{
+			return 0;
+		}
+		if (!isWordChar(value.charAt(pos - 1)))
+		{
+			while (pos > 0 && !isWordChar(value.charAt(pos - 1)))
+			{
+				pos--;
+			}
+		}
+		while (pos > 0 && isWordChar(value.charAt(pos - 1)))
+		{
+			pos--;
+		}
+		return pos;
+	}
+
+	private int findWordBoundaryRight(int pos)
+	{
+		if (pos >= value.length())
+		{
+			return value.length();
+		}
+		if (!isWordChar(value.charAt(pos)))
+		{
+			while (pos < value.length() && !isWordChar(value.charAt(pos)))
+			{
+				pos++;
+			}
+		}
+		else
+		{
+			while (pos < value.length() && isWordChar(value.charAt(pos)))
+			{
+				pos++;
+			}
+			while (pos < value.length() && !isWordChar(value.charAt(pos)))
+			{
+				pos++;
+			}
+		}
+		return pos;
 	}
 
 	private int getCharOffset(MouseEvent ev)
@@ -617,6 +709,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		char c = e.getKeyChar();
 		if (charValidator.test(c))
 		{
+			if (!lastActionWasTyping)
+			{
+				pushUndoSnapshot();
+			}
+			lastActionWasTyping = true;
+			lastActionWasDeleting = false;
 			if (cursorStart != cursorEnd)
 			{
 				value.delete(cursorStart, cursorEnd);
@@ -650,6 +748,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 						String s = value.substring(cursorStart, cursorEnd);
 						if (code == KeyEvent.VK_X)
 						{
+							pushUndoSnapshot();
+							lastActionWasTyping = false;
+							lastActionWasDeleting = false;
 							value.delete(cursorStart, cursorEnd);
 							cursorAt(cursorStart);
 						}
@@ -659,6 +760,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 					}
 					return;
 				case KeyEvent.VK_V:
+					pushUndoSnapshot();
+					lastActionWasTyping = false;
+					lastActionWasDeleting = false;
 					try
 					{
 						String s = Toolkit.getDefaultToolkit()
@@ -689,13 +793,93 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 						log.warn("Unable to get clipboard", ex);
 					}
 					return;
+				case KeyEvent.VK_Z:
+					if (!undoHistory.isEmpty())
+					{
+						redoHistory.push(new HistoryEntry(value.toString(), cursorStart, cursorEnd));
+						HistoryEntry entry = undoHistory.pop();
+						value = new StringBuffer(entry.text);
+						selectionStart = -1;
+						selectionEnd = -1;
+						lastActionWasTyping = false;
+						lastActionWasDeleting = false;
+						cursorAt(entry.cursorStart, entry.cursorEnd);
+						if (onChanged != null)
+						{
+							onChanged.accept(getValue());
+						}
+					}
+					return;
+				case KeyEvent.VK_Y:
+					if (!redoHistory.isEmpty())
+					{
+						undoHistory.push(new HistoryEntry(value.toString(), cursorStart, cursorEnd));
+						HistoryEntry entry = redoHistory.pop();
+						value = new StringBuffer(entry.text);
+						selectionStart = -1;
+						selectionEnd = -1;
+						lastActionWasTyping = false;
+						lastActionWasDeleting = false;
+						cursorAt(entry.cursorStart, entry.cursorEnd);
+						if (onChanged != null)
+						{
+							onChanged.accept(getValue());
+						}
+					}
+					return;
 				case KeyEvent.VK_A:
 					selectionStart = 0;
 					selectionEnd = value.length();
 					cursorAt(0, selectionEnd);
 					return;
+				case KeyEvent.VK_BACK_SPACE:
+				{
+					int deleteStart = cursorStart != cursorEnd ? cursorStart : findWordBoundaryLeft(cursorStart);
+					int deleteEnd = cursorEnd;
+					if (deleteStart < deleteEnd)
+					{
+						if (!lastActionWasDeleting)
+						{
+							pushUndoSnapshot();
+						}
+						lastActionWasTyping = false;
+						lastActionWasDeleting = true;
+						value.delete(deleteStart, deleteEnd);
+						cursorAt(deleteStart);
+						if (onChanged != null)
+						{
+							onChanged.accept(getValue());
+						}
+					}
+					return;
+				}
+				case KeyEvent.VK_DELETE:
+				{
+					int deleteStart = cursorStart;
+					int deleteEnd = cursorStart != cursorEnd ? cursorEnd : findWordBoundaryRight(cursorStart);
+					if (deleteStart < deleteEnd)
+					{
+						if (!lastActionWasDeleting)
+						{
+							pushUndoSnapshot();
+						}
+						lastActionWasTyping = false;
+						lastActionWasDeleting = true;
+						value.delete(deleteStart, deleteEnd);
+						cursorAt(deleteStart);
+						if (onChanged != null)
+						{
+							onChanged.accept(getValue());
+						}
+					}
+					return;
+				}
+				case KeyEvent.VK_LEFT:
+				case KeyEvent.VK_RIGHT:
+					break;
+				default:
+					return;
 			}
-			return;
 		}
 		int newPos = cursorStart;
 		if (ev.isShiftDown())
@@ -717,6 +901,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			case KeyEvent.VK_DELETE:
 				if (cursorStart != cursorEnd)
 				{
+					if (!lastActionWasDeleting)
+					{
+						pushUndoSnapshot();
+					}
+					lastActionWasTyping = false;
+					lastActionWasDeleting = true;
 					value.delete(cursorStart, cursorEnd);
 					cursorAt(cursorStart);
 					if (onChanged != null)
@@ -727,6 +917,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				}
 				if (cursorStart < value.length())
 				{
+					if (!lastActionWasDeleting)
+					{
+						pushUndoSnapshot();
+					}
+					lastActionWasTyping = false;
+					lastActionWasDeleting = true;
 					value.deleteCharAt(cursorStart);
 					cursorAt(cursorStart);
 					if (onChanged != null)
@@ -738,6 +934,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			case KeyEvent.VK_BACK_SPACE:
 				if (cursorStart != cursorEnd)
 				{
+					if (!lastActionWasDeleting)
+					{
+						pushUndoSnapshot();
+					}
+					lastActionWasTyping = false;
+					lastActionWasDeleting = true;
 					value.delete(cursorStart, cursorEnd);
 					cursorAt(cursorStart);
 					if (onChanged != null)
@@ -748,6 +950,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				}
 				if (cursorStart > 0)
 				{
+					if (!lastActionWasDeleting)
+					{
+						pushUndoSnapshot();
+					}
+					lastActionWasTyping = false;
+					lastActionWasDeleting = true;
 					value.deleteCharAt(cursorStart - 1);
 					cursorAt(cursorStart - 1);
 					if (onChanged != null)
@@ -758,9 +966,13 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				return;
 			case KeyEvent.VK_LEFT:
 				ev.consume();
-				if (cursorStart != cursorEnd)
+				if (!ev.isShiftDown() && cursorStart != cursorEnd)
 				{
 					newPos = cursorStart;
+				}
+				else if (ev.isControlDown())
+				{
+					newPos = findWordBoundaryLeft(newPos);
 				}
 				else
 				{
@@ -769,9 +981,13 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			case KeyEvent.VK_RIGHT:
 				ev.consume();
-				if (cursorStart != cursorEnd)
+				if (!ev.isShiftDown() && cursorStart != cursorEnd)
 				{
 					newPos = cursorEnd;
+				}
+				else if (ev.isControlDown())
+				{
+					newPos = findWordBoundaryRight(newPos);
 				}
 				else
 				{
@@ -780,11 +996,25 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			case KeyEvent.VK_UP:
 				ev.consume();
-				newPos = getLineOffset.applyAsInt(code);
+				if (getLineOffset == null)
+				{
+					newPos = 0;
+				}
+				else
+				{
+					newPos = getLineOffset.applyAsInt(code, ev.isShiftDown() ? newPos : cursorStart);
+				}
 				break;
 			case KeyEvent.VK_DOWN:
 				ev.consume();
-				newPos = getLineOffset.applyAsInt(code);
+				if (getLineOffset == null)
+				{
+					newPos = value.length();
+				}
+				else
+				{
+					newPos = getLineOffset.applyAsInt(code, ev.isShiftDown() ? newPos : cursorEnd);
+				}
 				break;
 			case KeyEvent.VK_HOME:
 				ev.consume();
