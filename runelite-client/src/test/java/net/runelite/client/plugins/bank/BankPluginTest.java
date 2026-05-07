@@ -29,22 +29,36 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.events.WidgetClosed;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.vars.InputType;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -62,6 +76,18 @@ public class BankPluginTest
 	@Mock
 	@Bind
 	private BankConfig bankConfig;
+
+	@Mock
+	@Bind
+	private BankSearch bankSearch;
+
+	@Mock
+	@Bind
+	private ClientThread clientThread;
+
+	@Mock
+	@Bind
+	private KeyManager keyManager;
 
 	@Inject
 	private BankPlugin bankPlugin;
@@ -149,5 +175,143 @@ public class BankPluginTest
 
 		assertTrue(prices.getHighAlchPrice() > Integer.MAX_VALUE);
 		assertTrue(prices.getGePrice() > Integer.MAX_VALUE);
+	}
+
+	@Test
+	public void testSearchHotkeyDoesNotTriggerWhileSearching()
+	{
+		KeyListener keyListener = registerSearchHotkeyListener();
+		loadWidget(InterfaceID.BANKMAIN);
+		when(bankConfig.searchKeybind()).thenReturn(new Keybind(KeyEvent.VK_F, 0));
+		when(client.getVarcIntValue(VarClientID.MESLAYERMODE)).thenReturn(InputType.SEARCH.getType());
+
+		KeyEvent event = mockKeyEvent(KeyEvent.VK_F);
+		keyListener.keyPressed(event);
+
+		verify(bankSearch, never()).initSearch();
+		verify(event, never()).consume();
+	}
+
+	@Test
+	public void testSearchHotkeyTriggersBankSearch()
+	{
+		KeyListener keyListener = registerSearchHotkeyListener();
+		loadWidget(InterfaceID.BANKMAIN);
+		when(bankConfig.searchKeybind()).thenReturn(new Keybind(KeyEvent.VK_F, 0));
+		when(client.getVarcIntValue(VarClientID.MESLAYERMODE)).thenReturn(InputType.NONE.getType());
+
+		Widget bankContainer = mock(Widget.class);
+		when(bankContainer.isSelfHidden()).thenReturn(false);
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(bankContainer);
+
+		KeyEvent event = mockKeyEvent(KeyEvent.VK_F);
+		keyListener.keyPressed(event);
+
+		verify(bankSearch).initSearch();
+		verify(event).consume();
+	}
+
+	@Test
+	public void testSearchHotkeyConsumesOpeningTypedEvent()
+	{
+		KeyListener keyListener = registerSearchHotkeyListener();
+		loadWidget(InterfaceID.BANKMAIN);
+		when(bankConfig.searchKeybind()).thenReturn(new Keybind(KeyEvent.VK_S, 0));
+		when(client.getVarcIntValue(VarClientID.MESLAYERMODE)).thenReturn(InputType.NONE.getType());
+
+		Widget bankContainer = mock(Widget.class);
+		when(bankContainer.isSelfHidden()).thenReturn(false);
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(bankContainer);
+
+		keyListener.keyPressed(mockKeyEvent(KeyEvent.VK_S));
+
+		KeyEvent typedEvent = mockTypedEvent('s');
+		keyListener.keyTyped(typedEvent);
+		verify(typedEvent).consume();
+
+		KeyEvent subsequentTypedEvent = mockTypedEvent('s');
+		keyListener.keyTyped(subsequentTypedEvent);
+		verify(subsequentTypedEvent, never()).consume();
+	}
+
+	@Test
+	public void testSearchHotkeyDoesNotLeavePendingConsumeOutsideBank()
+	{
+		KeyListener keyListener = registerSearchHotkeyListener();
+		loadWidget(InterfaceID.BANKMAIN);
+		when(bankConfig.searchKeybind()).thenReturn(new Keybind(KeyEvent.VK_S, 0));
+		when(client.getVarcIntValue(VarClientID.MESLAYERMODE)).thenReturn(InputType.NONE.getType());
+
+		Widget bankContainer = mock(Widget.class);
+		when(bankContainer.isSelfHidden()).thenReturn(false);
+		when(client.getWidget(InterfaceID.Bankmain.ITEMS)).thenReturn(bankContainer);
+
+		keyListener.keyPressed(mockKeyEvent(KeyEvent.VK_S));
+		closeWidget(InterfaceID.BANKMAIN);
+
+		KeyEvent typedEvent = mockTypedEvent('s');
+		keyListener.keyTyped(typedEvent);
+		verify(typedEvent, never()).consume();
+	}
+
+	@Test
+	public void testSearchHotkeyDoesNotConsumeClosedBank()
+	{
+		KeyListener keyListener = registerSearchHotkeyListener();
+		when(bankConfig.searchKeybind()).thenReturn(new Keybind(KeyEvent.VK_S, 0));
+
+		KeyEvent event = mockKeyEvent(KeyEvent.VK_S);
+		keyListener.keyPressed(event);
+
+		verify(bankSearch, never()).initSearch();
+		verify(event, never()).consume();
+	}
+
+	@Test
+	public void testSearchHotkeyDoesNotConsumeOutsideBank()
+	{
+		KeyListener keyListener = registerSearchHotkeyListener();
+		when(bankConfig.searchKeybind()).thenReturn(new Keybind(KeyEvent.VK_S, 0));
+
+		KeyEvent event = mockKeyEvent(KeyEvent.VK_S);
+		keyListener.keyPressed(event);
+
+		verify(bankSearch, never()).initSearch();
+		verify(event, never()).consume();
+	}
+
+	private KeyListener registerSearchHotkeyListener()
+	{
+		bankPlugin.startUp();
+		ArgumentCaptor<KeyListener> captor = ArgumentCaptor.forClass(KeyListener.class);
+		verify(keyManager).registerKeyListener(captor.capture());
+		return captor.getValue();
+	}
+
+	private void loadWidget(int groupId)
+	{
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(groupId);
+		bankPlugin.onWidgetLoaded(event);
+	}
+
+	private void closeWidget(int groupId)
+	{
+		bankPlugin.onWidgetClosed(new WidgetClosed(groupId, 0, true));
+	}
+
+	private static KeyEvent mockKeyEvent(int keyCode)
+	{
+		KeyEvent event = mock(KeyEvent.class);
+		when(event.getExtendedKeyCode()).thenReturn(keyCode);
+		when(event.getModifiersEx()).thenReturn(0);
+		return event;
+	}
+
+	private static KeyEvent mockTypedEvent(char keyChar)
+	{
+		KeyEvent event = mock(KeyEvent.class);
+		when(event.getKeyChar()).thenReturn(keyChar);
+		return event;
 	}
 }
