@@ -36,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
@@ -47,9 +48,11 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.SpotanimID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
@@ -108,6 +111,7 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant sixHourWarningTime;
 	private boolean ready;
 	private boolean lastInteractWasCombat;
+	private boolean fishingInventoryFull;
 	private static final int BUFF_BAR_NOT_DISPLAYED = -1;
 
 	@Provides
@@ -566,6 +570,34 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getContainerId() != InventoryID.INV)
+		{
+			return;
+		}
+
+		if (lastInteract == null
+			|| lastInteract.getName() == null
+			|| !lastInteract.getName().contains(FISHING_SPOT))
+		{
+			return;
+		}
+
+		final ItemContainer inventory = event.getItemContainer();
+		if (inventory == null || inventory.count() < inventory.size())
+		{
+			return;
+		}
+
+		// Inventory is full while the fishing-spot NPC is still our interaction
+		// target. The OSRS client does not clear getInteracting() in this case,
+		// so checkInteractionIdle()'s null-target gate never fires. Set a flag
+		// the next idle check honours instead.
+		fishingInventoryFull = true;
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		final Player local = client.getLocalPlayer();
@@ -898,6 +930,24 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
+		// Inventory filled while fishing — the fishing-spot NPC is still our
+		// interaction target so the null-target gate below would never fire.
+		if (fishingInventoryFull)
+		{
+			if (lastInteracting != null
+				&& Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0
+				&& lastCombatCountdown == 0)
+			{
+				fishingInventoryFull = false;
+				lastInteract = null;
+				lastInteracting = null;
+				lastAnimation = -1;
+				lastAnimating = null;
+				return true;
+			}
+			return false;
+		}
+
 		final Actor interact = local.getInteracting();
 
 		if (interact == null)
@@ -1046,6 +1096,8 @@ public class IdleNotifierPlugin extends Plugin
 	private void resetTimers()
 	{
 		final Player local = client.getLocalPlayer();
+
+		fishingInventoryFull = false;
 
 		// Reset animation idle timer
 		lastAnimating = null;

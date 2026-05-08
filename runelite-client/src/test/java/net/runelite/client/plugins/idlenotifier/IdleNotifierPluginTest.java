@@ -34,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
@@ -43,7 +44,9 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -302,6 +305,59 @@ public class IdleNotifierPluginTest
 		plugin.onGameTick(new GameTick());
 
 		verify(notifier).notify(Notification.ON, "You are now idle!");
+	}
+
+	@Test
+	public void testFishingInventoryFullFiresIdleEvenWhenSpotRemainsTarget()
+	{
+		// Player is fishing — interacting with the fishing-spot NPC and animating.
+		when(player.getInteracting()).thenReturn(fishingSpot);
+		when(player.getAnimation()).thenReturn(AnimationID.HUMAN_FISHING_CASTING);
+
+		AnimationChanged animationChanged = new AnimationChanged();
+		animationChanged.setActor(player);
+
+		plugin.onInteractingChanged(new InteractingChanged(player, fishingSpot));
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onGameTick(new GameTick());
+
+		verify(notifier, never()).notify(anyString());
+
+		// Inventory becomes full while the fishing spot is still our target.
+		final ItemContainer inventory = mock(ItemContainer.class);
+		when(inventory.size()).thenReturn(28);
+		when(inventory.count()).thenReturn(28);
+		plugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, inventory));
+
+		// Spot is still the interaction target — vanilla checkInteractionIdle would
+		// not fire. With the fix, the next tick fires the notification.
+		plugin.onGameTick(new GameTick());
+
+		verify(notifier).notify(Notification.ON, "You are now idle!");
+	}
+
+	@Test
+	public void testFishingPartialInventoryDoesNotFireIdle()
+	{
+		when(player.getInteracting()).thenReturn(fishingSpot);
+		when(player.getAnimation()).thenReturn(AnimationID.HUMAN_FISHING_CASTING);
+
+		AnimationChanged animationChanged = new AnimationChanged();
+		animationChanged.setActor(player);
+
+		plugin.onInteractingChanged(new InteractingChanged(player, fishingSpot));
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onGameTick(new GameTick());
+
+		// 27 fish + 1 empty slot — not full.
+		final ItemContainer inventory = mock(ItemContainer.class);
+		when(inventory.size()).thenReturn(28);
+		when(inventory.count()).thenReturn(27);
+		plugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, inventory));
+
+		plugin.onGameTick(new GameTick());
+
+		verify(notifier, never()).notify(anyString());
 	}
 
 	@Test
