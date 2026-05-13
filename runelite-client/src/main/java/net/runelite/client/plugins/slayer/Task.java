@@ -28,8 +28,10 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import net.runelite.api.NPC;
 import net.runelite.api.gameval.ItemID;
 
 @Getter
@@ -63,15 +65,21 @@ enum Task
 	CAVE_BUGS("Cave bugs", ItemID.SWAMP_CAVE_BUG),
 	CAVE_CRAWLERS("Cave crawlers", ItemID.SLAYERGUIDE_CAVECRAWLER, "Chasm crawler"),
 	CAVE_HORRORS("Cave horrors", ItemID.SLAYERGUIDE_HARMLESS_CAVE_HORROR, "Cave abomination"),
-	CAVE_KRAKEN("Cave kraken", ItemID.CERT_EADGAR_FADE_TO_BLACK_INV, "Kraken"),
+	CAVE_KRAKEN("Cave kraken", ItemID.CERT_EADGAR_FADE_TO_BLACK_INV, NpcPredicate.nameEquals("Cave kraken", "Kraken")),
 	CAVE_SLIMES("Cave slimes", ItemID.SWAMP_CAVE_SLIME),
 	CERBERUS("Cerberus", ItemID.HELL_PET),
 	CHAOS_DRUIDS("Chaos druids", ItemID.ELDERCHAOS_HOOD),
 	CHAOS_ELEMENTAL("The Chaos Elemental", ItemID.CHAOSELEPET),
 	CHAOS_FANATIC("The Chaos Fanatic", ItemID.STAFF_OF_ZAROS),
 	COCKATRICE("Cockatrice", ItemID.SLAYERGUIDE_COCKATRICE, "Cockathrice"),
-	COWS("Cows", ItemID.COW_MASK, "Buffalo", "Brutus"),
-	CRABS("Crabs", ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET, "Ammonite Crab", "Frost Crab", "King Sand Crab", "Rock Crab", "Giant Rock Crab", "Sand Crab", "Swamp Crab"),
+	COWS("Cows", ItemID.COW_MASK,
+		NpcPredicate.nameContains("Cow")
+			.or(NpcPredicate.nameEquals("Buffalo", "Brutus"))
+	),
+	CRABS("Crabs", ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET,
+		NpcPredicate.nameContains("Crab")
+			.and(NpcPredicate.nameEquals("Hermit crab").negate())
+	),
 	CRAWLING_HANDS("Crawling hands", ItemID.SLAYERGUIDE_CRAWLINGHAND, "Crushing hand"),
 	CRAZY_ARCHAEOLOGIST("Crazy Archaeologists", ItemID.FEDORA),
 	CROCODILES("Crocodiles", ItemID.GREEN_SALAMANDER),
@@ -87,7 +95,10 @@ enum Task
 	DUST_DEVILS("Dust devils", ItemID.SLAYERGUIDE_DUSTDEVIL, "Choke devil"),
 	DWARVES("Dwarves", ItemID.GRIM_WEAR_HELMET, "Dwarf", "Black Guard"),
 	EARTH_WARRIORS("Earth warriors", ItemID.BRONZE_FULL_HELM_TRIM),
-	ELVES("Elves", ItemID.PICKPOCKET_GUIDE_WOODELF, "Elf", "Iorwerth Warrior", "Iorwerth Archer"),
+	ELVES("Elves", ItemID.PICKPOCKET_GUIDE_WOODELF,
+		NpcPredicate.nameEquals("Iorwerth Archer", "Elf Archer", "Iorwerth Warrior", "Elf Warrior", "Mourner", "Reanimated Elf")
+			.or(NpcPredicate.nameEquals("Guard").and(NpcPredicate.combatLevelEquals(108)))
+	),
 	ENTS("Ents", ItemID.POH_TREE_2),
 	FEVER_SPIDERS("Fever spiders", ItemID.SLAYERGUIDE_FEVER_SPIDER),
 	FIRE_GIANTS("Fire giants", ItemID.RTBRANDAPET, "Branda the Fire Queen"),
@@ -120,7 +131,7 @@ enum Task
 	KALPHITE_QUEEN("The Kalphite Queen", ItemID.KQPET_WALKING),
 	KILLERWATTS("Killerwatts", ItemID.SLAYERGUIDE_KILLERWATT),
 	KING_BLACK_DRAGON("The King Black Dragon", ItemID.KBDPET),
-	KRAKEN("The Cave Kraken Boss", ItemID.KRAKENPET, "Kraken"),
+	KRAKEN("The Cave Kraken Boss", ItemID.KRAKENPET, NpcPredicate.nameEquals("Kraken")),
 	KREEARRA("Kree'arra", ItemID.ARMADYLPET),
 	KRIL_TSUTSAROTH("K'ril Tsutsaroth", ItemID.ZAMORAKPET),
 	KURASK("Kurask", ItemID.SLAYERGUIDE_KURASK),
@@ -171,7 +182,7 @@ enum Task
 	TROLLS("Trolls", ItemID.POH_TROLL, "Dad", "Arrg", "Stick", "Kraka", "Pee Hat", "Rock", "Twig", "Berry"),
 	TUROTH("Turoth", ItemID.SLAYERGUIDE_TUROTH),
 	TZHAAR("Tzhaar", ItemID.ARCEUUS_CORPSE_TZHAAR_INITIAL, "TzTok-Jad", "TzKal-Zuk"),
-	VAMPYRES("Vampyres", ItemID.STAKE, "Vyrewatch"),
+	VAMPYRES("Vampyres", ItemID.STAKE, NpcPredicate.nameEquals("Feral Vampyre", "Vampyre Juvenile", "Vampyre Juvinate", "Vyrewatch", "Vyrewatch Sentinel")),
 	VARDORVIS("Vardorvis", ItemID.VARDORVISPET),
 	VENENATIS("Venenatis", ItemID.VENENATIS_PET),
 	VETION("Vet'ion", ItemID.VETION_PET),
@@ -192,9 +203,9 @@ enum Task
 
 	private final String name;
 	private final int itemSpriteId;
-	private final String[] targetNames;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
+	private final Predicate<NPC> npcPredicate;
 
 	static
 	{
@@ -208,24 +219,31 @@ enum Task
 		tasks = builder.build();
 	}
 
-	Task(String name, int itemSpriteId, String... targetNames)
-	{
-		Preconditions.checkArgument(itemSpriteId >= 0);
-		this.name = name;
-		this.itemSpriteId = itemSpriteId;
-		this.weaknessThreshold = -1;
-		this.weaknessItem = -1;
-		this.targetNames = targetNames;
-	}
-
-	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, Predicate<NPC> npcPredicate)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
 		this.weaknessThreshold = weaknessThreshold;
 		this.weaknessItem = weaknessItem;
-		this.targetNames = targetNames;
+		this.npcPredicate = npcPredicate;
+	}
+
+	Task(String name, int itemSpriteId, Predicate<NPC> npcPredicate)
+	{
+		this(name, itemSpriteId, -1, -1, npcPredicate);
+	}
+
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
+	{
+		this(name, itemSpriteId, weaknessThreshold, weaknessItem,
+			NpcPredicate.nameContains(name.replaceAll("s$", ""))
+				.or(NpcPredicate.nameContains(targetNames)));
+	}
+
+	Task(String name, int itemSpriteId, String... targetNames)
+	{
+		this(name, itemSpriteId, -1, -1, targetNames);
 	}
 
 	@Nullable
