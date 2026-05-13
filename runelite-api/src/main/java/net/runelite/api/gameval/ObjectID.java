@@ -91790,6 +91790,11 @@ public final class ObjectID extends ObjectID1
 	public static final int POH_THRONE_8 = 29459;
 
 	/**
+	 * Spade
+	 */
+	public static final int MOLE_HILL_SPADE = 29460;
+
+	/**
 	 * Gate
 	 */
 	public static final int HILLGIANT_BOSS_ENTRANCE_R = 29486;

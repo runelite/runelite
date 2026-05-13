@@ -4170,7 +4170,6 @@ public final class DBTableID
 			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_REVERSED = 3511;
 			public static final int VMQ3_TOWER_LOCK_DATASET_ALPHABETIC = 3783;
 			public static final int COMBINATION_LOCK_DATASET_VMQ4_JANUS_LOCK = 5195;
-			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_EASTER26 = 13320;
 		}
 	}
 
@@ -10065,60 +10064,8 @@ public final class DBTableID
 			public static final int NIEVE_AQUANITES = 9411;
 			public static final int NIEVE_FROST_DRAGONS = 9412;
 			public static final int VANNAKA_GRYPHONS = 9413;
-			public static final int LEAGUES_BOSS = 16206;
-			public static final int LEAGUES_CRABS = 16207;
 			public static final int LEAGUES_COWS = 16208;
-			public static final int LEAGUES_GOBLINS = 16209;
 			public static final int LEAGUES_BIRDS = 16210;
-			public static final int LEAGUES_HILLGIANTS = 16211;
-			public static final int LEAGUES_MOSSGIANTS = 16212;
-			public static final int LEAGUES_FIREGIANTS = 16213;
-			public static final int LEAGUES_ANKOU = 16214;
-			public static final int LEAGUES_ABYSSALDEMONS = 16215;
-			public static final int LEAGUES_TZHAAR = 16216;
-			public static final int LEAGUES_LESSERDEMONS = 16217;
-			public static final int LEAGUES_GREATERDEMONS = 16218;
-			public static final int LEAGUES_BLACKDEMONS = 16219;
-			public static final int LEAGUES_TROLLS = 16220;
-			public static final int LEAGUES_GREENDRAGONS = 16221;
-			public static final int LEAGUES_BLUEDRAGONS = 16222;
-			public static final int LEAGUES_REDDRAGONS = 16223;
-			public static final int LEAGUES_BLACKDRAGONS = 16224;
-			public static final int LEAGUES_LAVADRAGONS = 16225;
-			public static final int LEAGUES_DRAKES = 16226;
-			public static final int LEAGUES_WYRMS = 16227;
-			public static final int LEAGUES_HYDRAS = 16228;
-			public static final int LEAGUES_HELLHOUNDS = 16229;
-			public static final int LEAGUES_SKELETALWYVERNS = 16230;
-			public static final int LEAGUES_OGRES = 16231;
-			public static final int LEAGUES_CHAOSDRUIDS = 16232;
-			public static final int LEAGUES_CAVEKRAKEN = 16233;
-			public static final int LEAGUES_SMOKEDEVIL = 16234;
-			public static final int LEAGUES_KALPHITE = 16235;
-			public static final int LEAGUES_DUSTDEVILS = 16236;
-			public static final int LEAGUES_PYREFIENDS = 16237;
-			public static final int LEAGUES_BANDITS = 16238;
-			public static final int LEAGUES_DAGANNOTH = 16239;
-			public static final int LEAGUES_COCKATRICE = 16240;
-			public static final int LEAGUES_JELLIES = 16241;
-			public static final int LEAGUES_BASILISKS = 16242;
-			public static final int LEAGUES_TUROTH = 16243;
-			public static final int LEAGUES_KURASK = 16244;
-			public static final int LEAGUES_BANSHEES = 16245;
-			public static final int LEAGUES_VAMPYRES = 16246;
-			public static final int LEAGUES_BLOODVELD = 16247;
-			public static final int LEAGUES_CAVEHORRORS = 16248;
-			public static final int LEAGUES_GARGOYLES = 16249;
-			public static final int LEAGUES_NECHRYAEL = 16250;
-			public static final int LEAGUES_ARAXYTES = 16251;
-			public static final int LEAGUES_ELVES = 16252;
-			public static final int LEAGUES_WATERFIENDS = 16253;
-			public static final int LEAGUES_DARKBEASTS = 16254;
-			public static final int LEAGUES_REVENANTS = 16255;
-			public static final int LEAGUES_BEARS = 16256;
-			public static final int LEAGUES_SKELETONS = 16257;
-			public static final int LEAGUES_LIZARDMEN = 16258;
-			public static final int LEAGUES_CUSTODIANS = 16259;
 		}
 	}
 
@@ -13087,6 +13034,7 @@ public final class DBTableID
 			public static final int BARBARIAN_TELEPORT = 9651;
 			public static final int KHAZARD_TELEPORT = 9652;
 			public static final int ICEPLATEAU_TELEPORT = 9653;
+			public static final int BANK_ARDOUGNE_DOCK_TELEPORT = 13320;
 			public static final int LEPRECHAUN_AL_KHARID_TELEPORT = 15611;
 			public static final int LEPRECHAUN_ARDOUGNE_MONASTERY_TELEPORT = 15612;
 			public static final int LEPRECHAUN_BRIMHAVEN_TELEPORT = 15613;
@@ -13590,6 +13538,17 @@ public final class DBTableID
 			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_GWD_CREVICE = 16111;
 			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_SLAYER_CAVE_JELLIES = 16112;
 			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_SLAYER_CAVE_LESSER_DEMONS = 16113;
+			public static final int BANK_CATHERBY_DOCK_TELEPORT = 16206;
+			public static final int BANK_PORT_SARIM_DOCK_SOUTH_TELEPORT = 16207;
+			public static final int BANK_VOID_KNIGHTS_OUTPOST_DOCK_TELEPORT = 16209;
+			public static final int BANK_LUNAR_ISLE_DOCK_TELEPORT = 16211;
+			public static final int BANK_ETCETERIA_DOCK_TELEPORT = 16212;
+			public static final int BANK_JATIZSO_DOCK_TELEPORT = 16213;
+			public static final int BANK_NEITIZNOT_DOCK_TELEPORT = 16214;
+			public static final int BANK_LANDS_END_DOCK_TELEPORT = 16215;
+			public static final int BANK_PORT_PISCARILIUS_DOCK_TELEPORT = 16216;
+			public static final int BANK_ALDARIN_DOCK_TELEPORT = 16217;
+			public static final int BANK_PRIFFDINAS_DOCK_TELEPORT = 16218;
 			public static final int LEAGUE_VARROCK_GE_TELEPORT = 16266;
 			public static final int ICE_PLATEAU_TELEPORT = 16267;
 			public static final int BARBARIAN_OUTPOST_TELEPORT = 16268;
@@ -17684,104 +17643,99 @@ public final class DBTableID
 		public static final int COL_LEVEL_REQUIRED = 3;
 
 		/**
-		 * integer
+		 * dbrow
 		 */
-		public static final int COL_REWARD_TIER = 4;
+		public static final int COL_STARTING_PORT = 4;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_STARTING_PORT = 5;
+		public static final int COL_CARGO_PORT = 5;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_CARGO_PORT = 6;
-
-		/**
-		 * dbrow
-		 */
-		public static final int COL_ENDING_PORT = 7;
+		public static final int COL_ENDING_PORT = 6;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_CANCELLABLE = 8;
+		public static final int COL_CANCELLABLE = 7;
 
 		/**
 		 * (loc, string)
 		 */
-		public static final int COL_FACILITIES_REQUIRED = 11;
+		public static final int COL_FACILITIES_REQUIRED = 10;
 
 		/**
 		 * (loc, string)
 		 */
-		public static final int COL_FACILITITES_RECOMMENDED = 12;
+		public static final int COL_FACILITITES_RECOMMENDED = 11;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_BOAT_COMBAT_REQUIRED = 13;
+		public static final int COL_BOAT_COMBAT_REQUIRED = 12;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_REGULAR_COMBAT_REQUIRED = 14;
+		public static final int COL_REGULAR_COMBAT_REQUIRED = 13;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_COMBAT_RECOMMENDED = 15;
+		public static final int COL_COMBAT_RECOMMENDED = 14;
 
 		/**
 		 * namedobj
 		 */
-		public static final int COL_DELIVERY_OBJECT = 16;
+		public static final int COL_DELIVERY_OBJECT = 15;
 
 		/**
 		 * (namedobj, integer)
 		 */
-		public static final int COL_CARGO = 17;
+		public static final int COL_CARGO = 16;
 
 		/**
 		 * (integer, integer)
 		 */
-		public static final int COL_PORT_CHECKPOINT = 18;
+		public static final int COL_PORT_CHECKPOINT = 17;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_BOUNTY_TARGET_ALIVE = 19;
+		public static final int COL_BOUNTY_TARGET_ALIVE = 18;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_BOUNTY_TARGET_DEAD = 20;
+		public static final int COL_BOUNTY_TARGET_DEAD = 19;
 
 		/**
 		 * namedobj
 		 */
-		public static final int COL_BOUNTY_OBJECT = 21;
+		public static final int COL_BOUNTY_OBJECT = 20;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOUNTY_OBJECT_AMOUNT = 22;
+		public static final int COL_BOUNTY_OBJECT_AMOUNT = 21;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOUNTY_OBJECT_RARITY = 23;
+		public static final int COL_BOUNTY_OBJECT_RARITY = 22;
 
 		/**
 		 * model
 		 */
-		public static final int COL_TASK_BOARD_GRAPHIC = 24;
+		public static final int COL_TASK_BOARD_GRAPHIC = 23;
 
 		/**
 		 * string
 		 */
-		public static final int COL_FLAVOUR_TEXT = 25;
+		public static final int COL_FLAVOUR_TEXT = 24;
 
 		public static final class Row
 		{
@@ -22691,6 +22645,10 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_MINIGAME_TELEPORT = 13295;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_MINIGAME_TELEPORT = 13296;
 			public static final int SKILL_FEATURE_SAILING_FACILITY_BALLISTIC_ATTRACTOR = 13297;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_GEM_POUCH = 16219;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_GEM_SATCHEL = 16220;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_GEM_TOTE = 16221;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_GEM_SACK = 16222;
 			public static final int SKILL_FEATURE_AGILITY_LEAGUES_6_YAMA_STONE = 16260;
 			public static final int SKILL_FEATURE_MAGIC_STANDARD_LEAGUES_6_HOME_TELEPORT = 16261;
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_LEAGUES_6_HOME_TELEPORT = 16262;

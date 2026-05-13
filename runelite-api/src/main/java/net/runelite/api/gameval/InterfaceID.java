@@ -29637,7 +29637,7 @@ public final class InterfaceID
 		public static final int ORB_SPECENERGY_EMPTY = 0x037f_0025;
 		public static final int ORB_SPECENERGY_EMPTY_GRAPHIC0 = 0x037f_0026;
 		public static final int SPEC_REGEN = 0x037f_0027;
-		public static final int ORB_SPECENERGY_GRAPHIC6 = 0x037f_0028;
+		public static final int SPECENERGY_ICON = 0x037f_0028;
 		public static final int ORB_STORE = 0x037f_0029;
 		public static final int STORE_BACKING = 0x037f_002a;
 		public static final int STORE_INDICATOR = 0x037f_002b;
@@ -29703,7 +29703,7 @@ public final class InterfaceID
 		public static final int ORB_SPECENERGY_EMPTY = 0x0381_0023;
 		public static final int ORB_SPECENERGY_EMPTY_GRAPHIC0 = 0x0381_0024;
 		public static final int SPEC_REGEN = 0x0381_0025;
-		public static final int ORB_SPECENERGY_GRAPHIC6 = 0x0381_0026;
+		public static final int SPECENERGY_ICON = 0x0381_0026;
 		public static final int ORB_STORE = 0x0381_0027;
 		public static final int STORE_BACKING = 0x0381_0028;
 		public static final int STORE_BUTTON = 0x0381_0029;
@@ -29763,7 +29763,7 @@ public final class InterfaceID
 		public static final int ORB_SPECENERGY_EMPTY = 0x0382_0024;
 		public static final int ORB_SPECENERGY_EMPTY_GRAPHIC0 = 0x0382_0025;
 		public static final int SPEC_REGEN = 0x0382_0026;
-		public static final int ORB_SPECENERGY_GRAPHIC6 = 0x0382_0027;
+		public static final int SPECENERGY_ICON = 0x0382_0027;
 		public static final int ORB_STORE = 0x0382_0028;
 		public static final int ORB_CONTENTRECOM = 0x0382_0029;
 		public static final int ORB_WORLDMAP = 0x0382_002a;
