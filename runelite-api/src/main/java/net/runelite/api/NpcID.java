@@ -13017,9 +13017,8 @@ public final class NpcID
 	public static final int TIGER_SHARK_15575 = 15575;
 	public static final int VEILED_KRAKEN = 15576;
 	public static final int VEILED_KRAKEN_15577 = 15577;
-	public static final int EASTER_BUNNY = 15578;
-	public static final int ARCHIBALD_15580 = 15580;
-	public static final int ARCHIBALD_15581 = 15581;
+	public static final int ISLES = 15578;
+	public static final int ISLES_15579 = 15579;
 	public static final int BARRICADE_15582 = 15582;
 	public static final int BARRICADE_15583 = 15583;
 	public static final int BARRICADE_15584 = 15584;

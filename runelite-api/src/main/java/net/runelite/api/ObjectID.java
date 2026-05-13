@@ -15572,6 +15572,7 @@ public final class ObjectID
 	public static final int BANNER_STAND = 29457;
 	public static final int ORNATE_BANNER_STAND = 29458;
 	public static final int THRONE_29459 = 29459;
+	public static final int SPADE_29460 = 29460;
 	public static final int GATE_29486 = 29486;
 	public static final int GATE_29487 = 29487;
 	public static final int GATE_29488 = 29488;
