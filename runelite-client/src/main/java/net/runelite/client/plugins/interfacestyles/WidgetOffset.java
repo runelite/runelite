@@ -29,12 +29,14 @@ package net.runelite.client.plugins.interfacestyles;
 import lombok.Getter;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
 
 @Getter
 enum WidgetOffset
 {
 	RESIZABLE_2010_COMBAT_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.STONE0, -4, 1, null, null),
-	RESIZABLE_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.ICON0, 5, null, null, null),
+	RESIZABLE_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.ICON0, 4, null, null, null, SpriteID.SideiconsInterface.COMBAT),
+	RESIZABLE_2010_SAILING_ICON(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.ICON0, 1, null, null, null, SpriteID.SideiconsInterface._67),
 	RESIZABLE_2010_STATS_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.STONE1, 35, 1, null, null),
 	RESIZABLE_2010_STATS_ICON(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.ICON1, 35, null, null, null),
 	RESIZABLE_2010_QUESTS_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.STONE2, 69, 1, 33, null),
@@ -76,7 +78,8 @@ enum WidgetOffset
 	RESIZABLE_BOTTOM_2010_MUSIC_ICON(Skin.AROUND_2010, InterfaceID.ToplevelPreEoc.ICON13, null, 3, null, null),
 
 	FIXED_2010_COMBAT_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.Toplevel.STONE0, 2, 1, null, null),
-	FIXED_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON0, 11, null, null, null),
+	FIXED_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON0, 9, null, null, null, SpriteID.SideiconsInterface.COMBAT),
+	FIXED_2010_SAILING_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON0, 8, null, null, null,  SpriteID.SideiconsInterface._67),
 	FIXED_2010_STATS_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.Toplevel.STONE1, 41, 1, null, null),
 	FIXED_2010_STATS_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON1, 41, null, null, null),
 	FIXED_2010_QUESTS_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.Toplevel.STONE2, 75, 1, 33, null),
@@ -103,6 +106,7 @@ enum WidgetOffset
 	FIXED_2010_MUSIC_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.Toplevel.STONE13, 208, 1, null, null),
 	FIXED_2010_MUSIC_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON13, 209, 2, null, null),
 
+	RESIZABLE_2005_COMBAT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON0, 5, null, null, null, SpriteID.SideiconsInterface.COMBAT),
 	RESIZABLE_2005_QUESTS_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON2, 71, -1, null, null),
 	RESIZABLE_2005_FRIENDS_CHAT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON7, null, 1, null, null),
 	RESIZABLE_2005_LOGOUT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON10, null, null, null, null),
@@ -129,7 +133,8 @@ enum WidgetOffset
 	FIXED_2005_INTERFACE_CONTAINER(Skin.AROUND_2005, InterfaceID.Toplevel.SIDE_PANELS, 7, null, null, null),
 	FIXED_2005_BANK_CONTAINER(Skin.AROUND_2005, InterfaceID.Toplevel.SIDEMODAL, 7, null, null, null),
 	FIXED_2005_COMBAT_HIGHLIGHT(Skin.AROUND_2005, InterfaceID.Toplevel.STONE0, 22, 1, 34, 36),
-	FIXED_2005_COMBAT_ICON(Skin.AROUND_2005, InterfaceID.Toplevel.ICON0, 28, 1, null, null),
+	FIXED_2005_COMBAT_ICON(Skin.AROUND_2005, InterfaceID.Toplevel.ICON0, 28, 1, null, null, SpriteID.SideiconsInterface.COMBAT),
+	FIXED_2005_SAILING_ICON(Skin.AROUND_2005, InterfaceID.Toplevel.ICON0, 26, 1, null, null, SpriteID.SideiconsInterface._67),
 	FIXED_2005_STATS_HIGHLIGHT(Skin.AROUND_2005, InterfaceID.Toplevel.STONE1, 54, null, 30, 37),
 	FIXED_2005_STATS_ICON(Skin.AROUND_2005, InterfaceID.Toplevel.ICON1, 51, null, null, null),
 	FIXED_2005_QUESTS_HIGHLIGHT(Skin.AROUND_2005, InterfaceID.Toplevel.STONE2, 82, null, 30, 37),
@@ -196,8 +201,14 @@ enum WidgetOffset
 	private final Integer offsetY;
 	private final Integer width;
 	private final Integer height;
+	private final Integer spriteId;
 
 	WidgetOffset(Skin skin, @Component int component, Integer offsetX, Integer offsetY, Integer width, Integer height)
+	{
+		this(skin, component, offsetX, offsetY, width, height, null);
+	}
+
+	WidgetOffset(Skin skin, @Component int component, Integer offsetX, Integer offsetY, Integer width, Integer height, Integer spriteId)
 	{
 		this.skin = skin;
 		this.component = component;
@@ -205,5 +216,6 @@ enum WidgetOffset
 		this.offsetY = offsetY;
 		this.width = width;
 		this.height = height;
+		this.spriteId = spriteId;
 	}
 }
