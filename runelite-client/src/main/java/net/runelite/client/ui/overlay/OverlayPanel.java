@@ -102,9 +102,9 @@ public abstract class OverlayPanel extends Overlay
 		try
 		{
 			dimension = panelComponent.render(graphics);
-            final Rectangle pb = panelComponent.getBounds();
-            getBounds().setLocation(getBounds().x + pb.x, getBounds().y + pb.y);
-        }
+			final Rectangle pb = panelComponent.getBounds();
+			getBounds().setLocation(getBounds().x + pb.x, getBounds().y + pb.y);
+		}
 		finally
 		{
 			if (clearChildren)
@@ -118,9 +118,10 @@ public abstract class OverlayPanel extends Overlay
 		return dimension;
 	}
 
-    public Point getBoundsOffset()
-    {
-        final Rectangle pb = panelComponent.getBounds();
-        return new Point(pb.x, pb.y);
-    }
+	@Override
+	public Point getBoundsOffset()
+	{
+		final Rectangle pb = panelComponent.getBounds();
+		return new Point(pb.x, pb.y);
+	}
 }

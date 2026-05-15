@@ -232,10 +232,10 @@ public class InfoBoxOverlay extends OverlayPanel
 				entry.onClick(e -> infoboxManager.setOrientation(name, flipOrientation()));
 
 				final Menu submenu = entry.createSubMenu();
-                submenu.createMenuEntry(-1)
-                        .setOption("Wrap Direction")
-                        .setType(MenuAction.RUNELITE)
-                        .onClick(e -> infoboxManager.setWrapDirection(name, flipWrapDirection()));
+				submenu.createMenuEntry(-1)
+					.setOption("Wrap Direction")
+					.setType(MenuAction.RUNELITE)
+					.onClick(e -> infoboxManager.setWrapDirection(name, flipWrapDirection()));
 
 				submenu.createMenuEntry(-1)
 					.setOption("Orientation")
