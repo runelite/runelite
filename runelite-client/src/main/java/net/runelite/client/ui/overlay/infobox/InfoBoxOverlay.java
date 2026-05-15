@@ -178,7 +178,7 @@ public class InfoBoxOverlay extends OverlayPanel
 
 			// Create intersection rectangle
 			final Rectangle intersectionRectangle = new Rectangle(component.getBounds());
-			intersectionRectangle.translate(getBounds().x, getBounds().y);
+			intersectionRectangle.translate(getBounds().x - panelComponent.getBounds().x, getBounds().y - panelComponent.getBounds().y);
 
 			if (intersectionRectangle.contains(mouse))
 			{

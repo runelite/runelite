@@ -27,6 +27,8 @@ package net.runelite.client.ui.overlay;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
@@ -100,7 +102,9 @@ public abstract class OverlayPanel extends Overlay
 		try
 		{
 			dimension = panelComponent.render(graphics);
-		}
+            final Rectangle pb = panelComponent.getBounds();
+            getBounds().setLocation(getBounds().x + pb.x, getBounds().y + pb.y);
+        }
 		finally
 		{
 			if (clearChildren)
@@ -113,4 +117,10 @@ public abstract class OverlayPanel extends Overlay
 		panelComponent.setBackgroundColor(oldBackgroundColor);
 		return dimension;
 	}
+
+    public Point getBoundsOffset()
+    {
+        final Rectangle pb = panelComponent.getBounds();
+        return new Point(pb.x, pb.y);
+    }
 }
