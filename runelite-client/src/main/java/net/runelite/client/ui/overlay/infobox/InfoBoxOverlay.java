@@ -39,7 +39,10 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -50,6 +53,7 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
+import net.runelite.client.ui.overlay.components.ComponentWrapDirection;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -72,6 +76,7 @@ public class InfoBoxOverlay extends OverlayPanel
 	private final EventBus eventBus;
 	private final String name;
 	private ComponentOrientation orientation;
+	private ComponentWrapDirection wrapDirection;
 
 	@Getter
 	private final List<InfoBox> infoBoxes = new CopyOnWriteArrayList<>();
@@ -85,7 +90,8 @@ public class InfoBoxOverlay extends OverlayPanel
 		RuneLiteConfig config,
 		EventBus eventBus,
 		String name,
-		@NonNull ComponentOrientation orientation)
+		@NonNull ComponentOrientation orientation,
+		@NonNull ComponentWrapDirection wrapDirection)
 	{
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
@@ -94,6 +100,7 @@ public class InfoBoxOverlay extends OverlayPanel
 		this.eventBus = eventBus;
 		this.name = name;
 		this.orientation = orientation;
+		this.wrapDirection = wrapDirection;
 		setPosition(OverlayPosition.TOP_LEFT);
 		setClearChildren(false);
 		setDragTargetable(true);
@@ -128,6 +135,7 @@ public class InfoBoxOverlay extends OverlayPanel
 		// to the last infobox prior to wrapping too.
 		panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
 		panelComponent.setOrientation(orientation);
+		panelComponent.setWrapDirection(wrapDirection);
 
 		final Font font = config.infoboxFont().getFont();
 		final boolean infoBoxTextOutline = config.infoBoxTextOutline();
@@ -208,6 +216,38 @@ public class InfoBoxOverlay extends OverlayPanel
 	}
 
 	@Subscribe
+	public void onMenuOpened(MenuOpened event)
+	{
+		if (hoveredComponent == null)
+		{
+			return;
+		}
+
+		final MenuEntry[] entries = event.getMenuEntries();
+		for (int idx = entries.length - 1; idx >= 0; --idx)
+		{
+			final MenuEntry entry = entries[idx];
+			if (entry.getType() == MenuAction.RUNELITE_INFOBOX && "Flip".equals(entry.getOption()))
+			{
+				entry.onClick(e -> infoboxManager.setOrientation(name, flipOrientation()));
+
+				final Menu submenu = entry.createSubMenu();
+                submenu.createMenuEntry(-1)
+                        .setOption("Wrap Direction")
+                        .setType(MenuAction.RUNELITE)
+                        .onClick(e -> infoboxManager.setWrapDirection(name, flipWrapDirection()));
+
+				submenu.createMenuEntry(-1)
+					.setOption("Orientation")
+					.setType(MenuAction.RUNELITE)
+					.onClick(e -> infoboxManager.setOrientation(name, flipOrientation()));
+
+				break;
+			}
+		}
+	}
+
+	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		if (menuOptionClicked.getMenuAction() != MenuAction.RUNELITE_INFOBOX || hoveredComponent == null)
@@ -238,8 +278,19 @@ public class InfoBoxOverlay extends OverlayPanel
 		return true;
 	}
 
-	ComponentOrientation flip()
+	ComponentOrientation flipOrientation()
 	{
-		return orientation = orientation == ComponentOrientation.HORIZONTAL ? ComponentOrientation.VERTICAL : ComponentOrientation.HORIZONTAL;
+		orientation = (orientation == ComponentOrientation.HORIZONTAL)
+			? ComponentOrientation.VERTICAL
+			: ComponentOrientation.HORIZONTAL;
+		return orientation;
+	}
+
+	ComponentWrapDirection flipWrapDirection()
+	{
+		wrapDirection = (wrapDirection == ComponentWrapDirection.NORMAL)
+			? ComponentWrapDirection.REVERSED
+			: ComponentWrapDirection.NORMAL;
+		return wrapDirection;
 	}
 }
