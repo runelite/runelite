@@ -148,19 +148,24 @@ public class FarmingContractManager
 		SummaryState oldSummary = summary;
 
 		handleContractState();
-		if (loc.getRegionID() == FARMING_GUILD_REGION_ID)
+		boolean inFarmingGuild = loc.getRegionID() == FARMING_GUILD_REGION_ID;
+
+		if (inFarmingGuild)
 		{
 			handleGuildmasterJaneWidgetDialog();
+		}
+
+		if (config.farmingContractInfoBox() == FarmingContractInfoBoxDisplay.ALWAYS
+			|| (config.farmingContractInfoBox() == FarmingContractInfoBoxDisplay.IN_GUILD && inFarmingGuild))
+		{
 			handleInfoBox();
 		}
-		else
+		else if (infoBox != null)
 		{
-			if (infoBox != null)
-			{
-				infoBoxManager.removeInfoBox(infoBox);
-				infoBox = null;
-			}
+			infoBoxManager.removeInfoBox(infoBox);
+			infoBox = null;
 		}
+
 		return oldSummary != summary;
 	}
 
