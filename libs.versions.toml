@@ -23,7 +23,6 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 [versions]
-rs = "235"
 cache = "165"
 
 flatlaf = "3.2.5-rl4"
@@ -36,7 +35,6 @@ antlr = "4.13.1"
 
 
 [libraries]
-rs-vanilla = { module = "net.runelite.rs:vanilla", version.ref = "rs" }
 rs-cache = { module = "net.runelite.rs:cache", version.ref = "cache" }
 
 flatlaf-core = { module = "net.runelite:flatlaf", version.ref = "flatlaf" }
