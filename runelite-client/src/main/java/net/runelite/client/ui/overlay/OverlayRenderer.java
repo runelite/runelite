@@ -400,6 +400,8 @@ public class OverlayRenderer extends MouseAdapter
 		{
 			final Point offset = new Point(mousePoint.x, mousePoint.y);
 			offset.translate(-currentManagedOverlay.getBounds().x, -currentManagedOverlay.getBounds().y);
+			final Point boundsOffset = currentManagedOverlay.getBoundsOffset();
+			offset.translate(boundsOffset.x, boundsOffset.y);
 			overlayOffset.setLocation(offset);
 
 			inOverlayResizingMode = currentManagedOverlay != null && currentManagedOverlay.isResizable() && clientUI.getCurrentCursor() != clientUI.getDefaultCursor();
@@ -588,7 +590,10 @@ public class OverlayRenderer extends MouseAdapter
 
 			if (currentManagedOverlay.getPreferredLocation() != null)
 			{
-				currentManagedOverlay.setPreferredLocation(currentManagedBounds.getLocation());
+				final Point bo = currentManagedOverlay.getBoundsOffset();
+				currentManagedOverlay.setPreferredLocation(new Point(
+					currentManagedBounds.x - bo.x,
+					currentManagedBounds.y - bo.y));
 			}
 		}
 		else if (inOverlayDraggingMode)

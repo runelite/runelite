@@ -233,6 +233,11 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	{
 	}
 
+	public Point getBoundsOffset()
+	{
+		return new Point(0, 0);
+	}
+
 	public void setPosition(OverlayPosition position)
 	{
 		this.position = position;

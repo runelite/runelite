@@ -26,6 +26,12 @@ package net.runelite.client.ui.overlay.components;
 
 public enum ComponentOrientation
 {
+	/**
+	 * Grow horizontally first (left to right). Overflow direction controlled by {@link ComponentWrapDirection}.
+	 */
 	HORIZONTAL,
+	/**
+	 * Grow vertically first (top to bottom). Overflow direction controlled by {@link ComponentWrapDirection}.
+	 */
 	VERTICAL
 }
