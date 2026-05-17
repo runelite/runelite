@@ -35,7 +35,7 @@ import static net.runelite.client.plugins.interfacestyles.Skin.AROUND_2010;
 @Getter
 enum SpriteOverride
 {
-	TAB_COMBAT(SpriteID.SideIcons.COMBAT, AROUND_2005, AROUND_2010),
+	TAB_COMBAT(SpriteID.SideiconsInterface.COMBAT, AROUND_2005, AROUND_2010),
 	TAB_STATS(SpriteID.SideIcons.STATS, AROUND_2005, AROUND_2010),
 	TAB_QUESTS(SpriteID.SideiconsInterface.QUESTS, AROUND_2005),
 	TAB_QUESTS_PURPLE_KOUREND_1299(SpriteID.SideiconsInterface.KOUREND, AROUND_2005),
