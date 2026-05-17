@@ -186,6 +186,14 @@ public class WorldHopperPlugin extends Plugin
 			clientThread.invoke(() -> hop(false));
 		}
 	};
+	private final HotkeyListener homeWorldKeyListener = new HotkeyListener(() -> config.homeWorldKey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			clientThread.invoke(() -> hop(config.setHomeWorld()));
+		}
+	};
 
 	@Provides
 	WorldHopperConfig getConfig(ConfigManager configManager)
@@ -200,6 +208,7 @@ public class WorldHopperPlugin extends Plugin
 
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
+		keyManager.registerKeyListener(homeWorldKeyListener);
 
 		panel = new WorldSwitcherPanel(this);
 
