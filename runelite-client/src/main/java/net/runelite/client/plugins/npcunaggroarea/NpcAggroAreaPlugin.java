@@ -40,9 +40,11 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
@@ -486,7 +488,23 @@ public class NpcAggroAreaPlugin extends Plugin
 				if (loggingIn)
 				{
 					loggingIn = false;
-					onLogin();
+					clientThread.invokeLater(() ->
+					{
+						//avoid infinite loop in the event of unexpected gamestate change before client.getLocalPlayer() is non-null
+						if (event.getGameState() != GameState.LOGGED_IN)
+						{
+							return true;
+						}
+						final Player localPlayer = client.getLocalPlayer();
+						if (localPlayer == null)
+						{
+							return false;
+						}
+						onLogin();
+						scanNpcs();
+						return true;
+					});
+					break;
 				}
 
 				scanNpcs();
