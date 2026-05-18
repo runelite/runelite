@@ -381,8 +381,12 @@ public class InterfaceStylesPlugin extends Plugin
 			}
 
 			Widget widget = client.getWidget(widgetOffset.getComponent());
+			if (widget == null)
+			{
+				continue;
+			}
 
-			if (widget != null)
+			if (widgetOffset.getSpriteId() == null || widgetOffset.getSpriteId() == widget.getSpriteId())
 			{
 				if (widgetOffset.getOffsetX() != null)
 				{
