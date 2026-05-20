@@ -64,34 +64,10 @@ public enum FiremakingAction implements ItemSkillAction
 	IRONWOOD_LOGS(ItemID.IRONWOOD_LOGS, 80, 220.5f, FiremakingMethod.NORMAL_LOGS),
 	MAGIC_PYRE_LOGS(ItemID.MAGIC_LOGS_PYRE, 80, 404.5f, FiremakingMethod.PYRE_LOGS),
 	IRONWOOD_PYRE_LOGS(ItemID.IRONWOOD_LOGS_PYRE, 85, 435, FiremakingMethod.PYRE_LOGS),
-	CAMPHOR_LOGS_BARBARIAN(ItemID.CAMPHOR_LOGS, 86, 245, FiremakingMethod.NORMAL_LOGS)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Camphor logs (barbarian)";
-			}
-		},
 	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 350, FiremakingMethod.NORMAL_LOGS),
 	ROSEWOOD_LOGS(ItemID.ROSEWOOD_LOGS, 92, 268, FiremakingMethod.NORMAL_LOGS),
 	REDWOOD_PYRE_LOGS(ItemID.REDWOOD_LOGS_PYRE, 95, 500, FiremakingMethod.PYRE_LOGS),
 	ROSEWOOD_PYRE_LOGS(ItemID.ROSEWOOD_LOGS_PYRE, 97, 580, FiremakingMethod.PYRE_LOGS),
-	IRONWOOD_LOGS_BARBARIAN(ItemID.IRONWOOD_LOGS, 99, 320, FiremakingMethod.NORMAL_LOGS)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Ironwood logs (barbarian)";
-			}
-		},
-	ROSEWOOD_LOGS_BARBARIAN(ItemID.ROSEWOOD_LOGS, 99, 420, FiremakingMethod.NORMAL_LOGS)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Rosewood logs (barbarian)";
-			}
-		},
 	;
 
 	private final int itemId;
