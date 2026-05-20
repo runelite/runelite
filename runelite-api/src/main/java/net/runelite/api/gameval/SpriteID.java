@@ -10969,6 +10969,14 @@ public final class SpriteID
 		public static final int _21 = 7199;
 		public static final int _22 = 7200;
 		public static final int _23 = 7201;
+		public static final int _24 = 8343;
+		public static final int _25 = 8344;
+		public static final int _26 = 8345;
+		public static final int _27 = 8346;
+		public static final int _28 = 8347;
+		public static final int _29 = 8348;
+		public static final int _30 = 8349;
+		public static final int _31 = 8350;
 	}
 
 	public static final class HeadbarIce40
