@@ -169,7 +169,7 @@ public class InterfaceStylesPlugin extends Plugin
 				{
 					// Change this menu to be the submenu parent
 					menuEntry.setOption("");
-					menuEntry.setType(MenuAction.RUNELITE);
+					menuEntry.setType(MenuAction.RUNELITE_PLAYER);
 					menuEntry.setDeprioritized(false);
 					submenu = menuEntry.createSubMenu();
 
