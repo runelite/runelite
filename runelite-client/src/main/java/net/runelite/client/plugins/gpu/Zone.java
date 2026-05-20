@@ -54,7 +54,7 @@ class Zone
 	// Zone vertex format
 	// index 0: short vec3(x, y, z)
 	// index 1: int abhsl
-	// index 2: short vec4(id, x, y, z)
+	// index 2: short vec4(id, u, v, 0)
 	static final int VERT_SIZE = 20;
 
 	int glVao;
