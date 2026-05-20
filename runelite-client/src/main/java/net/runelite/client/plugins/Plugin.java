@@ -47,6 +47,7 @@ public abstract class Plugin implements Module
 	@Override
 	public void configure(Binder binder)
 	{
+		binder.bind(Plugin.class).toInstance(this);
 	}
 
 	protected void startUp() throws Exception
