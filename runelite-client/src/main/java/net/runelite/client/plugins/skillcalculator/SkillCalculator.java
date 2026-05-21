@@ -612,6 +612,8 @@ class SkillCalculator extends JPanel
 				return VarPlayerID.XPDROPS_THIEVING_END;
 			case FLETCHING:
 				return VarPlayerID.XPDROPS_FLETCHING_END;
+			case SAILING:
+				return VarPlayerID.XPDROPS_SAILING_END;
 			default:
 				throw new IllegalArgumentException();
 		}
