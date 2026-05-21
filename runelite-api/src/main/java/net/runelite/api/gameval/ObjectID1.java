@@ -72465,7 +72465,7 @@ class ObjectID1
 	public static final int LEADROCK1_EMPTY = 58918;
 
 	/**
-	 * Strange rocks
+	 * Rubium rocks
 	 */
 	public static final int RUBIUMROCK1 = 58919;
 
@@ -72475,7 +72475,7 @@ class ObjectID1
 	public static final int RUBIUMROCK1_EMPTY = 58920;
 
 	/**
-	 * Strange deposit
+	 * Rubium deposit
 	 */
 	public static final int RUBIUMDEPOSIT1 = 58921;
 
@@ -73850,115 +73850,27 @@ class ObjectID1
 	public static final int SAILING_KEEL_KANDARIN_3X8_ADAMANT = 59527;
 	public static final int SAILING_KEEL_KANDARIN_3X8_RUNE = 59528;
 	public static final int SAILING_KEEL_KANDARIN_3X8_DRAGON = 59529;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_WOOD = 59530;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_OAK = 59531;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_TEAK = 59532;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_MAHOGANY = 59533;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_CAMPHOR = 59534;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_IRONWOOD = 59535;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_ROSEWOOD = 59536;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_WOOD = 59537;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_OAK = 59538;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_TEAK = 59539;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_MAHOGANY = 59540;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_CAMPHOR = 59541;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_IRONWOOD = 59542;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_ROSEWOOD = 59543;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_WOOD = 59544;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_OAK = 59545;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_TEAK = 59546;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_MAHOGANY = 59547;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_CAMPHOR = 59548;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_IRONWOOD = 59549;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_ROSEWOOD = 59550;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAILS_COLOSSAL_REGULAR = 59551;
 
 	/**
@@ -76204,10 +76116,6 @@ class ObjectID1
 	 * Sails
 	 */
 	public static final int SAILING_NPC_BOAT_BASIC_SMALL_SAIL = 60243;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_NPC_BOAT_BASIC_MEDIUM_SAIL = 60244;
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT = 60245;
 

@@ -91795,6 +91795,39 @@ public final class ObjectID extends ObjectID1
 	public static final int MOLE_HILL_SPADE = 29460;
 
 	/**
+	 * Buoy
+	 */
+	public static final int SAILING_BUOY_LAST_LIGHT_ESCAPE = 29461;
+	public static final int BGSOUND_SAILING_RED_REEF_OCEAN_WATER_LOOP_01 = 29462;
+
+	/**
+	 * Pirate cannon
+	 */
+	public static final int SAILING_PIRATE_CANNON = 29463;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_PIRATE = 29464;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_PIRATE = 29465;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_PIRATE = 29466;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_PIRATE = 29467;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_PIRATE = 29468;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_PIRATE = 29469;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_PIRATE = 29470;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_PIRATE = 29471;
+	public static final int SAILING_BOAT_HULL_KANDARIN_3X8_PIRATE = 29472;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_WOOD = 29473;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_OAK = 29474;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_TEAK = 29475;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_MAHOGANY = 29476;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_CAMPHOR = 29477;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_IRONWOOD = 29478;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_ROSEWOOD = 29479;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_WOOD = 29480;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_OAK = 29481;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_TEAK = 29482;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_MAHOGANY = 29483;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_CAMPHOR = 29484;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_IRONWOOD = 29485;
+
+	/**
 	 * Gate
 	 */
 	public static final int HILLGIANT_BOSS_ENTRANCE_R = 29486;
@@ -91839,6 +91872,212 @@ public final class ObjectID extends ObjectID1
 	 * Fairy ring
 	 */
 	public static final int FAIRYRING_MINORHUB = 29495;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_ROSEWOOD = 29496;
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_PIRATE = 29497;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_WOOD = 29498;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_OAK = 29499;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_TEAK = 29500;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_MAHOGANY = 29501;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_CAMPHOR = 29502;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_IRONWOOD = 29503;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_ROSEWOOD = 29504;
+	public static final int SAILING_BOAT_MAST_INTRO = 29505;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_LINEN = 29506;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_CANVAS = 29507;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_COTTON = 29508;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_BLACK = 29509;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_YELLOW = 29510;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_PURPLE = 29511;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_GREEN = 29512;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_BLUE = 29513;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_PINK = 29514;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_RED = 29515;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_LINEN = 29516;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_CANVAS = 29517;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_COTTON = 29518;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_BLACK = 29519;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_YELLOW = 29520;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_PURPLE = 29521;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_GREEN = 29522;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_BLUE = 29523;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_PINK = 29524;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_RED = 29525;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_LINEN = 29526;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_CANVAS = 29527;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_COTTON = 29528;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_BLACK = 29529;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_YELLOW = 29530;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_PURPLE = 29531;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_GREEN = 29532;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_BLUE = 29533;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_PINK = 29534;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_RED = 29535;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_3X8_PIRATE = 29536;
+	public static final int SAILING_BOAT_SLOOP_TRIM_PIRATE = 29537;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_NORMAL = 29538;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_OAK = 29539;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_TEAK = 29540;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_MAHOGANY = 29541;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_CAMPHOR = 29542;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_IRONWOOD = 29543;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_ROSEWOOD = 29544;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_NPC_BOAT_STEERING_WOODEN = 29545;
 
 	/**
 	 * Fairy ring
