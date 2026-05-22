@@ -298,4 +298,15 @@ public interface KeyRemappingConfig extends Config
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
 	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "worldMap",
+		name = "World map",
+		description = "The key which will replace ctrl+m to toggle the world map."
+	)
+	default ModifierlessKeybind worldMap()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_M, 0);
+	}
 }

@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.keyremapping;
 
 import com.google.common.base.Strings;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,6 +53,7 @@ class KeyRemappingListener implements KeyListener
 	private ClientThread clientThread;
 
 	private final Map<Integer, Integer> modified = new HashMap<>();
+	private final Set<Integer> worldMapPressed = new HashSet<>();
 	private final Set<Character> blockedChars = new HashSet<>();
 
 	@Override
@@ -181,6 +183,18 @@ class KeyRemappingListener implements KeyListener
 					blockedChars.add(keyChar);
 				}
 			}
+			else if (!plugin.isDialogOpen() && config.worldMap().matches(e))
+			{
+				final char keyChar = e.getKeyChar();
+				worldMapPressed.add(e.getKeyCode());
+				e.setKeyCode(KeyEvent.VK_M);
+				e.setModifiers(e.getModifiers() | InputEvent.CTRL_MASK | InputEvent.CTRL_DOWN_MASK);
+				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
+				if (keyChar != KeyEvent.CHAR_UNDEFINED)
+				{
+					blockedChars.add(keyChar);
+				}
+			}
 
 			switch (e.getKeyCode())
 			{
@@ -240,6 +254,12 @@ class KeyRemappingListener implements KeyListener
 		if (mappedKeyCode != null)
 		{
 			e.setKeyCode(mappedKeyCode);
+			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
+		}
+		else if (worldMapPressed.remove(keyCode))
+		{
+			e.setKeyCode(KeyEvent.VK_M);
+			e.setModifiers(e.getModifiers() | InputEvent.CTRL_MASK | InputEvent.CTRL_DOWN_MASK);
 			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 		}
 	}
