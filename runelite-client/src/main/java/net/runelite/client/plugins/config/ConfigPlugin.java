@@ -32,6 +32,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.ui.overlay.OverlayConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
@@ -66,6 +67,9 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	private ChatColorConfig chatColorConfig;
 
+	@Inject
+	private OverlayConfig overlayConfig;
+
 	private TopLevelConfigPanel topLevelConfigPanel;
 
 	private NavigationButton navButton;
@@ -82,6 +86,10 @@ public class ConfigPlugin extends Plugin
 			new PluginConfigurationDescriptor(
 				"Chat Color", "Recolor chat text", new String[]{"colour", "messages"},
 				chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
+			),
+			new PluginConfigurationDescriptor(
+				"Overlay Zones", "Configure overlay zone stacking directions", new String[]{"overlay", "zone", "stack", "horizontal", "vertical"},
+				overlayConfig, configManager.getConfigDescriptor(overlayConfig)
 			));
 		pluginListPanel.rebuildPluginList();
 

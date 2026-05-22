@@ -52,6 +52,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.ui.overlay.OverlayConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
@@ -173,6 +174,13 @@ public class RuneLiteModule extends AbstractModule
 	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatColorConfig.class);
+	}
+
+	@Provides
+	@Singleton
+	OverlayConfig provideOverlayConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(OverlayConfig.class);
 	}
 
 	@Provides

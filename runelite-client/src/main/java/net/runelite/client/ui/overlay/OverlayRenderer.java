@@ -93,6 +93,7 @@ public class OverlayRenderer extends MouseAdapter
 	private final Client client;
 	private final OverlayManager overlayManager;
 	private final RuneLiteConfig runeLiteConfig;
+	private final OverlayConfig overlayConfig;
 	private final ClientUI clientUI;
 	private final EventBus eventBus;
 	private final ChatMessageManager chatMessageManager;
@@ -112,7 +113,8 @@ public class OverlayRenderer extends MouseAdapter
 	private Overlay curHoveredOverlay; // for building menu entries
 	private Overlay lastHoveredOverlay; // for off-thread access
 
-	private final SnapCorners snapCorners = new SnapCorners();
+	private SnapCorners snapCorners;
+	private boolean snapCornersDirty = true;
 	private boolean dragWarn;
 
 	@Inject
@@ -120,6 +122,7 @@ public class OverlayRenderer extends MouseAdapter
 		final Client client,
 		final OverlayManager overlayManager,
 		final RuneLiteConfig runeLiteConfig,
+		final OverlayConfig overlayConfig,
 		final MouseManager mouseManager,
 		final KeyManager keyManager,
 		final ClientUI clientUI,
@@ -130,6 +133,7 @@ public class OverlayRenderer extends MouseAdapter
 		this.client = client;
 		this.overlayManager = overlayManager;
 		this.runeLiteConfig = runeLiteConfig;
+		this.overlayConfig = overlayConfig;
 		this.clientUI = clientUI;
 		this.eventBus = eventBus;
 		this.chatMessageManager = chatMessageManager;
@@ -156,6 +160,15 @@ public class OverlayRenderer extends MouseAdapter
 		keyManager.registerKeyListener(hotkeyListener);
 		mouseManager.registerMouseListener(this);
 		eventBus.register(this);
+	}
+
+	@Subscribe
+	private void onConfigChanged(net.runelite.client.events.ConfigChanged event)
+	{
+		if (event.getGroup().equals(OverlayConfig.GROUP_NAME))
+		{
+			snapCornersDirty = true;
+		}
 	}
 
 	@Subscribe
@@ -791,6 +804,12 @@ public class OverlayRenderer extends MouseAdapter
 
 	private void positionSnapcorners()
 	{
+		if (snapCornersDirty)
+		{
+			snapCorners = new SnapCorners(overlayConfig);
+			snapCornersDirty = false;
+		}
+
 		final Widget viewportWidget = getViewportLayer();
 		final Rectangle viewportBounds = viewportWidget != null ? viewportWidget.getBounds() : new Rectangle();
 		final boolean isResizeable = client.isResized();

@@ -31,15 +31,27 @@ class SnapCorners
 {
 	final SnapCorner topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
 
-	SnapCorners()
+	SnapCorners(OverlayConfig config)
 	{
-		this.topLeft = new SnapCorner(OverlayPosition.TOP_LEFT, SnapCorner.EXPAND_DOWN);
-		this.topCenter = new SnapCorner(OverlayPosition.TOP_CENTER, SnapCorner.ALIGNMENT_CENTER_HORIZONTAL | SnapCorner.EXPAND_DOWN);
-		this.topRight = new SnapCorner(OverlayPosition.TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN);
-		this.bottomLeft = new SnapCorner(OverlayPosition.BOTTOM_LEFT, SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_RIGHT);
-		this.bottomRight = new SnapCorner(OverlayPosition.BOTTOM_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_LEFT);
-		this.aboveChatboxRight = new SnapCorner(OverlayPosition.ABOVE_CHATBOX_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_UP);
-		this.canvasTopRight = new SnapCorner(OverlayPosition.CANVAS_TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN);
+		this.topLeft = new SnapCorner(OverlayPosition.TOP_LEFT,
+			expand(config.topLeftZoneDirection(), SnapCorner.EXPAND_DOWN, SnapCorner.EXPAND_RIGHT));
+		this.topCenter = new SnapCorner(OverlayPosition.TOP_CENTER,
+			SnapCorner.ALIGNMENT_CENTER_HORIZONTAL | expand(config.topCenterZoneDirection(), SnapCorner.EXPAND_DOWN, SnapCorner.EXPAND_RIGHT));
+		this.topRight = new SnapCorner(OverlayPosition.TOP_RIGHT,
+			SnapCorner.ALIGNMENT_RIGHT | expand(config.topRightZoneDirection(), SnapCorner.EXPAND_DOWN, SnapCorner.EXPAND_LEFT));
+		this.bottomLeft = new SnapCorner(OverlayPosition.BOTTOM_LEFT,
+			SnapCorner.ALIGNMENT_BOTTOM | expand(config.bottomLeftZoneDirection(), SnapCorner.EXPAND_UP, SnapCorner.EXPAND_RIGHT));
+		this.bottomRight = new SnapCorner(OverlayPosition.BOTTOM_RIGHT,
+			SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | expand(config.bottomRightZoneDirection(), SnapCorner.EXPAND_UP, SnapCorner.EXPAND_LEFT));
+		this.aboveChatboxRight = new SnapCorner(OverlayPosition.ABOVE_CHATBOX_RIGHT,
+			SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | expand(config.aboveChatboxRightZoneDirection(), SnapCorner.EXPAND_UP, SnapCorner.EXPAND_LEFT));
+		this.canvasTopRight = new SnapCorner(OverlayPosition.CANVAS_TOP_RIGHT,
+			SnapCorner.ALIGNMENT_RIGHT | expand(config.canvasTopRightZoneDirection(), SnapCorner.EXPAND_DOWN, SnapCorner.EXPAND_LEFT));
+	}
+
+	private static int expand(OverlayZoneDirection direction, int vertical, int horizontal)
+	{
+		return direction == OverlayZoneDirection.VERTICAL ? vertical : horizontal;
 	}
 
 	SnapCorner forPosition(OverlayPosition overlayPosition)
