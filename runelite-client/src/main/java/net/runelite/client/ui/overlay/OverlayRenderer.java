@@ -114,7 +114,6 @@ public class OverlayRenderer extends MouseAdapter
 	private Overlay lastHoveredOverlay; // for off-thread access
 
 	private SnapCorners snapCorners;
-	private boolean snapCornersDirty = true;
 	private boolean dragWarn;
 
 	@Inject
@@ -167,7 +166,7 @@ public class OverlayRenderer extends MouseAdapter
 	{
 		if (event.getGroup().equals(OverlayConfig.GROUP_NAME))
 		{
-			snapCornersDirty = true;
+			snapCorners = null;
 		}
 	}
 
@@ -804,10 +803,9 @@ public class OverlayRenderer extends MouseAdapter
 
 	private void positionSnapcorners()
 	{
-		if (snapCornersDirty)
+		if (snapCorners == null)
 		{
 			snapCorners = new SnapCorners(overlayConfig);
-			snapCornersDirty = false;
 		}
 
 		final Widget viewportWidget = getViewportLayer();
