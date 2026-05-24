@@ -1409,6 +1409,12 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode 2 players", 20 * 60 + 31.);
 	}
 
+	@Test
+	public void testAgilityArena()
+	{
+		testKillCountChatMessage("agility arena", "Your Agility Arena Total Ticket count is: <col=ff0000>206</col>.", 206);
+	}
+
 	private void testKillCountChatMessage(String key, String message, int kc)
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", message, null, 0);
