@@ -510,8 +510,9 @@ public class ScriptInspector extends DevToolsFrame
 
 			javax.swing.JPopupMenu popup = new javax.swing.JPopupMenu();
 			javax.swing.JMenuItem blacklistOpt = new javax.swing.JMenuItem(blacklistStr);
-			blacklistOpt.addActionListener(action -> {
-				if(isBlacklisted) 
+			blacklistOpt.addActionListener(action ->
+			{
+				if (isBlacklisted)
 				{
 					blacklist.remove(scriptId);
 				}
@@ -523,8 +524,9 @@ public class ScriptInspector extends DevToolsFrame
 			});
 			popup.add(blacklistOpt);
 			javax.swing.JMenuItem highlightOpt = new javax.swing.JMenuItem(highlightStr);
-			highlightOpt.addActionListener(action -> {
-				if(isHighlighted) 
+			highlightOpt.addActionListener(action ->
+			{
+				if (isHighlighted)
 				{
 					highlights.remove(scriptId);
 				}
