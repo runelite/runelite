@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -237,7 +239,7 @@ public class ScriptInspector extends DevToolsFrame
 		listModel = new DefaultListModel<>();
 		changeState(ListState.BLACKLIST);
 		jList = new JList<>(listModel);
-		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		JScrollPane listScrollPane = new JScrollPane(jList);
 
 		final JButton blacklistButton = new JButton("Blacklist");
@@ -437,8 +439,8 @@ public class ScriptInspector extends DevToolsFrame
 			return;
 		}
 
-		int script = listModel.get(index);
-		getSet().remove(script);
+		Set<Integer> set = getSet();
+		jList.getSelectedValuesList().forEach(set::remove);
 		refreshList();
 	}
 
