@@ -31,8 +31,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -513,7 +511,7 @@ public class ScriptInspector extends DevToolsFrame
 			javax.swing.JPopupMenu popup = new javax.swing.JPopupMenu();
 			javax.swing.JMenuItem blacklistOpt = new javax.swing.JMenuItem(blacklistStr);
 			blacklistOpt.addActionListener(action -> {
-				if (isBlacklisted) 
+				if(isBlacklisted) 
 				{
 					blacklist.remove(scriptId);
 				}
@@ -526,7 +524,7 @@ public class ScriptInspector extends DevToolsFrame
 			popup.add(blacklistOpt);
 			javax.swing.JMenuItem highlightOpt = new javax.swing.JMenuItem(highlightStr);
 			highlightOpt.addActionListener(action -> {
-				if (isHighlighted) 
+				if(isHighlighted) 
 				{
 					highlights.remove(scriptId);
 				}
