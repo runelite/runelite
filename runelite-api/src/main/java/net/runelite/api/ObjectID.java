@@ -15623,6 +15623,14 @@ public final class ObjectID
 	public static final int BOSUNS_WORKBENCH_29543 = 29543;
 	public static final int BOSUNS_WORKBENCH_29544 = 29544;
 	public static final int HELM_29545 = 29545;
+	public static final int SHIELD_29551 = 29551;
+	public static final int BRAZIER_29552 = 29552;
+	public static final int BRAZIER_29553 = 29553;
+	public static final int BRAZIER_29554 = 29554;
+	public static final int BRAZIER_29555 = 29555;
+	public static final int BRAZIER_29556 = 29556;
+	public static final int HEROIC_STATUE = 29557;
+	public static final int DEATH = 29559;
 	public static final int FAIRY_RING_29560 = 29560;
 	public static final int MOUNTED_MAX_CAPE_29625 = 29625;
 	public static final int CRACK_29626 = 29626;
@@ -17385,7 +17393,7 @@ public final class ObjectID
 	public static final int PORTAL_33443 = 33443;
 	public static final int PORTAL_33444 = 33444;
 	public static final int BRAZIER_33454 = 33454;
-	public static final int HEROIC_STATUE = 33455;
+	public static final int HEROIC_STATUE_33455 = 33455;
 	public static final int CHALICE_33456 = 33456;
 	public static final int ICE_THRONE_33477 = 33477;
 	public static final int PEAR_TREE = 33480;
@@ -18155,7 +18163,7 @@ public final class ObjectID
 	public static final int REDWOOD_TREE_34314 = 34314;
 	public static final int REDWOOD_TREE_34315 = 34315;
 	public static final int SPIKE_DEFENCE_34316 = 34316;
-	public static final int DEATH = 34318;
+	public static final int DEATH_34318 = 34318;
 	public static final int GLASS_TABLE_34319 = 34319;
 	public static final int DEAD_TREE_34334 = 34334;
 	public static final int SULPHUR_VENT_34335 = 34335;
