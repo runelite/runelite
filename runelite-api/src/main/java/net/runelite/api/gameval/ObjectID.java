@@ -92078,6 +92078,52 @@ public final class ObjectID extends ObjectID1
 	 * Helm
 	 */
 	public static final int SAILING_NPC_BOAT_STEERING_WOODEN = 29545;
+	public static final int _1V1ARENA_DUNGEON_LOWWALL = 29546;
+	public static final int _1V1ARENA_DUNGEON_LOWWALL_PILLAR = 29547;
+	public static final int _1V1ARENA_DUNGEON_PILLAR_DARK01 = 29548;
+	public static final int _1V1ARENA_DUNGEON_PILLAR_DARK02 = 29549;
+	public static final int _1V1ARENA_WALLSHIELD = 29550;
+
+	/**
+	 * Shield
+	 */
+	public static final int _1V1ARENA_WALLSHIELD_WIDE = 29551;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_WIDE = 29552;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_BLUE = 29553;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_YELLOW = 29554;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_WIDE_BLUE = 29555;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_WIDE_YELLOW = 29556;
+
+	/**
+	 * Heroic statue
+	 */
+	public static final int _1V1ARENA_DUNGEON_STATUE_DARK01 = 29557;
+	public static final int _1V1ARENA_DUNGEON_SKEWSTEPS_RUG_MIDDLE = 29558;
+
+	/**
+	 * &#60;col=ffff00&#62;Death&#60;/col&#62;
+	 */
+	public static final int DEADMAN_DEATH_WIDER = 29559;
 
 	/**
 	 * Fairy ring

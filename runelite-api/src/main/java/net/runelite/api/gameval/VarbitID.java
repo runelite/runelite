@@ -8446,6 +8446,16 @@ public final class VarbitID
 	public static final int SAILING_BOAT_4_SAIL_PATTERN = 13316;
 	public static final int SAILING_BOAT_5_SAIL_PATTERN = 13317;
 	public static final int LOST_SCHEMATIC_BOSUNS_WORKBENCH = 13318;
+	public static final int DEADMAN_ALLSTAR_TRACKING_DAMAGE = 13319;
+	public static final int DEADMAN_ALLSTAR_TRACKING_CORRECT_OVERHEAD = 13320;
+	public static final int DEADMAN_ALLSTAR_TRACKING_CORRECT_OFFENSIVE_ATTACK = 13321;
+	public static final int DEADMAN_ALLSTAR_TRACKING_CHANCE_COUNTER = 13322;
+	public static final int DEADMAN_ALLSTAR_TRACKING_HIT_ON_ROBES_COUNTER = 13323;
+	public static final int DEADMAN_ALLSTAR_TRACKING_HEALING_NOT_FOOD = 13324;
+	public static final int DEADMAN_ALLSTAR_TRACKING_TOTAL_ATTACKS = 13325;
+	public static final int SPECTATOR_STAT_TRACK_TARGET = 13326;
+	public static final int SPECTATOR_TOTAL_PLAYER = 13327;
+	public static final int SPECTATOR_PLAYERLIST_IS_SEARCHING = 13328;
 	public static final int LEAGUE_TASK_FILTER_SKILL = 13340;
 	public static final int LEAGUE_REWARD_POINTS_BUFFER = 13341;
 	public static final int LEAGUE_UNLOCK_POINTS_BUFFER = 13342;
