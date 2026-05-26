@@ -173,4 +173,6 @@ public interface Scene extends Renderable
 	byte getOverrideHue();
 	byte getOverrideSaturation();
 	byte getOverrideLuminance();
+
+	Model getSkybox();
 }

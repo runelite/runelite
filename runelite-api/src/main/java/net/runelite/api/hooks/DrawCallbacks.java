@@ -73,6 +73,7 @@ public interface DrawCallbacks
 
 	int PASS_OPAQUE = 0;
 	int PASS_ALPHA = 1;
+	int PRE_PASS_ALPHA = 2;
 
 	static int RENDER_THREADS(int num)
 	{
@@ -140,6 +141,15 @@ public interface DrawCallbacks
 	{
 	}
 
+	default void preSceneDraw(
+		Scene scene, Projection entityProjection,
+		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
+		int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
+	{
+		preSceneDraw(scene, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw, minLevel, level, maxLevel, hideRoofIds);
+	}
+
+	@Deprecated
 	default void preSceneDraw(
 		Scene scene,
 		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
