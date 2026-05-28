@@ -131,6 +131,7 @@ public class ItemStatChanges
 		add(range(food(7), food(10)), ItemID.TBW_SPIDER_ON_STICK_COOKED, ItemID.TBW_SPIDER_ON_SHAFT_COOKED);
 		add(combo(food(8), food(6)), ItemID.GRAAHK_COOKED);
 		add(combo(food(9), food(8)), ItemID.KYATT_COOKED);
+		add(combo(food(9), boost(STRENGTH, 2)), ItemID.TBONE_STEAK);
 		add(combo(food(11), food(8)), ItemID.FENNECFOX_COOKED);
 		add(combo(food(13), food(10), heal(RUN_ENERGY, 10)), ItemID.DASHINGKEBBIT_COOKED);
 		add(combo(food(12), food(9)), ItemID.ANTELOPESUN_COOKED);
