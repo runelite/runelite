@@ -167,6 +167,12 @@ class VAO
 				glDrawArrays(GL_TRIANGLES, start / (VERT_SIZE / 4), count / (VERT_SIZE / 4));
 				glColorMask(true, true, true, true);
 			}
+			else if (range.renderMethod == Renderable.RENDERMODE_UNSORTED_NO_DEPTH)
+			{
+				glDepthMask(false);
+				glDrawArrays(GL_TRIANGLES, start / (VERT_SIZE / 4), count / (VERT_SIZE / 4));
+				glDepthMask(true);
+			}
 			else
 			{
 				glDrawArrays(GL_TRIANGLES, start / (VERT_SIZE / 4), count / (VERT_SIZE / 4));

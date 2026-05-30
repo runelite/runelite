@@ -973,11 +973,36 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDepthFunc(GL_GREATER);
 		glEnable(GL_DEPTH_TEST);
 
-		glClearColor((sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
+		drawSkybox(scene, sky, cameraX, cameraY, cameraZ);
+
+		checkGLErrors();
+	}
+
+	private void drawSkybox(Scene scene, int sky, float cameraX, float cameraY, float cameraZ)
+	{
+		Model skybox = scene.getSkybox();
+		if (skybox == null)
+		{
+			glClearColor((sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
+			glClearDepth(0d);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			return;
+		}
+
+		glClearColor(0f, 0f, 0f, 1f);
 		glClearDepth(0d);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		checkGLErrors();
+		int size = skybox.getFaceCount() * 3 * VAO.VERT_SIZE;
+		VAO o = vaoO.get(size);
+		clientUploader.uploadTempModel(skybox, 0, 0, 0, 0, o.vbo.vb);
+
+		float[] skyboxProjection = Mat4.translate(cameraX, cameraY, cameraZ);
+		o.addRange(skyboxProjection, scene, Renderable.RENDERMODE_UNSORTED_NO_DEPTH);
+
+		vaoO.draw();
+
+		glUniformMatrix4fv(uniEntityProj, false, IDENTITY);
 	}
 
 	@Override
