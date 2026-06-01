@@ -597,7 +597,7 @@ public class WorldHopperPlugin extends Plugin
 			world = worlds.get(worldIdx);
 
 			// Check world region if filter is enabled
-			if (!regionFilter.isEmpty() && !regionFilter.contains(RegionFilterMode.of(world.getRegion())))
+			if (!regionFilter.isEmpty() && world.getRegion() != null && !regionFilter.contains(RegionFilterMode.of(world.getRegion())))
 			{
 				continue;
 			}
