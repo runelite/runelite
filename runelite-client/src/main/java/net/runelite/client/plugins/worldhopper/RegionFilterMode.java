@@ -50,6 +50,9 @@ enum RegionFilterMode
 			}
 		},
 	BRAZIL(WorldRegion.BRAZIL),
+	JAPAN(WorldRegion.JAPAN),
+	SINGAPORE(WorldRegion.SINGAPORE),
+	SOUTH_AFRICA(WorldRegion.SOUTH_AFRICA),
 	;
 
 	@Getter
