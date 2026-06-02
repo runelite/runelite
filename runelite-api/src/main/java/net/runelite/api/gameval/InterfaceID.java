@@ -5365,6 +5365,9 @@ public final class InterfaceID
 		public static final int COMPOST = 0x007d_0011;
 		public static final int SUPERCOMPOST = 0x007d_0012;
 		public static final int ULTRACOMPOST = 0x007d_0013;
+		public static final int DEPOSIT_ALL = 0x007d_0014;
+		public static final int DEPOSITINV = 0x007d_0015;
+		public static final int DEPOSITINV_GRAPHIC = 0x007d_0016;
 	}
 
 	public static final class FarmingToolsSide
@@ -22334,27 +22337,29 @@ public final class InterfaceID
 		public static final int RIGHT_PANEL = 0x0277_0009;
 		public static final int RIGHT_SCROLL = 0x0277_000a;
 		public static final int LIST = 0x0277_000b;
-		public static final int FAVES = 0x0277_000c;
-		public static final int CATEGORY_HEADERS = 0x0277_000d;
-		public static final int CATEGORY_LINES = 0x0277_000e;
-		public static final int OBJ_LIST = 0x0277_000f;
-		public static final int TEXT_LIST = 0x0277_0010;
-		public static final int BUTTONS = 0x0277_0011;
-		public static final int BUTTONS_LINE0 = 0x0277_0012;
-		public static final int X1 = 0x0277_0013;
-		public static final int X5 = 0x0277_0014;
-		public static final int X10 = 0x0277_0015;
-		public static final int XX = 0x0277_0016;
-		public static final int XALL = 0x0277_0017;
-		public static final int SEARCH = 0x0277_0018;
-		public static final int DEPOSIT_ALL = 0x0277_0019;
-		public static final int DEPOSIT_ALL_GFX = 0x0277_001a;
-		public static final int TEXT_1 = 0x0277_001b;
-		public static final int TEXT_5 = 0x0277_001c;
-		public static final int TEXT_10 = 0x0277_001d;
-		public static final int TEXT_X = 0x0277_001e;
-		public static final int TEXT_ALL = 0x0277_001f;
-		public static final int SEARCH_GFX = 0x0277_0020;
+		public static final int CONTRACT_SEEDS = 0x0277_000c;
+		public static final int MAIN_VAULT = 0x0277_000d;
+		public static final int FAVES = 0x0277_000e;
+		public static final int CATEGORY_HEADERS = 0x0277_000f;
+		public static final int CATEGORY_LINES = 0x0277_0010;
+		public static final int OBJ_LIST = 0x0277_0011;
+		public static final int TEXT_LIST = 0x0277_0012;
+		public static final int BUTTONS = 0x0277_0013;
+		public static final int BUTTONS_LINE0 = 0x0277_0014;
+		public static final int X1 = 0x0277_0015;
+		public static final int X5 = 0x0277_0016;
+		public static final int X10 = 0x0277_0017;
+		public static final int XX = 0x0277_0018;
+		public static final int XALL = 0x0277_0019;
+		public static final int SEARCH = 0x0277_001a;
+		public static final int DEPOSIT_ALL = 0x0277_001b;
+		public static final int DEPOSIT_ALL_GFX = 0x0277_001c;
+		public static final int TEXT_1 = 0x0277_001d;
+		public static final int TEXT_5 = 0x0277_001e;
+		public static final int TEXT_10 = 0x0277_001f;
+		public static final int TEXT_X = 0x0277_0020;
+		public static final int TEXT_ALL = 0x0277_0021;
+		public static final int SEARCH_GFX = 0x0277_0022;
 	}
 
 	public static final class HallowedToolSide

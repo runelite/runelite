@@ -3946,6 +3946,12 @@ public final class SpriteID
 		public static final int _9 = 4936;
 		public static final int _10 = 4937;
 		public static final int _11 = 4938;
+		public static final int _12 = 8351;
+		public static final int _13 = 8352;
+		public static final int _14 = 8353;
+		public static final int _15 = 8354;
+		public static final int _16 = 8355;
+		public static final int _17 = 8356;
 
 		public static final int NONE = _0;
 		public static final int USA = _1;

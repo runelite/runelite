@@ -4827,6 +4827,10 @@ public final class VarbitID
 	public static final int FGUILD_BOOK_HERBS = 7956;
 	public static final int FGUILD_BOOK_TREES = 7957;
 	public static final int FGUILD_BOOK_FRUIT = 7958;
+	public static final int FARMGUILD_CONTRACT_COMPLETE = 7961;
+	public static final int FARMGUILD_CONTRACT_LEVEL = 7962;
+	public static final int FARMGUILD_CONTRACT_TYPE = 7963;
+	public static final int FARMGUILD_CONTRACT_COUNT = 7964;
 	public static final int PLAYER_HAS_HIT_200M_ALL = 7969;
 	public static final int HH_CONSTRUCTED_MEDIUM_EXP10 = 7970;
 	public static final int WINT_TRANSMIT_RESPAWNDELAY = 7980;
@@ -8456,6 +8460,14 @@ public final class VarbitID
 	public static final int SPECTATOR_STAT_TRACK_TARGET = 13326;
 	public static final int SPECTATOR_TOTAL_PLAYER = 13327;
 	public static final int SPECTATOR_PLAYERLIST_IS_SEARCHING = 13328;
+	public static final int RESURRECTION_COSMETIC_TOGGLES_ZOMBIE = 13329;
+	public static final int RESURRECTION_COSMETIC_TOGGLES_SKELETON = 13330;
+	public static final int RESURRECTION_COSMETIC_TOGGLES_GHOST = 13331;
+	public static final int LEAGUE_6_HOME_TELEPORT_UNLOCKED = 13332;
+	public static final int LEAGUE_6_THRALL_OVERRIDE_UNLOCKED = 13333;
+	public static final int LEAGUE_6_RED_SKIN_UNLOCKED = 13334;
+	public static final int LEAGUE_6_BUTLER_UNLOCKED = 13335;
+	public static final int POH_DEMON_BUTLER_COSMETICS = 13336;
 	public static final int LEAGUE_TASK_FILTER_SKILL = 13340;
 	public static final int LEAGUE_REWARD_POINTS_BUFFER = 13341;
 	public static final int LEAGUE_UNLOCK_POINTS_BUFFER = 13342;
@@ -9537,6 +9549,8 @@ public final class VarbitID
 	public static final int CA_TASK_TOA_KILLCOUNT_1 = 14659;
 	public static final int CA_TASK_TOA_KILLCOUNT_2 = 14660;
 	public static final int CA_TASK_TOA_KILLCOUNT_3 = 14661;
+	public static final int BOUNTY_TASK_ITEM_COUNTER_1 = 14662;
+	public static final int BOUNTY_TASK_ITEM_COUNTER_2 = 14663;
 	public static final int CA_TASK_TOA_KILLCOUNT_6 = 14664;
 	public static final int CA_TASK_TOA_KILLCOUNT_7 = 14665;
 	public static final int CA_TASK_TOA_KILLCOUNT_8 = 14666;
@@ -9668,6 +9682,7 @@ public final class VarbitID
 	public static final int SETTINGS_TEXTFIELD_CSV_MODAL_OPENED = 14816;
 	public static final int OPTION_MASTER_VOLUME_SAVED = 14817;
 	public static final int AB_GROUP_RESET6 = 14818;
+	public static final int BOUNTY_TASK_ITEM_COUNTER_3 = 14819;
 	public static final int SLAYER_LONGER_REVENANTS = 14822;
 	public static final int SLAYER_TOGGLEOFF_LONGERREVENANTS = 14823;
 	public static final int SLAYER_TOGGLEOFF_FOSSILWYVERNBLOCK = 14824;
@@ -9993,11 +10008,13 @@ public final class VarbitID
 	public static final int STAR_LAST_MINED_LOCATION = 15352;
 	public static final int STAR_LAST_MINED_SIZE = 15353;
 	public static final int STAR_TIME_SINCE_LANDED = 15354;
+	public static final int BOUNTY_TASK_ITEM_COUNTER_4 = 15370;
 	public static final int POH_DECOR_LEAGUES_4_POOL = 15372;
 	public static final int RUNE_POUCH_TYPE_5 = 15373;
 	public static final int RUNE_POUCH_TYPE_6 = 15374;
 	public static final int RUNE_POUCH_QUANTITY_5 = 15375;
 	public static final int RUNE_POUCH_QUANTITY_6 = 15376;
+	public static final int BOUNTY_TASK_ITEM_COUNTER_5 = 15397;
 	public static final int XMAS24_INVITE_HAIRDRESSER = 15522;
 	public static final int XMAS24_INVITE_SARAH = 15524;
 	public static final int LEAGUE_HASNT_USED_BOOTS_FOR_MOUNT_QUID = 15647;
