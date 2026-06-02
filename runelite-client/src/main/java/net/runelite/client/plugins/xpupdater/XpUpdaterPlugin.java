@@ -126,8 +126,8 @@ public class XpUpdaterPlugin extends Plugin
 			if (local != null)
 			{
 				lastDisplayName = local.getName();
+				fetchXp = false;
 			}
-			fetchXp = false;
 		}
 	}
 
