@@ -46339,7 +46339,7 @@ public final class ObjectID extends ObjectID1
 	public static final int DUNGEONKIT_BARS02_EDGE01 = 14208;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_SEED = 14209;
 	public static final int PEST_WALL_RANGE_FIXED = 14210;
@@ -83239,27 +83239,27 @@ public final class ObjectID extends ObjectID1
 	public static final int FEUD_BIRD_CAGE_TABLE_SMALLER = 26824;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_1 = 26825;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_2 = 26826;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_3 = 26827;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_FULLYGROWN = 26828;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_SEED = 26829;
 
@@ -92129,6 +92129,266 @@ public final class ObjectID extends ObjectID1
 	 * Fairy ring
 	 */
 	public static final int FAIRYRING_HOMEHUB = 29560;
+
+	/**
+	 * Oak outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_OAK_LEAGUE_6_T1 = 29561;
+
+	/**
+	 * Oak outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_OAK_LEAGUE_6_T2 = 29562;
+
+	/**
+	 * Oak outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_OAK_LEAGUE_6_T3 = 29563;
+
+	/**
+	 * Mahogany outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_MAHOGANY_LEAGUE_6_T1 = 29564;
+
+	/**
+	 * Mahogany outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_MAHOGANY_LEAGUE_6_T2 = 29565;
+
+	/**
+	 * Mahogany outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_MAHOGANY_LEAGUE_6_T3 = 29566;
+
+	/**
+	 * Throne
+	 */
+	public static final int POH_INVISIBLE_THRONE_8 = 29567;
+
+	/**
+	 * Diseased guam leaf
+	 */
+	public static final int HERB_GUAM_LEAF_DISEASED_1 = 29568;
+
+	/**
+	 * Diseased guam leaf
+	 */
+	public static final int HERB_GUAM_LEAF_DISEASED_2 = 29569;
+
+	/**
+	 * Diseased guam leaf
+	 */
+	public static final int HERB_GUAM_LEAF_DISEASED_3 = 29570;
+
+	/**
+	 * Diseased marrentill
+	 */
+	public static final int HERB_MARENTILL_DISEASED_1 = 29571;
+
+	/**
+	 * Diseased marrentill
+	 */
+	public static final int HERB_MARENTILL_DISEASED_2 = 29572;
+
+	/**
+	 * Diseased marrentill
+	 */
+	public static final int HERB_MARENTILL_DISEASED_3 = 29573;
+
+	/**
+	 * Diseased tarromin
+	 */
+	public static final int HERB_TARROMIN_DISEASED_1 = 29574;
+
+	/**
+	 * Diseased tarromin
+	 */
+	public static final int HERB_TARROMIN_DISEASED_2 = 29575;
+
+	/**
+	 * Diseased tarromin
+	 */
+	public static final int HERB_TARROMIN_DISEASED_3 = 29576;
+
+	/**
+	 * Diseased harralander
+	 */
+	public static final int HERB_HARRALANDER_DISEASED_1 = 29577;
+
+	/**
+	 * Diseased harralander
+	 */
+	public static final int HERB_HARRALANDER_DISEASED_2 = 29578;
+
+	/**
+	 * Diseased harralander
+	 */
+	public static final int HERB_HARRALANDER_DISEASED_3 = 29579;
+
+	/**
+	 * Diseased ranarr weed
+	 */
+	public static final int HERB_RANARR_WEED_DISEASED_1 = 29580;
+
+	/**
+	 * Diseased ranarr weed
+	 */
+	public static final int HERB_RANARR_WEED_DISEASED_2 = 29581;
+
+	/**
+	 * Diseased ranarr weed
+	 */
+	public static final int HERB_RANARR_WEED_DISEASED_3 = 29582;
+
+	/**
+	 * Diseased irit leaf
+	 */
+	public static final int HERB_IRIT_LEAF_DISEASED_1 = 29583;
+
+	/**
+	 * Diseased irit leaf
+	 */
+	public static final int HERB_IRIT_LEAF_DISEASED_2 = 29584;
+
+	/**
+	 * Diseased irit leaf
+	 */
+	public static final int HERB_IRIT_LEAF_DISEASED_3 = 29585;
+
+	/**
+	 * Diseased avantoe
+	 */
+	public static final int HERB_AVANTOE_DISEASED_1 = 29586;
+
+	/**
+	 * Diseased avantoe
+	 */
+	public static final int HERB_AVANTOE_DISEASED_2 = 29587;
+
+	/**
+	 * Diseased avantoe
+	 */
+	public static final int HERB_AVANTOE_DISEASED_3 = 29588;
+
+	/**
+	 * Diseased toadflax
+	 */
+	public static final int HERB_TOADFLAX_DISEASED_1 = 29589;
+
+	/**
+	 * Diseased toadflax
+	 */
+	public static final int HERB_TOADFLAX_DISEASED_2 = 29590;
+
+	/**
+	 * Diseased toadflax
+	 */
+	public static final int HERB_TOADFLAX_DISEASED_3 = 29591;
+
+	/**
+	 * Diseased kwuarm
+	 */
+	public static final int HERB_KWUARM_DISEASED_1 = 29592;
+
+	/**
+	 * Diseased kwuarm
+	 */
+	public static final int HERB_KWUARM_DISEASED_2 = 29593;
+
+	/**
+	 * Diseased kwuarm
+	 */
+	public static final int HERB_KWUARM_DISEASED_3 = 29594;
+
+	/**
+	 * Diseased cadantine
+	 */
+	public static final int HERB_CADANTINE_DISEASED_1 = 29595;
+
+	/**
+	 * Diseased cadantine
+	 */
+	public static final int HERB_CADANTINE_DISEASED_2 = 29596;
+
+	/**
+	 * Diseased cadantine
+	 */
+	public static final int HERB_CADANTINE_DISEASED_3 = 29597;
+
+	/**
+	 * Diseased lantadyme
+	 */
+	public static final int HERB_LANTADYME_DISEASED_1 = 29598;
+
+	/**
+	 * Diseased lantadyme
+	 */
+	public static final int HERB_LANTADYME_DISEASED_2 = 29599;
+
+	/**
+	 * Diseased lantadyme
+	 */
+	public static final int HERB_LANTADYME_DISEASED_3 = 29600;
+
+	/**
+	 * Diseased dwarf weed
+	 */
+	public static final int HERB_DWARF_WEED_DISEASED_1 = 29601;
+
+	/**
+	 * Diseased dwarf weed
+	 */
+	public static final int HERB_DWARF_WEED_DISEASED_2 = 29602;
+
+	/**
+	 * Diseased dwarf weed
+	 */
+	public static final int HERB_DWARF_WEED_DISEASED_3 = 29603;
+
+	/**
+	 * Diseased torstol
+	 */
+	public static final int HERB_TORSTOL_DISEASED_1 = 29604;
+
+	/**
+	 * Diseased torstol
+	 */
+	public static final int HERB_TORSTOL_DISEASED_2 = 29605;
+
+	/**
+	 * Diseased torstol
+	 */
+	public static final int HERB_TORSTOL_DISEASED_3 = 29606;
+
+	/**
+	 * Diseased snapdragon
+	 */
+	public static final int HERB_SNAPDRAGON_DISEASED_1 = 29607;
+
+	/**
+	 * Diseased snapdragon
+	 */
+	public static final int HERB_SNAPDRAGON_DISEASED_2 = 29608;
+
+	/**
+	 * Diseased snapdragon
+	 */
+	public static final int HERB_SNAPDRAGON_DISEASED_3 = 29609;
+
+	/**
+	 * Diseased huasca
+	 */
+	public static final int HERB_HUASCA_DISEASED_1 = 29610;
+
+	/**
+	 * Diseased huasca
+	 */
+	public static final int HERB_HUASCA_DISEASED_2 = 29611;
+
+	/**
+	 * Diseased huasca
+	 */
+	public static final int HERB_HUASCA_DISEASED_3 = 29612;
 
 	/**
 	 * Mounted Max Cape

@@ -7086,6 +7086,9 @@ public final class DBTableID
 			public static final int VENGEANCE_ANIM_TOGGLE_LIST = 4094;
 			public static final int ALCHEMY_ANIM_TOGGLE_LIST = 4095;
 			public static final int NPC_CONTACT_ANIM_TOGGLE_LIST = 4096;
+			public static final int RESURRECTION_COSMETIC_TOGGLE_LIST_ZOMBIE = 8114;
+			public static final int RESURRECTION_COSMETIC_TOGGLE_LIST_SKELETON = 8115;
+			public static final int RESURRECTION_COSMETIC_TOGGLE_LIST_GHOST = 8116;
 		}
 	}
 
@@ -9222,6 +9225,7 @@ public final class DBTableID
 			public static final int POH_TROPHY_BLUEFIN = 7126;
 			public static final int POH_TROPHY_MARLIN = 7127;
 			public static final int POH_GARDEN_CENTREPIECE_6 = 9654;
+			public static final int POH_THRONE_8 = 16324;
 		}
 	}
 
@@ -10327,6 +10331,7 @@ public final class DBTableID
 			public static final int SLAYER_REWARDS_UNLOCK_GRYPHONS = 9420;
 			public static final int SLAYER_REWARDS_UNLOCK_HELM_HOODED = 9641;
 			public static final int SLAYER_REWARDS_LONGER_GRYPHONS = 9642;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_LEAGUE_6 = 16325;
 		}
 	}
 
@@ -22710,6 +22715,7 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_LEAGUES_6_HOME_TELEPORT = 16262;
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_LEAGUES_6_HOME_TELEPORT = 16263;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_LEAGUES_6_HOME_TELEPORT = 16264;
+			public static final int SKILL_FEATURE_FARMING_SULPHUROUS_FERTILISER = 16323;
 		}
 	}
 
