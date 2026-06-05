@@ -554,7 +554,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_HARD_RIDDLE029)
 			.text("And so on, and so on, and so on. Walking from the land of many unimportant things leads to a choice of paths.")
-			.location(new WorldPoint(2591, 3879, 0))
+			.location(new WorldPoint(2592, 3879, 0))
 			.solution("Dig on Etceteria next to the Evergreen tree in front of the castle walls.")
 			.build(),
 		CrypticClue.builder()
