@@ -1912,7 +1912,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("Elvish onions.")
-			.location(new WorldPoint(3303, 6092, 0))
+			.location(new WorldPoint(3303, 6091, 0))
 			.solution("Dig in the onion patch east of the Prifddinas allotments.")
 			.build(),
 		CrypticClue.builder()
