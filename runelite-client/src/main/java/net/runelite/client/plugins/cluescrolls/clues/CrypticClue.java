@@ -1291,7 +1291,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("If you're feeling brave, dig beneath the dragon's eye.")
-			.location(new WorldPoint(2410, 4714, 0))
+			.location(new WorldPoint(2409, 4715, 0))
 			.solution("Dig below the mossy rock under the Viyeldi caves (Legend's Quest). Items needed: Pickaxe, unpowered orb, lockpick, spade, any charge orb spell, and either 79 agility or an axe and machete. With 96 agility no items are needed.")
 			.build(),
 		CrypticClue.builder()
