@@ -1505,7 +1505,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("South of a river in a town surrounded by the undead, what lies beneath the furnace?")
-			.location(new WorldPoint(2857, 2966, 0))
+			.location(new WorldPoint(2857, 2965, 0))
 			.solution("Dig in front of the Shilo Village furnace.")
 			.build(),
 		CrypticClue.builder()
