@@ -29,7 +29,7 @@ import java.util.Collection;
 
 class SnapCorners
 {
-	final SnapCorner topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
+	final SnapCorner topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight, aboveInventoryRight;
 
 	SnapCorners()
 	{
@@ -40,6 +40,7 @@ class SnapCorners
 		this.bottomRight = new SnapCorner(OverlayPosition.BOTTOM_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_LEFT);
 		this.aboveChatboxRight = new SnapCorner(OverlayPosition.ABOVE_CHATBOX_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_UP);
 		this.canvasTopRight = new SnapCorner(OverlayPosition.CANVAS_TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN);
+		this.aboveInventoryRight = new SnapCorner(OverlayPosition.ABOVE_INVENTORY_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_UP);
 	}
 
 	SnapCorner forPosition(OverlayPosition overlayPosition)
@@ -60,6 +61,8 @@ class SnapCorners
 				return aboveChatboxRight;
 			case CANVAS_TOP_RIGHT:
 				return canvasTopRight;
+			case ABOVE_INVENTORY_RIGHT:
+				return aboveInventoryRight;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -67,6 +70,6 @@ class SnapCorners
 
 	Collection<SnapCorner> getSnapCorners()
 	{
-		return Arrays.asList(topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight);
+		return Arrays.asList(topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight, aboveInventoryRight);
 	}
 }

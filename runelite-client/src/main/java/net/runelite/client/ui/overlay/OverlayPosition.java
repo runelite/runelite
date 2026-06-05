@@ -61,6 +61,10 @@ public enum OverlayPosition
 	 */
 	ABOVE_CHATBOX_RIGHT,
 	/**
+	 * Place overlay directly above right side of inventory
+	 */
+	ABOVE_INVENTORY_RIGHT,
+	/**
 	 * Place overlay in the top right most area possible
 	 */
 	CANVAS_TOP_RIGHT,
