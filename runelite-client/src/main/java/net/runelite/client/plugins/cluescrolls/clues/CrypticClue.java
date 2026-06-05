@@ -1641,7 +1641,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("A massive battle rages beneath so be careful when you dig by the large broken crossbow.")
-			.location(new WorldPoint(2927, 3761, 0))
+			.location(new WorldPoint(2927, 3763, 0))
 			.solution("NE of the God Wars Dungeon entrance, climb the rocky handholds & dig by large crossbow.")
 			.build(),
 		CrypticClue.builder()
