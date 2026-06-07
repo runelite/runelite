@@ -28,10 +28,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Projection;
+import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
+import static net.runelite.client.plugins.gpu.GpuPlugin.uniBase;
+import static net.runelite.client.plugins.gpu.GpuPlugin.uniEntityProj;
 import static net.runelite.client.plugins.gpu.GpuPlugin.uniEntityTint;
-import static net.runelite.client.plugins.gpu.GpuPlugin.updateEntityProjection;
 import static org.lwjgl.opengl.GL33C.*;
 
 class VAO
@@ -39,7 +40,7 @@ class VAO
 	// Temporary vertex format
 	// index 0: vec3(x, y, z)
 	// index 1: int abhsl
-	// index 2: short vec4(id, x, y, z)
+	// index 2: short vec4(id, u, v, 0)
 	static final int VERT_SIZE = 24;
 
 	final VBO vbo;
@@ -78,51 +79,104 @@ class VAO
 		vao = 0;
 	}
 
-	int[] lengths = new int[4];
-	Projection[] projs = new Projection[4];
-	Scene[] scenes = new Scene[4];
-	int off = 0;
+	static class Range
+	{
+		int endpos;
+		float[] projection;
+		byte h, s, l, a;
+		byte renderMethod;
+	}
 
-	void addRange(Projection projection, Scene scene)
+	Range[] ranges = new Range[4];
+	int off;
+
+	{
+		for (int i = 0; i < ranges.length; ++i)
+		{
+			ranges[i] = new Range();
+		}
+	}
+
+	void addRange(float[] projection, Scene scene, int renderMode)
 	{
 		assert vbo.mapped;
 
-		if (off > 0 && lengths[off - 1] == vbo.vb.position())
+		if (off > 0)
 		{
-			return;
+			Range r = ranges[off - 1];
+			int pos = vbo.vb.position();
+			if (r.endpos == pos)
+			{
+				return;
+			}
+
+			if (projection == r.projection && renderMode == r.renderMethod)
+			{
+				assert pos > r.endpos;
+				r.endpos = pos;
+				return;
+			}
 		}
 
-		if (lengths.length == off)
+		if (ranges.length == off)
 		{
-			int l = lengths.length << 1;
-			lengths = Arrays.copyOf(lengths, l);
-			projs = Arrays.copyOf(projs, l);
-			scenes = Arrays.copyOf(scenes, l);
+			int l = ranges.length << 1;
+			ranges = Arrays.copyOf(ranges, l);
+			for (int i = ranges.length >> 1; i < ranges.length; ++i)
+			{
+				ranges[i] = new Range();
+			}
 		}
 
-		lengths[off] = vbo.vb.position();
-		projs[off] = projection;
-		scenes[off] = scene;
-		off++;
+		Range r = ranges[off++];
+		r.endpos = vbo.vb.position();
+		r.projection = projection;
+		r.h = scene.getOverrideHue();
+		r.s = scene.getOverrideSaturation();
+		r.l = scene.getOverrideLuminance();
+		r.a = scene.getOverrideAmount();
+		r.renderMethod = (byte) renderMode;
 	}
 
 	void draw()
 	{
 		assert !vbo.mapped;
 
+		glUniform3i(uniBase, 0, 0, 0);
+
 		int start = 0;
 		for (int i = 0; i < off; ++i)
 		{
-			int end = lengths[i];
-			Projection p = projs[i];
-			Scene scene = scenes[i];
+			Range range = ranges[i];
+			int end = range.endpos;
 
 			int count = end - start;
 
-			updateEntityProjection(p);
-			glUniform4i(uniEntityTint, scene.getOverrideHue(), scene.getOverrideSaturation(), scene.getOverrideLuminance(), scene.getOverrideAmount());
+			glUniformMatrix4fv(uniEntityProj, false, range.projection);
+			glUniform4i(uniEntityTint, range.h, range.s, range.l, range.a);
+
 			glBindVertexArray(vao);
-			glDrawArrays(GL_TRIANGLES, start / (VERT_SIZE / 4), count / (VAO.VERT_SIZE / 4));
+
+			if (range.renderMethod == Renderable.RENDERMODE_SORTED_NO_DEPTH)
+			{
+				glDepthMask(false);
+				glDrawArrays(GL_TRIANGLES, start / (VERT_SIZE / 4), count / (VERT_SIZE / 4));
+				glDepthMask(true);
+
+				glColorMask(false, false, false, false);
+				glDrawArrays(GL_TRIANGLES, start / (VERT_SIZE / 4), count / (VERT_SIZE / 4));
+				glColorMask(true, true, true, true);
+			}
+			else if (range.renderMethod == Renderable.RENDERMODE_UNSORTED_NO_DEPTH)
+			{
+				glDepthMask(false);
+				glDrawArrays(GL_TRIANGLES, start / (VERT_SIZE / 4), count / (VERT_SIZE / 4));
+				glDepthMask(true);
+			}
+			else
+			{
+				glDrawArrays(GL_TRIANGLES, start / (VERT_SIZE / 4), count / (VERT_SIZE / 4));
+			}
 
 			start = end;
 		}
@@ -130,8 +184,10 @@ class VAO
 
 	void reset()
 	{
-		Arrays.fill(projs, 0, off, null);
-		Arrays.fill(scenes, 0, off, null);
+		for (int i = 0; i < off; ++i)
+		{
+			ranges[i].projection = null;
+		}
 		off = 0;
 	}
 }
@@ -200,15 +256,14 @@ class VAOList
 		curIdx = 0;
 	}
 
-	void addRange(Projection projection, Scene scene)
+	void draw()
 	{
-		for (int i = 0; i <= curIdx && i < vaos.size(); ++i)
+		int sz = unmap();
+		for (int i = 0; i < sz; ++i)
 		{
 			VAO vao = vaos.get(i);
-			if (vao.vbo.mapped)
-			{
-				vao.addRange(projection, scene);
-			}
+			vao.draw();
+			vao.reset();
 		}
 	}
 
@@ -218,12 +273,10 @@ class VAOList
 		for (VAO vao : vaos)
 		{
 			log.debug("vao {} mapped: {} num ranges: {} length: {}", vao, vao.vbo.mapped, vao.off, vao.vbo.mapped ? vao.vbo.vb.position() : -1);
-			if (vao.off > 1)
+			for (int i = 0; i < vao.off; ++i)
 			{
-				for (int i = 0; i < vao.off; ++i)
-				{
-					log.debug("  {} {} {}", vao.lengths[i], vao.projs[i], vao.scenes[i]);
-				}
+				VAO.Range r = vao.ranges[i];
+				log.debug("  endpos: {} proj: {} hsl: {},{},{},{} renderMethod: {}", r.endpos, r.projection, r.h, r.s, r.l, r.a, r.renderMethod);
 			}
 		}
 	}

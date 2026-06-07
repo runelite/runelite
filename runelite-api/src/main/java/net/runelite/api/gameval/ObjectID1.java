@@ -19922,322 +19922,322 @@ class ObjectID1
 	public static final int GH_ROCKSLIDE_06 = 39747;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_1 = 39748;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_2 = 39749;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_3 = 39750;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_FULLYGROWN = 39751;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_SEED = 39752;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_1 = 39753;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_2 = 39754;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_3 = 39755;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_FULLYGROWN = 39756;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_SEED = 39757;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_1 = 39758;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_2 = 39759;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_3 = 39760;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_FULLYGROWN = 39761;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_SEED = 39762;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_1 = 39763;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_2 = 39764;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_3 = 39765;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_FULLYGROWN = 39766;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_SEED = 39767;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_1 = 39768;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_2 = 39769;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_3 = 39770;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_FULLYGROWN = 39771;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_SEED = 39772;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_1 = 39773;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_2 = 39774;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_3 = 39775;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_FULLYGROWN = 39776;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_SEED = 39777;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_1 = 39778;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_2 = 39779;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_3 = 39780;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_FULLYGROWN = 39781;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_SEED = 39782;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_1 = 39783;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_2 = 39784;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_3 = 39785;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_FULLYGROWN = 39786;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_SEED = 39787;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_1 = 39788;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_2 = 39789;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_3 = 39790;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_FULLYGROWN = 39791;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_SEED = 39792;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_1 = 39793;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_2 = 39794;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_3 = 39795;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_FULLYGROWN = 39796;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_SEED = 39797;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_1 = 39798;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_2 = 39799;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_3 = 39800;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_FULLYGROWN = 39801;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_SEED = 39802;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_1 = 39803;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_2 = 39804;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_3 = 39805;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_FULLYGROWN = 39806;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_SEED = 39807;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_1 = 39808;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_2 = 39809;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_3 = 39810;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_FULLYGROWN = 39811;
 
@@ -60917,27 +60917,27 @@ class ObjectID1
 	public static final int MYARM_REALPATCH_HERB5_HUASCA_ACTIVE = 55346;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_SEED = 55347;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_1 = 55348;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_2 = 55349;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_3 = 55350;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_FULLYGROWN = 55351;
 
@@ -72465,7 +72465,7 @@ class ObjectID1
 	public static final int LEADROCK1_EMPTY = 58918;
 
 	/**
-	 * Strange rocks
+	 * Rubium rocks
 	 */
 	public static final int RUBIUMROCK1 = 58919;
 
@@ -72475,7 +72475,7 @@ class ObjectID1
 	public static final int RUBIUMROCK1_EMPTY = 58920;
 
 	/**
-	 * Strange deposit
+	 * Rubium deposit
 	 */
 	public static final int RUBIUMDEPOSIT1 = 58921;
 
@@ -73850,115 +73850,27 @@ class ObjectID1
 	public static final int SAILING_KEEL_KANDARIN_3X8_ADAMANT = 59527;
 	public static final int SAILING_KEEL_KANDARIN_3X8_RUNE = 59528;
 	public static final int SAILING_KEEL_KANDARIN_3X8_DRAGON = 59529;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_WOOD = 59530;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_OAK = 59531;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_TEAK = 59532;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_MAHOGANY = 59533;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_CAMPHOR = 59534;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_IRONWOOD = 59535;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_ROSEWOOD = 59536;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_WOOD = 59537;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_OAK = 59538;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_TEAK = 59539;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_MAHOGANY = 59540;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_CAMPHOR = 59541;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_IRONWOOD = 59542;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_ROSEWOOD = 59543;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_WOOD = 59544;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_OAK = 59545;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_TEAK = 59546;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_MAHOGANY = 59547;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_CAMPHOR = 59548;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_IRONWOOD = 59549;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_ROSEWOOD = 59550;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAILS_COLOSSAL_REGULAR = 59551;
 
 	/**
@@ -76204,10 +76116,6 @@ class ObjectID1
 	 * Sails
 	 */
 	public static final int SAILING_NPC_BOAT_BASIC_SMALL_SAIL = 60243;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_NPC_BOAT_BASIC_MEDIUM_SAIL = 60244;
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT = 60245;
 

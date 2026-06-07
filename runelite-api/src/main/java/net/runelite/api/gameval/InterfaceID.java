@@ -959,6 +959,8 @@ public final class InterfaceID
 	public static final int CANOE_MAP_DOUGNE = 952;
 	public static final int CANOE_MAP_LUM = 953;
 	public static final int BUTLERS_BELL_COLLECTION_DISPLAY = 954;
+	public static final int ALLSTAR_OCULUS = 955;
+	public static final int ALLSTAR_TOURNAMENT_SIDEPANEL = 956;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -5363,6 +5365,9 @@ public final class InterfaceID
 		public static final int COMPOST = 0x007d_0011;
 		public static final int SUPERCOMPOST = 0x007d_0012;
 		public static final int ULTRACOMPOST = 0x007d_0013;
+		public static final int DEPOSIT_ALL = 0x007d_0014;
+		public static final int DEPOSITINV = 0x007d_0015;
+		public static final int DEPOSITINV_GRAPHIC = 0x007d_0016;
 	}
 
 	public static final class FarmingToolsSide
@@ -22332,27 +22337,29 @@ public final class InterfaceID
 		public static final int RIGHT_PANEL = 0x0277_0009;
 		public static final int RIGHT_SCROLL = 0x0277_000a;
 		public static final int LIST = 0x0277_000b;
-		public static final int FAVES = 0x0277_000c;
-		public static final int CATEGORY_HEADERS = 0x0277_000d;
-		public static final int CATEGORY_LINES = 0x0277_000e;
-		public static final int OBJ_LIST = 0x0277_000f;
-		public static final int TEXT_LIST = 0x0277_0010;
-		public static final int BUTTONS = 0x0277_0011;
-		public static final int BUTTONS_LINE0 = 0x0277_0012;
-		public static final int X1 = 0x0277_0013;
-		public static final int X5 = 0x0277_0014;
-		public static final int X10 = 0x0277_0015;
-		public static final int XX = 0x0277_0016;
-		public static final int XALL = 0x0277_0017;
-		public static final int SEARCH = 0x0277_0018;
-		public static final int DEPOSIT_ALL = 0x0277_0019;
-		public static final int DEPOSIT_ALL_GFX = 0x0277_001a;
-		public static final int TEXT_1 = 0x0277_001b;
-		public static final int TEXT_5 = 0x0277_001c;
-		public static final int TEXT_10 = 0x0277_001d;
-		public static final int TEXT_X = 0x0277_001e;
-		public static final int TEXT_ALL = 0x0277_001f;
-		public static final int SEARCH_GFX = 0x0277_0020;
+		public static final int CONTRACT_SEEDS = 0x0277_000c;
+		public static final int MAIN_VAULT = 0x0277_000d;
+		public static final int FAVES = 0x0277_000e;
+		public static final int CATEGORY_HEADERS = 0x0277_000f;
+		public static final int CATEGORY_LINES = 0x0277_0010;
+		public static final int OBJ_LIST = 0x0277_0011;
+		public static final int TEXT_LIST = 0x0277_0012;
+		public static final int BUTTONS = 0x0277_0013;
+		public static final int BUTTONS_LINE0 = 0x0277_0014;
+		public static final int X1 = 0x0277_0015;
+		public static final int X5 = 0x0277_0016;
+		public static final int X10 = 0x0277_0017;
+		public static final int XX = 0x0277_0018;
+		public static final int XALL = 0x0277_0019;
+		public static final int SEARCH = 0x0277_001a;
+		public static final int DEPOSIT_ALL = 0x0277_001b;
+		public static final int DEPOSIT_ALL_GFX = 0x0277_001c;
+		public static final int TEXT_1 = 0x0277_001d;
+		public static final int TEXT_5 = 0x0277_001e;
+		public static final int TEXT_10 = 0x0277_001f;
+		public static final int TEXT_X = 0x0277_0020;
+		public static final int TEXT_ALL = 0x0277_0021;
+		public static final int SEARCH_GFX = 0x0277_0022;
 	}
 
 	public static final class HallowedToolSide
@@ -29637,7 +29644,7 @@ public final class InterfaceID
 		public static final int ORB_SPECENERGY_EMPTY = 0x037f_0025;
 		public static final int ORB_SPECENERGY_EMPTY_GRAPHIC0 = 0x037f_0026;
 		public static final int SPEC_REGEN = 0x037f_0027;
-		public static final int ORB_SPECENERGY_GRAPHIC6 = 0x037f_0028;
+		public static final int SPECENERGY_ICON = 0x037f_0028;
 		public static final int ORB_STORE = 0x037f_0029;
 		public static final int STORE_BACKING = 0x037f_002a;
 		public static final int STORE_INDICATOR = 0x037f_002b;
@@ -29703,7 +29710,7 @@ public final class InterfaceID
 		public static final int ORB_SPECENERGY_EMPTY = 0x0381_0023;
 		public static final int ORB_SPECENERGY_EMPTY_GRAPHIC0 = 0x0381_0024;
 		public static final int SPEC_REGEN = 0x0381_0025;
-		public static final int ORB_SPECENERGY_GRAPHIC6 = 0x0381_0026;
+		public static final int SPECENERGY_ICON = 0x0381_0026;
 		public static final int ORB_STORE = 0x0381_0027;
 		public static final int STORE_BACKING = 0x0381_0028;
 		public static final int STORE_BUTTON = 0x0381_0029;
@@ -29763,7 +29770,7 @@ public final class InterfaceID
 		public static final int ORB_SPECENERGY_EMPTY = 0x0382_0024;
 		public static final int ORB_SPECENERGY_EMPTY_GRAPHIC0 = 0x0382_0025;
 		public static final int SPEC_REGEN = 0x0382_0026;
-		public static final int ORB_SPECENERGY_GRAPHIC6 = 0x0382_0027;
+		public static final int SPECENERGY_ICON = 0x0382_0027;
 		public static final int ORB_STORE = 0x0382_0028;
 		public static final int ORB_CONTENTRECOM = 0x0382_0029;
 		public static final int ORB_WORLDMAP = 0x0382_002a;
@@ -31029,6 +31036,64 @@ public final class InterfaceID
 		public static final int UNIVERSE = 0x03ba_0000;
 		public static final int FRAME = 0x03ba_0001;
 		public static final int ITEMS = 0x03ba_0002;
+	}
+
+	public static final class AllstarOculus
+	{
+		public static final int UNIVERSE = 0x03bb_0000;
+		public static final int VIEWPORT = 0x03bb_0001;
+		public static final int HUD = 0x03bb_0002;
+		public static final int INFOPANEL = 0x03bb_0003;
+		public static final int ALLSTAR_SPECTATOR_LIST = 0x03bb_0004;
+		public static final int BOTTOM = 0x03bb_0005;
+		public static final int FRAME = 0x03bb_0006;
+		public static final int INFO = 0x03bb_0007;
+		public static final int LEFT = 0x03bb_0008;
+		public static final int F1 = 0x03bb_0009;
+		public static final int FLASHER1 = 0x03bb_000a;
+		public static final int W = 0x03bb_000b;
+		public static final int A = 0x03bb_000c;
+		public static final int S = 0x03bb_000d;
+		public static final int D = 0x03bb_000e;
+		public static final int R = 0x03bb_000f;
+		public static final int F = 0x03bb_0010;
+		public static final int LEFT_TEXT8 = 0x03bb_0011;
+		public static final int PAGEDOWN = 0x03bb_0012;
+		public static final int PAGEUP = 0x03bb_0013;
+		public static final int LEFT_TEXT11 = 0x03bb_0014;
+		public static final int RIGHT = 0x03bb_0015;
+		public static final int ESC = 0x03bb_0016;
+		public static final int FLASHER2 = 0x03bb_0017;
+		public static final int RIGHT_GRAPHIC2 = 0x03bb_0018;
+		public static final int RIGHT_GRAPHIC3 = 0x03bb_0019;
+		public static final int RIGHT_GRAPHIC4 = 0x03bb_001a;
+		public static final int RIGHT_GRAPHIC5 = 0x03bb_001b;
+		public static final int RIGHT_GRAPHIC6 = 0x03bb_001c;
+		public static final int RIGHT_GRAPHIC7 = 0x03bb_001d;
+		public static final int RIGHT_GRAPHIC8 = 0x03bb_001e;
+		public static final int RIGHT_GRAPHIC9 = 0x03bb_001f;
+		public static final int RIGHT_TEXT10 = 0x03bb_0020;
+		public static final int SPACE = 0x03bb_0021;
+		public static final int FLASHER3 = 0x03bb_0022;
+		public static final int RIGHT_TEXT13 = 0x03bb_0023;
+	}
+
+	public static final class AllstarTournamentSidepanel
+	{
+		public static final int UNIVERSE = 0x03bc_0000;
+		public static final int BACKGROUND = 0x03bc_0001;
+		public static final int UNIVERSE_TEXT1 = 0x03bc_0002;
+		public static final int CONTENTS = 0x03bc_0003;
+		public static final int CONTENTS_GRAPHIC0 = 0x03bc_0004;
+		public static final int LIST = 0x03bc_0005;
+		public static final int SCROLLBAR = 0x03bc_0006;
+		public static final int REFRESH = 0x03bc_0007;
+		public static final int CLEAR_UI = 0x03bc_0008;
+		public static final int SHOW_TARGET = 0x03bc_0009;
+		public static final int FREECAM = 0x03bc_000a;
+		public static final int SEARCHBAR_CONTAINER = 0x03bc_000b;
+		public static final int SEARCHBAR = 0x03bc_000c;
+		public static final int SEARCH_TITLE = 0x03bc_000d;
 	}
 /* This file is automatically generated. Do not edit. */
 }

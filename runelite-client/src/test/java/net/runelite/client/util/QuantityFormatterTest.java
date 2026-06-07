@@ -45,6 +45,8 @@ public class QuantityFormatterTest
 		assertEquals("0", QuantityFormatter.quantityToRSDecimalStack(0));
 		assertEquals("8500", QuantityFormatter.quantityToRSDecimalStack(8_500));
 		assertEquals("10K", QuantityFormatter.quantityToRSDecimalStack(10_000));
+		assertEquals("14.9K", QuantityFormatter.quantityToRSDecimalStack(14_950));
+		assertEquals("14.9K", QuantityFormatter.quantityToRSDecimalStack(14_999));
 		assertEquals("21.7K", QuantityFormatter.quantityToRSDecimalStack(21_700));
 		assertEquals("100K", QuantityFormatter.quantityToRSDecimalStack(100_000));
 		assertEquals("100.3K", QuantityFormatter.quantityToRSDecimalStack(100_300));
@@ -67,6 +69,8 @@ public class QuantityFormatterTest
 		assertEquals("1,000", QuantityFormatter.quantityToStackSize(1000));
 		assertEquals("9,450", QuantityFormatter.quantityToStackSize(9450));
 		assertEquals("14.5K", QuantityFormatter.quantityToStackSize(14_500));
+		assertEquals("14.9K", QuantityFormatter.quantityToStackSize(14_950));
+		assertEquals("14.9K", QuantityFormatter.quantityToStackSize(14_999));
 		assertEquals("99.9K", QuantityFormatter.quantityToStackSize(99_920));
 		assertEquals("100K", QuantityFormatter.quantityToStackSize(100_000));
 		assertEquals("10M", QuantityFormatter.quantityToStackSize(10_000_000));

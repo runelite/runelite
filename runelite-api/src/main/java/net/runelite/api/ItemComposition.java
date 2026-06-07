@@ -134,9 +134,15 @@ public interface ItemComposition extends ParamHolder
 	boolean isStackable();
 
 	/**
-	 * Returns whether or not the item can be sold on the grand exchange.
+	 * Returns whether the item can be traded between players.
+	 * @return
 	 */
 	boolean isTradeable();
+
+	/**
+	 * Returns whether the item can be sold on the grand exchange.
+	 */
+	boolean isGeTradeable();
 
 	/**
 	 * Gets an array of possible right-click menu actions the item

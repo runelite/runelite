@@ -811,11 +811,12 @@ public class OverlayRenderer extends MouseAdapter
 			viewportBounds.x + viewportBounds.width - BORDER,
 			viewportBounds.y + BORDER);
 
-		int bottomLeftX = viewportBounds.x + BORDER, bottomLeftY = viewportBounds.y + viewportBounds.height - BORDER;
+		int bottomLeftX = viewportBounds.x + BORDER;
+		int bottomLeftY = viewportBounds.y + viewportBounds.height - BORDER;
 		// Check to see if chat box is minimized
 		if (isResizeable && chatboxHidden)
 		{
-			bottomLeftX += chatboxBounds.height;
+			bottomLeftY += chatboxBounds.height;
 		}
 		snapCorners.bottomLeft.setPosition(bottomLeftX, bottomLeftY);
 
