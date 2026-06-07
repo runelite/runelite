@@ -53,6 +53,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -348,6 +349,11 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		//npc aggression does not expire while on a player boat
+		if (client.getLocalPlayer() == null || client.getVarbitValue(VarbitID.SAILING_BOARDED_BOAT) == 1)
+		{
+			return;
+		}
 		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
 
 		if (active && notifyOnce && Instant.now().isAfter(endTime))
