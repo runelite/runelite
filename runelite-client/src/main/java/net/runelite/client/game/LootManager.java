@@ -266,7 +266,7 @@ public class LootManager
 			processDelayedLoot();
 			clearDelayedLootNpc();
 		}
-		if(client.getLocalPlayer() == null)
+		if (client.getLocalPlayer() == null)
 		{
 			return;
 		}
