@@ -63,6 +63,10 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuAction;
+import java.util.Arrays;
+import net.runelite.api.events.PostMenuSort;
 
 @PluginDescriptor(
 	name = "Attack Styles",
@@ -260,6 +264,35 @@ public class AttackStylesPlugin extends Plugin
 			notifier.notify(config.warningNotification(), "Attack style changed to " + attackStyle.getName() + "!");
 		}
 		prevAttackStyle = attackStyle;
+	}
+
+	@Subscribe
+	public void onPostMenuSort(PostMenuSort event)
+	{
+		if (!config.hideNpcAttackOptions() || !warnedSkillSelected)
+		{
+			return;
+		}
+
+		MenuEntry[] filtered = Arrays.stream(client.getMenuEntries())
+				.filter(entry ->
+				{
+					if (!"Attack".equalsIgnoreCase(entry.getOption()))
+					{
+						return true;
+					}
+
+					MenuAction action = entry.getType();
+
+					return action != MenuAction.NPC_FIRST_OPTION
+							&& action != MenuAction.NPC_SECOND_OPTION
+							&& action != MenuAction.NPC_THIRD_OPTION
+							&& action != MenuAction.NPC_FOURTH_OPTION
+							&& action != MenuAction.NPC_FIFTH_OPTION;
+				})
+				.toArray(MenuEntry[]::new);
+
+		client.setMenuEntries(filtered);
 	}
 
 	private void resetWarnings()
