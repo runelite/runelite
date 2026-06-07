@@ -266,7 +266,10 @@ public class LootManager
 			processDelayedLoot();
 			clearDelayedLootNpc();
 		}
-
+		if(client.getLocalPlayer() == null)
+		{
+			return;
+		}
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
 
 		itemSpawns.clear();
