@@ -3420,276 +3420,6 @@ class ObjectID1
 	public static final int POH_NEXUS_5_AMULET = 33353;
 
 	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AIP = 33354;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AIS = 33355;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AIR = 33356;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AIQ = 33357;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_ALP = 33358;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_ALS = 33359;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_ALR = 33360;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_ALQ = 33361;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AKP = 33362;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AKS = 33363;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AKR = 33364;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AKQ = 33365;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AJP = 33366;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AJS = 33367;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AJR = 33368;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AJQ = 33369;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DIP = 33370;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DIS = 33371;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DIR = 33372;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DIQ = 33373;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DLP = 33374;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DLS = 33375;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DLR = 33376;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DLQ = 33377;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DKP = 33378;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DKS = 33379;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DKR = 33380;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DKQ = 33381;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DJP = 33382;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DJS = 33383;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DJR = 33384;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DJQ = 33385;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CIP = 33386;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CIS = 33387;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CIR = 33388;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CIQ = 33389;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CLP = 33390;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CLS = 33391;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CLR = 33392;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CLQ = 33393;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CKP = 33394;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CKS = 33395;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CKR = 33396;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CKQ = 33397;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CJP = 33398;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CJS = 33399;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CJR = 33400;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CJQ = 33401;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BIP = 33402;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BIS = 33403;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BIR = 33404;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BIQ = 33405;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BLP = 33406;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BLS = 33407;
-
-	/**
 	 * Portal Nexus
 	 */
 	public static final int POH_NEXUS_PORTAL_1 = 33408;
@@ -3759,51 +3489,6 @@ class ObjectID1
 	 * Rocks
 	 */
 	public static final int XBOWS_ROCKS_HIDDENOP = 33422;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BLR = 33423;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BLQ = 33424;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BKP = 33425;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BKS = 33426;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BKR = 33427;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BKQ = 33428;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BJP = 33429;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BJS = 33430;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BJR = 33431;
 
 	/**
 	 * Catherby Portal
@@ -15465,11 +15150,6 @@ class ObjectID1
 	public static final int POH_JEWELLERY_BOX_3_KHARID = 37546;
 
 	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BJQ = 37547;
-
-	/**
 	 * Bounty supply crate
 	 */
 	public static final int BH_SUPPLY_CRATE_STACK = 37548;
@@ -20242,322 +19922,322 @@ class ObjectID1
 	public static final int GH_ROCKSLIDE_06 = 39747;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_1 = 39748;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_2 = 39749;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_3 = 39750;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_FULLYGROWN = 39751;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_SEED = 39752;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_1 = 39753;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_2 = 39754;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_3 = 39755;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_FULLYGROWN = 39756;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_SEED = 39757;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_1 = 39758;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_2 = 39759;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_3 = 39760;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_FULLYGROWN = 39761;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_SEED = 39762;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_1 = 39763;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_2 = 39764;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_3 = 39765;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_FULLYGROWN = 39766;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_SEED = 39767;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_1 = 39768;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_2 = 39769;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_3 = 39770;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_FULLYGROWN = 39771;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_SEED = 39772;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_1 = 39773;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_2 = 39774;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_3 = 39775;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_FULLYGROWN = 39776;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_SEED = 39777;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_1 = 39778;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_2 = 39779;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_3 = 39780;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_FULLYGROWN = 39781;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_SEED = 39782;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_1 = 39783;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_2 = 39784;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_3 = 39785;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_FULLYGROWN = 39786;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_SEED = 39787;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_1 = 39788;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_2 = 39789;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_3 = 39790;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_FULLYGROWN = 39791;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_SEED = 39792;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_1 = 39793;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_2 = 39794;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_3 = 39795;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_FULLYGROWN = 39796;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_SEED = 39797;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_1 = 39798;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_2 = 39799;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_3 = 39800;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_FULLYGROWN = 39801;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_SEED = 39802;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_1 = 39803;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_2 = 39804;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_3 = 39805;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_FULLYGROWN = 39806;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_SEED = 39807;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_1 = 39808;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_2 = 39809;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_3 = 39810;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_FULLYGROWN = 39811;
 
@@ -23811,327 +23491,11 @@ class ObjectID1
 	 * Christmas-Spirit Tree
 	 */
 	public static final int XMAS20_POH_SPIRIT_TREE = 40778;
+
+	/**
+	 * Spiritual Fairy Tree
+	 */
 	public static final int XMAS20_POH_SPIRIT_RING = 40779;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AIP = 40780;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AIS = 40781;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AIR = 40782;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AIQ = 40783;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_ALP = 40784;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_ALS = 40785;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_ALR = 40786;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_ALQ = 40787;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AKP = 40788;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AKS = 40789;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AKR = 40790;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AKQ = 40791;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AJP = 40792;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AJS = 40793;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AJR = 40794;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AJQ = 40795;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DIP = 40796;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DIS = 40797;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DIR = 40798;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DIQ = 40799;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DLP = 40800;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DLS = 40801;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DLR = 40802;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DLQ = 40803;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DKP = 40804;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DKS = 40805;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DKR = 40806;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DKQ = 40807;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DJP = 40808;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DJS = 40809;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DJR = 40810;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DJQ = 40811;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CIP = 40812;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CIS = 40813;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CIR = 40814;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CIQ = 40815;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CLP = 40816;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CLS = 40817;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CLR = 40818;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CLQ = 40819;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CKP = 40820;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CKS = 40821;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CKR = 40822;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CKQ = 40823;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CJP = 40824;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CJS = 40825;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CJR = 40826;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CJQ = 40827;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BIP = 40828;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BIS = 40829;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BIR = 40830;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BIQ = 40831;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BLP = 40832;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BLS = 40833;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BLR = 40834;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BLQ = 40835;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BKP = 40836;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BKS = 40837;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BKR = 40838;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BKQ = 40839;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BJP = 40840;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BJS = 40841;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BJR = 40842;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BJQ = 40843;
 
 	/**
 	 * Frozen Pool of Restoration
@@ -61553,27 +60917,27 @@ class ObjectID1
 	public static final int MYARM_REALPATCH_HERB5_HUASCA_ACTIVE = 55346;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_SEED = 55347;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_1 = 55348;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_2 = 55349;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_3 = 55350;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_FULLYGROWN = 55351;
 
@@ -73101,7 +72465,7 @@ class ObjectID1
 	public static final int LEADROCK1_EMPTY = 58918;
 
 	/**
-	 * Strange rocks
+	 * Rubium rocks
 	 */
 	public static final int RUBIUMROCK1 = 58919;
 
@@ -73111,7 +72475,7 @@ class ObjectID1
 	public static final int RUBIUMROCK1_EMPTY = 58920;
 
 	/**
-	 * Strange deposit
+	 * Rubium deposit
 	 */
 	public static final int RUBIUMDEPOSIT1 = 58921;
 
@@ -74486,115 +73850,27 @@ class ObjectID1
 	public static final int SAILING_KEEL_KANDARIN_3X8_ADAMANT = 59527;
 	public static final int SAILING_KEEL_KANDARIN_3X8_RUNE = 59528;
 	public static final int SAILING_KEEL_KANDARIN_3X8_DRAGON = 59529;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_WOOD = 59530;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_OAK = 59531;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_TEAK = 59532;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_MAHOGANY = 59533;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_CAMPHOR = 59534;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_IRONWOOD = 59535;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_ROSEWOOD = 59536;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_WOOD = 59537;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_OAK = 59538;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_TEAK = 59539;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_MAHOGANY = 59540;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_CAMPHOR = 59541;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_IRONWOOD = 59542;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_ROSEWOOD = 59543;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_WOOD = 59544;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_OAK = 59545;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_TEAK = 59546;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_MAHOGANY = 59547;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_CAMPHOR = 59548;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_IRONWOOD = 59549;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_ROSEWOOD = 59550;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAILS_COLOSSAL_REGULAR = 59551;
 
 	/**
@@ -76840,10 +76116,6 @@ class ObjectID1
 	 * Sails
 	 */
 	public static final int SAILING_NPC_BOAT_BASIC_SMALL_SAIL = 60243;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_NPC_BOAT_BASIC_MEDIUM_SAIL = 60244;
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT = 60245;
 
@@ -78672,5 +77944,27 @@ class ObjectID1
 	 * Suit of armour
 	 */
 	public static final int FAI_VARROCK_SUITOFARMOUR_WITH_EGG = 60839;
+
+	/**
+	 * Pipe
+	 */
+	public static final int KARAM_DUNGEON_PIPE_SOUTH = 60840;
+
+	/**
+	 * Pipe
+	 */
+	public static final int KARAM_DUNGEON_PIPE2_SOUTH = 60841;
+
+	/**
+	 * Bed
+	 */
+	public static final int ARDY_BIGBED3 = 60842;
+	public static final int ARDY_BEDSIDESHELF = 60843;
+	public static final int BURGH_STONE_CRUMBLY_LOW_LEFT_END = 60844;
+	public static final int CANOEING_CANOESTATION_CASTLE_WARS = 60845;
+	public static final int CANOEING_CANOESTATION_TREE_GNOME_VILLAGE = 60846;
+	public static final int CANOEING_CANOESTATION_ARDOUGNE_ZOO = 60847;
+	public static final int CANOEING_CANOESTATION_CHAOS_DRUID_TOWER = 60848;
+	public static final int CANOEING_CANOESTATION_TREE_GNOME_STRONGHOLD = 60849;
 /* This file is automatically generated. Do not edit. */
 }

@@ -123,8 +123,6 @@ public class TabInterface
 	private static final int BUTTON_HEIGHT = 20;
 	private static final int MARGIN = 1;
 	private static final int SCROLL_TICK = 500;
-	private static final int INCINERATOR_WIDTH = 48;
-	private static final int INCINERATOR_HEIGHT = 39;
 	private static final int BANK_BOTTOM_OFFSET = 39; // offset from bottom of BANK_CONTENT_CONTAINER
 	private static final int BANK_ITEM_WIDTH = BankTagsPlugin.BANK_ITEM_WIDTH;
 	private static final int BANK_ITEM_HEIGHT = BankTagsPlugin.BANK_ITEM_HEIGHT;

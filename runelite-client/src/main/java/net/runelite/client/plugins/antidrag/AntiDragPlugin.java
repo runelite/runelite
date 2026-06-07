@@ -200,6 +200,10 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		{
 			setInvDragDelay(config.dragDelay());
 		}
+		else if (widgetLoaded.getGroupId() == InterfaceID.RUNE_POUCH)
+		{
+			setRunePouchDragDelay(config.dragDelay());
+		}
 	}
 
 	@Subscribe
@@ -296,6 +300,12 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		applyDragDelay(coxChest, delay);
 	}
 
+	private void setRunePouchDragDelay(int delay)
+	{
+		final Widget runePouchSlots = client.getWidget(InterfaceID.RunePouch.POUCH);
+		applyDragDelay(runePouchSlots, delay);
+	}
+
 	private void setSeedVaultDragDelay(int delay)
 	{
 		final Widget seedVaultItems = client.getWidget(InterfaceID.SeedVault.OBJ_LIST);
@@ -313,6 +323,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		setBankDragDelay(delay);
 		setCoxDragDelay(delay);
 		setSeedVaultDragDelay(delay);
+		setRunePouchDragDelay(delay);
 	}
 
 	private void resetDragDelay()
@@ -323,6 +334,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		setBankDragDelay(DEFAULT_DELAY);
 		setCoxDragDelay(DEFAULT_DELAY);
 		setSeedVaultDragDelay(DEFAULT_DELAY);
+		setRunePouchDragDelay(DEFAULT_DELAY);
 	}
 
 }

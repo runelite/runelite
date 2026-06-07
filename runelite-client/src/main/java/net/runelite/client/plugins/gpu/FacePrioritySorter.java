@@ -86,7 +86,7 @@ class FacePrioritySorter
 		this.sceneUploader = sceneUploader;
 	}
 
-	int uploadSortedModel(Projection proj, Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer, IntBuffer alphaBuffer)
+	int uploadSortedModel(Projection proj, Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer, IntBuffer alphaBuffer, boolean prioritySort)
 	{
 		final int vertexCount = model.getVerticesCount();
 		final float[] verticesX = model.getVerticesX();
@@ -262,7 +262,7 @@ class FacePrioritySorter
 		}
 
 		int len = 0;
-		if (faceRenderPriorities == null)
+		if (faceRenderPriorities == null || !prioritySort)
 		{
 			for (int i = maxFz; i >= minFz; --i)
 			{

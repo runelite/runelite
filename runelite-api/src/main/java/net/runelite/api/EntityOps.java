@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,67 +24,22 @@
  */
 package net.runelite.api;
 
-public interface ActorSpotAnim extends Renderable
+import javax.annotation.Nullable;
+
+/**
+ * Menu options on a TileObject or NPC
+ */
+public interface EntityOps
 {
-	/**
-	 * Get the spotanim id
-	 * @see net.runelite.api.gameval.SpotanimID
-	 * @return
-	 */
-	int getId();
+	int MAX_OPS = 5;
 
-	/**
-	 * Set the spotanim id
-	 * @see net.runelite.api.gameval.SpotanimID
-	 * @param id
-	 */
-	void setId(int id);
+	@Nullable
+	String getOp(int idx);
 
-	/**
-	 * Get the client cycle that the spotanim starts at
-	 * @return
-	 */
-	int getStartCycle();
+	int getNumSubOps(int idx);
 
-	/**
-	 * Set the client cycle that the spotanim starts at
-	 * @param cycle
-	 */
-	void setStartCycle(int cycle);
+	int getSubID(int idx, int subIdx);
 
-	/**
-	 * Get the spotanim height
-	 * @return
-	 */
-	int getHeight();
-
-	/**
-	 * Set the spotanim height
-	 * @param height
-	 */
-	void setHeight(int height);
-
-	/**
-	 * Get the spotanim frame
-	 * @return
-	 */
-	int getFrame();
-
-	/**
-	 * Set the spotanim frame
-	 * @param frame
-	 */
-	void setFrame(int frame);
-
-	/**
-	 * Get the frame cycle. The number of ticks the client has been on this frame.
-	 * @return
-	 */
-	int getCycle();
-
-	/**
-	 * Set the frame cycle.
-	 * @param cycle
-	 */
-	void setCycle(int cycle);
+	@Nullable
+	String getSubOp(int idx, int subIdx);
 }
