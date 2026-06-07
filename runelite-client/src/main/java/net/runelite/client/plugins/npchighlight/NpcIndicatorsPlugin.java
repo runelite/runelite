@@ -640,6 +640,10 @@ public class NpcIndicatorsPlugin extends Plugin
 		removeOldHighlightedRespawns();
 		validateSpawnedNpcs();
 		lastTickUpdate = Instant.now();
+		if(client.getLocalPlayer() == null)
+		{
+			return;
+		}
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
