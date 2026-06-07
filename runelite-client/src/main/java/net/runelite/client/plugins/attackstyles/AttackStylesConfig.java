@@ -126,7 +126,10 @@ public interface AttackStylesConfig extends Config
 			description = "Hide NPC attack options when a warned attack style is selected.",
 			position = 9
 	)
-	default boolean hideNpcAttackOptions() { return false; }
+	default boolean hideNpcAttackOptions()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "showChatWarnings",
