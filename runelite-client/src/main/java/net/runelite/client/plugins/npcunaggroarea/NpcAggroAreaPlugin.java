@@ -491,7 +491,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					clientThread.invokeLater(() ->
 					{
 						//avoid infinite loop in the event of unexpected gamestate change before client.getLocalPlayer() is non-null
-						if (event.getGameState() != GameState.LOGGED_IN)
+						if (client.getGameState() != GameState.LOGGED_IN)
 						{
 							return true;
 						}
