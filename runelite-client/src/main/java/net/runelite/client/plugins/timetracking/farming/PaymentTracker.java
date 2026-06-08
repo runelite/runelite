@@ -31,9 +31,11 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ScriptID;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPreFired;
@@ -59,6 +61,8 @@ public class PaymentTracker
 		"That'll do nicely, iknami. Leave it with me - I'll make<br>sure that patch grows for you.",
 		"Alright, leave it with me. I'll look after that nursery for<br>you."
 	);
+
+	private static final String FALADOR_DIARY_TEXT = "The gardener protects your tree for you, free of charge, as a token of gratitude for completing the Falador elite diary.";
 
 	private final Client client;
 	private final ConfigManager configManager;
@@ -118,6 +122,35 @@ public class PaymentTracker
 			lastSelectedOption = action == MenuAction.NPC_THIRD_OPTION ? 0 : 1;
 			log.debug("Selected option via npc op: {}", lastSelectedOption);
 		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.GAMEMESSAGE || !event.getMessage().equals(FALADOR_DIARY_TEXT))
+		{
+			return;
+		}
+
+		FarmingPatch p = null;
+		for (FarmingRegion region : farmingWorld.getRegionsForLocation(client.getLocalPlayer().getWorldLocation()))
+		{
+			for (FarmingPatch patch : region.getPatches())
+			{
+				if (region.getName().equals("Falador") && patch.getImplementation() == PatchImplementation.TREE)
+				{
+					p = patch;
+				}
+			}
+		}
+
+		if (p == null || getProtectedState(p))
+		{
+			return;
+		}
+
+		log.debug("Detected patch protection for {}", p);
+		setProtectedState(p, true);
 	}
 
 	@Subscribe

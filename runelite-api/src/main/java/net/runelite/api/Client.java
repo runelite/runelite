@@ -146,8 +146,7 @@ public interface Client extends OAuthApi, GameEngine
 	void setGameState(GameState gameState);
 
 	/**
-	 * Causes the client to shutdown. It is faster than
-	 * {@link java.applet.Applet#stop()} because it doesn't wait for 4000ms.
+	 * Causes the client to shutdown.
 	 * This will call {@link System#exit} when it is done
 	 */
 	void stopNow();
@@ -539,22 +538,6 @@ public interface Client extends OAuthApi, GameEngine
 	 */
 	@Nullable
 	Widget getWidget(@Component int componentId);
-
-	/**
-	 * Gets an array containing the x-axis canvas positions
-	 * of all widgets.
-	 *
-	 * @return array of x-axis widget coordinates
-	 */
-	int[] getWidgetPositionsX();
-
-	/**
-	 * Gets an array containing the y-axis canvas positions
-	 * of all widgets.
-	 *
-	 * @return array of y-axis widget coordinates
-	 */
-	int[] getWidgetPositionsY();
 
 	/**
 	 * Gets the current run energy of the logged in player.
@@ -1576,12 +1559,12 @@ public interface Client extends OAuthApi, GameEngine
 	void runScript(Object... args);
 
 	/**
-	 * Creates a blank ScriptEvent for executing a ClientScript2 script
+	 * Creates a blank ScriptEventBuilder for building a ScriptEvent to execute a ClientScript2 script
 	 *
 	 * @param args the script id, then any additional arguments to execute the script with
 	 * @see ScriptID
 	 */
-	ScriptEvent createScriptEvent(Object ...args);
+	ScriptEventBuilder createScriptEventBuilder(Object ...args);
 
 	/**
 	 * Checks whether or not there is any active hint arrow.
@@ -2164,21 +2147,6 @@ public interface Client extends OAuthApi, GameEngine
 	int[][][] getInstanceTemplateChunks();
 
 	/**
-	 * Returns a 2D array containing XTEA encryption keys used to decrypt
-	 * map region files.
-	 * <p>
-	 * The array maps the region keys at index {@code n} to the region
-	 * ID held in {@link #getMapRegions()} at {@code n}.
-	 * <p>
-	 * The array of keys for the region make up a 128-bit encryption key
-	 * spread across 4 integers.
-	 *
-	 * @return the XTEA encryption keys
-	 */
-	@Deprecated
-	int[][] getXteaKeys();
-
-	/**
 	 * Checks whether the scene is in an instanced region.
 	 * @see WorldView#isInstance()
 	 */
@@ -2430,6 +2398,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return
 	 */
+	@Nullable
 	CameraFocusableEntity getCameraFocusEntity();
 
 	/**

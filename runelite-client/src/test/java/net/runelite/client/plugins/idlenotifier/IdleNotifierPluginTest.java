@@ -34,7 +34,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
-import net.runelite.api.HitsplatID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
@@ -259,7 +258,8 @@ public class IdleNotifierPluginTest
 		// But player is being damaged (is in combat)
 		final HitsplatApplied hitsplatApplied = new HitsplatApplied();
 		hitsplatApplied.setActor(player);
-		hitsplatApplied.setHitsplat(new Hitsplat(HitsplatID.DAMAGE_ME, 0, 0));
+		Hitsplat hitsplat = mock(Hitsplat.class);
+		hitsplatApplied.setHitsplat(hitsplat);
 		plugin.onHitsplatApplied(hitsplatApplied);
 		plugin.onGameTick(new GameTick());
 		verify(notifier, never()).notify(any());

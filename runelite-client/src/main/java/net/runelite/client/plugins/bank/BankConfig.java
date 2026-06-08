@@ -92,8 +92,8 @@ public interface BankConfig extends Config
 
 	@ConfigItem(
 		keyName = "rightClickBankLoot",
-		name = "Disable left-click bank looting bag",
-		description = "Configures whether the bank looting bag button will bank your looting bag contents on left-click.",
+		name = "Disable left-click bank containers",
+		description = "Configures whether the bank containers button will bank your looting bag contents on left-click.",
 		position = 6
 	)
 	default boolean rightClickBankLoot()

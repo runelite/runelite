@@ -2030,7 +2030,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_RIDDLE_SAIL)
 			.text("Their bane awaits, but don't be going in there without permission.")
-			.location(new WorldPoint(3120, 2424, 0))
+			.location(new WorldPoint(3176, 2478, 0))
 			.npc("Shellbane gryphon")
 			.solution("Kill the shellbane gryphon.")
 			.build(),

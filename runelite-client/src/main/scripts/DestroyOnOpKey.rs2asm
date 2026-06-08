@@ -1,5 +1,6 @@
 .id                       1651
 .int_arg_count            5
+.long_arg_count           0
 .obj_arg_count            2
    iload                  0
    iconst                 1

@@ -29,6 +29,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.Runnables;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -251,7 +252,7 @@ public class EmojiPlugin extends Plugin
 			{
 				index = gson.fromJson(in, Index.class);
 			}
-			catch (IOException ex)
+			catch (IOException | JsonParseException ex)
 			{
 				log.error("Unable to load emoji index", ex);
 			}
@@ -295,7 +296,15 @@ public class EmojiPlugin extends Plugin
 				{
 					Files.asByteSink(to).writeFrom(in);
 				}
-				cb.run();
+				catch (IOException ex)
+				{
+					log.error("unable to download {} to {}", srnPath, to, ex);
+					throw ex;
+				}
+				finally
+				{
+					cb.run();
+				}
 			}
 
 			@Override

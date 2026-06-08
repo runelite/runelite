@@ -285,12 +285,13 @@ public class SlayerPluginTest
 		assertTrue(matches("Ancient Custodian", Task.CUSTODIAN_STALKERS));
 		assertTrue(matches("Gryphon", Task.GRYPHONS));
 		assertTrue(matches("Dire gryphon", Task.GRYPHONS));
-		assertTrue(matches("Shellbane Gryphon", Task.GRYPHONS));
-		assertTrue(matches("Shellbane Gryphon", Task.SHELLBANE_GRYPHON));
+		assertTrue(matches("The Shellbane Gryphon", Task.GRYPHONS));
+		assertTrue(matches("The Shellbane Gryphon", Task.SHELLBANE_GRYPHON));
 		assertTrue(matches("Lava Strykewyrm", Task.WYRMS));
 		assertTrue(matches("Magma strykewyrm", Task.WYRMS));
 		assertTrue(matches("Aquanite", Task.AQUANITES));
 		assertTrue(matches("Elder Aquanite", Task.AQUANITES));
+		assertTrue(matches("Frost dragon", Task.FROST_DRAGONS));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));

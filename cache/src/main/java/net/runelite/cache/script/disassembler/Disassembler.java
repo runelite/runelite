@@ -26,13 +26,11 @@ package net.runelite.cache.script.disassembler;
 
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
-import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
 import net.runelite.cache.script.Opcodes;
 import org.slf4j.Logger;
@@ -77,6 +75,12 @@ public class Disassembler
 			case Opcodes.IF_ICMPLE:
 			case Opcodes.IF_ICMPLT:
 			case Opcodes.IF_ICMPNE:
+			case Opcodes.IF_LCMPEQ:
+			case Opcodes.IF_LCMPGE:
+			case Opcodes.IF_LCMPGT:
+			case Opcodes.IF_LCMPLE:
+			case Opcodes.IF_LCMPLT:
+			case Opcodes.IF_LCMPNE:
 				return true;
 			default:
 				return false;
@@ -127,14 +131,16 @@ public class Disassembler
 		return jumped;
 	}
 
-	public String disassemble(ScriptDefinition script) throws IOException
+	public String disassemble(ScriptDefinition script)
 	{
 		int[] instructions = script.getInstructions();
 		int[] iops = script.getIntOperands();
+		long[] lops = script.getLongOperands();
 		String[] sops = script.getStringOperands();
 		Map<Integer, Integer>[] switches = script.getSwitches();
 
 		assert iops.length == instructions.length;
+		assert lops.length == instructions.length;
 		assert sops.length == instructions.length;
 
 		boolean[] jumps = needLabel(script);
@@ -146,28 +152,20 @@ public class Disassembler
 		{
 			int opcode = instructions[i];
 			int iop = iops[i];
+			long lop = lops[i];
 			String sop = sops[i];
 
-			Instruction ins = this.instructions.find(opcode);
-			if (ins == null)
+			String name = this.instructions.findNameFromOpcode(opcode);
+			if (name == null)
 			{
 				logger.debug("Unknown instruction {} in script {}", opcode, script.getId());
+				name = String.format("%03d", opcode);
 			}
 
 			if (jumps[i])
 			{
 				// something jumps here
 				writer.append("LABEL").append(i).append(":\n");
-			}
-
-			String name;
-			if (ins != null && ins.getName() != null)
-			{
-				name = ins.getName();
-			}
-			else
-			{
-				name = String.format("%03d", opcode);
 			}
 
 			writer.append(String.format("   %-22s", name));
@@ -186,6 +184,11 @@ public class Disassembler
 				{
 					writer.append(" ").append(iop);
 				}
+			}
+
+			if (shouldWriteLongOperand(opcode, lop))
+			{
+				writer.append(' ').append(lop);
 			}
 
 			if (sop != null)
@@ -241,14 +244,21 @@ public class Disassembler
 		return false;
 	}
 
+	private boolean shouldWriteLongOperand(int opcode, long operand)
+	{
+		return opcode == Opcodes.LCONST;
+	}
+
 	private void writerHeader(StringBuilder writer, ScriptDefinition script)
 	{
 		int id = script.getId();
-		int intStackCount = script.getIntArgCount();
-		int stringStackCount = script.getObjArgCount();
+		int intArgCount = script.getIntArgCount();
+		int longArgCount = script.getLongArgCount();
+		int stringArgCount = script.getObjArgCount();
 
 		writer.append(".id                       ").append(id).append('\n');
-		writer.append(".int_arg_count            ").append(intStackCount).append('\n');
-		writer.append(".obj_arg_count            ").append(stringStackCount).append('\n');
+		writer.append(".int_arg_count            ").append(intArgCount).append('\n');
+		writer.append(".long_arg_count           ").append(longArgCount).append('\n');
+		writer.append(".obj_arg_count            ").append(stringArgCount).append('\n');
 	}
 }

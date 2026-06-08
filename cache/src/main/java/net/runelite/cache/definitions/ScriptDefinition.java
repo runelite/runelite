@@ -33,10 +33,13 @@ public class ScriptDefinition
 	private int id;
 	private int[] instructions;
 	private int[] intOperands;
+	private long[] longOperands;
 	private String[] stringOperands;
 	private int intArgCount;
+	private int longArgCount;
 	private int objArgCount;
 	private int localIntCount;
+	private int localLongCount;
 	private int localObjCount;
 	private Map<Integer, Integer>[] switches;
 }

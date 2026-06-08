@@ -48,25 +48,25 @@ enum RegionFilterMode
 			{
 				return "USA";
 			}
-		};
+		},
+	BRAZIL(WorldRegion.BRAZIL),
+	JAPAN(WorldRegion.JAPAN),
+	SINGAPORE(WorldRegion.SINGAPORE),
+	SOUTH_AFRICA(WorldRegion.SOUTH_AFRICA),
+	;
 
 	@Getter
 	private final WorldRegion region;
 
 	static RegionFilterMode of(WorldRegion region)
 	{
-		switch (region)
+		for (var rfm : values())
 		{
-			case UNITED_STATES_OF_AMERICA:
-				return UNITED_STATES;
-			case UNITED_KINGDOM:
-				return UNITED_KINGDOM;
-			case AUSTRALIA:
-				return AUSTRALIA;
-			case GERMANY:
-				return GERMANY;
-			default:
-				throw new IllegalStateException();
+			if (rfm.region == region)
+			{
+				return rfm;
+			}
 		}
+		throw new IllegalArgumentException();
 	}
 }

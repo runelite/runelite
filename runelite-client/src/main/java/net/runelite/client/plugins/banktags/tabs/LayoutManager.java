@@ -436,7 +436,7 @@ public class LayoutManager
 			c.setItemId(-1);
 			c.setItemQuantity(0);
 			c.setOnDragListener((Object[]) null);
-			c.setOnDragCompleteListener((Object[]) null);
+			c.setOnDragCompleteListener((JavaScriptCallback) ev -> client.setDraggedOnWidget(null));
 		}
 
 		int posX = (idx % BANK_ITEMS_PER_ROW) * (BANK_ITEM_WIDTH + BANK_ITEM_X_PADDING) + BANK_ITEM_START_X;
@@ -516,9 +516,10 @@ public class LayoutManager
 	private int matchesVariant(Set<Integer> bank, int itemId)
 	{
 		int baseId = ItemVariationMapping.map(itemId);
-		if (baseId != itemId)
+		Collection<Integer> variations = ItemVariationMapping.getVariations(baseId);
+		if (variations.size() > 1)
 		{
-			for (int variationId : ItemVariationMapping.getVariations(baseId))
+			for (int variationId : variations)
 			{
 				if (bank.contains(variationId))
 				{

@@ -32,6 +32,8 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,10 +54,13 @@ import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemPrice;
 
@@ -83,6 +88,7 @@ public class ItemManager
 	private final ClientThread clientThread;
 	private final ItemClient itemClient;
 	private final RuneLiteConfig runeLiteConfig;
+	private final ScheduledExecutorService executor;
 
 	@Inject(optional = true)
 	@Named("activePriceThreshold")
@@ -95,6 +101,8 @@ public class ItemManager
 	private int lowPriceThreshold = 1000;
 
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
+	private Instant itemPricesTime; // last attempted fetch time
+
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
@@ -196,15 +204,18 @@ public class ItemManager
 		build();
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
-		ItemClient itemClient, RuneLiteConfig runeLiteConfig)
+	private ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
+		EventBus eventBus, ItemClient itemClient, RuneLiteConfig runeLiteConfig)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.itemClient = itemClient;
 		this.runeLiteConfig = runeLiteConfig;
+		this.executor = scheduledExecutorService;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
+		eventBus.register(this);
+
+		scheduledExecutorService.scheduleWithFixedDelay(this::refreshPrices, 0, 30, TimeUnit.MINUTES);
 		scheduledExecutorService.submit(this::loadStats);
 
 		itemImages = CacheBuilder.newBuilder()
@@ -230,6 +241,29 @@ public class ItemManager
 					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
 				}
 			});
+	}
+
+	@Subscribe
+	private void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState().getState() >= GameState.LOGGING_IN.getState())
+		{
+			if (itemPricesTime == null || itemPricesTime.isBefore(Instant.now().minus(30, ChronoUnit.MINUTES)))
+			{
+				log.debug("Recaching prices due to login");
+				itemPricesTime = Instant.now();
+				executor.execute(this::loadPrices);
+			}
+		}
+	}
+
+	private void refreshPrices()
+	{
+		if (itemPricesTime == null || client.getGameState().getState() >= GameState.LOGGING_IN.getState())
+		{
+			itemPricesTime = Instant.now();
+			loadPrices();
+		}
 	}
 
 	private void loadPrices()

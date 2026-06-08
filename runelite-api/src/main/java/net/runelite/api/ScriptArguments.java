@@ -41,6 +41,11 @@ import java.lang.annotation.Target;
 	int integer() default 0;
 
 	/**
+	 * The number of long arguments the script takes
+	 */
+	int Long() default 0;
+
+	/**
 	 * The number of string arguments the script takes
 	 */
 	int string() default 0;

@@ -42,7 +42,9 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.logging.Logger;
+import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.CacheableTask;
+import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.OutputDirectory;
@@ -68,6 +70,9 @@ public abstract class AssembleTask extends DefaultTask
 	@PathSensitive(PathSensitivity.RELATIVE)
 	public abstract RegularFileProperty getComponentsFile();
 
+	@Input
+	public abstract Property<Boolean> getLongSupport();
+
 	private final Logger log = getLogger();
 
 	@TaskAction
@@ -81,10 +86,12 @@ public abstract class AssembleTask extends DefaultTask
 		instructions.init();
 
 		Assembler assembler = new Assembler(instructions, buildComponentSymbols(componentsFile));
-		ScriptSaver saver = new ScriptSaver();
+		ScriptSaver saver = new ScriptSaver(getLongSupport().getOrElse(true));
 
 		int count = 0;
 		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));
+
+		getProject().delete(scriptOut);
 		scriptOut.mkdirs();
 
 		for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith(".rs2asm")))

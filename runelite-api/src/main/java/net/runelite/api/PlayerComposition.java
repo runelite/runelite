@@ -86,10 +86,9 @@ public interface PlayerComposition
 	int getKitId(KitType type);
 
 	/**
-	 * Update the cached hash value for player equipment
-	 * Used to cache the player models based on equipment.
+	 * Update the cached hash value for player equipment.
+	 * Call this whenever the player's equipment changes or overrides change.
 	 */
-	@VisibleForDevtools
 	void setHash();
 
 	/**
@@ -117,4 +116,21 @@ public interface PlayerComposition
 	 */
 	@Nullable
 	ColorTextureOverride[] getColorTextureOverrides();
+
+	/**
+	 * Get the {@link ColorTextureOverride} for a kit slot.
+	 */
+	@Nullable
+	ColorTextureOverride getColorTextureOverride(KitType kit);
+
+	/**
+	 * Create a {@link ColorTextureOverride} for a kit slot.
+	 * The ColorTextureOverride is initialized with the overrides from the provided item.
+	 */
+	ColorTextureOverride createColorTextureOverride(KitType kit, int itemId);
+
+	/**
+	 * Remove the {@link ColorTextureOverride} for a kit slot.
+	 */
+	void removeColorTextureOverride(KitType kit);
 }

@@ -5,6 +5,7 @@
 ; string2 = timestamp color
 .id                       4742
 .int_arg_count            0
+.long_arg_count           0
 .obj_arg_count            3
    jump                   ENABLED ; jump over ~on_enhanced_any = 0 | chat_gettimestamps = 0
    invoke                 100

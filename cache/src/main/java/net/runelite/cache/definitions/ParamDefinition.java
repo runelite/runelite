@@ -34,4 +34,5 @@ public class ParamDefinition
 	private boolean isMembers = true;
 	private int defaultInt;
 	private String defaultString;
+	private long defaultLong;
 }

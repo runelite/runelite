@@ -493,6 +493,12 @@ public interface Actor extends Renderable, CameraFocusableEntity
 	void setDead(boolean dead);
 
 	/**
+	 * Get the actor's footprint size
+	 * @return
+	 */
+	int getFootprintSize();
+
+	/**
 	 * Get the height offset of the actor from their current animation
 	 * @return
 	 */

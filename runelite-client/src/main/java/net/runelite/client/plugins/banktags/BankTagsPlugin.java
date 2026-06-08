@@ -231,8 +231,9 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		Widget w = client.getWidget(InterfaceID.Bankmain.UNIVERSE);
 		if (w != null)
 		{
-			client.createScriptEvent(w.getOnLoadListener())
+			client.createScriptEventBuilder(w.getOnLoadListener())
 				.setSource(w)
+				.build()
 				.run();
 		}
 	}
@@ -308,7 +309,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 			.mapToObj(ItemVariationMapping::getVariations)
 			.flatMap(Collection::stream)
 			.distinct()
-			.filter(i -> itemManager.getItemComposition(i).isTradeable())
+			.filter(i -> itemManager.getItemComposition(i).isGeTradeable())
 			.limit(MAX_RESULT_COUNT)
 			.collect(Collectors.toCollection(TreeSet::new));
 

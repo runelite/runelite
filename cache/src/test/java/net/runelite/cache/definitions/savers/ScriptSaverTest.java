@@ -40,6 +40,7 @@ public class ScriptSaverTest
 {
 	private static final String SCRIPT_RESOURCE = "/net/runelite/cache/script/assembler/91.rs2asm";
 	private static final String SCRIPT_RESOURCE_UNICODE = "/net/runelite/cache/script/assembler/Unicode.rs2asm";
+	private static final boolean LONG_SUPPORT = true;
 
 	@Test
 	public void testSave() throws IOException
@@ -47,8 +48,8 @@ public class ScriptSaverTest
 		Instructions instructions = new Instructions();
 		instructions.init();
 		ScriptDefinition script = new Assembler(instructions).assemble(getClass().getResourceAsStream(SCRIPT_RESOURCE));
-		byte[] saved = new ScriptSaver().save(script);
-		ScriptDefinition loadedScripot = new ScriptLoader().load(91, saved);
+		byte[] saved = new ScriptSaver(LONG_SUPPORT).save(script);
+		ScriptDefinition loadedScripot = new ScriptLoader().setRev237(LONG_SUPPORT).load(91, saved);
 		assertEquals(script, loadedScripot);
 	}
 
@@ -58,8 +59,8 @@ public class ScriptSaverTest
 		Instructions instructions = new Instructions();
 		instructions.init();
 		ScriptDefinition script = new Assembler(instructions).assemble(getClass().getResourceAsStream(SCRIPT_RESOURCE_UNICODE));
-		byte[] saved = new ScriptSaver().save(script);
-		ScriptDefinition loadedScripot = new ScriptLoader().load(1001, saved);
+		byte[] saved = new ScriptSaver(LONG_SUPPORT).save(script);
+		ScriptDefinition loadedScripot = new ScriptLoader().setRev237(LONG_SUPPORT).load(1001, saved);
 		assertEquals(script, loadedScripot);
 	}
 

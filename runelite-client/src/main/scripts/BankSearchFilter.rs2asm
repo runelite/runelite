@@ -1,5 +1,6 @@
 .id                       279 ; [proc,bankmain_filteritem]
 .int_arg_count            2
+.long_arg_count           0
 .obj_arg_count            1
    iconst                 -1                 ; return value
    iload                  0                  ; load item id

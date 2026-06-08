@@ -26,13 +26,9 @@ package net.runelite.cache.definitions.loaders;
 
 import net.runelite.cache.definitions.KitDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class KitLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(KitLoader.class);
-
 	public KitDefinition load(int id, byte[] b)
 	{
 		KitDefinition def = new KitDefinition(id);
@@ -64,6 +60,16 @@ public class KitLoader
 			{
 				def.nonSelectable = true;
 			}
+			else if (opcode == 5)
+			{
+				int length = is.readUnsignedByte();
+				def.models = new int[length];
+
+				for (int index = 0; index < length; ++index)
+				{
+					def.models[index] = is.readInt();
+				}
+			}
 			else if (opcode == 40)
 			{
 				int length = is.readUnsignedByte();
@@ -91,6 +97,10 @@ public class KitLoader
 			else if (opcode >= 60 && opcode < 70)
 			{
 				def.chatheadModels[opcode - 60] = is.readUnsignedShort();
+			}
+			else if (opcode >= 70 && opcode < 80)
+			{
+				def.chatheadModels[opcode - 70] = is.readInt();
 			}
 		}
 

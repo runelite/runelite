@@ -26,14 +26,16 @@ grammar rs2asm;
 
 prog: NEWLINE* (header NEWLINE+)* (line NEWLINE+)+ ;
 
-header: id | int_arg_count | obj_arg_count ;
+header: id | int_arg_count | long_arg_count | obj_arg_count ;
 
 id: '.id ' id_value ;
 int_arg_count: '.int_arg_count ' int_arg_value ;
+long_arg_count: '.long_arg_count ' long_arg_value ;
 obj_arg_count: '.obj_arg_count ' obj_arg_value ;
 
 id_value: INT ;
 int_arg_value: INT ;
+long_arg_value: INT ;
 obj_arg_value: INT ;
 
 line: instruction | label | switch_lookup ;

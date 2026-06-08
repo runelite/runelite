@@ -59,7 +59,7 @@ public class LocalPoint
 	@Deprecated
 	public LocalPoint(int x, int y)
 	{
-		this(x, y, -1);
+		this(x, y, WorldView.TOPLEVEL);
 	}
 
 	@Nullable

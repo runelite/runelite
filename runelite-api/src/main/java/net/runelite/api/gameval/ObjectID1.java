@@ -3420,276 +3420,6 @@ class ObjectID1
 	public static final int POH_NEXUS_5_AMULET = 33353;
 
 	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AIP = 33354;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AIS = 33355;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AIR = 33356;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AIQ = 33357;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_ALP = 33358;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_ALS = 33359;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_ALR = 33360;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_ALQ = 33361;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AKP = 33362;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AKS = 33363;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AKR = 33364;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AKQ = 33365;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AJP = 33366;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AJS = 33367;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AJR = 33368;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_AJQ = 33369;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DIP = 33370;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DIS = 33371;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DIR = 33372;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DIQ = 33373;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DLP = 33374;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DLS = 33375;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DLR = 33376;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DLQ = 33377;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DKP = 33378;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DKS = 33379;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DKR = 33380;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DKQ = 33381;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DJP = 33382;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DJS = 33383;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DJR = 33384;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_DJQ = 33385;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CIP = 33386;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CIS = 33387;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CIR = 33388;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CIQ = 33389;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CLP = 33390;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CLS = 33391;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CLR = 33392;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CLQ = 33393;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CKP = 33394;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CKS = 33395;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CKR = 33396;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CKQ = 33397;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CJP = 33398;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CJS = 33399;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CJR = 33400;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_CJQ = 33401;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BIP = 33402;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BIS = 33403;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BIR = 33404;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BIQ = 33405;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BLP = 33406;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BLS = 33407;
-
-	/**
 	 * Portal Nexus
 	 */
 	public static final int POH_NEXUS_PORTAL_1 = 33408;
@@ -3759,51 +3489,6 @@ class ObjectID1
 	 * Rocks
 	 */
 	public static final int XBOWS_ROCKS_HIDDENOP = 33422;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BLR = 33423;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BLQ = 33424;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BKP = 33425;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BKS = 33426;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BKR = 33427;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BKQ = 33428;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BJP = 33429;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BJS = 33430;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BJR = 33431;
 
 	/**
 	 * Catherby Portal
@@ -15465,11 +15150,6 @@ class ObjectID1
 	public static final int POH_JEWELLERY_BOX_3_KHARID = 37546;
 
 	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int LEAGUE_5_POH_SPIRIT_RING_LAST_BJQ = 37547;
-
-	/**
 	 * Bounty supply crate
 	 */
 	public static final int BH_SUPPLY_CRATE_STACK = 37548;
@@ -20242,322 +19922,322 @@ class ObjectID1
 	public static final int GH_ROCKSLIDE_06 = 39747;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_1 = 39748;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_2 = 39749;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_3 = 39750;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_FULLYGROWN = 39751;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_SEED = 39752;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_1 = 39753;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_2 = 39754;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_3 = 39755;
 
 	/**
-	 * Herbs
+	 * Tarromin
 	 */
 	public static final int HERB_TARROMIN_FULLYGROWN = 39756;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_SEED = 39757;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_1 = 39758;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_2 = 39759;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_3 = 39760;
 
 	/**
-	 * Herbs
+	 * Harralander
 	 */
 	public static final int HERB_HARRALANDER_FULLYGROWN = 39761;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_SEED = 39762;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_1 = 39763;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_2 = 39764;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_3 = 39765;
 
 	/**
-	 * Herbs
+	 * Ranarr weed
 	 */
 	public static final int HERB_RANARR_WEED_FULLYGROWN = 39766;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_SEED = 39767;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_1 = 39768;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_2 = 39769;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_3 = 39770;
 
 	/**
-	 * Herbs
+	 * Irit leaf
 	 */
 	public static final int HERB_IRIT_LEAF_FULLYGROWN = 39771;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_SEED = 39772;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_1 = 39773;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_2 = 39774;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_3 = 39775;
 
 	/**
-	 * Herbs
+	 * Avantoe
 	 */
 	public static final int HERB_AVANTOE_FULLYGROWN = 39776;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_SEED = 39777;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_1 = 39778;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_2 = 39779;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_3 = 39780;
 
 	/**
-	 * Herbs
+	 * Toadflax
 	 */
 	public static final int HERB_TOADFLAX_FULLYGROWN = 39781;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_SEED = 39782;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_1 = 39783;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_2 = 39784;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_3 = 39785;
 
 	/**
-	 * Herbs
+	 * Kwuarm
 	 */
 	public static final int HERB_KWUARM_FULLYGROWN = 39786;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_SEED = 39787;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_1 = 39788;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_2 = 39789;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_3 = 39790;
 
 	/**
-	 * Herbs
+	 * Cadantine
 	 */
 	public static final int HERB_CADANTINE_FULLYGROWN = 39791;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_SEED = 39792;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_1 = 39793;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_2 = 39794;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_3 = 39795;
 
 	/**
-	 * Herbs
+	 * Lantadyme
 	 */
 	public static final int HERB_LANTADYME_FULLYGROWN = 39796;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_SEED = 39797;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_1 = 39798;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_2 = 39799;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_3 = 39800;
 
 	/**
-	 * Herbs
+	 * Dwarf weed
 	 */
 	public static final int HERB_DWARF_WEED_FULLYGROWN = 39801;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_SEED = 39802;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_1 = 39803;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_2 = 39804;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_3 = 39805;
 
 	/**
-	 * Herbs
+	 * Torstol
 	 */
 	public static final int HERB_TORSTOL_FULLYGROWN = 39806;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_SEED = 39807;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_1 = 39808;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_2 = 39809;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_3 = 39810;
 
 	/**
-	 * Herbs
+	 * Snapdragon
 	 */
 	public static final int HERB_SNAPDRAGON_FULLYGROWN = 39811;
 
@@ -23811,327 +23491,11 @@ class ObjectID1
 	 * Christmas-Spirit Tree
 	 */
 	public static final int XMAS20_POH_SPIRIT_TREE = 40778;
+
+	/**
+	 * Spiritual Fairy Tree
+	 */
 	public static final int XMAS20_POH_SPIRIT_RING = 40779;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AIP = 40780;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AIS = 40781;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AIR = 40782;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AIQ = 40783;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_ALP = 40784;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_ALS = 40785;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_ALR = 40786;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_ALQ = 40787;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AKP = 40788;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AKS = 40789;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AKR = 40790;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AKQ = 40791;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AJP = 40792;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AJS = 40793;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AJR = 40794;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_AJQ = 40795;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DIP = 40796;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DIS = 40797;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DIR = 40798;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DIQ = 40799;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DLP = 40800;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DLS = 40801;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DLR = 40802;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DLQ = 40803;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DKP = 40804;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DKS = 40805;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DKR = 40806;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DKQ = 40807;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DJP = 40808;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DJS = 40809;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DJR = 40810;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_DJQ = 40811;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CIP = 40812;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CIS = 40813;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CIR = 40814;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CIQ = 40815;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CLP = 40816;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CLS = 40817;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CLR = 40818;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CLQ = 40819;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CKP = 40820;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CKS = 40821;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CKR = 40822;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CKQ = 40823;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CJP = 40824;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CJS = 40825;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CJR = 40826;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_CJQ = 40827;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BIP = 40828;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BIS = 40829;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BIR = 40830;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BIQ = 40831;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BLP = 40832;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BLS = 40833;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BLR = 40834;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BLQ = 40835;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BKP = 40836;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BKS = 40837;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BKR = 40838;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BKQ = 40839;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BJP = 40840;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BJS = 40841;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BJR = 40842;
-
-	/**
-	 * Spiritual Fairy Tree
-	 */
-	public static final int XMAS20_POH_SPIRIT_RING_LAST_BJQ = 40843;
 
 	/**
 	 * Frozen Pool of Restoration
@@ -29742,7 +29106,7 @@ class ObjectID1
 	 * Tree
 	 */
 	public static final int REGICIDE_TREE_DEAD1SWAMP_WEB = 42649;
-	public static final int QUEST_START_ICON_TUTORIAL = 42650;
+	public static final int VM_BASEMENT_WALL_GROUND_FLOOR_NOBACK = 42650;
 	public static final int QUEST_START_ICON_ANIMALMAGNETISM = 42651;
 	public static final int QUEST_START_ICON_ANOTHERSLICEOFHAM = 42652;
 	public static final int QUEST_START_ICON_ASCENTOFARCEUUS = 42653;
@@ -40162,18 +39526,22 @@ class ObjectID1
 	public static final int WILD_CAVE_EXIT01 = 47175;
 	public static final int GREYBOX_TOMB_WALL02_DARK01 = 47176;
 	public static final int GREYBOX_TOMB_WALL02_DARK02 = 47177;
-	public static final int OSB10_HOLIDAY_ICON = 47178;
+
+	/**
+	 * Thick Web
+	 */
+	public static final int HOSDUN_SARACHNIS_ENTRANCE_INSTANCE = 47178;
 	public static final int OSB10_TABLE = 47179;
 
 	/**
 	 * Warmhandz' Fire
 	 */
 	public static final int OSB10_WARMFIRE = 47180;
-	public static final int OSB10_BUNTING01_POST01_VARIANT01 = 47181;
-	public static final int OSB10_BUNTING01_POST01_VARIANT02 = 47182;
-	public static final int OSB10_BUNTING01_POST01_VARIANT03 = 47183;
-	public static final int OSB10_BUNTING01_POST01_VARIANT04 = 47184;
-	public static final int OSB10_BUNTING01_MIDDLE01_VARIANT01 = 47185;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_WOOD = 47181;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_WOOD = 47182;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_WOOD = 47183;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_WOOD = 47184;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_WOOD = 47185;
 	public static final int OSB10_BANNER01_YEAR10 = 47186;
 	public static final int OSB10_BANNER01_YEAR10_RAISED01 = 47187;
 
@@ -40216,20 +39584,12 @@ class ObjectID1
 	 * Birthday plushies
 	 */
 	public static final int OSB10_TOYS01_GNOMECHILD10_SOLO01 = 47195;
-	public static final int OSB10_CONFETTI01_DEFAULT01 = 47196;
-	public static final int OSB10_CONFETTI01_SPARSE01 = 47197;
-	public static final int OSB10_CONFETTI01_CORNER01 = 47198;
-	public static final int OSB10_CONFETTI01_SPARSE02 = 47199;
-
-	/**
-	 * Birthday cake
-	 */
-	public static final int OSB10_CAKE_UNLIT = 47200;
-
-	/**
-	 * Birthday cake
-	 */
-	public static final int OSB10_CAKE_LIT = 47201;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_OAK = 47196;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_OAK = 47197;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_OAK = 47198;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_OAK = 47199;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_OAK = 47200;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_OAK = 47201;
 	public static final int OSB10_PARTYROOM_DOORL_NOOP = 47202;
 	public static final int OSB10_PARTYROOM_DOORR_NOOP = 47203;
 
@@ -40547,7 +39907,7 @@ class ObjectID1
 	 */
 	public static final int BANNER_BIRTHDAY01_DEFAULT02 = 47321;
 	public static final int PILLAR_MUSEUM01_TALL01 = 47322;
-	public static final int OSB10_CAKE_MULTI = 47323;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_OAK = 47323;
 
 	/**
 	 * Ice chunks
@@ -61557,27 +60917,27 @@ class ObjectID1
 	public static final int MYARM_REALPATCH_HERB5_HUASCA_ACTIVE = 55346;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_SEED = 55347;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_1 = 55348;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_2 = 55349;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_3 = 55350;
 
 	/**
-	 * Herbs
+	 * Huasca
 	 */
 	public static final int HERB_HUASCA_FULLYGROWN = 55351;
 
@@ -66512,7 +65872,7 @@ class ObjectID1
 	public static final int VMQ4_MOKI_ENTRANCE_STATUE_SUN = 56673;
 
 	/**
-	 * Shrine
+	 * Statue
 	 */
 	public static final int VMQ4_MOKI_ENTRANCE_STATUE_SUN_INACTIVE = 56674;
 
@@ -66523,12 +65883,12 @@ class ObjectID1
 	public static final int VMQ4_MOKI_ENTRANCE_STATUE_MOON = 56676;
 
 	/**
-	 * Shrine
+	 * Statue
 	 */
 	public static final int VMQ4_MOKI_ENTRANCE_STATUE_MOON_INACTIVE = 56677;
 
 	/**
-	 * Shrine
+	 * Statue
 	 */
 	public static final int VMQ4_MOKI_ENTRANCE_STATUE_MOON_ACTIVATED = 56678;
 	public static final int VMQ4_SUN_PUZZLE_STATUE = 56679;
@@ -71680,16 +71040,12 @@ class ObjectID1
 	public static final int TRR_CORAL_DREDGER_FIXED = 58501;
 
 	/**
-	 * Coral refiner
+	 * Tile
 	 */
-	public static final int TRR_CORAL_REFINER = 58502;
-
-	/**
-	 * Anchor
-	 */
-	public static final int TRR_ANCHOR_BOTTOM = 58503;
-	public static final int TRR_ANCHOR_MIDDLE = 58504;
-	public static final int TRR_ANCHOR_TOP = 58505;
+	public static final int _25TH_GRID_BLANK = 58502;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_OAK = 58503;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_TEAK = 58504;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_TEAK = 58505;
 	public static final int TRR_PIER_SUPPORT_PILLAR01A = 58506;
 	public static final int TRR_PIER_SUPPORT_STRAIGHT01A = 58507;
 	public static final int TRR_PIER_SUPPORT_CORNER_OUTSIDE01A = 58508;
@@ -73109,7 +72465,7 @@ class ObjectID1
 	public static final int LEADROCK1_EMPTY = 58918;
 
 	/**
-	 * Strange rocks
+	 * Rubium rocks
 	 */
 	public static final int RUBIUMROCK1 = 58919;
 
@@ -73119,7 +72475,7 @@ class ObjectID1
 	public static final int RUBIUMROCK1_EMPTY = 58920;
 
 	/**
-	 * Strange deposit
+	 * Rubium deposit
 	 */
 	public static final int RUBIUMDEPOSIT1 = 58921;
 
@@ -74494,115 +73850,27 @@ class ObjectID1
 	public static final int SAILING_KEEL_KANDARIN_3X8_ADAMANT = 59527;
 	public static final int SAILING_KEEL_KANDARIN_3X8_RUNE = 59528;
 	public static final int SAILING_KEEL_KANDARIN_3X8_DRAGON = 59529;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_WOOD = 59530;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_OAK = 59531;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_TEAK = 59532;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_MAHOGANY = 59533;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_CAMPHOR = 59534;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_IRONWOOD = 59535;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_ROSEWOOD = 59536;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_WOOD = 59537;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_OAK = 59538;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_TEAK = 59539;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_MAHOGANY = 59540;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_CAMPHOR = 59541;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_IRONWOOD = 59542;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_ROSEWOOD = 59543;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_WOOD = 59544;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_OAK = 59545;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_TEAK = 59546;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_MAHOGANY = 59547;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_CAMPHOR = 59548;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_IRONWOOD = 59549;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_ROSEWOOD = 59550;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_BOAT_SAILS_COLOSSAL_REGULAR = 59551;
 
 	/**
@@ -75085,7 +74353,7 @@ class ObjectID1
 	public static final int SAILING_KEG_WHIRLPOOL_SURPRISE = 59694;
 
 	/**
-	 * Keg of kraken ink sout
+	 * Keg of kraken ink stout
 	 */
 	public static final int SAILING_KEG_KRAKEN_INK_STOUT = 59695;
 
@@ -76848,221 +76116,61 @@ class ObjectID1
 	 * Sails
 	 */
 	public static final int SAILING_NPC_BOAT_BASIC_SMALL_SAIL = 60243;
-
-	/**
-	 * Sails
-	 */
 	public static final int SAILING_NPC_BOAT_BASIC_MEDIUM_SAIL = 60244;
-
-	/**
-	 * Basic cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT = 60245;
 
 	/**
-	 * Basic cargo hold
+	 * Deadman's chest
 	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT_OPEN = 60246;
-
-	/**
-	 * Oak cargo hold
-	 */
+	public static final int DEADMAN_RARE_CHEST_SPAWN = 60246;
 	public static final int SAILING_BOAT_CARGO_HOLD_OAK_RAFT = 60247;
 
 	/**
-	 * Oak cargo hold
+	 * Deadman's chest
 	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_OAK_RAFT_OPEN = 60248;
-
-	/**
-	 * Teak cargo hold
-	 */
+	public static final int DEADMAN_RARE_CHEST_IDLE = 60248;
 	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_RAFT = 60249;
 
 	/**
-	 * Teak cargo hold
+	 * Deadman's chest
 	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_RAFT_OPEN = 60250;
-
-	/**
-	 * Mahogany cargo hold
-	 */
+	public static final int DEADMAN_RARE_CHEST_OPENED = 60250;
 	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_RAFT = 60251;
-
-	/**
-	 * Mahogany cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_RAFT_OPEN = 60252;
-
-	/**
-	 * Camphor cargo hold
-	 */
+	public static final int DEADMAN_POH_WALL = 60252;
 	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_RAFT = 60253;
-
-	/**
-	 * Camphor cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_RAFT_OPEN = 60254;
-
-	/**
-	 * Ironwood cargo hold
-	 */
+	public static final int DEADMAN_POH_WINDOW = 60254;
 	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_RAFT = 60255;
-
-	/**
-	 * Ironwood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_RAFT_OPEN = 60256;
-
-	/**
-	 * Rosewood cargo hold
-	 */
+	public static final int DEADMAN_POH_WALL_CRUMBLY01_L = 60256;
 	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_RAFT = 60257;
-
-	/**
-	 * Rosewood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_RAFT_OPEN = 60258;
-
-	/**
-	 * Basic cargo hold
-	 */
+	public static final int DEADMAN_POH_WALL_CRUMBLY01_R = 60258;
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_2X5 = 60259;
-
-	/**
-	 * Basic cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_2X5_OPEN = 60260;
-
-	/**
-	 * Oak cargo hold
-	 */
+	public static final int DEADMAN_POH_WALL_CRUMBLY02_L = 60260;
 	public static final int SAILING_BOAT_CARGO_HOLD_OAK_2X5 = 60261;
-
-	/**
-	 * Oak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_OAK_2X5_OPEN = 60262;
-
-	/**
-	 * Teak cargo hold
-	 */
+	public static final int DEADMAN_POH_WALL_CRUMBLY02_R = 60262;
 	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_2X5 = 60263;
-
-	/**
-	 * Teak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_2X5_OPEN = 60264;
-
-	/**
-	 * Mahogany cargo hold
-	 */
+	public static final int DEADMAN_POH_WALL_CRUMBLY03_L = 60264;
 	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_2X5 = 60265;
-
-	/**
-	 * Mahogany cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_2X5_OPEN = 60266;
-
-	/**
-	 * Camphor cargo hold
-	 */
+	public static final int DEADMAN_POH_WALL_CRUMBLY03_R = 60266;
 	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_2X5 = 60267;
-
-	/**
-	 * Camphor cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_2X5_OPEN = 60268;
-
-	/**
-	 * Ironwood cargo hold
-	 */
+	public static final int DEADMAN_RUBBLE01 = 60268;
 	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_2X5 = 60269;
-
-	/**
-	 * Ironwood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_2X5_OPEN = 60270;
-
-	/**
-	 * Rosewood cargo hold
-	 */
+	public static final int DEADMAN_RUBBLE02 = 60270;
 	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_2X5 = 60271;
-
-	/**
-	 * Rosewood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_2X5_OPEN = 60272;
-
-	/**
-	 * Basic cargo hold
-	 */
+	public static final int POH_FLOORDECOR_DEADMAN = 60272;
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_LARGE = 60273;
-
-	/**
-	 * Basic cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_LARGE_OPEN = 60274;
-
-	/**
-	 * Oak cargo hold
-	 */
+	public static final int DEADMAN_DUNGEON_INSIDEWALL_CORNER = 60274;
 	public static final int SAILING_BOAT_CARGO_HOLD_OAK_LARGE = 60275;
-
-	/**
-	 * Oak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_OAK_LARGE_OPEN = 60276;
-
-	/**
-	 * Teak cargo hold
-	 */
+	public static final int DEADMAN_DUNGEON_OUTSIDEWALL_CORNER = 60276;
 	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_LARGE = 60277;
-
-	/**
-	 * Teak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_LARGE_OPEN = 60278;
-
-	/**
-	 * Mahogany cargo hold
-	 */
+	public static final int DEADMAN_DUNGEON_OUTSIDEWALL_LCORNER = 60278;
 	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_LARGE = 60279;
-
-	/**
-	 * Mahogany cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_LARGE_OPEN = 60280;
-
-	/**
-	 * Camphor cargo hold
-	 */
+	public static final int DEADMAN_DUNGEON_OUTSIDEWALL_RCORNER = 60280;
 	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_LARGE = 60281;
-
-	/**
-	 * Camphor cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_LARGE_OPEN = 60282;
-
-	/**
-	 * Ironwood cargo hold
-	 */
+	public static final int DEADMAN_DUNGEON_WALLTOP = 60282;
 	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_LARGE = 60283;
-
-	/**
-	 * Ironwood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_LARGE_OPEN = 60284;
-
-	/**
-	 * Rosewood cargo hold
-	 */
+	public static final int DEADMAN_DUNGEON_OUTSIDEWALL = 60284;
 	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE = 60285;
-
-	/**
-	 * Rosewood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE_OPEN = 60286;
+	public static final int DEADMAN_DUNGEON_INSIDEWALL = 60286;
 
 	/**
 	 * Notice board
@@ -77730,17 +76838,17 @@ class ObjectID1
 	public static final int CIVITAS_TABLE_RICH_1_SMALL1 = 60527;
 
 	/**
-	 * Red Coral
+	 * Red coral
 	 */
 	public static final int RED_CORAL01_1X1 = 60528;
 
 	/**
-	 * Red Coral
+	 * Red coral
 	 */
 	public static final int RED_CORAL01_2X2 = 60529;
 
 	/**
-	 * Red Coral
+	 * Red coral
 	 */
 	public static final int RED_CORAL01_3X2 = 60530;
 	public static final int BGSOUND_SAILING_STOMRY_SEAS_WATER_WIND_LOOP_01 = 60531;
@@ -77895,6 +77003,11 @@ class ObjectID1
 	public static final int XMAS25_TABLE01_EMPTY01 = 60576;
 
 	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT_NO_CARGO = 60577;
+
+	/**
 	 * Table
 	 */
 	public static final int XMAS25_TABLE01_DRINK01 = 60578;
@@ -77910,9 +77023,34 @@ class ObjectID1
 	public static final int XMAS25_TABLE01_VEGETABLE01 = 60580;
 
 	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT_CARGO = 60581;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_RAFT_NO_CARGO = 60582;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_RAFT_CARGO = 60583;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_RAFT_NO_CARGO = 60584;
+
+	/**
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_MIDDLE = 60585;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_RAFT_CARGO = 60586;
 
 	/**
 	 * Bar
@@ -77920,9 +77058,19 @@ class ObjectID1
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_MIDDLE2 = 60587;
 
 	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_RAFT_NO_CARGO = 60588;
+
+	/**
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_LEFT = 60589;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_RAFT_CARGO = 60590;
 
 	/**
 	 * Bar
@@ -77930,9 +77078,19 @@ class ObjectID1
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_RIGHT = 60591;
 
 	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_RAFT_NO_CARGO = 60592;
+
+	/**
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_BAR_MIDDLE = 60593;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_RAFT_CARGO = 60594;
 
 	/**
 	 * Bar
@@ -77940,9 +77098,19 @@ class ObjectID1
 	public static final int XMAS25_BLUE_INN_BAR_MIDDLE2 = 60595;
 
 	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_RAFT_NO_CARGO = 60596;
+
+	/**
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_BAR_MIDDLE3 = 60597;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_RAFT_CARGO = 60598;
 
 	/**
 	 * Bar
@@ -77953,6 +77121,41 @@ class ObjectID1
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_BAR_RIGHT = 60600;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_RAFT_NO_CARGO = 60601;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_RAFT_CARGO = 60602;
+
+	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_2X5_NO_CARGO = 60603;
+
+	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_2X5_CARGO = 60604;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_2X5_NO_CARGO = 60605;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_2X5_CARGO = 60606;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_2X5_NO_CARGO = 60607;
 
 	/**
 	 * Crate
@@ -78001,5 +77204,767 @@ class ObjectID1
 	 * Shellbane Gryphon display
 	 */
 	public static final int POH_DISPLAY_GRYPHON = 60619;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_2X5_CARGO = 60620;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_2X5_NO_CARGO = 60621;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_2X5_CARGO = 60622;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_2X5_NO_CARGO = 60623;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_2X5_CARGO = 60624;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_2X5_NO_CARGO = 60625;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_2X5_CARGO = 60626;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_2X5_NO_CARGO = 60627;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_2X5_CARGO = 60628;
+
+	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_LARGE_NO_CARGO = 60629;
+
+	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_LARGE_CARGO = 60630;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_LARGE_NO_CARGO = 60631;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_LARGE_CARGO = 60632;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_LARGE_NO_CARGO = 60633;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_LARGE_CARGO = 60634;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_LARGE_NO_CARGO = 60635;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_LARGE_CARGO = 60636;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_LARGE_NO_CARGO = 60637;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_LARGE_CARGO = 60638;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_LARGE_NO_CARGO = 60639;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_LARGE_CARGO = 60640;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE_NO_CARGO = 60641;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE_CARGO = 60642;
+	public static final int DEADMAN_DUNGEON_CORRIDORFILLER = 60643;
+	public static final int QUEST_START_ICON_LEARNINGTHEROPES = 60644;
+
+	/**
+	 * Diving bell
+	 */
+	public static final int TRR_DIVING_BELL = 60645;
+	public static final int BLACK_WALL02 = 60646;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEADMAN_WINDOW_BINGO_01 = 60647;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEADMAN_WINDOW_BINGO_02 = 60648;
+
+	/**
+	 * Shuttered window
+	 */
+	public static final int POH_DEADMAN_WINDOW_SHUTTERS = 60649;
+
+	/**
+	 * Decorative window
+	 */
+	public static final int POH_DEADMAN_WINDOW_BOB = 60650;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEADMAN_WINDOW_BOB2 = 60651;
+
+	/**
+	 * Decorative window
+	 */
+	public static final int POH_DEADMAN_WINDOW_GUTHIX = 60652;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEADMAN_WINDOW_GUTHIX2 = 60653;
+
+	/**
+	 * Decorative window
+	 */
+	public static final int POH_DEADMAN_WINDOW_SARADOMIN = 60654;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEADMAN_WINDOW_SARADOMIN2 = 60655;
+
+	/**
+	 * Decorative window
+	 */
+	public static final int POH_DEADMAN_WINDOW_ZAMORAK = 60656;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEADMAN_WINDOW_ZAMORAK2 = 60657;
+
+	/**
+	 * Decorative window
+	 */
+	public static final int POH_DEADMAN_WINDOW_GNOMECHILD = 60658;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEADMAN_WINDOW_GNOMECHILD2 = 60659;
+
+	/**
+	 * Window space
+	 */
+	public static final int POH_CHAPELWINDOW_HOTSPOT_DEADMAN = 60660;
+	public static final int DEADMAN_DUNGEON_INSIDEWALL_SIDER = 60661;
+	public static final int DEADMAN_DUNGEON_INSIDEWALL_SIDEL = 60662;
+
+	/**
+	 * Crane
+	 */
+	public static final int TRR_DIVING_BELL_CRANE = 60663;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_CORNER1_PURPLE = 60664;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_CORNER2_PURPLE = 60665;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_INVERSE_PURPLE = 60666;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_ROCK1_PURPLE = 60667;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_ROCK2_PURPLE = 60668;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_SIDE1_PURPLE = 60669;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_SIDE2_PURPLE = 60670;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_TOP1_PURPLE = 60671;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_TOP2_PURPLE = 60672;
+
+	/**
+	 * Coral
+	 */
+	public static final int _100_CORAL_LACE_TOP3_PURPLE = 60673;
+	public static final int TRR_ROCKS_BIG01 = 60674;
+	public static final int TRR_ROCKS_BIG02 = 60675;
+	public static final int OCEAN_OUTCROP_UNDERWATER01 = 60676;
+	public static final int OCEAN_OUTCROP_UNDERWATER02 = 60677;
+	public static final int OCEAN_OUTCROP_UNDERWATER03 = 60678;
+	public static final int OCEAN_OUTCROP_UNDERWATER04 = 60679;
+	public static final int CORAL_SEABED_LOW_WALL = 60680;
+
+	/**
+	 * Fountain
+	 */
+	public static final int FOUNTAIN_2X3 = 60681;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_TEAK = 60682;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_TEAK = 60683;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_TEAK = 60684;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_TEAK = 60685;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_TEAK = 60686;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_TEAK = 60687;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_MAHOGANY = 60688;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_MAHOGANY = 60689;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_MAHOGANY = 60690;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_MAHOGANY = 60691;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_MAHOGANY = 60692;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_MAHOGANY = 60693;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_MAHOGANY = 60694;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_MAHOGANY = 60695;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_CAMPHOR = 60696;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_CAMPHOR = 60697;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_CAMPHOR = 60698;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_CAMPHOR = 60699;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_CAMPHOR = 60700;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_CAMPHOR = 60701;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_CAMPHOR = 60702;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_CAMPHOR = 60703;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_IRONWOOD = 60704;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_IRONWOOD = 60705;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_IRONWOOD = 60706;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_IRONWOOD = 60707;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_IRONWOOD = 60708;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_IRONWOOD = 60709;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_IRONWOOD = 60710;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_IRONWOOD = 60711;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_ROSEWOOD = 60712;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_ROSEWOOD = 60713;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_ROSEWOOD = 60714;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_ROSEWOOD = 60715;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_ROSEWOOD = 60716;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_ROSEWOOD = 60717;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_ROSEWOOD = 60718;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_ROSEWOOD = 60719;
+
+	/**
+	 * Facility hotspot
+	 */
+	public static final int SAILING_BOAT_FACILITY_PLACEHOLDER_3X8_11 = 60720;
+
+	/**
+	 * Facility hotspot
+	 */
+	public static final int SAILING_BOAT_FACILITY_PLACEHOLDER_3X8_12 = 60721;
+
+	/**
+	 * Ballistic attractor
+	 */
+	public static final int SAILING_BALLISTIC_ATTRACTOR = 60722;
+	public static final int EASTER23_DAFFODIL_EDGE01 = 60723;
+	public static final int EASTER23_DAFFODIL_SCATTER01 = 60724;
+	public static final int EASTER23_DAFFODIL_SCATTER02 = 60725;
+	public static final int EASTER23_DAFFODIL_SCATTER03 = 60726;
+
+	/**
+	 * Crate
+	 */
+	public static final int EASTER23_CRATE_EASTEREGGS_FULL = 60727;
+
+	/**
+	 * Crate
+	 */
+	public static final int EASTER23_CRATE_EASTEREGGS_EMPTY = 60728;
+	public static final int EASTER23_EASTER_EGGS01 = 60729;
+	public static final int EASTER23_EASTER_EGGS02 = 60730;
+
+	/**
+	 * Ladder
+	 */
+	public static final int _25TH_LADDER_BOTTOM = 60731;
+
+	/**
+	 * Ladder
+	 */
+	public static final int _25TH_LADDER_TOP = 60732;
+	public static final int EASTER23_BUNTING01_POST01_VARIANT04 = 60733;
+	public static final int EASTER23_BUNTING01_POST01_VARIANT01 = 60734;
+	public static final int EASTER23_BUNTING01_MIDDLE01_VARIANT01 = 60735;
+	public static final int EASTER26_FIRST_CLUE = 60736;
+
+	/**
+	 * Note on a table
+	 */
+	public static final int EASTER26_FIRST_CLUE_WITH_CLUE = 60737;
+
+	/**
+	 * Table without a note
+	 */
+	public static final int EASTER26_FIRST_CLUE_WITHOUT_CLUE = 60738;
+	public static final int FAI_VARROCK_CHEMISTY_SHELVES1_EASTER26 = 60739;
+
+	/**
+	 * Shelves
+	 */
+	public static final int FAI_VARROCK_CHEMISTY_SHELVES1_WITHOUT_EGG = 60740;
+
+	/**
+	 * Shelves
+	 */
+	public static final int FAI_VARROCK_CHEMISTY_SHELVES1_WITH_EGG = 60741;
+	public static final int FAI_VARROCK_STEPLADDERS_EASTER26 = 60742;
+
+	/**
+	 * Stepladder
+	 */
+	public static final int FAI_VARROCK_STEPLADDERS_WITHOUT_EGG = 60743;
+
+	/**
+	 * Stepladder
+	 */
+	public static final int FAI_VARROCK_STEPLADDERS_WITH_EGG = 60744;
+
+	/**
+	 * Birthday Banner
+	 */
+	public static final int BIRTHDAY_BANNER01_YEAR_STANDING01 = 60745;
+	public static final int BIRTHDAY_BANNER01_YEAR_HANGING01 = 60746;
+	public static final int BIRTHDAY_BANNER01_YEAR_HANGING02 = 60747;
+	public static final int BIRTHDAY_BANNER01_YEAR_HANGING03 = 60748;
+	public static final int BIRTHDAY_BANNER01_YEAR_HANGING04 = 60749;
+	public static final int BIRTHDAY_BANNER01_YEAR_HANGING05 = 60750;
+	public static final int BIRTHDAY_BANNER01_YEAR_HANGING06 = 60751;
+	public static final int BIRTHDAY_BANNER01_ANNI25_HANGING01 = 60752;
+	public static final int BIRTHDAY_BANNER01_ANNI25_HANGING02 = 60753;
+	public static final int BIRTHDAY_BANNER01_ANNI25_HANGING03 = 60754;
+	public static final int BIRTHDAY_BANNER01_ANNI25_HANGING04 = 60755;
+
+	/**
+	 * Birthday Banner
+	 */
+	public static final int BIRTHDAY_BANNER01_ANNI25_STANDING01 = 60756;
+	public static final int BIRTHDAY_BUNTING01_MIDDLE01_OFFSET01 = 60757;
+	public static final int BIRTHDAY_BUNTING01_MIDDLE01_VARIANT02_CORNER = 60758;
+
+	/**
+	 * Web
+	 */
+	public static final int SARACHNIS_WEB_NOOP = 60759;
+
+	/**
+	 * Gate
+	 */
+	public static final int FENCEGATE_R_COWBOSS_START = 60760;
+
+	/**
+	 * Gate
+	 */
+	public static final int FENCEGATE_L_COWBOSS_START_NOOP = 60761;
+
+	/**
+	 * Gate
+	 */
+	public static final int FENCEGATE_R_COWBOSS_START_NOOP = 60762;
+
+	/**
+	 * Gate
+	 */
+	public static final int FENCEGATE_L_COWBOSS_START = 60763;
+
+	/**
+	 * Gate
+	 */
+	public static final int FENCEGATE_R_COWBOSS_EXIT = 60764;
+
+	/**
+	 * Gate
+	 */
+	public static final int FENCEGATE_L_COWBOSS_EXIT = 60765;
+	public static final int COWBOSS_SCOREBOARD_MULTI = 60766;
+
+	/**
+	 * Scoreboard
+	 */
+	public static final int COWBOSS_SCOREBOARD = 60767;
+
+	/**
+	 * Scoreboard
+	 */
+	public static final int COWBOSS_SCOREBOARD_UBER = 60768;
+
+	/**
+	 * Warning Sign
+	 */
+	public static final int COWBOSS_SIGN_WARNING = 60769;
+	public static final int COWBOSS_DEMONIC_POTATO_MULTI = 60770;
+
+	/**
+	 * Growth
+	 */
+	public static final int COWBOSS_DEMONIC_POTATO_NOOP = 60771;
+
+	/**
+	 * Growth
+	 */
+	public static final int COWBOSS_DEMONIC_POTATO = 60772;
+	public static final int BLOCKING_MILK = 60773;
+
+	/**
+	 * Trollheim Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_TROLLHEIM = 60774;
+
+	/**
+	 * Paddewwa Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_PADDEWWA = 60775;
+
+	/**
+	 * Lassar Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_LASSAR = 60776;
+
+	/**
+	 * Dareeyak Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_DAREEYAK = 60777;
+
+	/**
+	 * Ourania Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_OURANIA = 60778;
+
+	/**
+	 * Barbarian Outpost Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_BARBARIAN = 60779;
+
+	/**
+	 * Port Khazard Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_KHAZARD = 60780;
+
+	/**
+	 * Ice Plateau Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_ICEPLATEAU = 60781;
+
+	/**
+	 * Respawn Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_RESPAWN = 60782;
+
+	/**
+	 * Boat Portal
+	 */
+	public static final int POH_PORTAL_LEAGUE_5_BOAT = 60783;
+	public static final int QUEST_START_ICON_IDESOFMILK = 60784;
+
+	/**
+	 * Shelves
+	 */
+	public static final int COWQUEST_SETH_SHELF = 60785;
+	public static final int ARCHEDCAGE_BLACKBACKA_BOSS_L = 60786;
+	public static final int ARCHEDCAGE_BLACKBACKA_BOSS_R = 60787;
+
+	/**
+	 * Dairy cow
+	 */
+	public static final int FAT_COW_FAWEST = 60788;
+
+	/**
+	 * Portal
+	 */
+	public static final int POH_EXIT_PORTAL_WILDERNESS = 60789;
+
+	/**
+	 * Trollheim Portal
+	 */
+	public static final int POH_PORTAL_TEAK_TROLLHEIM = 60790;
+
+	/**
+	 * Paddewwa Portal
+	 */
+	public static final int POH_PORTAL_TEAK_PADDEWWA = 60791;
+
+	/**
+	 * Lassar Portal
+	 */
+	public static final int POH_PORTAL_TEAK_LASSAR = 60792;
+
+	/**
+	 * Dareeyak Portal
+	 */
+	public static final int POH_PORTAL_TEAK_DAREEYAK = 60793;
+
+	/**
+	 * Ourania Portal
+	 */
+	public static final int POH_PORTAL_TEAK_OURANIA = 60794;
+
+	/**
+	 * Barbarian Outpost Portal
+	 */
+	public static final int POH_PORTAL_TEAK_BARBARIAN = 60795;
+
+	/**
+	 * Port Khazard Portal
+	 */
+	public static final int POH_PORTAL_TEAK_KHAZARD = 60796;
+
+	/**
+	 * Ice Plateau Portal
+	 */
+	public static final int POH_PORTAL_TEAK_ICEPLATEAU = 60797;
+
+	/**
+	 * Respawn Portal
+	 */
+	public static final int POH_PORTAL_TEAK_RESPAWN = 60798;
+
+	/**
+	 * Boat Portal
+	 */
+	public static final int POH_PORTAL_TEAK_BOAT = 60799;
+
+	/**
+	 * Trollheim Portal
+	 */
+	public static final int POH_PORTAL_MAG_TROLLHEIM = 60800;
+
+	/**
+	 * Paddewwa Portal
+	 */
+	public static final int POH_PORTAL_MAG_PADDEWWA = 60801;
+
+	/**
+	 * Lassar Portal
+	 */
+	public static final int POH_PORTAL_MAG_LASSAR = 60802;
+
+	/**
+	 * Dareeyak Portal
+	 */
+	public static final int POH_PORTAL_MAG_DAREEYAK = 60803;
+
+	/**
+	 * Ourania Portal
+	 */
+	public static final int POH_PORTAL_MAG_OURANIA = 60804;
+
+	/**
+	 * Barbarian Outpost Portal
+	 */
+	public static final int POH_PORTAL_MAG_BARBARIAN = 60805;
+
+	/**
+	 * Port Khazard Portal
+	 */
+	public static final int POH_PORTAL_MAG_KHAZARD = 60806;
+
+	/**
+	 * Ice Plateau Portal
+	 */
+	public static final int POH_PORTAL_MAG_ICEPLATEAU = 60807;
+
+	/**
+	 * Respawn Portal
+	 */
+	public static final int POH_PORTAL_MAG_RESPAWN = 60808;
+
+	/**
+	 * Boat Portal
+	 */
+	public static final int POH_PORTAL_MAG_BOAT = 60809;
+
+	/**
+	 * Trollheim Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_TROLLHEIM = 60810;
+
+	/**
+	 * Paddewwa Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_PADDEWWA = 60811;
+
+	/**
+	 * Lassar Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_LASSAR = 60812;
+
+	/**
+	 * Dareeyak Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_DAREEYAK = 60813;
+
+	/**
+	 * Ourania Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_OURANIA = 60814;
+
+	/**
+	 * Barbarian Outpost Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_BARBARIAN = 60815;
+
+	/**
+	 * Port Khazard Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_KHAZARD = 60816;
+
+	/**
+	 * Ice Plateau Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_ICEPLATEAU = 60817;
+
+	/**
+	 * Respawn Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_RESPAWN = 60818;
+
+	/**
+	 * Boat Portal
+	 */
+	public static final int POH_PORTAL_MARBLE_BOAT = 60819;
+	public static final int BOATKIT_SHIPHULL_STRAIGHT01_DAMAGED_L = 60820;
+	public static final int BOATKIT_SHIPHULL_STRAIGHT01_DAMAGED_R = 60821;
+	public static final int BOATKIT_SHIPHULL_STRAIGHT01_DAMAGED_MID = 60822;
+	public static final int BOATKIT_DECK_STRAIGHT01_BROKEN01 = 60823;
+	public static final int BOATKIT_DECK_STRAIGHT01_BROKEN01_MIRROR = 60824;
+	public static final int FAI_VARROCK_CASTLE_BATTLEMENT_EASTER26 = 60825;
+
+	/**
+	 * Wall
+	 */
+	public static final int FAI_VARROCK_CASTLE_BATTLEMENT_WITHOUT_EGG = 60826;
+
+	/**
+	 * Wall
+	 */
+	public static final int FAI_VARROCK_CASTLE_BATTLEMENT_WITH_EGG = 60827;
+	public static final int FAI_VARROCK_SWORD_TABLE_EASTER26 = 60828;
+
+	/**
+	 * Table
+	 */
+	public static final int FAI_VARROCK_SWORD_TABLE_WITHOUT_EGG = 60829;
+
+	/**
+	 * Table
+	 */
+	public static final int FAI_VARROCK_SWORD_TABLE_WITH_EGG = 60830;
+	public static final int FAI_VARROCK_POSH_CHAIR2_EASTER26 = 60831;
+
+	/**
+	 * Oak chair
+	 */
+	public static final int FAI_VARROCK_POSH_CHAIR2_WITHOUT_EGG = 60832;
+
+	/**
+	 * Oak chair
+	 */
+	public static final int FAI_VARROCK_POSH_CHAIR2_WITH_EGG = 60833;
+	public static final int FAI_VARROCK_SINGLE_BED_EASTER26 = 60834;
+
+	/**
+	 * Bed
+	 */
+	public static final int FAI_VARROCK_SINGLE_BED_WITHOUT_EGG = 60835;
+
+	/**
+	 * Bed
+	 */
+	public static final int FAI_VARROCK_SINGLE_BED_WITH_EGG = 60836;
+	public static final int FAI_VARROCK_SUITOFARMOUR_EASTER26 = 60837;
+
+	/**
+	 * Suit of armour
+	 */
+	public static final int FAI_VARROCK_SUITOFARMOUR_WITHOUT_EGG = 60838;
+
+	/**
+	 * Suit of armour
+	 */
+	public static final int FAI_VARROCK_SUITOFARMOUR_WITH_EGG = 60839;
+
+	/**
+	 * Pipe
+	 */
+	public static final int KARAM_DUNGEON_PIPE_SOUTH = 60840;
+
+	/**
+	 * Pipe
+	 */
+	public static final int KARAM_DUNGEON_PIPE2_SOUTH = 60841;
+
+	/**
+	 * Bed
+	 */
+	public static final int ARDY_BIGBED3 = 60842;
+	public static final int ARDY_BEDSIDESHELF = 60843;
+	public static final int BURGH_STONE_CRUMBLY_LOW_LEFT_END = 60844;
+	public static final int CANOEING_CANOESTATION_CASTLE_WARS = 60845;
+	public static final int CANOEING_CANOESTATION_TREE_GNOME_VILLAGE = 60846;
+	public static final int CANOEING_CANOESTATION_ARDOUGNE_ZOO = 60847;
+	public static final int CANOEING_CANOESTATION_CHAOS_DRUID_TOWER = 60848;
+	public static final int CANOEING_CANOESTATION_TREE_GNOME_STRONGHOLD = 60849;
 /* This file is automatically generated. Do not edit. */
 }

@@ -32,7 +32,6 @@ import com.google.inject.Provides;
 import com.google.inject.binder.ConstantBindingBuilder;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
-import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -146,13 +145,6 @@ public class RuneLiteModule extends AbstractModule
 		bind(EventBus.class)
 			.annotatedWith(Names.named("Deferred EventBus"))
 			.to(DeferredEventBus.class);
-	}
-
-	@Provides
-	@Singleton
-	Applet provideApplet(Client client)
-	{
-		return (Applet) client;
 	}
 
 	@Provides

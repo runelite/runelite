@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.script;
+package net.runelite.client.plugins.grounditems;
 
-public class Instruction
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import lombok.Value;
+import net.runelite.client.util.WildcardMatcher;
+
+@Value
+class ItemList
 {
-	private final int opcode;
-	private String name;
+	static final int NONE = 0;
+	static final int WILDCARD = 1;
+	static final int EXACT = 2;
 
-	public Instruction(int opcode)
+	List<ItemThreshold> items;
+
+	ItemList(List<String> items)
 	{
-		this.opcode = opcode;
+		this.items = items.stream()
+			.map(ItemThreshold::fromName)
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
 	}
 
-	public int getOpcode()
+	int matches(GroundItem item)
 	{
-		return opcode;
-	}
+		for (ItemThreshold it : items)
+		{
+			if (!it.isWildcard()
+				&& it.getName().equalsIgnoreCase(item.getName())
+				&& it.quantityHolds(item.getQuantity()))
+			{
+				return EXACT;
+			}
+		}
 
-	public String getName()
-	{
-		return name;
-	}
+		for (ItemThreshold it : items)
+		{
+			if (it.isWildcard()
+				&& WildcardMatcher.matches(it.getName(), item.getName())
+				&& it.quantityHolds(item.getQuantity()))
+			{
+				return WILDCARD;
+			}
+		}
 
-	public void setName(String name)
-	{
-		this.name = name;
+		return NONE;
 	}
 }

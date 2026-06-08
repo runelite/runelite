@@ -56,6 +56,8 @@ public class InterfaceManager
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.INTERFACES);
 
+		loader.configureForRevision(index.getRevision());
+
 		int max = index.getArchives().stream().mapToInt(a -> a.getArchiveId()).max().getAsInt();
 		interfaces = new InterfaceDefinition[max + 1][];
 

@@ -31,6 +31,9 @@ import java.awt.Canvas;
  */
 public interface GameEngine
 {
+	void setConfiguration(ClientConfiguration configuration);
+	void initialize();
+
 	/**
 	 * Gets the canvas that contains everything.
 	 *

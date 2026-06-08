@@ -55,6 +55,11 @@ class AgilitySession
 
 		++totalLaps;
 
+		recalculateLapsTillGoal(client, xpTrackerService);
+	}
+
+	void recalculateLapsTillGoal(Client client, XpTrackerService xpTrackerService)
+	{
 		final int currentExp = client.getSkillExperience(Skill.AGILITY);
 		final int goalXp = xpTrackerService.getEndGoalXp(Skill.AGILITY);
 		final int goalRemainingXp = goalXp - currentExp;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.worldhopper.ping;
 
-import com.google.common.base.Strings;
-import com.google.common.cache.CacheLoader;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import net.runelite.client.util.WildcardMatcher;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.ptr.IntByReference;
 
-class WildcardMatchLoader extends CacheLoader<NamedQuantity, Boolean>
+interface Ws2_32 extends Library
 {
-	private final List<ItemThreshold> itemThresholds;
+	Ws2_32 INSTANCE = Native.loadLibrary("Ws2_32", Ws2_32.class);
 
-	WildcardMatchLoader(List<String> configEntries)
-	{
-		this.itemThresholds = configEntries.stream()
-			.map(ItemThreshold::fromConfigEntry)
-			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
-	}
+	int SIO_TCP_INFO = 0xD800_0027;
 
-	@Override
-	public Boolean load(@Nonnull final NamedQuantity key)
-	{
-		if (Strings.isNullOrEmpty(key.getName()))
-		{
-			return false;
-		}
-
-		final String filteredName = key.getName().trim();
-
-		for (final ItemThreshold entry : itemThresholds)
-		{
-			if (WildcardMatcher.matches(entry.getItemName(), filteredName)
-				&& entry.quantityHolds(key.getQuantity()))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
+	int WSAIoctl(WinNT.HANDLE socket, int dwIoControlCode, Pointer lpvInBuffer, int cbInBuffer, Pointer lpvOutBuffer, int cbOutBuffer, IntByReference lpcbBytesReturned, Pointer lpOverlapped, Pointer lpCompletionRoutine);
 }

@@ -1,5 +1,6 @@
 .id                       5517
 .int_arg_count            4
+.long_arg_count           0
 .obj_arg_count            1
    get_varbit             4394
    iconst                 1

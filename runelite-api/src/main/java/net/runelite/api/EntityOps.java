@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, dekvall <https://github.com/dekvall>
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.api;
 
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import javax.annotation.Nullable;
 
-@Value
-@RequiredArgsConstructor
-class NamedQuantity
+/**
+ * Menu options on a TileObject or NPC
+ */
+public interface EntityOps
 {
-	private final String name;
-	private final int quantity;
+	int MAX_OPS = 5;
 
-	NamedQuantity(GroundItem groundItem)
-	{
-		this(groundItem.getName(), groundItem.getQuantity());
-	}
+	@Nullable
+	String getOp(int idx);
+
+	int getNumSubOps(int idx);
+
+	int getSubID(int idx, int subIdx);
+
+	@Nullable
+	String getSubOp(int idx, int subIdx);
 }

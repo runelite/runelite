@@ -373,3 +373,90 @@ r 49 81
 // king black dragon lair
 n
 r 35 73
+
+// evil twin random
+n
+r 29 80
+
+// surprise exam random
+n
+r 29 78
+
+// beekeeper random
+n
+m 30 78
+C 0 4 3 7
+
+// gravedigger random
+n
+m 30 78
+C 0 0 3 3
+
+// pinball random
+n
+m 30 78
+C 4 4 7 7
+
+// giant mole lair
+n
+R 27 80 27 81
+
+// robert the strong battle (ds2)
+n
+r 28 81
+
+// ancient cavern (ds2)
+n
+R 25 82 25 83
+
+// dream mentor battle
+//n
+r 28 80
+
+// dream world puzzles (lunar diplomacy)
+n
+r 27 79
+
+// dream world battle (lunar diplomacy)
+n
+r 28 79
+
+// varrock museum basement
+n
+r 27 77
+
+// barrows
+n
+r 55 151
+
+// shade catacombs
+n
+r 54 151
+
+// trollweiss dungeon
+n
+r 43 159
+
+// lamistard's tunnels (curse of arrav)
+n
+r 43 160
+
+// koschei the deathless fight (fremennik trials)
+n
+r 41 157
+
+// the kendal's cave (mountain daughter)
+n
+r 43 157
+
+// polar eagle cave
+n
+r 42 159
+
+// brine rat cavern
+n
+r 42 158
+
+// keldagrim tunnel
+n
+r 43 158

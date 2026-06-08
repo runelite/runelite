@@ -32,9 +32,13 @@ public interface EnumComposition
 
 	int[] getIntVals();
 
+	long[] getLongVals();
+
 	String[] getStringVals();
 
 	int getIntValue(int key);
 
 	String getStringValue(int key);
+
+	long getLongValue(int key);
 }

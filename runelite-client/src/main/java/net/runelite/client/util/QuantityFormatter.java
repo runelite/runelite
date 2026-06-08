@@ -24,6 +24,7 @@
  */
 package net.runelite.client.util;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -49,15 +50,24 @@ public class QuantityFormatter
 
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance(Locale.ENGLISH);
 
-	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat(
-		"#,###.#",
-		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
-	);
+	private static final NumberFormat DECIMAL_FORMATTER;
 
-	private static final NumberFormat PRECISE_DECIMAL_FORMATTER = new DecimalFormat(
-		"#,###.###",
-		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
-	);
+	private static final NumberFormat PRECISE_DECIMAL_FORMATTER;
+
+	static
+	{
+		DECIMAL_FORMATTER = new DecimalFormat(
+			"#,###.#",
+			DecimalFormatSymbols.getInstance(Locale.ENGLISH)
+		);
+		DECIMAL_FORMATTER.setRoundingMode(RoundingMode.FLOOR);
+
+		PRECISE_DECIMAL_FORMATTER = new DecimalFormat(
+			"#,###.###",
+			DecimalFormatSymbols.getInstance(Locale.ENGLISH)
+		);
+		PRECISE_DECIMAL_FORMATTER.setRoundingMode(RoundingMode.FLOOR);
+	}
 
 	/**
 	 * Convert a quantity to a short, comma separated, SI-prefix style string

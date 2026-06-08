@@ -1,5 +1,6 @@
 .id                       2091
 .int_arg_count            2
+.long_arg_count           0
 .obj_arg_count            0
    iload                  0 ; stat
    iload                  1 ; xp

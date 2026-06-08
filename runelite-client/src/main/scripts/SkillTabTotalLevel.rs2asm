@@ -1,5 +1,6 @@
 .id                       396
 .int_arg_count            2
+.long_arg_count           0
 .obj_arg_count            0
    invoke                 1007
    istore                 2

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.worldhopper.ping;
 
-import lombok.Data;
-
-/**
- * Called every game cycle the client is dragging a widget on
- * the cursor.
- */
-@Data
-public class DraggingWidgetChanged
+public interface TCPInfo
 {
 	/**
-	 * Whether a widget is currently being dragged.
+	 * Round trip time in µs
 	 */
-	private boolean draggingWidget;
+	long getRTT();
+
+	long getTransmitted();
+	long getRetransmitted();
 }

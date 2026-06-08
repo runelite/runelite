@@ -34,16 +34,16 @@ public class ItemThresholdTest
 	@Test
 	public void test()
 	{
-		Assert.assertEquals(ItemThreshold.fromConfigEntry("Dharok's platebody 100"), new ItemThreshold("Dharok's platebody 100", 0, MORE_THAN));
-		Assert.assertEquals(ItemThreshold.fromConfigEntry("Dharok's platebody 100<100"), new ItemThreshold("Dharok's platebody 100", 100, LESS_THAN));
-		Assert.assertEquals(ItemThreshold.fromConfigEntry("Dharok's platebody > 100"), new ItemThreshold("Dharok's platebody", 100, MORE_THAN));
-		Assert.assertEquals(ItemThreshold.fromConfigEntry("Dharok's platebody < 10 0"), new ItemThreshold("Dharok's platebody", 0, MORE_THAN));
+		Assert.assertEquals(ItemThreshold.fromName("Dharok's platebody 100"), new ItemThreshold("Dharok's platebody 100", 0, MORE_THAN, false));
+		Assert.assertEquals(ItemThreshold.fromName("Dharok's platebody 100<100"), new ItemThreshold("Dharok's platebody 100", 100, LESS_THAN, false));
+		Assert.assertEquals(ItemThreshold.fromName("Dharok's platebody > 100"), new ItemThreshold("Dharok's platebody", 100, MORE_THAN, false));
+		Assert.assertEquals(ItemThreshold.fromName("Dharok's platebody < 10 0"), new ItemThreshold("Dharok's platebody", 0, MORE_THAN, false));
 	}
 
 	@Test(timeout = 100)
 	public void testExplosive()
 	{
 		String name = "archer" + Strings.repeat('e', 50000) + "s ring";
-		Assert.assertEquals(ItemThreshold.fromConfigEntry(name + " < 387"), new ItemThreshold(name, 387, LESS_THAN));
+		Assert.assertEquals(ItemThreshold.fromName(name + " < 387"), new ItemThreshold(name, 387, LESS_THAN, false));
 	}
 }

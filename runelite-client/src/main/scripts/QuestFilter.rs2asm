@@ -1,5 +1,6 @@
 .id                       3238
 .int_arg_count            8
+.long_arg_count           0
 .obj_arg_count            0
    iload                  0
    iconst                 48

@@ -155,8 +155,9 @@ public class FairyRingPlugin extends Plugin
 		if (widget != null)
 		{
 			client.setVarcStrValue(VarClientID.MESLAYERINPUT, "");
-			client.createScriptEvent(widget.getOnOpListener())
+			client.createScriptEventBuilder(widget.getOnOpListener())
 				.setOp(1)
+				.build()
 				.run();
 		}
 	}

@@ -1,5 +1,6 @@
 .id                       39
 .int_arg_count            1
+.long_arg_count           0
 .obj_arg_count            0
    iconst                 1
    iconst                 0

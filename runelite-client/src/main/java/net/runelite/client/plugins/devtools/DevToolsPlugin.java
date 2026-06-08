@@ -493,6 +493,16 @@ public class DevToolsPlugin extends Plugin
 				player.getPlayerComposition().setHash();
 				break;
 			}
+			case "zsort":
+			{
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().getEquipmentIds()[KitType.AMULET.getIndex()] = ItemID.ENCHANTED_ONYX_AMULET + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.SKILLCAPE_CONSTRUCTION + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = ItemID.TORVA_CHEST + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = ItemID.BARROWS_AHRIM_LEGS + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().setHash();
+				break;
+			}
 			case "sound":
 			{
 				int id = Integer.parseInt(args[0]);

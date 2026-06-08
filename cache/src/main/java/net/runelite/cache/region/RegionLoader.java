@@ -43,7 +43,7 @@ import net.runelite.cache.util.KeyProvider;
 @Slf4j
 public class RegionLoader
 {
-	private static final int MAX_REGION = 32768;
+	private static final int MAX_REGION = 25287;
 
 	private final Store store;
 	private final Index index;
@@ -80,34 +80,93 @@ public class RegionLoader
 		}
 	}
 
-	public Region loadRegionFromArchive(int i) throws IOException
+	public MapDefinition loadMapDef(int i) throws IOException
 	{
 		int x = i >> 8;
 		int y = i & 0xFF;
 
 		Storage storage = store.getStorage();
-		Archive map = index.findArchiveByName("m" + x + "_" + y);
-		Archive land = index.findArchiveByName("l" + x + "_" + y);
+		byte[] data;
+		if (index.isNamed())
+		{
+			Archive map = index.findArchiveByName("m" + x + "_" + y);
+			if (map == null)
+			{
+				return null;
+			}
 
-		assert (map == null) == (land == null);
+			data = map.decompress(storage.loadArchive(map));
+		}
+		else
+		{
+			Archive archive = index.getArchive(i);
+			if (archive == null)
+			{
+				return null;
+			}
 
-		if (map == null || land == null)
+			data = archive.getFiles(storage.loadArchive(archive))
+				.findFile(0)
+				.getContents();
+		}
+
+		return new MapLoader().load(x, y, data);
+	}
+
+	public LocationsDefinition loadLocDef(int i) throws IOException
+	{
+		int x = i >> 8;
+		int y = i & 0xFF;
+
+		Storage storage = store.getStorage();
+		byte[] data;
+		if (index.isNamed())
+		{
+			Archive locs = index.findArchiveByName("l" + x + "_" + y);
+			if (locs == null)
+			{
+				return null;
+			}
+
+			int[] keys = keyProvider.getKey(i);
+			if (keys == null)
+			{
+				return null;
+			}
+
+			data = locs.decompress(storage.loadArchive(locs), keys);
+		}
+		else
+		{
+			Archive archive = index.getArchive(i);
+			if (archive == null)
+			{
+				return null;
+			}
+
+			data = archive.getFiles(storage.loadArchive(archive))
+				.findFile(1)
+				.getContents();
+		}
+
+		return new LocationsLoader().load(x, y, data);
+	}
+
+	public Region loadRegionFromArchive(int i) throws IOException
+	{
+		var mapDef = loadMapDef(i);
+		var locDef = loadLocDef(i);
+
+		if (mapDef == null)
 		{
 			return null;
 		}
 
-		byte[] data = map.decompress(storage.loadArchive(map));
-
-		MapDefinition mapDef = new MapLoader().load(x, y, data);
-
 		Region region = new Region(i);
 		region.loadTerrain(mapDef);
 
-		int[] keys = keyProvider.getKey(i);
-		if (keys != null)
+		if (locDef != null)
 		{
-			data = land.decompress(storage.loadArchive(land), keys);
-			LocationsDefinition locDef = new LocationsLoader().load(x, y, data);
 			region.loadLocations(locDef);
 		}
 

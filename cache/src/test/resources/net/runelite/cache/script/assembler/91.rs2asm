@@ -1,5 +1,6 @@
 .id                       91
 .int_arg_count            2
+.long_arg_count           0
 .obj_arg_count            1
    iload                  0
    switch                
