@@ -98,25 +98,23 @@ class SnapCorner
 	}
 
 	// get position to draw the next overlay
-	Point getNextDrawPosition(Rectangle bounds)
+	void getNextDrawPosition(Rectangle bounds, Point out)
 	{
-		Point result = new Point(px, py);
+		out.setLocation(px, py);
 
 		if ((mode & ALIGNMENT_CENTER_HORIZONTAL) != 0)
 		{
-			result.x -= bounds.width / 2;
+			out.x -= bounds.width / 2;
 		}
 		else if ((mode & ALIGNMENT_RIGHT) != 0)
 		{
-			result.x -= bounds.width;
+			out.x -= bounds.width;
 		}
 
 		if ((mode & ALIGNMENT_BOTTOM) != 0)
 		{
-			result.y -= bounds.height;
+			out.y -= bounds.height;
 		}
-
-		return result;
 	}
 
 	Rectangle corner(Dimension size)
