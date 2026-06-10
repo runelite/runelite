@@ -271,7 +271,7 @@ class WorldSwitcherPanel extends PluginPanel
 					break;
 			}
 
-			if (!regionFilterMode.isEmpty() && !regionFilterMode.contains(RegionFilterMode.of(world.getRegion())))
+			if (!regionFilterMode.isEmpty() && world.getRegion() != null && !regionFilterMode.contains(RegionFilterMode.of(world.getRegion())))
 			{
 				continue;
 			}

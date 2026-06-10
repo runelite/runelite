@@ -87225,7 +87225,7 @@ public final class ItemID
 	public static final int TOXIC_TOTS_I_CHARGED_ORN = 33318;
 
 	/**
-	 * Uncharged toxic trident (e)
+	 * Uncharged toxic trident (e) (o)
 	 */
 	public static final int TOXIC_TOTS_I_UNCHARGED_ORN = 33320;
 
@@ -87250,7 +87250,7 @@ public final class ItemID
 	public static final int TOTS_I_UNCHARGED_ORN = 33328;
 
 	/**
-	 * Iban's staff
+	 * Iban's staff (o)
 	 */
 	public static final int IBAN_STAFF_ORN = 33330;
 
@@ -87260,7 +87260,7 @@ public final class ItemID
 	public static final int IBAN_STAFF_UPGRADED_ORN = 33332;
 
 	/**
-	 * Iban's staff (o)
+	 * Iban's staff (b)(o)
 	 */
 	public static final int BROKEN_IBAN_STAFF_ORN = 33333;
 
@@ -87270,12 +87270,12 @@ public final class ItemID
 	public static final int SOULREAPER_AXE_ORN = 33335;
 
 	/**
-	 * Demonic slayer helmet
+	 * Oathplate slayer helmet
 	 */
 	public static final int LEAGUE_6_SLAYER_HELM1 = 33338;
 
 	/**
-	 * Demonic slayer helmet
+	 * Radiant slayer helmet
 	 */
 	public static final int LEAGUE_6_SLAYER_HELM2 = 33340;
 
@@ -87320,7 +87320,7 @@ public final class ItemID
 	public static final int LEAGUE_6_BRONZE_TROPHY = 33357;
 
 	/**
-	 * Impish ritual kit
+	 * Impish ritual scroll
 	 */
 	public static final int LEAGUE_6_RITUAL_KIT = 33359;
 
@@ -87352,6 +87352,188 @@ public final class ItemID
 	public static final int TRANSMUTE_UPGRADE = 33375;
 	public static final int TRANSMUTE_DOWNGRADE = 33376;
 	public static final int FANG_OF_THE_HOUND_FIRE = 33377;
+
+	/**
+	 * Incoming damage modifier
+	 */
+	public static final int NOSAVE_WORLD_INCOMING_PRAYER_DAMAGE_MODIFIER = 33378;
+
+	/**
+	 * Incoming damage clamping
+	 */
+	public static final int NOSAVE_WORLD_DAMAGE_CLAMPING = 33380;
+
+	/**
+	 * Immaculate mole skin
+	 */
+	public static final int IMMACULATE_MOLE_SKIN = 33382;
+
+	/**
+	 * Gem pouch
+	 */
+	public static final int GEM_POUCH = 33384;
+
+	/**
+	 * Open gem pouch
+	 */
+	public static final int GEM_POUCH_OPEN = 33386;
+
+	/**
+	 * Gem satchel
+	 */
+	public static final int GEM_SATCHEL = 33387;
+
+	/**
+	 * Open gem satchel
+	 */
+	public static final int GEM_SATCHEL_OPEN = 33389;
+
+	/**
+	 * Gem tote
+	 */
+	public static final int GEM_TOTE = 33390;
+
+	/**
+	 * Open gem tote
+	 */
+	public static final int GEM_TOTE_OPEN = 33392;
+
+	/**
+	 * Gem sack
+	 */
+	public static final int GEM_SACK = 33393;
+
+	/**
+	 * Open gem sack
+	 */
+	public static final int GEM_SACK_OPEN = 33395;
+
+	/**
+	 * Null
+	 */
+	public static final int INCENDIARY_DATA = 33396;
+	public static final int BRONZE_CANNONBALL_SIDEPANEL = 33397;
+	public static final int IRON_CANNONBALL_SIDEPANEL = 33398;
+	public static final int MCANNONBALL_SIDEPANEL = 33399;
+	public static final int MITHRIL_CANNONBALL_SIDEPANEL = 33400;
+	public static final int ADAMANT_CANNONBALL_SIDEPANEL = 33401;
+	public static final int RUNE_CANNONBALL_SIDEPANEL = 33402;
+	public static final int DRAGON_CANNONBALL_SIDEPANEL = 33403;
+
+	/**
+	 * Granite cannonball
+	 */
+	public static final int GRANITE_CANNONBALL_SIDEPANEL = 33404;
+	public static final int BRONZE_CHAINSHOT_CANNONBALL_SIDEPANEL = 33406;
+	public static final int IRON_CHAINSHOT_CANNONBALL_SIDEPANEL = 33407;
+	public static final int STEEL_CHAINSHOT_CANNONBALL_SIDEPANEL = 33408;
+	public static final int MITHRIL_CHAINSHOT_CANNONBALL_SIDEPANEL = 33409;
+	public static final int ADAMANT_CHAINSHOT_CANNONBALL_SIDEPANEL = 33410;
+	public static final int RUNE_CHAINSHOT_CANNONBALL_SIDEPANEL = 33411;
+	public static final int DRAGON_CHAINSHOT_CANNONBALL_SIDEPANEL = 33412;
+	public static final int BRONZE_INCENDIARY_CANNONBALL_SIDEPANEL = 33413;
+	public static final int IRON_INCENDIARY_CANNONBALL_SIDEPANEL = 33414;
+	public static final int STEEL_INCENDIARY_CANNONBALL_SIDEPANEL = 33415;
+	public static final int MITHRIL_INCENDIARY_CANNONBALL_SIDEPANEL = 33416;
+	public static final int ADAMANT_INCENDIARY_CANNONBALL_SIDEPANEL = 33417;
+	public static final int RUNE_INCENDIARY_CANNONBALL_SIDEPANEL = 33418;
+	public static final int DRAGON_INCENDIARY_CANNONBALL_SIDEPANEL = 33419;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_SKILLGUIDE_BOSUNS_WORKBENCH = 33420;
+
+	/**
+	 * Recoloured sail
+	 */
+	public static final int SAILING_SKILLGUIDE_RECOLOURED_SAIL = 33421;
+
+	/**
+	 * Dyes
+	 */
+	public static final int SAILING_SKILLGUIDE_MYSTERY_DYES = 33422;
+
+	/**
+	 * Bosun's workbench schematic
+	 */
+	public static final int LOST_SCHEMATIC_BOSUNS_WORKBENCH = 33423;
+
+	/**
+	 * Mission totem
+	 */
+	public static final int DEADMAN_ALL_STAR_MISSION_TOTEM = 33424;
+
+	/**
+	 * Spectator oculus
+	 */
+	public static final int SPECTATOR_OCULUS = 33427;
+
+	/**
+	 * Trinket of vengeance (2)
+	 */
+	public static final int MAGIC_ROCK_OF_VENGEANCE_2_USE = 33428;
+
+	/**
+	 * Trinket of vengeance (1)
+	 */
+	public static final int MAGIC_ROCK_OF_VENGEANCE_1_USE = 33431;
+
+	/**
+	 * Uncharged trident (o)
+	 */
+	public static final int TOTS_UNCHARGED_ORN = 33434;
+	public static final int POH_DUMMY_THRONE_8 = 33436;
+
+	/**
+	 * Sulphurous fertiliser
+	 */
+	public static final int BUCKET_SULPHUROUS_FERTILISER = 33437;
+
+	/**
+	 * Oathplate slayer helmet (i)
+	 */
+	public static final int LEAGUE_6_SLAYER_HELM1_I = 33439;
+
+	/**
+	 * Oathplate slayer helmet (i)
+	 */
+	public static final int SW_LEAGUE_6_SLAYER_HELM1_I = 33441;
+
+	/**
+	 * Oathplate slayer helmet (i)
+	 */
+	public static final int PVPA_LEAGUE_6_SLAYER_HELM1_I = 33443;
+
+	/**
+	 * Radiant slayer helmet (i)
+	 */
+	public static final int LEAGUE_6_SLAYER_HELM2_I = 33445;
+
+	/**
+	 * Radiant slayer helmet (i)
+	 */
+	public static final int SW_LEAGUE_6_SLAYER_HELM2_I = 33447;
+
+	/**
+	 * Radiant slayer helmet (i)
+	 */
+	public static final int PVPA_LEAGUE_6_SLAYER_HELM2_I = 33449;
+
+	/**
+	 * Demonic pacts relic hunter (t1) armour set
+	 */
+	public static final int SET_LEAGUE_6_RELICHUNTER_T1 = 33451;
+
+	/**
+	 * Demonic pacts relic hunter (t2) armour set
+	 */
+	public static final int SET_LEAGUE_6_RELICHUNTER_T2 = 33454;
+
+	/**
+	 * Demonic pacts relic hunter (t3) armour set
+	 */
+	public static final int SET_LEAGUE_6_RELICHUNTER_T3 = 33457;
 
 	public static final class Cert
 	{
@@ -91978,16 +92160,17 @@ public final class ItemID
 		public static final int DEMONIC_AXE_ORNAMENT_KIT = 33306;
 		public static final int DEMONIC_STAFF_ORNAMENT_KIT = 33309;
 		public static final int DEMONIC_TRIDENT_ORNAMENT_KIT = 33312;
-		public static final int TOXIC_TOTS_UNCHARGED_ORN = 33317;
-		public static final int TOXIC_TOTS_I_UNCHARGED_ORN = 33321;
-		public static final int TOTS_ORN = 33324;
-		public static final int TOTS_I_UNCHARGED_ORN = 33329;
-		public static final int SOULREAPER_AXE_ORN = 33336;
 		public static final int LEAGUE_6_DEMONIC_QUILL = 33343;
 		public static final int LEAGUE_6_RITUAL_KIT = 33360;
 		public static final int LEAGUE_6_THRONE = 33363;
 		public static final int LEAGUE_6_THRALL_CONTRACT = 33366;
 		public static final int LEAGUE_6_BUTLER_SCROLL = 33369;
+		public static final int DEADMAN_ALL_STAR_MISSION_TOTEM = 33425;
+		public static final int MAGIC_ROCK_OF_VENGEANCE_2_USE = 33429;
+		public static final int MAGIC_ROCK_OF_VENGEANCE_1_USE = 33432;
+		public static final int SET_LEAGUE_6_RELICHUNTER_T1 = 33452;
+		public static final int SET_LEAGUE_6_RELICHUNTER_T2 = 33455;
+		public static final int SET_LEAGUE_6_RELICHUNTER_T3 = 33458;
 	}
 
 	public static final class Placeholder
@@ -101530,6 +101713,28 @@ public final class ItemID
 		public static final int LEAGUE_6_THRALL_CONTRACT = 33367;
 		public static final int LEAGUE_6_BUTLER_SCROLL = 33370;
 		public static final int GRACE_HOTFOOT = 33372;
+		public static final int NOSAVE_WORLD_INCOMING_PRAYER_DAMAGE_MODIFIER = 33379;
+		public static final int NOSAVE_WORLD_DAMAGE_CLAMPING = 33381;
+		public static final int IMMACULATE_MOLE_SKIN = 33383;
+		public static final int GEM_POUCH = 33385;
+		public static final int GEM_SATCHEL = 33388;
+		public static final int GEM_TOTE = 33391;
+		public static final int GEM_SACK = 33394;
+		public static final int GRANITE_CANNONBALL_SIDEPANEL = 33405;
+		public static final int DEADMAN_ALL_STAR_MISSION_TOTEM = 33426;
+		public static final int MAGIC_ROCK_OF_VENGEANCE_2_USE = 33430;
+		public static final int MAGIC_ROCK_OF_VENGEANCE_1_USE = 33433;
+		public static final int TOTS_UNCHARGED_ORN = 33435;
+		public static final int BUCKET_SULPHUROUS_FERTILISER = 33438;
+		public static final int LEAGUE_6_SLAYER_HELM1_I = 33440;
+		public static final int SW_LEAGUE_6_SLAYER_HELM1_I = 33442;
+		public static final int PVPA_LEAGUE_6_SLAYER_HELM1_I = 33444;
+		public static final int LEAGUE_6_SLAYER_HELM2_I = 33446;
+		public static final int SW_LEAGUE_6_SLAYER_HELM2_I = 33448;
+		public static final int PVPA_LEAGUE_6_SLAYER_HELM2_I = 33450;
+		public static final int SET_LEAGUE_6_RELICHUNTER_T1 = 33453;
+		public static final int SET_LEAGUE_6_RELICHUNTER_T2 = 33456;
+		public static final int SET_LEAGUE_6_RELICHUNTER_T3 = 33459;
 	}
 /* This file is automatically generated. Do not edit. */
 }

@@ -1172,6 +1172,10 @@ public class LootTrackerPlugin extends Plugin
 		{
 			countChangedItems(ItemID.DIRTY_ARROWTIPS, client.getBoostedSkillLevel(Skill.FLETCHING));
 		}
+		else if (message.equals("You crack open the rubium geode and obtain some rubium splinters."))
+		{
+			countChangedItems(ItemID.RUBIUM_GEODE, client.getBoostedSkillLevel(Skill.MINING));
+		}
 	}
 
 	private void countChangedItems(int itemId, Object metadata)

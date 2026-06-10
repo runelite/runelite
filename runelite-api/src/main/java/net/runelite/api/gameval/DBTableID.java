@@ -4170,7 +4170,6 @@ public final class DBTableID
 			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_REVERSED = 3511;
 			public static final int VMQ3_TOWER_LOCK_DATASET_ALPHABETIC = 3783;
 			public static final int COMBINATION_LOCK_DATASET_VMQ4_JANUS_LOCK = 5195;
-			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_EASTER26 = 13320;
 		}
 	}
 
@@ -5873,6 +5872,10 @@ public final class DBTableID
 			public static final int MUSIC_GREAT_CONCH_UNDERGROUND = 7095;
 			public static final int MUSIC_SCAPE_SAIL = 7096;
 			public static final int MUSIC_BRUTUS_COW_BOSS = 8662;
+			public static final int MUSIC_SAILING_COMBAT = 16223;
+			public static final int MUSIC_RED_ROCK_ISLAND = 16224;
+			public static final int MUSIC_RED_REEFS_UNDERWATER = 16225;
+			public static final int MUSIC_SAILING_COMBAT_02 = 16226;
 		}
 	}
 
@@ -7083,6 +7086,9 @@ public final class DBTableID
 			public static final int VENGEANCE_ANIM_TOGGLE_LIST = 4094;
 			public static final int ALCHEMY_ANIM_TOGGLE_LIST = 4095;
 			public static final int NPC_CONTACT_ANIM_TOGGLE_LIST = 4096;
+			public static final int RESURRECTION_COSMETIC_TOGGLE_LIST_ZOMBIE = 8114;
+			public static final int RESURRECTION_COSMETIC_TOGGLE_LIST_SKELETON = 8115;
+			public static final int RESURRECTION_COSMETIC_TOGGLE_LIST_GHOST = 8116;
 		}
 	}
 
@@ -9219,6 +9225,7 @@ public final class DBTableID
 			public static final int POH_TROPHY_BLUEFIN = 7126;
 			public static final int POH_TROPHY_MARLIN = 7127;
 			public static final int POH_GARDEN_CENTREPIECE_6 = 9654;
+			public static final int POH_THRONE_8 = 16324;
 		}
 	}
 
@@ -10065,60 +10072,8 @@ public final class DBTableID
 			public static final int NIEVE_AQUANITES = 9411;
 			public static final int NIEVE_FROST_DRAGONS = 9412;
 			public static final int VANNAKA_GRYPHONS = 9413;
-			public static final int LEAGUES_BOSS = 16206;
-			public static final int LEAGUES_CRABS = 16207;
 			public static final int LEAGUES_COWS = 16208;
-			public static final int LEAGUES_GOBLINS = 16209;
 			public static final int LEAGUES_BIRDS = 16210;
-			public static final int LEAGUES_HILLGIANTS = 16211;
-			public static final int LEAGUES_MOSSGIANTS = 16212;
-			public static final int LEAGUES_FIREGIANTS = 16213;
-			public static final int LEAGUES_ANKOU = 16214;
-			public static final int LEAGUES_ABYSSALDEMONS = 16215;
-			public static final int LEAGUES_TZHAAR = 16216;
-			public static final int LEAGUES_LESSERDEMONS = 16217;
-			public static final int LEAGUES_GREATERDEMONS = 16218;
-			public static final int LEAGUES_BLACKDEMONS = 16219;
-			public static final int LEAGUES_TROLLS = 16220;
-			public static final int LEAGUES_GREENDRAGONS = 16221;
-			public static final int LEAGUES_BLUEDRAGONS = 16222;
-			public static final int LEAGUES_REDDRAGONS = 16223;
-			public static final int LEAGUES_BLACKDRAGONS = 16224;
-			public static final int LEAGUES_LAVADRAGONS = 16225;
-			public static final int LEAGUES_DRAKES = 16226;
-			public static final int LEAGUES_WYRMS = 16227;
-			public static final int LEAGUES_HYDRAS = 16228;
-			public static final int LEAGUES_HELLHOUNDS = 16229;
-			public static final int LEAGUES_SKELETALWYVERNS = 16230;
-			public static final int LEAGUES_OGRES = 16231;
-			public static final int LEAGUES_CHAOSDRUIDS = 16232;
-			public static final int LEAGUES_CAVEKRAKEN = 16233;
-			public static final int LEAGUES_SMOKEDEVIL = 16234;
-			public static final int LEAGUES_KALPHITE = 16235;
-			public static final int LEAGUES_DUSTDEVILS = 16236;
-			public static final int LEAGUES_PYREFIENDS = 16237;
-			public static final int LEAGUES_BANDITS = 16238;
-			public static final int LEAGUES_DAGANNOTH = 16239;
-			public static final int LEAGUES_COCKATRICE = 16240;
-			public static final int LEAGUES_JELLIES = 16241;
-			public static final int LEAGUES_BASILISKS = 16242;
-			public static final int LEAGUES_TUROTH = 16243;
-			public static final int LEAGUES_KURASK = 16244;
-			public static final int LEAGUES_BANSHEES = 16245;
-			public static final int LEAGUES_VAMPYRES = 16246;
-			public static final int LEAGUES_BLOODVELD = 16247;
-			public static final int LEAGUES_CAVEHORRORS = 16248;
-			public static final int LEAGUES_GARGOYLES = 16249;
-			public static final int LEAGUES_NECHRYAEL = 16250;
-			public static final int LEAGUES_ARAXYTES = 16251;
-			public static final int LEAGUES_ELVES = 16252;
-			public static final int LEAGUES_WATERFIENDS = 16253;
-			public static final int LEAGUES_DARKBEASTS = 16254;
-			public static final int LEAGUES_REVENANTS = 16255;
-			public static final int LEAGUES_BEARS = 16256;
-			public static final int LEAGUES_SKELETONS = 16257;
-			public static final int LEAGUES_LIZARDMEN = 16258;
-			public static final int LEAGUES_CUSTODIANS = 16259;
 		}
 	}
 
@@ -10376,6 +10331,7 @@ public final class DBTableID
 			public static final int SLAYER_REWARDS_UNLOCK_GRYPHONS = 9420;
 			public static final int SLAYER_REWARDS_UNLOCK_HELM_HOODED = 9641;
 			public static final int SLAYER_REWARDS_LONGER_GRYPHONS = 9642;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_LEAGUE_6 = 16325;
 		}
 	}
 
@@ -13087,6 +13043,7 @@ public final class DBTableID
 			public static final int BARBARIAN_TELEPORT = 9651;
 			public static final int KHAZARD_TELEPORT = 9652;
 			public static final int ICEPLATEAU_TELEPORT = 9653;
+			public static final int BANK_ARDOUGNE_DOCK_TELEPORT = 13320;
 			public static final int LEPRECHAUN_AL_KHARID_TELEPORT = 15611;
 			public static final int LEPRECHAUN_ARDOUGNE_MONASTERY_TELEPORT = 15612;
 			public static final int LEPRECHAUN_BRIMHAVEN_TELEPORT = 15613;
@@ -13590,6 +13547,17 @@ public final class DBTableID
 			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_GWD_CREVICE = 16111;
 			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_SLAYER_CAVE_JELLIES = 16112;
 			public static final int AGILITY_SHORTCUT_TELEPORT_WILDERNESS_SLAYER_CAVE_LESSER_DEMONS = 16113;
+			public static final int BANK_CATHERBY_DOCK_TELEPORT = 16206;
+			public static final int BANK_PORT_SARIM_DOCK_SOUTH_TELEPORT = 16207;
+			public static final int BANK_VOID_KNIGHTS_OUTPOST_DOCK_TELEPORT = 16209;
+			public static final int BANK_LUNAR_ISLE_DOCK_TELEPORT = 16211;
+			public static final int BANK_ETCETERIA_DOCK_TELEPORT = 16212;
+			public static final int BANK_JATIZSO_DOCK_TELEPORT = 16213;
+			public static final int BANK_NEITIZNOT_DOCK_TELEPORT = 16214;
+			public static final int BANK_LANDS_END_DOCK_TELEPORT = 16215;
+			public static final int BANK_PORT_PISCARILIUS_DOCK_TELEPORT = 16216;
+			public static final int BANK_ALDARIN_DOCK_TELEPORT = 16217;
+			public static final int BANK_PRIFFDINAS_DOCK_TELEPORT = 16218;
 			public static final int LEAGUE_VARROCK_GE_TELEPORT = 16266;
 			public static final int ICE_PLATEAU_TELEPORT = 16267;
 			public static final int BARBARIAN_OUTPOST_TELEPORT = 16268;
@@ -15770,6 +15738,11 @@ public final class DBTableID
 		 */
 		public static final int COL_BOAT_AMMO_SAVE_PERCENTAGE = 35;
 
+		/**
+		 * integer
+		 */
+		public static final int COL_BOAT_AUTO_REPAIR_RATE = 36;
+
 		public static final class Row
 		{
 			public static final int SAILING_BOAT_STATS_MERMAID_BLESSING = 8091;
@@ -15889,6 +15862,7 @@ public final class DBTableID
 			public static final int SAILING_BOAT_WIND_CATCHER_STATS = 8262;
 			public static final int SAILING_BOAT_GALE_CATCHER_STATS = 8263;
 			public static final int SAILING_BOAT_BALLISTIC_ATTRACTOR_STATS = 13305;
+			public static final int SAILING_BOAT_BOSUNS_WORKBENCH_STATS = 16256;
 		}
 	}
 
@@ -15906,6 +15880,11 @@ public final class DBTableID
 		 */
 		public static final int COL_AMMUNITION_OBJ = 1;
 
+		/**
+		 * integer
+		 */
+		public static final int COL_AMMUNITION_TYPE = 7;
+
 		public static final class Row
 		{
 			public static final int SAILING_COMBAT_AMMUNITION_BRONZE_CANNONBALL = 8083;
@@ -15916,6 +15895,20 @@ public final class DBTableID
 			public static final int SAILING_COMBAT_AMMUNITION_ADAMANT_CANNONBALL = 8088;
 			public static final int SAILING_COMBAT_AMMUNITION_RUNE_CANNONBALL = 8089;
 			public static final int SAILING_COMBAT_AMMUNITION_DRAGON_CANNONBALL = 8090;
+			public static final int SAILING_COMBAT_AMMUNITION_BRONZE_CANNONBALL_INCENDIARY = 16231;
+			public static final int SAILING_COMBAT_AMMUNITION_BRONZE_CANNONBALL_CHAINSHOT = 16232;
+			public static final int SAILING_COMBAT_AMMUNITION_IRON_CANNONBALL_INCENDIARY = 16233;
+			public static final int SAILING_COMBAT_AMMUNITION_IRON_CANNONBALL_CHAINSHOT = 16234;
+			public static final int SAILING_COMBAT_AMMUNITION_STEEL_CANNONBALL_INCENDIARY = 16235;
+			public static final int SAILING_COMBAT_AMMUNITION_STEEL_CANNONBALL_CHAINSHOT = 16236;
+			public static final int SAILING_COMBAT_AMMUNITION_MITHRIL_CANNONBALL_INCENDIARY = 16237;
+			public static final int SAILING_COMBAT_AMMUNITION_MITHRIL_CANNONBALL_CHAINSHOT = 16238;
+			public static final int SAILING_COMBAT_AMMUNITION_ADAMANT_CANNONBALL_INCENDIARY = 16239;
+			public static final int SAILING_COMBAT_AMMUNITION_ADAMANT_CANNONBALL_CHAINSHOT = 16240;
+			public static final int SAILING_COMBAT_AMMUNITION_RUNE_CANNONBALL_INCENDIARY = 16241;
+			public static final int SAILING_COMBAT_AMMUNITION_RUNE_CANNONBALL_CHAINSHOT = 16242;
+			public static final int SAILING_COMBAT_AMMUNITION_DRAGON_CANNONBALL_INCENDIARY = 16243;
+			public static final int SAILING_COMBAT_AMMUNITION_DRAGON_CANNONBALL_CHAINSHOT = 16244;
 		}
 	}
 
@@ -15991,57 +15984,62 @@ public final class DBTableID
 		/**
 		 * dbrow
 		 */
-		public static final int COL_STEERING_OPTION = 27;
+		public static final int COL_SAIL_PATTERN_OPTION = 27;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_FLAG_OPTION = 28;
+		public static final int COL_STEERING_OPTION = 28;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_TRIM_OPTION = 29;
+		public static final int COL_FLAG_OPTION = 29;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_BRAZIER_OPTION = 30;
+		public static final int COL_TRIM_OPTION = 30;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_BRAZIER_OPTION = 31;
 
 		/**
 		 * (coordgrid, integer, integer, dbrow)
 		 */
-		public static final int COL_HOTSPOT = 31;
+		public static final int COL_HOTSPOT = 32;
 
 		/**
 		 * (coordgrid, loc, integer, locshape)
 		 */
-		public static final int COL_STATIC_FACILITY = 32;
+		public static final int COL_STATIC_FACILITY = 33;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_FACILITY_AMOUNT = 33;
+		public static final int COL_FACILITY_AMOUNT = 34;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_SAME_FACILITIES_PORT_AND_STARBOARD = 34;
+		public static final int COL_SAME_FACILITIES_PORT_AND_STARBOARD = 35;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_CREW_CAPACITY = 35;
+		public static final int COL_CREW_CAPACITY = 36;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_TEMPORARY_BOAT = 39;
+		public static final int COL_TEMPORARY_BOAT = 40;
 
 		/**
 		 * graphic
 		 */
-		public static final int COL_BOAT_SPRITE = 40;
+		public static final int COL_BOAT_SPRITE = 41;
 
 		public static final class Row
 		{
@@ -16099,6 +16097,7 @@ public final class DBTableID
 			public static final int SAILING_SIDEPANEL_FACILITY_TRAWLING_DEPTH_1 = 8143;
 			public static final int SAILING_SIDEPANEL_FACILITY_TRAWLING_DEPTH_2 = 8144;
 			public static final int SAILING_SIDEPANEL_FACILITY_TRAWLING_DEPTH_3 = 8145;
+			public static final int SAILING_SIDEPANEL_FACILITY_BOSUNS_WORKBENCH = 16252;
 		}
 	}
 
@@ -16194,6 +16193,7 @@ public final class DBTableID
 			public static final int SAILING_SIDEPANEL_FACILITY_GRAPHIC_SALVAGING_HOOK = 8140;
 			public static final int SAILING_SIDEPANEL_FACILITY_GRAPHIC_CHUM_STATION = 8142;
 			public static final int SAILING_SIDEPANEL_FACILITY_GRAPHIC_TRAWLING = 8146;
+			public static final int SAILING_SIDEPANEL_FACILITY_GRAPHIC_BOSUNS_WORKBENCH = 16253;
 		}
 	}
 
@@ -16230,6 +16230,7 @@ public final class DBTableID
 		{
 			public static final int SAILING_SIDEPANEL_FACILITY_HELM_TEXT = 8126;
 			public static final int SAILING_SIDEPANEL_FACILITY_HULL_TEXT = 8129;
+			public static final int SAILING_SIDEPANEL_FACILITY_TEXT_BOSUNS_WORKBENCH = 16254;
 		}
 	}
 
@@ -16570,6 +16571,8 @@ public final class DBTableID
 			public static final int SAILING_BOAT_FACILITY_TELEPORT_FOCUS = 8521;
 			public static final int SAILING_BOAT_FACILITY_TELEPORT_FOCUS_GREATER = 8522;
 			public static final int SAILING_BOAT_FACILITY_BALLISTIC_ATTRACTOR = 13307;
+			public static final int SAILING_BOAT_SKILLGUIDE_SAIL_RECOLOUR = 16310;
+			public static final int SAILING_BOAT_FACILITY_BOSUNS_WORKBENCH = 16313;
 		}
 	}
 
@@ -16770,6 +16773,7 @@ public final class DBTableID
 			public static final int SAILING_BOAT_IRONWOOD_HULL_LARGE = 8283;
 			public static final int SAILING_BOAT_ROSEWOOD_HULL_LARGE = 8284;
 			public static final int SAILING_BOAT_HULL_INTRO = 8341;
+			public static final int SAILING_BOAT_PIRATE_HULL_LARGE = 16316;
 		}
 	}
 
@@ -16840,22 +16844,22 @@ public final class DBTableID
 		/**
 		 * (loc, coordgrid, integer, locshape, dbrow)
 		 */
-		public static final int COL_LOC = 15;
+		public static final int COL_LOC = 12;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_FACILITY_STATS = 16;
+		public static final int COL_FACILITY_STATS = 13;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_SIDEPANEL_LAYOUT_DATA = 17;
+		public static final int COL_SIDEPANEL_LAYOUT_DATA = 14;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_FACILITY_CUSTOMISATION_ORDER = 18;
+		public static final int COL_FACILITY_CUSTOMISATION_ORDER = 15;
 
 		public static final class Row
 		{
@@ -16890,9 +16894,12 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int SAILING_BOAT_RAFT_SAILS_FX = 8114;
-			public static final int SAILING_BOAT_KANDARIN_2X5_SAILS_FX = 8115;
-			public static final int SAILING_BOAT_SLOOP_SAILS_FX = 8116;
+			public static final int SAILING_BOAT_RAFT_MASTS_FX = 16245;
+			public static final int SAILING_BOAT_RAFT_SAILS_FX_OFFSET = 16246;
+			public static final int SAILING_BOAT_KANDARIN_2X5_MASTS_FX = 16247;
+			public static final int SAILING_BOAT_KANDARIN_2X5_SAILS_FX_OFFSET = 16248;
+			public static final int SAILING_BOAT_SLOOP_MASTS_FX = 16249;
+			public static final int SAILING_BOAT_SLOOP_SAILS_FX_OFFSET = 16250;
 		}
 	}
 
@@ -17385,6 +17392,7 @@ public final class DBTableID
 			public static final int SAILING_CUSTOMISATION_ANCHOR_LOC_ANGLES = 8410;
 			public static final int SAILING_CUSTOMISATION_KEG_LOC_ANGLES = 8411;
 			public static final int SAILING_CUSTOMISATION_BALLISTIC_ATTRACTOR_LOC_ANGLES = 13306;
+			public static final int SAILING_CUSTOMISATION_BOSUNS_WORKBENCH_LOC_ANGLES = 16311;
 		}
 	}
 
@@ -17427,6 +17435,11 @@ public final class DBTableID
 		 */
 		public static final int COL_FACILITY_DESC = 6;
 
+		/**
+		 * integer
+		 */
+		public static final int COL_OFFSET = 7;
+
 		public static final class Row
 		{
 			public static final int SAILING_CUSTOMISATION_TAB_HULL = 8412;
@@ -17444,6 +17457,7 @@ public final class DBTableID
 			public static final int SAILING_CUSTOMISATION_TAB_STATIONS = 8424;
 			public static final int SAILING_CUSTOMISATION_TAB_WIND = 8425;
 			public static final int SAILING_CUSTOMISATION_TAB_MISC = 8426;
+			public static final int SAILING_CUSTOMISATION_TAB_SAIL_PATTERN = 16312;
 		}
 	}
 
@@ -17636,6 +17650,8 @@ public final class DBTableID
 			public static final int SAILING_NPC_BOAT_BT_TRIAL_MASTER_3_BOAT = 8658;
 			public static final int SAILING_NPC_BOAT_TROUBLED_TORTUGANS_RED_REEF = 8659;
 			public static final int SAILING_NPC_BOAT_RED_REEF_ZENITH = 8660;
+			public static final int SAILING_NPC_BOAT_COMBAT_TRR_1 = 16314;
+			public static final int SAILING_NPC_BOAT_COMBAT_TRR_2 = 16315;
 		}
 	}
 
@@ -17684,104 +17700,99 @@ public final class DBTableID
 		public static final int COL_LEVEL_REQUIRED = 3;
 
 		/**
-		 * integer
+		 * dbrow
 		 */
-		public static final int COL_REWARD_TIER = 4;
+		public static final int COL_STARTING_PORT = 4;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_STARTING_PORT = 5;
+		public static final int COL_CARGO_PORT = 5;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_CARGO_PORT = 6;
-
-		/**
-		 * dbrow
-		 */
-		public static final int COL_ENDING_PORT = 7;
+		public static final int COL_ENDING_PORT = 6;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_CANCELLABLE = 8;
+		public static final int COL_CANCELLABLE = 7;
 
 		/**
 		 * (loc, string)
 		 */
-		public static final int COL_FACILITIES_REQUIRED = 11;
+		public static final int COL_FACILITIES_REQUIRED = 10;
 
 		/**
 		 * (loc, string)
 		 */
-		public static final int COL_FACILITITES_RECOMMENDED = 12;
+		public static final int COL_FACILITITES_RECOMMENDED = 11;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_BOAT_COMBAT_REQUIRED = 13;
+		public static final int COL_BOAT_COMBAT_REQUIRED = 12;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_REGULAR_COMBAT_REQUIRED = 14;
+		public static final int COL_REGULAR_COMBAT_REQUIRED = 13;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_COMBAT_RECOMMENDED = 15;
+		public static final int COL_COMBAT_RECOMMENDED = 14;
 
 		/**
 		 * namedobj
 		 */
-		public static final int COL_DELIVERY_OBJECT = 16;
+		public static final int COL_DELIVERY_OBJECT = 15;
 
 		/**
 		 * (namedobj, integer)
 		 */
-		public static final int COL_CARGO = 17;
+		public static final int COL_CARGO = 16;
 
 		/**
 		 * (integer, integer)
 		 */
-		public static final int COL_PORT_CHECKPOINT = 18;
+		public static final int COL_PORT_CHECKPOINT = 17;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_BOUNTY_TARGET_ALIVE = 19;
+		public static final int COL_BOUNTY_TARGET_ALIVE = 18;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_BOUNTY_TARGET_DEAD = 20;
+		public static final int COL_BOUNTY_TARGET_DEAD = 19;
 
 		/**
 		 * namedobj
 		 */
-		public static final int COL_BOUNTY_OBJECT = 21;
+		public static final int COL_BOUNTY_OBJECT = 20;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOUNTY_OBJECT_AMOUNT = 22;
+		public static final int COL_BOUNTY_OBJECT_AMOUNT = 21;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOUNTY_OBJECT_RARITY = 23;
+		public static final int COL_BOUNTY_OBJECT_RARITY = 22;
 
 		/**
 		 * model
 		 */
-		public static final int COL_TASK_BOARD_GRAPHIC = 24;
+		public static final int COL_TASK_BOARD_GRAPHIC = 23;
 
 		/**
 		 * string
 		 */
-		public static final int COL_FLAVOUR_TEXT = 25;
+		public static final int COL_FLAVOUR_TEXT = 24;
 
 		public static final class Row
 		{
@@ -22691,11 +22702,20 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_MINIGAME_TELEPORT = 13295;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_MINIGAME_TELEPORT = 13296;
 			public static final int SKILL_FEATURE_SAILING_FACILITY_BALLISTIC_ATTRACTOR = 13297;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_GEM_POUCH = 16219;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_GEM_SATCHEL = 16220;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_GEM_TOTE = 16221;
+			public static final int SKILL_FEATURE_CRAFTING_OTHER_GEM_SACK = 16222;
+			public static final int SKILL_FEATURE_MINING_RUBIUM_SPLINTERS = 16227;
+			public static final int SKILL_FEATURE_MINING_RUBIUM_GEODE = 16228;
+			public static final int SKILL_FEATURE_SAILING_FACILITY_BOSUNS_WORKBENCH = 16229;
+			public static final int SKILL_FEATURE_SAILING_RECOLOUR_SAIL = 16230;
 			public static final int SKILL_FEATURE_AGILITY_LEAGUES_6_YAMA_STONE = 16260;
 			public static final int SKILL_FEATURE_MAGIC_STANDARD_LEAGUES_6_HOME_TELEPORT = 16261;
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_LEAGUES_6_HOME_TELEPORT = 16262;
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_LEAGUES_6_HOME_TELEPORT = 16263;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_LEAGUES_6_HOME_TELEPORT = 16264;
+			public static final int SKILL_FEATURE_FARMING_SULPHUROUS_FERTILISER = 16323;
 		}
 	}
 
@@ -22762,6 +22782,7 @@ public final class DBTableID
 			public static final int SAILING_GUN_PORT_CAMPHOR = 13302;
 			public static final int SAILING_GUN_PORT_IRONWOOD = 13303;
 			public static final int SAILING_GUN_PORT_ROSEWOOD = 13304;
+			public static final int SAILING_GUN_PORT_PIRATE = 16255;
 		}
 	}
 
@@ -23359,6 +23380,209 @@ public final class DBTableID
 			public static final int LEAGUE_6_HOME_TELEPORT_OVERRIDE_ARCEUUS = 16279;
 			public static final int LEAGUE_6_OVERRIDE_LOW_ALCH = 16280;
 			public static final int LEAGUE_6_OVERRIDE_HIGH_ALCH = 16281;
+		}
+	}
+
+	public static final class SailingSidepanelWidgetObjbutton
+	{
+		public static final int ID = 229;
+
+		/**
+		 * string
+		 */
+		public static final int COL_DEFAULT_OPTEXT = 0;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_TOGGLE_ENABLED = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_TOGGLE_OPTEXT = 2;
+
+		/**
+		 * namedobj
+		 */
+		public static final int COL_OBJECT = 3;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_AMOUNT = 4;
+
+		/**
+		 * (boolean, string)
+		 */
+		public static final int COL_OP2 = 5;
+
+		/**
+		 * (boolean, string)
+		 */
+		public static final int COL_OP3 = 6;
+
+		/**
+		 * (boolean, string)
+		 */
+		public static final int COL_OP4 = 7;
+
+		public static final class Row
+		{
+			public static final int SAILING_SIDEPANEL_FACILITY_OBJBUTTON_CANNONBALL = 16251;
+		}
+	}
+
+	public static final class SailingBoatSailPattern
+	{
+		public static final int ID = 230;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_DESCRIPTION = 1;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_CUSTOMISATION_HIDE_DESC = 2;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_CUSTOMISATION_LOC_VALUES = 3;
+
+		/**
+		 * loc
+		 */
+		public static final int COL_CUSTOMISATION_LOC_OVERRIDE = 4;
+
+		/**
+		 * model
+		 */
+		public static final int COL_HIDDEN_MODEL = 5;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_SAILING_REQUIREMENT = 6;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_CONSTRUCTION_REQUIREMENT = 7;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_CONSTRUCTION_COINS_ALTERNATIVE = 8;
+
+		/**
+		 * (stat, integer)
+		 */
+		public static final int COL_OTHER_STAT_REQUIREMENT = 9;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_QUEST_REQUIREMENT = 10;
+
+		/**
+		 * (namedobj, integer)
+		 */
+		public static final int COL_MATERIAL = 11;
+
+		/**
+		 * (loc, coordgrid, integer, locshape, dbrow)
+		 */
+		public static final int COL_LOC = 12;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_FACILITY_STATS = 13;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_SIDEPANEL_LAYOUT_DATA = 14;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_FACILITY_CUSTOMISATION_ORDER = 15;
+
+		public static final class Row
+		{
+			public static final int SAILING_BOAT_LINEN_SAIL_RAFT = 16257;
+			public static final int SAILING_BOAT_CANVAS_SAIL_RAFT = 16258;
+			public static final int SAILING_BOAT_COTTON_SAIL_RAFT = 16259;
+			public static final int SAILING_BOAT_BLACK_SAIL_RAFT = 16282;
+			public static final int SAILING_BOAT_YELLOW_SAIL_RAFT = 16283;
+			public static final int SAILING_BOAT_PURPLE_SAIL_RAFT = 16284;
+			public static final int SAILING_BOAT_GREEN_SAIL_RAFT = 16285;
+			public static final int SAILING_BOAT_BLUE_SAIL_RAFT = 16286;
+			public static final int SAILING_BOAT_PINK_SAIL_RAFT = 16287;
+			public static final int SAILING_BOAT_RED_SAIL_RAFT = 16288;
+			public static final int SAILING_BOAT_LINEN_SAIL_2X5 = 16289;
+			public static final int SAILING_BOAT_CANVAS_SAIL_2X5 = 16290;
+			public static final int SAILING_BOAT_COTTON_SAIL_2X5 = 16291;
+			public static final int SAILING_BOAT_BLACK_SAIL_2X5 = 16292;
+			public static final int SAILING_BOAT_YELLOW_SAIL_2X5 = 16293;
+			public static final int SAILING_BOAT_PURPLE_SAIL_2X5 = 16294;
+			public static final int SAILING_BOAT_GREEN_SAIL_2X5 = 16295;
+			public static final int SAILING_BOAT_BLUE_SAIL_2X5 = 16296;
+			public static final int SAILING_BOAT_PINK_SAIL_2X5 = 16297;
+			public static final int SAILING_BOAT_RED_SAIL_2X5 = 16298;
+			public static final int SAILING_BOAT_LINEN_SAIL_LARGE = 16299;
+			public static final int SAILING_BOAT_CANVAS_SAIL_LARGE = 16300;
+			public static final int SAILING_BOAT_COTTON_SAIL_LARGE = 16301;
+			public static final int SAILING_BOAT_BLACK_SAIL_LARGE = 16302;
+			public static final int SAILING_BOAT_YELLOW_SAIL_LARGE = 16303;
+			public static final int SAILING_BOAT_PURPLE_SAIL_LARGE = 16304;
+			public static final int SAILING_BOAT_GREEN_SAIL_LARGE = 16305;
+			public static final int SAILING_BOAT_BLUE_SAIL_LARGE = 16306;
+			public static final int SAILING_BOAT_PINK_SAIL_LARGE = 16307;
+			public static final int SAILING_BOAT_RED_SAIL_LARGE = 16308;
+			public static final int SAILING_BOAT_SAIL_INTRO = 16309;
+		}
+	}
+
+	public static final class SailingNpcBoatBaseStats
+	{
+		public static final int ID = 231;
+
+		public static final class Row
+		{
+			public static final int SAILING_NPC_BOAT_BASE_STATS_DEFAULT = 16317;
+			public static final int SAILING_NPC_BOAT_BASE_STATS_TRR = 16318;
+		}
+	}
+
+	public static final class SailingNpcBoatWeapon
+	{
+		public static final int ID = 232;
+
+		public static final class Row
+		{
+			public static final int SAILING_NPC_BOAT_BASIC_CANNON = 16319;
+			public static final int SAILING_NPC_BOAT_PIRATE_CANNON = 16320;
+		}
+	}
+
+	public static final class SailingNpcBoatSteering
+	{
+		public static final int ID = 233;
+
+		public static final class Row
+		{
+			public static final int SAILING_NPC_BOAT_STEERING_SLOOP_WOODEN = 16321;
+			public static final int SAILING_NPC_BOAT_STEERING_SLOOP_PIRATE = 16322;
 		}
 	}
 /* This file is automatically generated. Do not edit. */
