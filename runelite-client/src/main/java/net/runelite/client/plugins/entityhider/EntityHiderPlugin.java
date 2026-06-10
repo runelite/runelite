@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
@@ -64,7 +65,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class EntityHiderPlugin extends Plugin
 {
 	private static final int MILLIS_PER_SECOND = 1000;
-	private static final int MILLIS_PER_TICK = 600;
 
 	private static final Set<Integer> THRALL_IDS = ImmutableSet.of(
 		NpcID.ARCEUUS_THRALL_GHOST_LESSER, NpcID.ARCEUUS_THRALL_SKELETON_LESSER, NpcID.ARCEUUS_THRALL_ZOMBIE_LESSER,  // Lesser Thrall (ghost, skeleton, zombie)
@@ -131,7 +131,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
 	private boolean pvpAttackerOnlyHiding;
-	private int pvpAttackerGracePeriodSeconds;
+	private int pvpAttackerGracePeriodTicks;
 	private int lastAttackedAtTick = -1;
 	private boolean dangerousPvpArea;
 	private boolean underAttackOrGracePeriod;
@@ -194,9 +194,8 @@ public class EntityHiderPlugin extends Plugin
 			lastAttackedAtTick = tick;
 		}
 
-		int gracePeriodTicks = getGracePeriodTicks();
 		underAttackOrGracePeriod = hasActiveAttacker
-			|| (lastAttackedAtTick >= 0 && tick - lastAttackedAtTick <= gracePeriodTicks);
+			|| (lastAttackedAtTick >= 0 && tick - lastAttackedAtTick <= pvpAttackerGracePeriodTicks);
 
 		if (!underAttackOrGracePeriod)
 		{
@@ -233,7 +232,8 @@ public class EntityHiderPlugin extends Plugin
 
 		hideProjectiles = config.hideProjectiles();
 		pvpAttackerOnlyHiding = config.pvpAttackerOnlyHiding();
-		pvpAttackerGracePeriodSeconds = config.pvpAttackerGracePeriodSeconds();
+		pvpAttackerGracePeriodTicks = (int) Math.ceil(config.pvpAttackerGracePeriodSeconds()
+			* (double) MILLIS_PER_SECOND / Constants.GAME_TICK_LENGTH);
 
 		if (!pvpAttackerOnlyHiding)
 		{
@@ -422,12 +422,6 @@ public class EntityHiderPlugin extends Plugin
 		return hasActiveAttacker;
 	}
 
-	private int getGracePeriodTicks()
-	{
-		// Round up so configured seconds are never shorter than requested.
-		return (pvpAttackerGracePeriodSeconds * MILLIS_PER_SECOND + (MILLIS_PER_TICK - 1)) / MILLIS_PER_TICK;
-	}
-
 	private boolean isRecentAttacker(Player player, int tick)
 	{
 		String name = player.getName();
@@ -442,17 +436,16 @@ public class EntityHiderPlugin extends Plugin
 			return false;
 		}
 
-		return tick - lastSeenAt <= getGracePeriodTicks();
+		return tick - lastSeenAt <= pvpAttackerGracePeriodTicks;
 	}
 
 	private void pruneExpiredAttackers(int tick)
 	{
-		int gracePeriodTicks = getGracePeriodTicks();
 		Iterator<Map.Entry<String, Integer>> iterator = attackerLastSeenTick.entrySet().iterator();
 		while (iterator.hasNext())
 		{
 			Map.Entry<String, Integer> entry = iterator.next();
-			if (tick - entry.getValue() > gracePeriodTicks)
+			if (tick - entry.getValue() > pvpAttackerGracePeriodTicks)
 			{
 				iterator.remove();
 			}
