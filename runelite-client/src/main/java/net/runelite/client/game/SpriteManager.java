@@ -82,7 +82,7 @@ public class SpriteManager
 		}
 
 		SpritePixels[] sp = client.getSprites(client.getIndexSprites(), archive, 0);
-		if (sp == null)
+		if (sp == null || file < 0 || file >= sp.length || sp[file] == null || sp[file].getWidth() <= 0 || sp[file].getHeight() <= 0)
 		{
 			return null;
 		}

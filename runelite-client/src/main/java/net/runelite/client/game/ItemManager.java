@@ -197,14 +197,18 @@ public class ItemManager
 
 	@Inject
 	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
-		ItemClient itemClient, RuneLiteConfig runeLiteConfig)
+		ItemClient itemClient, RuneLiteConfig runeLiteConfig,
+		@Named("stevescape.disableItemPrices") String disableItemPrices)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.itemClient = itemClient;
 		this.runeLiteConfig = runeLiteConfig;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
+		if (!Boolean.parseBoolean(disableItemPrices))
+		{
+			scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
+		}
 		scheduledExecutorService.submit(this::loadStats);
 
 		itemImages = CacheBuilder.newBuilder()

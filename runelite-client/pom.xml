@@ -240,9 +240,16 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite</groupId>
+			<groupId>net.runelite.stevescape</groupId>
 			<artifactId>injected-client</artifactId>
-			<version>${project.version}</version>
+			<version>1.11.11-stevescape</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/../stevescape-libs/injected-client-1.11.11-stevescape.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -360,7 +367,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.6.2</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -372,6 +379,9 @@
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>shaded</shadedClassifierName>
 							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<extraJars>
+								<extraJar>${project.basedir}/../stevescape-libs/injected-client-1.11.11-stevescape.jar</extraJar>
+							</extraJars>
 							<filters>
 								<filter>
 									<artifact>*:*</artifact>

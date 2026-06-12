@@ -62,14 +62,22 @@ public class WorldService
 
 	@Inject
 	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, OkHttpClient okHttpClient,
-		@Named("runelite.api.base") HttpUrl apiBase, EventBus eventBus)
+		@Named("runelite.api.base") HttpUrl apiBase, EventBus eventBus,
+		@Named("stevescape.disableUpstreamWorlds") String disableUpstreamWorlds)
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.worldClient = new WorldClient(okHttpClient, apiBase);
 		this.eventBus = eventBus;
 
-		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
+		if (Boolean.parseBoolean(disableUpstreamWorlds))
+		{
+			firstRunFuture.complete(null);
+		}
+		else
+		{
+			scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
+		}
 	}
 
 	private void tick()

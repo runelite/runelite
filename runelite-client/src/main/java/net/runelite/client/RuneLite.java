@@ -42,7 +42,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -57,7 +56,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -104,7 +102,7 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class RuneLite
 {
-	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
+	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".stevescape");
 	public static final File CACHE_DIR = new File(RUNELITE_DIR, "cache");
 	public static final File PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
@@ -220,7 +218,7 @@ public class RuneLite
 		RuneLiteAPI.CLIENT = okHttpClient;
 
 		SplashScreen.init();
-		SplashScreen.stage(0, "Preparing RuneScape", "");
+		SplashScreen.stage(0, "Preparing SteveScape", "");
 
 		try
 		{
@@ -266,11 +264,11 @@ public class RuneLite
 				runtimeConfigLoader,
 				developerMode,
 				options.has("safe-mode"),
-				options.has("disable-telemetry"),
+				true,
 				options.valueOf(sessionfile),
 				(String) options.valueOf("profile"),
 				options.has(insecureWriteCredentials),
-				options.has("noupdate")
+				true
 			));
 
 			injector.getInstance(RuneLite.class).start();
@@ -300,9 +298,6 @@ public class RuneLite
 
 		setupSystemProps();
 		setupCompilerControl();
-
-		// Start the applet
-		copyJagexCache();
 
 		// Client size must be set prior to init
 		var applet = (Applet) client;
@@ -480,38 +475,6 @@ public class RuneLite
 		}
 
 		return builder.build();
-	}
-
-	private static void copyJagexCache()
-	{
-		Path from = Paths.get(System.getProperty("user.home"), "jagexcache");
-		Path to = Paths.get(System.getProperty("user.home"), ".runelite", "jagexcache");
-		if (Files.exists(to) || !Files.exists(from))
-		{
-			return;
-		}
-
-		log.info("Copying jagexcache from {} to {}", from, to);
-
-		// Recursively copy path https://stackoverflow.com/a/50418060
-		try (Stream<Path> stream = Files.walk(from))
-		{
-			stream.forEach(source ->
-			{
-				try
-				{
-					Files.copy(source, to.resolve(from.relativize(source)), COPY_ATTRIBUTES);
-				}
-				catch (IOException e)
-				{
-					throw new RuntimeException(e);
-				}
-			});
-		}
-		catch (Exception e)
-		{
-			log.warn("unable to copy jagexcache", e);
-		}
 	}
 
 	private void setupSystemProps()

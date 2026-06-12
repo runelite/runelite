@@ -87,7 +87,7 @@ public class ClientLoader implements Supplier<Client>
 			SplashScreen.stage(0, null, "Fetching applet viewer config");
 			RSConfig config = downloadConfig();
 
-			SplashScreen.stage(.3, "Starting", "Starting Old School RuneScape");
+			SplashScreen.stage(.3, "Starting", "Starting SteveScape");
 
 			Client rs = loadClient(config);
 
@@ -113,6 +113,14 @@ public class ClientLoader implements Supplier<Client>
 
 	private RSConfig downloadConfig() throws IOException
 	{
+		if (!javConfigUrl.startsWith("http://") && !javConfigUrl.startsWith("https://"))
+		{
+			RSConfig config = clientConfigLoader.fetch(javConfigUrl);
+			validateConfig(config);
+			SteveScapeConfigServer.applyLocalWorldList(config, javConfigUrl);
+			return config;
+		}
+
 		HttpUrl url = HttpUrl.get(javConfigUrl);
 		IOException err = null;
 		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
@@ -121,10 +129,8 @@ public class ClientLoader implements Supplier<Client>
 			{
 				RSConfig config = clientConfigLoader.fetch(url);
 
-				if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
-				{
-					throw new IOException("Invalid or missing jav_config");
-				}
+				validateConfig(config);
+				SteveScapeConfigServer.applyLocalWorldList(config, javConfigUrl);
 
 				return config;
 			}
@@ -157,6 +163,14 @@ public class ClientLoader implements Supplier<Client>
 		{
 			log.debug("error downloading backup config", ex);
 			throw err; // NOPMD: PreserveStackTrace - use error from Jagex's servers
+		}
+	}
+
+	private static void validateConfig(RSConfig config) throws IOException
+	{
+		if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
+		{
+			throw new IOException("Invalid or missing jav_config");
 		}
 	}
 

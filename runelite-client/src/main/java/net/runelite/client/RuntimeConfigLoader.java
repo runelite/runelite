@@ -103,6 +103,13 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 			}
 		}
 
+		if (Strings.isNullOrEmpty(RuneLiteProperties.getRuneLiteConfig()))
+		{
+			log.info("Skipping remote runtime config; no config URL is configured");
+			future.complete(null);
+			return future;
+		}
+
 		Request request = new Request.Builder()
 			.url(RuneLiteProperties.getRuneLiteConfig())
 			.build();

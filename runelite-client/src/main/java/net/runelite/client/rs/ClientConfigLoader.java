@@ -26,9 +26,14 @@
 package net.runelite.client.rs;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import lombok.AllArgsConstructor;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -40,13 +45,32 @@ class ClientConfigLoader
 {
 	private final OkHttpClient okHttpClient;
 
+	RSConfig fetch(String location) throws IOException
+	{
+		if (location.startsWith("http://") || location.startsWith("https://"))
+		{
+			return fetch(HttpUrl.get(location));
+		}
+
+		Path path = location.startsWith("file:")
+			? Paths.get(URI.create(location)).toAbsolutePath().normalize()
+			: Paths.get(location).toAbsolutePath().normalize();
+		if (!Files.isRegularFile(path))
+		{
+			throw new IOException("jav_config file does not exist: " + path);
+		}
+
+		try (FileInputStream inputStream = new FileInputStream(path.toFile()))
+		{
+			return parse(new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)));
+		}
+	}
+
 	RSConfig fetch(HttpUrl url) throws IOException
 	{
 		final Request request = new Request.Builder()
 			.url(url)
 			.build();
-
-		final RSConfig config = new RSConfig();
 
 		try (Response response = okHttpClient.newCall(request).execute())
 		{
@@ -55,8 +79,17 @@ class ClientConfigLoader
 				throw new IOException("Unsuccessful response: " + response.message());
 			}
 
+			return parse(new BufferedReader(new InputStreamReader(response.body().byteStream(), StandardCharsets.UTF_8)));
+		}
+	}
+
+	private RSConfig parse(BufferedReader in) throws IOException
+	{
+		final RSConfig config = new RSConfig();
+
+		try (in)
+		{
 			String str;
-			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream(), StandardCharsets.UTF_8));
 			while ((str = in.readLine()) != null)
 			{
 				int idx = str.indexOf('=');
