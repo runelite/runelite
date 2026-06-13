@@ -33,13 +33,10 @@ public interface EntityOps
 {
 	int MAX_OPS = 5;
 
+	int getNumOps();
+
 	@Nullable
 	String getOp(int idx);
 
-	int getNumSubOps(int idx);
-
-	int getSubID(int idx, int subIdx);
-
-	@Nullable
-	String getSubOp(int idx, int subIdx);
+	EntityOps getSubOps(int idx);
 }

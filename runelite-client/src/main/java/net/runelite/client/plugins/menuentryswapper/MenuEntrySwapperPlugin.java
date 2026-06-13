@@ -546,7 +546,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (entry.getType() == MenuAction.EXAMINE_OBJECT)
 			{
 				final ObjectComposition composition = client.getObjectDefinition(entry.getIdentifier());
-				final var ops = composition.getOps();
+				final EntityOps ops = composition.getOps();
 
 				final Integer swapConfig = getObjectSwapConfig(false, composition.getId());
 				final Integer shiftSwapConfig = getObjectSwapConfig(true, composition.getId());
@@ -579,22 +579,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.setType(MenuAction.RUNELITE)
 						.onClick(objectConsumer(composition, op, opIdx, true));
 
-					int numSubOps = ops.getNumSubOps(opIdx);
-					for (int subIdx = 0; subIdx < numSubOps; subIdx++)
+					EntityOps subops = ops.getSubOps(opIdx);
+					if (subops != null)
 					{
-						String subOp = ops.getSubOp(opIdx, subIdx);
-
-						if (subOp != null)
+						int numSubOps = subops.getNumOps();
+						for (int subIdx = 0; subIdx < numSubOps; subIdx++)
 						{
-							int subID = ops.getSubID(opIdx, subIdx);
-							subLeft.createMenuEntry(0)
-								.setOption(subOp)
-								.setType(MenuAction.RUNELITE)
-								.onClick(objectConsumer(composition, subOp, packSubID(opIdx, subID), false));
-							subShift.createMenuEntry(0)
-								.setOption(subOp)
-								.setType(MenuAction.RUNELITE)
-								.onClick(objectConsumer(composition, subOp, packSubID(opIdx, subID), true));
+							String subOp = subops.getOp(subIdx);
+
+							if (subOp != null)
+							{
+								subLeft.createMenuEntry(0)
+									.setOption(subOp)
+									.setType(MenuAction.RUNELITE)
+									.onClick(objectConsumer(composition, subOp, packSubID(opIdx, subIdx), false));
+								subShift.createMenuEntry(0)
+									.setOption(subOp)
+									.setType(MenuAction.RUNELITE)
+									.onClick(objectConsumer(composition, subOp, packSubID(opIdx, subIdx), true));
+							}
 						}
 					}
 				}
