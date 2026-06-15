@@ -80,6 +80,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.plugins.party.data.PartyTilePingData;
 import net.runelite.client.plugins.party.messages.LocationUpdate;
+import net.runelite.client.plugins.party.messages.ReadyCheckRequest;
+import net.runelite.client.plugins.party.messages.ReadyCheckResponse;
 import net.runelite.client.plugins.party.messages.StatusUpdate;
 import net.runelite.client.plugins.party.messages.TilePing;
 import net.runelite.client.task.Schedule;
@@ -156,6 +158,9 @@ public class PartyPlugin extends Plugin
 	private WorldPoint lastLocation;
 	private StatusUpdate lastStatus;
 
+	@Getter
+	private boolean readyCheckActive;
+
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.pingHotkey())
 	{
 		@Override
@@ -202,6 +207,8 @@ public class PartyPlugin extends Plugin
 		wsClient.registerMessage(TilePing.class);
 		wsClient.registerMessage(LocationUpdate.class);
 		wsClient.registerMessage(StatusUpdate.class);
+		wsClient.registerMessage(ReadyCheckRequest.class);
+		wsClient.registerMessage(ReadyCheckResponse.class);
 		// Delay sync so the eventbus can register prior to the sync response
 		SwingUtilities.invokeLater(this::requestSync);
 	}
@@ -223,8 +230,11 @@ public class PartyPlugin extends Plugin
 		wsClient.unregisterMessage(TilePing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
 		wsClient.unregisterMessage(StatusUpdate.class);
+		wsClient.unregisterMessage(ReadyCheckRequest.class);
+		wsClient.unregisterMessage(ReadyCheckResponse.class);
 		lastLocation = null;
 		lastStatus = null;
+		readyCheckActive = false;
 	}
 
 	@Provides
@@ -245,6 +255,22 @@ public class PartyPlugin extends Plugin
 	void leaveParty()
 	{
 		party.changeParty(null);
+	}
+
+	void startReadyCheck()
+	{
+		if (party.isInParty())
+		{
+			party.send(new ReadyCheckRequest());
+		}
+	}
+
+	void respondReadyCheck(boolean ready)
+	{
+		if (party.isInParty() && readyCheckActive)
+		{
+			party.send(new ReadyCheckResponse(ready));
+		}
 	}
 
 	@Subscribe
@@ -453,6 +479,110 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onReadyCheckRequest(final ReadyCheckRequest event)
+	{
+		final PartyMember member = party.getMemberById(event.getMemberId());
+		if (member == null)
+		{
+			return;
+		}
+
+		// Begin a fresh check, clearing any responses from a previous one
+		clearReadyStates();
+		readyCheckActive = true;
+
+		queueChatMessage(member.getDisplayName() + " has started a ready check. Respond in the Party panel.");
+
+		SwingUtilities.invokeLater(() ->
+		{
+			panel.updateReadyCheck();
+			panel.updateAll();
+		});
+	}
+
+	@Subscribe
+	public void onReadyCheckResponse(final ReadyCheckResponse event)
+	{
+		if (!readyCheckActive)
+		{
+			return;
+		}
+
+		final PartyData partyData = getPartyData(event.getMemberId());
+		if (partyData == null)
+		{
+			return;
+		}
+
+		partyData.setReady(event.isReady());
+		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId()));
+
+		final PartyMember member = party.getMemberById(event.getMemberId());
+		final String name = member != null ? member.getDisplayName() : "A party member";
+
+		if (!event.isReady())
+		{
+			queueChatMessage("Ready check failed: " + name + " is not ready.");
+			endReadyCheck();
+		}
+		else if (allMembersReady())
+		{
+			queueChatMessage("Ready check passed: all party members are ready!");
+			endReadyCheck();
+		}
+	}
+
+	private boolean allMembersReady()
+	{
+		final List<PartyMember> members = party.getMembers();
+		if (members.isEmpty())
+		{
+			return false;
+		}
+
+		for (PartyMember member : members)
+		{
+			final PartyData partyData = partyDataMap.get(member.getMemberId());
+			if (partyData == null || !Boolean.TRUE.equals(partyData.getReady()))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private void endReadyCheck()
+	{
+		readyCheckActive = false;
+		clearReadyStates();
+		SwingUtilities.invokeLater(() ->
+		{
+			panel.updateReadyCheck();
+			panel.updateAll();
+		});
+	}
+
+	private void clearReadyStates()
+	{
+		synchronized (partyDataMap)
+		{
+			for (PartyData partyData : partyDataMap.values())
+			{
+				partyData.setReady(null);
+			}
+		}
+	}
+
+	private void queueChatMessage(String message)
+	{
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.GAMEMESSAGE)
+			.value(message)
+			.build());
+	}
+
+	@Subscribe
 	public void onLocationUpdate(final LocationUpdate event)
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
@@ -587,12 +717,20 @@ public class PartyPlugin extends Plugin
 
 			SwingUtilities.invokeLater(() -> panel.removeMember(event.getMemberId()));
 		}
+
+		// A member leaving may have been the only one not yet ready
+		if (readyCheckActive && allMembersReady())
+		{
+			queueChatMessage("Ready check passed: all party members are ready!");
+			endReadyCheck();
+		}
 	}
 
 	@Subscribe
 	public void onPartyChanged(final PartyChanged event)
 	{
 		// Reset party
+		readyCheckActive = false;
 		partyDataMap.clear();
 		pendingTilePings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
