@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -48,6 +50,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.PluginErrorPanel;
+import net.runelite.client.util.ImageUtil;
 
 class PartyPanel extends PluginPanel
 {
@@ -64,6 +67,12 @@ class PartyPanel extends PluginPanel
 	private final JButton joinPartyButton = new JButton();
 	private final JButton rejoinPartyButton = new JButton();
 	private final JButton copyPartyIdButton = new JButton();
+	private final JButton readyCheckButton = new JButton();
+	private final JButton readyButton = new JButton();
+	private final JButton notReadyButton = new JButton();
+
+	private final JPanel startReadyCheckPanel = new JPanel(new BorderLayout());
+	private final JPanel respondReadyCheckPanel = new JPanel(new GridLayout(1, 2, 4, 0));
 
 	private final PluginErrorPanel noPartyPanel = new PluginErrorPanel();
 	private final PluginErrorPanel partyEmptyPanel = new PluginErrorPanel();
@@ -111,7 +120,26 @@ class PartyPanel extends PluginPanel
 		c.gridwidth = 2;
 		topPanel.add(rejoinPartyButton, c);
 
+		readyCheckButton.setText("Ready check");
+		readyCheckButton.setFocusable(false);
+		startReadyCheckPanel.setBorder(new EmptyBorder(0, 0, 4, 0));
+		startReadyCheckPanel.add(readyCheckButton, BorderLayout.CENTER);
+
+		readyButton.setText("Ready");
+		readyButton.setFocusable(false);
+		readyButton.setIcon(new ImageIcon(ImageUtil.loadImageResource(PartyPlugin.class, "confirm_icon.png")));
+
+		notReadyButton.setText("Not ready");
+		notReadyButton.setFocusable(false);
+		notReadyButton.setIcon(new ImageIcon(ImageUtil.loadImageResource(PartyPlugin.class, "cancel_icon.png")));
+
+		respondReadyCheckPanel.setBorder(new EmptyBorder(0, 0, 4, 0));
+		respondReadyCheckPanel.add(readyButton);
+		respondReadyCheckPanel.add(notReadyButton);
+
 		layoutPanel.add(topPanel);
+		layoutPanel.add(startReadyCheckPanel);
+		layoutPanel.add(respondReadyCheckPanel);
 		layoutPanel.add(memberBoxPanel);
 
 		startButton.setText(party.isInParty() ? BTN_LEAVE_TEXT : BTN_CREATE_TEXT);
@@ -202,6 +230,10 @@ class PartyPanel extends PluginPanel
 			}
 		});
 
+		readyCheckButton.addActionListener(e -> plugin.startReadyCheck());
+		readyButton.addActionListener(e -> plugin.respondReadyCheck(true));
+		notReadyButton.addActionListener(e -> plugin.respondReadyCheck(false));
+
 		noPartyPanel.setContent("Not in a party", "Create a party to begin.");
 
 		updateParty();
@@ -227,6 +259,17 @@ class PartyPanel extends PluginPanel
 					"Your party passphrase is: " + party.getPartyPassphrase() + ".");
 			add(partyEmptyPanel);
 		}
+
+		updateReadyCheck();
+	}
+
+	void updateReadyCheck()
+	{
+		final boolean inParty = party.isInParty();
+		final boolean active = plugin.isReadyCheckActive();
+
+		startReadyCheckPanel.setVisible(inParty && !active);
+		respondReadyCheckPanel.setVisible(inParty && active);
 	}
 
 	void addMember(PartyData partyData)
