@@ -28,13 +28,15 @@ package net.runelite.client.plugins.party;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -54,6 +56,11 @@ class PartyMemberBox extends JPanel
 	private static final Color HP_BG = new Color(102, 15, 16, 230);
 	private static final Color PRAY_FG = new Color(0, 149, 151);
 	private static final Color PRAY_BG = Color.black;
+	private static final Color READY_COLOR = new Color(0, 200, 83);
+	private static final int AVATAR_SIZE = 32;
+	private static final int TICK_SIZE = 14;
+	private static final BufferedImage READY_TICK = ImageUtil.resizeImage(
+		ImageUtil.loadImageResource(PartyPlugin.class, "confirm_icon.png"), TICK_SIZE, TICK_SIZE);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final PartyData memberPartyData;
@@ -67,7 +74,9 @@ class PartyMemberBox extends JPanel
 
 	private final PartyConfig config;
 
-	private boolean avatarSet;
+	private BufferedImage avatarBase;
+	private boolean avatarIconSet;
+	private Boolean renderedReady;
 
 	PartyMemberBox(final PartyConfig config, final JComponent panel, final PartyData memberPartyData,
 		final PartyService partyService)
@@ -85,9 +94,8 @@ class PartyMemberBox extends JPanel
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		container.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		// create a line border with the specified color and width
-		Border border = BorderFactory.createLineBorder(Color.gray, 1);
-		avatar.setBorder(border);
+		// border color reflects ready-check state; updated in update()
+		avatar.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 
 		avatar.setHorizontalAlignment(SwingConstants.CENTER);
 		avatar.setVerticalAlignment(SwingConstants.CENTER);
@@ -143,15 +151,28 @@ class PartyMemberBox extends JPanel
 	{
 		final PartyMember member = partyService.getMemberById(memberPartyData.getMemberId());
 
-		// Avatar
-		if (!avatarSet && member.getAvatar() != null)
+		final Boolean ready = memberPartyData.getReady();
+		final boolean isReady = Boolean.TRUE.equals(ready);
+
+		// Cache the resized avatar once it becomes available
+		if (avatarBase == null && member.getAvatar() != null)
 		{
-			ImageIcon icon = new ImageIcon(ImageUtil.resizeImage(member.getAvatar(), 32, 32));
+			avatarBase = ImageUtil.resizeImage(member.getAvatar(), AVATAR_SIZE, AVATAR_SIZE);
+		}
+
+		// (Re)build the avatar icon when it first becomes available or the ready state changes,
+		// overlaying a green tick on members that have answered ready
+		if (avatarBase != null && (!avatarIconSet || !Objects.equals(renderedReady, ready)))
+		{
+			ImageIcon icon = new ImageIcon(isReady ? withTick(avatarBase) : avatarBase);
 			icon.getImage().flush();
 			avatar.setIcon(icon);
-
-			avatarSet = true;
+			avatarIconSet = true;
+			renderedReady = ready;
 		}
+
+		// Outline ready members in green
+		avatar.setBorder(BorderFactory.createLineBorder(isReady ? READY_COLOR : Color.gray, 1));
 
 		// Update progress bars
 		hpBar.setValue(memberPartyData.getHitpoints());
@@ -173,5 +194,16 @@ class PartyMemberBox extends JPanel
 	private static String progressBarLabel(int current, int max)
 	{
 		return current + "/" + max;
+	}
+
+	private static BufferedImage withTick(BufferedImage base)
+	{
+		BufferedImage out = new BufferedImage(base.getWidth(), base.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = out.getGraphics();
+		g.drawImage(base, 0, 0, null);
+		// bottom-right corner
+		g.drawImage(READY_TICK, base.getWidth() - READY_TICK.getWidth(), base.getHeight() - READY_TICK.getHeight(), null);
+		g.dispose();
+		return out;
 	}
 }
