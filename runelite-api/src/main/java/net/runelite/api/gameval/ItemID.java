@@ -58327,7 +58327,7 @@ public final class ItemID
 	public static final int BR_HUNDRED_GAUNTLETS_LEVEL_10 = 23593;
 
 	/**
-	 * Berserker ring
+	 * Berserker ring (i)
 	 */
 	public static final int BR_BERZERKER_RING = 23595;
 
@@ -74000,7 +74000,7 @@ public final class ItemID
 	public static final int DIZANAS_QUIVER_UNCHARGED = 28947;
 
 	/**
-	 * Dizana's quiver (uncharged) (l)
+	 * Dizana's quiver (l) (uncharged)
 	 */
 	public static final int DIZANAS_QUIVER_UNCHARGED_TROUVER = 28949;
 
@@ -87260,7 +87260,7 @@ public final class ItemID
 	public static final int IBAN_STAFF_UPGRADED_ORN = 33332;
 
 	/**
-	 * Iban's staff (b)(o)
+	 * Iban's staff (o)
 	 */
 	public static final int BROKEN_IBAN_STAFF_ORN = 33333;
 
@@ -87483,6 +87483,11 @@ public final class ItemID
 	 * Uncharged trident (o)
 	 */
 	public static final int TOTS_UNCHARGED_ORN = 33434;
+
+	/**
+	 * Null
+	 */
+	public static final int PLACEHOLDER_TOTS_UNCHARGED_ORN = 33435;
 	public static final int POH_DUMMY_THRONE_8 = 33436;
 
 	/**
@@ -87534,6 +87539,196 @@ public final class ItemID
 	 * Demonic pacts relic hunter (t3) armour set
 	 */
 	public static final int SET_LEAGUE_6_RELICHUNTER_T3 = 33457;
+
+	/**
+	 * Dragon crossbow
+	 */
+	public static final int BR_XBOWS_CROSSBOW_DRAGON = 33460;
+
+	/**
+	 * Oathplate helm
+	 */
+	public static final int BR_OATHPLATE_HELM = 33462;
+
+	/**
+	 * Void melee helm (l) (broken)
+	 */
+	public static final int GAME_PEST_MELEE_HELM_TROUVER_BROKEN = 33464;
+
+	/**
+	 * Void melee helm (l) (mangled)
+	 */
+	public static final int GAME_PEST_MELEE_HELM_TROUVER_MANGLED = 33466;
+
+	/**
+	 * Void mage helm (l) (broken)
+	 */
+	public static final int GAME_PEST_MAGE_HELM_TROUVER_BROKEN = 33468;
+
+	/**
+	 * Void mage helm (l) (mangled)
+	 */
+	public static final int GAME_PEST_MAGE_HELM_TROUVER_MANGLED = 33470;
+
+	/**
+	 * Void ranger helm (l) (broken)
+	 */
+	public static final int GAME_PEST_ARCHER_HELM_TROUVER_BROKEN = 33472;
+
+	/**
+	 * Void ranger helm (l) (mangled)
+	 */
+	public static final int GAME_PEST_ARCHER_HELM_TROUVER_MANGLED = 33474;
+
+	/**
+	 * Void knight top (l) (broken)
+	 */
+	public static final int PEST_VOID_KNIGHT_TOP_TROUVER_BROKEN = 33476;
+
+	/**
+	 * Void knight top (l) (mangled)
+	 */
+	public static final int PEST_VOID_KNIGHT_TOP_TROUVER_MANGLED = 33478;
+
+	/**
+	 * Elite void top (l) (broken)
+	 */
+	public static final int ELITE_VOID_KNIGHT_TOP_TROUVER_BROKEN = 33480;
+
+	/**
+	 * Elite void top (l) (mangled)
+	 */
+	public static final int ELITE_VOID_KNIGHT_TOP_TROUVER_MANGLED = 33482;
+
+	/**
+	 * Void knight robe (l) (broken)
+	 */
+	public static final int PEST_VOID_KNIGHT_ROBES_TROUVER_BROKEN = 33484;
+
+	/**
+	 * Void knight robe (l) (mangled)
+	 */
+	public static final int PEST_VOID_KNIGHT_ROBES_TROUVER_MANGLED = 33486;
+
+	/**
+	 * Elite void robe (l) (broken)
+	 */
+	public static final int ELITE_VOID_KNIGHT_ROBES_TROUVER_BROKEN = 33488;
+
+	/**
+	 * Elite void robe (l) (mangled)
+	 */
+	public static final int ELITE_VOID_KNIGHT_ROBES_TROUVER_MANGLED = 33490;
+
+	/**
+	 * Void knight gloves (l) (broken)
+	 */
+	public static final int PEST_VOID_KNIGHT_GLOVES_TROUVER_BROKEN = 33492;
+
+	/**
+	 * Void knight gloves (l) (mangled)
+	 */
+	public static final int PEST_VOID_KNIGHT_GLOVES_TROUVER_MANGLED = 33494;
+
+	/**
+	 * Infernal max cape (l) (broken)
+	 */
+	public static final int SKILLCAPE_MAX_INFERNALCAPE_TROUVER_BROKEN = 33496;
+
+	/**
+	 * Infernal max cape (l) (mangled)
+	 */
+	public static final int SKILLCAPE_MAX_INFERNALCAPE_TROUVER_MANGLED = 33498;
+
+	/**
+	 * Infernal cape (l) (broken)
+	 */
+	public static final int INFERNAL_CAPE_TROUVER_BROKEN = 33500;
+
+	/**
+	 * Infernal cape (l) (mangled)
+	 */
+	public static final int INFERNAL_CAPE_TROUVER_MANGLED = 33502;
+
+	/**
+	 * Blood ancient sceptre (l) (broken)
+	 */
+	public static final int ANCIENT_SCEPTRE_BLOOD_TROUVER_BROKEN = 33504;
+
+	/**
+	 * Blood ancient sceptre (l) (mangled)
+	 */
+	public static final int ANCIENT_SCEPTRE_BLOOD_TROUVER_MANGLED = 33506;
+
+	/**
+	 * Ice ancient sceptre (l) (broken)
+	 */
+	public static final int ANCIENT_SCEPTRE_ICE_TROUVER_BROKEN = 33508;
+
+	/**
+	 * Ice ancient sceptre (l) (mangled)
+	 */
+	public static final int ANCIENT_SCEPTRE_ICE_TROUVER_MANGLED = 33510;
+
+	/**
+	 * Smoke ancient sceptre (l) (broken)
+	 */
+	public static final int ANCIENT_SCEPTRE_SMOKE_TROUVER_BROKEN = 33512;
+
+	/**
+	 * Smoke ancient sceptre (l) (mangled)
+	 */
+	public static final int ANCIENT_SCEPTRE_SMOKE_TROUVER_MANGLED = 33514;
+
+	/**
+	 * Shadow ancient sceptre (l) (broken)
+	 */
+	public static final int ANCIENT_SCEPTRE_SHADOW_TROUVER_BROKEN = 33516;
+
+	/**
+	 * Shadow ancient sceptre (l) (mangled)
+	 */
+	public static final int ANCIENT_SCEPTRE_SHADOW_TROUVER_MANGLED = 33518;
+
+	/**
+	 * Fighter torso (l) (broken)
+	 */
+	public static final int BARBASSAULT_PENANCE_FIGHTER_TORSO_TROUVER_BROKEN = 33520;
+
+	/**
+	 * Fighter torso (l) (mangled)
+	 */
+	public static final int BARBASSAULT_PENANCE_FIGHTER_TORSO_TROUVER_MANGLED = 33522;
+
+	/**
+	 * Dizana's quiver (l) (broken)
+	 */
+	public static final int DIZANAS_QUIVER_TROUVER_BROKEN = 33524;
+
+	/**
+	 * Dizana's quiver (l) (mangled)
+	 */
+	public static final int DIZANAS_QUIVER_TROUVER_MANGLED = 33526;
+
+	/**
+	 * Blessed dizana's quiver (l) (broken)
+	 */
+	public static final int DIZANAS_QUIVER_INFINITE_TROUVER_BROKEN = 33528;
+
+	/**
+	 * Blessed dizana's quiver (l) (mangled)
+	 */
+	public static final int DIZANAS_QUIVER_INFINITE_TROUVER_MANGLED = 33530;
+
+	/**
+	 * Dizana's max cape (l) (broken)
+	 */
+	public static final int SKILLCAPE_MAX_DIZANAS_TROUVER_BROKEN = 33532;
+
+	/**
+	 * Dizana's max cape (l) (mangled)
+	 */
+	public static final int SKILLCAPE_MAX_DIZANAS_TROUVER_MANGLED = 33533;
 
 	public static final class Cert
 	{
@@ -92171,6 +92366,8 @@ public final class ItemID
 		public static final int SET_LEAGUE_6_RELICHUNTER_T1 = 33452;
 		public static final int SET_LEAGUE_6_RELICHUNTER_T2 = 33455;
 		public static final int SET_LEAGUE_6_RELICHUNTER_T3 = 33458;
+		public static final int BR_XBOWS_CROSSBOW_DRAGON = 33461;
+		public static final int BR_OATHPLATE_HELM = 33463;
 	}
 
 	public static final class Placeholder
@@ -101724,7 +101921,6 @@ public final class ItemID
 		public static final int DEADMAN_ALL_STAR_MISSION_TOTEM = 33426;
 		public static final int MAGIC_ROCK_OF_VENGEANCE_2_USE = 33430;
 		public static final int MAGIC_ROCK_OF_VENGEANCE_1_USE = 33433;
-		public static final int TOTS_UNCHARGED_ORN = 33435;
 		public static final int BUCKET_SULPHUROUS_FERTILISER = 33438;
 		public static final int LEAGUE_6_SLAYER_HELM1_I = 33440;
 		public static final int SW_LEAGUE_6_SLAYER_HELM1_I = 33442;
@@ -101735,6 +101931,40 @@ public final class ItemID
 		public static final int SET_LEAGUE_6_RELICHUNTER_T1 = 33453;
 		public static final int SET_LEAGUE_6_RELICHUNTER_T2 = 33456;
 		public static final int SET_LEAGUE_6_RELICHUNTER_T3 = 33459;
+		public static final int GAME_PEST_MELEE_HELM_TROUVER_BROKEN = 33465;
+		public static final int GAME_PEST_MELEE_HELM_TROUVER_MANGLED = 33467;
+		public static final int GAME_PEST_MAGE_HELM_TROUVER_BROKEN = 33469;
+		public static final int GAME_PEST_MAGE_HELM_TROUVER_MANGLED = 33471;
+		public static final int GAME_PEST_ARCHER_HELM_TROUVER_BROKEN = 33473;
+		public static final int GAME_PEST_ARCHER_HELM_TROUVER_MANGLED = 33475;
+		public static final int PEST_VOID_KNIGHT_TOP_TROUVER_BROKEN = 33477;
+		public static final int PEST_VOID_KNIGHT_TOP_TROUVER_MANGLED = 33479;
+		public static final int ELITE_VOID_KNIGHT_TOP_TROUVER_BROKEN = 33481;
+		public static final int ELITE_VOID_KNIGHT_TOP_TROUVER_MANGLED = 33483;
+		public static final int PEST_VOID_KNIGHT_ROBES_TROUVER_BROKEN = 33485;
+		public static final int PEST_VOID_KNIGHT_ROBES_TROUVER_MANGLED = 33487;
+		public static final int ELITE_VOID_KNIGHT_ROBES_TROUVER_BROKEN = 33489;
+		public static final int ELITE_VOID_KNIGHT_ROBES_TROUVER_MANGLED = 33491;
+		public static final int PEST_VOID_KNIGHT_GLOVES_TROUVER_BROKEN = 33493;
+		public static final int PEST_VOID_KNIGHT_GLOVES_TROUVER_MANGLED = 33495;
+		public static final int SKILLCAPE_MAX_INFERNALCAPE_TROUVER_BROKEN = 33497;
+		public static final int SKILLCAPE_MAX_INFERNALCAPE_TROUVER_MANGLED = 33499;
+		public static final int INFERNAL_CAPE_TROUVER_BROKEN = 33501;
+		public static final int INFERNAL_CAPE_TROUVER_MANGLED = 33503;
+		public static final int ANCIENT_SCEPTRE_BLOOD_TROUVER_BROKEN = 33505;
+		public static final int ANCIENT_SCEPTRE_BLOOD_TROUVER_MANGLED = 33507;
+		public static final int ANCIENT_SCEPTRE_ICE_TROUVER_BROKEN = 33509;
+		public static final int ANCIENT_SCEPTRE_ICE_TROUVER_MANGLED = 33511;
+		public static final int ANCIENT_SCEPTRE_SMOKE_TROUVER_BROKEN = 33513;
+		public static final int ANCIENT_SCEPTRE_SMOKE_TROUVER_MANGLED = 33515;
+		public static final int ANCIENT_SCEPTRE_SHADOW_TROUVER_BROKEN = 33517;
+		public static final int ANCIENT_SCEPTRE_SHADOW_TROUVER_MANGLED = 33519;
+		public static final int BARBASSAULT_PENANCE_FIGHTER_TORSO_TROUVER_BROKEN = 33521;
+		public static final int BARBASSAULT_PENANCE_FIGHTER_TORSO_TROUVER_MANGLED = 33523;
+		public static final int DIZANAS_QUIVER_TROUVER_BROKEN = 33525;
+		public static final int DIZANAS_QUIVER_TROUVER_MANGLED = 33527;
+		public static final int DIZANAS_QUIVER_INFINITE_TROUVER_BROKEN = 33529;
+		public static final int DIZANAS_QUIVER_INFINITE_TROUVER_MANGLED = 33531;
 	}
 /* This file is automatically generated. Do not edit. */
 }
