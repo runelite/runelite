@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, syslogdaemon <290098959+syslogdaemon@users.noreply.github.com>
+ * Copyright (c) 2026, syslogdaemon <290098959+syslogdaemon@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
