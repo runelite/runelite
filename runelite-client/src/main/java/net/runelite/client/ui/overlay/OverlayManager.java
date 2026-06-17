@@ -640,7 +640,7 @@ public class OverlayManager
 	void addOriginMenu(Overlay overlay)
 	{
 		Menu menu = client.getMenu();
-		Menu sub = menu.createMenuEntry(-1)
+		Menu sub = menu.createMenuEntry(1)
 			.setOption("Overlay Origin")
 			.createSubMenu();
 		String[] opts = {"Top left", "Top center", "Top right", "Bottom left", "Bottom center", "Bottom right"};

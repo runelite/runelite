@@ -51,8 +51,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
 import net.runelite.api.events.BeforeRender;
-import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -174,7 +174,7 @@ public class OverlayRenderer extends MouseAdapter
 	}
 
 	@Subscribe
-	protected void onClientTick(ClientTick t)
+	protected void onPostMenuSort(PostMenuSort event)
 	{
 		lastHoveredOverlay = curHoveredOverlay;
 
