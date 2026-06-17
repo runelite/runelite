@@ -515,9 +515,9 @@ class PluginHubPanel extends PluginPanel
 			}
 		});
 
-		JLabel externalPluginWarning1 = new JLabel("<html>External plugins are verified to not be " +
-			"malicious or rule-breaking, but are not " +
-			"maintained by the RuneLite developers. " +
+		JLabel externalPluginWarning1 = new JLabel("<html>External plugins are reviewed to help " +
+			"ensure they are not malicious, or rule- " +
+			"breaking, but this is not guaranteed. " +
 			"They may cause bugs or instability.</html>");
 		externalPluginWarning1.setBackground(new Color(0xFFBB33));
 		externalPluginWarning1.setForeground(Color.BLACK);
