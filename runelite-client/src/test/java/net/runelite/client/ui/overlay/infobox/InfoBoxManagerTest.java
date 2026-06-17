@@ -36,7 +36,6 @@ import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,10 +62,6 @@ public class InfoBoxManagerTest
 	@Mock
 	@Bind
 	private Client client;
-
-	@Mock
-	@Bind
-	private OverlayManager overlayManager;
 
 	@Before
 	public void before()

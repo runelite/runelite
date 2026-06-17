@@ -190,8 +190,6 @@ public class OverlayRenderer extends MouseAdapter
 			return;
 		}
 
-		overlayManager.addOriginMenu(overlay);
-
 		List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
 		if (menuEntries.isEmpty())
 		{
@@ -286,12 +284,12 @@ public class OverlayRenderer extends MouseAdapter
 		final Rectangle clip = clipBounds(layer);
 		graphics.setClip(clip);
 
-		final Point location = new Point();
 		for (Overlay overlay : overlays)
 		{
 			final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
 			final Rectangle bounds = overlay.getBounds();
 			final Point preferredLocation = overlay.getPreferredLocation();
+			Point location;
 			SnapCorner snapCorner = null;
 
 			// If the final position is not modified, layout it
@@ -299,19 +297,15 @@ public class OverlayRenderer extends MouseAdapter
 				&& overlayPosition != OverlayPosition.DETACHED && preferredLocation == null)
 			{
 				snapCorner = snapCorners.forPosition(overlayPosition);
-				snapCorner.getNextDrawPosition(bounds, location);
-			}
-			else if (preferredLocation != null)
-			{
-				overlayManager.computeAbsolutePosition(overlay, location);
+				location = snapCorner.getNextDrawPosition(bounds);
 			}
 			else
 			{
-				location.setLocation(bounds.x, bounds.y);
+				location = preferredLocation != null ? preferredLocation : bounds.getLocation();
 			}
 
 			// Clamp the overlay position to ensure it is on screen or within parent bounds
-			clampOverlayLocation(location.x, location.y, bounds.width, bounds.height, overlay, location);
+			location = clampOverlayLocation(location.x, location.y, bounds.width, bounds.height, overlay);
 
 			if (overlay.getPreferredSize() != null)
 			{
@@ -565,6 +559,8 @@ public class OverlayRenderer extends MouseAdapter
 			final int minOverlaySize = currentManagedOverlay.getMinimumSize();
 			final int widthOverflow = Math.max(0, minOverlaySize - width);
 			final int heightOverflow = Math.max(0, minOverlaySize - height);
+			final int dx = x - originalX;
+			final int dy = y - originalY;
 
 			// If this resize operation would cause the dimensions to go below the minimum width/height, reset the
 			// dimensions and adjust the x/y position accordingly as needed
@@ -572,7 +568,7 @@ public class OverlayRenderer extends MouseAdapter
 			{
 				width = minOverlaySize;
 
-				if (x > originalX)
+				if (dx > 0)
 				{
 					x -= widthOverflow;
 				}
@@ -581,7 +577,7 @@ public class OverlayRenderer extends MouseAdapter
 			{
 				height = minOverlaySize;
 
-				if (y > originalY)
+				if (dy > 0)
 				{
 					y -= heightOverflow;
 				}
@@ -590,10 +586,9 @@ public class OverlayRenderer extends MouseAdapter
 			currentManagedBounds.setRect(x, y, width, height);
 			currentManagedOverlay.setPreferredSize(new Dimension(currentManagedBounds.width, currentManagedBounds.height));
 
-			Point l = currentManagedOverlay.getPreferredLocation();
-			if (l != null)
+			if (currentManagedOverlay.getPreferredLocation() != null)
 			{
-				l.translate(x - originalX, y -  originalY);
+				currentManagedOverlay.setPreferredLocation(currentManagedBounds.getLocation());
 			}
 		}
 		else if (inOverlayDraggingMode)
@@ -603,17 +598,7 @@ public class OverlayRenderer extends MouseAdapter
 
 			// Clamp drag to parent component
 			final Rectangle overlayBounds = currentManagedOverlay.getBounds();
-			clampOverlayLocation(overlayPosition.x, overlayPosition.y, overlayBounds.width, overlayBounds.height, currentManagedOverlay, overlayPosition);
-
-			if (currentManagedOverlay.getOrigin() == OverlayOrigin.AUTO)
-			{
-				// Compute the new origins for the overlay
-				overlayManager.computeOverlayOrigins(currentManagedOverlay, overlayPosition.x, overlayPosition.y, overlayBounds.width, overlayBounds.height);
-			}
-
-			// Compute new relative position
-			overlayPosition = overlayManager.computeOriginPosition(overlayPosition, currentManagedOverlay.getOrigin(), currentManagedOverlay.getOriginX(), currentManagedOverlay.getOriginY());
-
+			overlayPosition = clampOverlayLocation(overlayPosition.x, overlayPosition.y, overlayBounds.width, overlayBounds.height, currentManagedOverlay);
 			currentManagedOverlay.setPreferredPosition(null);
 			currentManagedOverlay.setPreferredLocation(overlayPosition);
 		}
@@ -670,9 +655,6 @@ public class OverlayRenderer extends MouseAdapter
 
 					currentManagedOverlay.setPreferredPosition(position);
 					currentManagedOverlay.setPreferredLocation(null); // from dragging
-					currentManagedOverlay.setOrigin(OverlayOrigin.AUTO);
-					currentManagedOverlay.setOriginX(OverlayOriginX.LEFT);
-					currentManagedOverlay.setOriginY(OverlayOriginY.TOP);
 					currentManagedOverlay.revalidate();
 					break;
 				}
@@ -862,9 +844,9 @@ public class OverlayRenderer extends MouseAdapter
 	 * @param overlayWidth
 	 * @param overlayHeight
 	 * @param overlay       the overlay
-	 * @param out the clamped position
+	 * @return the clamped position
 	 */
-	private void clampOverlayLocation(int overlayX, int overlayY, int overlayWidth, int overlayHeight, Overlay overlay, Point out)
+	private Point clampOverlayLocation(int overlayX, int overlayY, int overlayWidth, int overlayHeight, Overlay overlay)
 	{
 		int px, py, pw, ph;
 		Rectangle parentBounds = overlay.getParentBounds();
@@ -885,7 +867,7 @@ public class OverlayRenderer extends MouseAdapter
 		}
 
 		// Constrain overlay position to be within the parent bounds
-		out.setLocation(
+		return new Point(
 			Ints.constrainToRange(overlayX, px,
 				Math.max(px, px + pw - overlayWidth)),
 			Ints.constrainToRange(overlayY, py,
