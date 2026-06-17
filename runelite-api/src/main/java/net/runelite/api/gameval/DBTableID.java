@@ -7952,6 +7952,66 @@ public final class DBTableID
 			public static final int SYNTH_WEAPONS = 4978;
 			public static final int SYNTH_WILDERNESSBOSSREWORK = 4979;
 			public static final int SYNTH_VETION = 4980;
+			public static final int SYNTH_VARLAMOREPART3 = 16326;
+			public static final int SYNTH_ARKANBLADE = 16327;
+			public static final int SYNTH_CUSTODIANSTALKERS = 16328;
+			public static final int SYNTH_DELVEBOSS = 16329;
+			public static final int SYNTH_REWARDS = 16330;
+			public static final int SYNTH_DUOCULTISTSCOMBAT = 16331;
+			public static final int SYNTH_EARTHNAGUA = 16332;
+			public static final int SYNTH_ENNIUSCOMBAT = 16333;
+			public static final int SYNTH_ENVIRONMENTS = 16334;
+			public static final int SYNTH_MOKHAIOTLDUNGEON = 16335;
+			public static final int SYNTH_FINALDAWN = 16336;
+			public static final int SYNTH_FLETCHINGACTIVITY = 16337;
+			public static final int SYNTH_GEMSTONECRAB = 16338;
+			public static final int SYNTH_GUARDCOMBAT = 16339;
+			public static final int SYNTH_METZLICOMBAT = 16340;
+			public static final int SYNTH_SCRAMBLEDQUEST = 16341;
+			public static final int SYNTH_ANIMALS_DUPE1 = 16342;
+			public static final int SYNTH_BRUTUSCOWBOSS = 16343;
+			public static final int SYNTH_YAMA = 16344;
+			public static final int SYNTH_DEADMAN2026 = 16345;
+			public static final int SYNTH_EASTER2025 = 16346;
+			public static final int SYNTH_HALLOWEEN2025 = 16347;
+			public static final int SYNTH_LEAGUES6 = 16348;
+			public static final int SYNTH_REDREEF = 16349;
+			public static final int SYNTH_TCS = 16350;
+			public static final int SYNTH_ANCHOR = 16351;
+			public static final int SYNTH_BARRACUDATRAILS = 16352;
+			public static final int SYNTH_CANNONS = 16353;
+			public static final int SYNTH_CREATURESMISC = 16354;
+			public static final int SYNTH_CUSTOMISING = 16355;
+			public static final int SYNTH_DEEPSEATRAWLING = 16356;
+			public static final int SYNTH_GRYPHON = 16357;
+			public static final int SYNTH_HORNOFPLENTY = 16358;
+			public static final int SYNTH_KANDARINRAFT = 16359;
+			public static final int SYNTH_LOOTNET = 16360;
+			public static final int SYNTH_MERMAID = 16361;
+			public static final int SYNTH_MOGRE_DUPE1 = 16362;
+			public static final int SYNTH_MONODON = 16363;
+			public static final int SYNTH_OCEANAMBIENCES = 16364;
+			public static final int SYNTH_ARDENTOCEAN = 16365;
+			public static final int SYNTH_HAZARDS = 16366;
+			public static final int SYNTH_HAZARDFETIDWATERS = 16367;
+			public static final int SYNTH_HAZARDFLECKEDWATERS = 16368;
+			public static final int SYNTH_HAZARDPROFANEWATERS = 16369;
+			public static final int SYNTH_HAZARDSTORMYSEAS = 16370;
+			public static final int SYNTH_HAZARDSUNBAKEDSEAS = 16371;
+			public static final int SYNTH_HAZARDTANGLEDKELP = 16372;
+			public static final int SYNTH_NORTHERNOCEAN = 16373;
+			public static final int SYNTH_SUNSETOCEAN = 16374;
+			public static final int SYNTH_UNQUIETOCEAN = 16375;
+			public static final int SYNTH_SAILINGCOMBATREBALANCE = 16376;
+			public static final int SYNTH_SAILMOVEMENT = 16377;
+			public static final int SYNTH_SHARK_DUPE1 = 16378;
+			public static final int SYNTH_SHIPWRECK = 16379;
+			public static final int SYNTH_SKILLCAPEEMOTE = 16380;
+			public static final int SYNTH_TORTUGAN = 16381;
+			public static final int SYNTH_TRAWLING = 16382;
+			public static final int SYNTH_WINDCATCHER = 16383;
+			public static final int SYNTH_AQUANITES = 16384;
+			public static final int SYNTH_STRYKEWYRMS = 16385;
 		}
 	}
 
@@ -9525,14 +9585,19 @@ public final class DBTableID
 		public static final int COL_EXTENSION_ADDITIVE = 16;
 
 		/**
+		 * (dbrow, integer)
+		 */
+		public static final int COL_UNLOCK_WEIGHTING = 17;
+
+		/**
 		 * dbrow
 		 */
-		public static final int COL_BLOCK_UNLOCK = 17;
+		public static final int COL_BLOCK_UNLOCK = 18;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 18;
+		public static final int COL_RELATED_CONTENT = 19;
 
 		public static final class Row
 		{
@@ -10332,6 +10397,8 @@ public final class DBTableID
 			public static final int SLAYER_REWARDS_UNLOCK_HELM_HOODED = 9641;
 			public static final int SLAYER_REWARDS_LONGER_GRYPHONS = 9642;
 			public static final int SLAYER_REWARDS_UNLOCK_HELM_LEAGUE_6 = 16325;
+			public static final int SLAYER_REWARDS_WEIGHTED_FROST_DRAGONS = 16387;
+			public static final int SLAYER_REWARDS_LONGER_FROST_DRAGONS = 16388;
 		}
 	}
 
@@ -21433,7 +21500,6 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MAGIC_82_TELEOTHER_FALADOR = 11938;
 			public static final int SKILL_FEATURE_MAGIC_85_WATER_SURGE = 11939;
 			public static final int SKILL_FEATURE_MAGIC_85_TELEPORT_BLOCK = 11940;
-			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL_1 = 11941;
 			public static final int SKILL_FEATURE_MAGIC_87_ENCHANT_AMULET_LVL6 = 11942;
 			public static final int SKILL_FEATURE_MAGIC_90_EARTH_SURGE = 11943;
 			public static final int SKILL_FEATURE_MAGIC_90_TELEOTHER_CAMELOT = 11944;
@@ -21460,7 +21526,6 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_80_BLOOD_BLITZ = 11965;
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_82_ICE_BLITZ = 11966;
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_84_CARRALLAGAR_TELEPORT = 11967;
-			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL_2 = 11968;
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_86_SMOKE_BARRAGE = 11969;
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_88_SHADOW_BARRAGE = 11970;
 			public static final int SKILL_FEATURE_MAGIC_ANCIENT_90_ANNAKARL_TELEPORT = 11971;
@@ -21500,7 +21565,6 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_83_TREAT_SOIL = 12005;
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_84_STATBOOST_POT_SHARE = 12006;
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_85_TELE_FISH_GUILD = 12007;
-			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL_3 = 12008;
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_86_TELE_FISH_GUILD_GROUP = 12009;
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_86_PLANK_MAKE = 12010;
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_87_TELE_CATHERBY = 12011;
@@ -21557,7 +21621,6 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_83_TELEPORT_BARROWS = 12062;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_84_DEMONIC_OFFERING = 12063;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_85_GREATER_CORRUPTION = 12064;
-			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL_4 = 12065;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_90_TELEPORT_APE = 12066;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_16_REANIMATE_MASTER = 12067;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_92_SINISTER_OFFERING = 12068;
@@ -22716,6 +22779,7 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MAGIC_LUNAR_LEAGUES_6_HOME_TELEPORT = 16263;
 			public static final int SKILL_FEATURE_MAGIC_ARCEUUS_LEAGUES_6_HOME_TELEPORT = 16264;
 			public static final int SKILL_FEATURE_FARMING_SULPHUROUS_FERTILISER = 16323;
+			public static final int SKILL_FEATURE_MAGIC_BOUNTY_TELEPORT_SPELL = 16386;
 		}
 	}
 

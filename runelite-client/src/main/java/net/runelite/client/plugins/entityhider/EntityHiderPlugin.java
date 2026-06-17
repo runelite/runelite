@@ -60,7 +60,10 @@ public class EntityHiderPlugin extends Plugin
 	private static final Set<Integer> THRALL_IDS = ImmutableSet.of(
 		NpcID.ARCEUUS_THRALL_GHOST_LESSER, NpcID.ARCEUUS_THRALL_SKELETON_LESSER, NpcID.ARCEUUS_THRALL_ZOMBIE_LESSER,  // Lesser Thrall (ghost, skeleton, zombie)
 		NpcID.ARCEUUS_THRALL_GHOST_SUPERIOR, NpcID.ARCEUUS_THRALL_SKELETON_SUPERIOR, NpcID.ARCEUUS_THRALL_ZOMBIE_SUPERIOR,  // Superior Thrall (ghost, skeleton, zombie)
-		NpcID.ARCEUUS_THRALL_GHOST_GREATER, NpcID.ARCEUUS_THRALL_SKELETON_GREATER, NpcID.ARCEUUS_THRALL_ZOMBIE_GREATER   // Greater Thrall (ghost, skeleton, zombie)
+		NpcID.ARCEUUS_THRALL_GHOST_GREATER, NpcID.ARCEUUS_THRALL_SKELETON_GREATER, NpcID.ARCEUUS_THRALL_ZOMBIE_GREATER,   // Greater Thrall (ghost, skeleton, zombie)
+		NpcID.THRALL_IMP_MAGIC_LESSER, NpcID.THRALL_IMP_RANGED_LESSER, NpcID.THRALL_IMP_MELEE_LESSER, // Leagues 6 Cosmetic Override for lesser thralls
+		NpcID.THRALL_IMP_MAGIC_SUPERIOR, NpcID.THRALL_IMP_RANGED_SUPERIOR, NpcID.THRALL_IMP_MELEE_SUPERIOR, // Leagues 6 Cosmetic Override for superior thralls
+		NpcID.THRALL_IMP_MAGIC_GREATER, NpcID.THRALL_IMP_RANGED_GREATER, NpcID.THRALL_IMP_MELEE_GREATER // Leagues 6 Cosmetic Override for greater thralls
 	);
 	private static final Set<Integer> RANDOM_EVENT_NPC_IDS = ImmutableSet.of(
 		NpcID.MACRO_BEEKEEPER_INVITATION,

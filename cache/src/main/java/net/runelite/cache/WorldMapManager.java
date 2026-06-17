@@ -62,6 +62,7 @@ public class WorldMapManager
 		Index index = store.getIndex(IndexType.WORLDMAP);
 		Archive compositeMapArchive = index.findArchiveByName("compositemap");
 		WorldMapCompositeLoader worldMapCompositeLoader = new WorldMapCompositeLoader();
+		worldMapCompositeLoader.configureForRevision(index.getRevision());
 
 		ArchiveFiles compositeMapFiles = compositeMapArchive.getFiles(storage.loadArchive(compositeMapArchive));
 		for (FSFile compositeFile : compositeMapFiles.getFiles())

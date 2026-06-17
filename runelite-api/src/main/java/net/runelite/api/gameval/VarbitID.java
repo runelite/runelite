@@ -10015,6 +10015,9 @@ public final class VarbitID
 	public static final int RUNE_POUCH_QUANTITY_5 = 15375;
 	public static final int RUNE_POUCH_QUANTITY_6 = 15376;
 	public static final int BOUNTY_TASK_ITEM_COUNTER_5 = 15397;
+	public static final int SLAYER_UNLOCK_LONGER_GRYPHON = 15398;
+	public static final int SLAYER_UNLOCK_LONGER_FROST_DRAGONS = 15399;
+	public static final int SLAYER_WEIGHTED_LONGER_FROST_DRAGONS = 15400;
 	public static final int XMAS24_INVITE_HAIRDRESSER = 15522;
 	public static final int XMAS24_INVITE_SARAH = 15524;
 	public static final int LEAGUE_HASNT_USED_BOOTS_FOR_MOUNT_QUID = 15647;

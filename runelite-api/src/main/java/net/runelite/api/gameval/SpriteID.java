@@ -3758,6 +3758,7 @@ public final class SpriteID
 		public static final int _1 = 1082;
 		public static final int _2 = 1083;
 		public static final int _3 = 2417;
+		public static final int _4 = 8357;
 
 		public static final int ALL_ITEMS = _0;
 		public static final int ADD = _1;
