@@ -516,7 +516,7 @@ class PluginHubPanel extends PluginPanel
 		});
 
 		JLabel externalPluginWarning1 = new JLabel("<html>External plugins are reviewed to help " +
-			"ensure they are not malicious, or rule- " +
+			"ensure they are not malicious or rule- " +
 			"breaking, but this is not guaranteed. " +
 			"They may cause bugs or instability.</html>");
 		externalPluginWarning1.setBackground(new Color(0xFFBB33));
