@@ -57,6 +57,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private ComponentOrientation orientation = ComponentOrientation.VERTICAL;
 
 	@Setter
+	private ComponentWrapDirection wrapDirection = ComponentWrapDirection.NORMAL;
+
+	@Setter
 	private boolean wrap = false;
 
 	@Setter
@@ -109,6 +112,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 		// Calculate max width/height for infoboxes
 		int totalHeight = 0;
 		int totalWidth = 0;
+		int minX = baseX;
+		int minY = baseY;
 
 		// Render all children
 		for (final LayoutableRenderableEntity child : children)
@@ -127,6 +132,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 				}
 			}
 
+			if (x < minX) minX = x;
+			if (y < minY) minY = y;
 			child.setPreferredLocation(new Point(x, y));
 			final Dimension childDimension = child.render(graphics);
 
@@ -162,10 +169,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 						height = 0;
 						y = baseY;
 						int diff = childDimension.width + gap.x;
-						x += diff;
+						x += wrapDirection == ComponentWrapDirection.REVERSED ? -diff : diff;
 						width += diff;
 					}
-
 					break;
 				}
 				case HORIZONTAL:
@@ -175,10 +181,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 						width = 0;
 						x = baseX;
 						int diff = childDimension.height + gap.y;
-						y += diff;
+						y += wrapDirection == ComponentWrapDirection.REVERSED ? -diff : diff;
 						height += diff;
 					}
-
 					break;
 				}
 			}
@@ -189,7 +194,7 @@ public class PanelComponent implements LayoutableRenderableEntity
 		{
 			totalWidth -= gap.x;
 		}
-		else // VERTICAL
+		else
 		{
 			totalHeight -= gap.y;
 		}
@@ -197,9 +202,10 @@ public class PanelComponent implements LayoutableRenderableEntity
 		// Cache children bounds
 		childDimensions.setSize(totalWidth, totalHeight);
 
-		// Cache bounds
-		bounds.setLocation(preferredLocation);
+		// Cache bounds — offset location if children grew in a negative direction
+		bounds.setLocation(preferredLocation.x + (minX - baseX), preferredLocation.y + (minY - baseY));
 		bounds.setSize(dimension);
+
 		return dimension;
 	}
 }

@@ -53,6 +53,7 @@ import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
+import net.runelite.client.ui.overlay.components.ComponentWrapDirection;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.AsyncBufferedImage;
 
@@ -63,6 +64,7 @@ public class InfoBoxManager
 	private static final String INFOBOXLAYER_KEY = "infoboxlayer";
 	private static final String INFOBOXOVERLAY_KEY = "infoboxoverlay";
 	private static final String INFOBOXOVERLAY_ORIENTATION_PREFIX = "orient_";
+	private static final String INFOBOXOVERLAY_WRAP_PREFIX = "wrap_";
 	private static final String DEFAULT_LAYER = "InfoBoxOverlay";
 
 	private static final String DETACH = "Detach";
@@ -127,12 +129,6 @@ public class InfoBoxManager
 			// The layer name doesn't matter as long as it is unique
 			splitInfobox(event.getInfoBox().getName() + "_" + System.currentTimeMillis(), event.getInfoBox());
 		}
-		else if (FLIP.equals(event.getEntry().getOption()))
-		{
-			InfoBoxOverlay infoBoxOverlay = layers.get(event.getInfoBox().layer);
-			ComponentOrientation newOrientation = infoBoxOverlay.flip();
-			setOrientation(infoBoxOverlay.getName(), newOrientation);
-		}
 		else if (DELETE.equals(event.getEntry().getOption()))
 		{
 			// This is just a merge into the default layer
@@ -158,6 +154,7 @@ public class InfoBoxManager
 		List<OverlayMenuEntry> menuEntries = infoBox.getMenuEntries();
 		menuEntries.add(DETACH_ME);
 		menuEntries.add(FLIP_ME);
+
 		if (!layerName.equals(DEFAULT_LAYER))
 		{
 			// Non default-group infoboxes have a delete option to delete the group
@@ -278,6 +275,8 @@ public class InfoBoxManager
 			}
 		}
 
+		ComponentWrapDirection wrapDirection = getWrapDirection(name);
+
 		InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay(
 			this,
 			tooltipManager,
@@ -285,7 +284,8 @@ public class InfoBoxManager
 			runeLiteConfig,
 			eventBus,
 			name,
-			orientation);
+			orientation,
+			wrapDirection);
 		overlayManager.add(infoBoxOverlay);
 		eventBus.register(infoBoxOverlay);
 		return infoBoxOverlay;
@@ -395,6 +395,17 @@ public class InfoBoxManager
 	void unsetOrientation(String name)
 	{
 		configManager.unsetConfiguration(INFOBOXOVERLAY_KEY, INFOBOXOVERLAY_ORIENTATION_PREFIX + name);
+	}
+
+	ComponentWrapDirection getWrapDirection(String name)
+	{
+		ComponentWrapDirection wrapDirection = configManager.getConfiguration(INFOBOXOVERLAY_KEY, INFOBOXOVERLAY_WRAP_PREFIX + name, ComponentWrapDirection.class);
+		return (wrapDirection != null) ? wrapDirection : ComponentWrapDirection.NORMAL;
+	}
+
+	void setWrapDirection(String name, ComponentWrapDirection wrapDirection)
+	{
+		configManager.setConfiguration(INFOBOXOVERLAY_KEY, INFOBOXOVERLAY_WRAP_PREFIX + name, wrapDirection);
 	}
 
 	/**
