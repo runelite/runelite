@@ -69,7 +69,7 @@ public class WorldMapDumperTest
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.WORLDMAP);
-			Archive archive = index.findArchiveByName("details");
+			Archive archive = index.isNamed() ? index.findArchiveByName("details") : index.getArchive(WorldMapManager.DETAILS_ID);
 
 			byte[] archiveData = storage.loadArchive(archive);
 			ArchiveFiles files = archive.getFiles(archiveData);
