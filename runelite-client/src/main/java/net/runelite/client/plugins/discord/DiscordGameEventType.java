@@ -623,6 +623,7 @@ enum DiscordGameEventType
 			case RUNECRAFT: return TRAINING_RUNECRAFT;
 			case HUNTER: return TRAINING_HUNTER;
 			case CONSTRUCTION: return TRAINING_CONSTRUCTION;
+			case SAILING: return TRAINING_SAILING;
 			default: return null;
 		}
 	}

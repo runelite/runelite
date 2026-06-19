@@ -1109,6 +1109,10 @@ public final class NpcID
 	 */
 	public static final int POH_SERVANT_MAITRE_D_MAN = 227;
 	public static final int POH_SERVANT_MULTI_MAITRE_D_MAN = 228;
+
+	/**
+	 * Demon butler
+	 */
 	public static final int POH_SERVANT_DEMON = 229;
 	public static final int POH_SERVANT_MULTI_DEMON = 230;
 
@@ -68302,11 +68306,6 @@ public final class NpcID
 	public static final int THRALL_IMP_MELEE_LESSER = 15707;
 	public static final int THRALL_IMP_MELEE_SUPERIOR = 15708;
 	public static final int THRALL_IMP_MELEE_GREATER = 15709;
-
-	/**
-	 * Demon butler
-	 */
-	public static final int POH_SERVANT_DEMON_BASE = 15710;
 
 	/**
 	 * Demon butler
