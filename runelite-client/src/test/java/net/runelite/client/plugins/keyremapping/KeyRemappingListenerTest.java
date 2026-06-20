@@ -65,6 +65,7 @@ public class KeyRemappingListenerTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(keyRemappingConfig.control()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK));
+		when(keyRemappingConfig.shift()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_SHIFT, InputEvent.SHIFT_DOWN_MASK));
 	}
 
 	@Test
@@ -138,5 +139,19 @@ public class KeyRemappingListenerTest
 		keyRemappingListener.keyPressed(event);
 
 		verify(event).setKeyCode(KeyEvent.VK_CONTROL);
+	}
+
+	@Test
+	public void testShiftRemap()
+	{
+		when(keyRemappingConfig.shift()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_NUMPAD1, 0));
+		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+
+		KeyEvent event = mock(KeyEvent.class);
+		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1); // for keybind matches()
+
+		keyRemappingListener.keyPressed(event);
+
+		verify(event).setKeyCode(KeyEvent.VK_SHIFT);
 	}
 }
