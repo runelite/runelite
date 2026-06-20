@@ -468,6 +468,11 @@ class ProfilePanel extends PluginPanel
 					if (defaultForRsProfiles == null || defaultForRsProfiles.isEmpty())
 					{
 						tooltip.append("Set profile as default for the current RuneScape account");
+						final RuneScapeProfileType currentType = configManager.getConfiguration(ConfigManager.RSPROFILE_GROUP, configManager.getRSProfileKey(), ConfigManager.RSPROFILE_TYPE, RuneScapeProfileType.class);
+						if (currentType != null && currentType != RuneScapeProfileType.STANDARD)
+						{
+							tooltip.append(" on ").append(Text.titleCase(currentType)).append(" worlds");
+						}
 					}
 					else
 					{
