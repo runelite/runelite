@@ -699,7 +699,7 @@ class SceneUploader
 	}
 
 	// temp draw
-	int uploadTempModel(Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer)
+	int uploadTempModel(Model model, int orientation, int x, int y, int z, IntBuffer buffer)
 	{
 		final int triangleCount = model.getFaceCount();
 		final int vertexCount = model.getVerticesCount();
@@ -715,6 +715,8 @@ class SceneUploader
 		final int[] color1s = model.getFaceColors1();
 		final int[] color2s = model.getFaceColors2();
 		final int[] color3s = model.getFaceColors3();
+
+		final byte[] transparencies = model.getFaceTransparencies();
 
 		final short[] faceTextures = model.getFaceTextures();
 
@@ -810,17 +812,18 @@ class SceneUploader
 			int sv2 = (int) (v2 * 256f);
 
 			int alphaBias = 0;
+			alphaBias |= transparencies != null ? (transparencies[face] & 0xff) << 24 : 0;
 			alphaBias |= bias != null ? (bias[face] & 0xff) << 16 : 0;
 			int texture = faceTextures != null ? faceTextures[face] + 1 : 0;
 
-			putfff4(opaqueBuffer, vx1, vy1, vz1, alphaBias | color1);
-			put2222(opaqueBuffer, texture, su0, sv0, 0);
+			putfff4(buffer, vx1, vy1, vz1, alphaBias | color1);
+			put2222(buffer, texture, su0, sv0, 0);
 
-			putfff4(opaqueBuffer, vx2, vy2, vz2, alphaBias | color2);
-			put2222(opaqueBuffer, texture, su1, sv1, 0);
+			putfff4(buffer, vx2, vy2, vz2, alphaBias | color2);
+			put2222(buffer, texture, su1, sv1, 0);
 
-			putfff4(opaqueBuffer, vx3, vy3, vz3, alphaBias | color3);
-			put2222(opaqueBuffer, texture, su2, sv2, 0);
+			putfff4(buffer, vx3, vy3, vz3, alphaBias | color3);
+			put2222(buffer, texture, su2, sv2, 0);
 
 			len += 3;
 		}
