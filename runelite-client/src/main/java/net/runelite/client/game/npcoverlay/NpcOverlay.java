@@ -39,6 +39,7 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -64,6 +65,11 @@ class NpcOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (client.getVarbitValue(VarbitID.CUTSCENE_STATUS) == 1)
+		{
+			return null;
+		}
+
 		for (HighlightedNpc highlightedNpc : highlightedNpcs.values())
 		{
 			renderNpcOverlay(graphics, highlightedNpc);
