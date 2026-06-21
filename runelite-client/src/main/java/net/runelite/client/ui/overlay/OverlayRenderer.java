@@ -870,6 +870,7 @@ public class OverlayRenderer extends MouseAdapter
 		{
 			snapCorners.aboveChatboxRight.setPosition(snapCorners.bottomRight.getPositionX(), snapCorners.bottomRight.getPositionY());
 			snapCorners.canvasTopRight.setPosition(snapCorners.topRight.getPositionX(), snapCorners.topRight.getPositionY());
+			snapCorners.aboveInventoryRight.setPosition(snapCorners.bottomRight.getPositionX(), snapCorners.bottomRight.getPositionY());
 		}
 	}
 
