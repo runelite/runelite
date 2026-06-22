@@ -69,6 +69,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -90,6 +91,7 @@ import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.ProfileChanged;
@@ -150,7 +152,11 @@ class ConfigPanel extends PluginPanel
 	private final JLabel title;
 	private final PluginToggleButton pluginToggle;
 
-	private PluginConfigurationDescriptor pluginConfig = null;
+	private PluginConfigurationDescriptor pluginConfig;
+	private ConfigDescriptor cd;
+
+	private String ignoreConfigKey;
+	private Timer scheduledRebuild;
 
 	@Inject
 	private ConfigPanel(
@@ -214,6 +220,7 @@ class ConfigPanel extends PluginPanel
 	{
 		assert this.pluginConfig == null;
 		this.pluginConfig = pluginConfig;
+		cd = pluginConfig.getConfigDescriptor();
 
 		String name = pluginConfig.getName();
 		title.setText(name);
@@ -267,8 +274,6 @@ class ConfigPanel extends PluginPanel
 	private void rebuild()
 	{
 		mainPanel.removeAll();
-
-		ConfigDescriptor cd = pluginConfig.getConfigDescriptor();
 
 		final Map<String, JPanel> sectionWidgets = new HashMap<>();
 		final Map<ConfigObject, JPanel> topLevelPanels = new TreeMap<>((a, b) ->
@@ -437,8 +442,6 @@ class ConfigPanel extends PluginPanel
 				{
 					plugin.resetConfiguration();
 				}
-
-				rebuild();
 			}
 		});
 		mainPanel.add(resetButton);
@@ -609,7 +612,11 @@ class ConfigPanel extends PluginPanel
 		heightSpinnerTextField.setColumns(4);
 
 		ChangeListener listener = e ->
+		{
+			ignoreConfigKey = cid.key();
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+			ignoreConfigKey = null;
+		};
 
 		widthSpinner.addChangeListener(listener);
 		heightSpinner.addChangeListener(listener);
@@ -777,6 +784,8 @@ class ConfigPanel extends PluginPanel
 			}
 		}
 
+		ignoreConfigKey = cid.key();
+
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
@@ -814,6 +823,8 @@ class ConfigPanel extends PluginPanel
 
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Sets.newHashSet(selectedValues));
 		}
+
+		ignoreConfigKey = null;
 	}
 
 	@Override
@@ -849,6 +860,29 @@ class ConfigPanel extends PluginPanel
 		SwingUtilities.invokeLater(this::rebuild);
 	}
 
+	@Subscribe
+	private void onConfigChanged(ConfigChanged e)
+	{
+		if (!e.getKey().equals(ignoreConfigKey) &&
+			cd.getGroup().value().equals(e.getGroup()) &&
+			isKeyInPanel(e.getKey()))
+		{
+			if (scheduledRebuild != null)
+			{
+				scheduledRebuild.stop();
+			}
+
+			scheduledRebuild = new Timer(10, e1 ->
+			{
+				scheduledRebuild = null;
+				rebuild();
+				validate();
+			});
+			scheduledRebuild.setRepeats(false);
+			scheduledRebuild.start();
+		}
+	}
+
 	private JMenuItem createResetMenuItem(PluginConfigurationDescriptor pluginConfig, ConfigItemDescriptor configItemDescriptor)
 	{
 		JMenuItem menuItem = new JMenuItem("Reset");
@@ -861,9 +895,13 @@ class ConfigPanel extends PluginPanel
 			// To reset one item we'll just unset it and then apply defaults over the whole group
 			configManager.unsetConfiguration(configGroup.value(), configItem.keyName());
 			configManager.setDefaultConfiguration(pluginConfig.getConfig(), false);
-
-			rebuild();
 		});
 		return menuItem;
+	}
+
+	private boolean isKeyInPanel(String key)
+	{
+		return cd.getItems().stream()
+				.anyMatch(cid -> cid.key().equals(key));
 	}
 }
