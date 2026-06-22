@@ -70,6 +70,7 @@ import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -258,6 +259,7 @@ class PluginHubPanel extends PluginPanel
 			JLabel author = new JLabel(manifest.getAuthor());
 			author.setFont(FontManager.getRunescapeSmallFont());
 			author.setToolTipText(manifest.getAuthor());
+			author.setHorizontalAlignment(SwingConstants.RIGHT);
 
 			JLabel version = new JLabel(manifest.getVersion());
 			version.setFont(FontManager.getRunescapeSmallFont());
@@ -403,9 +405,10 @@ class PluginHubPanel extends PluginPanel
 				.addGap(5)
 				.addGroup(layout.createParallelGroup()
 					.addGroup(layout.createSequentialGroup()
-						.addComponent(pluginName, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+						.addComponent(pluginName, 85, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-						.addComponent(author, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+						.addComponent(author, 60, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+						.addGap(5))
 					.addComponent(description, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 					.addGroup(layout.createSequentialGroup()
 						.addComponent(version, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
