@@ -135,6 +135,7 @@ public class ClientUI
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final String CONFIG_CLIENT_SIDEBAR_CLOSED = "clientSidebarClosed";
+	private static final String CONFIG_CLIENT_SIDEBAR_LEFT = "clientSidebarLeft";
 	public static final BufferedImage ICON_128 = ImageUtil.loadImageResource(ClientUI.class, "runelite_128.png");
 	public static final BufferedImage ICON_16 = ImageUtil.loadImageResource(ClientUI.class, "runelite_16.png");
 
@@ -161,6 +162,7 @@ public class ClientUI
 
 	private ClientToolbarPanel toolbarPanel;
 	private boolean withTitleBar;
+	public static boolean isSidebarLeft;
 
 	private ContainableFrame frame;
 	private JPanel content;
@@ -328,6 +330,9 @@ public class ClientUI
 
 			RuneLiteLAF.setup();
 
+			// Preload sidebar position config before main window creation since it is called in ContainableFrame.java
+			isSidebarLeft = preloadSidebarPositionConfig();
+
 			// Create main window
 			frame = new ContainableFrame();
 
@@ -491,6 +496,14 @@ public class ClientUI
 						toggleSidebar();
 					}
 				},
+				new HotkeyListener(config::sidebarLeftKey)
+				{
+					@Override
+					public void hotkeyPressed()
+					{
+						toggleSidebarLeft();
+					}
+				},
 				new HotkeyListener(config::panelToggleKey)
 				{
 					@Override
@@ -613,6 +626,12 @@ public class ClientUI
 			if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_CLOSED, Boolean.class) == Boolean.TRUE)
 			{
 				toggleSidebar(false, true);
+			}
+
+			// Move sidebar left if the config left state is set
+			if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_LEFT, Boolean.class) == Boolean.TRUE)
+			{
+				toggleSidebarLeft(true, true);
 			}
 		});
 	}
@@ -1114,6 +1133,45 @@ public class ClientUI
 		}
 	}
 
+	private boolean preloadSidebarPositionConfig()
+	{
+		if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_LEFT, Boolean.class) == Boolean.TRUE)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	private void toggleSidebarLeft()
+	{
+		toggleSidebarLeft(!this.isSidebarLeft, true);
+		this.isSidebarLeft = !this.isSidebarLeft;
+	}
+
+	private void toggleSidebarLeft(boolean isLeft, boolean pushHistory)
+	{
+		if (!isLeft)
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_LEFT);
+			sidebar.setTabPlacement(JTabbedPane.RIGHT);
+		}
+		else
+		{
+			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_LEFT, true);
+			sidebar.setTabPlacement(JTabbedPane.LEFT);
+		}
+
+		content.revalidate();
+
+		if (pushHistory)
+		{
+			pushHistory();
+		}
+	}
+
 	private void togglePluginPanel()
 	{
 		if (!sidebar.isVisible() || sidebar.getSelectedIndex() < 0)
@@ -1532,8 +1590,16 @@ public class ClientUI
 			content.setPreferredSize(content.getSize());
 			previousContentWidth = width;
 
-			client.setBounds(insets.left, insets.top, clientWidth, innerHeight);
-			sidebar.setBounds(insets.left + clientWidth, insets.top, sidebarWidth, innerHeight);
+			if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_LEFT, Boolean.class) == Boolean.TRUE)
+			{
+				sidebar.setBounds(insets.left, insets.top, sidebarWidth, innerHeight);
+				client.setBounds(insets.left + sidebarWidth, insets.top, clientWidth, innerHeight);
+			}
+			else
+			{
+				client.setBounds(insets.left, insets.top, clientWidth, innerHeight);
+				sidebar.setBounds(insets.left + clientWidth, insets.top, sidebarWidth, innerHeight);
+			}
 
 			Rectangle oldBounds = frame.getBounds();
 			frame.revalidateMinimumSize();
