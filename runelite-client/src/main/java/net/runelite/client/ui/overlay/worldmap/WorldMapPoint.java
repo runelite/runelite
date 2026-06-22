@@ -56,6 +56,11 @@ public class WorldMapPoint
 	private boolean currentlyEdgeSnapped;
 
 	/**
+	 * Used to visually lead the user to the point.
+	 */
+	private boolean imageHighlighted;
+
+	/**
 	 * Whether or not the map jumps to target, or worldPoint when the overlay is clicked
 	 */
 	private boolean jumpOnClick;
