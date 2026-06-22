@@ -32,6 +32,7 @@ import java.util.Iterator;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.plugins.party.data.PartyTilePingData;
 import net.runelite.client.ui.overlay.Overlay;
@@ -42,12 +43,16 @@ class PartyPingOverlay extends Overlay
 {
 	private final Client client;
 	private final PartyPlugin plugin;
+	private final PartyConfig config;
+
+	private boolean renderNameOnTile;
 
 	@Inject
-	private PartyPingOverlay(final Client client, final PartyPlugin plugin)
+	private PartyPingOverlay(final Client client, final PartyPlugin plugin, final PartyConfig config)
 	{
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 
@@ -106,5 +111,23 @@ class PartyPingOverlay extends Overlay
 			ping.getAlpha());
 
 		OverlayUtil.renderPolygon(graphics, poly, color);
+
+		if (renderNameOnTile)
+		{
+			final String tileText = ping.getDisplayName();
+			if (tileText != null)
+			{
+				Point canvasTextLocation = Perspective.getCanvasTextLocation(client, graphics, localPoint, tileText, 0);
+				if (canvasTextLocation != null)
+				{
+					OverlayUtil.renderTextLocation(graphics, canvasTextLocation, tileText, color);
+				}
+			}
+		}
+	}
+
+	void updateConfig()
+	{
+		this.renderNameOnTile = config.nameOnPingedTile();
 	}
 }
