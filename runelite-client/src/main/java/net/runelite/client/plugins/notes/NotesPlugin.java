@@ -29,6 +29,7 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -69,7 +70,7 @@ public class NotesPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.tooltip("Notes")
 			.icon(icon)
-			.priority(7)
+			.priority(config.navButtonPriority())
 			.panel(panel)
 			.build();
 
@@ -88,5 +89,33 @@ public class NotesPlugin extends Plugin
 		// update notes
 		String data = config.notesData();
 		panel.setNotes(data);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("notes"))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
+
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "notes_icon.png");
+
+			navButton = NavigationButton.builder()
+					.tooltip("Notes")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(panel)
+					.build();
+
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 }
