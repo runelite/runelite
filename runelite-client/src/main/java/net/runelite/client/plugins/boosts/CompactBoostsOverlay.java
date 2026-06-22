@@ -38,15 +38,12 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
-import net.runelite.client.util.ImageUtil;
 
 class CompactBoostsOverlay extends Overlay
 {
 	private static final int H_PADDING = 2;
 	private static final int V_PADDING = 1;
 	private static final int TEXT_WIDTH = 22;
-	private static final BufferedImage BUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "buffedsmall.png");
-	private static final BufferedImage DEBUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "debuffedsmall.png");
 
 	private final Client client;
 	private final BoostsConfig config;
@@ -95,25 +92,19 @@ class CompactBoostsOverlay extends Overlay
 			drawBoost(graphics, fontMetrics, fontHeight,
 				skillIconManager.getSkillImage(skill, true),
 				getTextColor(boost),
-				getBoostText(boost, base, boosted));
+				getBoostText(boost, boosted));
 		}
 
-		int time = plugin.getChangeUpTicks();
-		if (time != -1)
+		for (BoostTimer boostTimer : BoostTimer.values())
 		{
-			drawBoost(graphics, fontMetrics, fontHeight,
-				DEBUFFED,
-				time < 10 ? Color.RED.brighter() : Color.WHITE,
-				Integer.toString(plugin.getChangeTime(time)));
-		}
-
-		time = plugin.getChangeDownTicks();
-		if (time != -1)
-		{
-			drawBoost(graphics, fontMetrics, fontHeight,
-				BUFFED,
-				time < 10 ? Color.RED.brighter() : Color.WHITE,
-				Integer.toString(plugin.getChangeTime(time)));
+			int time = plugin.getTicksRemaining(boostTimer);
+			if (time != -1)
+			{
+				drawBoost(graphics, fontMetrics, fontHeight,
+					boostTimer.compactImage,
+					time < 10 ? Color.RED.brighter() : Color.WHITE,
+					Integer.toString(plugin.getChangeTime(time)));
+			}
 		}
 
 		return new Dimension(maxX, curY);
@@ -142,7 +133,7 @@ class CompactBoostsOverlay extends Overlay
 		maxX = Math.max(maxX, image.getWidth() + H_PADDING + TEXT_WIDTH);
 	}
 
-	private String getBoostText(int boost, int base, int boosted)
+	private String getBoostText(int boost, int boosted)
 	{
 		if (config.useRelativeBoost())
 		{
