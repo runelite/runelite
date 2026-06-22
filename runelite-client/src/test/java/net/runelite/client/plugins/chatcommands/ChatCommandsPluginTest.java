@@ -329,6 +329,18 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testBryophyta()
+	{
+		testKillCountChatMessage("bryophyta chests opened", "Your Bryophyta chests opened count is: <col=ff3045>67</col>", 67);
+	}
+
+	@Test
+	public void testObor()
+	{
+		testKillCountChatMessage("obor chests opened", "Your Obor chests opened count is: <col=ff3045>10</col>", 10);
+	}
+
+	@Test
 	public void testPersonalBest()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.";
