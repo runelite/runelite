@@ -53,11 +53,23 @@ public interface ItemPricesConfig extends Config
 		return true;
 	}
 
+
+	@ConfigItem(
+		keyName = "showLAValue",
+		name = "Show low alchemy values",
+		description = "Low alchemy values should be shown on tooltips.",
+		position = 3
+	)
+	default boolean showLAValue()
+	{
+		return false;
+	}
+
 	@ConfigItem(
 		keyName = "showEA",
 		name = "Show price each on stacks",
 		description = "The price/value of each item should be shown on stacks.",
-		position = 3
+		position = 4
 	)
 	default boolean showEA()
 	{
@@ -68,7 +80,7 @@ public interface ItemPricesConfig extends Config
 		keyName = "hideInventory",
 		name = "Hide tooltips on inventory items",
 		description = "Tooltips should be hidden on items in the inventory.",
-		position = 4
+		position = 5
 	)
 	default boolean hideInventory()
 	{
@@ -79,7 +91,7 @@ public interface ItemPricesConfig extends Config
 		keyName = "showAlchProfit",
 		name = "Show high alchemy profit",
 		description = "Show the profit from casting high alchemy on items.",
-		position = 5
+		position = 6
 	)
 	default boolean showAlchProfit()
 	{
@@ -90,7 +102,7 @@ public interface ItemPricesConfig extends Config
 		keyName = "showWhileAlching",
 		name = "Show prices while alching",
 		description = "Show the price overlay while using high alchemy. Takes priority over 'Hide tooltips on inventory items'",
-		position = 6
+		position = 7
 	)
 	default boolean showWhileAlching()
 	{
