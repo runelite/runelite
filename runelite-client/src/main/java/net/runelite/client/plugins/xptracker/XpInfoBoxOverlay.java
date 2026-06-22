@@ -90,16 +90,18 @@ class XpInfoBoxOverlay extends OverlayPanel
 
 		final XpSnapshotSingle snapshot = plugin.getSkillSnapshot(skill);
 
-		final String leftStr = config.onScreenDisplayMode().getKey();
-		final String rightNum = config.onScreenDisplayMode().getValueFunc().apply(snapshot);
+		final XpPanelLabel topLabel = config.onScreenDisplayMode();
+		final String leftStr = formatKeyForSkill(topLabel, skill);
+		final String rightNum = topLabel.getValueFunc().apply(snapshot);
 
 		final LineComponent xpLine = LineComponent.builder()
 			.left(leftStr + ":")
 			.right(rightNum)
 			.build();
 
-		final String bottomLeftStr = config.onScreenDisplayModeBottom().getKey();
-		final String bottomRightNum = config.onScreenDisplayModeBottom().getValueFunc().apply(snapshot);
+		final XpPanelLabel bottomLabel = config.onScreenDisplayModeBottom();
+		final String bottomLeftStr = formatKeyForSkill(bottomLabel, skill);
+		final String bottomRightNum = bottomLabel.getValueFunc().apply(snapshot);
 
 		final LineComponent xpLineBottom = LineComponent.builder()
 				.left(bottomLeftStr + ":")
@@ -144,5 +146,39 @@ class XpInfoBoxOverlay extends OverlayPanel
 	public String getName()
 	{
 		return super.getName() + skill.getName();
+	}
+
+	private static boolean isActions(XpPanelLabel label)
+	{
+		return label == XpPanelLabel.ACTIONS_LEFT || label == XpPanelLabel.ACTIONS_HOUR || label == XpPanelLabel.ACTIONS_DONE;
+	}
+
+	private static boolean isCombatSkill(Skill skill)
+	{
+		return skill == Skill.ATTACK
+			|| skill == Skill.STRENGTH
+			|| skill == Skill.DEFENCE
+			|| skill == Skill.HITPOINTS
+			|| skill == Skill.RANGED
+			|| skill == Skill.MAGIC;
+	}
+
+	private static String formatKeyForSkill(XpPanelLabel label, Skill skill)
+	{
+		if (isCombatSkill(skill) && isActions(label))
+		{
+			switch (label)
+			{
+				case ACTIONS_LEFT:
+					return "Kills";
+				case ACTIONS_HOUR:
+					return "Kills/hr";
+				case ACTIONS_DONE:
+					return "Kills Done";
+				default:
+					break;
+			}
+		}
+		return label.getKey();
 	}
 }
