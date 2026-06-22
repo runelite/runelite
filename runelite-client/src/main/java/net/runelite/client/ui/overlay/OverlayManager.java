@@ -46,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Menu;
+import net.runelite.api.MenuAction;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
@@ -641,6 +642,7 @@ public class OverlayManager
 	{
 		Menu menu = client.getMenu();
 		Menu sub = menu.createMenuEntry(1)
+			.setType(MenuAction.RUNELITE_OVERLAY)
 			.setOption("Overlay Origin")
 			.createSubMenu();
 		String[] opts = {"Top left", "Top center", "Top right", "Bottom left", "Bottom center", "Bottom right"};
@@ -658,6 +660,7 @@ public class OverlayManager
 			OverlayOriginX ox = originX[i];
 			OverlayOriginY oy = originY[i];
 			sub.createMenuEntry(-1 - off++)
+				.setType(MenuAction.RUNELITE_OVERLAY)
 				.setOption(opts[i])
 				.onClick(e ->
 				{
@@ -684,6 +687,7 @@ public class OverlayManager
 		{
 			OverlayOrigin origin = origins[i];
 			sub.createMenuEntry(-1 - off++)
+				.setType(MenuAction.RUNELITE_OVERLAY)
 				.setOption(opts[i])
 				.onClick(e ->
 				{
