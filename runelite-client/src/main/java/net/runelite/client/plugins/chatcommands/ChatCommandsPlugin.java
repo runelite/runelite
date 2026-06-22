@@ -126,6 +126,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern BIRD_EGG_OFFERING_PATTERN = Pattern.compile("You have made <col=ff0000>(?<kc>[\\d,]+|one)</col> offerings?\\.");
 	private static final Pattern CHEST_OPENING_PATTERN = Pattern.compile("You have (?<never>never )?opened (the )?(?<chest>crystal chest|Larran's big chest|Larran's small chest|Brimstone chest)( (?<kc>[\\d,]+ times|once))?\\.");
 
+	private static final String HELP_COMMAND = "!help";
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
 	private static final String LEVEL_COMMAND_STRING = "!lvl";
@@ -227,6 +228,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
 		chatCommandManager.registerCommandAsync(CA_COMMAND, this::caLookup, this::caSubmit);
 		chatCommandManager.registerCommandAsync(CLOG_COMMAND, this::clogLookup, this::clogSubmit);
+		chatCommandManager.registerCommand(HELP_COMMAND,this::helpCommand);
 
 		clientThread.invoke(() ->
 		{
@@ -267,6 +269,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(PET_LIST_COMMAND);
 		chatCommandManager.unregisterCommand(CA_COMMAND);
 		chatCommandManager.unregisterCommand(CLOG_COMMAND);
+		chatCommandManager.unregisterCommand(HELP_COMMAND);
 	}
 
 	@Provides
@@ -1983,6 +1986,22 @@ public class ChatCommandsPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.warn("error looking up clues", ex);
+		}
+	}
+
+	private void helpCommand(ChatMessage chatMessage, String message){
+		String messageName = chatMessage.getName().replaceAll("<img=\\d+>","");
+		if(messageName.equals(client.getLocalPlayer().getName())) {
+			final List<String> commands = this.chatCommandManager.getCommands();
+			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder().append(ChatColorType.HIGHLIGHT).append("List of Commands:");
+			for (String command : commands) {
+				chatMessageBuilder
+						.append("\n")
+						.append(ChatColorType.NORMAL)
+						.append(command);
+			}
+			String response = chatMessageBuilder.build();
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", response, null);
 		}
 	}
 
