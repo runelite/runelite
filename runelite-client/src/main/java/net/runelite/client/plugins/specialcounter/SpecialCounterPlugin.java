@@ -226,7 +226,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		final int tickCount = client.getTickCount();
 
-		if (specialWeapon == SpecialWeapon.ELDER_MAUL)
+		if (specialWeapon == SpecialWeapon.ELDER_MAUL || specialWeapon == SpecialWeapon.ACCURSED_SCEPTRE)
 		{
 			// We do not wait for the hitsplat and instead go immediately
 			specialAttackHit(specialWeapon, lastSpecHpChange ? 1 : 0, lastSpecTarget);
