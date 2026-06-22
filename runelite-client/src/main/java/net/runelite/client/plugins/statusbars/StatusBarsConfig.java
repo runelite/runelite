@@ -119,4 +119,14 @@ public interface StatusBarsConfig extends Config
 	{
 		return BarRenderer.DEFAULT_WIDTH;
 	}
+
+    @ConfigItem(
+            keyName = "toggleResizableClassicSideview",
+            name = "Toggle sideview",
+            description = "Toggles statusbars' position in resizable classic layout."
+    )
+    default boolean toggleResizableClassicSideview()
+    {
+        return false;
+    }
 }
