@@ -80,11 +80,13 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	// banktags:item_<id>=tag,tag,tag,...
 	// banktags:icon_<tag>=id
 	// banktags:tagtabs=tab,tab,tab,...
+	// banktags:tagtabs.tagtabshidden_<item>=true
 	// banktags:layout_<tag>=item,item,item,...
 	// banktags:hidden_<tag>=true
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_ICON_PREFIX = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
+	public static final String TAG_HIDDEN_CONFIG = "tagtabshidden";
 	public static final String TAG_LAYOUT_PREFIX = "layout_";
 	static final String ITEM_KEY_PREFIX = "item_";
 	static final String TAG_HIDDEN_PREFIX = "hidden_";
