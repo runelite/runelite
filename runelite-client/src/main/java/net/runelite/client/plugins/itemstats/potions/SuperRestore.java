@@ -24,54 +24,13 @@
  */
 package net.runelite.client.plugins.itemstats.potions;
 
-import com.google.common.annotations.VisibleForTesting;
-import java.util.Comparator;
-import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.Client;
-import static net.runelite.client.plugins.itemstats.Builders.perc;
-import net.runelite.client.plugins.itemstats.Effect;
-import net.runelite.client.plugins.itemstats.SimpleStatBoost;
-import net.runelite.client.plugins.itemstats.stats.Stat;
-import net.runelite.client.plugins.itemstats.StatChange;
-import static net.runelite.client.plugins.itemstats.stats.Stats.*;
-import net.runelite.client.plugins.itemstats.StatsChanges;
+import net.runelite.client.plugins.itemstats.StatRestoringEffect;
 
-@RequiredArgsConstructor
-public class SuperRestore implements Effect
+
+public class SuperRestore extends StatRestoringEffect
 {
-	private static final Stat[] superRestoreStats = {
-		ATTACK, DEFENCE, STRENGTH, RANGED, MAGIC, COOKING,
-		WOODCUTTING, FLETCHING, FISHING, FIREMAKING, CRAFTING, SMITHING, MINING,
-		HERBLORE, AGILITY, THIEVING, SLAYER, FARMING, RUNECRAFT, HUNTER,
-		CONSTRUCTION
-	};
-
-	@VisibleForTesting
-	public final double percR; //percentage restored
-	private final int delta;
-
-	@Override
-	public StatsChanges calculate(Client client)
+	public SuperRestore(double percR, int delta)
 	{
-		StatsChanges changes = new StatsChanges(0);
-
-		SimpleStatBoost calc = new SimpleStatBoost(null, false, perc(percR, delta));
-		PrayerPotion prayer = new PrayerPotion(delta, percR);
-		changes.setStatChanges(Stream.concat(
-			Stream.of(prayer.effect(client)),
-			Stream.of(superRestoreStats)
-				.filter(stat -> stat.getValue(client) < stat.getMaximum(client))
-				.map(stat ->
-				{
-					calc.setStat(stat);
-					return calc.effect(client);
-				})
-			).toArray(StatChange[]::new));
-		changes.setPositivity(Stream.of(changes.getStatChanges())
-			.map(sc -> sc.getPositivity())
-			.max(Comparator.naturalOrder()).get());
-		return changes;
+		super(percR, delta, new PrayerPotion(delta, percR));
 	}
-
 }
