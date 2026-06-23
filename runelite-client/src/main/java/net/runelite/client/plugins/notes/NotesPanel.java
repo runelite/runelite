@@ -140,8 +140,9 @@ class NotesPanel extends PluginPanel
 				try
 				{
 					// get document text and save to config whenever editor is changed
-					String data = doc.getText(0, doc.getLength());
+					String data = doc.getText(0, doc.getLength()).replaceAll("[\\p{Cc}\\p{Cf}\\p{Co}\\p{Cn}]", "");
 					config.notesData(data);
+					setNotes(data);
 				}
 				catch (BadLocationException ex)
 				{
