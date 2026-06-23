@@ -41,12 +41,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
+import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ProfileChanged;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -55,6 +58,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
@@ -75,10 +79,16 @@ public class ScreenMarkerPlugin extends Plugin
 	private final List<ScreenMarkerOverlay> screenMarkers = new ArrayList<>();
 
 	@Inject
+	public ScreenMarkerConfig config;
+
+	@Inject
 	private ConfigManager configManager;
 
 	@Inject
 	private MouseManager mouseManager;
+
+	@Inject
+	private KeyManager keyManager;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -118,6 +128,12 @@ public class ScreenMarkerPlugin extends Plugin
 	private Rectangle selectedWidgetBounds = null;
 	private Point startLocation = null;
 
+	@Provides
+	ScreenMarkerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ScreenMarkerConfig.class);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -128,6 +144,26 @@ public class ScreenMarkerPlugin extends Plugin
 
 		pluginPanel = new ScreenMarkerPluginPanel(this);
 		pluginPanel.rebuild();
+
+		keyManager.registerKeyListener(new HotkeyListener(() -> config.hotkey())
+		{
+			@Override
+			public void hotkeyPressed()
+			{
+				if (ScreenMarkerPlugin.this.currentMarker == null)
+				{
+					pluginPanel.setCreation(true);
+				}
+				else
+				{
+					// Repressing the hotkey confirms the screen marker
+					// Right clicking, or pressing the 'cancel' button will both
+					// work to cancel the screen marker
+					finishCreation(false);
+				}
+			}
+		});
+
 
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
 
