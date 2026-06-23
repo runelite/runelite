@@ -93,7 +93,7 @@ public class FishingPlugin extends Plugin
 	private final FishingSession session = new FishingSession();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<Integer, MinnowSpot> minnowSpots = new HashMap<>();
+	private final Map<Integer, TrackedFishingSpot> trackedFishingSpots = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> fishingSpots = new ArrayList<>();
@@ -145,7 +145,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(spotOverlay);
 		overlayManager.remove(fishingSpotMinimapOverlay);
 		fishingSpots.clear();
-		minnowSpots.clear();
+		trackedFishingSpots.clear();
 		currentSpot = null;
 		trawlerStartTime = null;
 	}
@@ -157,7 +157,7 @@ public class FishingPlugin extends Plugin
 		if (gameState == GameState.CONNECTION_LOST || gameState == GameState.LOGIN_SCREEN || gameState == GameState.HOPPING)
 		{
 			fishingSpots.clear();
-			minnowSpots.clear();
+			trackedFishingSpots.clear();
 		}
 	}
 
@@ -303,17 +303,25 @@ public class FishingPlugin extends Plugin
 
 		for (NPC npc : fishingSpots)
 		{
-			if (FishingSpot.findSpot(npc.getId()) == FishingSpot.MINNOW && config.showMinnowOverlay())
+			FishingSpot spot = FishingSpot.findSpot(npc.getId());
+			if (shouldDrawTimer(spot))
 			{
 				final int id = npc.getIndex();
-				final MinnowSpot minnowSpot = minnowSpots.get(id);
+				final TrackedFishingSpot trackedFishingSpot = trackedFishingSpots.get(id);
 
-				// create the minnow spot if it doesn't already exist
+				// create the tracked fishing spot if it doesn't already exist
 				// or if it was moved, reset it
-				if (minnowSpot == null
-					|| !minnowSpot.getLoc().equals(npc.getWorldLocation()))
+				if (trackedFishingSpot == null
+					|| !trackedFishingSpot.getLoc().equals(npc.getWorldLocation()))
 				{
-					minnowSpots.put(id, new MinnowSpot(npc.getWorldLocation(), Instant.now()));
+					if (trackedFishingSpot != null)
+					{
+						// Logging to help measure unknown fishing spot durations.
+						Duration duration = Duration.between(trackedFishingSpot.getTime(), Instant.now());
+						long totalSeconds = duration.getSeconds();
+						log.debug("Fishing spot {} lasted {} min {} sec", npc, totalSeconds / 60, totalSeconds % 60);
+					}
+					trackedFishingSpots.put(id, new TrackedFishingSpot(npc.getWorldLocation(), Instant.now()));
 				}
 			}
 		}
@@ -343,10 +351,10 @@ public class FishingPlugin extends Plugin
 
 		fishingSpots.remove(npc);
 
-		MinnowSpot minnowSpot = minnowSpots.remove(npc.getIndex());
-		if (minnowSpot != null)
+		TrackedFishingSpot trackedFishingSpot = trackedFishingSpots.remove(npc.getIndex());
+		if (trackedFishingSpot != null)
 		{
-			log.debug("Minnow spot {} despawned", npc);
+			log.debug("Fishing spot {} despawned", npc);
 		}
 	}
 
@@ -466,5 +474,25 @@ public class FishingPlugin extends Plugin
 				// And then by id
 				.thenComparingInt(NPC::getId)
 		);
+
+	}
+
+	public boolean shouldDrawTimer(FishingSpot spot)
+	{
+		switch (spot)
+		{
+			case KARAMBWAN: // Karambwan spots never move
+			case QUEST_FISHING_CONTEST: // Don't bother with quest spots.  These are hard to test and an uncommon use case.
+			case QUEST_TAI_BWO_WANNAI_TRIO:
+			case QUEST_RUM_DEAL:
+			case TUTORIAL_SHRIMP: // Tutorial island shrimp spot doesn't move.
+			case COMMON_TENCH: // Aerial fishing spots move much more frequently and we don't have numbers for these spots.
+				return false;
+			case MINNOW:
+				// Special case to preserve the existing minnow-specific options.
+				return config.showMinnowOverlay() || config.showSpotTimer();
+			default:
+				return config.showSpotTimer();
+		}
 	}
 }
