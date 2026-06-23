@@ -30,6 +30,9 @@ import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Set;
 import javax.inject.Inject;
+
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -80,12 +83,16 @@ public class RandomEventPlugin extends Plugin
 		NpcID.MACRO_DRILLDEMON_INVITATION,
 		NpcID.MACRO_COUNTCHECK_SURFACE, NpcID.MACRO_COUNTCHECK_UNDERWATER
 	);
+	private static final Set<Integer> FROG_NPCS = ImmutableSet.of(
+		NpcID.FROG_5429, NpcID.FROG_5430, NpcID.FROG_5431, NpcID.FROG_5432, NpcID.FROG, NpcID.FROG_PRINCE, NpcID.FROG_PRINCESS
+	);
 	private static final Set<String> EVENT_OPTIONS = ImmutableSet.of(
 		"Talk-to",
 		"Dismiss"
 	);
 	private static final int RANDOM_EVENT_TIMEOUT = 150;
 
+	@Getter(AccessLevel.PACKAGE)
 	private NPC currentRandomEvent;
 	private int lastNotificationTick = -RANDOM_EVENT_TIMEOUT; // to avoid double notifications
 
@@ -160,7 +167,10 @@ public class RandomEventPlugin extends Plugin
 			&& EVENT_OPTIONS.contains(event.getOption()))
 		{
 			NPC npc = event.getMenuEntry().getNpc();
-			if (npc != null && EVENT_NPCS.contains(npc.getId()) && npc != currentRandomEvent && config.removeMenuOptions())
+			if (npc != null
+				&& config.removeMenuOptions()
+				&& currentRandomEvent == null
+				&& (EVENT_NPCS.contains(npc.getId()) || FROG_NPCS.contains(npc.getId())))
 			{
 				client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 1));
 			}
