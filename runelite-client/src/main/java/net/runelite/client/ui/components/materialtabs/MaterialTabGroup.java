@@ -96,6 +96,16 @@ public class MaterialTabGroup extends JPanel
 	 */
 	public boolean select(MaterialTab selectedTab)
 	{
+		return select(selectedTab, false);
+	}
+	// Version of select where the same tab can be re-painted by clicking on it again by providing a boolean option
+	public boolean select(MaterialTab selectedTab, boolean shouldUpdateSameTab)
+	{
+		if (shouldUpdateSameTab)
+		{
+			selectedTab.unselect();
+		}
+
 		if (!tabs.contains(selectedTab) || selectedTab.isSelected())
 		{
 			return false;
