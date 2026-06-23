@@ -39,12 +39,11 @@ import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 
 public class CrowdsourcingCooking
 {
-	private static final int HOSIDIUS_KITCHEN_REGION = 6712;
-
 	@Inject
 	private CrowdsourcingManager manager;
 
@@ -93,7 +92,7 @@ public class CrowdsourcingCooking
 		{
 			boolean inHosidiusKitchen = false;
 			Player local = client.getLocalPlayer();
-			if (local != null && local.getWorldLocation().getRegionID() == HOSIDIUS_KITCHEN_REGION)
+			if (local != null && GameArea.HOSIDIUS_KITCHEN.containsRegion(local.getWorldLocation().getRegionID()))
 			{
 				inHosidiusKitchen = true;
 			}

@@ -24,11 +24,9 @@
  */
 package net.runelite.client.plugins.agility;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
-import java.util.List;
 import java.util.Set;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.game.AgilityShortcut;
@@ -125,8 +123,6 @@ class Obstacles
 		// Agility pyramid
 		ObjectID.INVISWALL_SERVERSIDE, ObjectID.AGILITY_PYRAMID_PENNY_MULTILOC_LEVEL_2, ObjectID.AGILITY_PYRAMID_PENNY_MULTILOC_LEVEL_4
 	);
-
-	static final List<Integer> TRAP_OBSTACLE_REGIONS = ImmutableList.of(12105, 13356);
 
 	static
 	{

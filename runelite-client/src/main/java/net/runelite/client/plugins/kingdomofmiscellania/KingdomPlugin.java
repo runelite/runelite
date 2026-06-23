@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.kingdomofmiscellania;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -48,6 +47,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -63,7 +63,6 @@ import net.runelite.client.util.QuantityFormatter;
 @Slf4j
 public class KingdomPlugin extends Plugin
 {
-	private static final ImmutableSet<Integer> KINGDOM_REGION = ImmutableSet.of(10044, 10300);
 	private static final String CONFIG_LAST_CHANGED_KEY = "lastChanged";
 	private static final String CONFIG_COFFER_KEY = "coffer";
 	private static final String CONFIG_APPROVAL_KEY = "approval";
@@ -245,7 +244,7 @@ public class KingdomPlugin extends Plugin
 	private boolean isInKingdom()
 	{
 		return client.getLocalPlayer() != null
-			&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
+			&& GameArea.anyContainsRegion(client.getLocalPlayer().getWorldLocation().getRegionID(), GameArea.MISCELLANIA, GameArea.ETCETERIA);
 	}
 
 	private boolean isThroneOfMiscellaniaCompleted()
