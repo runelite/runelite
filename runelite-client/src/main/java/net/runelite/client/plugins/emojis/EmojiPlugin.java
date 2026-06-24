@@ -174,21 +174,6 @@ public class EmojiPlugin extends Plugin
 		{
 			char c = message.charAt(i);
 
-			if (Character.isWhitespace(c) || c == '\u00A0' || i + 1 == message.length())
-			{
-				int idxEndWs = i + 1 == message.length() ? message.length() : i;
-				String shortname = Text.removeFormattingTags(message.substring(idxStartWs + 1, idxEndWs));
-				idxStartWs = i;
-
-				final Emoji emoji = Emoji.getEmoji(shortname);
-				if (emoji != null)
-				{
-					String id = Integer.toHexString(emoji.codepoint);
-					int emojiId = getEmojiChatIconIndex(emoji.name(), id);
-					editedMessage = editedMessage.replace(shortname, "<img=" + chatIconManager.chatIconIndex(emojiId) + ">");
-				}
-			}
-
 			if (c == ':')
 			{
 				if (idxStart == -1)
@@ -206,6 +191,22 @@ public class EmojiPlugin extends Plugin
 						int emojiId = getEmojiChatIconIndex(emojiName, id);
 						editedMessage = editedMessage.replace(":" + emojiName + ":", "<img=" + chatIconManager.chatIconIndex(emojiId) + ">");
 					}
+				}
+			}
+
+			if (Character.isWhitespace(c) || c == '\u00A0' || i + 1 == message.length())
+			{
+				int idxEndWs = i + 1 == message.length() ? message.length() : i;
+				String shortname = Text.removeFormattingTags(message.substring(idxStartWs + 1, idxEndWs));
+				idxStart = -1;
+				idxStartWs = i;
+
+				final Emoji emoji = Emoji.getEmoji(shortname);
+				if (emoji != null)
+				{
+					String id = Integer.toHexString(emoji.codepoint);
+					int emojiId = getEmojiChatIconIndex(emoji.name(), id);
+					editedMessage = editedMessage.replace(shortname, "<img=" + chatIconManager.chatIconIndex(emojiId) + ">");
 				}
 			}
 		}
