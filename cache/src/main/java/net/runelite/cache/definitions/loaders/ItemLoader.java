@@ -359,6 +359,10 @@ public class ItemLoader
 		{
 			def.placeholderTemplateId = stream.readUnsignedShort();
 		}
+		else if (opcode == 160)
+		{
+			def.stackable = 2;
+		}
 		else if (opcode == 200)
 		{
 			entityOpsLoader.decodeSubOp(def.groundOps, stream);
