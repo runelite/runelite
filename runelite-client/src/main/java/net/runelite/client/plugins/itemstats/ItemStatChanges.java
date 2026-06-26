@@ -336,6 +336,7 @@ public class ItemStatChanges
 		add(combo(boost(ATTACK, coxPotionBoost), boost(STRENGTH, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), ItemID.RAIDS_VIAL_ELDER_1, ItemID.RAIDS_VIAL_ELDER_2, ItemID.RAIDS_VIAL_ELDER_3, ItemID.RAIDS_VIAL_ELDER_4);
 		add(combo(boost(RANGED, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), ItemID.RAIDS_VIAL_TWISTED_1, ItemID.RAIDS_VIAL_TWISTED_2, ItemID.RAIDS_VIAL_TWISTED_3, ItemID.RAIDS_VIAL_TWISTED_4);
 		add(combo(boost(MAGIC, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), ItemID.RAIDS_VIAL_KODAI_1, ItemID.RAIDS_VIAL_KODAI_2, ItemID.RAIDS_VIAL_KODAI_3, ItemID.RAIDS_VIAL_KODAI_4);
+		add(new SaradominBrew(0.12, 0.18, 0.09, 2, 2), ItemID.RAIDS_VIAL_XERICAID_1, ItemID.RAIDS_VIAL_XERICAID_2, ItemID.RAIDS_VIAL_XERICAID_3, ItemID.RAIDS_VIAL_XERICAID_4);
 
 		// Chambers of Xeric potions (-)
 		final DeltaPercentage coxMinusPotionBoost = perc(.10, 4);
@@ -343,6 +344,7 @@ public class ItemStatChanges
 		add(combo(boost(ATTACK, coxMinusPotionBoost), boost(STRENGTH, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), ItemID.RAIDS_VIAL_ELDER_WEAK_1, ItemID.RAIDS_VIAL_ELDER_WEAK_2, ItemID.RAIDS_VIAL_ELDER_WEAK_3, ItemID.RAIDS_VIAL_ELDER_WEAK_4);
 		add(combo(boost(RANGED, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), ItemID.RAIDS_VIAL_TWISTED_WEAK_1, ItemID.RAIDS_VIAL_TWISTED_WEAK_2, ItemID.RAIDS_VIAL_TWISTED_WEAK_3, ItemID.RAIDS_VIAL_TWISTED_WEAK_4);
 		add(combo(boost(MAGIC, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), ItemID.RAIDS_VIAL_KODAI_WEAK_1, ItemID.RAIDS_VIAL_KODAI_WEAK_2, ItemID.RAIDS_VIAL_KODAI_WEAK_3, ItemID.RAIDS_VIAL_KODAI_WEAK_4);
+		add(new SaradominBrew(0.07, 0.14, 0.07, 1, 1), ItemID.RAIDS_VIAL_XERICAID_WEAK_1, ItemID.RAIDS_VIAL_XERICAID_WEAK_2, ItemID.RAIDS_VIAL_XERICAID_WEAK_3, ItemID.RAIDS_VIAL_XERICAID_WEAK_4);
 
 		// Tombs of Amascut consumables
 		final DeltaPercentage nectarDrain = perc(0.2, -5);
