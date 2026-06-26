@@ -50,7 +50,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -103,6 +105,9 @@ class PluginHubPanel extends PluginPanel
 	private static final ImageIcon CONFIGURE_ICON;
 	private static final ImageIcon PLUGIN_UNAVAILABLE_ICON;
 	private static final Pattern SPACES = Pattern.compile(" +");
+	private static final int DEBOUNCE_DELAY_MS = 200;
+
+	private Future<?> runningFilter = null;
 
 	static
 	{
@@ -501,19 +506,19 @@ class PluginHubPanel extends PluginPanel
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
-				executor.execute(PluginHubPanel.this::filter);
+				filter(executor);
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e)
 			{
-				executor.execute(PluginHubPanel.this::filter);
+				filter(executor);
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
 			{
-				executor.execute(PluginHubPanel.this::filter);
+				filter(executor);
 			}
 		});
 
@@ -671,42 +676,52 @@ class PluginHubPanel extends PluginPanel
 			}
 
 			refreshing.setVisible(false);
-			executor.execute(PluginHubPanel.this::filter);
+			filter(executor);
 		});
 	}
 
-	void filter()
+	void filter(ScheduledExecutorService scheduledExecutorService)
 	{
 		if (refreshing.isVisible() || plugins == null)
 		{
 			return;
 		}
 
-		String query = searchBar.getText();
-		boolean isSearching = query != null && !query.trim().isEmpty();
-		List<PluginItem> pluginItems;
-		if (isSearching)
+		Future<?> rr = runningFilter;
+		if (rr != null)
 		{
-			pluginItems = PluginSearch.search(plugins, query);
+			rr.cancel(false);
 		}
-		else
+		runningFilter = scheduledExecutorService.schedule(() ->
 		{
-			pluginItems = plugins.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
-				.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
-					.thenComparing(PluginItem::isInstalled)
-					.thenComparingInt(PluginItem::getUserCount)
-					.reversed()
-					.thenComparing(p -> p.manifest.getDisplayName())
-				)
-				.collect(Collectors.toList());
-		}
+			String query = searchBar.getText();
+			boolean isSearching = query != null && !query.trim().isEmpty();
+			List<PluginItem> pluginItems;
+			if (isSearching)
+			{
+				pluginItems = PluginSearch.search(plugins, query);
+			}
+			else
+			{
+				pluginItems = plugins.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
+					.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
+						.thenComparing(PluginItem::isInstalled)
+						.thenComparingInt(PluginItem::getUserCount)
+						.reversed()
+						.thenComparing(p -> p.manifest.getDisplayName())
+					)
+					.collect(Collectors.toList());
+			}
 
-		SwingUtilities.invokeLater(() ->
-		{
-			mainPanel.removeAll();
-			pluginItems.forEach(mainPanel::add);
-			mainPanel.revalidate();
-		});
+			SwingUtilities.invokeLater(() ->
+			{
+				mainPanel.removeAll();
+				pluginItems.forEach(mainPanel::add);
+				mainPanel.revalidate();
+			});
+
+			runningFilter = null;
+		}, DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
