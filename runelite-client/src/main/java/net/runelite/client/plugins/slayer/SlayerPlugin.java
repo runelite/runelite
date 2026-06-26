@@ -35,12 +35,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -177,7 +175,6 @@ public class SlayerPlugin extends Plugin
 	private TaskCounter counter;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private final List<Pattern> targetNames = new ArrayList<>();
 
 	private String[] taskLocations;
 
@@ -545,52 +542,17 @@ public class SlayerPlugin extends Plugin
 	@VisibleForTesting
 	boolean isTarget(NPC npc)
 	{
-		if (targetNames.isEmpty())
-		{
-			return false;
-		}
-
+		final Task task = Task.getTask(taskName);
 		final NPCComposition composition = npc.getTransformedComposition();
-		if (composition == null)
+		if (task == null || composition == null)
 		{
 			return false;
 		}
 
-		final String name = composition.getName()
-			.replace('\u00A0', ' ')
-			.toLowerCase();
-
-		for (Pattern target : targetNames)
-		{
-			final Matcher targetMatcher = target.matcher(name);
-			if (targetMatcher.find()
-				&& (ArrayUtils.contains(composition.getActions(), "Attack")
-					// Pick action is for zygomite-fungi
-					|| ArrayUtils.contains(composition.getActions(), "Pick")))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private void rebuildTargetNames(Task task)
-	{
-		targetNames.clear();
-
-		if (task != null)
-		{
-			Arrays.stream(task.getTargetNames())
-				.map(SlayerPlugin::targetNamePattern)
-				.forEach(targetNames::add);
-
-			targetNames.add(targetNamePattern(taskName.replaceAll("s$", "")));
-		}
-	}
-
-	private static Pattern targetNamePattern(final String targetName)
-	{
-		return Pattern.compile("(?:\\s|^)" + targetName + "(?:\\s|$)", Pattern.CASE_INSENSITIVE);
+		return task.getNpcPredicate().test(npc)
+			&& (ArrayUtils.contains(composition.getActions(), "Attack")
+			// Pick action is for zygomite-fungi
+			|| ArrayUtils.contains(composition.getActions(), "Pick"));
 	}
 
 	private void rebuildTargetList()
@@ -627,8 +589,6 @@ public class SlayerPlugin extends Plugin
 			addCounter();
 		}
 
-		Task task = Task.getTask(name);
-		rebuildTargetNames(task);
 		rebuildTargetList();
 		npcOverlayService.rebuild();
 	}
