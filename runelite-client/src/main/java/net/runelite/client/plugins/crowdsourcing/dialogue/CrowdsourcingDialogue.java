@@ -138,6 +138,7 @@ public class CrowdsourcingDialogue
 	{
 		if ((chatMessage.getType() == ChatMessageType.DIALOG
 			|| chatMessage.getType() == ChatMessageType.MESBOX)
+			&& client.getLocalPlayer() != null
 			&& client.getLocalPlayer().getName() != null)
 		{
 			ChatMessageData data = new ChatMessageData(sanitize(chatMessage.getMessage()), chatMessage.getType());

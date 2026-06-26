@@ -99,6 +99,10 @@ class DevToolsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		WorldView tlwv = client.getTopLevelWorldView();
+		if (client.getLocalPlayer() == null)
+		{
+			return null;
+		}
 		WorldView playerWv = client.getLocalPlayer().getWorldView();
 
 		graphics.setFont(FONT);

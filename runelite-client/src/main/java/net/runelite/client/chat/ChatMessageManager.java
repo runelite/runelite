@@ -129,7 +129,7 @@ public class ChatMessageManager
 			{
 				String sanitizedUsername = Text.removeTags(username).replace('\u00A0', ' ');
 
-				if (client.getLocalPlayer().getName().equals(sanitizedUsername))
+				if (client.getLocalPlayer() != null && client.getLocalPlayer().getName().equals(sanitizedUsername))
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPlayerUsername() : chatColorConfig.opaquePlayerUsername();
 				}

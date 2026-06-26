@@ -59,7 +59,7 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightHoveredTile())
+		if (config.highlightHoveredTile() && client.getLocalPlayer() != null)
 		{
 			WorldView wv = client.getLocalPlayer().getWorldView();
 			Tile tile = wv.getSelectedSceneTile();
@@ -75,7 +75,7 @@ public class TileIndicatorsOverlay extends Overlay
 			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor(), config.destinationTileBorderWidth(), config.destinationTileFillColor());
 		}
 
-		if (config.highlightCurrentTile())
+		if (config.highlightCurrentTile() && client.getLocalPlayer() != null)
 		{
 			final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
 			if (playerPos == null)

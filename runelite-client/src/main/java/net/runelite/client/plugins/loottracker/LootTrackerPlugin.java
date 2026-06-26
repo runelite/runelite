@@ -1046,7 +1046,12 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+		final var localPlayer = client.getLocalPlayer();
+		if (localPlayer == null)
+		{
+			return;
+		}
+		final int regionID = localPlayer.getWorldLocation().getRegionID();
 
 		final Matcher hamStoreroomMatcher = HAM_CHEST_LOOTED_PATTERN.matcher(message);
 		if (hamStoreroomMatcher.matches() && regionID == HAM_STOREROOM_REGION)
