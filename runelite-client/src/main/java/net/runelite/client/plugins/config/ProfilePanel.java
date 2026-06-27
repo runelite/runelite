@@ -837,7 +837,7 @@ class ProfilePanel extends PluginPanel
 			File source = ProfileManager.profileConfigFile(profile);
 			if (!source.exists())
 			{
-				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Profile '" + profile.getName() + "' can not be exported because it has no settings."));
+				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this, "Profile '" + profile.getName() + "' can not be exported because it has no settings."));
 				return;
 			}
 

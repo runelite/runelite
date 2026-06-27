@@ -38,6 +38,7 @@ import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
@@ -60,6 +61,9 @@ public class AccountPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	@Inject
+	private ClientUI clientUI;
 
 	private NavigationButton loginButton;
 	private NavigationButton logoutButton;
@@ -113,9 +117,11 @@ public class AccountPlugin extends Plugin
 
 	private void logoutClick()
 	{
-		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
+		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
+			clientUI.getFrame(),
 			"Are you sure you want to sign out of RuneLite?", "Sign Out Confirmation",
-			JOptionPane.YES_NO_OPTION))
+			JOptionPane.YES_NO_OPTION
+		))
 		{
 			executor.execute(() ->
 			{
