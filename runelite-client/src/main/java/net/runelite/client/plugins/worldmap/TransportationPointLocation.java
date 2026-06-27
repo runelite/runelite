@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 
 @Getter
 @AllArgsConstructor
-enum TransportationPointLocation
+public enum TransportationPointLocation
 {
 	//Ships
 	ALDARIN_TO_SUNSET_COAST("Ship to Sunset Coast", new WorldPoint(1443, 2976, 0), new WorldPoint(1492, 2985, 0)),
