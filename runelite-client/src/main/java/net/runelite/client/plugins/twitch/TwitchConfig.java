@@ -55,4 +55,15 @@ public interface TwitchConfig extends Config
 		position = 2
 	)
 	String channel();
+
+	@ConfigItem(
+		keyName = "bypass-plugin-formatting",
+		name = "Bypass Plugins",
+		description = "Prevent other plugins (such as emoji) from modifying the message.",
+		position = 3
+	)
+	default boolean bypassPluginFormatting()
+	{
+		return false;
+	}
 }
