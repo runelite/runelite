@@ -104,4 +104,15 @@ public interface CannonConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showAmmoCount",
+		name = "Show cannonball count",
+		description = "Configures whether to show the cannonballs above the cannon.",
+		position = 7
+	)
+	default boolean showAmmoCount()
+	{
+		return true;
+	}
 }
