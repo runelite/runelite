@@ -110,6 +110,7 @@ public enum HiscoreSkill
 	KREEARRA("Kree'Arra", BOSS, SpriteID.IconBoss25x25.KREEARRA),
 	KRIL_TSUTSAROTH("K'ril Tsutsaroth", BOSS, SpriteID.IconBoss25x25.KRIL_TSUTSAROTH),
 	LUNAR_CHESTS("Lunar Chests", BOSS, SpriteID.IconBoss25x25.LUNAR_CHESTS),
+	MAGGOT_KING("Maggot King", BOSS, SpriteID.IconBoss25x25.MAGGOT_KING),
 	MIMIC("Mimic", BOSS, SpriteID.IconBoss25x25.MIMIC),
 	NEX("Nex", BOSS, SpriteID.IconBoss25x25.NEX),
 	NIGHTMARE("Nightmare", BOSS, SpriteID.IconBoss25x25.NIGHTMARE),

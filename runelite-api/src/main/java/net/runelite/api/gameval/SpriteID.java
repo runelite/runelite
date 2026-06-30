@@ -7904,6 +7904,7 @@ public final class SpriteID
 		public static final int DOOM_OF_MOKHAIOTL = _64;
 		public static final int SHELLBANE_GRYPHON = _66;
 		public static final int BRUTUS = _69;
+		public static final int MAGGOT_KING = _70;
 	}
 
 	public static final class IconBoss50x50
