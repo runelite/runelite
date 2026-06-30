@@ -781,6 +781,7 @@ public class OverlayRenderer extends MouseAdapter
 					overlayPosition = OverlayPosition.TOP_RIGHT;
 					break;
 				case ABOVE_CHATBOX_RIGHT:
+				case ABOVE_INVENTORY_RIGHT:
 					overlayPosition = OverlayPosition.BOTTOM_RIGHT;
 					break;
 			}
@@ -854,11 +855,48 @@ public class OverlayRenderer extends MouseAdapter
 		{
 			snapCorners.aboveChatboxRight.setPosition(viewportBounds.x + chatboxBounds.width - BORDER, bottomLeftY);
 			snapCorners.canvasTopRight.setPosition((int) client.getRealDimensions().getWidth(), 0);
+
+			final Dimension realDimensions = client.getRealDimensions();
+			int canvasRight = realDimensions.width;
+			int canvasBottom = realDimensions.height;
+			if (client.getVarbitValue(VarbitID.RESIZABLE_STONE_ARRANGEMENT) == 1)
+			{
+				Widget sideContainer = client.getWidget(InterfaceID.ToplevelPreEoc.SIDE_CONTAINER);
+				Widget tabs1 = client.getWidget(InterfaceID.ToplevelPreEoc.SIDE_STATIC_LAYER);
+				Widget tabs2 = client.getWidget(InterfaceID.ToplevelPreEoc.SIDE_MOVABLE_LAYER);
+				if (tabs1 != null)
+				{
+					int y = canvasBottom;
+					boolean inventoryOpen = sideContainer != null && !sideContainer.isHidden();
+					if (inventoryOpen)
+					{
+						y -= sideContainer.getHeight();
+					}
+					y -= tabs1.getHeight();
+					// movable tab layer only adds height once it has wrapped to its own row above the static
+					// one (larger OriginalY = higher up, as these are anchored from the panel bottom)
+					if (tabs2 != null && tabs2.getOriginalY() > tabs1.getOriginalY())
+					{
+						y -= tabs2.getHeight();
+					}
+					snapCorners.aboveInventoryRight.setPosition(canvasRight - BORDER, y - BORDER);
+				}
+			}
+			else
+			{
+				Widget sideMenu = client.getWidget(InterfaceID.ToplevelOsrsStretch.SIDE_MENU);
+				if (sideMenu != null)
+				{
+					int y = canvasBottom - sideMenu.getHeight();
+					snapCorners.aboveInventoryRight.setPosition(canvasRight - BORDER, y - BORDER);
+				}
+			}
 		}
 		else
 		{
 			snapCorners.aboveChatboxRight.setPosition(snapCorners.bottomRight.getPositionX(), snapCorners.bottomRight.getPositionY());
 			snapCorners.canvasTopRight.setPosition(snapCorners.topRight.getPositionX(), snapCorners.topRight.getPositionY());
+			snapCorners.aboveInventoryRight.setPosition(snapCorners.bottomRight.getPositionX(), snapCorners.bottomRight.getPositionY());
 		}
 	}
 
