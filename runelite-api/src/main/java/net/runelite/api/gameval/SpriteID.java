@@ -289,7 +289,6 @@ public final class SpriteID
 	public static final int MAP_RESIZE = 2523;
 	public static final int SCROLL_ICON = 2534;
 	public static final int AUTOMATIC_WIZARD = 2560;
-	public static final int LEAGUES_MEMBERSHIP_BANNER = 2590;
 	public static final int UPGRADE_MEMBERSHIP_BUTTON = 2591;
 	public static final int UPGRADE_MEMBERSHIP_BUTTON_HIGHLIGHT = 2592;
 	public static final int LEAGUE_MAP = 2603;
@@ -802,6 +801,62 @@ public final class SpriteID
 	public static final int LEAGUE_6_MAP_KOUREND = 8069;
 	public static final int LEAGUE_6_MAP_VARLAMORE = 8070;
 	public static final int LEAGUE_6_PROGRESS_BAR_INDICATOR = 8319;
+	public static final int CASTLE_DRAKAN_ROOM_1 = 8458;
+	public static final int CASTLE_DRAKAN_ROOM_1A = 8459;
+	public static final int CASTLE_DRAKAN_ROOM_2 = 8460;
+	public static final int CASTLE_DRAKAN_ROOM_2A = 8461;
+	public static final int CASTLE_DRAKAN_ROOM_3 = 8462;
+	public static final int CASTLE_DRAKAN_ROOM_3A = 8463;
+	public static final int CASTLE_DRAKAN_ROOM_4 = 8464;
+	public static final int CASTLE_DRAKAN_ROOM_5 = 8465;
+	public static final int CASTLE_DRAKAN_ROOM_6 = 8466;
+	public static final int CASTLE_DRAKAN_ROOM_7 = 8467;
+	public static final int CASTLE_DRAKAN_ROOM_8 = 8468;
+	public static final int CASTLE_DRAKAN_ROOM_9 = 8469;
+	public static final int CASTLE_DRAKAN_ROOM_10 = 8470;
+	public static final int CASTLE_DRAKAN_ROOM_11 = 8471;
+	public static final int CASTLE_DRAKAN_ROOM_12 = 8472;
+	public static final int CASTLE_DRAKAN_ROOM_13 = 8473;
+	public static final int CASTLE_DRAKAN_ROOM_14 = 8474;
+	public static final int CASTLE_DRAKAN_ROOM_15 = 8475;
+	public static final int CASTLE_DRAKAN_ROOM_16 = 8476;
+	public static final int CASTLE_DRAKAN_ROOM_17 = 8477;
+	public static final int CASTLE_DRAKAN_ROOM_18 = 8478;
+	public static final int CASTLE_DRAKAN_ROOM_19 = 8479;
+	public static final int CASTLE_DRAKAN_ROOM_20 = 8480;
+	public static final int CASTLE_DRAKAN_ROOM_21 = 8481;
+	public static final int CASTLE_DRAKAN_ROOM_22 = 8482;
+	public static final int CASTLE_DRAKAN_ROOM_23 = 8483;
+	public static final int CASTLE_DRAKAN_ROOM_24 = 8484;
+	public static final int CASTLE_DRAKAN_ROOM_25 = 8485;
+	public static final int CASTLE_DRAKAN_ROOM_26 = 8486;
+	public static final int CASTLE_DRAKAN_ROOM_27 = 8487;
+	public static final int CASTLE_DRAKAN_ROOM_28 = 8488;
+	public static final int CASTLE_DRAKAN_ROOM_29 = 8489;
+	public static final int CASTLE_DRAKAN_ROOM_30 = 8490;
+	public static final int CASTLE_DRAKAN_ROOM_31 = 8491;
+	public static final int CASTLE_DRAKAN_ROOM_32 = 8492;
+	public static final int CASTLE_DRAKAN_ROOM_33 = 8493;
+	public static final int CASTLE_DRAKAN_ROOM_34 = 8494;
+	public static final int CASTLE_DRAKAN_ROOM_35 = 8495;
+	public static final int CASTLE_DRAKAN_ROOM_36 = 8496;
+	public static final int CASTLE_DRAKAN_ROOM_37 = 8497;
+	public static final int CASTLE_DRAKAN_ROOM_38 = 8498;
+	public static final int CASTLE_DRAKAN_ROOM_39 = 8499;
+	public static final int CASTLE_DRAKAN_ROOM_40 = 8500;
+	public static final int CASTLE_DRAKAN_ROOM_41 = 8501;
+	public static final int CASTLE_DRAKAN_ROOM_42 = 8502;
+	public static final int CASTLE_DRAKAN_ROOM_43 = 8503;
+	public static final int CASTLE_DRAKAN_ROOM_44 = 8504;
+	public static final int CASTLE_DRAKAN_ROOM_45 = 8505;
+	public static final int CASTLE_DRAKAN_ROOM_46 = 8506;
+	public static final int CASTLE_DRAKAN_ROOM_47 = 8507;
+	public static final int CASTLE_DRAKAN_ROOM_48 = 8508;
+	public static final int CASTLE_DRAKAN_ROOM_49 = 8509;
+	public static final int CASTLE_DRAKAN_ROOM_50 = 8510;
+	public static final int CASTLE_DRAKAN_ROOM_51 = 8511;
+	public static final int LEAFYTREE_DARKWOOD = 8512;
+	public static final int LEAFYTREE_DARKWOOD_TILED = 8513;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -4375,6 +4430,10 @@ public final class SpriteID
 		public static final int _1 = 1440;
 		public static final int _2 = 2204;
 		public static final int _3 = 2205;
+		public static final int _4 = 8420;
+		public static final int _5 = 8421;
+		public static final int _6 = 8422;
+		public static final int _7 = 8423;
 
 		public static final int PLANET = _0;
 		public static final int PLANET_HOVERED = _1;
@@ -4742,6 +4801,10 @@ public final class SpriteID
 		public static final int _1 = 1699;
 		public static final int _2 = 2206;
 		public static final int _3 = 2207;
+		public static final int _4 = 8424;
+		public static final int _5 = 8425;
+		public static final int _6 = 8426;
+		public static final int _7 = 8427;
 	}
 
 	public static final class AccManIcons
@@ -7766,6 +7829,16 @@ public final class SpriteID
 		public static final int _67 = 6350;
 		public static final int _68 = 6351;
 		public static final int _69 = 6352;
+		public static final int _70 = 8358;
+		public static final int _71 = 8359;
+		public static final int _72 = 8360;
+		public static final int _73 = 8361;
+		public static final int _74 = 8362;
+		public static final int _75 = 8363;
+		public static final int _76 = 8364;
+		public static final int _77 = 8365;
+		public static final int _78 = 8366;
+		public static final int _79 = 8367;
 
 		public static final int MIMIC = _0;
 		public static final int OBOR = _1;
@@ -7905,6 +7978,16 @@ public final class SpriteID
 		public static final int _67 = 6380;
 		public static final int _68 = 6381;
 		public static final int _69 = 6382;
+		public static final int _70 = 8368;
+		public static final int _71 = 8369;
+		public static final int _72 = 8370;
+		public static final int _73 = 8371;
+		public static final int _74 = 8372;
+		public static final int _75 = 8373;
+		public static final int _76 = 8374;
+		public static final int _77 = 8375;
+		public static final int _78 = 8376;
+		public static final int _79 = 8377;
 	}
 
 	public static final class ArrowsCurved
@@ -12127,5 +12210,109 @@ public final class SpriteID
 		public static final int _3 = 8340;
 		public static final int _4 = 8341;
 		public static final int _5 = 8342;
+	}
+
+	public static final class RadioButtons
+	{
+		public static final int _0 = 8378;
+		public static final int _1 = 8379;
+		public static final int _2 = 8380;
+		public static final int _3 = 8381;
+		public static final int _4 = 8382;
+		public static final int _5 = 8383;
+		public static final int _6 = 8384;
+		public static final int _7 = 8385;
+	}
+
+	public static final class MenuButtonsSmall
+	{
+		public static final int _0 = 8386;
+		public static final int _1 = 8387;
+		public static final int _2 = 8388;
+		public static final int _3 = 8389;
+	}
+
+	public static final class CombinationLockSymbolsLarge
+	{
+		public static final int _0 = 8390;
+		public static final int _1 = 8391;
+		public static final int _2 = 8392;
+		public static final int _3 = 8393;
+		public static final int _4 = 8394;
+		public static final int _5 = 8395;
+		public static final int _6 = 8396;
+		public static final int _7 = 8397;
+		public static final int _8 = 8398;
+		public static final int _9 = 8399;
+		public static final int _10 = 8400;
+		public static final int _11 = 8401;
+		public static final int _12 = 8402;
+		public static final int _13 = 8403;
+		public static final int _14 = 8404;
+		public static final int _15 = 8405;
+		public static final int _16 = 8406;
+		public static final int _17 = 8407;
+		public static final int _18 = 8408;
+		public static final int _19 = 8409;
+		public static final int _20 = 8410;
+		public static final int _21 = 8411;
+		public static final int _22 = 8412;
+		public static final int _23 = 8413;
+		public static final int _24 = 8414;
+		public static final int _25 = 8415;
+		public static final int _26 = 8416;
+		public static final int _27 = 8417;
+		public static final int _28 = 8418;
+		public static final int _29 = 8419;
+	}
+
+	public static final class VampyreSymbols
+	{
+		public static final int _0 = 8428;
+		public static final int _1 = 8429;
+		public static final int _2 = 8430;
+		public static final int _3 = 8431;
+		public static final int _4 = 8432;
+		public static final int _5 = 8433;
+		public static final int _6 = 8434;
+		public static final int _7 = 8435;
+	}
+
+	public static final class VampyreSymbolsSmall
+	{
+		public static final int _0 = 8436;
+		public static final int _1 = 8437;
+		public static final int _2 = 8438;
+		public static final int _3 = 8439;
+		public static final int _4 = 8440;
+		public static final int _5 = 8441;
+		public static final int _6 = 8442;
+		public static final int _7 = 8443;
+	}
+
+	public static final class VampyreBooks
+	{
+		public static final int _0 = 8444;
+		public static final int _1 = 8445;
+		public static final int _2 = 8446;
+		public static final int _3 = 8447;
+		public static final int _4 = 8448;
+		public static final int _5 = 8449;
+		public static final int _6 = 8450;
+		public static final int _7 = 8451;
+	}
+
+	public static final class CastleDrakanWorldmapIcons
+	{
+		public static final int _0 = 8452;
+		public static final int _1 = 8453;
+	}
+
+	public static final class CastleDrakanRoomIcons
+	{
+		public static final int _0 = 8454;
+		public static final int _1 = 8455;
+		public static final int _2 = 8456;
+		public static final int _3 = 8457;
 	}
 }
