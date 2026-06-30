@@ -28,7 +28,9 @@ package net.runelite.client.ui;
 import java.awt.image.BufferedImage;
 import java.util.Comparator;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Value;
 
 /**
@@ -40,7 +42,11 @@ public class NavigationButton
 {
 	static final Comparator<NavigationButton> COMPARATOR = Comparator.comparing(NavigationButton::getPriority)
 		.thenComparing(NavigationButton::getTooltip);
-
+	/**
+	 * Id of the button
+	 */
+	@Getter(AccessLevel.NONE)
+	private final String id;
 	/**
 	 * Icon of button.
 	 */
@@ -71,4 +77,19 @@ public class NavigationButton
 	 * Map of key-value pairs for setting the popup menu
 	 */
 	private final Map<String, Runnable> popup;
+
+	public String getId()
+	{
+		if (id != null)
+		{
+			return id;
+		}
+		if (panel == null)
+		{
+			return null;
+		}
+		final String classPath = panel.getClass().toString();
+		// example path: "class some.path.to.PluginPanel"
+		return classPath.substring(classPath.indexOf(" ") + 1);
+	}
 }
