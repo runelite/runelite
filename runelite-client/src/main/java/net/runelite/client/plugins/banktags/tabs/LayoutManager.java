@@ -74,7 +74,9 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.plugins.banktags.BankTag;
+import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
+import net.runelite.client.plugins.banktags.LayoutReorderMode;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.BANK_ITEMS_PER_ROW;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.BANK_ITEM_HEIGHT;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.BANK_ITEM_START_X;
@@ -101,13 +103,14 @@ public class LayoutManager
 	private final PotionStorage potionStorage;
 	private final EventBus eventBus;
 	private final ConfigManager configManager;
+	private final BankTagsConfig config;
 
 	private final List<PluginAutoLayout> autoLayouts = new ArrayList<>();
 
 	@Inject
 	LayoutManager(Client client, ItemManager itemManager, BankTagsPlugin plugin, ChatboxPanelManager chatboxPanelManager,
 		BankSearch bankSearch, ChatMessageManager chatMessageManager,
-		PotionStorage potionStorage, EventBus eventBus, ConfigManager configManager)
+		PotionStorage potionStorage, EventBus eventBus, ConfigManager configManager, BankTagsConfig config)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -118,6 +121,7 @@ public class LayoutManager
 		this.potionStorage = potionStorage;
 		this.eventBus = eventBus;
 		this.configManager = configManager;
+		this.config = config;
 
 		registerAutoLayout(plugin, "Default", new DefaultLayout());
 	}
@@ -469,7 +473,20 @@ public class LayoutManager
 		int sidx = source.getIndex();
 		int tidx = target.getIndex();
 
-		boolean swap = client.getVarbitValue(VarbitID.BANK_INSERTMODE) == 0;
+		boolean swap;
+		LayoutReorderMode reorderMode = config.layoutReorderMode();
+		if (reorderMode == LayoutReorderMode.SWAP)
+		{
+			swap = true;
+		}
+		else if (reorderMode == LayoutReorderMode.INSERT)
+		{
+			swap = false;
+		}
+		else
+		{
+			swap = client.getVarbitValue(VarbitID.BANK_INSERTMODE) == 0;
+		}
 
 		if (sidx >= l.size() || tidx >= l.size())
 		{
