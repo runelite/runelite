@@ -96,4 +96,15 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "disabledItems",
+		name = "Disabled items",
+		description = "Items to hide tooltips for. Format: item1, item2, item3 (supports * wildcard).",
+		position = 7
+	)
+	default String disabledItems()
+	{
+		return "";
+	}
 }
