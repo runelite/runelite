@@ -29,7 +29,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.annotation.Nullable;
 import javax.inject.Singleton;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -141,6 +143,78 @@ public class AudioPlayer
 		});
 
 		return clip;
+	}
+
+	/**
+	 * A handle to in-progress playback, allowing it to be stopped before it finishes on its own.
+	 */
+	public interface Playback
+	{
+		/**
+		 * Stops playback and releases the underlying line. A no-op once playback has already ended.
+		 */
+		void stop();
+	}
+
+	/**
+	 * Plays raw signed PCM samples, returning a {@link Playback} handle that can stop it early.
+	 * Unlike the file and stream overloads this requires no decodable audio-file container, so it
+	 * suits synthesized or otherwise in-memory PCM audio.
+	 *
+	 * <p>So that callers need not touch {@code javax.sound} at all, this reports a line that could
+	 * not be opened by returning {@code null} rather than throwing a checked sound exception.
+	 *
+	 * @param pcm            the signed PCM sample bytes
+	 * @param sampleRate     sample rate, in Hz
+	 * @param channels       channel count (1 for mono, 2 for stereo)
+	 * @param sampleSizeBits bits per sample (for example 16)
+	 * @param bigEndian      {@code true} if the samples are big-endian, {@code false} for little-endian
+	 * @param gain           gain (in dB) to apply to playback
+	 * @return a handle that stops the audio when {@link Playback#stop()} is called, or {@code null}
+	 *         if a line could not be opened for playback
+	 */
+	@Nullable
+	public Playback play(byte[] pcm, int sampleRate, int channels, int sampleSizeBits, boolean bigEndian, float gain)
+	{
+		AudioFormat format = new AudioFormat(sampleRate, sampleSizeBits, channels, true, bigEndian);
+		Clip clip;
+
+		try
+		{
+			clip = AudioSystem.getClip();
+			clip.open(format, pcm, 0, pcm.length);
+		}
+		catch (LineUnavailableException | RuntimeException e)
+		{
+			log.warn("Failed to play PCM audio: {}", e.getMessage());
+			return null;
+		}
+
+		if (gain != 0)
+		{
+			trySetGain(clip, gain);
+		}
+
+		// Release the line once playback finishes on its own; stopping early releases it via the
+		// returned handle instead.
+		clip.addLineListener(event ->
+		{
+			if (event.getType() == LineEvent.Type.STOP)
+			{
+				clip.close();
+			}
+		});
+
+		clip.start();
+
+		return () ->
+		{
+			if (clip.isOpen())
+			{
+				clip.stop();
+				clip.close();
+			}
+		};
 	}
 
 	private void trySetGain(DataLine line, float gain)
