@@ -24,17 +24,31 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
-import static net.runelite.cache.script.Opcodes.SCONST;
+import static net.runelite.cache.script.Opcodes.LCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
-import static net.runelite.cache.script.Opcodes.POP_STRING;
+import static net.runelite.cache.script.Opcodes.POP_OBJECT;
+import static net.runelite.cache.script.Opcodes.PUSH_NULL;
 import static net.runelite.cache.script.Opcodes.RETURN;
+import static net.runelite.cache.script.Opcodes.SCONST;
 
+@Accessors(chain = true)
+@Data
 public class ScriptLoader
 {
+	private boolean rev237 = true;
+
+	public ScriptLoader configureForRevision(int rev)
+	{
+		this.rev237 = rev > 1773753883;
+		return this;
+	}
+
 	public ScriptDefinition load(int id, byte[] b)
 	{
 		ScriptDefinition def = new ScriptDefinition();
@@ -44,14 +58,24 @@ public class ScriptLoader
 		in.setOffset(in.getLength() - 2);
 		int switchLength = in.readUnsignedShort();
 
-		// 2 for switchLength + the switch data + 12 for the param/vars/stack data
-		int endIdx = in.getLength() - 2 - switchLength - 12;
+		// 2 for switchLength + the switch data + 12 or 16 for the param/vars/stack data
+		int endIdx = in.getLength() - 2 - switchLength - (rev237 ? 16 : 12);
 		in.setOffset(endIdx);
 		int numOpcodes = in.readInt();
 		int localIntCount = in.readUnsignedShort();
-		int localStringCount = in.readUnsignedShort();
-		int intStackCount = in.readUnsignedShort();
-		int stringStackCount = in.readUnsignedShort();
+		int localObjCount = in.readUnsignedShort();
+		int localLongCount = 0;
+		if (rev237)
+		{
+			localLongCount = in.readUnsignedShort();
+		}
+		int intArgCount = in.readUnsignedShort();
+		int objArgCount = in.readUnsignedShort();
+		int longArgCount = 0;
+		if (rev237)
+		{
+			longArgCount = in.readUnsignedShort();
+		}
 
 		int numSwitches = in.readUnsignedByte();
 		if (numSwitches > 0)
@@ -61,7 +85,7 @@ public class ScriptLoader
 
 			for (int i = 0; i < numSwitches; ++i)
 			{
-				switches[i] = new HashMap<>();
+				switches[i] = new LinkedHashMap<>();
 
 				int count = in.readUnsignedShort();
 				while (count-- > 0)
@@ -75,36 +99,53 @@ public class ScriptLoader
 		}
 
 		def.setLocalIntCount(localIntCount);
-		def.setLocalStringCount(localStringCount);
-		def.setIntStackCount(intStackCount);
-		def.setStringStackCount(stringStackCount);
+		def.setLocalLongCount(localLongCount);
+		def.setLocalObjCount(localObjCount);
+		def.setIntArgCount(intArgCount);
+		def.setLongArgCount(longArgCount);
+		def.setObjArgCount(objArgCount);
 
 		in.setOffset(0);
 		in.readStringOrNull();
 
 		int[] instructions = new int[numOpcodes];
 		int[] intOperands = new int[numOpcodes];
+		long[] longOperands = new long[numOpcodes];
 		String[] stringOperands = new String[numOpcodes];
 
 		def.setInstructions(instructions);
 		def.setIntOperands(intOperands);
+		def.setLongOperands(longOperands);
 		def.setStringOperands(stringOperands);
 
-		int opcode;
-		for (int i = 0; in.getOffset() < endIdx; instructions[i++] = opcode)
+		for (int i = 0; in.getOffset() < endIdx; ++i)
 		{
-			opcode = in.readUnsignedShort();
-			if (opcode == SCONST)
+			int opcode = in.readUnsignedShort();
+			instructions[i] = opcode;
+			switch (opcode)
 			{
-				stringOperands[i] = in.readString();
-			}
-			else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
-			{
-				intOperands[i] = in.readInt();
-			}
-			else
-			{
-				intOperands[i] = in.readUnsignedByte();
+				case SCONST:
+					stringOperands[i] = in.readString();
+					break;
+				case RETURN:
+				case POP_INT:
+				case POP_OBJECT:
+				case PUSH_NULL:
+					intOperands[i] = in.readUnsignedByte();
+					break;
+				case LCONST:
+					longOperands[i] = in.readLong();
+					break;
+				default:
+					if (opcode < 100)
+					{
+						intOperands[i] = in.readInt();
+					}
+					else
+					{
+						intOperands[i] = in.readUnsignedByte();
+					}
+					break;
 			}
 		}
 

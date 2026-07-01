@@ -128,6 +128,12 @@ public class FlatTextField extends JPanel
 		setBackground(color, true);
 	}
 
+	@Override
+	public boolean requestFocusInWindow()
+	{
+		return textField.requestFocusInWindow();
+	}
+
 	public void setBackground(Color color, boolean saveColor)
 	{
 		if (color == null)

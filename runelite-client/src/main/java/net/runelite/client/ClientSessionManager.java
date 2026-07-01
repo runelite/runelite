@@ -32,82 +32,67 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
+import net.runelite.client.util.RunnableExceptionLogger;
 
 @Singleton
 @Slf4j
 public class ClientSessionManager
 {
-	private final SessionClient sessionClient = new SessionClient();
 	private final ScheduledExecutorService executorService;
+	private final Client client;
+	private final SessionClient sessionClient;
+	private static final UUID sessionId = UUID.randomUUID();
 
 	private ScheduledFuture<?> scheduledFuture;
-	private UUID sessionId;
-
 
 	@Inject
-	ClientSessionManager(ScheduledExecutorService executorService)
+	ClientSessionManager(ScheduledExecutorService executorService,
+		Client client,
+		SessionClient sessionClient)
 	{
 		this.executorService = executorService;
+		this.client = client;
+		this.sessionClient = sessionClient;
 	}
 
 	public void start()
 	{
-		try
-		{
-			sessionId = sessionClient.open();
-			log.debug("Opened session {}", sessionId);
-		}
-		catch (IOException ex)
-		{
-			log.warn("error opening session", ex);
-		}
-
-		scheduledFuture = executorService.scheduleWithFixedDelay(this::ping, 1, 10, TimeUnit.MINUTES);
+		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), (int) (5 * 60 * Math.random()), 10 * 60, TimeUnit.SECONDS);
 	}
 
-	public void shutdown()
+	@Subscribe
+	private void onClientShutdown(ClientShutdown e)
 	{
-		if (sessionId != null)
-		{
-			try
-			{
-				sessionClient.delete(sessionId);
-			}
-			catch (IOException ex)
-			{
-				log.warn(null, ex);
-			}
-			sessionId = null;
-		}
-		
 		scheduledFuture.cancel(true);
 	}
 
 	private void ping()
 	{
-		try
+		if (!isWorldHostValid())
 		{
-			if (sessionId == null)
-			{
-				sessionId = sessionClient.open();
-				log.debug("Opened session {}", sessionId);
-				return;
-			}
+			return;
 		}
-		catch (IOException ex)
-		{
-			log.warn(null, ex);
-		}
+
+		GameState gameState = client.getGameState();
+		boolean loggedIn = gameState.getState() >= GameState.LOADING.getState();
 
 		try
 		{
-			sessionClient.ping(sessionId);
+			sessionClient.ping(sessionId, loggedIn);
 		}
 		catch (IOException ex)
 		{
-			log.warn("Resetting session", ex);
-			sessionId = null;
+			log.warn("Unable to ping session service", ex);
 		}
+	}
 
+	private boolean isWorldHostValid()
+	{
+		String host = client.getWorldHost();
+		return host != null && host.endsWith(".runescape.com");
 	}
 }

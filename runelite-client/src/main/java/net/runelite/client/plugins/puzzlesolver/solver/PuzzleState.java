@@ -36,7 +36,7 @@ public class PuzzleState
 {
 	private PuzzleState parent;
 
-	private int[] pieces;
+	private final int[] pieces;
 	private int emptyPiece = -1;
 
 	private int h = -1;

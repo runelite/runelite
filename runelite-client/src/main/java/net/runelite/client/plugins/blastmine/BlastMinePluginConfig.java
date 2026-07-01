@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.blastmine;
 
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -37,7 +38,7 @@ public interface BlastMinePluginConfig extends Config
 		position = 0,
 		keyName = "showOreOverlay",
 		name = "Show ore overlay",
-		description = "Configures whether or not the ore count overlay is displayed"
+		description = "Configures whether or not the ore count overlay is displayed."
 	)
 	default boolean showOreOverlay()
 	{
@@ -48,7 +49,7 @@ public interface BlastMinePluginConfig extends Config
 		position = 1,
 		keyName = "showRockIconOverlay",
 		name = "Show icons overlay",
-		description = "Configures whether or not the icon overlay is displayed"
+		description = "Configures whether or not the icon overlay is displayed."
 	)
 	default boolean showRockIconOverlay()
 	{
@@ -59,7 +60,7 @@ public interface BlastMinePluginConfig extends Config
 		position = 2,
 		keyName = "showTimerOverlay",
 		name = "Show timer overlay",
-		description = "Configures whether or not the timer overlay is displayed"
+		description = "Configures whether or not the timer overlay is displayed."
 	)
 	default boolean showTimerOverlay()
 	{
@@ -70,29 +71,31 @@ public interface BlastMinePluginConfig extends Config
 		position = 3,
 		keyName = "showWarningOverlay",
 		name = "Show explosion warning",
-		description = "Configures whether or not the explosion warning overlay is displayed"
+		description = "Configures whether or not the explosion warning overlay is displayed."
 	)
 	default boolean showWarningOverlay()
 	{
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 4,
 		keyName = "hexTimerColor",
 		name = "Timer color",
-		description = "Color of timer overlay"
+		description = "Color of timer overlay."
 	)
 	default Color getTimerColor()
 	{
 		return new Color(217, 54, 0);
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 5,
 		keyName = "hexWarningColor",
 		name = "Warning color",
-		description = "Color of warning overlay"
+		description = "Color of warning overlay."
 	)
 	default Color getWarningColor()
 	{

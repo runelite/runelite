@@ -25,28 +25,25 @@
 package net.runelite.client.chat;
 
 import java.awt.Color;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.runelite.api.annotations.Varp;
 
 @Data
-@EqualsAndHashCode(exclude = {"color", "isDefault"})
-public class ChatColor
+@EqualsAndHashCode(exclude = {"color", "isDefault", "setting"})
+@AllArgsConstructor
+class ChatColor
 {
 	private ChatColorType type;
 	private Color color;
 	private boolean transparent;
 	private boolean isDefault;
+	@Varp
+	private int setting; // varp for the in-game chat color setting
 
 	public ChatColor(ChatColorType type, Color color, boolean transparent)
 	{
-		this(type, color, transparent, false);
-	}
-
-	public ChatColor(ChatColorType type, Color color, boolean transparent, boolean isDefault)
-	{
-		this.type = type;
-		this.color = color;
-		this.transparent = transparent;
-		this.isDefault = isDefault;
+		this(type, color, transparent, false, -1);
 	}
 }

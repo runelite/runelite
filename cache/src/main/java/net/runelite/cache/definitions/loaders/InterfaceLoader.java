@@ -27,12 +27,24 @@ package net.runelite.cache.definitions.loaders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import net.runelite.cache.definitions.ClientScript1Instruction;
 import net.runelite.cache.definitions.InterfaceDefinition;
 import net.runelite.cache.io.InputStream;
 
+@Accessors(chain = true)
+@Data
 public class InterfaceLoader
 {
+	private boolean rev237 = true;
+
+	public InterfaceLoader configureForRevision(int rev)
+	{
+		this.rev237 = rev > 1773137432;
+		return this;
+	}
+
 	public InterfaceDefinition load(int id, byte[] b)
 	{
 		InterfaceDefinition iface = new InterfaceDefinition();
@@ -250,16 +262,24 @@ public class InterfaceLoader
 		if (iface.type == 6)
 		{
 			iface.modelType = 1;
-			iface.modelId = var1.readUnsignedShort();
-			if (iface.modelId == 0xFFFF)
+			if (rev237)
 			{
-				iface.modelId = -1;
+				iface.modelId = var1.readInt();
+				iface.alternateModelId = var1.readInt();
 			}
-
-			iface.alternateModelId = var1.readUnsignedShort();
-			if (iface.alternateModelId == 0xFFFF)
+			else
 			{
-				iface.alternateModelId = -1;
+				iface.modelId = var1.readUnsignedShort();
+				if (iface.modelId == 0xFFFF)
+				{
+					iface.modelId = -1;
+				}
+
+				iface.alternateModelId = var1.readUnsignedShort();
+				if (iface.alternateModelId == 0xFFFF)
+				{
+					iface.alternateModelId = -1;
+				}
 			}
 
 			iface.animation = var1.readUnsignedShort();
@@ -420,10 +440,17 @@ public class InterfaceLoader
 		if (iface.type == 6)
 		{
 			iface.modelType = 1;
-			iface.modelId = var1.readUnsignedShort();
-			if (iface.modelId == 0xFFFF)
+			if (rev237)
 			{
-				iface.modelId = -1;
+				iface.modelId = var1.readInt();
+			}
+			else
+			{
+				iface.modelId = var1.readUnsignedShort();
+				if (iface.modelId == 0xFFFF)
+				{
+					iface.modelId = -1;
+				}
 			}
 
 			iface.offsetX2d = var1.readShort();

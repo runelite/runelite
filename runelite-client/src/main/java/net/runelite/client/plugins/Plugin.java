@@ -33,6 +33,18 @@ public abstract class Plugin implements Module
 	protected Injector injector;
 
 	@Override
+	public final int hashCode()
+	{
+		return super.hashCode();
+	}
+
+	@Override
+	public final boolean equals(Object obj)
+	{
+		return super.equals(obj);
+	}
+
+	@Override
 	public void configure(Binder binder)
 	{
 	}
@@ -45,8 +57,17 @@ public abstract class Plugin implements Module
 	{
 	}
 
+	public void resetConfiguration()
+	{
+	}
+
 	public final Injector getInjector()
 	{
 		return injector;
+	}
+
+	public String getName()
+	{
+		return getClass().getAnnotation(PluginDescriptor.class).name();
 	}
 }

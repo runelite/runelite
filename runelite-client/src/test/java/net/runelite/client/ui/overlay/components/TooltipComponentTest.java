@@ -28,7 +28,7 @@ import java.awt.FontMetrics;
 import static net.runelite.client.ui.overlay.components.TooltipComponent.calculateTextWidth;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

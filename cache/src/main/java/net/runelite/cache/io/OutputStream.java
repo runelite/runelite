@@ -26,8 +26,8 @@ package net.runelite.cache.io;
 
 import com.google.common.base.Preconditions;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public final class OutputStream extends java.io.OutputStream
 {
@@ -179,18 +179,15 @@ public final class OutputStream extends java.io.OutputStream
 		this.getArray()[this.getOffset() - var1 - 1] = (byte) var1;
 	}
 
+	public void writeLong(long l)
+	{
+		ensureRemaining(8);
+		buffer.putLong(l);
+	}
+
 	public void writeString(String str)
 	{
-		byte[] b;
-		try
-		{
-			b = str.getBytes("ISO-8859-1");
-		}
-		catch (UnsupportedEncodingException ex)
-		{
-			throw new RuntimeException(ex);
-		}
-		writeBytes(b);
+		writeBytes(str.getBytes(StandardCharsets.ISO_8859_1));
 		writeByte(0);
 	}
 

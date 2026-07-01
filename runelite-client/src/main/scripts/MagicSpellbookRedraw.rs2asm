@@ -1,0 +1,939 @@
+.id                       2611
+.int_arg_count            11
+.long_arg_count           0
+.obj_arg_count            2
+   iconst                 190
+   istore                 11
+   iconst                 261
+   istore                 12
+   iconst                 0
+   istore                 13
+   iload                  10
+   iconst                 1
+   if_icmpeq              LABEL10
+   jump                   LABEL76
+LABEL10:
+   iconst                 6
+   iconst                 240
+   iconst                 1
+   iconst                 0
+   iload                  3
+   if_setsize            
+   iconst                 190
+   iconst                 6
+   sub                   
+   iconst                 240
+   istore                 12
+   istore                 11
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 0
+   iload                  3
+   if_setposition        
+   iconst                 0
+   iload                  4
+   if_sethide            
+   oload                  0
+   iconst                 190
+   iconst                 494
+   parawidth             
+   oload                  1
+   iconst                 190
+   iconst                 494
+   parawidth             
+   invoke                 1045
+   iconst                 14
+   add                   
+   istore                 13
+   iload                  13
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iload                  5
+   if_setsize            
+   iload                  13
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iload                  6
+   if_setsize            
+   iconst                 190
+   iload                  13
+   iconst                 2
+   multiply              
+   sub                   
+   iconst                 3
+   div                   
+   istore                 13
+   iload                  13
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iload                  5
+   if_setposition        
+   iload                  13
+   iconst                 0
+   iconst                 2
+   iconst                 1
+   iload                  6
+   if_setposition        
+   jump                   LABEL147
+LABEL76:
+   get_varbit             6718
+   iconst                 1
+   if_icmpeq              LABEL80
+   jump                   LABEL109
+LABEL80:
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   iload                  3
+   if_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   iload                  3
+   if_setposition        
+   iconst                 1
+   iload                  4
+   if_sethide            
+   iconst                 -1
+   iload                  10
+   iload                  5
+   iload                  6
+   iload                  0
+   iload                  1
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  2
+   oload                  0
+   oload                  1
+   invoke                 2603
+   jump                   LABEL147
+LABEL109:
+   iconst                 6
+   iconst                 240
+   iconst                 1
+   iconst                 0
+   iload                  3
+   if_setsize            
+   iconst                 190
+   iconst                 6
+   sub                   
+   iconst                 240
+   istore                 12
+   istore                 11
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 0
+   iload                  3
+   if_setposition        
+   iconst                 0
+   iload                  4
+   if_sethide            
+   oload                  1
+   iconst                 190
+   iconst                 494
+   parawidth             
+   iconst                 14
+   add                   
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iload                  6
+   if_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   iload                  6
+   if_setposition        
+LABEL147:
+   iload                  0
+   cc_deleteall          
+   iload                  1
+   cc_deleteall          
+   iload                  2
+   cc_deleteall          
+   invoke                 9409
+   iconst                 105
+   iconst                 103
+   iconst                 1981
+   get_varbit             4070
+   enum                  
+   istore                 14
+   iconst                 105
+   iconst                 103
+   iconst                 5280
+   get_varbit             4070
+   enum                  
+   istore                 15
+   get_varbit             9730
+   iconst                 0
+   if_icmpge              LABEL170
+   jump                   LABEL176
+LABEL170:
+   iconst                 105
+   iconst                 103
+   iload                  15
+   get_varbit             9730
+   enum                  
+   istore                 14
+LABEL176:
+   iconst                 0
+   istore                 16
+   iconst                 1981
+   enum_getoutputcount   
+   istore                 17
+   iconst                 1
+   istore                 18
+   iconst                 0
+   istore                 19
+   iconst                 -1
+   istore                 20
+LABEL187:
+   iload                  16
+   iload                  17
+   if_icmplt              LABEL191
+   jump                   LABEL240
+LABEL191:
+   iconst                 105
+   iconst                 103
+   iconst                 1981
+   iload                  16
+   enum                  
+   istore                 20
+   iload                  20
+   iload                  14
+   if_icmpne              LABEL201
+   jump                   LABEL203
+LABEL201:
+   iload                  20
+   invoke                 2618
+LABEL203:
+   iconst                 105
+   iconst                 103
+   iconst                 5280
+   iload                  16
+   enum                  
+   istore                 15
+   iconst                 1
+   istore                 18
+   iload                  15
+   enum_getoutputcount   
+   istore                 19
+LABEL214:
+   iload                  18
+   iload                  19
+   if_icmple              LABEL218
+   jump                   LABEL235
+LABEL218:
+   iconst                 105
+   iconst                 103
+   iload                  15
+   iload                  18
+   enum                  
+   istore                 20
+   iload                  20
+   iload                  14
+   if_icmpne              LABEL228
+   jump                   LABEL230
+LABEL228:
+   iload                  20
+   invoke                 2618
+LABEL230:
+   iload                  18
+   iconst                 1
+   add                   
+   istore                 18
+   jump                   LABEL214
+LABEL235:
+   iload                  16
+   iconst                 1
+   add                   
+   istore                 16
+   jump                   LABEL187
+LABEL240:
+   iload                  14
+   iconst                 -1
+   if_icmpeq              LABEL244
+   jump                   LABEL245
+LABEL244:
+   return                
+LABEL245:
+   iload                  14
+   enum_getoutputcount   
+   istore                 21
+   iload                  21
+   define_array           131177
+   iconst                 0
+   istore                 22
+   iconst                 -1
+   istore                 23
+   iconst                 -1
+   istore                 24
+   iconst                 0
+   istore                 25
+   iload                  10
+   iconst                 0
+   if_icmpeq              LABEL262
+   jump                   LABEL301
+LABEL262:
+   get_varbit             6718
+   iconst                 1
+   if_icmpeq              LABEL266
+   jump                   LABEL301
+LABEL266:
+   iload                  25
+   iload                  21
+   if_icmplt              LABEL270
+   jump                   LABEL300
+LABEL270:
+   iconst                 105
+   iconst                 111
+   iload                  14
+   iload                  25
+   enum                  
+   istore                 23
+   invoke                 3160
+   iconst                 1
+   if_icmpeq              LABEL280
+   jump                   LABEL283
+LABEL280:
+   iload                  23
+   invoke                 3159
+   istore                 23
+LABEL283:
+   iconst                 0
+   iload                  23
+   iconst                 596
+   oc_param              
+   if_sethide            
+   iload                  22
+   iload                  25
+   set_array_int          2
+   iload                  22
+   iconst                 1
+   add                   
+   istore                 22
+   iload                  25
+   iconst                 1
+   add                   
+   istore                 25
+   jump                   LABEL266
+LABEL300:
+   jump                   LABEL346
+LABEL301:
+   iload                  25
+   iload                  21
+   if_icmplt              LABEL305
+   jump                   LABEL346
+LABEL305:
+   iconst                 105
+   iconst                 111
+   iload                  14
+   iload                  25
+   enum                  
+   istore                 23
+   invoke                 3160
+   iconst                 1
+   if_icmpeq              LABEL315
+   jump                   LABEL318
+LABEL315:
+   iload                  23
+   invoke                 3159
+   istore                 23
+LABEL318:
+   iload                  23
+   invoke                 2619
+   iconst                 1
+   if_icmpeq              LABEL323
+   jump                   LABEL336
+LABEL323:
+   iconst                 0
+   iload                  23
+   iconst                 596
+   oc_param              
+   if_sethide            
+   iload                  22
+   iload                  25
+   set_array_int          2
+   iload                  22
+   iconst                 1
+   add                   
+   istore                 22
+   jump                   LABEL341
+LABEL336:
+   iconst                 1
+   iload                  23
+   iconst                 596
+   oc_param              
+   if_sethide            
+LABEL341:
+   iload                  25
+   iconst                 1
+   add                   
+   istore                 25
+   jump                   LABEL301
+LABEL346:
+   iconst                 0
+   istore                 26
+   iload                  22
+   jump                   USE_FILTERSORT ;
+   iconst                 2
+USE_FILTERSORT:
+   iconst                 1 ; run our filter+sort even when there is only one vanilla spell
+   if_icmpge              LABEL352
+   jump                   LABEL360
+LABEL352:
+   oload                  2
+   iconst                 0
+   iload                  22
+   iconst                 1
+   sub                   
+   iload                  14
+   invoke                 2621
+
+   ; after sorting the spell array
+   iload                  14 ; spellbook enum
+   iconst                 2  ; spell array id
+   iload                  22 ; number of spells
+   sconst                 "spellbookSort"
+   runelite_callback     
+   istore                 22 ; number of spells
+   pop_int                   ; spell array id
+   pop_int                   ; spellbook enum
+
+   jump                   LABEL396
+LABEL360:
+   iload                  22
+   iconst                 0
+   if_icmple              LABEL364
+   jump                   LABEL396
+LABEL364:
+   iload                  0
+   iconst                 4
+   iload                  26
+   iconst                 0
+   cc_create             
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   cc_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   cc_setposition        
+   iconst                 16750623
+   cc_setcolour          
+   iconst                 495
+   cc_settextfont        
+   iconst                 1
+   cc_settextshadow      
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   sconst                 "No spells match your selected filters."
+   cc_settext            
+   iload                  26
+   iconst                 1
+   add                   
+   istore                 26
+   return                
+LABEL396:
+   iconst                 24
+   istore                 27
+   iconst                 0
+   istore                 28
+   iconst                 0
+   istore                 29
+   iconst                 0
+   istore                 30
+   iconst                 0
+   istore                 31
+   iload                  12
+   istore                 32
+   iload                  10
+   iconst                 0
+   if_icmpeq              LABEL412
+   jump                   LABEL462
+LABEL412:
+   get_varbit             6718
+   iconst                 1
+   if_icmpeq              LABEL416
+   jump                   LABEL462
+LABEL416:
+   get_varbit             4070
+   invoke                 6419
+   istore                 30
+   istore                 31
+   istore                 29
+   istore                 28
+   get_varbit             4070
+   switch                
+      1: LABEL431
+      2: LABEL438
+      3: LABEL445
+   iconst                 1
+   iconst                 15
+   iconst                 1
+   iconst                 0
+   iload                  0
+   if_setposition        
+   jump                   LABEL451
+LABEL431:
+   iconst                 2
+   iconst                 8
+   iconst                 1
+   iconst                 0
+   iload                  0
+   if_setposition        
+   jump                   LABEL451
+LABEL438:
+   iconst                 0
+   iconst                 8
+   iconst                 1
+   iconst                 0
+   iload                  0
+   if_setposition        
+   jump                   LABEL451
+LABEL445:
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 0
+   iload                  0
+   if_setposition        
+LABEL451:
+   iload                  29
+   iload                  27
+   multiply              
+   iload                  29
+   iconst                 1
+   sub                   
+   iload                  30
+   multiply              
+   add                   
+   istore                 32
+   jump                   LABEL653
+LABEL462:
+   get_varbit             6548
+   iconst                 1
+   if_icmpeq              LABEL484
+   get_varp               3717
+   invoke                 9529
+   iconst                 1
+   if_icmpeq              LABEL484
+   iload                  10
+   iconst                 0
+   if_icmpeq              LABEL473
+   jump                   LABEL564
+LABEL473:
+   invoke                 1138
+   iconst                 0
+   if_icmpeq              LABEL477
+   jump                   LABEL564
+LABEL477:
+   get_varbit             8121
+   iconst                 1
+   if_icmpeq              LABEL484
+   get_varbit             6549
+   iconst                 1
+   if_icmpeq              LABEL484
+   jump                   LABEL564
+LABEL484:
+   iload                  22
+   iconst                 28
+   if_icmple              LABEL488
+   jump                   LABEL491
+LABEL488:
+   iconst                 4
+   istore                 28
+   jump                   LABEL501
+LABEL491:
+   iconst                 4
+   iconst                 7
+   iload                  22
+   iconst                 8
+   add                   
+   iconst                 9
+   div                   
+   invoke                 1046
+   invoke                 1045
+   istore                 28
+LABEL501:
+   iconst                 0
+   iload                  27
+   iload                  11
+   iload                  27
+   iload                  28
+   multiply              
+   sub                   
+   iload                  28
+   iconst                 1
+   sub                   
+   div                   
+   invoke                 1046
+   invoke                 1045
+   istore                 31
+   iconst                 1
+   iload                  22
+   iload                  28
+   iconst                 1
+   sub                   
+   add                   
+   iload                  28
+   div                   
+   invoke                 1045
+   istore                 29
+   iload                  29
+   iconst                 2
+   if_icmpge              LABEL529
+   jump                   LABEL543
+LABEL529:
+   iconst                 0
+   iload                  31
+   iload                  12
+   iload                  27
+   iload                  29
+   multiply              
+   sub                   
+   iload                  29
+   iconst                 1
+   sub                   
+   div                   
+   invoke                 1046
+   invoke                 1045
+   istore                 30
+LABEL543:
+   iload                  29
+   iload                  27
+   multiply              
+   iload                  29
+   iconst                 1
+   sub                   
+   iload                  30
+   multiply              
+   add                   
+   iload                  12
+   iconst                 30
+   sub                   
+   invoke                 1045
+   istore                 32
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   iload                  0
+   if_setposition        
+   jump                   LABEL653
+LABEL564:
+   iload                  22
+   iconst                 15
+   if_icmple              LABEL568
+   jump                   LABEL573
+LABEL568:
+   iconst                 40
+   iconst                 3
+   istore                 28
+   istore                 27
+   jump                   LABEL592
+LABEL573:
+   iload                  22
+   iconst                 20
+   if_icmple              LABEL577
+   jump                   LABEL582
+LABEL577:
+   iconst                 40
+   iconst                 4
+   istore                 28
+   istore                 27
+   jump                   LABEL592
+LABEL582:
+   iconst                 4
+   iconst                 7
+   iload                  22
+   iconst                 8
+   add                   
+   iconst                 9
+   div                   
+   invoke                 1046
+   invoke                 1045
+   istore                 28
+LABEL592:
+   iconst                 0
+   iconst                 5
+   iconst                 7
+   iload                  27
+   scale                 
+   iload                  11
+   iload                  27
+   iload                  28
+   multiply              
+   sub                   
+   iload                  28
+   iconst                 1
+   sub                   
+   div                   
+   invoke                 1046
+   invoke                 1045
+   istore                 31
+   iconst                 1
+   iload                  22
+   iload                  28
+   iconst                 1
+   sub                   
+   add                   
+   iload                  28
+   div                   
+   invoke                 1045
+   istore                 29
+   iload                  29
+   iconst                 2
+   if_icmpge              LABEL623
+   jump                   LABEL637
+LABEL623:
+   iconst                 0
+   iload                  31
+   iload                  12
+   iload                  27
+   iload                  29
+   multiply              
+   sub                   
+   iload                  29
+   iconst                 1
+   sub                   
+   div                   
+   invoke                 1046
+   invoke                 1045
+   istore                 30
+LABEL637:
+   iload                  29
+   iload                  27
+   multiply              
+   iload                  29
+   iconst                 1
+   sub                   
+   iload                  30
+   multiply              
+   add                   
+   istore                 32
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   iload                  0
+   if_setposition        
+LABEL653:
+   iload                  28
+   iload                  27
+   multiply              
+   iload                  28
+   iconst                 1
+   sub                   
+   iload                  31
+   multiply              
+   add                   
+   iload                  32
+   iconst                 0
+   iconst                 0
+   iload                  0
+   if_setsize            
+   iconst                 0
+   istore                 33
+   iconst                 -1
+   istore                 34
+   iload                  27
+   iload                  31
+   add                   
+   istore                 35
+   iload                  27
+   iload                  30
+   add                   
+   istore                 36
+   iconst                 -1
+   istore                 37
+   iconst                 0
+   istore                 38
+   iconst                 0
+   istore                 39
+   iconst                 0
+   istore                 25
+LABEL687:
+   iload                  25
+   iload                  22
+   if_icmplt              LABEL691
+   jump                   LABEL845
+LABEL691:
+   iconst                 105
+   iconst                 111
+   iload                  14
+   iload                  25
+   get_array_int          2
+   enum                  
+   istore                 23
+   invoke                 3160
+   iconst                 1
+   if_icmpeq              LABEL702
+   jump                   LABEL705
+LABEL702:
+   iload                  23
+   invoke                 3159
+   istore                 23
+LABEL705:
+   iload                  23
+   iconst                 596
+   oc_param              
+   istore                 34
+   iload                  27
+   iload                  27
+   iconst                 0
+   iconst                 0
+   iload                  34
+   if_setsize            
+   iload                  25
+   iload                  28
+   mod                   
+   iload                  35
+   multiply              
+   iload                  25
+   iload                  28
+   div                   
+   iload                  36
+   multiply              
+   istore                 39
+   istore                 38
+   iload                  38
+   iload                  39
+   iconst                 0
+   iconst                 0
+   iload                  34
+   if_setposition        
+   iload                  23
+   iload                  34
+   iload                  27
+   invoke                 2614
+   istore                 37
+   istore                 33
+   iload                  23
+   iload                  27
+   iload                  33
+   invoke                 9448
+   iload                  34
+   if_setgraphic         
+   iload                  33
+   iconst                 0
+   if_icmpeq              LABEL749
+   jump                   LABEL774
+LABEL749:
+   iload                  37
+   iconst                 -1
+   if_icmpne              LABEL753
+   jump                   LABEL774
+LABEL753:
+   iload                  0
+   iconst                 5
+   iload                  26
+   iconst                 0
+   cc_create             
+   iload                  27
+   iload                  27
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iload                  38
+   iload                  39
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iload                  37
+   cc_setgraphic         
+   iload                  26
+   iconst                 1
+   add                   
+   istore                 26
+LABEL774:
+   iload                  34
+   invoke                 2615
+   iload                  10
+   iconst                 1
+   if_icmpeq              LABEL780
+   jump                   LABEL808
+LABEL780:
+   iload                  1
+   iconst                 5
+   iload                  25
+   iconst                 0
+   cc_create             
+   iload                  27
+   iload                  27
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iload                  38
+   iload                  39
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iload                  23
+   iconst                 1
+   cc_setobject          
+   iconst                 255
+   cc_settrans           
+   iconst                 2612
+   iload                  23
+   iload                  1
+   iload                  2
+   iload                  12
+   sconst                 "iiii"
+   cc_setonclick         
+   jump                   LABEL840
+LABEL808:
+   iconst                 2622
+   iconst                 1
+   iload                  23
+   iconst                 -2147483645
+   iconst                 -1
+   iload                  2
+   iload                  12
+   iconst                 94
+   iconst                 3
+   inv_getobj            
+   iconst                 94
+   iconst                 5
+   inv_getobj            
+   sconst                 "iiiiiiii"
+   iload                  34
+   if_setonmouserepeat   
+   iconst                 2622
+   iconst                 0
+   iload                  23
+   iconst                 -2147483645
+   iconst                 -1
+   iload                  2
+   iload                  12
+   iconst                 94
+   iconst                 3
+   inv_getobj            
+   iconst                 94
+   iconst                 5
+   inv_getobj            
+   sconst                 "iiiiiiii"
+   iload                  34
+   if_setonmouseleave    
+LABEL840:
+   iload                  25
+   iconst                 1
+   add                   
+   istore                 25
+   jump                   LABEL687
+LABEL845:
+   return                

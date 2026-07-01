@@ -36,7 +36,7 @@ public class EnergyStat extends Stat
 	@Override
 	public int getValue(Client client)
 	{
-		return client.getEnergy();
+		return client.getEnergy() / 100;
 	}
 
 	@Override

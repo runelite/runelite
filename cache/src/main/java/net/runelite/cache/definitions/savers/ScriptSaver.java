@@ -26,19 +26,26 @@ package net.runelite.cache.definitions.savers;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.RequiredArgsConstructor;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.OutputStream;
+import static net.runelite.cache.script.Opcodes.LCONST;
+import static net.runelite.cache.script.Opcodes.PUSH_NULL;
 import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
-import static net.runelite.cache.script.Opcodes.POP_STRING;
+import static net.runelite.cache.script.Opcodes.POP_OBJECT;
 import static net.runelite.cache.script.Opcodes.RETURN;
 
+@RequiredArgsConstructor
 public class ScriptSaver
 {
+	private final boolean longSupport;
+
 	public byte[] save(ScriptDefinition script)
 	{
 		int[] instructions = script.getInstructions();
 		int[] intOperands = script.getIntOperands();
+		long[] longOperands = script.getLongOperands();
 		String[] stringOperands = script.getStringOperands();
 		Map<Integer, Integer>[] switches = script.getSwitches();
 
@@ -48,24 +55,45 @@ public class ScriptSaver
 		{
 			int opcode = instructions[i];
 			out.writeShort(opcode);
-			if (opcode == SCONST)
+			switch (opcode)
 			{
-				out.writeString(stringOperands[i]);
-			}
-			else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
-			{
-				out.writeInt(intOperands[i]);
-			}
-			else
-			{
-				out.writeByte(intOperands[i]);
+				case SCONST:
+					out.writeString(stringOperands[i]);
+					break;
+				case RETURN:
+				case POP_INT:
+				case POP_OBJECT:
+				case PUSH_NULL:
+					out.writeByte(intOperands[i]);
+					break;
+				case LCONST:
+					out.writeLong(longOperands[i]);
+					break;
+				default:
+					if (opcode < 100)
+					{
+						out.writeInt(intOperands[i]);
+					}
+					else
+					{
+						out.writeByte(intOperands[i]);
+					}
+					break;
 			}
 		}
 		out.writeInt(instructions.length);
 		out.writeShort(script.getLocalIntCount());
-		out.writeShort(script.getLocalStringCount());
-		out.writeShort(script.getIntStackCount());
-		out.writeShort(script.getStringStackCount());
+		out.writeShort(script.getLocalObjCount());
+		if (longSupport)
+		{
+			out.writeShort(script.getLocalLongCount());
+		}
+		out.writeShort(script.getIntArgCount());
+		out.writeShort(script.getObjArgCount());
+		if (longSupport)
+		{
+			out.writeShort(script.getLongArgCount());
+		}
 		int switchStart = out.getOffset();
 		if (switches == null)
 		{

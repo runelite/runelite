@@ -24,7 +24,27 @@
  */
 package net.runelite.client.events;
 
+import lombok.Getter;
+
 public abstract class ChatInput
 {
-	public abstract void resume();
+	private final Runnable resume;
+
+	@Getter
+	private boolean consumed;
+
+	protected ChatInput(Runnable resume)
+	{
+		this.resume = resume;
+	}
+
+	public void resume()
+	{
+		resume.run();
+	}
+
+	public void consume()
+	{
+		consumed = true;
+	}
 }

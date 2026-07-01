@@ -29,12 +29,12 @@ import java.util.regex.Pattern;
 
 public class WildcardMatcher
 {
-	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*)");
+	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*+)");
 
 	public static boolean matches(String pattern, String text)
 	{
 		final Matcher matcher = WILDCARD_PATTERN.matcher(pattern);
-		final StringBuffer buffer = new StringBuffer();
+		final StringBuilder buffer = new StringBuilder();
 
 		buffer.append("(?i)");
 		while (matcher.find())
@@ -45,7 +45,7 @@ public class WildcardMatcher
 			}
 			else
 			{
-				matcher.appendReplacement(buffer, "\\\\Q" + matcher.group(0) + "\\\\E");
+				matcher.appendReplacement(buffer, Matcher.quoteReplacement(Pattern.quote(matcher.group(0))));
 			}
 		}
 

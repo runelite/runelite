@@ -24,111 +24,24 @@
  */
 package net.runelite.client.plugins.mining;
 
-import com.google.common.collect.ImmutableMap;
-import java.time.Duration;
-import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
-import static net.runelite.api.ObjectID.*;
 
 enum Rock
 {
-	TIN(Duration.ofMillis(2400), 0, ROCKS_11360, ROCKS_11361),
-	COPPER(Duration.ofMillis(2400), 0, ROCKS_10943, ROCKS_11161),
-	IRON(Duration.ofMillis(5400), 0, ROCKS_11364, ROCKS_11365, ROCKS_36203)
-		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				return region == MINING_GUILD ? Duration.ofMillis(2400) : super.respawnTime;
-			}
-		},
-	COAL(Duration.ofMillis(29400), 0, ROCKS_11366, ROCKS_11367, ROCKS_36204)
-		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				switch (region)
-				{
-					case MINING_GUILD:
-						return Duration.ofMillis(14400);
-					case MISCELLANIA:
-						return Duration.ofMillis(6600);
-					default:
-						return super.respawnTime;
-				}
-			}
-		},
-	SILVER(Duration.ofMinutes(1), 0, ROCKS_11368, ROCKS_11369, ROCKS_36205),
-	SANDSTONE(Duration.ofMillis(5400), 0, ROCKS_11386),
-	GOLD(Duration.ofMinutes(1), 0, ROCKS_11370, ROCKS_11371, ROCKS_36206),
-	GRANITE(Duration.ofMillis(5400), 0, ROCKS_11387),
-	MITHRIL(Duration.ofMinutes(2), 0, ROCKS_11372, ROCKS_11373, ROCKS_36207)
-		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				return region == MINING_GUILD ? Duration.ofMinutes(1) : super.respawnTime;
-			}
-		},
-	ADAMANTITE(Duration.ofMinutes(4), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
-		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				return region == MINING_GUILD || region == WILDERNESS_RESOURCE_AREA ? Duration.ofMinutes(2) : super.respawnTime;
-			}
-		},
-	RUNITE(Duration.ofMinutes(12), 0, ROCKS_11376, ROCKS_11377, ROCKS_36209)
-		{
-			@Override
-			Duration getRespawnTime(int region)
-			{
-				return region == MINING_GUILD ? Duration.ofMinutes(6) : super.respawnTime;
-			}
-		},
-	ORE_VEIN(Duration.ofSeconds(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME), 150),
-	AMETHYST(Duration.ofSeconds(75), 120),
-	ASH_VEIN(Duration.ofSeconds(30), 0, ASH_PILE),
-	GEM_ROCK(Duration.ofMinutes(1), 0, ROCKS_11380, ROCKS_11381);
+	ROCK(0),
+	MLM_ORE_VEIN(150),
+	ORE_VEIN(150),
+	AMETHYST(120),
+	DAEYALT_ESSENCE(0),
+	BARRONITE(140),
+	;
 
-	private static final int WILDERNESS_RESOURCE_AREA = 12605;
-	private static final int MISCELLANIA = 10044;
-	private static final int MINING_GUILD = 12183;
-	private static final Map<Integer, Rock> ROCKS;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, Rock> builder = new ImmutableMap.Builder<>();
-		for (Rock rock : values())
-		{
-			for (int id : rock.ids)
-			{
-				builder.put(id, rock);
-			}
-		}
-		ROCKS = builder.build();
-	}
-
-	private final Duration respawnTime;
 	@Getter(AccessLevel.PACKAGE)
 	private final int zOffset;
-	private final int[] ids;
 
-	Rock(Duration respawnTime, int zOffset, int... ids)
+	Rock(int zOffset)
 	{
-		this.respawnTime = respawnTime;
 		this.zOffset = zOffset;
-		this.ids = ids;
-	}
-
-	Duration getRespawnTime(int region)
-	{
-		return respawnTime;
-	}
-
-	static Rock getRock(int id)
-	{
-		return ROCKS.get(id);
 	}
 }

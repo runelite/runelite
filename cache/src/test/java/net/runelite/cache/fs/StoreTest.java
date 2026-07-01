@@ -121,6 +121,7 @@ public class StoreTest
 			{
 				FileData[] fileData = archive.getFileData();
 				FileData file = fileData[i] = new FileData();
+				file.setId(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 			}
 
@@ -128,6 +129,7 @@ public class StoreTest
 			{
 				FileData[] fileData = archive2.getFileData();
 				FileData file = fileData[i] = new FileData();
+				file.setId(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 			}
 
@@ -135,6 +137,7 @@ public class StoreTest
 			{
 				FileData[] fileData = archive3.getFileData();
 				FileData file = fileData[i] = new FileData();
+				file.setId(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 			}
 

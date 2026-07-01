@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.LocationsDefinition;
 import net.runelite.cache.definitions.MapDefinition;
@@ -37,83 +38,153 @@ import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.util.XteaKeyManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.cache.util.KeyProvider;
 
+@Slf4j
 public class RegionLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(RegionLoader.class);
-
-	private static final int MAX_REGION = 32768;
+	private static final int MAX_REGION = 25287;
 
 	private final Store store;
 	private final Index index;
-	private final XteaKeyManager keyManager;
+	private final KeyProvider keyProvider;
 
 	private final Map<Integer, Region> regions = new HashMap<>();
 	private Region lowestX = null, lowestY = null;
 	private Region highestX = null, highestY = null;
 
-	public RegionLoader(Store store)
+	public RegionLoader(Store store, KeyProvider keyProvider)
 	{
 		this.store = store;
 		index = store.getIndex(IndexType.MAPS);
-		keyManager = new XteaKeyManager();
-		keyManager.loadKeys();
+		this.keyProvider = keyProvider;
 	}
 
 	public void loadRegions() throws IOException
 	{
+		if (!this.regions.isEmpty())
+		{
+			return;
+		}
+
 		for (int i = 0; i < MAX_REGION; ++i)
 		{
-			Region region = this.loadRegionFromArchive(i);
-			if (region != null)
+			try
 			{
-				regions.put(i, region);
+				this.loadRegionFromArchive(i);
+			}
+			catch (IOException ex)
+			{
+				log.debug("Can't decrypt region " + i, ex);
 			}
 		}
 	}
 
-	public Region loadRegionFromArchive(int i) throws IOException
+	public MapDefinition loadMapDef(int i) throws IOException
 	{
 		int x = i >> 8;
 		int y = i & 0xFF;
 
 		Storage storage = store.getStorage();
-		Archive map = index.findArchiveByName("m" + x + "_" + y);
-		Archive land = index.findArchiveByName("l" + x + "_" + y);
+		byte[] data;
+		if (index.isNamed())
+		{
+			Archive map = index.findArchiveByName("m" + x + "_" + y);
+			if (map == null)
+			{
+				return null;
+			}
 
-		assert (map == null) == (land == null);
+			data = map.decompress(storage.loadArchive(map));
+		}
+		else
+		{
+			Archive archive = index.getArchive(i);
+			if (archive == null)
+			{
+				return null;
+			}
 
-		if (map == null || land == null)
+			data = archive.getFiles(storage.loadArchive(archive))
+				.findFile(0)
+				.getContents();
+		}
+
+		return new MapLoader().load(x, y, data);
+	}
+
+	public LocationsDefinition loadLocDef(int i) throws IOException
+	{
+		int x = i >> 8;
+		int y = i & 0xFF;
+
+		Storage storage = store.getStorage();
+		byte[] data;
+		if (index.isNamed())
+		{
+			Archive locs = index.findArchiveByName("l" + x + "_" + y);
+			if (locs == null)
+			{
+				return null;
+			}
+
+			int[] keys = keyProvider.getKey(i);
+			if (keys == null)
+			{
+				return null;
+			}
+
+			data = locs.decompress(storage.loadArchive(locs), keys);
+		}
+		else
+		{
+			Archive archive = index.getArchive(i);
+			if (archive == null)
+			{
+				return null;
+			}
+
+			data = archive.getFiles(storage.loadArchive(archive))
+				.findFile(1)
+				.getContents();
+		}
+
+		return new LocationsLoader().load(x, y, data);
+	}
+
+	public Region loadRegionFromArchive(int i) throws IOException
+	{
+		var mapDef = loadMapDef(i);
+		var locDef = loadLocDef(i);
+
+		if (mapDef == null)
 		{
 			return null;
 		}
 
-		byte[] data = map.decompress(storage.loadArchive(map));
-
-		MapDefinition mapDef = new MapLoader().load(x, y, data);
-
 		Region region = new Region(i);
 		region.loadTerrain(mapDef);
 
-		int[] keys = keyManager.getKeys(i);
-		if (keys != null)
+		if (locDef != null)
 		{
-			try
-			{
-				data = land.decompress(storage.loadArchive(land), keys);
-				LocationsDefinition locDef = new LocationsLoader().load(x, y, data);
-				region.loadLocations(locDef);
-			}
-			catch (IOException ex)
-			{
-				logger.debug("Can't decrypt region " + i, ex);
-			}
+			region.loadLocations(locDef);
 		}
 
+		regions.put(i, region);
+
 		return region;
+	}
+
+	public Region loadRegion(int id, MapDefinition map, LocationsDefinition locs)
+	{
+		Region r = new Region(id);
+		r.loadTerrain(map);
+		if (locs != null)
+		{
+			r.loadLocations(locs);
+		}
+		regions.put(id, r);
+		return r;
 	}
 
 	public void calculateBounds()
@@ -151,6 +222,11 @@ public class RegionLoader
 	{
 		x >>>= 6;
 		y >>>= 6;
+		return regions.get((x << 8) | y);
+	}
+
+	public Region findRegionForRegionCoordinates(int x, int y)
+	{
 		return regions.get((x << 8) | y);
 	}
 

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,16 +27,16 @@ package net.runelite.client.plugins.worldhopper;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 class WorldHopperPingOverlay extends Overlay
@@ -54,7 +55,7 @@ class WorldHopperPingOverlay extends Overlay
 		this.worldHopperPlugin = worldHopperPlugin;
 		this.worldHopperConfig = worldHopperConfig;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 
@@ -66,27 +67,36 @@ class WorldHopperPingOverlay extends Overlay
 			return null;
 		}
 
-		final int ping = worldHopperPlugin.getCurrentPing();
-		if (ping < 0)
-		{
-			return null;
-		}
-
-		final String text = ping + " ms";
-		final int textWidth = graphics.getFontMetrics().stringWidth(text);
-		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
-
-		// Adjust ping offset for logout button
-		Widget logoutButton = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON);
 		int xOffset = X_OFFSET;
+
+		// Adjust offset for logout button
+		Widget logoutButton = client.getWidget(InterfaceID.ToplevelPreEoc.ICON10);
 		if (logoutButton != null && !logoutButton.isHidden())
 		{
 			xOffset += logoutButton.getWidth();
 		}
 
+		final FontMetrics fm = graphics.getFontMetrics();
+		final int textHeight = fm.getAscent() - fm.getDescent();
 		final int width = (int) client.getRealDimensions().getWidth();
-		final Point point = new Point(width - textWidth - xOffset, textHeight + Y_OFFSET);
-		OverlayUtil.renderTextLocation(graphics, point, text, Color.YELLOW);
+
+		final int ping = worldHopperPlugin.getCurrentPing();
+		if (ping >= 0)
+		{
+			String text = ping + " ms";
+			int textWidth = fm.stringWidth(text);
+			Point point = new Point(width - textWidth - xOffset, textHeight + Y_OFFSET);
+			OverlayUtil.renderTextLocation(graphics, point, text, Color.YELLOW);
+			xOffset += textWidth + fm.stringWidth(" ");
+		}
+
+		int percRetransmit = worldHopperPlugin.retransmitCalculator.getRetransmitPercent();
+		if (percRetransmit > 0)
+		{
+			String text = percRetransmit + "% loss";
+			Point point = new Point(width - fm.stringWidth(text) - xOffset, textHeight + Y_OFFSET);
+			OverlayUtil.renderTextLocation(graphics, point, text, Color.RED);
+		}
 
 		return null;
 	}

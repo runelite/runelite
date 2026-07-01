@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
+import lombok.Getter;
 import net.runelite.api.Skill;
 
 enum AttackStyle
@@ -38,22 +39,14 @@ enum AttackStyle
 	DEFENSIVE_CASTING("Defensive Casting", Skill.MAGIC, Skill.DEFENCE),
 	OTHER("Other");
 
+	@Getter
 	private final String name;
+	@Getter
 	private final Skill[] skills;
 
 	AttackStyle(String name, Skill... skills)
 	{
 		this.name = name;
 		this.skills = skills;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public Skill[] getSkills()
-	{
-		return skills;
 	}
 }

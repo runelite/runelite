@@ -31,6 +31,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.exporters.SpriteExporter;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
@@ -39,11 +41,13 @@ import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.util.Djb2;
 
 public class SpriteManager implements SpriteProvider
 {
 	private final Store store;
 	private final Multimap<Integer, SpriteDefinition> sprites = LinkedListMultimap.create();
+	private final Map<Integer, Integer> spriteIdsByArchiveNameHash = new HashMap<>();
 
 	public SpriteManager(Store store)
 	{
@@ -65,6 +69,7 @@ public class SpriteManager implements SpriteProvider
 			for (SpriteDefinition sprite : defs)
 			{
 				sprites.put(sprite.getId(), sprite);
+				spriteIdsByArchiveNameHash.put(a.getNameHash(), sprite.getId());
 			}
 		}
 	}
@@ -93,11 +98,23 @@ public class SpriteManager implements SpriteProvider
 		return image;
 	}
 
+	public SpriteDefinition findSpriteByArchiveName(String name, int frameId)
+	{
+		int nameHash = Djb2.hash(name);
+		Integer spriteId = spriteIdsByArchiveNameHash.get(nameHash);
+		if (spriteId != null)
+		{
+			return this.findSprite(spriteId, frameId);
+		}
+
+		return null;
+	}
+
 	public void export(File outDir) throws IOException
 	{
 		for (SpriteDefinition sprite : sprites.values())
 		{
-			// I don't know why this happens
+			// Some sprites like ones for non-printable font characters do not have sizes
 			if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
 			{
 				continue;

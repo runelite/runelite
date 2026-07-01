@@ -34,13 +34,9 @@ import net.runelite.cache.util.BZip2;
 import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.GZip;
 import net.runelite.cache.util.Xtea;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Container
 {
-	private static final Logger logger = LoggerFactory.getLogger(Container.class);
-
 	public byte[] data;
 	public int compression; // compression
 	public int revision;
@@ -88,6 +84,10 @@ public class Container
 		}
 
 		this.data = stream.flip();
+
+		Crc32 crc32 = new Crc32();
+		crc32.update(this.data, 0, this.data.length - (revision != -1 ? 2 : 0));
+		this.crc = crc32.getHash();
 	}
 
 	public static Container decompress(byte[] b, int[] keys) throws IOException
@@ -96,7 +96,7 @@ public class Container
 
 		int compression = stream.readUnsignedByte();
 		int compressedLength = stream.readInt();
-		if (compressedLength < 0 || compressedLength > 1000000)
+		if (compressedLength < 0)
 		{
 			throw new RuntimeException("Invalid data");
 		}
@@ -105,7 +105,6 @@ public class Container
 		crc32.update(b, 0, 5); // compression + length
 
 		byte[] data;
-		int revision = -1;
 		switch (compression)
 		{
 			case CompressionType.NONE:
@@ -115,12 +114,6 @@ public class Container
 
 				crc32.update(encryptedData, 0, compressedLength);
 				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
-
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
 
 				data = decryptedData;
 
@@ -134,22 +127,10 @@ public class Container
 				crc32.update(encryptedData, 0, encryptedData.length);
 				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
 
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
+				InputStream decryptedStream = new InputStream(decryptedData);
 
-				stream = new InputStream(decryptedData);
-
-				int decompressedLength = stream.readInt();
-				data = BZip2.decompress(stream.getRemaining(), compressedLength);
-
-				if (data == null)
-				{
-					return null;
-				}
-
+				int decompressedLength = decryptedStream.readInt();
+				data = BZip2.decompress(decryptedStream.getRemaining(), compressedLength);
 				assert data.length == decompressedLength;
 
 				break;
@@ -162,28 +143,26 @@ public class Container
 				crc32.update(encryptedData, 0, encryptedData.length);
 				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
 
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
+				InputStream decryptedStream = new InputStream(decryptedData);
 
-				stream = new InputStream(decryptedData);
-
-				int decompressedLength = stream.readInt();
-				data = GZip.decompress(stream.getRemaining(), compressedLength);
-
-				if (data == null)
-				{
-					return null;
-				}
-
+				int decompressedLength = decryptedStream.readInt();
+				data = GZip.decompress(decryptedStream.getRemaining(), compressedLength);
 				assert data.length == decompressedLength;
 
 				break;
 			}
 			default:
-				throw new RuntimeException("Unknown decompression type");
+				throw new RuntimeException("Unknown compression type");
+		}
+
+		int revision = -1;
+		if (stream.remaining() >= 4)
+		{
+			revision = stream.readInt();
+		}
+		else if (stream.remaining() >= 2)
+		{
+			revision = stream.readUnsignedShort();
 		}
 
 		Container container = new Container(compression, revision);

@@ -30,6 +30,7 @@ import java.time.Instant;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -59,7 +60,10 @@ public class SmeltingPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private SmeltingSession session;
+
+	private int cannonBallsMade;
 
 	@Provides
 	SmeltingConfig getConfig(ConfigManager configManager)
@@ -72,6 +76,7 @@ public class SmeltingPlugin extends Plugin
 	{
 		session = null;
 		overlayManager.add(overlay);
+		cannonBallsMade = 0;
 	}
 
 	@Override
@@ -79,6 +84,7 @@ public class SmeltingPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		session = null;
+		cannonBallsMade = 0;
 	}
 
 	@Subscribe
@@ -89,7 +95,7 @@ public class SmeltingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().startsWith("You retrieve a bar of"))
+		if (event.getMessage().startsWith("You retrieve a bar of") || event.getMessage().startsWith("The Varrock platebody enabled you to smelt your next ore"))
 		{
 			if (session == null)
 			{
@@ -97,13 +103,21 @@ public class SmeltingPlugin extends Plugin
 			}
 			session.increaseBarsSmelted();
 		}
+		else if (event.getMessage().endsWith(" to form 8 cannonballs."))
+		{
+			cannonBallsMade = 8;
+		}
+		else if (event.getMessage().endsWith(" to form 4 cannonballs."))
+		{
+			cannonBallsMade = 4;
+		}
 		else if (event.getMessage().startsWith("You remove the cannonballs from the mould"))
 		{
 			if (session == null)
 			{
 				session = new SmeltingSession();
 			}
-			session.increaseCannonBallsSmelted();
+			session.increaseCannonBallsSmelted(cannonBallsMade);
 		}
 	}
 

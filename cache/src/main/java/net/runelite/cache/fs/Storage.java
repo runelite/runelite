@@ -37,7 +37,17 @@ public interface Storage extends AutoCloseable
 
 	void save(Store store) throws IOException;
 
-	byte[] loadArchive(Archive archive) throws IOException;
+	byte[] load(int index, int archive) throws IOException;
 
-	void saveArchive(Archive archive, byte[] data) throws IOException;
+	void store(int index, int archive, byte[] data) throws IOException;
+
+	default byte[] loadArchive(Archive archive) throws IOException
+	{
+		return load(archive.getIndex().getId(), archive.getArchiveId());
+	}
+
+	default void saveArchive(Archive archive, byte[] data) throws IOException
+	{
+		store(archive.getIndex().getId(), archive.getArchiveId(), data);
+	}
 }

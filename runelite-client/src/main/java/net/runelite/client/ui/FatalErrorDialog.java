@@ -27,19 +27,16 @@ package net.runelite.client.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -48,13 +45,13 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
-import net.runelite.client.rs.VerificationException;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.VerificationException;
 
 @Slf4j
 public class FatalErrorDialog extends JDialog
@@ -63,6 +60,7 @@ public class FatalErrorDialog extends JDialog
 
 	private final JPanel rightColumn = new JPanel();
 	private final Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
+	private final JLabel title;
 
 	public FatalErrorDialog(String message)
 	{
@@ -73,19 +71,9 @@ public class FatalErrorDialog extends JDialog
 
 		try
 		{
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-		}
-		catch (Exception e)
-		{
-		}
+			setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 
-		UIManager.put("Button.select", ColorScheme.DARKER_GRAY_COLOR);
-
-		try
-		{
-			BufferedImage logo = ImageIO.read(SplashScreen.class.getResourceAsStream("runelite_transparent.png"));
-			setIconImage(logo);
-
+			BufferedImage logo = ImageUtil.loadImageResource(FatalErrorDialog.class, "runelite_splash.png");
 			JLabel runelite = new JLabel();
 			runelite.setIcon(new ImageIcon(logo));
 			runelite.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -93,7 +81,7 @@ public class FatalErrorDialog extends JDialog
 			runelite.setOpaque(true);
 			rightColumn.add(runelite);
 		}
-		catch (IOException e)
+		catch (RuntimeException e)
 		{
 		}
 
@@ -109,14 +97,14 @@ public class FatalErrorDialog extends JDialog
 		setTitle("Fatal error starting RuneLite");
 		setLayout(new BorderLayout());
 
-		Container pane = getContentPane();
+		JPanel pane = (JPanel) getContentPane();
 		pane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		JPanel leftPane = new JPanel();
 		leftPane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		leftPane.setLayout(new BorderLayout());
 
-		JLabel title = new JLabel("There was a fatal error starting RuneLite");
+		title = new JLabel("There was a fatal error starting RuneLite");
 		title.setForeground(Color.WHITE);
 		title.setFont(font.deriveFont(16.f));
 		title.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -131,6 +119,7 @@ public class FatalErrorDialog extends JDialog
 		textArea.setWrapStyleWord(true);
 		textArea.setBorder(new EmptyBorder(10, 10, 10, 10));
 		textArea.setEditable(false);
+		textArea.setOpaque(false);
 		leftPane.add(textArea, BorderLayout.CENTER);
 
 		pane.add(leftPane, BorderLayout.CENTER);
@@ -138,20 +127,6 @@ public class FatalErrorDialog extends JDialog
 		rightColumn.setLayout(new BoxLayout(rightColumn, BoxLayout.Y_AXIS));
 		rightColumn.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		rightColumn.setMaximumSize(new Dimension(200, Integer.MAX_VALUE));
-
-		addButton("Open logs folder", () ->
-		{
-			try
-			{
-				Desktop.getDesktop().open(RuneLite.LOGS_DIR);
-			}
-			catch (IOException e)
-			{
-				log.warn("Unable to open logs", e);
-			}
-		});
-		addButton("Get help on Discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()));
-		addButton("Troubleshooting steps", () -> LinkBrowser.browse(RuneLiteProperties.getTroubleshootingLink()));
 
 		pane.add(rightColumn, BorderLayout.EAST);
 	}
@@ -202,6 +177,20 @@ public class FatalErrorDialog extends JDialog
 		return this;
 	}
 
+	public FatalErrorDialog setTitle(String windowTitle, String header)
+	{
+		super.setTitle(windowTitle);
+		title.setText(header);
+		return this;
+	}
+
+	public FatalErrorDialog addHelpButtons()
+	{
+		return addButton("Open logs folder", () -> LinkBrowser.open(RuneLite.LOGS_DIR.toString()))
+			.addButton("Get help on Discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()))
+			.addButton("Troubleshooting steps", () -> LinkBrowser.browse(RuneLiteProperties.getTroubleshootingLink()));
+	}
+
 	public FatalErrorDialog addBuildingGuide()
 	{
 		return addButton("Building guide", () -> LinkBrowser.browse(RuneLiteProperties.getBuildingLink()));
@@ -214,6 +203,7 @@ public class FatalErrorDialog extends JDialog
 			new FatalErrorDialog("RuneLite was unable to verify the security of its connection to the internet while " +
 				action + ". You may have a misbehaving antivirus, internet service provider, a proxy, or an incomplete" +
 				" java installation.")
+				.addHelpButtons()
 				.open();
 			return;
 		}
@@ -222,6 +212,7 @@ public class FatalErrorDialog extends JDialog
 		{
 			new FatalErrorDialog("RuneLite is unable to connect to a required server while " + action + ". " +
 				"Please check your internet connection")
+				.addHelpButtons()
 				.open();
 			return;
 		}
@@ -231,11 +222,14 @@ public class FatalErrorDialog extends JDialog
 			new FatalErrorDialog("RuneLite is unable to resolve the address of a required server while " + action + ". " +
 				"Your DNS resolver may be misconfigured, pointing to an inaccurate resolver, or your internet connection may " +
 				"be down. ")
+				.addHelpButtons()
 				.addButton("Change your DNS resolver", () -> LinkBrowser.browse(RuneLiteProperties.getDNSChangeLink()))
 				.open();
 			return;
 		}
 
-		new FatalErrorDialog("RuneLite encountered a fatal error while " + action + ".").open();
+		new FatalErrorDialog("RuneLite encountered a fatal error while " + action + ".")
+			.addHelpButtons()
+			.open();
 	}
 }

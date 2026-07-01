@@ -27,64 +27,108 @@ package net.runelite.client.plugins.timetracking;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("timetracking")
 public interface TimeTrackingConfig extends Config
 {
 	String CONFIG_GROUP = "timetracking";
+	String FARM_TICK_OFFSET = "farmTickOffset";
+	String FARM_TICK_OFFSET_PRECISION = "farmTickOffsetPrecision";
 	String AUTOWEED = "autoweed";
 	String BIRD_HOUSE = "birdhouse";
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
+	String PREFER_SOONEST = "preferSoonest";
+	String NOTIFY = "notify";
+	String BIRDHOUSE_NOTIFY = "birdHouseNotification";
+	String COMPOST = "compost";
+	String PROTECTED = "protected";
 
 	@ConfigItem(
-		keyName = "estimateRelative",
-		name = "Show relative time",
-		description = "Show amount of time remaining instead of completion time",
+		keyName = "timeFormatMode",
+		name = "Time format",
+		description = "What format to display times in.",
 		position = 1
 	)
-	default boolean estimateRelative()
+	default TimeFormatMode timeFormatMode()
 	{
-		return false;
+		return TimeFormatMode.ABSOLUTE_24H;
 	}
 
 	@ConfigItem(
 		keyName = "timerNotification",
 		name = "Timer notification",
-		description = "Notify you whenever a timer has finished counting down",
+		description = "Notify you whenever a timer has finished counting down.",
 		position = 2
 	)
-	default boolean timerNotification()
+	default Notification timerNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
-		keyName = "birdHouseNotification",
-		name = "Bird house notification",
-		description = "Notify you when all bird houses are full",
-		position = 3
+		keyName = "farmingContractInfoBox",
+		name = "Show farming contract infobox",
+		description = "Show an infobox of your current farming contract when inside the farming guild.",
+		position = 4
 	)
-	default boolean birdHouseNotification()
+	default boolean farmingContractInfoBox()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
 		keyName = "defaultTimerMinutes",
-		name = "Default Time (Minutes)",
-		description = "The default time for the timer in minutes",
-		position = 4
+		name = "Default time",
+		description = "The default time for the timer in minutes.",
+		position = 5
 	)
+	@Units(Units.MINUTES)
 	default int defaultTimerMinutes()
 	{
 		return 5;
 	}
 
 	@ConfigItem(
+		keyName = "sortOrder",
+		name = "Sort order",
+		description = "The order in which to sort the timers.",
+		position = 6
+	)
+	default SortOrder sortOrder()
+	{
+		return SortOrder.NONE;
+	}
+
+	@ConfigItem(
+		keyName = "timerWarningThreshold",
+		name = "Warning threshold",
+		description = "The time at which to change the timer color to the warning color.",
+		position = 6
+	)
+	@Units(Units.SECONDS)
+	default int timerWarningThreshold()
+	{
+		return 10;
+	}
+
+	@ConfigItem(
+		keyName = PREFER_SOONEST,
+		name = "Prefer soonest completion",
+		description = "When displaying completion times on the overview, prefer showing the soonest any patch will complete.",
+		position = 7
+	)
+	default boolean preferSoonest()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "activeTab",
-		name = "Active Tab",
-		description = "The currently selected tab",
+		name = "Active tab",
+		description = "The currently selected tab.",
 		hidden = true
 	)
 	default Tab activeTab()

@@ -30,12 +30,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -43,7 +43,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.FlatTextField;
-import net.runelite.client.ui.components.IconButton;
+import net.runelite.client.util.SwingUtil;
 
 abstract class ClockPanel extends JPanel
 {
@@ -63,8 +63,8 @@ abstract class ClockPanel extends JPanel
 	final JPanel rightActions;
 
 	private final FlatTextField nameInput;
-	private final IconButton startPauseButton;
-	private final FlatTextField displayInput;
+	private final JToggleButton startPauseButton;
+	protected final FlatTextField displayInput;
 
 	@Getter
 	private final Clock clock;
@@ -150,6 +150,7 @@ abstract class ClockPanel extends JPanel
 
 				clock.setDuration(Math.max(0, duration));
 				clock.reset();
+				clockManager.checkForWarnings();
 				updateDisplayInput();
 				updateActivityStatus();
 				clockManager.saveTimers();
@@ -167,28 +168,17 @@ abstract class ClockPanel extends JPanel
 		leftActions = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
 		leftActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		startPauseButton = new IconButton(ClockTabPanel.START_ICON);
+		startPauseButton = new JToggleButton(ClockTabPanel.START_ICON);
+		startPauseButton.setRolloverIcon(ClockTabPanel.START_ICON_HOVER);
+		startPauseButton.setSelectedIcon(ClockTabPanel.PAUSE_ICON);
+		startPauseButton.setRolloverSelectedIcon(ClockTabPanel.PAUSE_ICON_HOVER);
+		SwingUtil.removeButtonDecorations(startPauseButton);
 		startPauseButton.setPreferredSize(new Dimension(16, 14));
 		updateActivityStatus();
 
-		startPauseButton.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				startPauseButton.setIcon(clock.isActive() ? ClockTabPanel.PAUSE_ICON_HOVER : ClockTabPanel.START_ICON_HOVER);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				startPauseButton.setIcon(clock.isActive() ? ClockTabPanel.PAUSE_ICON : ClockTabPanel.START_ICON);
-			}
-		});
-
 		startPauseButton.addActionListener(e ->
 		{
-			if (clock.isActive())
+			if (!startPauseButton.isSelected())
 			{
 				clock.pause();
 			}
@@ -201,13 +191,16 @@ abstract class ClockPanel extends JPanel
 			clockManager.saveToConfig();
 		});
 
-		IconButton resetButton = new IconButton(ClockTabPanel.RESET_ICON, ClockTabPanel.RESET_ICON_HOVER);
+		JButton resetButton = new JButton(ClockTabPanel.RESET_ICON);
+		resetButton.setRolloverIcon(ClockTabPanel.RESET_ICON_HOVER);
+		SwingUtil.removeButtonDecorations(resetButton);
 		resetButton.setPreferredSize(new Dimension(16, 14));
 		resetButton.setToolTipText("Reset " + clockType);
 
 		resetButton.addActionListener(e ->
 		{
 			clock.reset();
+			clockManager.checkForWarnings();
 			reset();
 			clockManager.saveToConfig();
 		});
@@ -247,14 +240,19 @@ abstract class ClockPanel extends JPanel
 		boolean isActive = clock.isActive();
 
 		displayInput.setEditable(editable && !isActive);
-		displayInput.getTextField().setForeground(isActive ? ACTIVE_CLOCK_COLOR : INACTIVE_CLOCK_COLOR);
+		displayInput.getTextField().setForeground(getColor());
 		startPauseButton.setToolTipText(isActive ? "Pause " + clockType : "Start " + clockType);
-		startPauseButton.setIcon(isActive ? ClockTabPanel.PAUSE_ICON : ClockTabPanel.START_ICON);
+		startPauseButton.setSelected(isActive);
 
 		if (editable && clock.getDisplayTime() == 0 && !isActive)
 		{
 			displayInput.getTextField().setForeground(ColorScheme.PROGRESS_ERROR_COLOR.darker());
 		}
+	}
+
+	protected Color getColor()
+	{
+		return clock.isActive() ? ACTIVE_CLOCK_COLOR : INACTIVE_CLOCK_COLOR;
 	}
 
 	static String getFormattedDuration(long duration)

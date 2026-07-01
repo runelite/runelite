@@ -26,6 +26,8 @@ package net.runelite.cache.io;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InputStream extends java.io.InputStream
 {
@@ -125,6 +127,11 @@ public class InputStream extends java.io.InputStream
 		return buffer.getInt();
 	}
 
+	public long readLong()
+	{
+		return buffer.getLong();
+	}
+
 	public byte peek()
 	{
 		return buffer.get(buffer.position());
@@ -149,6 +156,12 @@ public class InputStream extends java.io.InputStream
 	{
 		int peek = this.peek() & 0xFF;
 		return peek < 128 ? this.readUnsignedByte() - 64 : this.readUnsignedShort() - 0xc000;
+	}
+
+	public int readUnsignedShortSmartMinusOne()
+	{
+		int peek = this.peek() & 0xFF;
+		return peek < 128 ? this.readUnsignedByte() - 1 : this.readUnsignedShort() - 0x8001;
 	}
 
 	public int readUnsignedShortSmart()
@@ -200,6 +213,18 @@ public class InputStream extends java.io.InputStream
 		return sb.toString();
 	}
 
+	public String readString2()
+	{
+		if (this.readByte() != 0)
+		{
+			throw new IllegalStateException("Invalid jstr2");
+		}
+		else
+		{
+			return readString();
+		}
+	}
+
 	public String readStringOrNull()
 	{
 		if (this.peek() != 0)
@@ -224,6 +249,49 @@ public class InputStream extends java.io.InputStream
 		}
 
 		return var2 | var1;
+	}
+
+	public int readVarInt2()
+	{
+		int value = 0;
+		int bits = 0;
+		int read;
+		do
+		{
+			read = readUnsignedByte();
+			value |= (read & 0x7F) << bits;
+			bits += 7;
+		} while (read > 127);
+		return value;
+	}
+
+	public Map<Integer, Object> readParams()
+	{
+		var out = new HashMap<Integer, Object>();
+		int size = this.readUnsignedByte();
+
+		for (int i = 0; i < size; ++i)
+		{
+			int var4 = this.readUnsignedByte();
+			int paramID = this.read24BitInt();
+			Object value;
+			if (var4 == 1)
+			{
+				value = this.readString();
+			}
+			else if (var4 == 2)
+			{
+				value = this.readLong();
+			}
+			else
+			{
+				value = this.readInt();
+			}
+
+			out.put(paramID, value);
+		}
+
+		return out;
 	}
 
 	public byte[] getRemaining()

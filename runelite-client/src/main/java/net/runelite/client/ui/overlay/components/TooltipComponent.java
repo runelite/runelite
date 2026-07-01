@@ -34,12 +34,11 @@ import java.awt.Rectangle;
 import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.api.IndexedSprite;
-import net.runelite.client.ui.overlay.RenderableEntity;
 
 @Setter
-public class TooltipComponent implements RenderableEntity
+public class TooltipComponent implements LayoutableRenderableEntity
 {
-	private static final Pattern BR = Pattern.compile("</br>");
+	private static final Pattern BR = Pattern.compile("</?br>");
 	private static final int OFFSET = 4;
 	private static final int MOD_ICON_WIDTH = 13; // they are generally 13px wide
 
@@ -106,7 +105,7 @@ public class TooltipComponent implements RenderableEntity
 					textComponent.setColor(nextColor);
 					String text = line.substring(begin, j);
 					textComponent.setText(text);
-					textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+					textComponent.setPosition(lineX, textY + (i + 1) * textHeight - textDescent);
 					textComponent.render(graphics);
 
 					lineX += metrics.stringWidth(text);
@@ -144,7 +143,7 @@ public class TooltipComponent implements RenderableEntity
 						textComponent.setColor(nextColor);
 						String text = line.substring(begin, j + 1);
 						textComponent.setText(text);
-						textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+						textComponent.setPosition(lineX, textY + (i + 1) * textHeight - textDescent);
 						textComponent.render(graphics);
 
 						lineX += metrics.stringWidth(text);
@@ -159,7 +158,7 @@ public class TooltipComponent implements RenderableEntity
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(nextColor);
 			textComponent.setText(line.substring(begin));
-			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+			textComponent.setPosition(lineX, textY + (i + 1) * textHeight - textDescent);
 			textComponent.render(graphics);
 		}
 
@@ -224,5 +223,22 @@ public class TooltipComponent implements RenderableEntity
 				}
 			}
 		}
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		return null;
+	}
+
+	@Override
+	public void setPreferredLocation(Point position)
+	{
+		this.position = position;
+	}
+
+	@Override
+	public void setPreferredSize(Dimension dimension)
+	{
 	}
 }

@@ -27,18 +27,16 @@ package net.runelite.client.plugins.blastfurnace;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameObject;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -62,7 +60,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		int dispenserState = client.getVar(Varbits.BAR_DISPENSER);
+		int dispenserState = client.getVarbitValue(VarbitID.BLAST_FURNACE_BARS_HOT);
 
 		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
 		{
@@ -83,22 +81,13 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 
 	private boolean hasIceGloves()
 	{
-		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.WORN);
 		if (equipmentContainer == null)
 		{
 			return false;
 		}
 
-		Item[] items = equipmentContainer.getItems();
-		int idx = EquipmentInventorySlot.GLOVES.getSlotIdx();
-
-		if (items == null || idx >= items.length)
-		{
-			return false;
-		}
-
-		Item glove = items[idx];
-		return glove != null && glove.getId() == ItemID.ICE_GLOVES;
+		return (equipmentContainer.contains(ItemID.ICE_GLOVES) || equipmentContainer.contains(ItemID.SMITHING_UNIFORM_GLOVES_ICE));
 	}
 
 	private void renderObject(GameObject object, Graphics2D graphics, Color color)
@@ -110,7 +99,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 
 		if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 		{
-			Area objectClickbox = object.getClickbox();
+			Shape objectClickbox = object.getClickbox();
 			if (objectClickbox != null)
 			{
 				if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
@@ -122,7 +111,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 					graphics.setColor(color);
 				}
 				graphics.draw(objectClickbox);
-				graphics.setColor(new Color(0xFF, 0, 0, 20));
+				graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
 				graphics.fill(objectClickbox);
 			}
 		}

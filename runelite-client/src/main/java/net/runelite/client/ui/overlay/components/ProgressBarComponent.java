@@ -114,12 +114,12 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 
 		// Draw bar
 		graphics.setColor(backgroundColor);
-		graphics.fillRect(barX, barY, width, height);
+		graphics.fillRect(barX + progressFill, barY, width - progressFill, height);
 		graphics.setColor(foregroundColor);
 		graphics.fillRect(barX, barY, progressFill, height);
 
 		final TextComponent textComponent = new TextComponent();
-		textComponent.setPosition(new Point(progressTextX, progressTextY));
+		textComponent.setPosition(progressTextX, progressTextY);
 		textComponent.setColor(fontColor);
 		textComponent.setText(textToWrite);
 		textComponent.render(graphics);
@@ -127,7 +127,7 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		if (leftLabel != null)
 		{
 			final TextComponent leftTextComponent = new TextComponent();
-			leftTextComponent.setPosition(new Point(barX + SIDE_LABEL_OFFSET, progressTextY));
+			leftTextComponent.setPosition(barX + SIDE_LABEL_OFFSET, progressTextY);
 			leftTextComponent.setColor(fontColor);
 			leftTextComponent.setText(leftLabel);
 			leftTextComponent.render(graphics);
@@ -136,7 +136,7 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		if (rightLabel != null)
 		{
 			final TextComponent leftTextComponent = new TextComponent();
-			leftTextComponent.setPosition(new Point(barX + width - metrics.stringWidth(rightLabel) - SIDE_LABEL_OFFSET, progressTextY));
+			leftTextComponent.setPosition(barX + width - metrics.stringWidth(rightLabel) - SIDE_LABEL_OFFSET, progressTextY);
 			leftTextComponent.setColor(fontColor);
 			leftTextComponent.setText(rightLabel);
 			leftTextComponent.render(graphics);

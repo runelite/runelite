@@ -25,17 +25,39 @@
 package net.runelite.client.plugins.agility;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
+	@ConfigSection(
+		name = "Hallowed Sepulchre",
+		description = "Settings for Hallowed Sepulchre highlights.",
+		position = 17
+	)
+	String sepulchreSection = "Hallowed Sepulchre";
+
+	@ConfigItem(
+		keyName = "showClickboxes",
+		name = "Show clickboxes",
+		description = "Show agility course and other obstacle clickboxes.",
+		position = 0
+	)
+	default boolean showClickboxes()
+	{
+		return true;
+	}
+
 	@ConfigItem(
 		keyName = "showLapCount",
-		name = "Show Lap Count",
-		description = "Enable/disable the lap counter",
+		name = "Show lap count",
+		description = "Enable/disable the lap counter.",
 		position = 1
 	)
 	default boolean showLapCount()
@@ -45,10 +67,11 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
-		description = "Time until the lap counter hides/resets",
+		name = "Hide lap count",
+		description = "Time until the lap counter hides/resets.",
 		position = 2
 	)
+	@Units(Units.MINUTES)
 	default int lapTimeout()
 	{
 		return 5;
@@ -56,8 +79,8 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapsToLevel",
-		name = "Show Laps Until Level",
-		description = "Show number of laps remaining until next level is reached.",
+		name = "Show laps until goal",
+		description = "Show number of laps remaining until next goal is reached.",
 		position = 3
 	)
 	default boolean lapsToLevel()
@@ -66,20 +89,21 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lapsToGoal",
-		name = "Show Laps Until Goal",
-		description = "Show number of laps remaining until experience tracker goal is reached",
+		keyName = "lapsPerHour",
+		name = "Show laps per hour",
+		description = "Shows how many laps you can expect to complete per hour.",
 		position = 4
 	)
-	default boolean lapsToGoal()
+	default boolean lapsPerHour()
 	{
-		return false;
+		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "overlayColor",
-		name = "Overlay Color",
-		description = "Color of Agility overlay",
+		name = "Overlay color",
+		description = "Color of agility overlay.",
 		position = 5
 	)
 	default Color getOverlayColor()
@@ -89,8 +113,8 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightMarks",
-		name = "Highlight Marks of Grace",
-		description = "Enable/disable the highlighting of retrievable Marks of Grace",
+		name = "Highlight marks of grace",
+		description = "Enable/disable the highlighting of retrievable marks of grace.",
 		position = 6
 	)
 	default boolean highlightMarks()
@@ -98,10 +122,11 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "markHighlight",
-		name = "Mark Highlight Color",
-		description = "Color of highlighted Marks of Grace",
+		name = "Mark highlight color",
+		description = "Color of highlighted marks of grace.",
 		position = 7
 	)
 	default Color getMarkColor()
@@ -110,10 +135,33 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightShortcuts",
-		name = "Highlight Agility Shortcuts",
-		description = "Enable/disable the highlighting of Agility shortcuts",
+		keyName = "highlightPortals",
+		name = "Highlight portals",
+		description = "Enable/disable the highlighting of Prifddinas portals.",
 		position = 8
+	)
+	default boolean highlightPortals()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "portalsHighlight",
+		name = "Portals color",
+		description = "Color of highlighted Prifddinas portals.",
+		position = 9
+	)
+	default Color getPortalsColor()
+	{
+		return Color.MAGENTA;
+	}
+
+	@ConfigItem(
+		keyName = "highlightShortcuts",
+		name = "Highlight agility shortcuts",
+		description = "Enable/disable the highlighting of agility shortcuts.",
+		position = 10
 	)
 	default boolean highlightShortcuts()
 	{
@@ -122,20 +170,21 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "trapOverlay",
-		name = "Show Trap Overlay",
-		description = "Enable/disable the highlighting of traps on Agility courses",
-		position = 9
+		name = "Show trap overlay",
+		description = "Enable/disable the highlighting of traps on agility courses.",
+		position = 11
 	)
 	default boolean showTrapOverlay()
 	{
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "trapHighlight",
-		name = "Trap Overlay Color",
-		description = "Color of Agility trap overlay",
-		position = 10
+		name = "Trap overlay color",
+		description = "Color of agility trap overlay.",
+		position = 12
 	)
 	default Color getTrapColor()
 	{
@@ -145,21 +194,93 @@ public interface AgilityConfig extends Config
 	@ConfigItem(
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
-		description = "Notify on ticket location change in Agility Arena",
-		position = 11
+		description = "Notify on ticket location change in Agility Arena.",
+		position = 13
 	)
-	default boolean notifyAgilityArena()
+	default Notification notifyAgilityArena()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
-		description = "Configures whether Agility Arena timer is displayed",
-		position = 12
+		description = "Configures whether Agility Arena timer is displayed.",
+		position = 14
 	)
 	default boolean showAgilityArenaTimer()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightStick",
+		name = "Highlight stick",
+		description = "Highlight the retrievable stick in the Werewolf Agility Course.",
+		position = 15
+	)
+	default boolean highlightStick()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "stickHighlightColor",
+		name = "Stick highlight color",
+		description = "Color of highlighted stick.",
+		position = 16
+	)
+	default Color stickHighlightColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreNpcs",
+		name = "Highlight projectiles",
+		description = "Highlights arrows and swords in the Sepulchre.",
+		position = 17,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreNpcs()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "sepulchreHighlightColor",
+		name = "Projectile color",
+		description = "Overlay color for arrows and swords.",
+		position = 18,
+		section = sepulchreSection
+	)
+	default Color sepulchreHighlightColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreObstacles",
+		name = "Highlight obstacles",
+		description = "Highlights pillars and stairs in the Sepulchre.",
+		position = 19,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreObstacles()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreSkilling",
+		name = "Highlight skill challenges",
+		description = "Highlights skilling challenges in the Sepulchre.",
+		position = 20,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreSkilling()
 	{
 		return true;
 	}

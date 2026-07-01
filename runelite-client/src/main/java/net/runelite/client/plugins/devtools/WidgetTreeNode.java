@@ -26,9 +26,6 @@ package net.runelite.client.plugins.devtools;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 
 class WidgetTreeNode extends DefaultMutableTreeNode
 {
@@ -48,22 +45,6 @@ class WidgetTreeNode extends DefaultMutableTreeNode
 	@Override
 	public String toString()
 	{
-		Widget widget = getWidget();
-
-		int id = widget.getId();
-		String str = type + " " + TO_GROUP(id) + "." + TO_CHILD(id);
-
-		if (widget.getIndex() != -1)
-		{
-			str += "[" + widget.getIndex() + "]";
-		}
-
-		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-		if (info != null)
-		{
-			str += " " + info.name();
-		}
-
-		return str;
+		return type + " " + WidgetInspector.getWidgetIdentifier(getWidget());
 	}
 }

@@ -25,14 +25,35 @@
 
 package net.runelite.client.plugins.objectindicators;
 
-import lombok.Value;
+import com.google.gson.annotations.SerializedName;
+import java.awt.Color;
+import javax.annotation.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+/**
+ * config structure for marked objects
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 class ObjectPoint
 {
+	private int id = -1;
 	private String name;
 	private int regionId;
 	private int regionX;
 	private int regionY;
 	private int z;
+	@Nullable
+	@SerializedName("color")
+	private Color borderColor;
+	@Nullable
+	private Color fillColor;
+	// highlight options
+	private Boolean hull;
+	private Boolean outline;
+	private Boolean clickbox;
+	private Boolean tile;
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.util;
 
+import java.nio.charset.StandardCharsets;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class XteaTest
 	@Test
 	public void test()
 	{
-		byte[] data = "testtesttest1".getBytes();
+		byte[] data = "testtesttest1".getBytes(StandardCharsets.UTF_8);
 
 		int[] key = new int[]
 		{

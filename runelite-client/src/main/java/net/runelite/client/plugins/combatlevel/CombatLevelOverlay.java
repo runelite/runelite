@@ -24,20 +24,21 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
-import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.api.Skill;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
-import net.runelite.client.ui.overlay.tooltip.TooltipManager;
-import net.runelite.client.util.ColorUtil;
-import javax.inject.Inject;
+import com.google.common.annotations.VisibleForTesting;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
 
 class CombatLevelOverlay extends Overlay
 {
@@ -58,15 +59,23 @@ class CombatLevelOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-		if (!config.showLevelsUntil()
-			|| client.getLocalPlayer().getCombatLevel() == Experience.MAX_COMBAT_LEVEL
-			|| combatLevelWidget == null || combatLevelWidget.isHidden())
+		if (!config.showLevelsUntil() || client.getLocalPlayer().getCombatLevel() == Experience.MAX_COMBAT_LEVEL)
 		{
 			return null;
 		}
 
-		Rectangle combatCanvas = combatLevelWidget.getBounds();
+		Widget combatTabLevelWidget = client.getWidget(InterfaceID.CombatInterface.LEVEL);
+		Widget characterTabWidget = client.getWidget(InterfaceID.AccountSummarySidepanel.SUMMARY_CONTENTS);
+
+		Rectangle combatCanvas = null;
+		if (combatTabLevelWidget != null && !combatTabLevelWidget.isHidden())
+		{
+			combatCanvas = combatTabLevelWidget.getBounds();
+		}
+		else if (characterTabWidget != null && !characterTabWidget.isHidden())
+		{
+			combatCanvas = characterTabWidget.getChild(9).getBounds();
+		}
 
 		if (combatCanvas == null)
 		{
@@ -81,7 +90,8 @@ class CombatLevelOverlay extends Overlay
 		return null;
 	}
 
-	private String getLevelsUntilTooltip()
+	@VisibleForTesting
+	String getLevelsUntilTooltip()
 	{
 		// grab combat skills from player
 		int attackLevel = client.getRealSkillLevel(Skill.ATTACK);
@@ -108,23 +118,23 @@ class CombatLevelOverlay extends Overlay
 		StringBuilder sb = new StringBuilder();
 		sb.append(ColorUtil.wrapWithColorTag("Next combat level:</br>", COMBAT_LEVEL_COLOUR));
 
-		if ((attackLevel + strengthLevel + meleeNeed) <= Experience.MAX_REAL_LEVEL * 2)
+		if ((attackLevel + strengthLevel) < Experience.MAX_REAL_LEVEL * 2)
 		{
 			sb.append(meleeNeed).append(" Attack/Strength</br>");
 		}
-		if ((hitpointsLevel + defenceLevel + hpDefNeed) <= Experience.MAX_REAL_LEVEL * 2)
+		if ((hitpointsLevel + defenceLevel) < Experience.MAX_REAL_LEVEL * 2)
 		{
 			sb.append(hpDefNeed).append(" Defence/Hitpoints</br>");
 		}
-		if ((rangeLevel + rangeNeed) <= Experience.MAX_REAL_LEVEL)
+		if (rangeLevel < Experience.MAX_REAL_LEVEL)
 		{
 			sb.append(rangeNeed).append(" Ranged</br>");
 		}
-		if ((magicLevel + magicNeed) <= Experience.MAX_REAL_LEVEL)
+		if (magicLevel < Experience.MAX_REAL_LEVEL)
 		{
 			sb.append(magicNeed).append(" Magic</br>");
 		}
-		if ((prayerLevel + prayerNeed) <= Experience.MAX_REAL_LEVEL)
+		if (prayerLevel < Experience.MAX_REAL_LEVEL)
 		{
 			sb.append(prayerNeed).append(" Prayer");
 		}

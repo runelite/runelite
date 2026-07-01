@@ -25,24 +25,41 @@
 package net.runelite.client.config;
 
 import java.awt.Color;
-import net.runelite.client.ui.JagexColors;
 
 @ConfigGroup("textrecolor")
 public interface ChatColorConfig extends Config
 {
+	@ConfigSection(
+		name = "Opaque",
+		description = "The options that control the colors for the opaque chatbox.",
+		position = 0,
+		closedByDefault = true
+	)
+	String opaqueSection = "opaqueSection";
+
+	@ConfigSection(
+		name = "Transparent",
+		description = "The options that control the colors for the transparent chatbox.",
+		position = 50,
+		closedByDefault = true
+	)
+	String transparentSection = "transparentSection";
+
 	@ConfigItem(
-		position = 31,
+		position = 1,
 		keyName = "opaquePublicChat",
 		name = "Public chat",
-		description = "Color of Public chat"
+		description = "Color of public chat.",
+		section = opaqueSection
 	)
 	Color opaquePublicChat();
 
 	@ConfigItem(
-		position = 32,
+		position = 2,
 		keyName = "opaquePublicChatHighlight",
 		name = "Public chat highlight",
-		description = "Color of highlights in Public chat"
+		description = "Color of highlights in public chat.",
+		section = opaqueSection
 	)
 	default Color opaquePublicChatHighlight()
 	{
@@ -50,18 +67,20 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 33,
+		position = 3,
 		keyName = "opaquePrivateMessageSent",
 		name = "Sent private messages",
-		description = "Color of Private messages you've sent"
+		description = "Color of private messages you've sent.",
+		section = opaqueSection
 	)
 	Color opaquePrivateMessageSent();
 
 	@ConfigItem(
-		position = 34,
+		position = 4,
 		keyName = "opaquePrivateMessageSentHighlight",
 		name = "Sent private messages highlight",
-		description = "Color of highlights in Private messages you've sent"
+		description = "Color of highlights in private messages you've sent.",
+		section = opaqueSection
 	)
 	default Color opaquePrivateMessageSentHighlight()
 	{
@@ -69,40 +88,86 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 35,
+		position = 5,
 		keyName = "opaquePrivateMessageReceived",
 		name = "Received private messages",
-		description = "Color of Private messages you've received"
+		description = "Color of private messages you've received.",
+		section = opaqueSection
 	)
 	Color opaquePrivateMessageReceived();
 
 	@ConfigItem(
-		position = 36,
+		position = 6,
 		keyName = "opaquePrivateMessageReceivedHighlight",
 		name = "Received private messages highlight",
-		description = "Color of highlights in Private messages you've received"
+		description = "Color of highlights in private messages you've received.",
+		section = opaqueSection
 	)
 	default Color opaquePrivateMessageReceivedHighlight()
 	{
 		return Color.decode("#002783");
 	}
 
+	//region opaque friends chat
 	@ConfigItem(
-		position = 37,
-		keyName = "opaqueClanChatInfo",
-		name = "Clan chat info",
-		description = "Clan Chat Information (eg. when joining a channel)"
+		position = 7,
+		keyName = "opaqueFriendsChatInfo",
+		name = "Friends chat info",
+		description = "Friends chat information (eg. when joining a channel).",
+		section = opaqueSection
 	)
-	default Color opaqueClanChatInfo()
+	Color opaqueFriendsChatInfo();
+
+	@ConfigItem(
+		position = 8,
+		keyName = "opaqueClanChatInfoHighlight",
+		name = "Friends chat info highlight",
+		description = "Friends chat information highlight.",
+		section = opaqueSection
+	)
+	default Color opaqueFriendsChatInfoHighlight()
 	{
-		return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
+		return Color.RED;
 	}
 
 	@ConfigItem(
-		position = 38,
-		keyName = "opaqueClanChatInfoHighlight",
+		position = 9,
+		keyName = "opaqueClanChatMessage",
+		name = "Friends chat message",
+		description = "Color of friends chat messages.",
+		section = opaqueSection
+	)
+	Color opaqueFriendsChatMessage();
+
+	@ConfigItem(
+		position = 10,
+		keyName = "opaqueClanChatMessageHighlight",
+		name = "Friends chat message highlight",
+		description = "Color of highlights in friends chat messages.",
+		section = opaqueSection
+	)
+	default Color opaqueFriendsChatMessageHighlight()
+	{
+		return Color.decode("#000000");
+	}
+	//endregion
+
+	//region opaque clan chat
+	@ConfigItem(
+		position = 11,
+		keyName = "opaqueClanInfo",
+		name = "Clan chat info",
+		description = "Clan chat information (eg. when joining a channel).",
+		section = opaqueSection
+	)
+	Color opaqueClanChatInfo();
+
+	@ConfigItem(
+		position = 12,
+		keyName = "opaqueClanInfoHighlight",
 		name = "Clan chat info highlight",
-		description = "Clan Chat Information highlight (used for the Raids plugin)"
+		description = "Clan chat information highlight.",
+		section = opaqueSection
 	)
 	default Color opaqueClanChatInfoHighlight()
 	{
@@ -110,18 +175,20 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 39,
-		keyName = "opaqueClanChatMessage",
+		position = 13,
+		keyName = "opaqueClanMessage",
 		name = "Clan chat message",
-		description = "Color of Clan Chat Messages"
+		description = "Color of clan chat messages.",
+		section = opaqueSection
 	)
 	Color opaqueClanChatMessage();
 
 	@ConfigItem(
-		position = 40,
-		keyName = "opaqueClanChatMessageHighlight",
+		position = 14,
+		keyName = "opaqueClanMessageHighlight",
 		name = "Clan chat message highlight",
-		description = "Color of highlights in Clan Chat Messages"
+		description = "Color of highlights in clan chat messages.",
+		section = opaqueSection
 	)
 	default Color opaqueClanChatMessageHighlight()
 	{
@@ -129,66 +196,117 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 41,
+		position = 15,
+		keyName = "opaqueClanGuestInfo",
+		name = "Guest clan chat info",
+		description = "Guest clan chat information (eg. when joining a channel).",
+		section = opaqueSection
+	)
+	Color opaqueClanChatGuestInfo();
+
+	@ConfigItem(
+		position = 16,
+		keyName = "opaqueClanGuestInfoHighlight",
+		name = "Guest clan chat info highlight",
+		description = "Guest clan chat information highlight.",
+		section = opaqueSection
+	)
+	default Color opaqueClanChatGuestInfoHighlight()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "opaqueClanGuestMessage",
+		name = "Guest clan chat message",
+		description = "Color of guest clan chat messages.",
+		section = opaqueSection
+	)
+	Color opaqueClanChatGuestMessage();
+
+	@ConfigItem(
+		position = 18,
+		keyName = "opaqueClanChatGuestMessageHighlight",
+		name = "Guest clan chat message highlight",
+		description = "Color of highlights in guest clan chat messages.",
+		section = opaqueSection
+	)
+	default Color opaqueClanChatGuestMessageHighlight()
+	{
+		return Color.decode("#000000");
+	}
+	//endregion
+
+	@ConfigItem(
+		position = 19,
 		keyName = "opaqueAutochatMessage",
 		name = "Autochat",
-		description = "Color of Autochat messages"
+		description = "Color of autochat messages.",
+		section = opaqueSection
 	)
 	Color opaqueAutochatMessage();
 
 	@ConfigItem(
-		position = 42,
+		position = 20,
 		keyName = "opaqueAutochatMessageHighlight",
 		name = "Autochat highlight",
-		description = "Color of highlights in Autochat messages"
+		description = "Color of highlights in autochat messages.",
+		section = opaqueSection
 	)
 	Color opaqueAutochatMessageHighlight();
 
 	@ConfigItem(
-		position = 43,
+		position = 21,
 		keyName = "opaqueTradeChatMessage",
 		name = "Trade chat",
-		description = "Color of Trade Chat Messages"
+		description = "Color of trade chat messages.",
+		section = opaqueSection
 	)
 	Color opaqueTradeChatMessage();
 
 	@ConfigItem(
-		position = 44,
+		position = 22,
 		keyName = "opaqueTradeChatMessageHighlight",
 		name = "Trade chat highlight",
-		description = "Color of highlights in Trade Chat Messages"
+		description = "Color of highlights in trade chat messages.",
+		section = opaqueSection
 	)
 	Color opaqueTradeChatMessageHighlight();
 
 	@ConfigItem(
-		position = 45,
+		position = 23,
 		keyName = "opaqueServerMessage",
 		name = "Server message",
-		description = "Color of Server Messages (eg. 'Welcome to Runescape')"
+		description = "Color of server messages (eg. 'Welcome to RuneScape').",
+		section = opaqueSection
 	)
 	Color opaqueServerMessage();
 
 	@ConfigItem(
-		position = 46,
+		position = 24,
 		keyName = "opaqueServerMessageHighlight",
 		name = "Server message highlight",
-		description = "Color of highlights in Server Messages"
+		description = "Color of highlights in server messages.",
+		section = opaqueSection
 	)
 	Color opaqueServerMessageHighlight();
 
 	@ConfigItem(
-		position = 47,
+		position = 25,
 		keyName = "opaqueGameMessage",
 		name = "Game message",
-		description = "Color of Game Messages"
+		description = "Color of game messages.",
+		section = opaqueSection
 	)
 	Color opaqueGameMessage();
 
 	@ConfigItem(
-		position = 48,
+		position = 26,
 		keyName = "opaqueGameMessageHighlight",
 		name = "Game message highlight",
-		description = "Color of highlights in Game Messages"
+		description = "Color of highlights in game messages.",
+		section = opaqueSection
 	)
 	default Color opaqueGameMessageHighlight()
 	{
@@ -196,18 +314,20 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 49,
+		position = 27,
 		keyName = "opaqueExamine",
 		name = "Examine",
-		description = "Color of Examine Text"
+		description = "Color of examine text.",
+		section = opaqueSection
 	)
 	Color opaqueExamine();
 
 	@ConfigItem(
-		position = 50,
+		position = 28,
 		keyName = "opaqueExamineHighlight",
 		name = "Examine highlight",
-		description = "Color of highlights in Examine Text"
+		description = "Color of highlights in examine text.",
+		section = opaqueSection
 	)
 	default Color opaqueExamineHighlight()
 	{
@@ -215,74 +335,128 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 51,
+		position = 29,
 		keyName = "opaqueFiltered",
 		name = "Filtered",
-		description = "Color of Filtered Text (messages that aren't shown when Game messages are filtered)"
+		description = "Color of filtered text (messages that aren't shown when game messages are filtered).",
+		section = opaqueSection
 	)
 	Color opaqueFiltered();
 
 	@ConfigItem(
-		position = 52,
+		position = 30,
 		keyName = "opaqueFilteredHighlight",
 		name = "Filtered highlight",
-		description = "Color of highlights in Filtered Text"
+		description = "Color of highlights in filtered text.",
+		section = opaqueSection
 	)
 	Color opaqueFilteredHighlight();
 
 	@ConfigItem(
-		position = 53,
+		position = 31,
 		keyName = "opaqueUsername",
 		name = "Usernames",
-		description = "Color of Usernames"
+		description = "Color of usernames.",
+		section = opaqueSection
 	)
 	Color opaqueUsername();
 
 	@ConfigItem(
-		position = 54,
+		position = 32,
 		keyName = "opaquePrivateUsernames",
 		name = "Private chat usernames",
-		description = "Color of Usernames in Private Chat"
+		description = "Color of usernames in private chat.",
+		section = opaqueSection
 	)
 	Color opaquePrivateUsernames();
 
 	@ConfigItem(
-		position = 55,
+		position = 33,
 		keyName = "opaqueClanChannelName",
-		name = "Clan channel name",
-		description = "Color of Clan Channel Name"
+		name = "Friends chat channel name",
+		description = "Color of friends chat channel name.",
+		section = opaqueSection
+	)
+	Color opaqueFriendsChatChannelName();
+
+	@ConfigItem(
+		position = 34,
+		keyName = "opaqueClanChatChannelName",
+		name = "Clan chat channel name",
+		description = "Color of clan chat channel name.",
+		section = opaqueSection
 	)
 	Color opaqueClanChannelName();
 
 	@ConfigItem(
-		position = 56,
-		keyName = "opaqueClanUsernames",
-		name = "Clan usernames",
-		description = "Color of Usernames in Clan Chat"
+		position = 35,
+		keyName = "opaqueClanChatGuestChannelName",
+		name = "Guest clan chat channel name",
+		description = "Color of guest clan chat channel name.",
+		section = opaqueSection
 	)
-	Color opaqueClanUsernames();
+	Color opaqueClanGuestChatChannelName();
 
 	@ConfigItem(
-		position = 57,
+		position = 36,
+		keyName = "opaqueClanUsernames",
+		name = "Friends chat usernames",
+		description = "Color of usernames in friends chat.",
+		section = opaqueSection
+	)
+	Color opaqueFriendsChatUsernames();
+
+	@ConfigItem(
+		position = 37,
+		keyName = "opaqueClanChatUsernames",
+		name = "Clan chat usernames",
+		description = "Color of usernames in clan chat.",
+		section = opaqueSection
+	)
+	Color opaqueClanChatUsernames();
+
+	@ConfigItem(
+		position = 38,
+		keyName = "opaqueClanChatGuestUsernames",
+		name = "Guest clan chat usernames",
+		description = "Color of usernames in guest clan chat.",
+		section = opaqueSection
+	)
+	Color opaqueClanChatGuestUsernames();
+
+	@ConfigItem(
+		position = 39,
 		keyName = "opaquePublicFriendUsernames",
 		name = "Public friend usernames",
-		description = "Color of Friend Usernames in Public Chat"
+		description = "Color of friend usernames in public chat.",
+		section = opaqueSection
 	)
 	Color opaquePublicFriendUsernames();
 
 	@ConfigItem(
-		position = 61,
+		position = 40,
+		keyName = "opaquePlayerUsername",
+		name = "Your username",
+		description = "Color of your username.",
+		section = opaqueSection
+	)
+	Color opaquePlayerUsername();
+
+	@ConfigItem(
+		position = 51,
 		keyName = "transparentPublicChat",
 		name = "Public chat (transparent)",
-		description = "Color of Public chat (transparent)"
+		description = "Color of public chat (transparent).",
+		section = transparentSection
 	)
 	Color transparentPublicChat();
 
 	@ConfigItem(
-		position = 62,
+		position = 52,
 		keyName = "transparentPublicChatHighlight",
 		name = "Public chat highlight (transparent)",
-		description = "Color of highlights in Public chat (transparent)"
+		description = "Color of highlights in public chat (transparent).",
+		section = transparentSection
 	)
 	default Color transparentPublicChatHighlight()
 	{
@@ -290,18 +464,20 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 63,
+		position = 53,
 		keyName = "transparentPrivateMessageSent",
 		name = "Sent private messages (transparent)",
-		description = "Color of Private messages you've sent (transparent)"
+		description = "Color of private messages you've sent (transparent).",
+		section = transparentSection
 	)
 	Color transparentPrivateMessageSent();
 
 	@ConfigItem(
-		position = 64,
+		position = 54,
 		keyName = "transparentPrivateMessageSentHighlight",
 		name = "Sent private messages highlight (transparent)",
-		description = "Color of highlights in Private messages you've sent (transparent)"
+		description = "Color of highlights in private messages you've sent (transparent).",
+		section = transparentSection
 	)
 	default Color transparentPrivateMessageSentHighlight()
 	{
@@ -309,40 +485,86 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 65,
+		position = 55,
 		keyName = "transparentPrivateMessageReceived",
 		name = "Received private messages (transparent)",
-		description = "Color of Private messages you've received (transparent)"
+		description = "Color of private messages you've received (transparent).",
+		section = transparentSection
 	)
 	Color transparentPrivateMessageReceived();
 
 	@ConfigItem(
-		position = 66,
+		position = 56,
 		keyName = "transparentPrivateMessageReceivedHighlight",
 		name = "Received private messages highlight (transparent)",
-		description = "Color of highlights in Private messages you've received (transparent)"
+		description = "Color of highlights in private messages you've received (transparent).",
+		section = transparentSection
 	)
 	default Color transparentPrivateMessageReceivedHighlight()
 	{
 		return Color.decode("#FFFFFF");
 	}
 
+	//region transparent friends chat
 	@ConfigItem(
-		position = 67,
-		keyName = "transparentClanChatInfo",
-		name = "Clan chat info (transparent)",
-		description = "Clan Chat Information (eg. when joining a channel) (transparent)"
+		position = 57,
+		keyName = "transparentFriendsChatInfo",
+		name = "Friends chat info (transparent)",
+		description = "Friends chat information (eg. when joining a channel) (transparent).",
+		section = transparentSection
 	)
-	default Color transparentClanChatInfo()
+	Color transparentFriendsChatInfo();
+
+	@ConfigItem(
+		position = 58,
+		keyName = "transparentClanChatInfoHighlight",
+		name = "Friends chat info highlight (transparent)",
+		description = "Friends chat information highlight (transparent).",
+		section = transparentSection
+	)
+	default Color transparentFriendsChatInfoHighlight()
 	{
-		return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
+		return Color.RED;
 	}
 
 	@ConfigItem(
-		position = 68,
-		keyName = "transparentClanChatInfoHighlight",
+		position = 59,
+		keyName = "transparentClanChatMessage",
+		name = "Friends chat message (transparent)",
+		description = "Color of friends chat messages (transparent).",
+		section = transparentSection
+	)
+	Color transparentFriendsChatMessage();
+
+	@ConfigItem(
+		position = 60,
+		keyName = "transparentClanChatMessageHighlight",
+		name = "Friends chat message highlight (transparent)",
+		description = "Color of highlights in friends chat messages (transparent).",
+		section = transparentSection
+	)
+	default Color transparentFriendsChatMessageHighlight()
+	{
+		return Color.decode("#FFFFFF");
+	}
+	//endregion
+
+	//region transparent clan chat
+	@ConfigItem(
+		position = 61,
+		keyName = "transparentClanInfo",
+		name = "Clan chat info (transparent)",
+		description = "Clan chat information (eg. when joining a channel) (transparent).",
+		section = transparentSection
+	)
+	Color transparentClanChatInfo();
+
+	@ConfigItem(
+		position = 62,
+		keyName = "transparentClanInfoHighlight",
 		name = "Clan chat info highlight (transparent)",
-		description = "Clan Chat Information highlight (used for the Raids plugin) (transparent)"
+		description = "Clan chat information highlight (transparent).",
+		section = transparentSection
 	)
 	default Color transparentClanChatInfoHighlight()
 	{
@@ -350,18 +572,20 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 69,
-		keyName = "transparentClanChatMessage",
+		position = 63,
+		keyName = "transparentClanMessage",
 		name = "Clan chat message (transparent)",
-		description = "Color of Clan Chat Messages (transparent)"
+		description = "Color of clan chat messages (transparent).",
+		section = transparentSection
 	)
 	Color transparentClanChatMessage();
 
 	@ConfigItem(
-		position = 70,
-		keyName = "transparentClanChatMessageHighlight",
+		position = 64,
+		keyName = "transparentClanMessageHighlight",
 		name = "Clan chat message highlight (transparent)",
-		description = "Color of highlights in Clan Chat Messages (transparent)"
+		description = "Color of highlights in clan chat messages (transparent).",
+		section = transparentSection
 	)
 	default Color transparentClanChatMessageHighlight()
 	{
@@ -369,66 +593,117 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 71,
+		position = 65,
+		keyName = "transparentClanGuestInfo",
+		name = "Guest clan chat info (transparent)",
+		description = "Guest clan chat information (eg. when joining a channel) (transparent).",
+		section = transparentSection
+	)
+	Color transparentClanChatGuestInfo();
+
+	@ConfigItem(
+		position = 66,
+		keyName = "transparentClanGuestInfoHighlight",
+		name = "Guest clan chat info highlight (transparent)",
+		description = "Guest clan chat information highlight (transparent).",
+		section = transparentSection
+	)
+	default Color transparentClanChatGuestInfoHighlight()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		position = 67,
+		keyName = "transparentClanGuestMessage",
+		name = "Guest clan chat message (transparent)",
+		description = "Color of guest clan chat messages (transparent).",
+		section = transparentSection
+	)
+	Color transparentClanChatGuestMessage();
+
+	@ConfigItem(
+		position = 68,
+		keyName = "transparentClanChatGuestMessageHighlight",
+		name = "Guest clan chat message highlight (transparent)",
+		description = "Color of highlights in guest clan chat messages (transparent).",
+		section = transparentSection
+	)
+	default Color transparentClanChatGuestMessageHighlight()
+	{
+		return Color.decode("#FFFFFF");
+	}
+	//endregion
+
+	@ConfigItem(
+		position = 69,
 		keyName = "transparentAutochatMessage",
 		name = "Autochat (transparent)",
-		description = "Color of Autochat messages (transparent)"
+		description = "Color of autochat messages (transparent).",
+		section = transparentSection
 	)
 	Color transparentAutochatMessage();
 
 	@ConfigItem(
-		position = 72,
+		position = 70,
 		keyName = "transparentAutochatMessageHighlight",
 		name = "Autochat highlight (transparent)",
-		description = "Color of highlights in Autochat messages (transparent)"
+		description = "Color of highlights in autochat messages (transparent).",
+		section = transparentSection
 	)
 	Color transparentAutochatMessageHighlight();
 
 	@ConfigItem(
-		position = 73,
+		position = 71,
 		keyName = "transparentTradeChatMessage",
 		name = "Trade chat (transparent)",
-		description = "Color of Trade Chat Messages (transparent)"
+		description = "Color of trade chat messages (transparent).",
+		section = transparentSection
 	)
 	Color transparentTradeChatMessage();
 
 	@ConfigItem(
-		position = 74,
+		position = 72,
 		keyName = "transparentTradeChatMessageHighlight",
 		name = "Trade chat highlight (transparent)",
-		description = "Color of highlights in Trade Chat Messages (transparent)"
+		description = "Color of highlights in trade chat messages (transparent).",
+		section = transparentSection
 	)
 	Color transparentTradeChatMessageHighlight();
 
 	@ConfigItem(
-		position = 75,
+		position = 73,
 		keyName = "transparentServerMessage",
 		name = "Server message (transparent)",
-		description = "Color of Server Messages (eg. 'Welcome to Runescape') (transparent)"
+		description = "Color of server messages (eg. 'Welcome to RuneScape') (transparent).",
+		section = transparentSection
 	)
 	Color transparentServerMessage();
 
 	@ConfigItem(
-		position = 76,
+		position = 74,
 		keyName = "transparentServerMessageHighlight",
 		name = "Server message highlight (transparent)",
-		description = "Color of highlights in Server Messages (transparent)"
+		description = "Color of highlights in server messages (transparent).",
+		section = transparentSection
 	)
 	Color transparentServerMessageHighlight();
 
 	@ConfigItem(
-		position = 77,
+		position = 75,
 		keyName = "transparentGameMessage",
 		name = "Game message (transparent)",
-		description = "Color of Game Messages (transparent)"
+		description = "Color of game messages (transparent).",
+		section = transparentSection
 	)
 	Color transparentGameMessage();
 
 	@ConfigItem(
-		position = 78,
+		position = 76,
 		keyName = "transparentGameMessageHighlight",
 		name = "Game message highlight (transparent)",
-		description = "Color of highlights in Game Messages (transparent)"
+		description = "Color of highlights in game messages (transparent).",
+		section = transparentSection
 	)
 	default Color transparentGameMessageHighlight()
 	{
@@ -436,18 +711,20 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 79,
+		position = 77,
 		keyName = "transparentExamine",
 		name = "Examine (transparent)",
-		description = "Color of Examine Text (transparent)"
+		description = "Color of examine text (transparent).",
+		section = transparentSection
 	)
 	Color transparentExamine();
 
 	@ConfigItem(
-		position = 80,
+		position = 78,
 		keyName = "transparentExamineHighlight",
 		name = "Examine highlight (transparent)",
-		description = "Color of highlights in Examine Text (transparent)"
+		description = "Color of highlights in examine text (transparent).",
+		section = transparentSection
 	)
 	default Color transparentExamineHighlight()
 	{
@@ -455,58 +732,110 @@ public interface ChatColorConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 81,
+		position = 79,
 		keyName = "transparentFiltered",
 		name = "Filtered (transparent)",
-		description = "Color of Filtered Text (messages that aren't shown when Game messages are filtered) (transparent)"
+		description = "Color of filtered text (messages that aren't shown when game messages are filtered) (transparent).",
+		section = transparentSection
 	)
 	Color transparentFiltered();
 
 	@ConfigItem(
-		position = 82,
+		position = 80,
 		keyName = "transparentFilteredHighlight",
 		name = "Filtered highlight (transparent)",
-		description = "Color of highlights in Filtered Text (transparent)"
+		description = "Color of highlights in filtered text (transparent).",
+		section = transparentSection
 	)
 	Color transparentFilteredHighlight();
 
 	@ConfigItem(
-		position = 83,
+		position = 81,
 		keyName = "transparentUsername",
 		name = "Usernames (transparent)",
-		description = "Color of Usernames (transparent)"
+		description = "Color of usernames (transparent).",
+		section = transparentSection
 	)
 	Color transparentUsername();
 
 	@ConfigItem(
-		position = 84,
+		position = 82,
 		keyName = "transparentPrivateUsernames",
 		name = "Private chat usernames (transparent)",
-		description = "Color of Usernames in Private Chat (transparent)"
+		description = "Color of usernames in private chat (transparent).",
+		section = transparentSection
 	)
 	Color transparentPrivateUsernames();
 
 	@ConfigItem(
-		position = 85,
+		position = 83,
 		keyName = "transparentClanChannelName",
-		name = "Clan channel name (transparent)",
-		description = "Color of Clan Channel Name (transparent)"
+		name = "Friends chat channel name (transparent)",
+		description = "Color of friends chat channel name (transparent).",
+		section = transparentSection
+	)
+	Color transparentFriendsChatChannelName();
+
+	@ConfigItem(
+		position = 84,
+		keyName = "transparentClanChatChannelName",
+		name = "Clan chat channel name (transparent)",
+		description = "Color of clan chat channel name (transparent).",
+		section = transparentSection
 	)
 	Color transparentClanChannelName();
 
 	@ConfigItem(
+		position = 85,
+		keyName = "transparentClanChatGuestChannelName",
+		name = "Guest clan chat channel name (transparent)",
+		description = "Color of guest clan chat channel name (transparent).",
+		section = transparentSection
+	)
+	Color transparentClanChannelGuestName();
+
+	@ConfigItem(
 		position = 86,
 		keyName = "transparentClanUsernames",
-		name = "Clan usernames (transparent)",
-		description = "Color of Usernames in Clan Chat (transparent)"
+		name = "Friends chat usernames (transparent)",
+		description = "Color of usernames in friends chat (transparent).",
+		section = transparentSection
 	)
-	Color transparentClanUsernames();
+	Color transparentFriendsChatUsernames();
 
 	@ConfigItem(
 		position = 87,
+		keyName = "transparentClanClanUsernames",
+		name = "Clan chat usernames (transparent)",
+		description = "Color of usernames in clan chat (transparent).",
+		section = transparentSection
+	)
+	Color transparentClanChatUsernames();
+
+	@ConfigItem(
+		position = 88,
+		keyName = "transparentClanClanGuestUsernames",
+		name = "Guest clan chat usernames (transparent)",
+		description = "Color of usernames in guest clan chat (transparent).",
+		section = transparentSection
+	)
+	Color transparentClanChatGuestUsernames();
+
+	@ConfigItem(
+		position = 89,
 		keyName = "transparentPublicFriendUsernames",
 		name = "Public friend usernames (transparent)",
-		description = "Color of Friend Usernames in Public Chat (transparent)"
+		description = "Color of friend usernames in public chat (transparent).",
+		section = transparentSection
 	)
 	Color transparentPublicFriendUsernames();
+
+	@ConfigItem(
+		position = 90,
+		keyName = "transparentPlayerUsername",
+		name = "Your username (transparent)",
+		description = "Color of your username (transparent).",
+		section = transparentSection
+	)
+	Color transparentPlayerUsername();
 }

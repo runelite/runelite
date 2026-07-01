@@ -65,7 +65,7 @@ public class AreaLoader
 		}
 		else if (opcode == 4)
 		{
-			def.field3296 = in.read24BitInt();
+			def.textColor = in.read24BitInt();
 		}
 		else if (opcode == 5)
 		{
@@ -73,7 +73,7 @@ public class AreaLoader
 		}
 		else if (opcode == 6)
 		{
-			def.field3310 = in.readUnsignedByte();
+			def.textScale = in.readUnsignedByte();
 		}
 		else if (opcode == 7)
 		{
@@ -138,7 +138,7 @@ public class AreaLoader
 		}
 		else if (opcode == 19)
 		{
-			def.field3297 = in.readUnsignedShort();
+			def.category = in.readUnsignedShort();
 		}
 		else if (opcode == 21)
 		{

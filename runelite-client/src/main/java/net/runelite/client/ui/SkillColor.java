@@ -52,7 +52,9 @@ public enum SkillColor
 	FARMING(101, 152, 63),
 	RUNECRAFT(170, 141, 26),
 	HUNTER(92, 89, 65),
-	CONSTRUCTION(130, 116, 95);
+	CONSTRUCTION(130, 116, 95),
+	SAILING(11, 165, 157),
+	;
 
 	@Getter
 	private final Color color;

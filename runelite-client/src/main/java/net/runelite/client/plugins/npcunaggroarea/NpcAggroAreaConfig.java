@@ -25,9 +25,11 @@
 package net.runelite.client.plugins.npcunaggroarea;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("npcUnaggroArea")
 public interface NpcAggroAreaConfig extends Config
@@ -41,7 +43,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroAlwaysActive",
 		name = "Always active",
-		description = "Always show this plugins overlays<br>Otherwise, they will only be shown when any NPC name matches the list",
+		description = "Always show this plugin's overlays.<br>Otherwise, they will only be shown when any NPC name matches the list.",
 		position = 1
 	)
 	default boolean alwaysActive()
@@ -52,7 +54,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroNames",
 		name = "NPC names",
-		description = "Enter names of NPCs where you wish to use this plugin",
+		description = "Enter names of NPCs where you wish to use this plugin.",
 		position = 2
 	)
 	default String npcNamePatterns()
@@ -63,7 +65,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroShowTimer",
 		name = "Show timer",
-		description = "Display a timer until NPCs become unaggressive",
+		description = "Display a timer until NPCs become unaggressive.",
 		position = 3
 	)
 	default boolean showTimer()
@@ -74,7 +76,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroShowAreaLines",
 		name = "Show area lines",
-		description = "Display lines, when walked past, the unaggressive timer resets",
+		description = "Display lines, when walked past, the unaggressive timer resets.",
 		position = 4
 	)
 	default boolean showAreaLines()
@@ -82,24 +84,59 @@ public interface NpcAggroAreaConfig extends Config
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
-		keyName = "npcUnaggroAreaColor",
-		name = "Area lines colour",
-		description = "Choose colour to use for marking NPC unaggressive area",
+		keyName = "npcAggroAreaColor",
+		name = "Aggressive color",
+		description = "Choose color to use for marking NPC unaggressive area when NPCs are aggressive.",
 		position = 5
 	)
 	default Color aggroAreaColor()
 	{
-		return Color.YELLOW;
+		return new Color(0x64FFFF00, true);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "npcUnaggroAreaColor",
+		name = "Unaggressive color",
+		description = "Choose color to use for marking NPC unaggressive area after NPCs have lost aggression.",
+		position = 6
+	)
+	default Color unaggroAreaColor()
+	{
+		return new Color(0xFFFF00);
 	}
 
 	@ConfigItem(
-		keyName = "npcUnaggroShowNotWorkingOverlay",
-		name = "Hide overlay hint",
-		description = "Hide overlay hint if plugin is enabled in unsupported area",
-		position = 6
+		keyName = "notifyExpire",
+		name = "Notify expiration",
+		description = "Send a notification when the unaggressive timer expires.",
+		position = 7
 	)
-	default boolean hideOverlayHint()
+	default Notification notifyExpire()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "hideIfOutOfCombat",
+		name = "Hide when out of combat",
+		description = "Hides unaggressive area lines when out of combat.",
+		position = 8
+	)
+	default boolean hideIfOutOfCombat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showOnSlayerTask",
+		name = "Show on slayer task",
+		description = "Enable for current slayer task NPCs.",
+		position = 9
+	)
+	default boolean showOnSlayerTask()
 	{
 		return false;
 	}

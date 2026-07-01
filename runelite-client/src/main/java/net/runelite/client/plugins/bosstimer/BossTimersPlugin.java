@@ -25,15 +25,21 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
+import java.time.Duration;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.NPC;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.RSTimeUnit;
 
 @PluginDescriptor(
 	name = "Boss Timers",
@@ -43,11 +49,16 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @Slf4j
 public class BossTimersPlugin extends Plugin
 {
+	private static final String BRUTUS_BELL = "You ring the bell... and hear something approaching.";
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private NpcUtil npcUtil;
 
 	@Override
 	protected void shutDown() throws Exception
@@ -59,28 +70,53 @@ public class BossTimersPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
+		Boss boss = Boss.find(npc.getId());
 
-		if (!npc.isDead())
+		if (boss != null && (boss.isIgnoreDead() || npcUtil.isDying(npc)))
 		{
-			return;
+			createTimer(npc, boss);
 		}
+	}
 
-		int npcId = npc.getId();
-
-		Boss boss = Boss.find(npcId);
-
-		if (boss == null)
+	@Subscribe
+	public void onNpcChanged(NpcChanged npcChanged)
+	{
+		NPC npc = npcChanged.getNpc();
+		Boss boss = Boss.find(npc.getId());
+		if (boss == Boss.HUEYCOATL)
 		{
-			return;
+			createTimer(npc, boss);
 		}
+	}
 
-		// remove existing timer
-		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
+	private void createTimer(NPC npc, Boss boss)
+	{
+		clearTimer(boss);
 
-		log.debug("Creating spawn timer for {} ({} seconds)", npc.getName(), boss.getSpawnTime());
+		log.debug("Creating spawn timer for {} ({})", npc.getName(), boss.getSpawnTime());
 
 		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()), this);
 		timer.setTooltip(npc.getName());
 		infoBoxManager.addInfoBox(timer);
+	}
+
+	private void clearTimer(Boss boss)
+	{
+		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
+	}
+
+	@Subscribe
+	private void onChatMessage(ChatMessage ev)
+	{
+		if (ev.getType() == ChatMessageType.MESBOX && BRUTUS_BELL.equals(ev.getMessage()))
+		{
+			for (var ib : infoBoxManager.getInfoBoxes())
+			{
+				if (ib instanceof RespawnTimer && ((RespawnTimer) ib).getBoss() == Boss.BRUTUS)
+				{
+					((RespawnTimer) ib).updateDuration(Duration.of(12, RSTimeUnit.GAME_TICKS));
+				}
+			}
+		}
 	}
 }

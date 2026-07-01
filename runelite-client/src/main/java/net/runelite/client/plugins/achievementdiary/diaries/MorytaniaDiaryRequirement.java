@@ -42,7 +42,7 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.CRAFTING, 15));
 		add("Cook a thin Snail on the Port Phasmatys range.",
 			new SkillRequirement(Skill.COOKING, 12));
-		add("Get a slayer task from Mazchna.",
+		add("Get a slayer task from the Slayer Master in Canifis.",
 			new CombatLevelRequirement(20));
 		add("Kill a Banshee in the Slayer Tower.",
 			new SkillRequirement(Skill.SLAYER, 15));
@@ -68,8 +68,7 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.CABIN_FEVER));
 		add("Make a batch of cannonballs at the Port Phasmatys furnace.",
 			new SkillRequirement(Skill.SMITHING, 35),
-			new QuestRequirement(Quest.DWARF_CANNON),
-			new QuestRequirement(Quest.GHOSTS_AHOY, true));
+			new QuestRequirement(Quest.DWARF_CANNON));
 		add("Kill a Fever Spider on Braindeath Island.",
 			new SkillRequirement(Skill.SLAYER, 42),
 			new QuestRequirement(Quest.RUM_DEAL));
@@ -83,7 +82,7 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 		add("Enter the Kharyrll portal in your POH.",
 			new SkillRequirement(Skill.MAGIC, 66),
 			new SkillRequirement(Skill.CONSTRUCTION, 50),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestRequirement(Quest.DESERT_TREASURE_I));
 		add("Climb the advanced spike chain within Slayer Tower.",
 			new SkillRequirement(Skill.AGILITY, 71));
 		add("Harvest some Watermelon from the Allotment patch on Harmony Island.",

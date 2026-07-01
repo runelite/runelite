@@ -34,7 +34,7 @@ public interface CustomCursorConfig extends Config
 	@ConfigItem(
 		keyName = "cursorStyle",
 		name = "Cursor",
-		description = "Select which cursor you wish to use"
+		description = "Select which cursor you wish to use."
 	)
 	default CustomCursor selectedCursor()
 	{

@@ -29,55 +29,47 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.Skill;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.api.gameval.VarPlayerID;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class WoodcuttingOverlay extends Overlay
+class WoodcuttingOverlay extends OverlayPanel
 {
+	private static final String WOODCUTTING_RESET = "Reset";
+	private static final int BUFF_BAR_DISPLAYED = 96;
+
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
 	private final WoodcuttingConfig config;
-	private final XpTrackerService xpTrackerService;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
+	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		this.xpTrackerService = xpTrackerService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay");
+		addMenuEntry(RUNELITE_OVERLAY, WOODCUTTING_RESET, "Woodcutting overlay", e -> plugin.resetSession());
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showWoodcuttingStats())
-		{
-			return null;
-		}
-
 		WoodcuttingSession session = plugin.getSession();
-		if (session == null)
+		if (session == null || !session.isActive() || !config.showWoodcuttingStats())
 		{
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
-		Axe axe = plugin.getAxe();
-		if (axe != null && axe.getAnimId() == client.getLocalPlayer().getAnimation())
+		if (WoodcuttingPlugin.WOODCUTTING_ANIMS.contains(client.getLocalPlayer().getAnimation())
+			|| client.getVarpValue(VarPlayerID.GROUP_GATHERING_ACTIVE_BUFF) == BUFF_BAR_DISPLAYED)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Woodcutting")
@@ -92,24 +84,43 @@ class WoodcuttingOverlay extends Overlay
 				.build());
 		}
 
-		int actions = xpTrackerService.getActions(Skill.WOODCUTTING);
-		if (actions > 0)
+		int logsCut = session.getLogsCut();
+		if (logsCut > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Logs cut:")
-				.right(Integer.toString(actions))
+				.right(Integer.toString(logsCut))
 				.build());
 
-			if (actions > 2)
+			int logsPerHr = session.getLogsPerHr();
+			if (logsPerHr > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Logs/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)))
+					.right(Integer.toString(logsPerHr))
 					.build());
 			}
 		}
 
-		return panelComponent.render(graphics);
+		int bark = session.getBark();
+		if (bark > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Bark:")
+				.right(Integer.toString(bark))
+				.build());
+
+			int barkPerHr = session.getBarkPerHr();
+			if (barkPerHr > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Bark/hr:")
+					.right(Integer.toString(barkPerHr))
+					.build());
+			}
+		}
+
+		return super.render(graphics);
 	}
 
 }

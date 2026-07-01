@@ -12,45 +12,41 @@ public class ModelDefinition
 	public int id;
 
 	public int vertexCount = 0;
-	public int[] vertexPositionsX;
-	public int[] vertexPositionsY;
-	public int[] vertexPositionsZ;
+	public int[] vertexX;
+	public int[] vertexY;
+	public int[] vertexZ;
 	public transient VertexNormal[] vertexNormals;
 
 	public int faceCount;
-	public int[] faceVertexIndices1;
-	public int[] faceVertexIndices2;
-	public int[] faceVertexIndices3;
-	public byte[] faceAlphas;
+	public int[] faceIndices1;
+	public int[] faceIndices2;
+	public int[] faceIndices3;
+	public byte[] faceTransparencies;
 	public short[] faceColors;
 	public byte[] faceRenderPriorities;
 	public byte[] faceRenderTypes;
 	public transient FaceNormal[] faceNormals;
 
-	public int textureTriangleCount;
-	public short[] textureTriangleVertexIndices1;
-	public short[] textureTriangleVertexIndices2;
-	public short[] textureTriangleVertexIndices3;
+	public int numTextureFaces;
+	public short[] texIndices1;
+	public short[] texIndices2;
+	public short[] texIndices3;
 	public transient float[][] faceTextureUCoordinates;
 	public transient float[][] faceTextureVCoordinates;
 	public short[] texturePrimaryColors;
 	public short[] faceTextures;
-	public byte[] textureCoordinates;
+	public byte[] faceZOffsets;
+	public byte[] textureCoords;
 	public byte[] textureRenderTypes;
 
-	public int[] vertexSkins;
-	public int[] faceSkins;
+	public int[] packedVertexGroups;
+	public int[] packedTransparencyVertexGroups;
 
 	public byte priority;
 
-	public short[] aShortArray2574;
-	public short[] aShortArray2575;
-	public short[] aShortArray2577;
-	public short[] aShortArray2578;
-	public byte[] aByteArray2580;
-	public short[] aShortArray2586;
-
 	private transient int[][] vertexGroups;
+	public int[][] animayaGroups;
+	public int[][] animayaScales;
 
 	private transient int[] origVX;
 	private transient int[] origVY;
@@ -77,17 +73,17 @@ public class ModelDefinition
 
 		for (var1 = 0; var1 < this.faceCount; ++var1)
 		{
-			int vertexA = this.faceVertexIndices1[var1];
-			int vertexB = this.faceVertexIndices2[var1];
-			int vertexC = this.faceVertexIndices3[var1];
+			int vertexA = this.faceIndices1[var1];
+			int vertexB = this.faceIndices2[var1];
+			int vertexC = this.faceIndices3[var1];
 
-			int xA = this.vertexPositionsX[vertexB] - this.vertexPositionsX[vertexA];
-			int yA = this.vertexPositionsY[vertexB] - this.vertexPositionsY[vertexA];
-			int zA = this.vertexPositionsZ[vertexB] - this.vertexPositionsZ[vertexA];
+			int xA = this.vertexX[vertexB] - this.vertexX[vertexA];
+			int yA = this.vertexY[vertexB] - this.vertexY[vertexA];
+			int zA = this.vertexZ[vertexB] - this.vertexZ[vertexA];
 
-			int xB = this.vertexPositionsX[vertexC] - this.vertexPositionsX[vertexA];
-			int yB = this.vertexPositionsY[vertexC] - this.vertexPositionsY[vertexA];
-			int zB = this.vertexPositionsZ[vertexC] - this.vertexPositionsZ[vertexA];
+			int xB = this.vertexX[vertexC] - this.vertexX[vertexA];
+			int yB = this.vertexY[vertexC] - this.vertexY[vertexA];
+			int zB = this.vertexZ[vertexC] - this.vertexZ[vertexA];
 
 			// Compute cross product
 			int var11 = yA * zB - yB * zA;
@@ -156,125 +152,139 @@ public class ModelDefinition
 		}
 	}
 
-	/**
-	 * Computes the UV coordinates for every three-vertex face that has a
-	 * texture.
-	 */
 	public void computeTextureUVCoordinates()
 	{
 		this.faceTextureUCoordinates = new float[faceCount][];
 		this.faceTextureVCoordinates = new float[faceCount][];
 
+		if (faceTextures == null)
+		{
+			return;
+		}
+
 		for (int i = 0; i < faceCount; i++)
 		{
-			int textureCoordinate;
-			if (textureCoordinates == null)
+			if (faceTextures[i] == -1)
 			{
-				textureCoordinate = -1;
+				continue;
+			}
+
+			float u0, u1, u2, v0, v1, v2;
+
+			if (textureCoords != null && textureCoords[i] != -1)
+			{
+				int tfaceIdx = textureCoords[i] & 0xff;
+				int triangleA = faceIndices1[i];
+				int triangleB = faceIndices2[i];
+				int triangleC = faceIndices3[i];
+				int texA = texIndices1[tfaceIdx];
+				int texB = texIndices2[tfaceIdx];
+				int texC = texIndices3[tfaceIdx];
+
+				// v1 = vertex[texA]
+				float v1x = (float) vertexX[texA];
+				float v1y = (float) vertexY[texA];
+				float v1z = (float) vertexZ[texA];
+				// v2 = vertex[texB] - v1
+				float v2x = (float) vertexX[texB] - v1x;
+				float v2y = (float) vertexY[texB] - v1y;
+				float v2z = (float) vertexZ[texB] - v1z;
+				// v3 = vertex[texC] - v1
+				float v3x = (float) vertexX[texC] - v1x;
+				float v3y = (float) vertexY[texC] - v1y;
+				float v3z = (float) vertexZ[texC] - v1z;
+
+				// v4 = vertex[triangleA] - v1
+				float v4x = (float) vertexX[triangleA] - v1x;
+				float v4y = (float) vertexY[triangleA] - v1y;
+				float v4z = (float) vertexZ[triangleA] - v1z;
+				// v5 = vertex[triangleB] - v1
+				float v5x = (float) vertexX[triangleB] - v1x;
+				float v5y = (float) vertexY[triangleB] - v1y;
+				float v5z = (float) vertexZ[triangleB] - v1z;
+				// v6 = vertex[triangleC] - v1
+				float v6x = (float) vertexX[triangleC] - v1x;
+				float v6y = (float) vertexY[triangleC] - v1y;
+				float v6z = (float) vertexZ[triangleC] - v1z;
+
+				// v7 = v2 x v3
+				float v7x = v2y * v3z - v2z * v3y;
+				float v7y = v2z * v3x - v2x * v3z;
+				float v7z = v2x * v3y - v2y * v3x;
+
+				// v8 = v3 x v7
+				float v8x = v3y * v7z - v3z * v7y;
+				float v8y = v3z * v7x - v3x * v7z;
+				float v8z = v3x * v7y - v3y * v7x;
+
+				// f = 1 / (v8 ⋅ v2)
+				float f = 1.0F / (v8x * v2x + v8y * v2y + v8z * v2z);
+
+				// u0 = (v8 ⋅ v4) * f
+				u0 = (v8x * v4x + v8y * v4y + v8z * v4z) * f;
+				// u1 = (v8 ⋅ v5) * f
+				u1 = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
+				// u2 = (v8 ⋅ v6) * f
+				u2 = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
+
+				// v8 = v2 x v7
+				v8x = v2y * v7z - v2z * v7y;
+				v8y = v2z * v7x - v2x * v7z;
+				v8z = v2x * v7y - v2y * v7x;
+
+				// f = 1 / (v8 ⋅ v3)
+				f = 1.0F / (v8x * v3x + v8y * v3y + v8z * v3z);
+
+				// v0 = (v8 ⋅ v4) * f
+				v0 = (v8x * v4x + v8y * v4y + v8z * v4z) * f;
+				// v1 = (v8 ⋅ v5) * f
+				v1 = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
+				// v2 = (v8 ⋅ v6) * f
+				v2 = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
 			}
 			else
 			{
-				textureCoordinate = textureCoordinates[i];
+				// Without a texture face, the client assigns tex = triangle, but the resulting
+				// calculations can be reduced:
+				//
+				// v1 = vertex[texA]
+				// v2 = vertex[texB] - v1
+				// v3 = vertex[texC] - v1
+				//
+				// v4 = 0
+				// v5 = v2
+				// v6 = v3
+				//
+				// v7 = v2 x v3
+				//
+				// v8 = v3 x v7
+				// u0 = (v8 . v4) / (v8 . v2) // 0 because v4 is 0
+				// u1 = (v8 . v5) / (v8 . v2) // 1 because v5=v2
+				// u2 = (v8 . v6) / (v8 . v2) // 0 because v8 is perpendicular to v3/v6
+				//
+				// v8 = v2 x v7
+				// v0 = (v8 . v4) / (v8 ⋅ v3) // 0 because v4 is 0
+				// v1 = (v8 . v5) / (v8 ⋅ v3) // 0 because v8 is perpendicular to v5/v2
+				// v2 = (v8 . v6) / (v8 ⋅ v3) // 1 because v6=v3
+
+				u0 = 0f;
+				v0 = 0f;
+
+				u1 = 1f;
+				v1 = 0f;
+
+				u2 = 0f;
+				v2 = 1f;
 			}
 
-			int textureIdx;
-			if (faceTextures == null)
-			{
-				textureIdx = -1;
-			}
-			else
-			{
-				textureIdx = faceTextures[i] & 0xFFFF;
-			}
-
-			if (textureIdx != -1)
-			{
-				float[] u = new float[3];
-				float[] v = new float[3];
-
-				if (textureCoordinate == -1)
-				{
-					u[0] = 0.0F;
-					v[0] = 1.0F;
-
-					u[1] = 1.0F;
-					v[1] = 1.0F;
-
-					u[2] = 0.0F;
-					v[2] = 0.0F;
-				}
-				else
-				{
-					textureCoordinate &= 0xFF;
-
-					byte textureRenderType = 0;
-					if (textureRenderTypes != null)
-					{
-						textureRenderType = textureRenderTypes[textureCoordinate];
-					}
-
-					if (textureRenderType == 0)
-					{
-						int faceVertexIdx1 = faceVertexIndices1[i];
-						int faceVertexIdx2 = faceVertexIndices2[i];
-						int faceVertexIdx3 = faceVertexIndices3[i];
-
-						short triangleVertexIdx1 = textureTriangleVertexIndices1[textureCoordinate];
-						short triangleVertexIdx2 = textureTriangleVertexIndices2[textureCoordinate];
-						short triangleVertexIdx3 = textureTriangleVertexIndices3[textureCoordinate];
-
-						float triangleX = (float) vertexPositionsX[triangleVertexIdx1];
-						float triangleY = (float) vertexPositionsY[triangleVertexIdx1];
-						float triangleZ = (float) vertexPositionsZ[triangleVertexIdx1];
-
-						float f_882_ = (float) vertexPositionsX[triangleVertexIdx2] - triangleX;
-						float f_883_ = (float) vertexPositionsY[triangleVertexIdx2] - triangleY;
-						float f_884_ = (float) vertexPositionsZ[triangleVertexIdx2] - triangleZ;
-						float f_885_ = (float) vertexPositionsX[triangleVertexIdx3] - triangleX;
-						float f_886_ = (float) vertexPositionsY[triangleVertexIdx3] - triangleY;
-						float f_887_ = (float) vertexPositionsZ[triangleVertexIdx3] - triangleZ;
-						float f_888_ = (float) vertexPositionsX[faceVertexIdx1] - triangleX;
-						float f_889_ = (float) vertexPositionsY[faceVertexIdx1] - triangleY;
-						float f_890_ = (float) vertexPositionsZ[faceVertexIdx1] - triangleZ;
-						float f_891_ = (float) vertexPositionsX[faceVertexIdx2] - triangleX;
-						float f_892_ = (float) vertexPositionsY[faceVertexIdx2] - triangleY;
-						float f_893_ = (float) vertexPositionsZ[faceVertexIdx2] - triangleZ;
-						float f_894_ = (float) vertexPositionsX[faceVertexIdx3] - triangleX;
-						float f_895_ = (float) vertexPositionsY[faceVertexIdx3] - triangleY;
-						float f_896_ = (float) vertexPositionsZ[faceVertexIdx3] - triangleZ;
-
-						float f_897_ = f_883_ * f_887_ - f_884_ * f_886_;
-						float f_898_ = f_884_ * f_885_ - f_882_ * f_887_;
-						float f_899_ = f_882_ * f_886_ - f_883_ * f_885_;
-						float f_900_ = f_886_ * f_899_ - f_887_ * f_898_;
-						float f_901_ = f_887_ * f_897_ - f_885_ * f_899_;
-						float f_902_ = f_885_ * f_898_ - f_886_ * f_897_;
-						float f_903_ = 1.0F / (f_900_ * f_882_ + f_901_ * f_883_ + f_902_ * f_884_);
-
-						u[0] = (f_900_ * f_888_ + f_901_ * f_889_ + f_902_ * f_890_) * f_903_;
-						u[1] = (f_900_ * f_891_ + f_901_ * f_892_ + f_902_ * f_893_) * f_903_;
-						u[2] = (f_900_ * f_894_ + f_901_ * f_895_ + f_902_ * f_896_) * f_903_;
-
-						f_900_ = f_883_ * f_899_ - f_884_ * f_898_;
-						f_901_ = f_884_ * f_897_ - f_882_ * f_899_;
-						f_902_ = f_882_ * f_898_ - f_883_ * f_897_;
-						f_903_ = 1.0F / (f_900_ * f_885_ + f_901_ * f_886_ + f_902_ * f_887_);
-
-						v[0] = (f_900_ * f_888_ + f_901_ * f_889_ + f_902_ * f_890_) * f_903_;
-						v[1] = (f_900_ * f_891_ + f_901_ * f_892_ + f_902_ * f_893_) * f_903_;
-						v[2] = (f_900_ * f_894_ + f_901_ * f_895_ + f_902_ * f_896_) * f_903_;
-					}
-				}
-
-				this.faceTextureUCoordinates[i] = u;
-				this.faceTextureVCoordinates[i] = v;
-			}
+			this.faceTextureUCoordinates[i] = new float[]{u0, u1, u2};
+			this.faceTextureVCoordinates[i] = new float[]{v0, v1, v2};
 		}
 	}
 
 	public void computeAnimationTables()
 	{
-		if (this.vertexSkins != null)
+		if (this.packedVertexGroups != null)
 		{
 			int[] groupCounts = new int[256];
 			int numGroups = 0;
@@ -282,7 +292,7 @@ public class ModelDefinition
 
 			for (var3 = 0; var3 < this.vertexCount; ++var3)
 			{
-				var4 = this.vertexSkins[var3];
+				var4 = this.packedVertexGroups[var3];
 				++groupCounts[var4];
 				if (var4 > numGroups)
 				{
@@ -300,10 +310,10 @@ public class ModelDefinition
 
 			for (var3 = 0; var3 < this.vertexCount; this.vertexGroups[var4][groupCounts[var4]++] = var3++)
 			{
-				var4 = this.vertexSkins[var3];
+				var4 = this.packedVertexGroups[var3];
 			}
 
-			this.vertexSkins = null;
+			this.packedVertexGroups = null;
 		}
 
 		// triangleSkinValues is here
@@ -314,13 +324,13 @@ public class ModelDefinition
 		int sin = CircularAngle.SINE[orientation];
 		int cos = CircularAngle.COSINE[orientation];
 
-		assert vertexPositionsX.length == vertexPositionsY.length;
-		assert vertexPositionsY.length == vertexPositionsZ.length;
+		assert vertexX.length == vertexY.length;
+		assert vertexY.length == vertexZ.length;
 
-		for (int i = 0; i < vertexPositionsX.length; ++i)
+		for (int i = 0; i < vertexX.length; ++i)
 		{
-			vertexPositionsX[i] = vertexPositionsX[i] * cos + vertexPositionsZ[i] * sin >> 16;
-			vertexPositionsZ[i] = vertexPositionsZ[i] * cos - vertexPositionsX[i] * sin >> 16;
+			vertexX[i] = vertexX[i] * cos + vertexZ[i] * sin >> 16;
+			vertexZ[i] = vertexZ[i] * cos - vertexX[i] * sin >> 16;
 		}
 
 		reset();
@@ -333,23 +343,23 @@ public class ModelDefinition
 			return;
 		}
 
-		System.arraycopy(origVX, 0, vertexPositionsX, 0, origVX.length);
-		System.arraycopy(origVY, 0, vertexPositionsY, 0, origVY.length);
-		System.arraycopy(origVZ, 0, vertexPositionsZ, 0, origVZ.length);
+		System.arraycopy(origVX, 0, vertexX, 0, origVX.length);
+		System.arraycopy(origVY, 0, vertexY, 0, origVY.length);
+		System.arraycopy(origVZ, 0, vertexZ, 0, origVZ.length);
 	}
 
 	public void animate(int type, int[] frameMap, int dx, int dy, int dz)
 	{
 		if (origVX == null)
 		{
-			origVX = Arrays.copyOf(vertexPositionsX, vertexPositionsX.length);
-			origVY = Arrays.copyOf(vertexPositionsY, vertexPositionsY.length);
-			origVZ = Arrays.copyOf(vertexPositionsZ, vertexPositionsZ.length);
+			origVX = Arrays.copyOf(vertexX, vertexX.length);
+			origVY = Arrays.copyOf(vertexY, vertexY.length);
+			origVZ = Arrays.copyOf(vertexZ, vertexZ.length);
 		}
 
-		final int[] verticesX = vertexPositionsX;
-		final int[] verticesY = vertexPositionsY;
-		final int[] verticesZ = vertexPositionsZ;
+		final int[] verticesX = vertexX;
+		final int[] verticesY = vertexY;
+		final int[] verticesZ = vertexZ;
 		int var6 = frameMap.length;
 		int var7;
 		int var8;
@@ -512,14 +522,14 @@ public class ModelDefinition
 		int var1;
 		for (var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			this.vertexPositionsZ[var1] = -this.vertexPositionsZ[var1];
+			this.vertexZ[var1] = -this.vertexZ[var1];
 		}
 
 		for (var1 = 0; var1 < this.faceCount; ++var1)
 		{
-			int var2 = this.faceVertexIndices1[var1];
-			this.faceVertexIndices1[var1] = this.faceVertexIndices3[var1];
-			this.faceVertexIndices3[var1] = var2;
+			int var2 = this.faceIndices1[var1];
+			this.faceIndices1[var1] = this.faceIndices3[var1];
+			this.faceIndices3[var1] = var2;
 		}
 
 		reset();
@@ -529,9 +539,9 @@ public class ModelDefinition
 	{
 		for (int var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			int var2 = this.vertexPositionsX[var1];
-			this.vertexPositionsX[var1] = this.vertexPositionsZ[var1];
-			this.vertexPositionsZ[var1] = -var2;
+			int var2 = this.vertexX[var1];
+			this.vertexX[var1] = this.vertexZ[var1];
+			this.vertexZ[var1] = -var2;
 		}
 
 		reset();
@@ -541,8 +551,8 @@ public class ModelDefinition
 	{
 		for (int var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			this.vertexPositionsX[var1] = -this.vertexPositionsX[var1];
-			this.vertexPositionsZ[var1] = -this.vertexPositionsZ[var1];
+			this.vertexX[var1] = -this.vertexX[var1];
+			this.vertexZ[var1] = -this.vertexZ[var1];
 		}
 
 		reset();
@@ -552,9 +562,9 @@ public class ModelDefinition
 	{
 		for (int var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			int var2 = this.vertexPositionsZ[var1];
-			this.vertexPositionsZ[var1] = this.vertexPositionsX[var1];
-			this.vertexPositionsX[var1] = -var2;
+			int var2 = this.vertexZ[var1];
+			this.vertexZ[var1] = this.vertexX[var1];
+			this.vertexX[var1] = -var2;
 		}
 
 		reset();
@@ -571,9 +581,9 @@ public class ModelDefinition
 	{
 		for (int var4 = 0; var4 < this.vertexCount; ++var4)
 		{
-			this.vertexPositionsX[var4] = this.vertexPositionsX[var4] * var1 / 128;
-			this.vertexPositionsY[var4] = var2 * this.vertexPositionsY[var4] / 128;
-			this.vertexPositionsZ[var4] = var3 * this.vertexPositionsZ[var4] / 128;
+			this.vertexX[var4] = this.vertexX[var4] * var1 / 128;
+			this.vertexY[var4] = var2 * this.vertexY[var4] / 128;
+			this.vertexZ[var4] = var3 * this.vertexZ[var4] / 128;
 		}
 
 		reset();
@@ -610,9 +620,9 @@ public class ModelDefinition
 	{
 		for (int i = 0; i < this.vertexCount; i++)
 		{
-			this.vertexPositionsX[i] += xOffset;
-			this.vertexPositionsY[i] += yOffset;
-			this.vertexPositionsZ[i] += zOffset;
+			this.vertexX[i] += xOffset;
+			this.vertexY[i] += yOffset;
+			this.vertexZ[i] += zOffset;
 		}
 		this.reset();
 	}

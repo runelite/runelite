@@ -24,6 +24,8 @@
  */
 package net.runelite.cache.item;
 
+import net.runelite.cache.models.JagexColor;
+
 class Graphics3D extends Rasterizer2D
 {
 	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
@@ -31,26 +33,12 @@ class Graphics3D extends Rasterizer2D
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
 
-	private static int[] field1932 = new int[512];
-	static int[] field1933 = new int[2048];
-
 	static
 	{
 		for (int i = 0; i < 2048; ++i)
 		{
 			SINE[i] = (int) (65536.0D * Math.sin((double) i * UNIT));
 			COSINE[i] = (int) (65536.0D * Math.cos((double) i * UNIT));
-		}
-
-		int var0;
-		for (var0 = 1; var0 < 512; ++var0)
-		{
-			field1932[var0] = 32768 / var0;
-		}
-
-		for (var0 = 1; var0 < 2048; ++var0)
-		{
-			field1933[var0] = 65536 / var0;
 		}
 	}
 
@@ -132,9 +120,9 @@ class Graphics3D extends Rasterizer2D
 		Rasterizer3D_clipMidY2 = Rasterizer3D_clipHeight - centerY;
 	}
 
-	public final void setBrightness(double var0)
+	public final void setBrightness(double brightness)
 	{
-		colorPalette = new ColorPalette(var0, 0, 512).getColorPalette();
+		colorPalette = JagexColor.createPalette(brightness);
 	}
 
 	final void rasterGouraud(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8)

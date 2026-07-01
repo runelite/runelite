@@ -37,7 +37,7 @@ public class OverlayManagerTest
 {
 	class TestOverlay extends Overlay
 	{
-		TestOverlay(OverlayPosition position, OverlayPriority priority)
+		TestOverlay(OverlayPosition position, float priority)
 		{
 			setPosition(position);
 			setPriority(priority);
@@ -86,8 +86,8 @@ public class OverlayManagerTest
 	public void testSort()
 	{
 		// High priorities overlays render first
-		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
-		Overlay tll = new TestOverlay(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
+		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, Overlay.PRIORITY_HIGH);
+		Overlay tll = new TestOverlay(OverlayPosition.TOP_LEFT, Overlay.PRIORITY_LOW);
 		List<Overlay> overlays = Arrays.asList(tlh, tll);
 		overlays.sort(OverlayManager.OVERLAY_COMPARATOR);
 		assertEquals(tlh, overlays.get(0));
@@ -98,8 +98,8 @@ public class OverlayManagerTest
 	public void testSortDynamic()
 	{
 		// Dynamic overlays render before static overlays
-		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
-		Overlay dyn = new TestOverlay(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
+		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, Overlay.PRIORITY_HIGH);
+		Overlay dyn = new TestOverlay(OverlayPosition.DYNAMIC, Overlay.PRIORITY_HIGH);
 		List<Overlay> overlays = Arrays.asList(tlh, dyn);
 		overlays.sort(OverlayManager.OVERLAY_COMPARATOR);
 		assertEquals(dyn, overlays.get(0));
@@ -110,9 +110,9 @@ public class OverlayManagerTest
 	public void testTooltips()
 	{
 		// Tooltip overlay renders after everything
-		Overlay t = new TestOverlay(OverlayPosition.TOOLTIP, OverlayPriority.HIGH);
-		Overlay dyn = new TestOverlay(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
-		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
+		Overlay t = new TestOverlay(OverlayPosition.TOOLTIP, Overlay.PRIORITY_HIGH);
+		Overlay dyn = new TestOverlay(OverlayPosition.DYNAMIC, Overlay.PRIORITY_HIGH);
+		Overlay tlh = new TestOverlay(OverlayPosition.TOP_LEFT, Overlay.PRIORITY_HIGH);
 		List<Overlay> overlays = Arrays.asList(t, dyn, tlh);
 		overlays.sort(OverlayManager.OVERLAY_COMPARATOR);
 		assertEquals(dyn, overlays.get(0));

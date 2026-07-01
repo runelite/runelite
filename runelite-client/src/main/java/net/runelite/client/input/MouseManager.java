@@ -28,13 +28,26 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.client.config.RuneLiteConfig;
 
 @Singleton
 public class MouseManager
 {
+	// Button numbers greater than BUTTON3 have no constant identifier
+	private static final int MOUSE_BUTTON_4 = 4;
+
 	private final List<MouseListener> mouseListeners = new CopyOnWriteArrayList<>();
 	private final List<MouseWheelListener> mouseWheelListeners = new CopyOnWriteArrayList<>();
+
+	private final RuneLiteConfig runeLiteConfig;
+
+	@Inject
+	private MouseManager(RuneLiteConfig runeLiteConfig)
+	{
+		this.runeLiteConfig = runeLiteConfig;
+	}
 
 	public void registerMouseListener(MouseListener mouseListener)
 	{
@@ -74,72 +87,158 @@ public class MouseManager
 
 	public MouseEvent processMousePressed(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
+		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mousePressed(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseReleased(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
+		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseReleased(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseClicked(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
+		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseClicked(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
+	private void checkExtraMouseButtons(MouseEvent mouseEvent)
+	{
+		// Prevent extra mouse buttons from being passed into the client,
+		// as it treats them all as left click
+		int button = mouseEvent.getButton();
+		if (button >= MOUSE_BUTTON_4 && runeLiteConfig.blockExtraMouseButtons())
+		{
+			mouseEvent.consume();
+		}
+	}
+
 	public MouseEvent processMouseEntered(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseEntered(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseExited(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseExited(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseDragged(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseDragged(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseMoved(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseMoved(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseWheelEvent processMouseWheelMoved(MouseWheelEvent mouseWheelEvent)
 	{
+		if (mouseWheelEvent.isConsumed())
+		{
+			return mouseWheelEvent;
+		}
+
 		for (MouseWheelListener mouseWheelListener : mouseWheelListeners)
 		{
 			mouseWheelEvent = mouseWheelListener.mouseWheelMoved(mouseWheelEvent);
+			if (mouseWheelEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseWheelEvent;
 	}

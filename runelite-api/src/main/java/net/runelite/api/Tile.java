@@ -62,6 +62,13 @@ public interface Tile
 	GroundObject getGroundObject();
 
 	/**
+	 * Sets the object on the ground layer of the tile.
+	 *
+	 * @param groundObject the ground object
+	 */
+	void setGroundObject(GroundObject groundObject);
+
+	/**
 	 * Gets the wall of the tile.
 	 *
 	 * @return the wall object
@@ -76,11 +83,27 @@ public interface Tile
 	SceneTilePaint getSceneTilePaint();
 
 	/**
+	 * Sets the scene paint of the tile.
+	 * Must only be mutated during map load.
+	 *
+	 * @param paint the paint
+	 */
+	void setSceneTilePaint(SceneTilePaint paint);
+
+	/**
 	 * Gets the model of the tile in the scene.
 	 *
 	 * @return the tile model
 	 */
 	SceneTileModel getSceneTileModel();
+
+	/**
+	 * Sets the model of the tile in the scene.
+	 * Must only be mutated during map load.
+	 *
+	 * @param model the tile model
+	 */
+	void setSceneTileModel(SceneTileModel model);
 
 	/**
 	 * Gets the location coordinate of the tile in the world.
@@ -116,14 +139,6 @@ public interface Tile
 	 * @return
 	 */
 	int getRenderLevel();
-
-	/**
-	 * Computes and returns whether this tile has line of sight to another.
-	 *
-	 * @param other the other tile
-	 * @return true if there is no sight obstruction, false otherwise
-	 */
-	boolean hasLineOfSightTo(Tile other);
 
 	/**
 	 * Get all the ground items for this tile

@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import com.google.common.annotations.VisibleForTesting;
 import java.awt.Rectangle;
 import java.util.Set;
 import javax.annotation.Nonnull;
@@ -38,7 +37,7 @@ import net.runelite.api.coords.WorldPoint;
  * <p>
  * These puzzles are established by having some way to test the distance from the solution via "warmth", where being
  * colder means one is farther away from the target, and being warmer means one is closer to it, with the goal being to
- * reach the most warm value to discover the solution point. Hot-cold puzzles in Old School Runescape are implemented
+ * reach the most warm value to discover the solution point. Hot-cold puzzles in Old School RuneScape are implemented
  * with specific set of solution points, so this solver will filter from a provided set of possible solutions as new
  * signals of temperatures and temperature changes are provided.
  */
@@ -94,74 +93,32 @@ public class HotColdSolver
 			switch (temperatureChange)
 			{
 				case COLDER:
-					// eliminate spots that are absolutely warmer
-					possibleLocations.removeIf(entry -> isFirstPointCloserRect(worldPoint, lastWorldPoint, entry.getRect()));
+					// eliminate spots that are warmer or same temperature
+					possibleLocations.removeIf(location ->
+					{
+						final WorldPoint locationPoint = location.getWorldPoint();
+						return locationPoint.distanceTo2D(worldPoint) <= locationPoint.distanceTo2D(lastWorldPoint);
+					});
 					break;
 				case WARMER:
-					// eliminate spots that are absolutely colder
-					possibleLocations.removeIf(entry -> isFirstPointCloserRect(lastWorldPoint, worldPoint, entry.getRect()));
+					// eliminate spots that are colder or same temperature
+					possibleLocations.removeIf(location ->
+					{
+						final WorldPoint locationPoint = location.getWorldPoint();
+						return locationPoint.distanceTo2D(worldPoint) >= locationPoint.distanceTo2D(lastWorldPoint);
+					});
 					break;
 				case SAME:
-					// I couldn't figure out a clean implementation for this case
-					// not necessary for quickly determining final location
+					// eliminate spots which are colder or warmer (as they would not yield a SAME temperature change)
+					possibleLocations.removeIf(location ->
+					{
+						final WorldPoint locationPoint = location.getWorldPoint();
+						return locationPoint.distanceTo2D(worldPoint) != locationPoint.distanceTo2D(lastWorldPoint);
+					});
 			}
 		}
 
 		lastWorldPoint = worldPoint;
 		return getPossibleLocations();
-	}
-
-	/**
-	 * Determines whether the first point passed is closer to each corner of the given rectangle than the second point.
-	 *
-	 * @param firstPoint  First point to test. Return result will be relating to this point's location.
-	 * @param secondPoint Second point to test
-	 * @param rect        Rectangle, whose corner points will be compared to the first and second points passed
-	 * @return {@code true} if {@code firstPoint} is closer to each of {@code rect}'s four corner points than
-	 *         {@code secondPoint}, {@code false} otherwise.
-	 * @see WorldPoint#distanceTo2D
-	 */
-	@VisibleForTesting
-	static boolean isFirstPointCloserRect(final WorldPoint firstPoint, final WorldPoint secondPoint, final Rectangle rect)
-	{
-		final WorldPoint nePoint = new WorldPoint((rect.x + rect.width), (rect.y + rect.height), 0);
-
-		if (!isFirstPointCloser(firstPoint, secondPoint, nePoint))
-		{
-			return false;
-		}
-
-		final WorldPoint sePoint = new WorldPoint((rect.x + rect.width), rect.y, 0);
-
-		if (!isFirstPointCloser(firstPoint, secondPoint, sePoint))
-		{
-			return false;
-		}
-
-		final WorldPoint nwPoint = new WorldPoint(rect.x, (rect.y + rect.height), 0);
-
-		if (!isFirstPointCloser(firstPoint, secondPoint, nwPoint))
-		{
-			return false;
-		}
-
-		final WorldPoint swPoint = new WorldPoint(rect.x, rect.y, 0);
-		return (isFirstPointCloser(firstPoint, secondPoint, swPoint));
-	}
-
-	/**
-	 * Determines whether the first point passed is closer to the given point of comparison than the second point.
-	 *
-	 * @param firstPoint  First point to test. Return result will be relating to this point's location.
-	 * @param secondPoint Second point to test
-	 * @param worldPoint  Point to compare to the first and second points passed
-	 * @return {@code true} if {@code firstPoint} is closer to {@code worldPoint} than {@code secondPoint},
-	 *         {@code false} otherwise.
-	 * @see WorldPoint#distanceTo2D
-	 */
-	@VisibleForTesting
-	static boolean isFirstPointCloser(final WorldPoint firstPoint, final WorldPoint secondPoint, final WorldPoint worldPoint)
-	{
-		return firstPoint.distanceTo2D(worldPoint) < secondPoint.distanceTo2D(worldPoint);
 	}
 }

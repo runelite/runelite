@@ -25,16 +25,11 @@
 package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
 import com.google.common.collect.Sets;
-import java.awt.Rectangle;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import static junit.framework.TestCase.assertTrue;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdSolver.isFirstPointCloser;
-import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdSolver.isFirstPointCloserRect;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
@@ -46,6 +41,8 @@ public class HotColdSolverTest
 	private static final String RESPONSE_TEXT_COLD_COLDER = "The device is cold, but colder than last time.";
 	private static final String RESPONSE_TEXT_COLD_WARMER = "The device is cold, and warmer than last time.";
 	private static final String RESPONSE_TEXT_COLD_SAME_TEMP = "The device is cold, and the same temperature as last time.";
+	private static final String RESPONSE_TEXT_WARM = "The device is warm.";
+	private static final String RESPONSE_TEXT_WARM_SAME_TEMP = "The device is warm, and the same temperature as last time.";
 	private static final String RESPONSE_TEXT_VERY_HOT = "The device is very hot.";
 	private static final String RESPONSE_TEXT_VERY_HOT_COLDER = "The device is very hot, but colder than last time.";
 	private static final String RESPONSE_TEXT_VERY_HOT_WARMER = "The device is very hot, and warmer than last time.";
@@ -107,22 +104,24 @@ public class HotColdSolverTest
 		final HotColdSolver solver = createHotColdSolver();
 		final Set<HotColdLocation> firstLocationsSet = Sets.immutableEnumSet(
 			HotColdLocation.FELDIP_HILLS_GNOME_GLITER,
+			HotColdLocation.FELDIP_HILLS_RANTZ,
 			HotColdLocation.FELDIP_HILLS_RED_CHIN,
 			HotColdLocation.KARAMJA_KHARAZI_NE,
 			HotColdLocation.KARAMJA_CRASH_ISLAND);
 		final Set<HotColdLocation> secondLocationsSet = firstLocationsSet.stream()
-			.filter(location -> location != HotColdLocation.FELDIP_HILLS_RED_CHIN)
+			.filter(location -> location != HotColdLocation.FELDIP_HILLS_GNOME_GLITER
+				&& location != HotColdLocation.FELDIP_HILLS_RANTZ)
 			.collect(Collectors.toSet());
 		final Set<HotColdLocation> thirdLocationSet = secondLocationsSet.stream()
-			.filter(location -> location != HotColdLocation.FELDIP_HILLS_GNOME_GLITER)
+			.filter(location -> location != HotColdLocation.FELDIP_HILLS_RED_CHIN)
 			.collect(Collectors.toSet());
 		final Set<HotColdLocation> finalLocation = thirdLocationSet.stream()
 			.filter(location -> location != HotColdLocation.KARAMJA_CRASH_ISLAND)
 			.collect(Collectors.toSet());
 
 		testSolver(solver, new WorldPoint(2711, 2803, 0), RESPONSE_TEXT_COLD, firstLocationsSet);
-		testSolver(solver, new WorldPoint(2711, 2802, 0), RESPONSE_TEXT_COLD_SAME_TEMP, firstLocationsSet);
-		testSolver(solver, new WorldPoint(2716, 2802, 0), RESPONSE_TEXT_COLD_WARMER, secondLocationsSet);
+		testSolver(solver, new WorldPoint(2711, 2802, 0), RESPONSE_TEXT_COLD_SAME_TEMP, secondLocationsSet);
+		testSolver(solver, new WorldPoint(2716, 2802, 0), RESPONSE_TEXT_COLD_WARMER, thirdLocationSet);
 		testSolver(solver, new WorldPoint(2739, 2808, 0), RESPONSE_TEXT_COLD_WARMER, thirdLocationSet);
 		testSolver(solver, new WorldPoint(2810, 2757, 0), RESPONSE_TEXT_COLD_COLDER, finalLocation);
 	}
@@ -137,7 +136,6 @@ public class HotColdSolverTest
 				HotColdLocation.KARAMJA_KHARAZI_SW,
 				HotColdLocation.KARAMJA_CRASH_ISLAND,
 				HotColdLocation.FELDIP_HILLS_SW,
-				HotColdLocation.FELDIP_HILLS_RANTZ,
 				HotColdLocation.FELDIP_HILLS_RED_CHIN,
 				HotColdLocation.FELDIP_HILLS_SE));
 
@@ -163,32 +161,48 @@ public class HotColdSolverTest
 	}
 
 	@Test
-	public void testIsFirstPointCloserRect()
+	public void testZeahLocationNarrowing()
 	{
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0), new Rectangle(0, 0, 1, 1)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(1, 0, 0), new WorldPoint(5, 0, 0), new Rectangle(2, 1, 5, 5)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new Rectangle(2, 0, 1, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 1), new Rectangle(2, 2, 2, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(4, 4, 4), new Rectangle(1, 1, 2, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(3, 2, 0), new WorldPoint(1, 5, 0), new Rectangle(0, 0, 4, 4)));
+		// Start with western Lovakengj sulphur mine and west of farming guild locations remaining
+		HotColdSolver solver = new HotColdSolver(EnumSet.of(
+			HotColdLocation.ZEAH_SULPHR_MINE,
+			HotColdLocation.ZEAH_FARMING_GUILD_W
+		));
 
-		assertTrue(isFirstPointCloserRect(new WorldPoint(1, 1, 0), new WorldPoint(0, 1, 0), new Rectangle(2, 0, 3, 2)));
-		assertTrue(isFirstPointCloserRect(new WorldPoint(4, 4, 0), new WorldPoint(1, 1, 0), new Rectangle(3, 3, 2, 2)));
-		assertTrue(isFirstPointCloserRect(new WorldPoint(3, 2, 0), new WorldPoint(7, 0, 0), new Rectangle(1, 3, 4, 2)));
-
+		testSolver(solver, new WorldPoint(1348, 3740, 0), RESPONSE_TEXT_WARM,
+			Sets.immutableEnumSet(
+				HotColdLocation.ZEAH_SULPHR_MINE,
+				HotColdLocation.ZEAH_FARMING_GUILD_W));
+		testSolver(solver, new WorldPoint(1347, 3740, 0), RESPONSE_TEXT_WARM_SAME_TEMP,
+			Sets.immutableEnumSet(HotColdLocation.ZEAH_SULPHR_MINE));
 	}
 
 	@Test
-	public void testIsFirstPointCloser()
+	public void testBeginnerCowFieldNarrowing()
 	{
-		assertFalse(isFirstPointCloser(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 1), new WorldPoint(0, 0, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(2, 2, 0), new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 0)));
+		// Start with Cow field north of Lumbridge and Northeast of Al Kharid mine locations remaining
+		final Set<HotColdLocation> startingLocations = EnumSet.of(
+			HotColdLocation.LUMBRIDGE_COW_FIELD,
+			HotColdLocation.NORTHEAST_OF_AL_KHARID_MINE
+		);
+		HotColdSolver solver = new HotColdSolver(startingLocations);
 
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(2, 0, 0)));
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 1, 0), new WorldPoint(1, 0, 0), new WorldPoint(2, 2, 0)));
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 1, 1), new WorldPoint(0, 1, 0), new WorldPoint(1, 1, 0)));
+		assertEquals(startingLocations, solver.signal(new WorldPoint(3313, 3208, 0), HotColdTemperature.WARM, null));
+		assertEquals(Sets.immutableEnumSet(HotColdLocation.LUMBRIDGE_COW_FIELD), solver.signal(new WorldPoint(3312, 3208, 0), HotColdTemperature.WARM, HotColdTemperatureChange.WARMER));
+	}
+
+	@Test
+	public void testBeginnerDraynorWheatFieldNarrowing()
+	{
+		// Start with Wheat field next to Draynor Village and Atop Ice Mountain locations remaining
+		final Set<HotColdLocation> startingLocations = EnumSet.of(
+			HotColdLocation.DRAYNOR_WHEAT_FIELD,
+			HotColdLocation.ICE_MOUNTAIN
+		);
+		HotColdSolver solver = new HotColdSolver(startingLocations);
+
+		assertEquals(startingLocations, solver.signal(new WorldPoint(3148, 3415, 0), HotColdTemperature.WARM, null));
+		assertEquals(Sets.immutableEnumSet(HotColdLocation.DRAYNOR_WHEAT_FIELD), solver.signal(new WorldPoint(3148, 3416, 0), HotColdTemperature.WARM, HotColdTemperatureChange.COLDER));
 	}
 
 	/**

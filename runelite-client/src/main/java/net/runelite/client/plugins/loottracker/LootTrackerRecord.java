@@ -24,27 +24,75 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import lombok.Value;
+import java.util.Arrays;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import net.runelite.http.api.loottracker.LootRecordType;
 
-@Value
+@Getter
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"title", "type"})
 class LootTrackerRecord
 {
+	@NonNull
 	private final String title;
 	private final String subTitle;
-	private final LootTrackerItem[] items;
+	private final LootRecordType type;
+	private LootTrackerItem[] items;
+	private int kills;
 
 	/**
 	 * Checks if this record matches specified id
+	 *
 	 * @param id other record id
 	 * @return true if match is made
 	 */
-	boolean matches(final String id)
+	boolean matches(final String id, LootRecordType type)
 	{
 		if (id == null)
 		{
 			return true;
 		}
 
-		return title.equals(id);
+		return title.equals(id) && this.type == type;
+	}
+
+	void merge(LootTrackerRecord record)
+	{
+		assert title.equals(record.title);
+		assert type == record.type;
+
+		outer:
+		for (LootTrackerItem item : record.items)
+		{
+			for (int idx = 0; idx < items.length; ++idx)
+			{
+				LootTrackerItem r = items[idx];
+				if (r.getId() == item.getId())
+				{
+					int qty = r.getQuantity() + item.getQuantity();
+					if (qty < 0)
+					{
+						qty = Integer.MAX_VALUE;
+					}
+					items[idx] = new LootTrackerItem(
+						r.getId(),
+						r.getName(),
+						qty,
+						r.getGePrice(),
+						r.getHaPrice(),
+						r.isIgnored()
+					);
+					continue outer;
+				}
+			}
+
+			items = Arrays.copyOf(items, items.length + 1);
+			items[items.length - 1] = item;
+		}
+
+		kills += record.kills;
 	}
 }

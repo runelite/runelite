@@ -40,4 +40,6 @@ public class EnumDefinition
 	private int size;
 	private int[] keys;
 	private String[] stringVals;
+	private long[] longVals;
+	private long defaultLong;
 }

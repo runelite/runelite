@@ -65,6 +65,6 @@ public class Layout
 
 	public String toCodeString()
 	{
-		return toCode().replaceAll("#", "").replaceAll("¤", "");
+		return toCode().replace("#", "").replace("¤", "");
 	}
 }

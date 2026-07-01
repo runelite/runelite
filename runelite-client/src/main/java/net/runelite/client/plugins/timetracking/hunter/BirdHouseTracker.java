@@ -84,19 +84,17 @@ public class BirdHouseTracker
 
 	public BirdHouseTabPanel createBirdHouseTabPanel()
 	{
-		return new BirdHouseTabPanel(itemManager, this, config);
+		return new BirdHouseTabPanel(configManager, itemManager, this, config);
 	}
 
 	public void loadFromConfig()
 	{
 		birdHouseData.clear();
 
-		final String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + TimeTrackingConfig.BIRD_HOUSE;
-
 		for (BirdHouseSpace space : BirdHouseSpace.values())
 		{
-			String key = Integer.toString(space.getVarp().getId());
-			String storedValue = configManager.getConfiguration(group, key);
+			String key = TimeTrackingConfig.BIRD_HOUSE + "." + space.getVarp();
+			String storedValue = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 
 			if (storedValue != null)
 			{
@@ -135,7 +133,7 @@ public class BirdHouseTracker
 
 			for (BirdHouseSpace space : BirdHouseSpace.values())
 			{
-				int varp = client.getVar(space.getVarp());
+				int varp = client.getVarpValue(space.getVarp());
 				BirdHouseData oldData = birdHouseData.get(space);
 				int oldVarp = oldData == null ? -1 : oldData.getVarp();
 
@@ -182,7 +180,7 @@ public class BirdHouseTracker
 			summary = SummaryState.COMPLETED;
 			completionTime = 0;
 
-			if (config.birdHouseNotification())
+			if (Boolean.TRUE.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BIRDHOUSE_NOTIFY, boolean.class)))
 			{
 				notifier.notify("Your bird houses are ready to be dismantled.");
 			}
@@ -242,12 +240,10 @@ public class BirdHouseTracker
 
 	private void saveToConfig(Map<BirdHouseSpace, BirdHouseData> updatedData)
 	{
-		final String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + TimeTrackingConfig.BIRD_HOUSE;
-
 		for (BirdHouseData data : updatedData.values())
 		{
-			String key = Integer.toString(data.getSpace().getVarp().getId());
-			configManager.setConfiguration(group, key, data.getVarp() + ":" + data.getTimestamp());
+			String key = TimeTrackingConfig.BIRD_HOUSE + "." + data.getSpace().getVarp();
+			configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key, data.getVarp() + ":" + data.getTimestamp());
 		}
 	}
 }

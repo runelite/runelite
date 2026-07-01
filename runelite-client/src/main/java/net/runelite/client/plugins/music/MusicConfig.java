@@ -27,53 +27,77 @@ package net.runelite.client.plugins.music;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
 
-@ConfigGroup("music")
+@ConfigGroup(MusicConfig.GROUP)
 public interface MusicConfig extends Config
 {
+	String GROUP = "music";
+	String GRANULAR_SLIDERS = "granularSliders";
+	String MUTE_AMBIENT_SOUNDS = "muteAmbientSounds";
+
 	@ConfigItem(
-		keyName = "musicVolume",
-		name = "Music Volume",
-		description = "Overrides music volume in game with more granular control",
+		keyName = "muteOwnAreaSounds",
+		name = "Mute player area sounds",
+		description = "Mute area sounds caused by yourself.",
+		position = 0
+	)
+	default boolean muteOwnAreaSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "muteOtherAreaSounds",
+		name = "Mute other players' area sounds",
+		description = "Mute area sounds caused by other players.",
 		position = 1
 	)
-	@Range(
-		min = 0,
-		max = 255
-	)
-	default int getMusicVolume()
+	default boolean muteOtherAreaSounds()
 	{
-		return 0;
+		return false;
 	}
 
 	@ConfigItem(
-		keyName = "soundEffectVolume",
-		name = "Sound Effect Volume",
-		description = "Overrides the sound effect volume in game with more granular control",
+		keyName = "muteOtherAreaNPCSounds",
+		name = "Mute NPCs' area sounds",
+		description = "Mute area sounds caused by NPCs.",
 		position = 2
 	)
-	@Range(
-		min = 0,
-		max = 127
-	)
-	default int getSoundEffectVolume()
+	default boolean muteNpcAreaSounds()
 	{
-		return 0;
+		return false;
 	}
 
 	@ConfigItem(
-		keyName = "areaSoundEffectVolume",
-		name = "Area Sound Effect Volume",
-		description = "Overrides the area sound effect volume in game with more granular control",
+		keyName = "muteOtherAreaEnvironmentSounds",
+		name = "Mute environment area sounds",
+		description = "Mute area sounds caused by neither NPCs nor players.",
 		position = 3
 	)
-	@Range(
-		min = 0,
-		max = 127
-	)
-	default int getAreaSoundEffectVolume()
+	default boolean muteEnvironmentAreaSounds()
 	{
-		return 0;
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = MUTE_AMBIENT_SOUNDS,
+		name = "Mute ambient sounds",
+		description = "Mute background noise such as magic trees and furnaces.",
+		position = 4
+	)
+	default boolean muteAmbientSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "mutePrayerSounds",
+		name = "Mute prayer sounds",
+		description = "Mute prayer activation and deactivation sounds.",
+		position = 5
+	)
+	default boolean mutePrayerSounds()
+	{
+		return false;
 	}
 }

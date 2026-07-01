@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.widgets.WidgetTextAlignment;
+import org.intellij.lang.annotations.MagicConstant;
+
 /**
  * A bitmap Font in Jagex's format
  */
@@ -32,4 +35,11 @@ public interface FontTypeFace
 	int getTextWidth(String text);
 
 	int getBaseline();
+
+	void drawWidgetText(
+		String text,
+		int x, int y, int width, int height,
+		int rgb, int shadowRGB, int alpha,
+		@MagicConstant(valuesFromClass = WidgetTextAlignment.class) int xTextAlignment, @MagicConstant(valuesFromClass = WidgetTextAlignment.class) int yTextAlignment,
+		int lineHeight);
 }

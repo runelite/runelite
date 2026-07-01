@@ -27,6 +27,8 @@ package net.runelite.cache.script.disassembler;
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.StoreLocation;
 import net.runelite.cache.definitions.ScriptDefinition;
@@ -38,13 +40,10 @@ import net.runelite.cache.fs.Store;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class DisassemblerTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(DisassemblerTest.class);
-
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
@@ -60,7 +59,8 @@ public class DisassemblerTest
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CLIENTSCRIPT);
-			ScriptLoader loader = new ScriptLoader();
+			ScriptLoader loader = new ScriptLoader()
+				.configureForRevision(index.getRevision());
 
 			for (Archive archive : index.getArchives())
 			{
@@ -78,12 +78,12 @@ public class DisassemblerTest
 				Disassembler disassembler = new Disassembler();
 				String out = disassembler.disassemble(script);
 
-				Files.write(out.getBytes(), outFile);
+				Files.write(out.getBytes(StandardCharsets.UTF_8), outFile);
 
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} scripts to {}", count, outDir);
+		log.info("Dumped {} scripts to {}", count, outDir);
 	}
 }

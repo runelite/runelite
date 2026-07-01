@@ -30,10 +30,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,6 +44,8 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.laf.RuneLiteLAF;
+import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 public class SplashScreen extends JFrame implements ActionListener
@@ -64,21 +65,20 @@ public class SplashScreen extends JFrame implements ActionListener
 	private volatile String subActionText = "";
 	private volatile String progressText = null;
 
-	private SplashScreen() throws IOException
+	private SplashScreen()
 	{
-		BufferedImage logo = ImageIO.read(SplashScreen.class.getResourceAsStream("runelite_transparent.png"));
-
 		setTitle("RuneLite Launcher");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setUndecorated(true);
-		setIconImage(logo);
+		setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 		setLayout(null);
 		Container pane = getContentPane();
 		pane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
+		BufferedImage logo = ImageUtil.loadImageResource(SplashScreen.class, "runelite_splash.png");
 		JLabel logoLabel = new JLabel(new ImageIcon(logo));
 		pane.add(logoLabel);
 		logoLabel.setBounds(0, 0, WIDTH, WIDTH);
@@ -151,6 +151,11 @@ public class SplashScreen extends JFrame implements ActionListener
 		}
 	}
 
+	public static boolean isOpen()
+	{
+		return INSTANCE != null;
+	}
+
 	public static void init()
 	{
 		try
@@ -164,7 +169,11 @@ public class SplashScreen extends JFrame implements ActionListener
 
 				try
 				{
-					UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+					boolean hasLAF = UIManager.getLookAndFeel() instanceof RuneLiteLAF;
+					if (!hasLAF)
+					{
+						UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+					}
 					INSTANCE = new SplashScreen();
 				}
 				catch (Exception e)
@@ -189,6 +198,12 @@ public class SplashScreen extends JFrame implements ActionListener
 			}
 
 			INSTANCE.timer.stop();
+			// The CLOSE_ALL_WINDOWS quit strategy on MacOS dispatches WINDOW_CLOSING events to each frame
+			// from Window.getWindows. However, getWindows uses weak refs and relies on gc to remove windows
+			// from its list, causing events to get dispatched to disposed frames. The frames handle the events
+			// regardless of being disposed and will run the configured close operation. Set the close operation
+			// to DO_NOTHING_ON_CLOSE prior to disposing to prevent this.
+			INSTANCE.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			INSTANCE.dispose();
 			INSTANCE = null;
 		});
@@ -206,8 +221,9 @@ public class SplashScreen extends JFrame implements ActionListener
 		String progress;
 		if (mib)
 		{
-			final double MiB = 1024 * 1042;
-			progress = String.format("%.1f / %.1f MiB", done / MiB, total / MiB);
+			final double MiB = 1024 * 1024;
+			final double CEIL = 1.d / 10.d;
+			progress = String.format("%.1f / %.1f MiB", done / MiB, (total / MiB) + CEIL);
 		}
 		else
 		{

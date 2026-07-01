@@ -26,13 +26,19 @@ package net.runelite.api;
 
 public interface EnumComposition
 {
+	int size();
+
 	int[] getKeys();
 
 	int[] getIntVals();
+
+	long[] getLongVals();
 
 	String[] getStringVals();
 
 	int getIntValue(int key);
 
 	String getStringValue(int key);
+
+	long getLongValue(int key);
 }

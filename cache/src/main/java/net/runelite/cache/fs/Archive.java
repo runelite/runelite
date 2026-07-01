@@ -25,70 +25,49 @@
 package net.runelite.cache.fs;
 
 import java.io.IOException;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.cache.index.FileData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@EqualsAndHashCode(of = {"archiveId", "nameHash", "revision"})
 public class Archive
 {
 	private static final Logger logger = LoggerFactory.getLogger(Archive.class);
 
+	@Getter
 	private final Index index; // member of this index
 
+	@Getter
 	private final int archiveId;
+	@Getter
+	@Setter
 	private int nameHash;
+	@Getter
+	@Setter
 	private int crc;
+	@Getter
+	@Setter
+	private int compressedSize;
+	@Getter
+	@Setter
+	private int decompressedSize;
+	@Getter
+	@Setter
 	private int revision;
+	@Getter
+	@Setter
 	private int compression;
+	@Getter
+	@Setter
 	private FileData[] fileData;
-	private byte[] hash; // used by webservice, sha256 hash of content
 
 	public Archive(Index index, int id)
 	{
 		this.index = index;
 		this.archiveId = id;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 47 * hash + this.archiveId;
-		hash = 47 * hash + this.nameHash;
-		hash = 47 * hash + this.revision;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Archive other = (Archive) obj;
-		if (this.archiveId != other.archiveId)
-		{
-			return false;
-		}
-		if (this.nameHash != other.nameHash)
-		{
-			return false;
-		}
-		if (this.revision != other.revision)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public Index getIndex()
-	{
-		return index;
 	}
 
 	public byte[] decompress(byte[] data) throws IOException
@@ -103,15 +82,7 @@ public class Archive
 			return null;
 		}
 
-		byte[] encryptedData = data;
-
-		Container container = Container.decompress(encryptedData, keys);
-		if (container == null)
-		{
-			logger.warn("Unable to decrypt archive {}", this);
-			return null;
-		}
-
+		Container container = Container.decompress(data, keys);
 		byte[] decompressedData = container.data;
 
 		if (this.crc != container.crc)
@@ -120,20 +91,20 @@ public class Archive
 			throw new IOException("CRC mismatch for " + index.getId() + "/" + this.getArchiveId());
 		}
 
-		if (container.revision != -1 && this.getRevision() != container.revision)
+		if (container.revision != -1 && this.revision != container.revision)
 		{
 			// compressed data doesn't always include a revision, but check it if it does
 			logger.warn("revision mismatch for archive {}/{}, expected {} was {}",
 				index.getId(), this.getArchiveId(),
-				this.getRevision(), container.revision);
+				this.revision, container.revision);
 			// I've seen this happen with vanilla caches where the
 			// revision in the index data differs from the revision
 			// stored for the archive data on disk... I assume this
 			// is more correct
-			this.setRevision(container.revision);
+			this.revision = container.revision;
 		}
 
-		setCompression(container.compression);
+		this.compression = container.compression;
 		return decompressedData;
 	}
 
@@ -155,70 +126,5 @@ public class Archive
 		}
 		files.loadContents(decompressedData);
 		return files;
-	}
-
-	public int getArchiveId()
-	{
-		return archiveId;
-	}
-
-	public int getNameHash()
-	{
-		return nameHash;
-	}
-
-	public void setNameHash(int nameHash)
-	{
-		this.nameHash = nameHash;
-	}
-
-	public int getCrc()
-	{
-		return crc;
-	}
-
-	public void setCrc(int crc)
-	{
-		this.crc = crc;
-	}
-
-	public int getRevision()
-	{
-		return revision;
-	}
-
-	public void setRevision(int revision)
-	{
-		this.revision = revision;
-	}
-
-	public int getCompression()
-	{
-		return compression;
-	}
-
-	public void setCompression(int compression)
-	{
-		this.compression = compression;
-	}
-
-	public FileData[] getFileData()
-	{
-		return fileData;
-	}
-
-	public void setFileData(FileData[] fileData)
-	{
-		this.fileData = fileData;
-	}
-
-	public byte[] getHash()
-	{
-		return hash;
-	}
-
-	public void setHash(byte[] hash)
-	{
-		this.hash = hash;
 	}
 }

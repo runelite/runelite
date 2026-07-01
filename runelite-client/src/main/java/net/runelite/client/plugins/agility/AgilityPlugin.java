@@ -24,69 +24,85 @@
  */
 package net.runelite.client.plugins.agility;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
+import net.runelite.api.Experience;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.Skill;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.BoostedLevelChanged;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
-import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Agility",
 	description = "Show helpful information about agility courses and obstacles",
-	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
+	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps", "sepulchre"}
 )
+@PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
+	private static final Set<Integer> SEPULCHRE_NPCS = ImmutableSet.of(
+		NpcID.HALLOWED_PROJECTILE_NPC, NpcID.HALLOWED_PROJECTILE_NPC_T2, NpcID.HALLOWED_PROJECTILE_NPC_T3,  // arrows
+		NpcID.HALLOWED_SWORD_NPC, NpcID.HALLOWED_SWORD_NPC_T2, NpcID.HALLOWED_SWORD_NPC_T3   // swords
+	);
 
 	@Getter
 	private final Map<TileObject, Obstacle> obstacles = new HashMap<>();
 
 	@Getter
 	private final List<Tile> marksOfGrace = new ArrayList<>();
+
+	@Getter
+	private final Set<NPC> npcs = new HashSet<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -112,7 +128,11 @@ public class AgilityPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private XpTrackerService xpTrackerService;
+
 	@Getter
+	@Setter(AccessLevel.PACKAGE)
 	private AgilitySession session;
 
 	private int lastAgilityXp;
@@ -120,6 +140,9 @@ public class AgilityPlugin extends Plugin
 
 	@Getter
 	private int agilityLevel;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Tile stickTile;
 
 	@Provides
 	AgilityConfig getConfig(ConfigManager configManager)
@@ -132,7 +155,7 @@ public class AgilityPlugin extends Plugin
 	{
 		overlayManager.add(agilityOverlay);
 		overlayManager.add(lapCounterOverlay);
-		agilityLevel = client.getBoostedSkillLevel(Skill.AGILITY);
+		agilityLevel = client.getBoostedSkillLevel(AGILITY);
 	}
 
 	@Override
@@ -144,6 +167,8 @@ public class AgilityPlugin extends Plugin
 		obstacles.clear();
 		session = null;
 		agilityLevel = 0;
+		stickTile = null;
+		npcs.clear();
 	}
 
 	@Subscribe
@@ -156,10 +181,12 @@ public class AgilityPlugin extends Plugin
 				session = null;
 				lastArenaTicketPosition = null;
 				removeAgilityArenaTimer();
+				npcs.clear();
 				break;
 			case LOADING:
 				marksOfGrace.clear();
 				obstacles.clear();
+				stickTile = null;
 				break;
 			case LOGGED_IN:
 				if (!isInAgilityArena())
@@ -181,50 +208,53 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getSkill() != AGILITY || !config.showLapCount())
+		if (event.getVarbitId() == VarbitID.VARLAMORE_WYRM_AGILITY_ADVANCED_PROGRESS && event.getValue() == 6)
 		{
-			return;
+			trackSession(Courses.COLOSSAL_WYRM_ADVANCED);
 		}
-
-		// Determine how much EXP was actually gained
-		int agilityXp = client.getSkillExperience(AGILITY);
-		int skillGained = agilityXp - lastAgilityXp;
-		lastAgilityXp = agilityXp;
-
-		// Get course
-		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| (course.getCourseEndWorldPoints().length == 0
-			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
-			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
+		else if (event.getVarbitId() == VarbitID.VARLAMORE_WYRM_AGILITY_BASIC_PROGRESS && event.getValue() == 6)
 		{
-			return;
-		}
-
-		if (session != null && session.getCourse() == course)
-		{
-			session.incrementLapCount(client);
-		}
-		else
-		{
-			session = new AgilitySession(course);
-			// New course found, reset lap count and set new course
-			session.resetLapCount();
-			session.incrementLapCount(client);
+			trackSession(Courses.COLOSSAL_WYRM_BASIC);
 		}
 	}
 
-
 	@Subscribe
-	public void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		Skill skill = boostedLevelChanged.getSkill();
-		if (skill == AGILITY)
+		if (statChanged.getSkill() != AGILITY)
 		{
-			agilityLevel = client.getBoostedSkillLevel(skill);
+			return;
 		}
+
+		agilityLevel = statChanged.getBoostedLevel();
+
+		// Store previous agility level for possible goal laps recalculation
+		final int previousLevel = Experience.getLevelForXp(lastAgilityXp);
+		// Determine how much EXP was actually gained
+		int agilityXp = statChanged.getXp();
+		int skillGained = agilityXp - lastAgilityXp;
+		lastAgilityXp = agilityXp;
+
+		log.debug("Gained {} xp at {}", skillGained, client.getLocalPlayer().getWorldLocation());
+
+		// Get course
+		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
+		if (course == null || !config.showLapCount())
+		{
+			return;
+		}
+		else if (Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
+		{
+			if (session != null && previousLevel != statChanged.getLevel())
+			{
+				session.recalculateLapsTillGoal(client, xpTrackerService);
+			}
+			return;
+		}
+
+		trackSession(course);
 	}
 
 	@Subscribe
@@ -238,17 +268,29 @@ public class AgilityPlugin extends Plugin
 		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
 
-		if (item.getId() == ItemID.MARK_OF_GRACE)
+		if (item.getId() == ItemID.GRACE)
 		{
 			marksOfGrace.add(tile);
+		}
+
+		if (item.getId() == ItemID.WAA_STICK)
+		{
+			stickTile = tile;
 		}
 	}
 
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
+		final TileItem item = itemDespawned.getItem();
 		final Tile tile = itemDespawned.getTile();
+
 		marksOfGrace.remove(tile);
+
+		if (item.getId() == ItemID.WAA_STICK && stickTile == tile)
+		{
+			stickTile = null;
+		}
 	}
 
 	@Subscribe
@@ -258,19 +300,20 @@ public class AgilityPlugin extends Plugin
 		{
 			// Hint arrow has no plane, and always returns the current plane
 			WorldPoint newTicketPosition = client.getHintArrowPoint();
+			if (newTicketPosition == null)
+			{
+				return;
+			}
 			WorldPoint oldTickPosition = lastArenaTicketPosition;
 
 			lastArenaTicketPosition = newTicketPosition;
 
-			if (oldTickPosition != null && newTicketPosition != null
+			if (oldTickPosition != null
 				&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
 			{
 				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
 
-				if (config.notifyAgilityArena())
-				{
-					notifier.notify("Ticket location changed");
-				}
+				notifier.notify(config.notifyAgilityArena(), "Ticket location changed");
 
 				if (config.showAgilityArenaTimer())
 				{
@@ -278,6 +321,17 @@ public class AgilityPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	private void trackSession(Courses course)
+	{
+		if (session == null || session.getCourse() != course)
+		{
+			session = new AgilitySession(course);
+			log.debug("Started new agility session for course: {}", course);
+		}
+
+		session.incrementLapCount(client, xpTrackerService);
 	}
 
 	private boolean isInAgilityArena()
@@ -300,19 +354,13 @@ public class AgilityPlugin extends Plugin
 	private void showNewAgilityArenaTimer()
 	{
 		removeAgilityArenaTimer();
-		infoBoxManager.addInfoBox(new AgilityArenaTimer(this, itemManager.getImage(AGILITY_ARENA_TICKET)));
+		infoBoxManager.addInfoBox(new AgilityArenaTimer(this, itemManager.getImage(ItemID.AGILITYARENA_TICKET)));
 	}
 
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
-	}
-
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
-	{
-		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe
@@ -328,12 +376,6 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectChanged(GroundObjectChanged event)
-	{
-		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
-	}
-
-	@Subscribe
 	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
@@ -346,12 +388,6 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
-	}
-
-	@Subscribe
 	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);
@@ -361,12 +397,6 @@ public class AgilityPlugin extends Plugin
 	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getDecorativeObject());
-	}
-
-	@Subscribe
-	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
-	{
-		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
 	}
 
 	@Subscribe
@@ -384,9 +414,12 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
+		if (Obstacles.OBSTACLE_IDS.contains(newObject.getId()) ||
+			Obstacles.PORTAL_OBSTACLE_IDS.contains(newObject.getId()) ||
 			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
+				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())) ||
+			Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(newObject.getId()) ||
+			Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(newObject.getId()))
 		{
 			obstacles.put(newObject, new Obstacle(tile, null));
 		}
@@ -399,6 +432,11 @@ public class AgilityPlugin extends Plugin
 			// Find the closest shortcut to this object
 			for (AgilityShortcut shortcut : Obstacles.SHORTCUT_OBSTACLE_IDS.get(newObject.getId()))
 			{
+				if (!shortcut.matches(client, newObject))
+				{
+					continue;
+				}
+
 				if (shortcut.getWorldLocation() == null)
 				{
 					closestShortcut = shortcut;
@@ -420,5 +458,23 @@ public class AgilityPlugin extends Plugin
 				obstacles.put(newObject, new Obstacle(tile, closestShortcut));
 			}
 		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned npcSpawned)
+	{
+		NPC npc = npcSpawned.getNpc();
+
+		if (SEPULCHRE_NPCS.contains(npc.getId()))
+		{
+			npcs.add(npc);
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		NPC npc = npcDespawned.getNpc();
+		npcs.remove(npc);
 	}
 }

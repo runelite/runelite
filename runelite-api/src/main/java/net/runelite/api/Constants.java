@@ -73,6 +73,12 @@ public class Constants
 	public static final int SCENE_SIZE = 104;
 
 	/**
+	 * Size of the extended scene. To compute the offset to convert from scene coordinate to
+	 * extended scene coordinate, use (EXTENDED_SCENE_SIZE-SCENE_SIZE)/2.
+	 */
+	public static final int EXTENDED_SCENE_SIZE = 184;
+
+	/**
 	 * The max allowed plane by the game.
 	 * <p>
 	 * This value is exclusive. The plane is set by 2 bits which restricts
@@ -81,6 +87,33 @@ public class Constants
 	public static final int MAX_Z = 4;
 
 	public static final int TILE_FLAG_BRIDGE = 2;
+	public static final int TILE_FLAG_UNDER_ROOF = 4;
+	public static final int TILE_FLAG_VIS_BELOW = 8;
+
+	/**
+	 * Flag for roof removal to remove the roofs above the player's current position.
+	 */
+	public static final int ROOF_FLAG_POSITION = 1;
+
+	/**
+	 * Flag for roof removal to remove the roofs above the currently hovered tile.
+	 */
+	public static final int ROOF_FLAG_HOVERED = 2;
+
+	/**
+	 * Flag for roof removal to remove the roofs above the player's destination tile.
+	 */
+	public static final int ROOF_FLAG_DESTINATION = 4;
+
+	/**
+	 * Flag for roof removal to remove the roofs that are above any tile between the camera and the player.
+	 */
+	public static final int ROOF_FLAG_BETWEEN = 8;
+
+	/**
+	 * The height of the overworld, in tiles. Coordinates above this are in caves and other such zones.
+	 */
+	public static final int OVERWORLD_MAX_Y = 4160;
 
 	/**
 	 * The number of milliseconds in a client tick.
@@ -114,4 +147,8 @@ public class Constants
 	 * @see ItemComposition#getPrice
 	 */
 	public static final float HIGH_ALCHEMY_MULTIPLIER = .6f;
+
+	public static final int CLICK_ACTION_NONE = 0;
+	public static final int CLICK_ACTION_WALK = 1;
+	public static final int CLICK_ACTION_SET_HEADING = 2;
 }

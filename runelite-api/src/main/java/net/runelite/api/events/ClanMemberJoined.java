@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, trimbe <github.com/trimbe>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,15 @@
 package net.runelite.api.events;
 
 import lombok.Value;
-import net.runelite.api.ClanMember;
+import net.runelite.api.clan.ClanChannel;
+import net.runelite.api.clan.ClanChannelMember;
 
+/**
+ * An event when a clan member joins a clan channel.
+ */
 @Value
 public class ClanMemberJoined
 {
-	/**
-	 * The ClanMember that joined
-	 */
-	private ClanMember member;
+	private final ClanChannel clanChannel;
+	private final ClanChannelMember clanMember;
 }

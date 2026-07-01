@@ -40,7 +40,7 @@ import net.runelite.api.Actor;
  *     <li>Breaking a teleport tab</li>
  * </ul>
  *
- * @see net.runelite.api.GraphicID
+ * @see net.runelite.api.gameval.SpotanimID
  */
 @Data
 public class GraphicChanged

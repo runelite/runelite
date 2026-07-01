@@ -29,7 +29,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientStr;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.vars.InputType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
@@ -54,49 +55,50 @@ public class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!e.isControlDown() || !chatCommandsConfig.clearShortcuts())
+		if (chatCommandsConfig.clearSingleWord().matches(e))
 		{
-			return;
-		}
+			int inputTye = client.getVarcIntValue(VarClientID.MESLAYERMODE);
+			String input = inputTye == InputType.NONE.getType()
+				? client.getVarcStrValue(VarClientID.CHATINPUT)
+				: client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 
-		switch (e.getKeyCode())
-		{
-			case KeyEvent.VK_W:
-				String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-				if (input != null)
+			if (input != null)
+			{
+				// prevent the keypress from also modifying the chatbox as we alter the text
+				e.consume();
+
+				// remove trailing space
+				while (input.endsWith(" "))
 				{
-					// remove trailing space
-					while (input.endsWith(" "))
-					{
-						input = input.substring(0, input.length() - 1);
-					}
-
-					// find next word
-					int idx = input.lastIndexOf(' ');
-					final String replacement;
-					if (idx != -1)
-					{
-						replacement = input.substring(0, idx);
-					}
-					else
-					{
-						replacement = "";
-					}
-
-					clientThread.invoke(() ->
-					{
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
-						client.runScript(ScriptID.CHAT_PROMPT_INIT);
-					});
+					input = input.substring(0, input.length() - 1);
 				}
-				break;
-			case KeyEvent.VK_BACK_SPACE:
-				clientThread.invoke(() ->
-				{
-					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
-					client.runScript(ScriptID.CHAT_PROMPT_INIT);
-				});
-				break;
+
+				// find next word
+				int idx = input.lastIndexOf(' ') + 1;
+				final String replacement = input.substring(0, idx);
+
+				clientThread.invoke(() -> applyText(inputTye, replacement));
+			}
+		}
+		else if (chatCommandsConfig.clearChatBox().matches(e))
+		{
+			e.consume();
+			int inputTye = client.getVarcIntValue(VarClientID.MESLAYERMODE);
+			clientThread.invoke(() -> applyText(inputTye, ""));
+		}
+	}
+
+	private void applyText(int inputType, String replacement)
+	{
+		if (inputType == InputType.NONE.getType())
+		{
+			client.setVarcStrValue(VarClientID.CHATINPUT, replacement);
+			client.runScript(ScriptID.CHAT_PROMPT_INIT);
+		}
+		else if (inputType == InputType.PRIVATE_MESSAGE.getType())
+		{
+			client.setVarcStrValue(VarClientID.MESLAYERINPUT, replacement);
+			client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");
 		}
 	}
 

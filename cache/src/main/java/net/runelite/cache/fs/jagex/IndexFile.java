@@ -29,16 +29,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@EqualsAndHashCode(of = "file")
 public class IndexFile implements Closeable
 {
 	private static final Logger logger = LoggerFactory.getLogger(IndexFile.class);
 
 	private static final int INDEX_ENTRY_LEN = 6;
 
+	@Getter
 	private final int indexFileId;
 	private final File file;
 	private final RandomAccessFile idx;
@@ -60,38 +63,6 @@ public class IndexFile implements Closeable
 	public void clear() throws IOException
 	{
 		idx.setLength(0L);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 3;
-		hash = 41 * hash + Objects.hashCode(this.file);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final IndexFile other = (IndexFile) obj;
-		if (!Objects.equals(this.file, other.file))
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public int getIndexFileId()
-	{
-		return indexFileId;
 	}
 
 	public synchronized void write(IndexEntry entry) throws IOException

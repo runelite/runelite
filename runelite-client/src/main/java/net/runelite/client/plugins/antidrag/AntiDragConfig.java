@@ -29,17 +29,39 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("antiDrag")
+@ConfigGroup(AntiDragPlugin.CONFIG_GROUP)
 public interface AntiDragConfig extends Config
 {
 	@ConfigItem(
 		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
+		name = "Drag delay",
+		description = "Configures the inventory drag delay in client ticks (20ms).",
 		position = 1
 	)
 	default int dragDelay()
 	{
 		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
+	}
+
+	@ConfigItem(
+		keyName = "onShiftOnly",
+		name = "On shift only",
+		description = "Configures whether to only adjust the delay while holding shift.",
+		position = 2
+	)
+	default boolean onShiftOnly()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "disableOnCtrl",
+		name = "Disable on control pressed",
+		description = "Configures whether to ignore the delay while holding control.",
+		position = 3
+	)
+	default boolean disableOnCtrl()
+	{
+		return false;
 	}
 }

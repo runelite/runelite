@@ -100,8 +100,11 @@ public class DynamicGridLayout extends GridLayout
 
 			// scaling factors
 			final Dimension pd = preferredLayoutSize(parent);
-			final double sw = (1.0 * parent.getWidth()) / pd.width;
-			final double sh = (1.0 * parent.getHeight()) / pd.height;
+			final Insets parentInsets = parent.getInsets();
+			int wborder = parentInsets.left + parentInsets.right;
+			int hborder = parentInsets.top + parentInsets.bottom;
+			final double sw = (1.0 * parent.getWidth() - wborder) / (pd.width - wborder);
+			final double sh = (1.0 * parent.getHeight() - hborder) / (pd.height - hborder);
 
 			final int[] w = new int[ncols];
 			final int[] h = new int[nrows];

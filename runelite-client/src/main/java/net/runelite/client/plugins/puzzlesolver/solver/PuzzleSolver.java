@@ -37,8 +37,8 @@ public class PuzzleSolver implements Runnable
 
 	private static final Duration MAX_WAIT_DURATION = Duration.ofMillis(1500);
 
-	private Pathfinder pathfinder;
-	private PuzzleState startState;
+	private final Pathfinder pathfinder;
+	private final PuzzleState startState;
 
 	private List<PuzzleState> solution;
 	private int position;

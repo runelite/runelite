@@ -74,7 +74,9 @@ class PartyPingOverlay extends Overlay
 				}
 
 				renderPing(graphics, next);
-				next.setAlpha(next.getAlpha() - 5);
+
+				long elapsedTimeMillis = (System.nanoTime() - next.getCreationTime()) / 1000000;
+				next.setAlpha((int) Math.max(0, 255 - (elapsedTimeMillis / 4)));
 			}
 		}
 

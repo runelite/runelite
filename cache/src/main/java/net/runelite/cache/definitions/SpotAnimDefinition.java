@@ -29,6 +29,7 @@ import lombok.Data;
 @Data
 public class SpotAnimDefinition
 {
+	public String debugName;
 	public int rotaton = 0;
 	public short[] textureToReplace;
 	public int id;

@@ -30,8 +30,8 @@ import net.runelite.api.Item;
 
 public class SlotLimitationRequirement implements ItemRequirement
 {
-	private String description;
-	private EquipmentInventorySlot[] slots;
+	private final String description;
+	private final EquipmentInventorySlot[] slots;
 
 	public SlotLimitationRequirement(String description, EquipmentInventorySlot... slots)
 	{

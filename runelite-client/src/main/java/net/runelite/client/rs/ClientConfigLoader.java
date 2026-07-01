@@ -28,34 +28,27 @@ package net.runelite.client.rs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import net.runelite.http.api.RuneLiteAPI;
+import java.nio.charset.StandardCharsets;
+import lombok.AllArgsConstructor;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+@AllArgsConstructor
 class ClientConfigLoader
 {
-	private ClientConfigLoader()
+	private final OkHttpClient okHttpClient;
+
+	RSConfig fetch(HttpUrl url) throws IOException
 	{
-	}
-
-	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
-
-	static RSConfig fetch(String host) throws IOException
-	{
-		HttpUrl url = HttpUrl.parse(CONFIG_URL);
-		if (host != null)
-		{
-			url = url.newBuilder().host(host).build();
-		}
-
 		final Request request = new Request.Builder()
 			.url(url)
 			.build();
 
 		final RSConfig config = new RSConfig();
 
-		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -63,7 +56,7 @@ class ClientConfigLoader
 			}
 
 			String str;
-			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream(), StandardCharsets.UTF_8));
 			while ((str = in.readLine()) != null)
 			{
 				int idx = str.indexOf('=');

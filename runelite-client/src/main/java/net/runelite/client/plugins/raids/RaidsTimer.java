@@ -33,9 +33,10 @@ import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public class RaidsTimer extends InfoBox
+class RaidsTimer extends InfoBox
 {
 	private final Instant startTime;
+	private final RaidsConfig config;
 	private Instant floorTime;
 	private LocalTime time;
 	private LocalTime firstFloorTime;
@@ -46,10 +47,11 @@ public class RaidsTimer extends InfoBox
 	@Setter
 	private boolean stopped;
 
-	public RaidsTimer(Plugin plugin, Instant startTime)
+	public RaidsTimer(Plugin plugin, Instant startTime, RaidsConfig raidsConfig)
 	{
 		super(null, plugin);
 		this.startTime = startTime;
+		this.config = raidsConfig;
 		floorTime = startTime;
 		stopped = false;
 	}
@@ -145,5 +147,11 @@ public class RaidsTimer extends InfoBox
 		}
 
 		return builder.toString();
+	}
+
+	@Override
+	public boolean render()
+	{
+		return config.raidsTimer();
 	}
 }

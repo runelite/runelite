@@ -28,8 +28,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.ui.overlay.Overlay;
@@ -70,14 +70,14 @@ class ClueScrollEmoteOverlay extends Overlay
 			return null;
 		}
 
-		Widget emoteContainer = client.getWidget(WidgetInfo.EMOTE_CONTAINER);
+		Widget emoteContainer = client.getWidget(InterfaceID.Emote.CONTENTS);
 
 		if (emoteContainer == null || emoteContainer.isHidden())
 		{
 			return null;
 		}
 
-		Widget emoteWindow = client.getWidget(WidgetInfo.EMOTE_WINDOW);
+		Widget emoteWindow = client.getWidget(InterfaceID.Emote.UNIVERSE);
 
 		if (emoteWindow == null)
 		{
@@ -105,7 +105,7 @@ class ClueScrollEmoteOverlay extends Overlay
 		if (!hasScrolled)
 		{
 			hasScrolled = true;
-			plugin.scrollToWidget(WidgetInfo.EMOTE_CONTAINER, WidgetInfo.EMOTE_SCROLLBAR, firstEmoteWidget, secondEmoteWidget);
+			plugin.scrollToWidget(InterfaceID.Emote.SCROLLABLE, InterfaceID.Emote.SCROLLBAR, firstEmoteWidget, secondEmoteWidget);
 		}
 
 		return null;

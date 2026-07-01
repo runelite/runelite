@@ -26,18 +26,18 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.inject.Provides;
-import java.awt.Font;
 import java.awt.Image;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -46,7 +46,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -61,11 +60,13 @@ public class BarbarianAssaultPlugin extends Plugin
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
 
-	private Font font;
+	@Getter(AccessLevel.PACKAGE)
 	private Image clockImage;
-	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
+
+	@Getter
+	private Round currentRound;
 
 	@Inject
 	private Client client;
@@ -80,7 +81,10 @@ public class BarbarianAssaultPlugin extends Plugin
 	private BarbarianAssaultConfig config;
 
 	@Inject
-	private BarbarianAssaultOverlay overlay;
+	private TimerOverlay timerOverlay;
+
+	@Inject
+	private HealerOverlay healerOverlay;
 
 	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
@@ -91,20 +95,20 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 24);
+		overlayManager.add(timerOverlay);
+		overlayManager.add(healerOverlay);
 
-		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
+		clockImage = ImageUtil.loadImageResource(getClass(), "clock.png");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(timerOverlay);
+		overlayManager.remove(healerOverlay);
 		gameTime = null;
 		currentWave = START_WAVE;
-		inGameBit = 0;
+		clockImage = null;
 	}
 
 	@Subscribe
@@ -112,9 +116,9 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		switch (event.getGroupId())
 		{
-			case WidgetID.BA_REWARD_GROUP_ID:
+			case InterfaceID.BARBASSAULT_WAVECOMPLETE:
 			{
-				Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
+				Widget rewardWidget = client.getWidget(InterfaceID.BarbassaultWavecomplete.BARBASSAULT_COMPL_QUEENREWARDS);
 
 				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 				{
@@ -124,25 +128,42 @@ public class BarbarianAssaultPlugin extends Plugin
 
 				break;
 			}
-			case WidgetID.BA_ATTACKER_GROUP_ID:
+			case InterfaceID.BARBASSAULT_OVER_ATT:
 			{
-				setOverlayRound(Role.ATTACKER);
+				setRound(Role.ATTACKER);
 				break;
 			}
-			case WidgetID.BA_DEFENDER_GROUP_ID:
+			case InterfaceID.BARBASSAULT_OVER_DEF:
 			{
-				setOverlayRound(Role.DEFENDER);
+				setRound(Role.DEFENDER);
 				break;
 			}
-			case WidgetID.BA_HEALER_GROUP_ID:
+			case InterfaceID.BARBASSAULT_OVER_HEAL:
 			{
-				setOverlayRound(Role.HEALER);
+				setRound(Role.HEALER);
 				break;
 			}
-			case WidgetID.BA_COLLECTOR_GROUP_ID:
+			case InterfaceID.BARBASSAULT_OVER_COL:
 			{
-				setOverlayRound(Role.COLLECTOR);
+				setRound(Role.COLLECTOR);
 				break;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarbitId() == VarbitID.BARBASSAULT_AREAEXIT_PENDING && event.getValue() == 0)
+		{
+			currentRound = null;
+
+			// Use an instance check to determine if this is exiting a game or a tutorial
+			// After exiting tutorials there is a small delay before changing IN_GAME_BA back to
+			// 0 whereas when in a real wave it changes while still in the instance.
+			if (config.waveTimes() && gameTime != null && client.isInInstancedRegion())
+			{
+				announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true));
 			}
 		}
 	}
@@ -167,41 +188,15 @@ public class BarbarianAssaultPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void setRound(Role role)
 	{
-		int inGame = client.getVar(Varbits.IN_GAME_BA);
-
-		if (inGameBit != inGame)
-		{
-			if (inGameBit == 1)
-			{
-				overlay.setCurrentRound(null);
-
-				// Use an instance check to determine if this is exiting a game or a tutorial
-				// After exiting tutorials there is a small delay before changing IN_GAME_BA back to
-				// 0 whereas when in a real wave it changes while still in the instance.
-				if (config.waveTimes() && gameTime != null && client.isInInstancedRegion())
-				{
-					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true));
-				}
-			}
-		}
-
-		inGameBit = inGame;
-	}
-
-	private void setOverlayRound(Role role)
-	{
-		// Prevent changing roles when a role is already set, as widgets can be
+		// Prevent changing rounds when a round is already set, as widgets can be
 		// loaded multiple times in game from eg. opening and closing the horn
 		// of glory.
-		if (overlay.getCurrentRound() != null)
+		if (currentRound == null)
 		{
-			return;
+			currentRound = new Round(role);
 		}
-
-		overlay.setCurrentRound(new Round(role));
 	}
 
 	private void announceTime(String preText, String time)
@@ -217,15 +212,5 @@ public class BarbarianAssaultPlugin extends Plugin
 			.type(ChatMessageType.CONSOLE)
 			.runeLiteFormattedMessage(chatMessage)
 			.build());
-	}
-
-	public Font getFont()
-	{
-		return font;
-	}
-
-	public Image getClockImage()
-	{
-		return clockImage;
 	}
 }

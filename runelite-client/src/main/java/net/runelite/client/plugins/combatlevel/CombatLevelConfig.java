@@ -42,9 +42,19 @@ public interface CombatLevelConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showPreciseCombatLevel",
+		name = "Show precise combat level",
+		description = "Displays your combat level with accurate decimals."
+	)
+	default boolean showPreciseCombatLevel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "wildernessAttackLevelRange",
 		name = "Show level range in wilderness",
-		description = "Displays a PVP-world-like attack level range in the wilderness"
+		description = "Displays a PvP-world-like attack level range in the wilderness."
 	)
 	default boolean wildernessAttackLevelRange()
 	{

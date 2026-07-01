@@ -62,9 +62,9 @@ public class TitleComponent implements LayoutableRenderableEntity
 		final TextComponent titleComponent = new TextComponent();
 		titleComponent.setText(text);
 		titleComponent.setColor(color);
-		titleComponent.setPosition(new Point(
+		titleComponent.setPosition(
 			baseX + ((preferredSize.width - metrics.stringWidth(text)) / 2),
-			baseY + metrics.getHeight()));
+			baseY + metrics.getHeight());
 		final Dimension rendered = titleComponent.render(graphics);
 		final Dimension dimension = new Dimension(preferredSize.width, rendered.height);
 		bounds.setLocation(preferredLocation);

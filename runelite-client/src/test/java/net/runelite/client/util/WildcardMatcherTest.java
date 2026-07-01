@@ -24,9 +24,9 @@
  */
 package net.runelite.client.util;
 
-import static junit.framework.TestCase.assertTrue;
 import static net.runelite.client.util.WildcardMatcher.matches;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class WildcardMatcherTest
@@ -39,5 +39,6 @@ public class WildcardMatcherTest
 		assertFalse(matches("Abyssal whip", "Adamant dagger"));
 		assertTrue(matches("rune*", "Runeite Ore"));
 		assertTrue(matches("Abyssal whip", "Abyssal whip"));
+		assertTrue(matches("string $ with special character", "string $ with special character"));
 	}
 }

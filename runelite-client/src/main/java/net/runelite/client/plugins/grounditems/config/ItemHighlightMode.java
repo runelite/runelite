@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ItemHighlightMode
 {
+	NONE("None"),
 	OVERLAY("Overlay"),
 	MENU("Right-click menu"),
 	BOTH("Both");

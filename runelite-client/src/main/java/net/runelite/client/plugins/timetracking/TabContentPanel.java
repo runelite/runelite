@@ -24,15 +24,21 @@
  */
 package net.runelite.client.plugins.timetracking;
 
-import java.awt.Dimension;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import javax.swing.JPanel;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class TabContentPanel extends JPanel
 {
+	private static final DateTimeFormatter DATETIME_FORMATTER_24H = DateTimeFormatter.ofPattern("HH:mm");
+	private static final DateTimeFormatter DATETIME_FORMATTER_12H = DateTimeFormatter.ofPattern("h:mm a");
+
 	/**
 	 * Gets the update interval of this panel, in units of 200 milliseconds
 	 * (the plugin panel checks if its contents should be updated every 200 ms;
@@ -42,15 +48,11 @@ public abstract class TabContentPanel extends JPanel
 
 	public abstract void update();
 
-	@Override
-	public Dimension getPreferredSize()
+	public static String getFormattedEstimate(long remainingSeconds, TimeFormatMode mode)
 	{
-		return super.getPreferredSize();
-	}
+		DateTimeFormatter formatter = getDateTimeFormatter(mode);
 
-	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
-	{
-		if (useRelativeTime)
+		if (formatter == null)
 		{
 			StringBuilder sb = new StringBuilder("in ");
 			long duration = (remainingSeconds + 59) / 60;
@@ -73,15 +75,38 @@ public abstract class TabContentPanel extends JPanel
 		}
 		else
 		{
-			StringBuilder sb = new StringBuilder();
-			LocalDateTime endTime = LocalDateTime.now().plus(remainingSeconds, ChronoUnit.SECONDS);
-			LocalDateTime currentTime = LocalDateTime.now();
-			if (endTime.getDayOfWeek() != currentTime.getDayOfWeek())
+			try
 			{
-				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
+				StringBuilder sb = new StringBuilder();
+				LocalDateTime endTime = LocalDateTime.now().plus(remainingSeconds, ChronoUnit.SECONDS);
+				LocalDateTime currentTime = LocalDateTime.now();
+				if (endTime.getDayOfWeek() != currentTime.getDayOfWeek())
+				{
+					sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault())).append(' ');
+				}
+				sb.append("at ");
+				sb.append(formatter.format(endTime));
+
+				return sb.toString();
 			}
-			sb.append(String.format("at %d:%02d", endTime.getHour(), endTime.getMinute()));
-			return sb.toString();
+			catch (DateTimeException e)
+			{
+				log.warn("error formatting absolute time: now + {}", remainingSeconds, e);
+				return "Invalid";
+			}
+		}
+	}
+
+	private static DateTimeFormatter getDateTimeFormatter(TimeFormatMode mode)
+	{
+		switch (mode)
+		{
+			case ABSOLUTE_12H:
+				return DATETIME_FORMATTER_12H;
+			case ABSOLUTE_24H:
+				return DATETIME_FORMATTER_24H;
+			default:
+				return null;
 		}
 	}
 }

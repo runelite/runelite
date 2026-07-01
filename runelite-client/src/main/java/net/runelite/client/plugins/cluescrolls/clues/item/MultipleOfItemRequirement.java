@@ -30,8 +30,8 @@ import net.runelite.api.ItemComposition;
 
 public class MultipleOfItemRequirement implements ItemRequirement
 {
-	private int itemId;
-	private int quantity;
+	private final int itemId;
+	private final int quantity;
 
 	public MultipleOfItemRequirement(int itemId, int quantity)
 	{
@@ -42,17 +42,22 @@ public class MultipleOfItemRequirement implements ItemRequirement
 	@Override
 	public boolean fulfilledBy(int itemId)
 	{
-		return itemId == this.itemId && this.quantity == 1;
+		return itemId == this.itemId;
 	}
 
 	@Override
 	public boolean fulfilledBy(Item[] items)
 	{
+		int quantityFound = 0;
 		for (Item item : items)
 		{
-			if (item.getId() == itemId && item.getQuantity() >= quantity)
+			if (item.getId() == itemId)
 			{
-				return true;
+				quantityFound += item.getQuantity();
+				if (quantityFound >= quantity)
+				{
+					return true;
+				}
 			}
 		}
 

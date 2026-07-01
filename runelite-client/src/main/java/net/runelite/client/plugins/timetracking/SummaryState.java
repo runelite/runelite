@@ -28,6 +28,7 @@ public enum SummaryState
 {
 	COMPLETED,
 	IN_PROGRESS,
+	OCCUPIED,
 	EMPTY,
 	UNKNOWN
 }

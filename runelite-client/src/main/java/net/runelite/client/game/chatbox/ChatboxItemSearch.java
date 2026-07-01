@@ -28,11 +28,14 @@ package net.runelite.client.game.chatbox;
 import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.widgets.ItemQuantityMode;
@@ -44,6 +47,7 @@ import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.JagexColors;
 
 @Singleton
 public class ChatboxItemSearch extends ChatboxTextInput
@@ -59,12 +63,22 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	private final ItemManager itemManager;
 	private final Client client;
 
-	private Map<Integer, ItemComposition> results = new LinkedHashMap<>();
+	private final Map<Integer, ItemComposition> results = new LinkedHashMap<>();
 	private String tooltipText;
 	private int index = -1;
 
 	@Getter
 	private Consumer<Integer> onItemSelected;
+
+	@Value
+	private static class ItemIcon
+	{
+		int modelId;
+		int ambient;
+		int contrast;
+		short[] colorsToReplace;
+		short[] texturesToReplace;
+	}
 
 	@Inject
 	private ChatboxItemSearch(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
@@ -130,7 +144,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			item.setOriginalY(y + FONT_SIZE * 2);
 			item.setOriginalHeight(ICON_HEIGHT);
 			item.setOriginalWidth(ICON_WIDTH);
-			item.setName("<col=ff9040>" + itemComposition.getName());
+			item.setName(JagexColors.MENU_TARGET_TAG + itemComposition.getName());
 			item.setItemId(itemComposition.getId());
 			item.setItemQuantity(10000);
 			item.setItemQuantityMode(ItemQuantityMode.NEVER);
@@ -173,6 +187,11 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	@Override
 	public void keyPressed(KeyEvent ev)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		switch (ev.getKeyCode())
 		{
 			case KeyEvent.VK_ENTER:
@@ -287,15 +306,27 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			return;
 		}
 
+		Set<ItemIcon> itemIcons = new HashSet<>();
 		for (int i = 0; i < client.getItemCount() && results.size() < MAX_RESULTS; i++)
 		{
 			ItemComposition itemComposition = itemManager.getItemComposition(itemManager.canonicalize(i));
 			String name = itemComposition.getName().toLowerCase();
+
 			// The client assigns "null" to item names of items it doesn't know about
-			if (!name.equals("null") && name.contains(search))
+			// and the item might already be in the results from canonicalize
+			if (!name.equals("null") && name.contains(search) && !results.containsKey(itemComposition.getId()))
 			{
-				// This may already be in the map due to canonicalize mapping the item to something we've already seen
-				results.putIfAbsent(itemComposition.getId(), itemComposition);
+				// Check if the results already contain the same item image
+				ItemIcon itemIcon = new ItemIcon(itemComposition.getInventoryModel(),
+					itemComposition.getAmbient(), itemComposition.getContrast(),
+					itemComposition.getColorToReplaceWith(), itemComposition.getTextureToReplaceWith());
+				if (itemIcons.contains(itemIcon))
+				{
+					continue;
+				}
+
+				itemIcons.add(itemIcon);
+				results.put(itemComposition.getId(), itemComposition);
 			}
 		}
 	}

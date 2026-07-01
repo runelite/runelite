@@ -34,18 +34,17 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_ICON_PREFIX;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_TABS_CONFIG;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
 
 @Singleton
-class TabManager
+public class TabManager
 {
-	private static final String TAG_TABS_CONFIG = "tagtabs";
-
 	@Getter
 	private final List<TagTab> tabs = new ArrayList<>();
 	private final ConfigManager configManager;
@@ -56,7 +55,7 @@ class TabManager
 		this.configManager = configManager;
 	}
 
-	void add(TagTab tagTab)
+	public void add(TagTab tagTab)
 	{
 		if (!contains(tagTab.getTag()))
 		{
@@ -66,17 +65,16 @@ class TabManager
 
 	void clear()
 	{
-		tabs.forEach(t -> t.setHidden(true));
 		tabs.clear();
 	}
 
-	TagTab find(String tag)
+	public TagTab find(String tag)
 	{
 		Optional<TagTab> first = tabs.stream().filter(t -> t.getTag().equals(Text.standardize(tag))).findAny();
 		return first.orElse(null);
 	}
 
-	List<String> getAllTabs()
+	List<String> loadAllTabNames()
 	{
 		return Text.fromCSV(MoreObjects.firstNonNull(configManager.getConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG), ""));
 	}
@@ -88,7 +86,7 @@ class TabManager
 		if (tagTab == null)
 		{
 			tag = Text.standardize(tag);
-			String item = configManager.getConfiguration(CONFIG_GROUP, ICON_SEARCH + tag);
+			String item = configManager.getConfiguration(CONFIG_GROUP, TAG_ICON_PREFIX + tag);
 			int itemid = NumberUtils.toInt(item, ItemID.SPADE);
 			tagTab = new TagTab(itemid, tag);
 		}
@@ -96,7 +94,12 @@ class TabManager
 		return tagTab;
 	}
 
-	void move(String tagToMove, String tagDestination)
+	private void save(TagTab tab)
+	{
+		setIcon(tab.getTag(), tab.getIconItemId());
+	}
+
+	void swap(String tagToMove, String tagDestination)
 	{
 		tagToMove = Text.standardize(tagToMove);
 		tagDestination = Text.standardize(tagDestination);
@@ -107,32 +110,47 @@ class TabManager
 		}
 	}
 
-	void remove(String tag)
+	void insert(String tagToMove, String tagDestination)
+	{
+		tagToMove = Text.standardize(tagToMove);
+		tagDestination = Text.standardize(tagDestination);
+
+		if (contains(tagToMove) && contains(tagDestination))
+		{
+			tabs.add(indexOf(tagDestination), tabs.remove(indexOf(tagToMove)));
+		}
+	}
+
+	public void remove(String tag)
 	{
 		TagTab tagTab = find(tag);
 
 		if (tagTab != null)
 		{
-			tagTab.setHidden(true);
 			tabs.remove(tagTab);
 			removeIcon(tag);
 		}
 	}
 
-	void save()
+	public void save()
 	{
 		String tags = Text.toCSV(tabs.stream().map(TagTab::getTag).collect(Collectors.toList()));
 		configManager.setConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG, tags);
+
+		for (TagTab tab : tabs)
+		{
+			save(tab);
+		}
 	}
 
-	void removeIcon(final String tag)
+	private void removeIcon(final String tag)
 	{
-		configManager.unsetConfiguration(CONFIG_GROUP, ICON_SEARCH + Text.standardize(tag));
+		configManager.unsetConfiguration(CONFIG_GROUP, TAG_ICON_PREFIX + Text.standardize(tag));
 	}
 
-	void setIcon(final String tag, final String icon)
+	private void setIcon(final String tag, int itemId)
 	{
-		configManager.setConfiguration(CONFIG_GROUP, ICON_SEARCH + Text.standardize(tag), icon);
+		configManager.setConfiguration(CONFIG_GROUP, TAG_ICON_PREFIX + Text.standardize(tag), itemId);
 	}
 
 	int size()
