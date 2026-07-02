@@ -126,6 +126,7 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.WinUtil;
+import net.runelite.client.util.X11WindowUtil;
 
 @Slf4j
 @Singleton
@@ -892,6 +893,23 @@ public class ClientUI
 				break;
 			case Windows:
 				WinUtil.requestForeground(frame);
+				break;
+			case Linux:
+				String sessionType = System.getenv("XDG_SESSION_TYPE");
+				if ("X11".equalsIgnoreCase(sessionType))
+				{
+					X11WindowUtil.forceFocus(frame);
+				}
+				else if ("wayland".equalsIgnoreCase(sessionType))
+				{
+					log.debug("forceFocus: unable to force focus due to Wayland compositor restrictions");
+					frame.requestFocus();
+				}
+				else
+				{
+					log.debug("forceFocus: unable to determine XDG_SESSION_TYPE");
+					frame.requestFocus();
+				}
 				break;
 			default:
 				frame.requestFocus();
