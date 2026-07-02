@@ -68,6 +68,8 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -685,5 +687,22 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Large salvage", -1, LootRecordType.EVENT, null, Collections.singletonList(new ItemStack(ItemID.NAILS, 4)));
+	}
+
+	@Test
+	public void testParseLootConfigKey()
+	{
+		Map.Entry<LootRecordType, String> npcLoot = LootTrackerPlugin.parseLootConfigKey("drops_NPC_General Graardor");
+		assertNotNull(npcLoot);
+		assertEquals(LootRecordType.NPC, npcLoot.getKey());
+		assertEquals("General Graardor", npcLoot.getValue());
+
+		Map.Entry<LootRecordType, String> eventLoot = LootTrackerPlugin.parseLootConfigKey("drops_EVENT_Reward_pool_(Tempoross)");
+		assertNotNull(eventLoot);
+		assertEquals(LootRecordType.EVENT, eventLoot.getKey());
+		assertEquals("Reward_pool_(Tempoross)", eventLoot.getValue());
+
+		assertNull(LootTrackerPlugin.parseLootConfigKey("ignoredEvents"));
+		assertNull(LootTrackerPlugin.parseLootConfigKey("drops_NPC_"));
 	}
 }
