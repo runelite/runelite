@@ -1416,6 +1416,7 @@ public class ClientUI
 		private int prevState;
 		private int previousContentWidth;
 		private boolean doingLayout;
+		private Insets previousFrameInsets;
 
 		@Override
 		public void addLayoutComponent(String name, Component comp)
@@ -1477,6 +1478,24 @@ public class ClientUI
 
 		private void layout(Container content, boolean forceSizingClient)
 		{
+			Insets frameInsets = frame.getInsets();
+
+			if (previousFrameInsets != null && !previousFrameInsets.equals(frameInsets)
+				&& (frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == 0)
+			{
+				int dw = (frameInsets.left + frameInsets.right) - (previousFrameInsets.left + previousFrameInsets.right);
+				int dh = (frameInsets.top + frameInsets.bottom) - (previousFrameInsets.top + previousFrameInsets.bottom);
+				if (dw != 0 || dh != 0)
+				{
+					log.debug("Frame insets changed from {} to {}, adjusting frame size by ({}, {})",
+						previousFrameInsets, frameInsets, dw, dh);
+					previousFrameInsets = (Insets) frameInsets.clone();
+					frame.setSize(frame.getWidth() + dw, frame.getHeight() + dh);
+					return;
+				}
+			}
+			previousFrameInsets = (Insets) frameInsets.clone();
+
 			int changed = prevState ^ frame.getExtendedState();
 			prevState = frame.getExtendedState();
 
@@ -1559,6 +1578,8 @@ public class ClientUI
 			}
 
 			log.trace("finishing layout - content={} client={} sidebar={} frame={}", content.getWidth(), client.getWidth(), sidebar.getWidth(), frame.getWidth());
+			log.trace("bounds and insets - frameBounds={}, frameInsets={}, contentSize={}, clientSize={}",
+				frame.getBounds(), frameInsets, content.getSize(), client.getSize());
 		}
 
 		private Dimension size(Container content, Function<Component, Dimension> sizer)
