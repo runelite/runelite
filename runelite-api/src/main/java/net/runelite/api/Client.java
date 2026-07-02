@@ -238,7 +238,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraX()
 	 * @return
 	 */
-	double getCameraFpX();
+	float getCameraFpX();
 
 	/**
 	 * Gets the y-axis coordinate of the camera.
@@ -255,7 +255,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraY()
 	 * @return
 	 */
-	double getCameraFpY();
+	float getCameraFpY();
 
 	/**
 	 * Gets the z-axis coordinate of the camera.
@@ -272,13 +272,13 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraZ()
 	 * @return
 	 */
-	double getCameraFpZ();
+	float getCameraFpZ();
 
 	/**
 	 * Gets the pitch of the camera.
 	 * <p>
-	 * The value returned by this method is measured in JAU, or Jagex
-	 * Angle Unit, which is 1/1024 of a revolution.
+	 * The value returned by this method is measured in JAU14, or Jagex
+	 * Angle Unit (14 bit), where each unit is equivalent to 2π/(2^14) radians.
 	 *
 	 * @return the camera pitch
 	 */
@@ -289,10 +289,13 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraPitch()
 	 * @return
 	 */
-	double getCameraFpPitch();
+	float getCameraFpPitch();
 
 	/**
 	 * Gets the yaw of the camera.
+	 * <p>
+	 * The value returned by this method is measured in JAU14, or Jagex
+	 * Angle Unit (14 bit), where each unit is equivalent to 2π/(2^14) radians.
 	 *
 	 * @return the camera yaw
 	 */
@@ -303,7 +306,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraYaw()
 	 * @return
 	 */
-	double getCameraFpYaw();
+	float getCameraFpYaw();
 
 	/**
 	 * Gets the current world number of the logged in player.
@@ -684,15 +687,6 @@ public interface Client extends OAuthApi, GameEngine
 	 */
 	@Deprecated
 	int getMenuWidth();
-
-	/**
-	 * Gets the angle of the map, or target camera yaw.
-	 *
-	 * @return the map angle
-	 * @see #getCameraYawTarget()
-	 */
-	@Deprecated
-	int getMapAngle();
 
 	/**
 	 * Checks whether the client window is currently resized.
@@ -1730,39 +1724,39 @@ public interface Client extends OAuthApi, GameEngine
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
 	 * @return
 	 */
-	double getCameraFocalPointX();
+	float getCameraFocalPointX();
 
 	/**
 	 * Sets the camera focus point x. Requires the {@link #getCameraMode()} to be free camera.
 	 * @param x
 	 */
-	void setCameraFocalPointX(double x);
+	void setCameraFocalPointX(float x);
 
 	/**
 	 * Get the camera focus point y
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
 	 * @return
 	 */
-	double getCameraFocalPointY();
+	float getCameraFocalPointY();
 
 	/**
 	 * Sets the camera focus point y. Requires the {@link #getCameraMode()} to be free camera.
 	 * @param y
 	 */
-	void setCameraFocalPointY(double y);
+	void setCameraFocalPointY(float y);
 
 	/**
 	 * Get the camera focus point z
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
 	 * @return
 	 */
-	double getCameraFocalPointZ();
+	float getCameraFocalPointZ();
 
 	/**
 	 * Sets the camera focus point z. Requires the {@link #getCameraMode()} to be free camera.
 	 * @param z
 	 */
-	void setCameraFocalPointZ(double z);
+	void setCameraFocalPointZ(float z);
 
 	/**
 	 * Sets the normal moving speed when using oculus orb (default value is 12)

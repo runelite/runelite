@@ -138,6 +138,7 @@ public class ItemStatChanges
 		add(new CappedStatBoost(HITPOINTS, max -> 18, max -> Math.min((int) (max * 0.2), 10)), ItemID.HADDOCK);
 		add(combo(food(19), heal(RUN_ENERGY, 20)), ItemID.YELLOWFIN);
 		add(combo(food(22), heal(PRAYER, 5)), ItemID.BLUEFIN);
+		add(combo(food(9), boost(STRENGTH, 2)), ItemID.TBONE_STEAK);
 
 		// Dorgeshuun Cuisine
 		add(food(2), ItemID.DORGESH_BAT_SHISH, ItemID.DORGESH_CRISPY_FROGLEGS, ItemID.DORGESH_CAVE_CRAWLER_FILLETS, ItemID.DORGESH_WALL_BEAST_FINGERS, ItemID.DORGESH_FROG_BURGER, ItemID.DORGESH_FROG_SPAWN_GUMBO, ItemID.DORGESH_GREEN_GLOOP_SOUP,

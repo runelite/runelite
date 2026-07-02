@@ -30,6 +30,18 @@ import net.runelite.cache.io.InputStream;
 
 public class WorldMapDataLoader
 {
+	private final boolean rev238;
+
+	public WorldMapDataLoader()
+	{
+		this(true);
+	}
+
+	public WorldMapDataLoader(boolean rev238)
+	{
+		this.rev238 = rev238;
+	}
+
 	public MapSquareDefinition loadMapSquare(InputStream in)
 	{
 		int worldMapDataType = in.readUnsignedByte();
@@ -46,8 +58,11 @@ public class WorldMapDataLoader
 		mapSquareDefinition.sourceSquareZ = in.readUnsignedShort();
 		mapSquareDefinition.displaySquareX = in.readUnsignedShort();
 		mapSquareDefinition.displaySquareZ = in.readUnsignedShort();
-		mapSquareDefinition.groupId = in.readBigSmart2();
-		mapSquareDefinition.fileId = in.readBigSmart2();
+		if (!rev238)
+		{
+			mapSquareDefinition.groupId = in.readBigSmart2();
+			mapSquareDefinition.fileId = in.readBigSmart2();
+		}
 
 		return mapSquareDefinition;
 	}
@@ -72,8 +87,11 @@ public class WorldMapDataLoader
 		zoneDefinition.displaySquareZ = in.readUnsignedShort();
 		zoneDefinition.displayZoneX = in.readUnsignedByte();
 		zoneDefinition.displayZoneZ = in.readUnsignedByte();
-		zoneDefinition.groupId = in.readBigSmart2();
-		zoneDefinition.fileId = in.readBigSmart2();
+		if (!rev238)
+		{
+			zoneDefinition.groupId = in.readBigSmart2();
+			zoneDefinition.fileId = in.readBigSmart2();
+		}
 
 		return zoneDefinition;
 	}

@@ -54,6 +54,7 @@ public class Perspective
 {
 	// How much of the unit circle each unit of SINE/COSINE is
 	public static final double UNIT = 0.0030679615d; // ~pi/1024
+	public static final double UNIT14 = 3.834951969714103E-4D; // ~pi/8192
 
 	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
@@ -64,8 +65,14 @@ public class Perspective
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
 
-	private static final float[] SINF = new float[2048];
-	private static final float[] COSF = new float[2048];
+	public static final float[] SINEF = new float[2048];
+	public static final float[] COSINEF = new float[2048];
+
+	public static final int[] SINE14 = new int[0x4000];
+	public static final int[] COSINE14 = new int[0x4000];
+
+	public static final float[] SINEF14 = new float[0x4000];
+	public static final float[] COSINEF14 = new float[0x4000];
 
 	private static final int ESCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 
@@ -75,10 +82,19 @@ public class Perspective
 		{
 			double s = Math.sin((double) i * UNIT);
 			double c = Math.cos((double) i * UNIT);
-			SINF[i] = (float) s;
-			COSF[i] = (float) c;
+			SINEF[i] = (float) s;
+			COSINEF[i] = (float) c;
 			SINE[i] = (int) (65536.0 * s);
 			COSINE[i] = (int) (65536.0 * c);
+		}
+		for (int i = 0; i < 0x4000; ++i)
+		{
+			double s = Math.sin((double) i * UNIT14);
+			double c = Math.cos((double) i * UNIT14);
+			SINEF14[i] = (float) s;
+			COSINEF14[i] = (float) c;
+			SINE14[i] = (int) (65536.0 * s);
+			COSINE14[i] = (int) (65536.0 * c);
 		}
 	}
 
@@ -207,10 +223,10 @@ public class Perspective
 			final int cameraPitch = client.getCameraPitch();
 			final int cameraYaw = client.getCameraYaw();
 
-			final int pitchSin = SINE[cameraPitch];
-			final int pitchCos = COSINE[cameraPitch];
-			final int yawSin = SINE[cameraYaw];
-			final int yawCos = COSINE[cameraYaw];
+			final int pitchSin = SINE14[cameraPitch];
+			final int pitchCos = COSINE14[cameraPitch];
+			final int yawSin = SINE14[cameraYaw];
+			final int yawCos = COSINE14[cameraYaw];
 
 			final int
 				x1 = x * yawCos + y * yawSin >> 16,
@@ -238,14 +254,14 @@ public class Perspective
 		if (x >= -ESCENE_OFFSET << LOCAL_COORD_BITS && y >= -ESCENE_OFFSET << LOCAL_COORD_BITS &&
 			x <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS && y <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS)
 		{
-			final double
+			final float
 				cameraPitch = client.getCameraFpPitch(),
 				cameraYaw = client.getCameraFpYaw();
 
 			final float
-				fx = x - (float) client.getCameraFpX(),
-				fy = y - (float) client.getCameraFpY(),
-				fz = z - (float) client.getCameraFpZ(),
+				fx = x - client.getCameraFpX(),
+				fy = y - client.getCameraFpY(),
+				fz = z - client.getCameraFpZ(),
 				pitchSin = (float) Math.sin(cameraPitch),
 				pitchCos = (float) Math.cos(cameraPitch),
 				yawSin = (float) Math.sin(cameraYaw),
@@ -360,7 +376,7 @@ public class Perspective
 
 	private static void modelToCanvasGpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, float[] x3d, float[] y3d, float[] z3d, int[] x2d, int[] y2d)
 	{
-		final double
+		final float
 			cameraPitch = client.getCameraFpPitch(),
 			cameraYaw = client.getCameraFpYaw();
 		final float
@@ -371,9 +387,9 @@ public class Perspective
 			rotateSin = SINE[rotate] / 65536.0f,
 			rotateCos = COSINE[rotate] / 65536.0f,
 
-			cx = x3dCenter - (float) client.getCameraFpX(),
-			cy = y3dCenter - (float) client.getCameraFpY(),
-			cz = z3dCenter - (float) client.getCameraFpZ(),
+			cx = x3dCenter - client.getCameraFpX(),
+			cy = y3dCenter - client.getCameraFpY(),
+			cz = z3dCenter - client.getCameraFpZ(),
 
 			viewportXMiddle = client.getViewportWidth() / 2f,
 			viewportYMiddle = client.getViewportHeight() / 2f,
@@ -430,12 +446,12 @@ public class Perspective
 			cameraYaw = client.getCameraYaw();
 
 		final float
-			pitchSin = SINF[cameraPitch],
-			pitchCos = COSF[cameraPitch],
-			yawSin = SINF[cameraYaw],
-			yawCos = COSF[cameraYaw],
-			rotateSin = SINF[rotate],
-			rotateCos = COSF[rotate];
+			pitchSin = SINEF14[cameraPitch],
+			pitchCos = COSINEF14[cameraPitch],
+			yawSin = SINEF14[cameraYaw],
+			yawCos = COSINEF14[cameraYaw],
+			rotateSin = SINEF[rotate],
+			rotateCos = COSINEF[rotate];
 
 		final int
 			cx = x3dCenter - client.getCameraX(),
@@ -586,10 +602,10 @@ public class Perspective
 		final int x = (int) (dx * zoom);
 		final int y = (int) (dy * zoom);
 
-		final int angle = client.getCameraYawTarget() & 0x7FF;
+		final int angle = client.getCameraYawTarget() & 0x3fff;
 
-		final int sin = SINE[angle];
-		final int cos = COSINE[angle];
+		final int sin = SINE14[angle];
+		final int cos = COSINE14[angle];
 
 		final int rx = cos * x + sin * y >> 16;
 		final int ry = sin * x - cos * y >> 16;

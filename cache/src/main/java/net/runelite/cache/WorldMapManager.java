@@ -46,6 +46,9 @@ import java.util.Map;
 
 public class WorldMapManager
 {
+	public static final int DETAILS_ID = 0;
+	public static final int COMPOSITEMAP_ID = 1;
+
 	private final Store store;
 	private final List<WorldMapCompositeDefinition> worldMapCompositeDefinitions = new ArrayList<>();
 	private final List<WorldMapElementDefinition> elements = new ArrayList<>();
@@ -60,8 +63,9 @@ public class WorldMapManager
 	{
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.WORLDMAP);
-		Archive compositeMapArchive = index.findArchiveByName("compositemap");
+		Archive compositeMapArchive = index.isNamed() ? index.findArchiveByName("compositemap") : index.getArchive(COMPOSITEMAP_ID);
 		WorldMapCompositeLoader worldMapCompositeLoader = new WorldMapCompositeLoader();
+		worldMapCompositeLoader.configureForRevision(index.getRevision());
 
 		ArchiveFiles compositeMapFiles = compositeMapArchive.getFiles(storage.loadArchive(compositeMapArchive));
 		for (FSFile compositeFile : compositeMapFiles.getFiles())

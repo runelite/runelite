@@ -178,6 +178,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.HUNTING_BOXTRAP_FULL_CHINCHOMPA_BIG: // Red chinchompa caught
 			case ObjectID.HUNTING_BOXTRAP_FULL_FERRET: // Ferret caught
 			case ObjectID.HUNTING_BOXTRAP_FULL_JERBOA: // Embertailed jerboa caught
+			case ObjectID.HUNTING_BOXTRAP_FULL_LETVEK: // Letvek caught
 			case ObjectID.HUNTING_DEADFALL_FULL_SPIKE: // Prickly kebbit caught
 			case ObjectID.HUNTING_DEADFALL_FULL_SABRE: // Sabre-tooth kebbit caught
 			case ObjectID.HUNTING_DEADFALL_FULL_BARBED: // Barb-tailed kebbit caught
@@ -260,6 +261,12 @@ public class HunterPlugin extends Plugin
 			case ObjectID.HUNTING_BOXTRAP_TRAPPING_JERBOA_E:
 			case ObjectID.HUNTING_BOXTRAP_TRAPPING_JERBOA_S:
 			case ObjectID.HUNTING_BOXTRAP_TRAPPING_JERBOA_W:
+
+			// Letvek box
+			case ObjectID.HUNTING_BOXTRAP_TRAPPING_LETVEK_N:
+			case ObjectID.HUNTING_BOXTRAP_TRAPPING_LETVEK_E:
+			case ObjectID.HUNTING_BOXTRAP_TRAPPING_LETVEK_S:
+			case ObjectID.HUNTING_BOXTRAP_TRAPPING_LETVEK_W:
 
 			// Bird traps
 			case ObjectID.HUNTING_OJIBWAY_TRAP_FAILING:

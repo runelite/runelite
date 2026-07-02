@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 Abex
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.ui.overlay;
 
-import javax.annotation.Nullable;
-
-/**
- * Menu options on a TileObject or NPC
- */
-public interface EntityOps
+enum OverlayOriginY
 {
-	int MAX_OPS = 5;
-
-	int getNumOps();
-
-	@Nullable
-	String getOp(int idx);
-
-	EntityOps getSubOps(int idx);
+	TOP,
+	CENTER,
+	BOTTOM,
 }
