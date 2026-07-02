@@ -159,4 +159,26 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showUsername",
+		name = "Username",
+		description = "Show your username in your Discord rich presence.",
+		position = 11
+	)
+	default boolean showUsername()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showWorld",
+		name = "World",
+		description = "Show the world you are playing on in your Discord rich presence.",
+		position = 12
+	)
+	default boolean showWorld()
+	{
+		return false;
+	}
 }
