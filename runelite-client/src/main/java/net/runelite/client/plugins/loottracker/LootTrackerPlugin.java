@@ -326,6 +326,8 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String DOM = "Doom of Mokhaiotl";
 
+	private static final Pattern TARNISHED_PATTERN = Pattern.compile("You rub the tarnished (?<type>.+) on your clothes.*");
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -1130,6 +1132,49 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER)));
+			return;
+		}
+
+		final Matcher tarnishedMatcher = TARNISHED_PATTERN.matcher(message);
+		if (tarnishedMatcher.matches())
+		{
+			final String type = tarnishedMatcher.group("type").toLowerCase();
+			String eventType;
+			switch (type)
+			{
+				case "2h sword":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_2H_SWORD).getMembersName();
+					break;
+				case "amulet":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_AMULET).getMembersName();
+					break;
+				case "battleaxe":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_BATTLEAXE).getMembersName();
+					break;
+				case "halberd":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_HALBERD).getMembersName();
+					break;
+				case "longsword":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_LONGSWORD).getMembersName();
+					break;
+				case "necklace":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_NECKLACE).getMembersName();
+					break;
+				case "ring":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_RING).getMembersName();
+					break;
+				case "spear":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_SPEAR).getMembersName();
+					break;
+				case "bracelet":
+					eventType = itemManager.getItemComposition(ItemID.TARNISHED_BRACELET).getMembersName();
+					break;
+				default:
+					log.debug("Unrecognized tarnished item: {}", type);
+					return;
+			}
+
+			onInvChange(collectInvItems(LootRecordType.EVENT, eventType, client.getBoostedSkillLevel(Skill.CRAFTING)));
 			return;
 		}
 
