@@ -326,6 +326,11 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String DOM = "Doom of Mokhaiotl";
 
+	private static final String MAGGOT_KING = "Maggot King";
+	private static final String MAGGOT_KING_TAKE_EGGS_SUPPLY_MESSAGE = "A pile of half digested food spills out as you try to take the eggs.";
+	private static final String MAGGOT_KING_TAKE_EGGS_NO_LOOT_MESSAGE = "The eggs pop as you try to take them.";
+	private static final String MAGGOT_KING_POP_EGG_NO_LOOT_MESSAGE = "The egg pops and reveals a dead maggot.";
+
 	private static final Pattern TARNISHED_PATTERN = Pattern.compile("You rub the tarnished (?<type>.+) on your clothes.*");
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
@@ -381,6 +386,7 @@ public class LootTrackerPlugin extends Plugin
 	private boolean lastLoadingIntoInstance;
 	private String lastPickpocketTarget;
 	private int ignorePickpocketLoot;
+	private int lastMaggotEggPopped;
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
@@ -672,10 +678,13 @@ public class LootTrackerPlugin extends Plugin
 
 	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items, int amount)
 	{
-		initLoot(type, name);
+		if (!items.isEmpty())
+		{
+			initLoot(type, name);
 
-		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
+			final LootTrackerItem[] entries = buildEntries(stack(items));
+			SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
+		}
 
 		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId(), amount, null);
 		synchronized (queuedLoots)
@@ -734,6 +743,10 @@ public class LootTrackerPlugin extends Plugin
 				"plane", location.getPlane(),
 				"world", client.getWorld()
 			);
+		}
+		else if (npc.getName() != null && npc.getName().equals(MAGGOT_KING))
+		{
+			return Map.of("item", lastMaggotEggPopped);
 		}
 		else
 		{
@@ -1221,6 +1234,15 @@ public class LootTrackerPlugin extends Plugin
 		{
 			countChangedItems(ItemID.RUBIUM_GEODE, client.getBoostedSkillLevel(Skill.MINING));
 		}
+		else if (message.equals(MAGGOT_KING_TAKE_EGGS_SUPPLY_MESSAGE)
+			|| message.equals(MAGGOT_KING_TAKE_EGGS_NO_LOOT_MESSAGE))
+		{
+			addLoot(MAGGOT_KING, -1, LootRecordType.UNKNOWN, Map.of("message", message), Collections.emptyList(), 1);
+		}
+		else if (message.equals(MAGGOT_KING_POP_EGG_NO_LOOT_MESSAGE))
+		{
+			addLoot(MAGGOT_KING, -1, LootRecordType.UNKNOWN, Map.of("message", message, "item", lastMaggotEggPopped), Collections.emptyList(), 1);
+		}
 	}
 
 	private void countChangedItems(int itemId, Object metadata)
@@ -1387,6 +1409,20 @@ public class LootTrackerPlugin extends Plugin
 						break;
 				}
 			}
+			else if (event.getMenuOption().equals("Pop"))
+			{
+				switch (event.getItemId())
+				{
+					case ItemID.MAGGOT_EGG:
+					case ItemID.SICKLY_MAGGOT_EGG:
+					case ItemID.WARM_MAGGOT_EGG:
+					case ItemID.PULSATING_MAGGOT_EGG:
+					case ItemID.WRIGGLING_MAGGOT_EGG:
+					case ItemID.WRITHING_MAGGOT_EGG:
+						lastMaggotEggPopped = event.getItemId();
+						break;
+				}
+			}
 		}
 	}
 
@@ -1435,6 +1471,10 @@ public class LootTrackerPlugin extends Plugin
 		Map<ConfigLoot, ConfigLoot> map = new HashMap<>();
 		for (LootRecord record : records)
 		{
+			if (record.getDrops().isEmpty())
+			{
+				continue;
+			}
 			ConfigLoot key = new ConfigLoot(record.getType(), record.getEventId());
 			ConfigLoot loot = map.computeIfAbsent(key, k -> key);
 			loot.kills += record.getAmount();
