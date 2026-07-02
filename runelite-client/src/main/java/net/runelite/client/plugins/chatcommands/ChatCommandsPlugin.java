@@ -2783,6 +2783,12 @@ public class ChatCommandsPlugin extends Plugin
 			case "doom":
 				return "Doom of Mokhaiotl";
 
+			case "titans":
+			case "titan":
+			case "royal titan":
+			case "royal titans":
+				return "The Royal Titans";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
