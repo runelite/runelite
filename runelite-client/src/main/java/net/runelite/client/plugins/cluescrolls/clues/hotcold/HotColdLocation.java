@@ -142,7 +142,7 @@ public enum HotColdLocation
 	MORYTANIA_HOLLOWS(MASTER, new WorldPoint(3499, 3421, 0), MORYTANIA, "Inside The Hollows, south of the bridge which was repaired in a quest.", BRASSICAN_MAGE),
 	MORYTANIA_SWAMP(MASTER, new WorldPoint(3418, 3372, 0), MORYTANIA, "Inside the Mort Myre Swamp, north-west of the Nature Grotto.", BRASSICAN_MAGE),
 	MORYTANIA_HAUNTED_MINE(MASTER, new WorldPoint(3444, 3255, 0), MORYTANIA, "At Haunted Mine quest start.", BRASSICAN_MAGE),
-	MORYTANIA_MAUSOLEUM(MASTER, new WorldPoint(3499, 3539, 0), MORYTANIA, "South of the Mausoleum.", BRASSICAN_MAGE),
+	MORYTANIA_MAUSOLEUM(MASTER, new WorldPoint(3497, 3541, 0), MORYTANIA, "South of the Mausoleum.", BRASSICAN_MAGE),
 	MORYTANIA_MOS_LES_HARMLESS(MASTER, new WorldPoint(3740, 3041, 0), MORYTANIA, "Northern area of Mos Le'Harmless, between the lakes.", BRASSICAN_MAGE),
 	MORYTANIA_MOS_LES_HARMLESS_BAR(MASTER, new WorldPoint(3666, 2972, 0), MORYTANIA, "Near Mos Le'Harmless southern bar.", BRASSICAN_MAGE),
 	MORYTANIA_DRAGONTOOTH_NORTH(MASTER, new WorldPoint(3811, 3569, 0), MORYTANIA, "Northern part of Dragontooth Island.", BRASSICAN_MAGE),
