@@ -76,9 +76,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -420,7 +423,7 @@ public class LootTrackerPluginTest
 		when(client.getLocalPlayer().getWorldLocation()).thenReturn(new WorldPoint(3153, 2833, 0));
 		when(client.getBoostedSkillLevel(Skill.FISHING)).thenReturn(69);
 
-		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
+		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class), anyInt());
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
@@ -441,7 +444,7 @@ public class LootTrackerPluginTest
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
 			new ItemStack(ItemID.RAW_TUNA, 30)
-		));
+		), 1);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: <col=ef1020>Tome of water (empty)</col>", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
@@ -456,7 +459,53 @@ public class LootTrackerPluginTest
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
 			new ItemStack(ItemID.TOME_OF_WATER_UNCHARGED, 1)
-		));
+		), 1);
+
+		//Big-search test
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 7 x Raw sea turtle", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		//rolls from the uniques table other than spirit shards and caskets arrive as ChatMessageType.GAMEMESSAGE
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You found some loot: <col=ef1020>Tome of water (empty)</col>", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 30 x Raw tuna", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 1,184 x Fishing bait", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 22 x Raw bass", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 27 x Raw swordfish", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+				new Item(ItemID.BUCKET_WATER, 1),
+				new Item(ItemID.ROPE, 1),
+				new Item(ItemID.RAW_TUNA, 60),
+				new Item(ItemID.TOME_OF_WATER_UNCHARGED, 2),
+				new Item(ItemID.RAW_SEATURTLE, 7),
+				new Item(ItemID.RAW_SWORDFISH, 27),
+				new Item(ItemID.FISHING_BAIT, 1184),
+				new Item(ItemID.RAW_BASS, 22),
+		});
+
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
+		List<ItemStack> lootAdded = Arrays.asList(
+				new ItemStack(ItemID.RAW_TUNA, 30),
+				new ItemStack(ItemID.TOME_OF_WATER_UNCHARGED, 1),
+				new ItemStack(ItemID.RAW_SEATURTLE, 7),
+				new ItemStack(ItemID.RAW_SWORDFISH, 27),
+				new ItemStack(ItemID.FISHING_BAIT, 1184),
+				new ItemStack(ItemID.RAW_BASS, 22)
+		);
+
+		ArgumentCaptor<List<ItemStack>> lootCaptor = ArgumentCaptor.forClass(List.class);
+		verify(lootTrackerPlugin).addLoot(eq("Reward pool (Tempoross)"), eq(-1), eq(LootRecordType.EVENT), eq(69), lootCaptor.capture(), eq(5));
+
+		assertThat(lootCaptor.getValue(), containsInAnyOrder(lootAdded.toArray()));
 	}
 
 	@Test
