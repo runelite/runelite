@@ -113,24 +113,11 @@ public class TimeTrackingPanelTest
 		});
 	}
 
-	private TimeTrackingPanel newPanel()
-	{
-		return new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker, clockManager,
-			farmingContractManager, configManager, false);
-	}
-
-	@Test
-	public void createsOneFarmingTabPanelPerFarmingTab()
-	{
-		newPanel();
-
-		assertEquals(Tab.FARMING_TABS.length, createdFarmingTabPanels.size());
-	}
-
 	@Test
 	public void reloadFarmingPatchOrderReloadsEveryFarmingTab() throws Exception
 	{
-		TimeTrackingPanel panel = newPanel();
+		TimeTrackingPanel panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker,
+			clockManager, farmingContractManager, configManager, false);
 
 		panel.reloadFarmingPatchOrder();
 		// The reload is posted to the event dispatch thread; wait for it to run

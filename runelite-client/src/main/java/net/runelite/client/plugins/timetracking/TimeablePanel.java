@@ -26,15 +26,12 @@
 package net.runelite.client.plugins.timetracking;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -65,9 +62,6 @@ public class TimeablePanel<T> extends JPanel
 		OVERLAY_ICON_BOUNDS = new Rectangle(x, y, width, height);
 	}
 
-	private static final String CARD_NOTIFY = "notify";
-	private static final String CARD_REORDER = "reorder";
-
 	private final T timeable;
 	private final JLabel icon = new JLabel();
 	private final JLabel overlayIcon = new JLabel();
@@ -76,11 +70,6 @@ public class TimeablePanel<T> extends JPanel
 	private final JLabel estimate = new JLabel();
 	private final ThinProgressBar progress = new ThinProgressBar();
 	private final JLabel text;
-
-	/* Swapped in over the notify button, in the same slot, by a tab that supports reordering */
-	private final JPanel notifyOrReorderSlot = new JPanel(new CardLayout());
-	private final JButton moveUpButton = new JButton("↑");
-	private final JButton moveDownButton = new JButton("↓");
 
 	public TimeablePanel(T timeable, String title, int maximumProgressValue)
 	{
@@ -125,33 +114,10 @@ public class TimeablePanel<T> extends JPanel
 		notifyPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		notifyPanel.add(notifyButton, BorderLayout.CENTER);
 
-		/* The reorder card must not exceed the notify card's 30x16 footprint: CardLayout sizes
-		 * the slot to its largest card, which would widen every row even when not editing */
-		JPanel reorderPanel = new JPanel(new GridLayout(2, 1, 0, 0));
-		reorderPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		reorderPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
-
-		moveUpButton.setMargin(new Insets(0, 0, 0, 0));
-		moveUpButton.setPreferredSize(new Dimension(20, 8));
-		moveUpButton.setFocusable(false);
-		moveUpButton.setToolTipText("Move up");
-
-		moveDownButton.setMargin(new Insets(0, 0, 0, 0));
-		moveDownButton.setPreferredSize(new Dimension(20, 8));
-		moveDownButton.setFocusable(false);
-		moveDownButton.setToolTipText("Move down");
-
-		reorderPanel.add(moveUpButton);
-		reorderPanel.add(moveDownButton);
-
-		notifyOrReorderSlot.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		notifyOrReorderSlot.add(notifyPanel, CARD_NOTIFY);
-		notifyOrReorderSlot.add(reorderPanel, CARD_REORDER);
-
 		JPanel iconPanel = new JPanel();
 		iconPanel.setLayout(new BorderLayout());
 		iconPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		iconPanel.add(notifyOrReorderSlot, BorderLayout.EAST);
+		iconPanel.add(notifyPanel, BorderLayout.EAST);
 		iconPanel.add(farmingContractIcon, BorderLayout.WEST);
 
 		JLayeredPane layeredIconPane = new JLayeredPane();
@@ -188,12 +154,4 @@ public class TimeablePanel<T> extends JPanel
 		overlayIcon.setIcon(new ImageIcon(overlayImg));
 	}
 
-	/**
-	 * Swaps the notify button for the move up/down buttons (or back), in the same slot,
-	 * so entering reorder mode doesn't shift the row's layout around.
-	 */
-	public void setEditingOrder(boolean editing)
-	{
-		((CardLayout) notifyOrReorderSlot.getLayout()).show(notifyOrReorderSlot, editing ? CARD_REORDER : CARD_NOTIFY);
-	}
 }

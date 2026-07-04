@@ -26,6 +26,9 @@ package net.runelite.client.plugins.timetracking.farming;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,14 +38,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
-import net.runelite.client.plugins.timetracking.TimeablePanel;
+import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.util.AsyncBufferedImage;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -106,8 +105,8 @@ public class FarmingTabPanelTest
 		patches = new LinkedHashSet<>(List.of(
 			faladorAllotment, catherbyAllotment, ardougneAllotment, faladorHerb, catherbyHerb));
 
-		// movePatch() triggers an immediate update(), which loads patch icons; not every
-		// test exercises that path, so this stub is lenient.
+		// Completing a drag triggers an immediate update(), which loads patch icons; not
+		// every test exercises that path, so this stub is lenient.
 		lenient().when(itemManager.getImage(anyInt())).thenReturn(mock(AsyncBufferedImage.class));
 	}
 
@@ -115,6 +114,36 @@ public class FarmingTabPanelTest
 	{
 		return new FarmingTabPanel(farmingTracker, compostTracker, paymentTracker, itemManager,
 			configManager, config, Tab.HERB, patches, farmingContractManager);
+	}
+
+	/**
+	 * Drags one row onto another by dispatching real mouse events to the group's
+	 * DragAndDropReorderPane, exercising the same code path as a user's drag.
+	 */
+	private static void drag(FarmingTabPanel panel, int pane, int from, int to)
+	{
+		DragAndDropReorderPane groupPane = panel.getGroupPanes().get(pane);
+		groupPane.setSize(groupPane.getPreferredSize());
+		groupPane.doLayout();
+
+		Point start = center(groupPane.getComponent(from).getBounds());
+		Point end = center(groupPane.getComponent(to).getBounds());
+
+		dispatchMouseEvent(groupPane, MouseEvent.MOUSE_PRESSED, start);
+		dispatchMouseEvent(groupPane, MouseEvent.MOUSE_DRAGGED, end); // passes the drag-start threshold
+		dispatchMouseEvent(groupPane, MouseEvent.MOUSE_DRAGGED, end); // reorders the rows
+		dispatchMouseEvent(groupPane, MouseEvent.MOUSE_RELEASED, end);
+	}
+
+	private static Point center(Rectangle bounds)
+	{
+		return new Point(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+	}
+
+	private static void dispatchMouseEvent(Component target, int id, Point point)
+	{
+		target.dispatchEvent(new MouseEvent(target, id, System.currentTimeMillis(),
+			MouseEvent.BUTTON1_DOWN_MASK, point.x, point.y, 1, false, MouseEvent.BUTTON1));
 	}
 
 	@Test
@@ -125,6 +154,7 @@ public class FarmingTabPanelTest
 		assertEquals(
 			List.of(faladorAllotment, catherbyAllotment, ardougneAllotment, faladorHerb, catherbyHerb),
 			panel.getPatchOrder());
+		assertEquals(5, panel.getPatchPanels().size());
 	}
 
 	@Test
@@ -156,12 +186,24 @@ public class FarmingTabPanelTest
 	}
 
 	@Test
-	public void moveDownSwapsAdjacentPatchesInSameGroupAndSaves()
+	public void eachGroupGetsItsOwnReorderPane()
+	{
+		FarmingTabPanel panel = newPanel();
+
+		// Dragging is confined to a pane, so per-group panes are what prevent a patch
+		// from being dragged into another group.
+		assertEquals(2, panel.getGroupPanes().size());
+		assertEquals(3, panel.getGroupPanes().get(0).getComponentCount());
+		assertEquals(2, panel.getGroupPanes().get(1).getComponentCount());
+	}
+
+	@Test
+	public void draggingAPatchUpdatesAndSavesTheNewOrder()
 	{
 		when(configManager.getRSProfileKey()).thenReturn("profile1");
 		FarmingTabPanel panel = newPanel();
 
-		assertTrue(panel.movePatch(faladorAllotment, 1));
+		drag(panel, 0, 0, 1); // faladorAllotment below catherbyAllotment
 
 		assertEquals(
 			List.of(catherbyAllotment, faladorAllotment, ardougneAllotment, faladorHerb, catherbyHerb),
@@ -170,42 +212,19 @@ public class FarmingTabPanelTest
 		String expectedJoined = catherbyAllotment.configKey() + "," + faladorAllotment.configKey() + ","
 			+ ardougneAllotment.configKey() + "," + faladorHerb.configKey() + "," + catherbyHerb.configKey();
 		verify(configManager).setRSProfileConfiguration(GROUP, ORDER_KEY, expectedJoined);
+
+		// The rebuilt rows are populated immediately, and the first row's border hack is reapplied
+		assertEquals("Unknown", panel.getPatchPanels().get(0).getEstimate().getText());
+		assertNull(panel.getPatchPanels().get(0).getBorder());
 	}
 
 	@Test
-	public void moveUpAtStartOfGroupIsNoOp()
-	{
-		FarmingTabPanel panel = newPanel();
-
-		assertFalse(panel.movePatch(faladorAllotment, -1));
-
-		assertEquals(
-			List.of(faladorAllotment, catherbyAllotment, ardougneAllotment, faladorHerb, catherbyHerb),
-			panel.getPatchOrder());
-		verify(configManager, never()).setRSProfileConfiguration(anyString(), eq(ORDER_KEY), anyString());
-	}
-
-	@Test
-	public void moveDownAcrossGroupBoundaryIsNoOp()
-	{
-		FarmingTabPanel panel = newPanel();
-
-		// Ardougne is the last Allotment patch; below it is the Herb group.
-		assertFalse(panel.movePatch(ardougneAllotment, 1));
-
-		assertEquals(
-			List.of(faladorAllotment, catherbyAllotment, ardougneAllotment, faladorHerb, catherbyHerb),
-			panel.getPatchOrder());
-		verify(configManager, never()).setRSProfileConfiguration(anyString(), eq(ORDER_KEY), anyString());
-	}
-
-	@Test
-	public void moveDoesNotSaveWithoutAnActiveProfile()
+	public void dragDoesNotSaveWithoutAnActiveProfile()
 	{
 		when(configManager.getRSProfileKey()).thenReturn(null);
 		FarmingTabPanel panel = newPanel();
 
-		assertTrue(panel.movePatch(faladorAllotment, 1));
+		drag(panel, 0, 0, 1);
 
 		// The in-memory order still changes...
 		assertEquals(
@@ -235,222 +254,9 @@ public class FarmingTabPanelTest
 	}
 
 	@Test
-	public void patchPanelsAreCreatedOnePerPatch()
+	public void unnamedImplementationsGetNoSectionLabel()
 	{
-		FarmingTabPanel panel = newPanel();
-		assertEquals(5, panel.getPatchPanels().size());
-	}
-
-	@Test
-	public void editOrderButtonHiddenForASingleImplementationPatchGroup()
-	{
-		FarmingPatch cactus = new FarmingPatch("Guild", VarbitID.FARMING_TRANSMIT_F, PatchImplementation.CACTUS);
-		new FarmingRegion("TestRegion2", 9998, true, cactus);
-
-		Set<FarmingPatch> mixedPatches = new LinkedHashSet<>(
-			List.of(faladorAllotment, catherbyAllotment, cactus));
-
-		FarmingTabPanel panel = new FarmingTabPanel(farmingTracker, compostTracker, paymentTracker, itemManager,
-			configManager, config, Tab.SPECIAL, mixedPatches, farmingContractManager);
-
-		// Allotment has two patches, so it can be reordered...
-		assertNotNull(panel.getEditOrderButton(PatchImplementation.ALLOTMENT));
-		// ...but Cactus only has one, so there's nothing to reorder.
-		assertNull(panel.getEditOrderButton(PatchImplementation.CACTUS));
-		assertNull(panel.getResetButton(PatchImplementation.CACTUS));
-	}
-
-	@Test
-	public void eachSectionHasItsOwnIndependentEditOrderButton()
-	{
-		FarmingTabPanel panel = newPanel();
-
-		assertNotNull(panel.getEditOrderButton(PatchImplementation.ALLOTMENT));
-		assertNotNull(panel.getEditOrderButton(PatchImplementation.HERB));
-		assertNotSame(
-			panel.getEditOrderButton(PatchImplementation.ALLOTMENT),
-			panel.getEditOrderButton(PatchImplementation.HERB));
-		assertFalse(panel.getEditOrderButton(PatchImplementation.ALLOTMENT).isSelected());
-		assertFalse(panel.getEditOrderButton(PatchImplementation.HERB).isSelected());
-	}
-
-	@Test
-	public void moveButtonsHiddenUntilThatSectionsEditModeIsToggledOn()
-	{
-		FarmingTabPanel panel = newPanel();
-
-		for (TimeablePanel<FarmingPatch> p : panel.getPatchPanels())
-		{
-			assertTrue(p.getNotifyButton().getParent().isVisible());
-			assertFalse(p.getMoveUpButton().getParent().isVisible());
-		}
-	}
-
-	@Test
-	public void togglingOneSectionsEditOrderDoesNotAffectTheOtherSection()
-	{
-		FarmingTabPanel panel = newPanel();
-
-		panel.getEditOrderButton(PatchImplementation.ALLOTMENT).doClick();
-
-		List<TimeablePanel<FarmingPatch>> panels = panel.getPatchPanels();
-		// Allotment rows (0-2) now show move buttons instead of the notify button.
-		for (int i = 0; i < 3; i++)
-		{
-			assertFalse(panels.get(i).getNotifyButton().getParent().isVisible());
-			assertTrue(panels.get(i).getMoveUpButton().getParent().isVisible());
-		}
-		// Herb rows (3-4) are untouched.
-		for (int i = 3; i < 5; i++)
-		{
-			assertTrue(panels.get(i).getNotifyButton().getParent().isVisible());
-			assertFalse(panels.get(i).getMoveUpButton().getParent().isVisible());
-		}
-
-		assertTrue(panel.getEditOrderButton(PatchImplementation.ALLOTMENT).isSelected());
-		assertFalse(panel.getEditOrderButton(PatchImplementation.HERB).isSelected());
-	}
-
-	@Test
-	public void editOrderButtonRefreshesRowsImmediatelyInBothDirections()
-	{
-		FarmingTabPanel panel = newPanel();
-
-		panel.getEditOrderButton(PatchImplementation.ALLOTMENT).doClick();
-		// Toggling rebuilds every row from scratch; verify update() ran immediately afterwards
-		// instead of leaving fresh, unpopulated rows on screen until the next scheduled tick.
-		assertEquals("Unknown", panel.getPatchPanels().get(0).getEstimate().getText());
-
-		panel.getEditOrderButton(PatchImplementation.ALLOTMENT).doClick();
-		assertEquals("Unknown", panel.getPatchPanels().get(0).getEstimate().getText());
-	}
-
-	@Test
-	public void moveButtonEnabledStateMatchesGroupBoundaries()
-	{
-		FarmingTabPanel panel = newPanel();
-		panel.getEditOrderButton(PatchImplementation.ALLOTMENT).doClick();
-		panel.getEditOrderButton(PatchImplementation.HERB).doClick();
-
-		List<TimeablePanel<FarmingPatch>> panels = panel.getPatchPanels();
-
-		// falador allotment: first overall -> no up, has down (within group)
-		assertFalse(panels.get(0).getMoveUpButton().isEnabled());
-		assertTrue(panels.get(0).getMoveDownButton().isEnabled());
-
-		// catherby allotment: has both neighbours in the same group
-		assertTrue(panels.get(1).getMoveUpButton().isEnabled());
-		assertTrue(panels.get(1).getMoveDownButton().isEnabled());
-
-		// ardougne allotment: last of its group -> no down (next patch is a different group)
-		assertTrue(panels.get(2).getMoveUpButton().isEnabled());
-		assertFalse(panels.get(2).getMoveDownButton().isEnabled());
-
-		// falador herb: first of its group -> no up (previous patch is a different group)
-		assertFalse(panels.get(3).getMoveUpButton().isEnabled());
-		assertTrue(panels.get(3).getMoveDownButton().isEnabled());
-
-		// catherby herb: last overall -> no down
-		assertTrue(panels.get(4).getMoveUpButton().isEnabled());
-		assertFalse(panels.get(4).getMoveDownButton().isEnabled());
-	}
-
-	@Test
-	public void clickingMoveDownButtonSwapsAdjacentPatchesInSameGroup()
-	{
-		when(configManager.getRSProfileKey()).thenReturn("profile1");
-		FarmingTabPanel panel = newPanel();
-		panel.getEditOrderButton(PatchImplementation.ALLOTMENT).doClick();
-
-		panel.getPatchPanels().get(0).getMoveDownButton().doClick(); // faladorAllotment
-
-		assertEquals(
-			List.of(catherbyAllotment, faladorAllotment, ardougneAllotment, faladorHerb, catherbyHerb),
-			panel.getPatchOrder());
-	}
-
-	@Test
-	public void resetButtonHiddenWhenNotEditingEvenIfOrderIsCustomized()
-	{
-		when(configManager.getRSProfileConfiguration(GROUP, ORDER_KEY))
-			.thenReturn(catherbyAllotment.configKey() + "," + faladorAllotment.configKey());
-
-		FarmingTabPanel panel = newPanel();
-
-		// Order differs from default, but we haven't entered edit mode for this section.
-		assertNull(panel.getResetButton(PatchImplementation.ALLOTMENT));
-	}
-
-	@Test
-	public void resetButtonHiddenWhenEditingButOrderIsAlreadyDefault()
-	{
-		FarmingTabPanel panel = newPanel();
-
-		panel.getEditOrderButton(PatchImplementation.ALLOTMENT).doClick();
-
-		assertNull(panel.getResetButton(PatchImplementation.ALLOTMENT));
-	}
-
-	@Test
-	public void resetButtonShownOnlyForTheCustomizedSectionWhileEditing()
-	{
-		when(configManager.getRSProfileConfiguration(GROUP, ORDER_KEY))
-			.thenReturn(catherbyAllotment.configKey() + "," + faladorAllotment.configKey());
-
-		FarmingTabPanel panel = newPanel();
-
-		panel.getEditOrderButton(PatchImplementation.ALLOTMENT).doClick();
-		panel.getEditOrderButton(PatchImplementation.HERB).doClick();
-
-		assertNotNull(panel.getResetButton(PatchImplementation.ALLOTMENT));
-		// Herb was never customized, so it has nothing to reset.
-		assertNull(panel.getResetButton(PatchImplementation.HERB));
-	}
-
-	@Test
-	public void clickingResetRestoresThatSectionsDefaultOrderAndExitsItsEditMode()
-	{
-		when(configManager.getRSProfileKey()).thenReturn("profile1");
-		// Customize both sections' order up front.
-		when(configManager.getRSProfileConfiguration(GROUP, ORDER_KEY)).thenReturn(
-			catherbyAllotment.configKey() + "," + faladorAllotment.configKey() + ","
-				+ catherbyHerb.configKey() + "," + faladorHerb.configKey());
-
-		FarmingTabPanel panel = newPanel();
-		assertEquals(
-			List.of(catherbyAllotment, faladorAllotment, ardougneAllotment, catherbyHerb, faladorHerb),
-			panel.getPatchOrder());
-
-		panel.getEditOrderButton(PatchImplementation.ALLOTMENT).doClick();
-		panel.getEditOrderButton(PatchImplementation.HERB).doClick();
-
-		panel.getResetButton(PatchImplementation.ALLOTMENT).doClick();
-
-		// Allotment is back to default order; Herb's customization is untouched.
-		assertEquals(
-			List.of(faladorAllotment, catherbyAllotment, ardougneAllotment, catherbyHerb, faladorHerb),
-			panel.getPatchOrder());
-
-		String expectedJoined = faladorAllotment.configKey() + "," + catherbyAllotment.configKey() + ","
-			+ ardougneAllotment.configKey() + "," + catherbyHerb.configKey() + "," + faladorHerb.configKey();
-		verify(configManager).setRSProfileConfiguration(GROUP, ORDER_KEY, expectedJoined);
-
-		// Resetting also exits Allotment's edit mode: its toggle is deselected, its reset button
-		// is gone, and its rows show the notify button again...
-		assertFalse(panel.getEditOrderButton(PatchImplementation.ALLOTMENT).isSelected());
-		assertNull(panel.getResetButton(PatchImplementation.ALLOTMENT));
-		assertTrue(panel.getPatchPanels().get(0).getNotifyButton().getParent().isVisible());
-		// ...while Herb is still being edited.
-		assertTrue(panel.getEditOrderButton(PatchImplementation.HERB).isSelected());
-		assertNotNull(panel.getResetButton(PatchImplementation.HERB));
-		assertTrue(panel.getPatchPanels().get(3).getMoveUpButton().getParent().isVisible());
-	}
-
-	@Test
-	public void reorderableUnnamedSectionsGetAHeaderRowWithoutNameText()
-	{
-		// PatchImplementation.ALLOTMENT and HERB have no display name, so their header rows
-		// (which exist to carry the edit-order button) show no "Allotment"/"Herb" text.
+		// PatchImplementation.ALLOTMENT and HERB have no display name
 		FarmingTabPanel panel = newPanel();
 
 		assertNull(panel.getPatchPanels().get(0).getBorder());
@@ -459,34 +265,20 @@ public class FarmingTabPanelTest
 	}
 
 	@Test
-	public void loneUnnamedPatchGroupGetsNoHeaderRow()
-	{
-		Set<FarmingPatch> lonePatch = new LinkedHashSet<>(List.of(faladorHerb));
-
-		FarmingTabPanel panel = new FarmingTabPanel(farmingTracker, compostTracker, paymentTracker, itemManager,
-			configManager, config, Tab.HERB, lonePatch, farmingContractManager);
-
-		// A single patch in an unnamed section has nothing to label or reorder, so the tab
-		// contains only the patch row itself - no empty header taking up space above it.
-		assertEquals(1, panel.getComponentCount());
-		assertNull(panel.getEditOrderButton(PatchImplementation.HERB));
-		assertNull(panel.getPatchPanels().get(0).getBorder());
-	}
-
-	@Test
-	public void namedImplementationsShowTheirNameInTheSectionHeader()
+	public void namedImplementationsShowTheirNameInASectionLabel()
 	{
 		FarmingPatch cactus = new FarmingPatch("Guild", VarbitID.FARMING_TRANSMIT_F, PatchImplementation.CACTUS);
 		new FarmingRegion("TestRegion2", 9998, true, cactus);
 
-		Set<FarmingPatch> namedFirstPatches = new LinkedHashSet<>(List.of(cactus, faladorAllotment));
+		// Once with the named section first, and once below an unnamed section, since the
+		// first label of a tab is styled differently.
+		for (List<FarmingPatch> order : List.of(List.of(cactus, faladorAllotment), List.of(faladorAllotment, cactus)))
+		{
+			FarmingTabPanel panel = new FarmingTabPanel(farmingTracker, compostTracker, paymentTracker, itemManager,
+				configManager, config, Tab.SPECIAL, new LinkedHashSet<>(order), farmingContractManager);
 
-		FarmingTabPanel panel = new FarmingTabPanel(farmingTracker, compostTracker, paymentTracker, itemManager,
-			configManager, config, Tab.SPECIAL, namedFirstPatches, farmingContractManager);
-
-		assertEquals(1, countLabelsWithText(panel, "Cactus"));
-		// The first row's own top border is still removed, since a header always precedes it.
-		assertNull(panel.getPatchPanels().get(0).getBorder());
+			assertEquals(1, countLabelsWithText(panel, "Cactus"));
+		}
 	}
 
 	private static int countLabelsWithText(Component root, String text)
