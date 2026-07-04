@@ -257,6 +257,7 @@ public class TimeTrackingPlugin extends Plugin
 		farmingTracker.loadCompletionTimes();
 		birdHouseTracker.loadFromConfig();
 		farmingContractManager.loadContractFromConfig();
+		panel.reloadFarmingPatchOrder();
 		panel.update();
 	}
 
