@@ -223,7 +223,7 @@ public class BankPlugin extends Plugin
 				{
 					return;
 				}
-				log.debug("Toggle note hotkey pressed");
+				log.debug("Note hotkey pressed");
 				client.createScriptEventBuilder(onOp)
 					.setOp(1)
 					.build()
