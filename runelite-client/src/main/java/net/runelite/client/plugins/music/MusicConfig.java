@@ -100,15 +100,4 @@ public interface MusicConfig extends Config
 	{
 		return false;
 	}
-
-	@ConfigItem(
-		keyName = "muteMusicOnFocusLoss",
-		name = "Lower volume on focus loss",
-		description = "Lower music volume when the client window is not focused.",
-		position = 6
-	)
-	default boolean muteMusicOnFocusLoss()
-	{
-		return false;
-	}
 }
