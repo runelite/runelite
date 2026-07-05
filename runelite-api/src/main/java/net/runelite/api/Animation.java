@@ -75,4 +75,18 @@ public interface Animation
 	 * {@code null} for {@link #isMayaAnim()} animations
 	 */
 	int[] getFrameLengths();
+
+	/**
+	 * Get the left hand item for this animation
+	 * @see net.runelite.api.gameval.ItemID
+	 * @return the item id or -1
+	 */
+	int getLeftHandItem();
+
+	/**
+	 * Get the right hand item for this animation
+	 * @see net.runelite.api.gameval.ItemID
+	 * @return the item id or -1
+	 */
+	int getRightHandItem();
 }
