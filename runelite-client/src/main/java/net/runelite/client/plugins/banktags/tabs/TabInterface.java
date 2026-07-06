@@ -865,7 +865,8 @@ public class TabInterface
 			&& !event.getMenuOption().equals(SCROLL_DOWN))
 		{
 			int interfaceId = WidgetUtil.componentToInterface(event.getWidget().getId());
-			if (interfaceId == InterfaceID.BANKMAIN || interfaceId == InterfaceID.BANKSIDE)
+			if (interfaceId == InterfaceID.BANKMAIN || interfaceId == InterfaceID.BANKSIDE
+				|| interfaceId == InterfaceID.SHARED_BANK || interfaceId == InterfaceID.SHARED_BANK_SIDE)
 			{
 				chatboxPanelManager.close();
 			}

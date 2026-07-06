@@ -238,6 +238,22 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		}
 	}
 
+	private void layoutSharedBank()
+	{
+		Widget w = client.getWidget(InterfaceID.SharedBank.ITEMS);
+		if (w != null)
+		{
+			Object[] args = w.getOnInvTransmitListener();
+			if (args != null)
+			{
+				client.createScriptEventBuilder(args)
+					.setSource(w)
+					.build()
+					.run();
+			}
+		}
+	}
+
 	@Deprecated
 	private void cleanConfig()
 	{
@@ -402,12 +418,14 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (event.getActionParam1() == InterfaceID.Bankmain.ITEMS
+		if ((event.getActionParam1() == InterfaceID.Bankmain.ITEMS
 			&& (event.getOption().equals("Examine")
 			// Potion storage has no Examine
 			|| (event.getOption().equals("Withdraw-All-but-1") && !client.getItemContainer(InventoryID.BANK).contains(event.getItemId()))))
+			// Shared bank (group storage) items
+			|| (event.getActionParam1() == InterfaceID.SharedBank.ITEMS && event.getOption().equals("Examine")))
 		{
-			Widget container = client.getWidget(InterfaceID.Bankmain.ITEMS);
+			Widget container = client.getWidget(event.getActionParam1());
 			Widget item = container.getChild(event.getActionParam0());
 			int itemId = item.getItemId();
 
@@ -474,6 +492,8 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 
 					// If a tab if active, rebuild the bank to apply the changes
 					tabInterface.reloadActiveTab();
+					// If the shared bank is open, rebuild it to reapply an active tag: search
+					layoutSharedBank();
 				}))
 			.build();
 	}
