@@ -90,6 +90,9 @@ enum HunterAreaLocation
 	TLATI_RAINFOREST_SOUTH(new WorldPoint(1282, 3021, 0), HunterCreature.BLACK_WARLOCK),
 	UZER_HUNTER_AREA(new WorldPoint(3401, 3104, 0), HunterCreature.GOLDEN_WARBLER, HunterCreature.DESERT_DEVIL,
 		HunterCreature.ORANGE_SALAMANDER),
+	VAMPYRIUM_EAST(new WorldPoint(2564, 7772, 0), HunterCreature.LETVEK),
+	VAMPYRIUM_WEST(new WorldPoint(2540, 7766, 0), HunterCreature.LETVEK),
+	VAMPYRIUM_NORTH(new WorldPoint(2653, 7845, 0), HunterCreature.STYMPHIKE),
 	WILDERNESS(new WorldPoint(3142, 3771, 0), HunterCreature.BLACK_CHINCHOMPA),
 	;
 
@@ -129,6 +132,7 @@ enum HunterAreaLocation
 		HERBIBOAR("Herbiboar", 80),
 		HORNED_GRAAHK("Horned graahk", 41),
 		// IMP and MANIACAL_MONKEY do not have a specific hunter area
+		LETVEK("Letvek", 76),
 		MOONLIGHT_ANTELOPE("Moonlight Antelope", 91),
 		MOTTLED_EEL("Mottled eel", 68),
 		ORANGE_SALAMANDER("Orange salamander", 47),
@@ -145,6 +149,7 @@ enum HunterAreaLocation
 		SNOWY_KNIGHT("Snowy knight", 35),
 		SPINED_LARUPIA("Spined larupia", 31),
 		SPOTTED_KEBBIT("Spotted kebbit", 43),
+		STYMPHIKE("Stymphike", 82),
 		SUNLIGHT_ANTELOPE("Sunlight Antelope", 72),
 		SUNLIGHT_MOTH("Sunlight Moth", 65),
 		SWAMP_LIZARD("Swamp lizard", 29),

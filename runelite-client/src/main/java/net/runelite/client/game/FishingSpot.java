@@ -148,6 +148,9 @@ public enum FishingSpot
 		NpcID._0_46_35_LANTERNFISH, NpcID._0_32_40_LANTERNFISH, NpcID._0_18_42_LANTERNFISH,
 		NpcID._0_32_57_LANTERNFISH
 	),
+	LEECHFIN("Leechfin", ItemID.LEECHFIN,
+		null // Uses ObjectID.RIVER_FISHING_SPOT_ENTER not an NPC
+	),
 	;
 
 	private static final Map<Integer, FishingSpot> SPOTS;
