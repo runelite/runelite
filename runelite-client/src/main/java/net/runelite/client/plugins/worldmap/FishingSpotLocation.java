@@ -194,8 +194,6 @@ enum FishingSpotLocation
 	TREE_GNOME_STRONGHOLD(FishingSpot.SALMON,
 		new WorldPoint(2389, 3422, 0), new WorldPoint(2382, 3415, 0)),
 	TUTORIAL_ISLAND(FishingSpot.TUTORIAL_SHRIMP, new WorldPoint(3100, 3091, 0)),
-	VAMPYRIUM(FishingSpot.LEECHFIN,
-		new WorldPoint(2709, 7819, 0), new WorldPoint(2720, 7825, 0)),
 	WATSON_HOUSE_SOUTH(FishingSpot.SALMON, new WorldPoint(1646, 3558, 0)),
 	WILDERNESS_BANDIT_CAMP(FishingSpot.SHRIMP, new WorldPoint(3049, 3704, 0)),
 	WILDERNESS_DARK_CRABS(FishingSpot.DARK_CRAB,
