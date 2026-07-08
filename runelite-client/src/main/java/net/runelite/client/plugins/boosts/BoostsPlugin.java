@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -64,18 +63,6 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class BoostsPlugin extends Plugin
 {
-	private static final Set<Skill> BOOSTABLE_COMBAT_SKILLS = ImmutableSet.of(
-		Skill.ATTACK,
-		Skill.STRENGTH,
-		Skill.DEFENCE,
-		Skill.RANGED,
-		Skill.MAGIC);
-
-	private static final Set<Skill> BOOSTABLE_NON_COMBAT_SKILLS = ImmutableSet.of(
-		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
-		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
-		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER, Skill.SAILING);
-
 	@Inject
 	private Notifier notifier;
 
@@ -220,7 +207,7 @@ public class BoostsPlugin extends Plugin
 	{
 		Skill skill = statChanged.getSkill();
 
-		if (!BOOSTABLE_COMBAT_SKILLS.contains(skill) && !BOOSTABLE_NON_COMBAT_SKILLS.contains(skill))
+		if (!config.displayBoosts().skillsToDisplay.contains(skill))
 		{
 			return;
 		}
@@ -299,25 +286,8 @@ public class BoostsPlugin extends Plugin
 
 	private void updateShownSkills()
 	{
-		switch (config.displayBoosts())
-		{
-			case NONE:
-				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
-				shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
-				break;
-			case COMBAT:
-				shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
-				shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
-				break;
-			case NON_COMBAT:
-				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
-				shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
-				break;
-			case BOTH:
-				shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
-				shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
-				break;
-		}
+		shownSkills.clear();
+		shownSkills.addAll(config.displayBoosts().skillsToDisplay);
 		updateBoostedStats();
 	}
 
