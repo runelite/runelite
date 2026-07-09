@@ -76,7 +76,12 @@ class MotherlodeSceneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
+		if (!plugin.isInMlm())
+		{
+			return null;
+		}
+
+		if (!config.showVeins() && !config.showRockFalls() && !config.showBrokenStruts())
 		{
 			return null;
 		}
