@@ -81,11 +81,6 @@ class MotherlodeSceneOverlay extends Overlay
 			return null;
 		}
 
-		if (!config.showVeins() && !config.showRockFalls() && !config.showBrokenStruts())
-		{
-			return null;
-		}
-
 		Player local = client.getLocalPlayer();
 
 		renderTiles(graphics, local);
