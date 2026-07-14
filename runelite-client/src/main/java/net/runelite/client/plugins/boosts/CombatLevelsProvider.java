@@ -59,6 +59,11 @@ public class CombatLevelsProvider
 			return this.levels.get(skill);
 		}
 
+		public boolean containsKey(Skill skill)
+		{
+			return this.levels.containsKey(skill);
+		}
+
 
 		static LmsBuildLevels getCurrent(Client client)
 		{
@@ -74,7 +79,7 @@ public class CombatLevelsProvider
 	public static int getRealSkillLevel(Client client, Skill skill)
 	{
 		LmsBuildLevels levels;
-		if (isInLmsMatch(client) && (levels = LmsBuildLevels.getCurrent(client)) != null)
+		if (isInLmsMatch(client) && (levels = LmsBuildLevels.getCurrent(client)) != null && levels.containsKey(skill))
 		{
 			return levels.get(skill);
 		}
