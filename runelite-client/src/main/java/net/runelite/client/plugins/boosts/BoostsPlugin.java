@@ -41,6 +41,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
@@ -68,6 +69,9 @@ public class BoostsPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
@@ -233,7 +237,7 @@ public class BoostsPlugin extends Plugin
 
 		int boostThreshold = config.boostThreshold();
 
-		int real = client.getRealSkillLevel(skill);
+		int real = CombatLevelsProvider.getRealSkillLevel(client, skill);
 		int lastBoost = last - real;
 		int boost = cur - real;
 		if (boost <= boostThreshold && boostThreshold < lastBoost)
@@ -307,21 +311,23 @@ public class BoostsPlugin extends Plugin
 			}
 
 			final int boosted = client.getBoostedSkillLevel(skill);
-			final int base = client.getRealSkillLevel(skill);
+			clientThread.invokeLater(() ->
+			{
+				final int base = CombatLevelsProvider.getRealSkillLevel(client, skill);
+				if (boosted > base)
+				{
+					isChangedUp = true;
+				}
+				else if (boosted < base)
+				{
+					isChangedDown = true;
+				}
 
-			if (boosted > base)
-			{
-				isChangedUp = true;
-			}
-			else if (boosted < base)
-			{
-				isChangedDown = true;
-			}
-
-			if (boosted != base)
-			{
-				skillsToDisplay.add(skill);
-			}
+				if (boosted != base)
+				{
+					skillsToDisplay.add(skill);
+				}
+			});
 		}
 	}
 
