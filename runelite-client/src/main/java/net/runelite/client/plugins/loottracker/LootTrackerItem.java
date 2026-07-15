@@ -40,15 +40,17 @@ class LootTrackerItem
 	private final int gePrice;
 	private final int haPrice;
 	@Setter
+	private int customPrice;
+	@Setter
 	private boolean ignored;
 
 	long getTotalGePrice()
 	{
-		return (long) gePrice * quantity;
+		return (long) (customPrice >= 0 ? customPrice : gePrice) * quantity;
 	}
 
 	long getTotalHaPrice()
 	{
-		return (long) haPrice * quantity;
+		return (long) (customPrice >= 0 ? customPrice : haPrice) * quantity;
 	}
 }
