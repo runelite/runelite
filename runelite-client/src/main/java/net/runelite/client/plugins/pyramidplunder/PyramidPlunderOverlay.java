@@ -24,15 +24,19 @@
  */
 package net.runelite.client.plugins.pyramidplunder;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
+import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
@@ -52,6 +56,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
 
+@Slf4j
 class PyramidPlunderOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
@@ -59,6 +64,7 @@ class PyramidPlunderOverlay extends Overlay
 	private final Client client;
 	private final PyramidPlunderPlugin plugin;
 	private final PyramidPlunderConfig config;
+	private TileObject lastLoggedEntrance;
 
 	@Inject
 	private PyramidPlunderOverlay(Client client, PyramidPlunderPlugin plugin, PyramidPlunderConfig config)
@@ -74,6 +80,8 @@ class PyramidPlunderOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		renderLastGoodEntrance(graphics);
+
 		Widget ppWidget = client.getWidget(InterfaceID.NtkOverlay.CONTENT);
 		if (ppWidget == null)
 		{
@@ -164,5 +172,62 @@ class PyramidPlunderOverlay extends Overlay
 		});
 
 		return null;
+	}
+
+	private void renderLastGoodEntrance(Graphics2D graphics)
+	{
+		if (!config.highlightLastGoodEntrance())
+		{
+			return;
+		}
+
+		TileObject entrance = plugin.getHighlightedEntrance();
+		if (entrance == null)
+		{
+			lastLoggedEntrance = null;
+			return;
+		}
+
+		Shape hull = null;
+		if (entrance instanceof GameObject)
+		{
+			hull = ((GameObject) entrance).getConvexHull();
+		}
+		else if (entrance instanceof WallObject)
+		{
+			hull = ((WallObject) entrance).getConvexHull();
+		}
+
+		if (hull == null)
+		{
+			hull = entrance.getClickbox();
+		}
+
+		if (entrance != lastLoggedEntrance)
+		{
+			log.debug("Rendering last good entrance: id={}, type={}, location={}, shapeBounds={}",
+				entrance.getId(), entrance.getClass().getSimpleName(), entrance.getWorldLocation(),
+				hull == null ? null : hull.getBounds());
+			lastLoggedEntrance = entrance;
+		}
+		renderEntranceShape(graphics, hull);
+
+		if (entrance instanceof WallObject)
+		{
+			renderEntranceShape(graphics, ((WallObject) entrance).getConvexHull2());
+		}
+	}
+
+	private void renderEntranceShape(Graphics2D graphics, Shape shape)
+	{
+		if (shape != null)
+		{
+			OverlayUtil.renderPolygon(
+				graphics,
+				shape,
+				config.lastGoodEntranceColor(),
+				config.lastGoodEntranceColor(),
+				new BasicStroke(2));
+		}
 	}
 }
