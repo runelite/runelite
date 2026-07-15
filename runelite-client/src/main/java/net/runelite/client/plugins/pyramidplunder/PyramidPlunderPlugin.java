@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -69,7 +68,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.RSTimeUnit;
 import net.runelite.client.util.Text;
 
-@Slf4j
 @PluginDescriptor(
 	name = "Pyramid Plunder",
 	description = "Show custom overlay for Pyramid Plunder",
@@ -81,6 +79,7 @@ public class PyramidPlunderPlugin extends Plugin
 	// Total time of a pyramid plunder game (5 minutes)
 	private static final Duration PYRAMID_PLUNDER_DURATION = Duration.of(501, RSTimeUnit.GAME_TICKS);
 	private static final int PYRAMID_PLUNDER_REGION = 7749;
+	private static final int SOPHANEM_REGION = 13099;
 	private static final int MAX_PENDING_DOOR_TICKS = 30;
 
 	static final Set<Integer> PYRAMID_ENTRANCE_IDS = ImmutableSet.of(
@@ -141,7 +140,6 @@ public class PyramidPlunderPlugin extends Plugin
 	private WorldPoint pendingEntrance;
 	private int pendingEntranceTicks;
 	private int timerAtEntranceAttempt;
-	private boolean entranceLookupMissLogged;
 	private PyramidPlunderTimer timer;
 
 	@Provides
@@ -156,7 +154,6 @@ public class PyramidPlunderPlugin extends Plugin
 		lastGoodEntrance = null;
 		pendingEntrance = null;
 		highlightedEntrance = null;
-		entranceLookupMissLogged = false;
 		overlayManager.add(overlay);
 	}
 
@@ -196,7 +193,13 @@ public class PyramidPlunderPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		updateLastGoodEntrance();
+		boolean inSophanem = isInSophanem();
+		boolean inPyramidPlunderRegion = isInPyramidPlunderRegion();
+
+		if (inSophanem || inPyramidPlunderRegion)
+		{
+			updateLastGoodEntrance(inSophanem);
+		}
 
 		if (isInPyramidPlunder())
 		{
@@ -255,13 +258,9 @@ public class PyramidPlunderPlugin extends Plugin
 		}
 
 		String target = Text.removeTags(event.getMenuTarget());
-		log.debug("Search clicked: target='{}', id={}, scene=({}, {}), plane={}",
-			target, event.getId(), event.getParam0(), event.getParam1(), client.getPlane());
-
 		if (!PYRAMID_ENTRANCE_IDS.contains(event.getId())
 			&& !"An anonymous looking door".equalsIgnoreCase(target))
 		{
-			log.debug("Ignoring Search because it did not match a Pyramid Plunder entrance");
 			return;
 		}
 
@@ -270,9 +269,6 @@ public class PyramidPlunderPlugin extends Plugin
 		pendingEntrance = clickedEntrance == null ? clickedPoint : clickedEntrance.getWorldLocation();
 		pendingEntranceTicks = 0;
 		timerAtEntranceAttempt = client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT);
-		entranceLookupMissLogged = false;
-		log.debug("Entrance attempt recorded: clickedPoint={}, resolvedObjectId={}, pendingEntrance={}, timer={}",
-			clickedPoint, clickedEntrance == null ? null : clickedEntrance.getId(), pendingEntrance, timerAtEntranceAttempt);
 	}
 
 	@Subscribe
@@ -280,9 +276,7 @@ public class PyramidPlunderPlugin extends Plugin
 	{
 		if (pendingEntrance != null && isGuardianMummy(event.getNpc()))
 		{
-			log.debug("Guardian mummy spawned while entrance {} is pending: id={}, name='{}'",
-				pendingEntrance, event.getNpc().getId(), event.getNpc().getName());
-			confirmPendingEntrance("guardian mummy spawned");
+			confirmPendingEntrance();
 		}
 	}
 
@@ -298,18 +292,15 @@ public class PyramidPlunderPlugin extends Plugin
 		clearIfHighlighted(event.getGameObject());
 	}
 
-	private void updateLastGoodEntrance()
+	private void updateLastGoodEntrance(boolean inSophanem)
 	{
-		// TODO(maeve): only run in sophanem
 		if (pendingEntrance != null)
 		{
 			for (NPC npc : client.getNpcs())
 			{
 				if (isGuardianMummy(npc))
 				{
-					log.debug("Guardian mummy already present while entrance {} is pending: id={}, name='{}'",
-						pendingEntrance, npc.getId(), npc.getName());
-					confirmPendingEntrance("guardian mummy present");
+					confirmPendingEntrance();
 					break;
 				}
 			}
@@ -317,39 +308,26 @@ public class PyramidPlunderPlugin extends Plugin
 			if (pendingEntrance != null && timerAtEntranceAttempt <= 0
 				&& client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT) > 0)
 			{
-				log.debug("Pyramid Plunder timer activated for pending entrance {}: before={}, now={}",
-					pendingEntrance, timerAtEntranceAttempt, client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT));
-				confirmPendingEntrance("Pyramid Plunder timer activated");
+				confirmPendingEntrance();
 			}
 
-			if (pendingEntrance != null && ++pendingEntranceTicks > MAX_PENDING_DOOR_TICKS)
+			if (pendingEntrance != null && pendingEntrance.equals(lastGoodEntrance)
+				&& isInPyramidPlunderRegion())
 			{
-				log.debug("Entrance attempt expired without finding the Guardian mummy: {}", pendingEntrance);
-				if (pendingEntrance.equals(lastGoodEntrance))
-				{
-					log.debug("Clearing stale last good entrance: {}", lastGoodEntrance);
-					lastGoodEntrance = null;
-					highlightedEntrance = null;
-				}
+				lastGoodEntrance = null;
+				highlightedEntrance = null;
+				pendingEntrance = null;
+			}
+			else if (pendingEntrance != null && ++pendingEntranceTicks > MAX_PENDING_DOOR_TICKS)
+			{
 				pendingEntrance = null;
 			}
 		}
 
-		if (config.highlightLastGoodEntrance() && lastGoodEntrance != null && highlightedEntrance == null)
+		if (inSophanem && config.highlightLastGoodEntrance()
+			&& lastGoodEntrance != null && highlightedEntrance == null)
 		{
 			highlightedEntrance = findEntranceAt(lastGoodEntrance);
-			if (highlightedEntrance != null)
-			{
-				log.debug("Resolved highlighted entrance object: id={}, type={}, location={}",
-					highlightedEntrance.getId(), highlightedEntrance.getClass().getSimpleName(),
-					highlightedEntrance.getWorldLocation());
-				entranceLookupMissLogged = false;
-			}
-			else if (!entranceLookupMissLogged)
-			{
-				log.debug("No loaded entrance object found near last good entrance {}", lastGoodEntrance);
-				entranceLookupMissLogged = true;
-			}
 		}
 		else if (!config.highlightLastGoodEntrance())
 		{
@@ -365,12 +343,10 @@ public class PyramidPlunderPlugin extends Plugin
 			|| "Annoyed guardian mummy".equalsIgnoreCase(npc.getName());
 	}
 
-	private void confirmPendingEntrance(String reason)
+	private void confirmPendingEntrance()
 	{
 		lastGoodEntrance = pendingEntrance;
 		pendingEntrance = null;
-		entranceLookupMissLogged = false;
-		log.debug("Confirmed last good Pyramid Plunder entrance {} ({})", lastGoodEntrance, reason);
 	}
 
 	private void considerForEntranceHighlight(TileObject object)
@@ -379,8 +355,6 @@ public class PyramidPlunderPlugin extends Plugin
 			&& matchesEntrance(object, lastGoodEntrance))
 		{
 			highlightedEntrance = object;
-			log.debug("Entrance spawn matched last good entrance: id={}, type={}, location={}",
-				object.getId(), object.getClass().getSimpleName(), object.getWorldLocation());
 		}
 	}
 
@@ -441,10 +415,22 @@ public class PyramidPlunderPlugin extends Plugin
 		return PYRAMID_ENTRANCE_IDS.contains(object.getId());
 	}
 
-	public boolean isInPyramidPlunder()
+	private boolean isInSophanem()
+	{
+		// TODO(maeve): consider exact Sophanem area bounds if the region check is too broad.
+		return client.getLocalPlayer() != null
+			&& SOPHANEM_REGION == client.getLocalPlayer().getWorldLocation().getRegionID();
+	}
+
+	private boolean isInPyramidPlunderRegion()
 	{
 		return client.getLocalPlayer() != null
-			&& PYRAMID_PLUNDER_REGION == client.getLocalPlayer().getWorldLocation().getRegionID()
+			&& PYRAMID_PLUNDER_REGION == client.getLocalPlayer().getWorldLocation().getRegionID();
+	}
+
+	public boolean isInPyramidPlunder()
+	{
+		return isInPyramidPlunderRegion()
 			&& client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT) > 0;
 	}
 }

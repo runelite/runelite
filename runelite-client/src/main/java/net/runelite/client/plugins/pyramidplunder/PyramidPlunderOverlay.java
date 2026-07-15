@@ -30,7 +30,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
@@ -56,7 +55,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
 
-@Slf4j
 class PyramidPlunderOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
@@ -64,7 +62,6 @@ class PyramidPlunderOverlay extends Overlay
 	private final Client client;
 	private final PyramidPlunderPlugin plugin;
 	private final PyramidPlunderConfig config;
-	private TileObject lastLoggedEntrance;
 
 	@Inject
 	private PyramidPlunderOverlay(Client client, PyramidPlunderPlugin plugin, PyramidPlunderConfig config)
@@ -184,7 +181,6 @@ class PyramidPlunderOverlay extends Overlay
 		TileObject entrance = plugin.getHighlightedEntrance();
 		if (entrance == null)
 		{
-			lastLoggedEntrance = null;
 			return;
 		}
 
@@ -203,13 +199,6 @@ class PyramidPlunderOverlay extends Overlay
 			hull = entrance.getClickbox();
 		}
 
-		if (entrance != lastLoggedEntrance)
-		{
-			log.debug("Rendering last good entrance: id={}, type={}, location={}, shapeBounds={}",
-				entrance.getId(), entrance.getClass().getSimpleName(), entrance.getWorldLocation(),
-				hull == null ? null : hull.getBounds());
-			lastLoggedEntrance = entrance;
-		}
 		renderEntranceShape(graphics, hull);
 
 		if (entrance instanceof WallObject)
