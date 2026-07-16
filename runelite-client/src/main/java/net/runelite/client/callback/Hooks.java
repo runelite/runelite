@@ -35,6 +35,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.awt.image.VolatileImage;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -121,6 +122,7 @@ public class Hooks implements Callbacks
 	private Dimension lastStretchedDimensions;
 	private VolatileImage stretchedImage;
 	private Graphics2D stretchedGraphics;
+	private BufferedImage frameStaging;
 
 	private long lastCheck;
 	private boolean shouldProcessGameTick;
@@ -479,6 +481,52 @@ public class Hooks implements Callbacks
 		// finalImage is backed by the client buffer which will change soon. make a copy
 		// so that callbacks can safely use it later from threads.
 		drawManager.processDrawComplete(() -> screenshot(finalImage));
+
+		if (drawManager.hasFrameListeners())
+		{
+			processFrame(finalImage);
+		}
+		else
+		{
+			frameStaging = null;
+		}
+	}
+
+	private void processFrame(Image src)
+	{
+		if (src instanceof BufferedImage)
+		{
+			// unstretched, this is the int-backed client buffer, which is stable
+			// for the duration of the synchronous listener callback
+			final BufferedImage bufferedImage = (BufferedImage) src;
+			if (bufferedImage.getRaster().getDataBuffer() instanceof DataBufferInt)
+			{
+				frameStaging = null;
+				drawManager.processFrame(((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData(),
+					bufferedImage.getWidth(), bufferedImage.getHeight());
+				return;
+			}
+		}
+
+		// stretched, the frame is a VolatileImage with no direct pixel access;
+		// blit it into a reused staging image
+		final AffineTransform transform = clientUi.getGraphicsConfiguration().getDefaultTransform();
+		int swidth = src.getWidth(null);
+		int sheight = src.getHeight(null);
+		int twidth = (int) (swidth * transform.getScaleX() + .5);
+		int theight = (int) (sheight * transform.getScaleY() + .5);
+
+		if (frameStaging == null || frameStaging.getWidth() != twidth || frameStaging.getHeight() != theight)
+		{
+			frameStaging = new BufferedImage(twidth, theight, BufferedImage.TYPE_INT_RGB);
+		}
+
+		Graphics2D graphics = (Graphics2D) frameStaging.getGraphics();
+		graphics.setTransform(transform);
+		graphics.drawImage(src, 0, 0, swidth, sheight, null);
+		graphics.dispose();
+
+		drawManager.processFrame(((DataBufferInt) frameStaging.getRaster().getDataBuffer()).getData(), twidth, theight);
 	}
 
 	private Image screenshot(Image src)
