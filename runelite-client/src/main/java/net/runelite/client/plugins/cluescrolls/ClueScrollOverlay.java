@@ -30,7 +30,7 @@ package net.runelite.client.plugins.cluescrolls;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import javax.inject.Inject;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
@@ -44,6 +44,7 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class ClueScrollOverlay extends OverlayPanel
 {
@@ -91,22 +92,46 @@ public class ClueScrollOverlay extends OverlayPanel
 
 	private final ClueScrollPlugin plugin;
 	private final Client client;
+	private final ClueScrollConfig config;
+	private final int index;
 
-	@Inject
-	private ClueScrollOverlay(ClueScrollPlugin plugin, Client client)
+	ClueScrollOverlay(ClueScrollPlugin plugin, Client client, ClueScrollConfig config, int index)
 	{
 		super(plugin);
 		this.plugin = plugin;
 		this.client = client;
-		setPriority(PRIORITY_LOW);
+		this.config = config;
+		this.index = index;
+		// Stack panels in list order: later clues sort just below earlier ones.
+		setPriority(PRIORITY_LOW - index * 0.001f);
 		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Clue Scroll overlay");
-		addMenuEntry(RUNELITE_OVERLAY, "Reset", "Clue Scroll overlay", e -> plugin.resetClue(true));
+		addMenuEntry(RUNELITE_OVERLAY, "Reset", "Clue Scroll overlay", e -> plugin.removeClueAt(index));
+	}
+
+	@Override
+	public String getName()
+	{
+		// Keep the original name for index 0 so its saved overlay position carries over.
+		return index == 0 ? super.getName() : super.getName() + (index + 1);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		ClueScroll clue = plugin.getClue();
+		if (index > 0 && !config.parallelSolving())
+		{
+			return null;
+		}
+
+		final List<ClueState> clues = plugin.getClues();
+
+		if (index >= clues.size())
+		{
+			return null;
+		}
+
+		final ClueState clueState = clues.get(index);
+		final ClueScroll clue = clueState.getClue();
 
 		if (clue == null)
 		{
@@ -114,6 +139,15 @@ public class ClueScrollOverlay extends OverlayPanel
 		}
 
 		panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
+
+		if (clues.size() > 1 && clueState.getTierName() != null)
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text(clueState.getTierName())
+				.color(Color.YELLOW)
+				.build());
+		}
+
 		clue.makeOverlayHint(panelComponent, plugin);
 
 		final Item[] inventoryItems = plugin.getInventoryItems();
