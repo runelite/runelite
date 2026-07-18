@@ -176,6 +176,6 @@ public interface PyramidPlunderConfig extends Config
 	)
 	default Color lastGoodEntranceColor()
 	{
-		return Color.GREEN;
+		return new Color(0, 255, 0, 100);
 	}
 }
