@@ -65,7 +65,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.RSTimeUnit;
-import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Pyramid Plunder",
@@ -250,9 +249,7 @@ public class PyramidPlunderPlugin extends Plugin
 			return;
 		}
 
-		String target = Text.removeTags(event.getMenuTarget());
-		if (!PYRAMID_ENTRANCE_IDS.contains(event.getId())
-			&& !"An anonymous looking door".equalsIgnoreCase(target))
+		if (!PYRAMID_ENTRANCE_IDS.contains(event.getId()))
 		{
 			return;
 		}
