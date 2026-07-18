@@ -260,7 +260,7 @@ public class PyramidPlunderPlugin extends Plugin
 			return;
 		}
 
-		WorldPoint clickedPoint = WorldPoint.fromScene(client, event.getParam0(), event.getParam1(), client.getPlane());
+		WorldPoint clickedPoint = WorldPoint.fromScene(client.getTopLevelWorldView(), event.getParam0(), event.getParam1(), client.getPlane());
 		TileObject clickedEntrance = findEntranceAt(clickedPoint);
 		pendingEntrance = clickedEntrance == null ? clickedPoint : clickedEntrance.getWorldLocation();
 		pendingEntranceTicks = 0;
