@@ -42,6 +42,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -364,37 +365,62 @@ public class PyramidPlunderPlugin extends Plugin
 
 	private TileObject findEntranceAt(WorldPoint point)
 	{
-		for (Tile[][] plane : client.getScene().getTiles())
+		LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), point);
+		if (localPoint == null)
 		{
-			for (Tile[] row : plane)
+			return null;
+		}
+
+		Tile[][][] tiles = client.getTopLevelWorldView().getScene().getTiles();
+		int plane = point.getPlane();
+		if (plane < 0 || plane >= tiles.length)
+		{
+			return null;
+		}
+
+		Tile[][] planeTiles = tiles[plane];
+		int minX = Math.max(0, localPoint.getSceneX() - 1);
+		int maxX = Math.min(planeTiles.length - 1, localPoint.getSceneX() + 1);
+		for (int x = minX; x <= maxX; x++)
+		{
+			int minY = Math.max(0, localPoint.getSceneY() - 1);
+			int maxY = Math.min(planeTiles[x].length - 1, localPoint.getSceneY() + 1);
+			for (int y = minY; y <= maxY; y++)
 			{
-				for (Tile tile : row)
+				TileObject entrance = findEntranceOnTile(planeTiles[x][y], point);
+				if (entrance != null)
 				{
-					if (tile == null)
-					{
-						continue;
-					}
-
-					WallObject wall = tile.getWallObject();
-					if (matchesEntrance(wall, point))
-					{
-						return wall;
-					}
-
-					DecorativeObject decorative = tile.getDecorativeObject();
-					if (matchesEntrance(decorative, point))
-					{
-						return decorative;
-					}
-
-					for (GameObject gameObject : tile.getGameObjects())
-					{
-						if (matchesEntrance(gameObject, point))
-						{
-							return gameObject;
-						}
-					}
+					return entrance;
 				}
+			}
+		}
+		return null;
+	}
+
+	private TileObject findEntranceOnTile(Tile tile, WorldPoint point)
+	{
+		if (tile == null)
+		{
+			return null;
+		}
+
+		WallObject wall = tile.getWallObject();
+		if (matchesEntrance(wall, point))
+		{
+			return wall;
+		}
+
+		DecorativeObject decorative = tile.getDecorativeObject();
+		if (matchesEntrance(decorative, point))
+		{
+			return decorative;
+		}
+
+		for (GameObject gameObject : tile.getGameObjects())
+		{
+			if (matchesEntrance(gameObject, point))
+			{
+				return gameObject;
 			}
 		}
 		return null;
