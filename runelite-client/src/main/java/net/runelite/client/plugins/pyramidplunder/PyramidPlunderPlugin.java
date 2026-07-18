@@ -293,29 +293,19 @@ public class PyramidPlunderPlugin extends Plugin
 	{
 		if (pendingEntrance != null)
 		{
-			for (NPC npc : client.getNpcs())
-			{
-				if (isGuardianMummy(npc))
-				{
-					confirmPendingEntrance();
-					break;
-				}
-			}
-
-			if (pendingEntrance != null && timerAtEntranceAttempt <= 0
-				&& client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT) > 0)
+			boolean timerStarted = timerAtEntranceAttempt <= 0
+				&& client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT) > 0;
+			if (hasGuardianMummy() || timerStarted)
 			{
 				confirmPendingEntrance();
 			}
-
-			if (pendingEntrance != null && pendingEntrance.equals(lastGoodEntrance)
-				&& isInPyramidPlunderRegion())
+			else if (pendingEntrance.equals(lastGoodEntrance) && isInPyramidPlunderRegion())
 			{
 				lastGoodEntrance = null;
 				highlightedEntrance = null;
 				pendingEntrance = null;
 			}
-			else if (pendingEntrance != null && ++pendingEntranceTicks > MAX_PENDING_DOOR_TICKS)
+			else if (++pendingEntranceTicks > MAX_PENDING_DOOR_TICKS)
 			{
 				pendingEntrance = null;
 			}
@@ -330,6 +320,18 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			highlightedEntrance = null;
 		}
+	}
+
+	private boolean hasGuardianMummy()
+	{
+		for (NPC npc : client.getNpcs())
+		{
+			if (isGuardianMummy(npc))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static boolean isGuardianMummy(NPC npc)
