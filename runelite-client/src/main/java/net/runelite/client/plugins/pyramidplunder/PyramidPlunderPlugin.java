@@ -41,6 +41,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -301,7 +302,13 @@ public class PyramidPlunderPlugin extends Plugin
 
 	private boolean hasGuardianMummy()
 	{
-		for (NPC npc : client.getNpcs())
+		WorldView worldView = client.getTopLevelWorldView();
+		if (worldView == null)
+		{
+			return false;
+		}
+
+		for (NPC npc : worldView.npcs())
 		{
 			if (isGuardianMummy(npc))
 			{
