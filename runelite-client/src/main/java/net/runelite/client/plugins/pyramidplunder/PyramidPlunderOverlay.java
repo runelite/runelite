@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.pyramidplunder;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -211,12 +210,7 @@ class PyramidPlunderOverlay extends Overlay
 	{
 		if (shape != null)
 		{
-			OverlayUtil.renderPolygon(
-				graphics,
-				shape,
-				config.lastGoodEntranceColor(),
-				config.lastGoodEntranceColor(),
-				new BasicStroke(2));
+			OverlayUtil.renderPolygon(graphics, shape, config.lastGoodEntranceColor());
 		}
 	}
 }
