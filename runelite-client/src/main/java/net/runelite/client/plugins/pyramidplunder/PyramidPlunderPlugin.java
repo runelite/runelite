@@ -336,10 +336,7 @@ public class PyramidPlunderPlugin extends Plugin
 
 	private static boolean isGuardianMummy(NPC npc)
 	{
-		return npc.getId() == NpcID.NTK_MUMMY_GUARDIAN
-			|| npc.getId() == NpcID.NTK_MUMMY_GUARDIAN_DUMMY
-			|| "Guardian mummy".equalsIgnoreCase(npc.getName())
-			|| "Annoyed guardian mummy".equalsIgnoreCase(npc.getName());
+		return npc.getId() == NpcID.NTK_MUMMY_GUARDIAN;
 	}
 
 	private void confirmPendingEntrance()
