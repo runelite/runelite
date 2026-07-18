@@ -33,8 +33,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
-import net.runelite.api.TileObject;
-import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
@@ -177,33 +175,19 @@ class PyramidPlunderOverlay extends Overlay
 			return;
 		}
 
-		TileObject entrance = plugin.getHighlightedEntrance();
+		GameObject entrance = plugin.getHighlightedEntrance();
 		if (entrance == null)
 		{
 			return;
 		}
 
-		Shape hull = null;
-		if (entrance instanceof GameObject)
-		{
-			hull = ((GameObject) entrance).getConvexHull();
-		}
-		else if (entrance instanceof WallObject)
-		{
-			hull = ((WallObject) entrance).getConvexHull();
-		}
-
+		Shape hull = entrance.getConvexHull();
 		if (hull == null)
 		{
 			hull = entrance.getClickbox();
 		}
 
 		renderEntranceShape(graphics, hull);
-
-		if (entrance instanceof WallObject)
-		{
-			renderEntranceShape(graphics, ((WallObject) entrance).getConvexHull2());
-		}
 	}
 
 	private void renderEntranceShape(Graphics2D graphics, Shape shape)

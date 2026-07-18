@@ -35,7 +35,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -50,7 +49,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
@@ -131,7 +129,7 @@ public class PyramidPlunderPlugin extends Plugin
 	private final List<GameObject> objectsToHighlight = new ArrayList<>();
 
 	@Getter
-	private TileObject highlightedEntrance;
+	private GameObject highlightedEntrance;
 
 	private WorldPoint lastGoodEntrance;
 	private WorldPoint pendingEntrance;
@@ -225,7 +223,6 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			tilesToHighlight.put(object, event.getTile());
 		}
-		considerForEntranceHighlight(object);
 	}
 
 	@Subscribe
@@ -262,7 +259,7 @@ public class PyramidPlunderPlugin extends Plugin
 		}
 
 		WorldPoint clickedPoint = WorldPoint.fromScene(client.getTopLevelWorldView(), event.getParam0(), event.getParam1(), client.getPlane());
-		TileObject clickedEntrance = findEntranceAt(clickedPoint);
+		GameObject clickedEntrance = findEntranceAt(clickedPoint);
 		pendingEntrance = clickedEntrance == null ? clickedPoint : clickedEntrance.getWorldLocation();
 		pendingEntranceTicks = 0;
 		timerAtEntranceAttempt = client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT);
@@ -278,15 +275,9 @@ public class PyramidPlunderPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectDespawned(WallObjectDespawned event)
-	{
-		clearIfHighlighted(event.getWallObject());
-	}
-
-	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
-		clearIfHighlighted(event.getGameObject());
+		clearHighlightedEntranceIfMatches(event.getGameObject());
 	}
 
 	private void updateLastGoodEntrance(boolean inSophanem)
@@ -345,7 +336,7 @@ public class PyramidPlunderPlugin extends Plugin
 		pendingEntrance = null;
 	}
 
-	private void considerForEntranceHighlight(TileObject object)
+	private void considerForEntranceHighlight(GameObject object)
 	{
 		if (config.highlightLastGoodEntrance() && lastGoodEntrance != null
 			&& matchesEntrance(object, lastGoodEntrance))
@@ -354,7 +345,7 @@ public class PyramidPlunderPlugin extends Plugin
 		}
 	}
 
-	private void clearIfHighlighted(TileObject object)
+	private void clearHighlightedEntranceIfMatches(GameObject object)
 	{
 		if (object == highlightedEntrance)
 		{
@@ -362,7 +353,7 @@ public class PyramidPlunderPlugin extends Plugin
 		}
 	}
 
-	private TileObject findEntranceAt(WorldPoint point)
+	private GameObject findEntranceAt(WorldPoint point)
 	{
 		LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), point);
 		if (localPoint == null)
@@ -386,7 +377,7 @@ public class PyramidPlunderPlugin extends Plugin
 			int maxY = Math.min(planeTiles[x].length - 1, localPoint.getSceneY() + 1);
 			for (int y = minY; y <= maxY; y++)
 			{
-				TileObject entrance = findEntranceOnTile(planeTiles[x][y], point);
+				GameObject entrance = findEntranceOnTile(planeTiles[x][y], point);
 				if (entrance != null)
 				{
 					return entrance;
@@ -396,23 +387,11 @@ public class PyramidPlunderPlugin extends Plugin
 		return null;
 	}
 
-	private TileObject findEntranceOnTile(Tile tile, WorldPoint point)
+	private GameObject findEntranceOnTile(Tile tile, WorldPoint point)
 	{
 		if (tile == null)
 		{
 			return null;
-		}
-
-		WallObject wall = tile.getWallObject();
-		if (matchesEntrance(wall, point))
-		{
-			return wall;
-		}
-
-		DecorativeObject decorative = tile.getDecorativeObject();
-		if (matchesEntrance(decorative, point))
-		{
-			return decorative;
 		}
 
 		for (GameObject gameObject : tile.getGameObjects())
@@ -425,20 +404,19 @@ public class PyramidPlunderPlugin extends Plugin
 		return null;
 	}
 
-	private boolean matchesEntrance(TileObject object, WorldPoint point)
+	private boolean matchesEntrance(GameObject object, WorldPoint point)
 	{
 		return object != null && isPyramidEntrance(object)
 			&& point.distanceTo(object.getWorldLocation()) <= 1;
 	}
 
-	private static boolean isPyramidEntrance(TileObject object)
+	private static boolean isPyramidEntrance(GameObject object)
 	{
 		return PYRAMID_ENTRANCE_IDS.contains(object.getId());
 	}
 
 	private boolean isInSophanem()
 	{
-		// TODO(maeve): consider exact Sophanem area bounds if the region check is too broad.
 		return client.getLocalPlayer() != null
 			&& SOPHANEM_REGION == client.getLocalPlayer().getWorldLocation().getRegionID();
 	}
