@@ -29,8 +29,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.config.Range;
-import net.runelite.client.config.Units;
 import net.runelite.client.util.ImageCapture.ScreenshotFormat;
 
 @ConfigGroup("screenshot")
@@ -53,22 +51,6 @@ public interface ScreenshotConfig extends Config
 	default ScreenshotFormat imageFormat()
 	{
 		return ScreenshotFormat.PNG;
-	}
-
-	@ConfigItem(
-		keyName = "imageQuality",
-		name = "Image quality",
-		description = "Quality for lossy formats such as JPG. Higher values look better but produce larger files. Ignored for PNG.",
-		position = 6
-	)
-	@Range(
-		min = 1,
-		max = 100
-	)
-	@Units(Units.PERCENT)
-	default int imageQuality()
-	{
-		return 90;
 	}
 
 	@ConfigItem(

@@ -43,11 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
-import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageOutputStream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
@@ -83,7 +79,7 @@ public class ImageCapture
 		JPG("JPEG", "jpg", true);
 
 		/**
-		 * The {@link ImageIO} informal format name used to look up an {@link ImageWriter}.
+		 * The {@link ImageIO} informal format name used to encode the image.
 		 */
 		private final String formatName;
 		/**
@@ -337,17 +333,6 @@ public class ImageCapture
 		return ScreenshotFormat.PNG;
 	}
 
-	private int getQuality()
-	{
-		final Integer quality = configManager.getConfiguration("screenshot", "imageQuality", int.class);
-		if (quality == null)
-		{
-			return 90;
-		}
-		// Clamp to a sane range regardless of how the value was persisted
-		return Math.max(1, Math.min(100, quality));
-	}
-
 	private void writeImage(BufferedImage screenshot, ScreenshotFormat imageFormat, File file) throws IOException
 	{
 		if (!imageFormat.isLossy())
@@ -363,23 +348,12 @@ public class ImageCapture
 		g.drawImage(screenshot, 0, 0, null);
 		g.dispose();
 
-		final ImageWriter writer = ImageIO.getImageWritersByFormatName(imageFormat.getFormatName()).next();
-		try (ImageOutputStream ios = ImageIO.createImageOutputStream(file))
+		if (!ImageIO.write(rgb, imageFormat.getFormatName(), file))
 		{
-			writer.setOutput(ios);
-
-			final ImageWriteParam param = writer.getDefaultWriteParam();
-			if (param.canWriteCompressed())
-			{
-				param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-				param.setCompressionQuality(getQuality() / 100f);
-			}
-
-			writer.write(null, new IIOImage(rgb, null, null), param);
-		}
-		finally
-		{
-			writer.dispose();
+			// No writer is available for this format on the current platform. Fall back to PNG
+			// so the screenshot is still saved rather than silently lost.
+			log.warn("no image writer for format {}, falling back to PNG", imageFormat.getFormatName());
+			ImageIO.write(screenshot, ScreenshotFormat.PNG.getFormatName(), file);
 		}
 	}
 
