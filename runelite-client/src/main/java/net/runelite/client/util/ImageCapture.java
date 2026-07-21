@@ -43,16 +43,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ScreenshotTaken;
@@ -66,12 +72,46 @@ public class ImageCapture
 {
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
+	/**
+	 * The file format screenshots are saved as. Only formats supported by the platform's
+	 * {@link ImageIO} implementation without additional dependencies are offered.
+	 */
+	@Getter
+	public enum ScreenshotFormat
+	{
+		PNG("PNG", "png", false),
+		JPG("JPEG", "jpg", true);
+
+		/**
+		 * The {@link ImageIO} informal format name used to look up an {@link ImageWriter}.
+		 */
+		private final String formatName;
+		/**
+		 * The file extension (without a leading dot) written to disk.
+		 */
+		private final String extension;
+		/**
+		 * Whether the format is lossy and therefore honours a quality setting. Lossy formats
+		 * also cannot store an alpha channel, so the image is flattened onto an opaque
+		 * background before it is written.
+		 */
+		private final boolean lossy;
+
+		ScreenshotFormat(String formatName, String extension, boolean lossy)
+		{
+			this.formatName = formatName;
+			this.extension = extension;
+			this.lossy = lossy;
+		}
+	}
+
 	private final Client client;
 	private final Notifier notifier;
 	private final ClientUI clientUi;
 	private final DrawManager drawManager;
 	private final ScheduledExecutorService executor;
 	private final EventBus eventBus;
+	private final ConfigManager configManager;
 
 	/**
 	 * Take a screenshot and save it
@@ -209,20 +249,23 @@ public class ImageCapture
 
 		playerFolder.mkdirs();
 
+		final ScreenshotFormat imageFormat = getFormat();
+
 		fileName += (fileName.isEmpty() ? "" : " ") + format(new Date());
 
-		File screenshotFile = new File(playerFolder, fileName + ".png");
+		final String extension = "." + imageFormat.getExtension();
+		File screenshotFile = new File(playerFolder, fileName + extension);
 		// To make sure that screenshots don't get overwritten, check if file exists,
 		// and if it does create file with same name and suffix.
 		int i = 1;
 		while (screenshotFile.exists())
 		{
-			screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + ".png");
+			screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + extension);
 		}
 
 		try
 		{
-			ImageIO.write(screenshot, "PNG", screenshotFile);
+			writeImage(screenshot, imageFormat, screenshotFile);
 		}
 		catch (IOException ex)
 		{
@@ -275,6 +318,69 @@ public class ImageCapture
 	public void takeScreenshot(BufferedImage screenshot, String fileName, boolean notify, ImageUploadStyle imageUploadStyle)
 	{
 		takeScreenshot(screenshot, fileName, null, notify, imageUploadStyle);
+	}
+
+	private ScreenshotFormat getFormat()
+	{
+		try
+		{
+			final String format = configManager.getConfiguration("screenshot", "imageFormat");
+			if (!Strings.isNullOrEmpty(format))
+			{
+				return ScreenshotFormat.valueOf(format);
+			}
+		}
+		catch (IllegalArgumentException ex)
+		{
+			log.warn("invalid screenshot format, falling back to PNG", ex);
+		}
+		return ScreenshotFormat.PNG;
+	}
+
+	private int getQuality()
+	{
+		final Integer quality = configManager.getConfiguration("screenshot", "imageQuality", int.class);
+		if (quality == null)
+		{
+			return 90;
+		}
+		// Clamp to a sane range regardless of how the value was persisted
+		return Math.max(1, Math.min(100, quality));
+	}
+
+	private void writeImage(BufferedImage screenshot, ScreenshotFormat imageFormat, File file) throws IOException
+	{
+		if (!imageFormat.isLossy())
+		{
+			ImageIO.write(screenshot, imageFormat.getFormatName(), file);
+			return;
+		}
+
+		// Lossy formats (e.g. JPEG) cannot store an alpha channel. Flatten the image onto an
+		// opaque background to avoid black or corrupted colors where the screenshot is transparent.
+		final BufferedImage rgb = new BufferedImage(screenshot.getWidth(), screenshot.getHeight(), BufferedImage.TYPE_INT_RGB);
+		final Graphics2D g = rgb.createGraphics();
+		g.drawImage(screenshot, 0, 0, null);
+		g.dispose();
+
+		final ImageWriter writer = ImageIO.getImageWritersByFormatName(imageFormat.getFormatName()).next();
+		try (ImageOutputStream ios = ImageIO.createImageOutputStream(file))
+		{
+			writer.setOutput(ios);
+
+			final ImageWriteParam param = writer.getDefaultWriteParam();
+			if (param.canWriteCompressed())
+			{
+				param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+				param.setCompressionQuality(getQuality() / 100f);
+			}
+
+			writer.write(null, new IIOImage(rgb, null, null), param);
+		}
+		finally
+		{
+			writer.dispose();
+		}
 	}
 
 	private static String format(Date date)
