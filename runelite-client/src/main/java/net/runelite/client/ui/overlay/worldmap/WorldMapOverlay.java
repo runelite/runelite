@@ -42,6 +42,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.worldmap.WorldMap;
@@ -213,7 +214,8 @@ public class WorldMapOverlay extends Overlay
 				Rectangle clickbox = new Rectangle(drawX, drawY, image.getWidth(), image.getHeight());
 				if (mousePos != null && clickbox.contains(mousePos.getX(), mousePos.getY()))
 				{
-					if (!Strings.isNullOrEmpty(worldPoint.getTooltip()))
+					if (!Strings.isNullOrEmpty(worldPoint.getTooltip()) &&
+						(client.getVarbitValue(VarbitID.WORLDMAP_TOGGLES) & 0b1000) == 0)
 					{
 						tooltipPoint = worldPoint;
 					}
