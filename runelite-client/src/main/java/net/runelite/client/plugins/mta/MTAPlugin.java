@@ -28,8 +28,11 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.mta.alchemy.AlchemyRoom;
@@ -64,6 +67,10 @@ public class MTAPlugin extends Plugin
 	private MTASceneOverlay sceneOverlay;
 	@Inject
 	private MTAItemOverlay itemOverlay;
+	@Inject
+	private Client client;
+	@Inject
+	private MTAConfig config;
 
 	@Getter(AccessLevel.PROTECTED)
 	private MTARoom[] rooms;
@@ -100,6 +107,20 @@ public class MTAPlugin extends Plugin
 		}
 
 		telekineticRoom.resetRoom();
+		client.clearHintArrow();
 	}
 
+	@Subscribe
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(MTAConfig.GROUP))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("disableFlashingArrows") && config.disableFlashingArrows())
+		{
+			client.clearHintArrow();
+		}
+	}
 }

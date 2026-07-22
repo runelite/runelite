@@ -82,12 +82,13 @@ public class EnchantmentRoom extends MTARoom
 		}
 
 		WorldPoint nearest = findNearestStone();
-		if (nearest != null)
+		boolean showHintArrow = !config.disableFlashingArrows();
+		if (nearest != null && showHintArrow)
 		{
 			client.setHintArrow(nearest);
 			hintSet = true;
 		}
-		else
+		else if (hintSet)
 		{
 			client.clearHintArrow();
 			hintSet = false;
