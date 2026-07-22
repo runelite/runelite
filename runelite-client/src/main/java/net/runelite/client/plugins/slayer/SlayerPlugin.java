@@ -36,8 +36,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -45,26 +49,31 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.GraphicsObject;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -105,6 +114,9 @@ public class SlayerPlugin extends Plugin
 	private static final String TASK_COMMAND_STRING = "!task";
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
+	// Longest known respawn time is currently held by Suspicious Water.
+	private static final int MAX_RESPAWN_TIME_TICKS = 500;
+	private static final int MAX_ACTOR_VIEW_RANGE = 15;
 
 	// Task streak
 	private static final int KRYSTILIA_SLAYER_MASTER = 7;
@@ -151,6 +163,9 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private NpcOverlayService npcOverlayService;
 
+	@Inject
+	private NpcRespawnOverlay npcRespawnOverlay;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
 
@@ -174,6 +189,60 @@ public class SlayerPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private String taskName;
 
+	/**
+	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
+	 */
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<Integer, MemorizedNpc> deadNpcsToDisplay = new HashMap<>();
+
+	/**
+	 * Tagged NPCs that have died at some point, which are memorized to
+	 * remember when and where they will respawn
+	 */
+	private final Map<Integer, MemorizedNpc> memorizedNpcs = new HashMap<>();
+
+	/**
+	 * Tagged NPCs that spawned this tick, which need to be verified that
+	 * they actually spawned and didn't just walk into view range.
+	 */
+	private final List<NPC> spawnedNpcsThisTick = new ArrayList<>();
+
+	/**
+	 * Tagged NPCs that despawned this tick, which need to be verified that
+	 * they actually spawned and didn't just walk into view range.
+	 */
+	private final List<DespawnedNpc> despawnedNpcsThisTick = new ArrayList<>();
+
+	@AllArgsConstructor
+	private static class DespawnedNpc
+	{
+		WorldPoint coord;
+		int index;
+	}
+
+	/**
+	 * The time when the last game tick event ran.
+	 */
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastTickUpdate;
+
+	/**
+	 * The players location on the last game tick.
+	 */
+	private WorldPoint lastPlayerLocation;
+
+	/**
+	 * When hopping worlds, NPCs can spawn without them actually respawning,
+	 * so we would not want to mark it as a real spawn in those cases.
+	 */
+	private boolean skipNextSpawnCheck = false;
+
+	/**
+	 * World locations of graphics object which indicate that an
+	 * NPC teleported that were played this tick.
+	 */
+	private final Set<WorldPoint> teleportGraphicsObjectSpawnedThisTick = new HashSet<>();
+
 	private TaskCounter counter;
 	private Instant infoTimer;
 	private boolean loginFlag;
@@ -183,7 +252,7 @@ public class SlayerPlugin extends Plugin
 
 	public final Function<NPC, HighlightedNpc> isTarget = (n) ->
 	{
-		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline()) && targets.contains(n))
+		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline() || config.highlightTrueTile() || config.highlightSwTile() || config.highlightSwTrueTile()) && targets.contains(n))
 		{
 			Color color = config.getTargetColor();
 			return HighlightedNpc.builder()
@@ -192,6 +261,9 @@ public class SlayerPlugin extends Plugin
 				.fillColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12))
 				.hull(config.highlightHull())
 				.tile(config.highlightTile())
+				.trueTile(config.highlightTrueTile())
+				.swTile(config.highlightSwTile())
+				.swTrueTile(config.highlightSwTrueTile())
 				.outline(config.highlightOutline())
 				.build();
 
@@ -213,6 +285,7 @@ public class SlayerPlugin extends Plugin
 
 		overlayManager.add(overlay);
 		overlayManager.add(targetWeaknessOverlay);
+		overlayManager.add(npcRespawnOverlay);
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -222,6 +295,7 @@ public class SlayerPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
+			skipNextSpawnCheck = true;
 			if (client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
 			{
 				return false;
@@ -244,10 +318,19 @@ public class SlayerPlugin extends Plugin
 
 		overlayManager.remove(overlay);
 		overlayManager.remove(targetWeaknessOverlay);
+		overlayManager.remove(npcRespawnOverlay);
 		removeCounter();
 		targets.clear();
 
 		taskLocations = null;
+		clientThread.invoke(() ->
+		{
+			deadNpcsToDisplay.clear();
+			memorizedNpcs.clear();
+			spawnedNpcsThisTick.clear();
+			despawnedNpcsThisTick.clear();
+			teleportGraphicsObjectSpawnedThisTick.clear();
+		});
 	}
 
 	@Provides
@@ -266,6 +349,10 @@ public class SlayerPlugin extends Plugin
 			case CONNECTION_LOST:
 				loginFlag = true; // to avoid re-adding the infobox
 				targets.clear();
+				deadNpcsToDisplay.clear();
+				memorizedNpcs.forEach((id, npc) -> npc.setDiedOnTick(-1));
+				lastPlayerLocation = null;
+				skipNextSpawnCheck = true;
 				break;
 		}
 	}
@@ -308,7 +395,15 @@ public class SlayerPlugin extends Plugin
 		if (isTarget(npc))
 		{
 			targets.add(npc);
+			memorizeNpc(npc);
+			spawnedNpcsThisTick.add(npc);
 		}
+	}
+
+	private void memorizeNpc(NPC npc)
+	{
+		final int npcIndex = npc.getIndex();
+		memorizedNpcs.putIfAbsent(npcIndex, new MemorizedNpc(npc));
 	}
 
 	@Subscribe
@@ -316,6 +411,10 @@ public class SlayerPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 		targets.remove(npc);
+		if (memorizedNpcs.containsKey(npc.getIndex()))
+		{
+			despawnedNpcsThisTick.add(new DespawnedNpc(npc.getWorldLocation(), npc.getIndex()));
+		}
 	}
 
 	@Subscribe
@@ -457,6 +556,10 @@ public class SlayerPlugin extends Plugin
 		}
 
 		loginFlag = false;
+		removeOldHighlightedRespawns();
+		validateSpawnedNpcs();
+		lastTickUpdate = Instant.now();
+		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
 	@Subscribe
@@ -539,6 +642,17 @@ public class SlayerPlugin extends Plugin
 				infoTimer = Instant.now();
 				addCounter();
 			}
+		}
+	}
+
+	@Subscribe
+	public void onGraphicsObjectCreated(GraphicsObjectCreated event)
+	{
+		final GraphicsObject go = event.getGraphicsObject();
+
+		if (go.getId() == SpotanimID.SMOKEPUFF)
+		{
+			teleportGraphicsObjectSpawnedThisTick.add(WorldPoint.fromLocal(client, go.getLocation()));
 		}
 	}
 
@@ -809,5 +923,149 @@ public class SlayerPlugin extends Plugin
 	private static String capsString(String str)
 	{
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
+
+	private void removeOldHighlightedRespawns()
+	{
+		deadNpcsToDisplay.values().removeIf(x -> x.getDiedOnTick() + x.getRespawnTime() <= client.getTickCount() + 1);
+	}
+
+	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)
+	{
+		int distance = wp1.distanceTo(wp2);
+		return distance < MAX_ACTOR_VIEW_RANGE;
+	}
+
+	private static WorldPoint getWorldLocationBehind(NPC npc)
+	{
+		final int orientation = npc.getOrientation() / 256;
+		int dx = 0, dy = 0;
+
+		switch (orientation)
+		{
+			case 0: // South
+				dy = -1;
+				break;
+			case 1: // Southwest
+				dx = -1;
+				dy = -1;
+				break;
+			case 2: // West
+				dx = -1;
+				break;
+			case 3: // Northwest
+				dx = -1;
+				dy = 1;
+				break;
+			case 4: // North
+				dy = 1;
+				break;
+			case 5: // Northeast
+				dx = 1;
+				dy = 1;
+				break;
+			case 6: // East
+				dx = 1;
+				break;
+			case 7: // Southeast
+				dx = 1;
+				dy = -1;
+				break;
+		}
+
+		final WorldPoint currWP = npc.getWorldLocation();
+		return new WorldPoint(currWP.getX() - dx, currWP.getY() - dy, currWP.getPlane());
+	}
+
+	private void validateSpawnedNpcs()
+	{
+		if (skipNextSpawnCheck)
+		{
+			skipNextSpawnCheck = false;
+		}
+		else
+		{
+			for (DespawnedNpc npc : despawnedNpcsThisTick)
+			{
+				if (!teleportGraphicsObjectSpawnedThisTick.isEmpty())
+				{
+					if (teleportGraphicsObjectSpawnedThisTick.contains(npc.coord))
+					{
+						// NPC teleported away, so we don't want to add the respawn timer
+						continue;
+					}
+				}
+
+				if (isInViewRange(client.getLocalPlayer().getWorldLocation(), npc.coord))
+				{
+					final MemorizedNpc mn = memorizedNpcs.get(npc.index);
+
+					if (mn != null)
+					{
+						mn.setDiedOnTick(client.getTickCount() + 1); // This runs before tickCounter updates, so we add 1
+
+						if (!mn.getPossibleRespawnLocations().isEmpty())
+						{
+							log.debug("Starting {} tick countdown for {}", mn.getRespawnTime(), mn.getNpcName());
+							deadNpcsToDisplay.put(mn.getNpcIndex(), mn);
+						}
+					}
+				}
+			}
+
+			for (NPC npc : spawnedNpcsThisTick)
+			{
+				if (!teleportGraphicsObjectSpawnedThisTick.isEmpty())
+				{
+					if (teleportGraphicsObjectSpawnedThisTick.contains(npc.getWorldLocation()) ||
+						teleportGraphicsObjectSpawnedThisTick.contains(getWorldLocationBehind(npc)))
+					{
+						// NPC teleported here, so we don't want to update the respawn timer
+						continue;
+					}
+				}
+
+				if (lastPlayerLocation != null && isInViewRange(lastPlayerLocation, npc.getWorldLocation()))
+				{
+					final MemorizedNpc mn = memorizedNpcs.get(npc.getIndex());
+
+					if (mn.getDiedOnTick() != -1)
+					{
+						final int respawnTime = client.getTickCount() + 1 - mn.getDiedOnTick();
+
+						// By killing a monster and leaving the area before seeing it again, an erroneously lengthy
+						// respawn time can be recorded. Thus, if the respawn time is already set and is greater than
+						// the observed time, assume that the lower observed respawn time is correct.
+						// Similarly, if the observed respawn time exceeds the maximum known respawn time,
+						// we can ignore the calculated time as obviously incorrect.
+						if ((mn.getRespawnTime() == -1 || respawnTime < mn.getRespawnTime()) && respawnTime <= MAX_RESPAWN_TIME_TICKS)
+						{
+							mn.setRespawnTime(respawnTime);
+						}
+
+						mn.setDiedOnTick(-1);
+					}
+
+					final WorldPoint npcLocation = npc.getWorldLocation();
+
+					// An NPC can move in the same tick as it spawns, so we also have
+					// to consider whatever tile is behind the npc
+					final WorldPoint possibleOtherNpcLocation = getWorldLocationBehind(npc);
+
+					mn.getPossibleRespawnLocations().removeIf(x ->
+						!x.equals(npcLocation) && !x.equals(possibleOtherNpcLocation));
+
+					if (mn.getPossibleRespawnLocations().isEmpty())
+					{
+						mn.getPossibleRespawnLocations().add(npcLocation);
+						mn.getPossibleRespawnLocations().add(possibleOtherNpcLocation);
+					}
+				}
+			}
+		}
+
+		spawnedNpcsThisTick.clear();
+		despawnedNpcsThisTick.clear();
+		teleportGraphicsObjectSpawnedThisTick.clear();
 	}
 }
