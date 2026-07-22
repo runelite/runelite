@@ -457,7 +457,22 @@ public class HiscorePanel extends PluginPanel
 						result.getSkill(RANGED).getLevel(),
 						result.getSkill(PRAYER).getLevel()
 					);
-					label.setText(Integer.toString(combatLevel));
+
+					if (result.getSkill(ATTACK).getLevel() == 1 || //Skills not on the hiscores get set to 1
+						result.getSkill(STRENGTH).getLevel() == 1 ||
+						result.getSkill(DEFENCE).getLevel() == 1 ||
+						result.getSkill(HITPOINTS).getLevel() == 1 ||
+						result.getSkill(MAGIC).getLevel() == 1 ||
+						result.getSkill(RANGED).getLevel() == 1 ||
+						result.getSkill(PRAYER).getLevel() == 1)
+					{
+						//Indicate combat level isn't precise if some combat stat is missing from the hiscores
+						label.setText(">= " + Integer.toString(combatLevel));
+					}
+					else
+					{
+						label.setText(Integer.toString(combatLevel));
+					}
 				}
 			}
 			else if ((s = result.getSkill(skill)) != null)
