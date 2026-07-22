@@ -79,6 +79,7 @@ public class WorldMapPlugin extends Plugin
 	private static final BufferedImage FINISHED_ICON;
 	private static final BufferedImage MINING_SITE_ICON;
 	private static final BufferedImage ROOFTOP_COURSE_ICON;
+	private static final BufferedImage FISHING_SPOT_ICON;
 
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
@@ -150,6 +151,10 @@ public class WorldMapPlugin extends Plugin
 		ROOFTOP_COURSE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage rooftopCourseIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "rooftop_course_icon.png");
 		ROOFTOP_COURSE_ICON.getGraphics().drawImage(rooftopCourseIcon, iconOffset, iconOffset, null);
+
+		FISHING_SPOT_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage fishingSpotIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "fishing_spot_icon.png");
+		FISHING_SPOT_ICON.getGraphics().drawImage(fishingSpotIcon, iconOffset, iconOffset, null);
 	}
 
 	@Inject
@@ -573,7 +578,7 @@ public class WorldMapPlugin extends Plugin
 						MapPoint.builder()
 							.type(MapPoint.Type.FISHING)
 							.worldPoint(point)
-							.image(BLANK_ICON)
+							.image(location.isIconRequired() ? FISHING_SPOT_ICON : BLANK_ICON)
 							.tooltip(location.getTooltip())
 							.build()
 					)
