@@ -61,7 +61,14 @@ class HunterTrap
 	private final int objectId;
 
 	@Getter
+	private final int varbitId;
+
+	@Getter
 	private final WorldPoint worldLocation;
+
+	@Setter
+	@Getter
+	private boolean ignoreTimer;
 
 	/**
 	 * The states a trap can be in.
@@ -83,7 +90,11 @@ class HunterTrap
 		/**
 		 * A trap that is closing.
 		 */
-		TRANSITION
+		TRANSITION,
+		/**
+		 * Not placed
+		 */
+		NOT_PLACED
 	}
 
 	/**
@@ -97,6 +108,23 @@ class HunterTrap
 		this.placedOn = Instant.now();
 		this.objectId = gameObject.getId();
 		this.worldLocation = gameObject.getWorldLocation();
+		this.varbitId = -1;
+		this.ignoreTimer = false;
+	}
+
+	/**
+	 * Constructor for a HunterTrap object
+	 *
+	 * @param gameObject The gameobject thats corresponds with this trap.
+	 */
+	HunterTrap(GameObject gameObject, int varbitId)
+	{
+		this.state = State.OPEN;
+		this.placedOn = Instant.now();
+		this.objectId = gameObject.getId();
+		this.worldLocation = gameObject.getWorldLocation();
+		this.varbitId = varbitId;
+		this.ignoreTimer = false;
 	}
 
 	/**
