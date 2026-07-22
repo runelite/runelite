@@ -65,6 +65,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
@@ -100,6 +101,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
+	private static final String NEX_FROZEN_MESSAGE = "<col=ff3045>You have been frozen!</col>";
+	private static final String NEX_ICE_PRISON_TRAPPED_MESSAGE = "<col=ff289d>You've been trapped in an ice prison!</col>";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
@@ -134,6 +137,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
+	private boolean caughtOffPrayByNex = false;
 
 	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
 
@@ -1016,6 +1020,27 @@ public class TimersAndBuffsPlugin extends Plugin
 			freezeTime = client.getTickCount();
 		}
 
+		if (message.equals(NEX_FROZEN_MESSAGE) && config.showFreezes())
+		{
+			// Spriritual Mage's & Glacies's freeze length
+			int freezeDuration = 6;
+			// differentiate whether freeze is coming from Nex or Glacies/Spiritual Mage
+			// Nex can only freeze if at the time of her ice attack player didn't have 'Protect from Magic' activated
+			if (caughtOffPrayByNex && client.getVarbitValue(VarbitID.NEX_BARRIER) == 3)
+			{
+				// Nex's freeze length
+				freezeDuration = 15;
+			}
+			freezeTimer = createGameTimer(ICEBARRAGE, Duration.of(freezeDuration, RSTimeUnit.GAME_TICKS));
+			freezeTime = client.getTickCount();
+		}
+
+		// being put in an ice prison puts player out of combat, which, among other things, clears freeze status
+		if (message.equals(NEX_ICE_PRISON_TRAPPED_MESSAGE) && config.showFreezes())
+		{
+			removeGameTimer(ICEBARRAGE);
+		}
+
 		if (config.showArceuus())
 		{
 			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
@@ -1297,6 +1322,11 @@ public class TimersAndBuffsPlugin extends Plugin
 				removeGameTimer(ICEBARRAGE);
 				freezeTimer = createGameTimer(ICEBLITZ);
 			}
+		}
+
+		if (actor.hasSpotAnim(SpotanimID.NEX_ICE_ATTACK_IMPACT))
+		{
+			caughtOffPrayByNex = client.getVarbitValue(VarbitID.PRAYER_PROTECTFROMMAGIC) != 1;
 		}
 	}
 
