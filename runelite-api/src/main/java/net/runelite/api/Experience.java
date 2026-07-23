@@ -152,6 +152,14 @@ public class Experience
 		int defenceLevel, int hitpointsLevel, int magicLevel,
 		int rangeLevel, int prayerLevel)
 	{
+		attackLevel = Math.max(attackLevel, 1);
+		strengthLevel = Math.max(strengthLevel, 1);
+		defenceLevel = Math.max(defenceLevel, 1);
+		hitpointsLevel = Math.max(hitpointsLevel, 10);
+		magicLevel = Math.max(magicLevel, 1);
+		rangeLevel = Math.max(rangeLevel, 1);
+		prayerLevel = Math.max(prayerLevel, 1);
+
 		double base = 0.25 * (defenceLevel + hitpointsLevel + (prayerLevel / 2));
 
 		double typeContribution = getMeleeRangeOrMagicCombatLevelContribution(attackLevel, strengthLevel, magicLevel, rangeLevel);
