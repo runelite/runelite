@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.time.Instant;
 import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.timetracking.ContractStateText;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -55,13 +56,86 @@ class FarmingContractInfoBox extends InfoBox
 	@Override
 	public String getText()
 	{
-		return null;
+		if (config.farmingContractInfoBoxStateText() == ContractStateText.NEVER)
+		{
+			return null;
+		}
+
+		switch (manager.getSummary())
+		{
+			case COMPLETED:
+				return "Ready";
+			case OCCUPIED:
+				return "Occ.";
+			case IN_PROGRESS:
+				CropState cropState = manager.getContractCropState();
+				switch (cropState)
+				{
+					case DISEASED:
+						return "Dis.";
+					case DEAD:
+						return "Dead";
+					default:
+						switch (config.farmingContractInfoBoxStateText())
+						{
+							case GROWTH_STAGES:
+								// Stages are 0-indexed
+								return (manager.getContractCropStage() + 1) + "/" + contract.getStages();
+							case TIME_REMAINING:
+								int remainingSeconds = (int) (manager.getCompletionTime() - Instant.now().getEpochSecond());
+								int remainingMinutes = (remainingSeconds + 59) / 60;
+								if (remainingMinutes < 60)
+								{
+									return Math.max(remainingMinutes, 0) + "m";
+								}
+								else
+								{
+									return String.format("%d:%02d",
+										remainingMinutes / 60,
+										remainingMinutes % 60);
+								}
+							default:
+								return null;
+						}
+				}
+			case EMPTY:
+				return "Empty";
+			case UNKNOWN:
+			default:
+				return "Unk.";
+		}
 	}
 
 	@Override
 	public Color getTextColor()
 	{
-		return null;
+		if (config.farmingContractInfoBoxStateText() == ContractStateText.NEVER)
+		{
+			return null;
+		}
+
+		switch (manager.getSummary())
+		{
+			case COMPLETED:
+				return ColorScheme.PROGRESS_COMPLETE_COLOR;
+			case OCCUPIED:
+				return ColorScheme.PROGRESS_ERROR_COLOR;
+			case IN_PROGRESS:
+				CropState cropState = manager.getContractCropState();
+				switch (cropState)
+				{
+					case DISEASED:
+					case DEAD:
+						return cropState.getColor();
+					default:
+						return Color.WHITE;
+				}
+			case EMPTY:
+				return ColorScheme.PROGRESS_INPROGRESS_COLOR;
+			case UNKNOWN:
+			default:
+				return Color.LIGHT_GRAY;
+		}
 	}
 
 	@Override
