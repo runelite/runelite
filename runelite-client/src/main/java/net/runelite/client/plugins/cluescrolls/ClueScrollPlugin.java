@@ -755,18 +755,22 @@ public class ClueScrollPlugin extends Plugin
 	{
 		if (developerMode && commandExecuted.getCommand().equalsIgnoreCase("clue"))
 		{
-			var text = String.join(" ", commandExecuted.getArguments());
-
-			if (text.isEmpty())
-			{
-				resetClue(true);
-			}
-			else
-			{
-				ClueScroll clueScroll = findClueScroll(text);
-				log.debug("Found clue scroll for '{}': {}", text, clueScroll);
-				updateClue(clueScroll);
-			}
+			chatboxPanelManager.openTextInput("Enter full clue text")
+				.value(String.join(" ", commandExecuted.getArguments()))
+				.onDone((text) ->
+				{
+					if (text.isEmpty())
+					{
+						resetClue(true);
+					}
+					else
+					{
+						ClueScroll clueScroll = findClueScroll(text);
+						log.debug("Found clue scroll for '{}': {}", text, clueScroll);
+						updateClue(clueScroll);
+					}
+				})
+				.build();
 		}
 	}
 
