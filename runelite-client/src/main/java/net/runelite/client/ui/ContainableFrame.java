@@ -73,7 +73,7 @@ public class ContainableFrame extends JFrame
 				rightSideSuction = wOldx + wOldWidth - insets.right + SCREEN_EDGE_CLOSE_DISTANCE >= cDpyBounds.getMaxX();
 			}
 
-			if (rightSideSuction && wWidth < wOldWidth)
+			if ((rightSideSuction && wWidth < wOldWidth) || (ClientUI.isSidebarLeft && wOldx - SCREEN_EDGE_CLOSE_DISTANCE >= cDpyBounds.getMinX()))
 			{
 				// shift the window so the right side is near the edge again
 				cRect.x += wOldWidth - wWidth;
@@ -91,8 +91,8 @@ public class ContainableFrame extends JFrame
 			cRect.x -= Math.max(0, cRect.getMaxX() - cDpyBounds.getMaxX());
 			cRect.y -= Math.max(0, cRect.getMaxY() - cDpyBounds.getMaxY());
 
-			// if we are just resizing don't try to move the left side out
-			if (cRect.x != wOldx + insets.left)
+			// if we are just resizing and sidebar is not on the left don't try to move the left side out
+			if (cRect.x != wOldx + insets.left && !ClientUI.isSidebarLeft)
 			{
 				cRect.x = Math.max(cRect.x, cDpyBounds.x);
 			}
