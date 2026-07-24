@@ -25,11 +25,14 @@
 package net.runelite.client.plugins.motherlode;
 
 import com.google.inject.Guice;
+import com.google.inject.Module;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
@@ -40,10 +43,20 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.loottracker.PluginLootReceived;
 import net.runelite.client.ui.overlay.OverlayManager;
+import okhttp3.HttpUrl;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,6 +97,66 @@ public class MotherlodePluginTest
 	@Mock
 	@Bind
 	private EventBus eventBus;
+
+	@Mock
+	@Bind
+	private Notifier notifier;
+
+	@Mock
+	@Bind
+	private ClientThread clientThread;
+
+	@Mock
+	@Bind
+	private ItemManager itemManager;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
+	private MouseManager mouseManager;
+
+	@Mock
+	@Bind
+	private KeyManager keyManager;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeLiteConfig;
+
+	@Mock
+	@Bind
+	private ChatColorConfig chatColorConfig;
+
+	@Bind
+	@Named("sessionfile")
+	private File sessionfile = new File("./session");
+
+	@Bind
+	@Named("profile")
+	private String profile = "default";
+
+	@Bind
+	@Named("safeMode")
+	private boolean safeMode = false;
+
+	@Bind
+	@Named("runelite.title")
+	private String runeLiteTitle = "RuneLite";
+
+	@Bind
+	@Named("runelite.api.base")
+	private HttpUrl apiBase = HttpUrl.parse("https://api.runelite.net");
+
+	@Bind
+	@Named("runelite.oauth.redirect")
+	private String oauthRedirect = "http://localhost:8080/oauth";
 
 	@Before
 	public void before()
