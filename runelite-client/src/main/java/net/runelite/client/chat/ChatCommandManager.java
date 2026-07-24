@@ -24,6 +24,8 @@
  */
 package net.runelite.client.chat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
@@ -173,5 +175,9 @@ public class ChatCommandManager
 		}
 
 		return message.substring(0, idx);
+	}
+
+	public List<String> getCommands(){
+		return new ArrayList<>(commands.keySet());
 	}
 }
