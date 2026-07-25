@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
+ * Copyright (c) 2026, StaySleeping <https://github.com/StaySleeping>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,10 +26,13 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
+import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -38,6 +42,39 @@ import net.runelite.client.config.Keybind;
 public interface WorldHopperConfig extends Config
 {
 	String GROUP = "worldhopper";
+
+	@AllArgsConstructor
+	enum PacketLossDisplayMode
+	{
+		ALWAYS("Always"),
+		NEVER("Never"),
+		GREATER_THAN_ZERO(">0%");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
+	@Getter
+	@AllArgsConstructor
+	enum PacketLossColor
+	{
+		YELLOW("Yellow", Color.YELLOW),
+		RED("Red", Color.RED);
+
+		private final String name;
+		private final Color color;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
 
 	@ConfigItem(
 		keyName = "previousKey",
@@ -158,5 +195,27 @@ public interface WorldHopperConfig extends Config
 	default boolean displayPing()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "displayPacketLoss",
+		name = "Display packet loss",
+		description = "Displays packet loss percentage or not.",
+		position = 12
+	)
+	default PacketLossDisplayMode displayPacketLoss()
+	{
+		return PacketLossDisplayMode.GREATER_THAN_ZERO;
+	}
+
+	@ConfigItem(
+		keyName = "packetLossColor",
+		name = "Packet loss color",
+		description = "Color of the packet loss overlay text.",
+		position = 13
+	)
+	default PacketLossColor packetLossColor()
+	{
+		return PacketLossColor.YELLOW;
 	}
 }
