@@ -358,6 +358,11 @@ enum RareTreeLocation
 		// Wilderness
 		new WorldPoint(3175, 3931, 0)),
 
+	BLOODWOOD("Bloodwood tree", 77,
+		// Vampyrium
+		new WorldPoint(2599, 7780, 0),
+		new WorldPoint(2696, 7823, 0)),
+
 	IRONWOOD("Ironwood tree", 80,
 		// Sunbleak Island
 		new WorldPoint(2223, 2341, 0),

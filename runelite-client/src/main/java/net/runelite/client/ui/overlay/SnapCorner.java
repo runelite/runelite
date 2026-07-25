@@ -24,7 +24,9 @@
  */
 package net.runelite.client.ui.overlay;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import org.intellij.lang.annotations.MagicConstant;
@@ -42,19 +44,51 @@ class SnapCorner
 	static final int EXPAND_UP = 0x40;
 	static final int EXPAND_DOWN = 0x80;
 
+	private static final int SNAP_CORNER_SIZE = 80;
+	private static final int SNAP_CORNER_PADDING = 10; // padding to ensure there is always part of the snapcorner that is clickable
+	private static final Color SNAP_CORNER_COLOR = new Color(0, 255, 255, 50);
+	private static final Color SNAP_CORNER_ACTIVE_COLOR = new Color(0, 255, 0, 100);
+
+	final OverlayPosition position;
+	final OverlayOriginX originX;
+	final OverlayOriginY originY;
 	@MagicConstant(flags = {ALIGNMENT_RIGHT, ALIGNMENT_CENTER_HORIZONTAL, EXPAND_LEFT, EXPAND_RIGHT, EXPAND_UP, EXPAND_DOWN})
 	private final int mode;
+	CornerOverlay overlay;
+	private final int offx, offy; // default offset from origin
+	int curx, cury; // current offset from origin
+
 	private int cx, cy; // corner point
 	private int px, py; // current point
-	final OverlayPosition position;
+	private int sx, sy; // size
+	int lastsx, lastsy; // last size
 
 	SnapCorner(
 		OverlayPosition position,
-		int mode
+		int mode,
+		OverlayOriginX originX,
+		OverlayOriginY originY,
+		int xoff,
+		int yoff
 	)
 	{
 		this.position = position;
+		this.originX = originX;
+		this.originY = originY;
 		this.mode = mode;
+		this.offx = curx = xoff;
+		this.offy = cury = yoff;
+	}
+
+	boolean isRepositioned()
+	{
+		return curx != offx || cury != offy;
+	}
+
+	void reset()
+	{
+		curx = offx;
+		cury = offy;
 	}
 
 	void setPosition(int x, int y)
@@ -63,16 +97,10 @@ class SnapCorner
 		this.cy = y;
 		this.px = x;
 		this.py = y;
-	}
-
-	int getPositionX()
-	{
-		return this.cx;
-	}
-
-	int getPositionY()
-	{
-		return this.cy;
+		this.lastsx = sx;
+		this.lastsy = sy;
+		this.sx = 0;
+		this.sy = 0;
 	}
 
 	// adjust snapcorner for a drawn overlay
@@ -93,6 +121,20 @@ class SnapCorner
 				break;
 			case EXPAND_DOWN:
 				py = Math.max(py, overlayBounds.y + overlayBounds.height + padding);
+				break;
+		}
+
+		switch (expand)
+		{
+			case EXPAND_UP:
+			case EXPAND_DOWN:
+				sx = Math.max(sx, overlayBounds.width);
+				sy += overlayBounds.height + padding;
+				break;
+			case EXPAND_LEFT:
+			case EXPAND_RIGHT:
+				sx += overlayBounds.width + padding;
+				sy = Math.max(sy, overlayBounds.height);
 				break;
 		}
 	}
@@ -117,24 +159,148 @@ class SnapCorner
 		}
 	}
 
-	Rectangle corner(Dimension size)
+	private Dimension getSize()
 	{
-		int x = cx, y = cy;
+		return new Dimension(
+			Math.max(lastsx, SNAP_CORNER_SIZE) + SNAP_CORNER_PADDING,
+			Math.max(lastsy, SNAP_CORNER_SIZE) + SNAP_CORNER_PADDING
+		);
+	}
+
+	void translateOffsetForAlignment(Point p)
+	{
+		int x = p.x, y = p.y;
+		var s = getSize();
 
 		if ((mode & ALIGNMENT_CENTER_HORIZONTAL) != 0)
 		{
-			x -= size.width / 2;
+			x -= s.width / 2;
 		}
 		else if ((mode & ALIGNMENT_RIGHT) != 0)
 		{
-			x -= size.width;
+			x -= s.width;
 		}
 
 		if ((mode & ALIGNMENT_BOTTOM) != 0)
 		{
-			y -= size.height;
+			y -= s.height;
 		}
 
-		return new Rectangle(x, y, size.width, size.height);
+		p.setLocation(x, y);
+	}
+
+	Rectangle corner()
+	{
+		int x = cx, y = cy;
+		var s = getSize();
+
+		if ((mode & ALIGNMENT_CENTER_HORIZONTAL) != 0)
+		{
+			x -= s.width / 2;
+		}
+		else if ((mode & ALIGNMENT_RIGHT) != 0)
+		{
+			x -= s.width;
+		}
+
+		if ((mode & ALIGNMENT_BOTTOM) != 0)
+		{
+			y -= s.height;
+		}
+
+		return new Rectangle(x, y, s.width, s.height);
+	}
+
+	class CornerOverlay extends Overlay
+	{
+		private boolean mouseover;
+
+		private Point translateOffsetForAlignment()
+		{
+			var p = new Point(curx, cury);
+			SnapCorner.this.translateOffsetForAlignment(p);
+			return p;
+		}
+
+		private Point translateLocationForAlignment(Point location)
+		{
+			int x = location.x, y = location.y;
+			var s = getSize();
+
+			if ((mode & ALIGNMENT_CENTER_HORIZONTAL) != 0)
+			{
+				x += s.width / 2;
+			}
+			else if ((mode & ALIGNMENT_RIGHT) != 0)
+			{
+				x += s.width;
+			}
+
+			if ((mode & ALIGNMENT_BOTTOM) != 0)
+			{
+				y += s.height;
+			}
+
+			return new Point(x, y);
+		}
+
+		CornerOverlay()
+		{
+			setPosition(OverlayPosition.DYNAMIC);
+			setMovable(true);
+			setSnappable(false);
+			setLayer(OverlayLayer.UNDER_WIDGETS);
+			setOrigin(OverlayOrigin.MANUAL);
+			setOriginX(originX);
+			setOriginY(originY);
+			setPreferredLocation(translateOffsetForAlignment());
+		}
+
+		@Override
+		public String getName()
+		{
+			return super.getName() + "_" + position;
+		}
+
+		@Override
+		void onDrag()
+		{
+			var location = getPreferredLocation();
+			var l = translateLocationForAlignment(location);
+			curx = l.x;
+			cury = l.y;
+		}
+
+		@Override
+		void reset()
+		{
+			curx = offx;
+			cury = offy;
+			setPreferredPosition(null);
+			setPreferredSize(null);
+			setPreferredLocation(translateOffsetForAlignment());
+			setOrigin(OverlayOrigin.MANUAL);
+			setOriginX(originX);
+			setOriginY(originY);
+		}
+
+		@Override
+		public void onMouseOver()
+		{
+			// this is really a frame behind since it is after render(), but it's basically fine
+			mouseover = true;
+		}
+
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			// overlay location depends on its size, which depends on how many things it renders
+			setPreferredLocation(translateOffsetForAlignment());
+			var s = getSize();
+			graphics.setColor(mouseover ? SNAP_CORNER_ACTIVE_COLOR : SNAP_CORNER_COLOR);
+			graphics.fill(new Rectangle(s));
+			mouseover = false;
+			return s;
+		}
 	}
 }

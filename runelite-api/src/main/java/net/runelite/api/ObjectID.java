@@ -5807,6 +5807,7 @@ public final class ObjectID
 	public static final int DOOR_10043 = 10043;
 	public static final int DOOR_10045 = 10045;
 	public static final int DARK_TUNNEL_10047 = 10047;
+	public static final int ENGORGED_BLOODWOOD_TREE = 10048;
 	public static final int GRAVE_10049 = 10049;
 	public static final int GRAVE_10050 = 10050;
 	public static final int GRAVE_10051 = 10051;

@@ -570,6 +570,7 @@ public final class AnimationID
 	public static final int CHATBORED2 = 563;
 	public static final int CHATBORED3 = 564;
 	public static final int CHATBORED4 = 565;
+	public static final int HUMAN_WEAPONS_CRIMSON_KISTEN_ATTACK_ALT = 566;
 	public static final int CHATHAP1 = 567;
 	public static final int CHATHAP2 = 568;
 	public static final int CHATHAP3 = 569;

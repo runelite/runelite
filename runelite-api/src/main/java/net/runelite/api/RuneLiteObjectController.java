@@ -27,6 +27,7 @@ package net.runelite.api;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.coords.LocalPoint;
+import org.intellij.lang.annotations.MagicConstant;
 
 @Getter
 @Setter
@@ -61,6 +62,19 @@ public abstract class RuneLiteObjectController
 	 * @see net.runelite.api.coords.Angle
 	 */
 	private int orientation = 0;
+
+	/**
+	 * The render mode to use when drawing the model.
+	 * @see net.runelite.api.Renderable
+	 */
+	@MagicConstant(intValues = {
+			Renderable.RENDERMODE_DEFAULT,
+			Renderable.RENDERMODE_SORTED,
+			Renderable.RENDERMODE_SORTED_NO_DEPTH,
+			Renderable.RENDERMODE_UNSORTED,
+			Renderable.RENDERMODE_UNSORTED_NO_DEPTH,
+	})
+	private int renderMode = Renderable.RENDERMODE_DEFAULT;
 
 	/**
 	 * Sets the location in the scene for the RuneLiteObjectController

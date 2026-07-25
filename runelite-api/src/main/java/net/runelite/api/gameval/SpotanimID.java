@@ -1796,6 +1796,7 @@ public final class SpotanimID
 	public static final int ELDRITCH_SMOKE_IMPACT = 1789;
 	public static final int VANSTROM_BLOODVELD_BURST = 1790;
 	public static final int VANSTROM_ORB_EXPLODE = 1791;
+	public static final int MAGGOT_KING_POISON_PROJECTILE = 1792;
 	public static final int VANSTROM_ENRAGE_POWERUP = 1793;
 	public static final int VANSTROM_LIGHTNING = 1794;
 	public static final int HALLOWED_GRAPPLE_SPOT = 1795;

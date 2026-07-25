@@ -13108,7 +13108,7 @@ public final class NpcID
 	public static final int VENATOR_15767 = 15767;
 	public static final int VENATOR_15768 = 15768;
 	public static final int VENATOR_15769 = 15769;
-	public static final int SUPERIOR_VENATOR = 15770;
+	public static final int BLOODSTARVED_VENATOR = 15770;
 	public static final int VASILE = 15772;
 	public static final int VASILE_15773 = 15773;
 	public static final int OLD_MAN_RAL = 15774;

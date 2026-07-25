@@ -68279,7 +68279,7 @@ public final class NpcID
 	public static final int VENATOR_5 = 15769;
 
 	/**
-	 * Superior venator
+	 * Blood-starved venator
 	 */
 	public static final int SUPERIOR_VENATOR = 15770;
 	public static final int BURGH_BREWING_HELPER = 15771;
