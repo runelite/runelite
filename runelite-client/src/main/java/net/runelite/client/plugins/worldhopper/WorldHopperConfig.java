@@ -216,6 +216,6 @@ public interface WorldHopperConfig extends Config
 	)
 	default PacketLossColor packetLossColor()
 	{
-		return PacketLossColor.YELLOW;
+		return PacketLossColor.RED;
 	}
 }
