@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.gpu;
 
-import java.nio.IntBuffer;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
@@ -48,20 +47,11 @@ import net.runelite.client.callback.RenderCallbackManager;
 @Slf4j
 class SceneUploader
 {
-	private static final float[] modelLocalX;
-	private static final float[] modelLocalY;
-	private static final float[] modelLocalZ;
-
 	private final int[] modelLocalXI;
 	private final int[] modelLocalYI;
 	private final int[] modelLocalZI;
 
-	static
-	{
-		modelLocalX = FacePrioritySorter.modelLocalX;
-		modelLocalY = FacePrioritySorter.modelLocalY;
-		modelLocalZ = FacePrioritySorter.modelLocalZ;
-	}
+	private final float[] u, v;
 
 	private final RenderCallbackManager renderCallbackManager;
 	private int basex, basez, rid, level;
@@ -69,9 +59,11 @@ class SceneUploader
 	SceneUploader(RenderCallbackManager renderCallbackManager)
 	{
 		this.renderCallbackManager = renderCallbackManager;
-		modelLocalXI = new int[FacePrioritySorter.MAX_VERTEX_COUNT];
-		modelLocalYI = new int[FacePrioritySorter.MAX_VERTEX_COUNT];
-		modelLocalZI = new int[FacePrioritySorter.MAX_VERTEX_COUNT];
+		modelLocalXI = new int[ModelUploader.MAX_VERTEX_COUNT];
+		modelLocalYI = new int[ModelUploader.MAX_VERTEX_COUNT];
+		modelLocalZI = new int[ModelUploader.MAX_VERTEX_COUNT];
+		u = new float[3];
+		v = new float[3];
 	}
 
 	void zoneSize(Scene scene, Zone zone, int mzx, int mzz)
@@ -666,16 +658,16 @@ class SceneUploader
 			int vy3 = modelLocalYI[triangleC];
 			int vz3 = modelLocalZI[triangleC];
 
-			computeFaceUvs(model, face);
+			ModelUploader.computeFaceUvs(model, face, u, v);
 
-			int su0 = (int) (u0 * 256f);
-			int sv0 = (int) (v0 * 256f);
+			int su0 = (int) (u[0] * 256f);
+			int sv0 = (int) (v[0] * 256f);
 
-			int su1 = (int) (u1 * 256f);
-			int sv1 = (int) (v1 * 256f);
+			int su1 = (int) (u[1] * 256f);
+			int sv1 = (int) (v[1] * 256f);
 
-			int su2 = (int) (u2 * 256f);
-			int sv2 = (int) (v2 * 256f);
+			int su2 = (int) (u[2] * 256f);
+			int sv2 = (int) (v[2] * 256f);
 
 			int alphaBias = 0;
 			alphaBias |= transparencies != null ? (transparencies[face] & 0xff) << 24 : 0;
@@ -696,301 +688,5 @@ class SceneUploader
 		}
 
 		return len;
-	}
-
-	// temp draw
-	int uploadTempModel(Model model, int orientation, int x, int y, int z, IntBuffer buffer)
-	{
-		final int triangleCount = model.getFaceCount();
-		final int vertexCount = model.getVerticesCount();
-
-		final float[] verticesX = model.getVerticesX();
-		final float[] verticesY = model.getVerticesY();
-		final float[] verticesZ = model.getVerticesZ();
-
-		final int[] indices1 = model.getFaceIndices1();
-		final int[] indices2 = model.getFaceIndices2();
-		final int[] indices3 = model.getFaceIndices3();
-
-		final int[] color1s = model.getFaceColors1();
-		final int[] color2s = model.getFaceColors2();
-		final int[] color3s = model.getFaceColors3();
-
-		final byte[] transparencies = model.getFaceTransparencies();
-
-		final short[] faceTextures = model.getFaceTextures();
-
-		final byte[] bias = model.getFaceBias();
-
-		final byte overrideAmount = model.getOverrideAmount();
-		final byte overrideHue = model.getOverrideHue();
-		final byte overrideSat = model.getOverrideSaturation();
-		final byte overrideLum = model.getOverrideLuminance();
-
-		float orientSine = 0;
-		float orientCosine = 0;
-		if (orientation != 0)
-		{
-			orientSine = Perspective.SINE[orientation] / 65536f;
-			orientCosine = Perspective.COSINE[orientation] / 65536f;
-		}
-
-		for (int v = 0; v < vertexCount; ++v)
-		{
-			float vertexX = verticesX[v];
-			float vertexY = verticesY[v];
-			float vertexZ = verticesZ[v];
-
-			if (orientation != 0)
-			{
-				float x0 = vertexX;
-				vertexX = vertexZ * orientSine + x0 * orientCosine;
-				vertexZ = vertexZ * orientCosine - x0 * orientSine;
-			}
-
-			vertexX += x;
-			vertexY += y;
-			vertexZ += z;
-
-			modelLocalX[v] = vertexX;
-			modelLocalY[v] = vertexY;
-			modelLocalZ[v] = vertexZ;
-		}
-
-		int len = 0;
-		for (int face = 0; face < triangleCount; ++face)
-		{
-			int color1 = color1s[face];
-			int color2 = color2s[face];
-			int color3 = color3s[face];
-
-			if (color3 == -1)
-			{
-				color2 = color3 = color1;
-			}
-			else if (color3 == -2)
-			{
-				continue;
-			}
-
-			// HSL override is not applied to textured faces
-			if (faceTextures == null || faceTextures[face] == -1)
-			{
-				if (overrideAmount > 0)
-				{
-					color1 = interpolateHSL(color1, overrideHue, overrideSat, overrideLum, overrideAmount);
-					color2 = interpolateHSL(color2, overrideHue, overrideSat, overrideLum, overrideAmount);
-					color3 = interpolateHSL(color3, overrideHue, overrideSat, overrideLum, overrideAmount);
-				}
-			}
-
-			int triangleA = indices1[face];
-			int triangleB = indices2[face];
-			int triangleC = indices3[face];
-
-			float vx1 = modelLocalX[triangleA];
-			float vy1 = modelLocalY[triangleA];
-			float vz1 = modelLocalZ[triangleA];
-
-			float vx2 = modelLocalX[triangleB];
-			float vy2 = modelLocalY[triangleB];
-			float vz2 = modelLocalZ[triangleB];
-
-			float vx3 = modelLocalX[triangleC];
-			float vy3 = modelLocalY[triangleC];
-			float vz3 = modelLocalZ[triangleC];
-
-			computeFaceUvs(model, face);
-
-			int su0 = (int) (u0 * 256f);
-			int sv0 = (int) (v0 * 256f);
-
-			int su1 = (int) (u1 * 256f);
-			int sv1 = (int) (v1 * 256f);
-
-			int su2 = (int) (u2 * 256f);
-			int sv2 = (int) (v2 * 256f);
-
-			int alphaBias = 0;
-			alphaBias |= transparencies != null ? (transparencies[face] & 0xff) << 24 : 0;
-			alphaBias |= bias != null ? (bias[face] & 0xff) << 16 : 0;
-			int texture = faceTextures != null ? faceTextures[face] + 1 : 0;
-
-			putfff4(buffer, vx1, vy1, vz1, alphaBias | color1);
-			put2222(buffer, texture, su0, sv0, 0);
-
-			putfff4(buffer, vx2, vy2, vz2, alphaBias | color2);
-			put2222(buffer, texture, su1, sv1, 0);
-
-			putfff4(buffer, vx3, vy3, vz3, alphaBias | color3);
-			put2222(buffer, texture, su2, sv2, 0);
-
-			len += 3;
-		}
-
-		return len;
-	}
-
-	static void put2222(IntBuffer vb, int x, int y, int z, int w)
-	{
-		vb.put(((y & 0xffff) << 16) | (x & 0xffff));
-		vb.put(((w & 0xffff) << 16) | (z & 0xffff));
-	}
-
-	static void putfff4(IntBuffer vb, float x, float y, float z, int w)
-	{
-		vb.put(Float.floatToIntBits(x));
-		vb.put(Float.floatToIntBits(y));
-		vb.put(Float.floatToIntBits(z));
-		vb.put(w);
-	}
-
-	static int interpolateHSL(int hsl, byte hue2, byte sat2, byte lum2, byte lerp)
-	{
-		int hue = hsl >> 10 & 63;
-		int sat = hsl >> 7 & 7;
-		int lum = hsl & 127;
-		int var9 = lerp & 255;
-		if (hue2 != -1)
-		{
-			hue += var9 * (hue2 - hue) >> 7;
-		}
-
-		if (sat2 != -1)
-		{
-			sat += var9 * (sat2 - sat) >> 7;
-		}
-
-		if (lum2 != -1)
-		{
-			lum += var9 * (lum2 - lum) >> 7;
-		}
-
-		return (hue << 10 | sat << 7 | lum) & 65535;
-	}
-
-	float u0, u1, u2, v0, v1, v2;
-
-	void computeFaceUvs(Model model, int face)
-	{
-		final float[] vertexX = model.getVerticesX();
-		final float[] vertexY = model.getVerticesY();
-		final float[] vertexZ = model.getVerticesZ();
-
-		final int[] indices1 = model.getFaceIndices1();
-		final int[] indices2 = model.getFaceIndices2();
-		final int[] indices3 = model.getFaceIndices3();
-
-		final byte[] textureFaces = model.getTextureFaces();
-		final int[] texIndices1 = model.getTexIndices1();
-		final int[] texIndices2 = model.getTexIndices2();
-		final int[] texIndices3 = model.getTexIndices3();
-
-		if (textureFaces != null && textureFaces[face] != -1)
-		{
-			final int triangleA = indices1[face];
-			final int triangleB = indices2[face];
-			final int triangleC = indices3[face];
-
-			int tfaceIdx = textureFaces[face] & 0xff;
-			int texA = texIndices1[tfaceIdx];
-			int texB = texIndices2[tfaceIdx];
-			int texC = texIndices3[tfaceIdx];
-
-			// v1 = vertex[texA]
-			float v1x = vertexX[texA];
-			float v1y = vertexY[texA];
-			float v1z = vertexZ[texA];
-			// v2 = vertex[texB] - v1
-			float v2x = vertexX[texB] - v1x;
-			float v2y = vertexY[texB] - v1y;
-			float v2z = vertexZ[texB] - v1z;
-			// v3 = vertex[texC] - v1
-			float v3x = vertexX[texC] - v1x;
-			float v3y = vertexY[texC] - v1y;
-			float v3z = vertexZ[texC] - v1z;
-
-			// v4 = vertex[triangleA] - v1
-			float v4x = vertexX[triangleA] - v1x;
-			float v4y = vertexY[triangleA] - v1y;
-			float v4z = vertexZ[triangleA] - v1z;
-			// v5 = vertex[triangleB] - v1
-			float v5x = vertexX[triangleB] - v1x;
-			float v5y = vertexY[triangleB] - v1y;
-			float v5z = vertexZ[triangleB] - v1z;
-			// v6 = vertex[triangleC] - v1
-			float v6x = vertexX[triangleC] - v1x;
-			float v6y = vertexY[triangleC] - v1y;
-			float v6z = vertexZ[triangleC] - v1z;
-
-			// v7 = v2 x v3
-			float v7x = v2y * v3z - v2z * v3y;
-			float v7y = v2z * v3x - v2x * v3z;
-			float v7z = v2x * v3y - v2y * v3x;
-
-			// v8 = v3 x v7
-			float v8x = v3y * v7z - v3z * v7y;
-			float v8y = v3z * v7x - v3x * v7z;
-			float v8z = v3x * v7y - v3y * v7x;
-
-			// f = 1 / (v8 ⋅ v2)
-			float f = 1.0F / (v8x * v2x + v8y * v2y + v8z * v2z);
-
-			// u0 = (v8 ⋅ v4) * f
-			u0 = (v8x * v4x + v8y * v4y + v8z * v4z) * f;
-			// u1 = (v8 ⋅ v5) * f
-			u1 = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
-			// u2 = (v8 ⋅ v6) * f
-			u2 = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
-
-			// v8 = v2 x v7
-			v8x = v2y * v7z - v2z * v7y;
-			v8y = v2z * v7x - v2x * v7z;
-			v8z = v2x * v7y - v2y * v7x;
-
-			// f = 1 / (v8 ⋅ v3)
-			f = 1.0F / (v8x * v3x + v8y * v3y + v8z * v3z);
-
-			// v0 = (v8 ⋅ v4) * f
-			v0 = (v8x * v4x + v8y * v4y + v8z * v4z) * f;
-			// v1 = (v8 ⋅ v5) * f
-			v1 = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
-			// v2 = (v8 ⋅ v6) * f
-			v2 = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
-		}
-		else
-		{
-			// Without a texture face, the client assigns tex = triangle, but the resulting
-			// calculations can be reduced:
-			//
-			// v1 = vertex[texA]
-			// v2 = vertex[texB] - v1
-			// v3 = vertex[texC] - v1
-			//
-			// v4 = 0
-			// v5 = v2
-			// v6 = v3
-			//
-			// v7 = v2 x v3
-			//
-			// v8 = v3 x v7
-			// u0 = (v8 . v4) / (v8 . v2) // 0 because v4 is 0
-			// u1 = (v8 . v5) / (v8 . v2) // 1 because v5=v2
-			// u2 = (v8 . v6) / (v8 . v2) // 0 because v8 is perpendicular to v3/v6
-			//
-			// v8 = v2 x v7
-			// v0 = (v8 . v4) / (v8 ⋅ v3) // 0 because v4 is 0
-			// v1 = (v8 . v5) / (v8 ⋅ v3) // 0 because v8 is perpendicular to v5/v2
-			// v2 = (v8 . v6) / (v8 ⋅ v3) // 1 because v6=v3
-
-			u0 = 0f;
-			v0 = 0f;
-
-			u1 = 1f;
-			v1 = 0f;
-
-			u2 = 0f;
-			v2 = 1f;
-		}
 	}
 }

@@ -460,7 +460,10 @@ public class FarmingTracker
 
 				allUnknown = false;
 
-				if (prediction.getProduce() != Produce.WEEDS && prediction.getProduce() != Produce.SCARECROW)
+				if (prediction.getProduce() != Produce.WEEDS
+					&& prediction.getProduce() != Produce.SCARECROW
+					&& prediction.getCropState() != CropState.EMPTY
+					&& prediction.getCropState() != CropState.FILLING)
 				{
 					allEmpty = false;
 

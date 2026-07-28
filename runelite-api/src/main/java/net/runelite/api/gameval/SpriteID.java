@@ -857,6 +857,7 @@ public final class SpriteID
 	public static final int CASTLE_DRAKAN_ROOM_51 = 8511;
 	public static final int LEAFYTREE_DARKWOOD = 8512;
 	public static final int LEAFYTREE_DARKWOOD_TILED = 8513;
+	public static final int SANGVESTI = 8515;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -12315,5 +12316,6 @@ public final class SpriteID
 		public static final int _1 = 8455;
 		public static final int _2 = 8456;
 		public static final int _3 = 8457;
+		public static final int _4 = 8514;
 	}
 }

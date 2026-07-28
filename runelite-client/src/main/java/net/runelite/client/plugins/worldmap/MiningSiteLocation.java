@@ -67,6 +67,8 @@ enum MiningSiteLocation
 	CAMDOZAAL_MINES_EAST(new WorldPoint(2934, 5811, 0), new Rock(8, Ore.BARRONITE), new Rock(1, Ore.CLAY), new Rock(2, Ore.TIN), new Rock(1, Ore.COPPER)),
 	CAMDOZAAL_MINES_WEST(new WorldPoint(2914, 5811, 0), new Rock(10, Ore.BARRONITE), new Rock(2, Ore.COPPER), new Rock(2, Ore.CLAY), new Rock(1, Ore.TIN)),
 	CENTRAL_FREMENIK_ISLES(new WorldPoint(2374, 3850, 0), new Rock(7, Ore.COAL), new Rock(1, Ore.RUNITE)),
+	CHARRED_DUNGEON(new WorldPoint(2698, 8785, 0), new Rock(10, Ore.COAL), new Rock(3, Ore.ADAMANTITE), new Rock(2, Ore.RUNITE)),
+	CHARRED_ISLAND(new WorldPoint(2640, 2390, 0), new Rock(11, Ore.COAL)),
 	CITHAREDE_ABBEY(new WorldPoint(3400, 3170, 0), new Rock(3, Ore.IRON), new Rock (3, Ore.COAL)),
 	COAL_TRUCKS(new WorldPoint(2580, 3484, 0), new Rock(18, Ore.COAL)),
 	CRAFTING_GUILD(new WorldPoint(2939, 3283, 0), new Rock(6, Ore.CLAY), new Rock(6, Ore.SILVER), new Rock(7, Ore.GOLD)),
@@ -242,6 +244,7 @@ enum MiningSiteLocation
 		new Rock(7, Ore.MITHRIL), new Rock(10, Ore.SOFT_CLAY), new Rock(7, Ore.ADAMANTITE), new Rock(4, Ore.RUNITE)),
 	// TUTORIAL ISLAND -- NOT AVAILABLE ON WORLD MAP
 	UZER(new WorldPoint(3415, 3160, 0), new Rock(10, Ore.CLAY)),
+	VAMPYRIUM(new WorldPoint(2567, 7735, 0), new Rock(14, Ore.IRON)),
 	VARROCK_SOUTH_EAST(new WorldPoint(3286, 3365, 0),
 		new Rock(9, Ore.COPPER), new Rock(6, Ore.TIN), new Rock(4, Ore.IRON)),
 	VARROCK_SOUTH_WEST(new WorldPoint(3176, 3370, 0),

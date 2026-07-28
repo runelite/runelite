@@ -58,7 +58,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.management.ObjectName;
 import javax.net.ssl.SSLContext;
@@ -86,9 +85,6 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.WidgetOverlay;
-import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
-import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.ReflectUtil;
 import net.runelite.http.api.RuneLiteAPI;
@@ -143,12 +139,6 @@ public class RuneLite
 
 	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private Provider<TooltipOverlay> tooltipOverlay;
-
-	@Inject
-	private Provider<WorldMapOverlay> worldMapOverlay;
 
 	@Inject
 	private Gson gson;
@@ -352,9 +342,7 @@ public class RuneLite
 		eventBus.register(discordService);
 
 		// Add core overlays
-		WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
-		overlayManager.add(worldMapOverlay.get());
-		overlayManager.add(tooltipOverlay.get());
+		overlayManager.init();
 
 		// Start plugins
 		pluginManager.startPlugins();

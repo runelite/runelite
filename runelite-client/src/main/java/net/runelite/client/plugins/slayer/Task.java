@@ -129,6 +129,7 @@ enum Task
 	LESSER_NAGUA("Lesser Nagua", ItemID.SLAYERGUIDE_LESSER_NAGUA, "Sulphur Nagua", "Frost Nagua", "Amoxliatl"),
 	LIZARDMEN("Lizardmen", ItemID.LIZARDMAN_FANG, "Lizardman"),
 	LIZARDS("Lizards", ItemID.SLAYERGUIDE_LIZARD),
+	MAGGOT_KING("The Maggot King", ItemID.MAGGOTKINGPET),
 	MAGIC_AXES("Magic axes", ItemID.IRON_BATTLEAXE),
 	MAMMOTHS("Mammoths", ItemID.BARBASSAULT_ATT_HORN_01),
 	METAL_DRAGONS("Metal dragons", ItemID.POH_STEEL_DRAGON, "Bronze dragon", "Iron Dragon", "Steel dragon", "Mithril dragon", "Adamant dragon", "Rune dragon"),

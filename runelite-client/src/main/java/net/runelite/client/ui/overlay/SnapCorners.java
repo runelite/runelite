@@ -24,22 +24,48 @@
  */
 package net.runelite.client.ui.overlay;
 
+import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.client.config.ConfigManager;
 
+@Singleton
 class SnapCorners
 {
+	private static final int BORDER = 5;
+	private static final int MOUSEOVERTEXT_OFFSET = 15;
+
+	private static final String RUNELITE_CONFIG_GROUP_NAME = "runelite";
+	private static final String SNAPCORNER_PREFIX = "snapcorner_";
+	private static final String SNAPCORNER_CONFIG_LOCATION = "_location";
+
+	private final ConfigManager configManager;
 	final SnapCorner topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
 
-	SnapCorners()
+	@Inject
+	private SnapCorners(
+		ConfigManager configManager
+	)
 	{
-		this.topLeft = new SnapCorner(OverlayPosition.TOP_LEFT, SnapCorner.EXPAND_DOWN);
-		this.topCenter = new SnapCorner(OverlayPosition.TOP_CENTER, SnapCorner.ALIGNMENT_CENTER_HORIZONTAL | SnapCorner.EXPAND_DOWN);
-		this.topRight = new SnapCorner(OverlayPosition.TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN);
-		this.bottomLeft = new SnapCorner(OverlayPosition.BOTTOM_LEFT, SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_RIGHT);
-		this.bottomRight = new SnapCorner(OverlayPosition.BOTTOM_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_LEFT);
-		this.aboveChatboxRight = new SnapCorner(OverlayPosition.ABOVE_CHATBOX_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_UP);
-		this.canvasTopRight = new SnapCorner(OverlayPosition.CANVAS_TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN);
+		this.configManager = configManager;
+		this.topLeft = new SnapCorner(OverlayPosition.TOP_LEFT, SnapCorner.EXPAND_DOWN, OverlayOriginX.HUD_CONTAINER_LEFT, OverlayOriginY.HUD_CONTAINER_TOP, BORDER, BORDER + MOUSEOVERTEXT_OFFSET);
+		this.topCenter = new SnapCorner(OverlayPosition.TOP_CENTER, SnapCorner.ALIGNMENT_CENTER_HORIZONTAL | SnapCorner.EXPAND_DOWN, OverlayOriginX.HUD_CONTAINER_CENTER, OverlayOriginY.TOP, 0, BORDER);
+		this.topRight = new SnapCorner(OverlayPosition.TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN, OverlayOriginX.HUD_CONTAINER_RIGHT, OverlayOriginY.TOP, -BORDER, BORDER);
+		this.bottomLeft = new SnapCorner(OverlayPosition.BOTTOM_LEFT, SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_RIGHT, OverlayOriginX.CHATBOX_LEFT, OverlayOriginY.CHATBOX_TOP, BORDER, -BORDER);
+		this.bottomRight = new SnapCorner(OverlayPosition.BOTTOM_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_LEFT, OverlayOriginX.HUD_CONTAINER_RIGHT, OverlayOriginY.HUD_CONTAINER_BOTTOM, -BORDER, -BORDER);
+		this.aboveChatboxRight = new SnapCorner(OverlayPosition.ABOVE_CHATBOX_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.ALIGNMENT_BOTTOM | SnapCorner.EXPAND_UP, OverlayOriginX.CHATBOX_RIGHT, OverlayOriginY.CHATBOX_TOP, -BORDER, -BORDER);
+		this.canvasTopRight = new SnapCorner(OverlayPosition.CANVAS_TOP_RIGHT, SnapCorner.ALIGNMENT_RIGHT | SnapCorner.EXPAND_DOWN, OverlayOriginX.RIGHT, OverlayOriginY.TOP, 0, 0);
+	}
+
+	void reset()
+	{
+		for (SnapCorner s : getSnapCorners())
+		{
+			s.reset();
+			saveSnapcorner(s);
+		}
 	}
 
 	SnapCorner forPosition(OverlayPosition overlayPosition)
@@ -68,5 +94,27 @@ class SnapCorners
 	Collection<SnapCorner> getSnapCorners()
 	{
 		return Arrays.asList(topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight);
+	}
+
+	void loadSnapcorner(SnapCorner s)
+	{
+		Point p = configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, SNAPCORNER_PREFIX + s.position + SNAPCORNER_CONFIG_LOCATION, Point.class);
+		if (p != null)
+		{
+			s.curx = p.x;
+			s.cury = p.y;
+		}
+	}
+
+	void saveSnapcorner(SnapCorner s)
+	{
+		if (s.isRepositioned())
+		{
+			configManager.setConfiguration(RUNELITE_CONFIG_GROUP_NAME, SNAPCORNER_PREFIX + s.position + SNAPCORNER_CONFIG_LOCATION, new Point(s.curx, s.cury));
+		}
+		else
+		{
+			configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, SNAPCORNER_PREFIX + s.position + SNAPCORNER_CONFIG_LOCATION);
+		}
 	}
 }

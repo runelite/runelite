@@ -5046,14 +5046,19 @@ public final class DBTableID
 		public static final int COL_SECONDARY_TRACK = 11;
 
 		/**
-		 * integer
+		 * dbrow
 		 */
-		public static final int COL_RELEASE_TYPE = 12;
+		public static final int COL_PARENT_TRACK = 12;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 13;
+		public static final int COL_RELEASE_TYPE = 13;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_RELATED_CONTENT = 14;
 
 		public static final class Row
 		{
@@ -5942,6 +5947,7 @@ public final class DBTableID
 
 		public static final class Row
 		{
+			public static final int WOODCUTTING_RESOURCE_ENGORGED_BLOODWOOD_TREE = 510;
 			public static final int WOODCUTTING_RESOURCE_YEW_TREE = 3251;
 			public static final int WOODCUTTING_RESOURCE_YEW_TREE_FARMING_PATCH = 3252;
 			public static final int WOODCUTTING_RESOURCE_TEAK_TREE = 3256;
@@ -22272,7 +22278,6 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_AGILITY_VAMPYRIUM_CRAWL = 16895;
 			public static final int SKILL_FEATURE_AGILITY_VAMPYRIUM_PILLAR_JUMPS = 16896;
 			public static final int SKILL_FEATURE_AGILITY_VAMPYRIUM_SLIDES = 16897;
-			public static final int SKILL_FEATURE_CRAFTING_NECKLACE_OF_RUPTURE = 16898;
 			public static final int SKILL_FEATURE_FISHING_LEECHFIN = 16899;
 			public static final int SKILL_FEATURE_HITPOINTS_NECKLACEOFRUPTURE = 16900;
 			public static final int SKILL_FEATURE_HUNTER_STYMPHIKE = 16901;
@@ -23608,6 +23613,16 @@ public final class DBTableID
 		 * (integer, integer, integer, integer, integer)
 		 */
 		public static final int COL_MAP_DETAILS = 9;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_UNLOCK_SIDE = 10;
+
+		/**
+		 * namedobj
+		 */
+		public static final int COL_KEY = 11;
 
 		/**
 		 * integer

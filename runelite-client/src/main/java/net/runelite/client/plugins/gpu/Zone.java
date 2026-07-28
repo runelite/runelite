@@ -39,10 +39,8 @@ import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Scene;
 import net.runelite.api.WorldView;
-import static net.runelite.client.plugins.gpu.FacePrioritySorter.MAX_DIAMETER;
-import static net.runelite.client.plugins.gpu.FacePrioritySorter.zsortHead;
-import static net.runelite.client.plugins.gpu.FacePrioritySorter.zsortNext;
-import static net.runelite.client.plugins.gpu.FacePrioritySorter.zsortTail;
+import static net.runelite.client.plugins.gpu.ModelUploader.MAX_DIAMETER;
+import static net.runelite.client.plugins.gpu.ModelUploader.MAX_VERTEX_COUNT;
 import static net.runelite.client.plugins.gpu.GpuPlugin.uniBase;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL33C.*;
@@ -430,9 +428,13 @@ class Zone
 		alphaModels.add(m);
 	}
 
-	void addTempAlphaModel(int vao, int startpos, int endpos, int level, int x, int y, int z)
+	synchronized void addTempAlphaModel(int vao, int startpos, int endpos, int level, int x, int y, int z)
 	{
-		AlphaModel m = modelCache.poll();
+		AlphaModel m;
+		synchronized (modelCache)
+		{
+			m = modelCache.poll();
+		}
 		if (m == null)
 		{
 			m = new AlphaModel();
@@ -468,7 +470,7 @@ class Zone
 	}
 
 	// this needs to be larger than the max model alpha face count * 3
-	private static final IntBuffer alphaElements = BufferUtils.createIntBuffer(FacePrioritySorter.MAX_VERTEX_COUNT * 3);
+	private static final IntBuffer alphaElements = BufferUtils.createIntBuffer(MAX_VERTEX_COUNT * 3);
 
 	private static final int STATIC = 1;
 	private static final int TEMP = 2;
@@ -479,9 +481,6 @@ class Zone
 	private static int lastzx, lastzz;
 
 	private static int elementBufferId;
-
-	private static final int[] numOfPriority = FacePrioritySorter.numOfPriority;
-	private static final int[][] orderedFaces = FacePrioritySorter.orderedFaces;
 
 	static void initBuffer()
 	{
@@ -528,7 +527,7 @@ class Zone
 		alphaModels.sort(alphaModelComparator);
 	}
 
-	void renderAlpha(int zx, int zz, int cyaw, int cpitch, int minLevel, int currentLevel, int maxLevel, int level, Set<Integer> hiddenRoofIds, boolean useStaticUnsorted)
+	void renderAlpha(ModelUploader mu, int zx, int zz, int cyaw, int cpitch, int minLevel, int currentLevel, int maxLevel, int level, Set<Integer> hiddenRoofIds, boolean useStaticUnsorted)
 	{
 		drawOff.clear();
 		drawEnd.clear();
@@ -599,8 +598,8 @@ class Zone
 				continue;
 			}
 
-			Arrays.fill(zsortHead, 0, diameter, (char) -1);
-			Arrays.fill(zsortTail, 0, diameter, (char) -1);
+			Arrays.fill(mu.zsortHead, 0, diameter, (char) -1);
+			Arrays.fill(mu.zsortTail, 0, diameter, (char) -1);
 
 			for (char i = 0; i < packedFaces.length; ++i)
 			{
@@ -616,17 +615,17 @@ class Zone
 
 				assert fz >= 0 && fz < diameter : fz;
 
-				if (zsortTail[fz] == (char) -1)
+				if (mu.zsortTail[fz] == (char) -1)
 				{
-					zsortHead[fz] = zsortTail[fz] = i;
-					zsortNext[i] = (char) -1;
+					mu.zsortHead[fz] = mu.zsortTail[fz] = i;
+					mu.zsortNext[i] = (char) -1;
 				}
 				else
 				{
-					char lastFace = zsortTail[fz];
-					zsortNext[lastFace] = i;
-					zsortNext[i] = (char) -1;
-					zsortTail[fz] = i;
+					char lastFace = mu.zsortTail[fz];
+					mu.zsortNext[lastFace] = i;
+					mu.zsortNext[i] = (char) -1;
+					mu.zsortTail[fz] = i;
 				}
 			}
 
@@ -644,7 +643,7 @@ class Zone
 			final int start = m.startpos / (VERT_SIZE >> 2); // ints to verts
 			for (int i = diameter - 1; i >= 0; --i)
 			{
-				for (char face = zsortHead[i]; face != (char) -1; face = zsortNext[face])
+				for (char face = mu.zsortHead[i]; face != (char) -1; face = mu.zsortNext[face])
 				{
 					int faceIdx = face * 3;
 					faceIdx += start;

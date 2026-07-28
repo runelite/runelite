@@ -49,6 +49,10 @@ public interface BankTagsService
 	 * Option to prevent {@link #openBankTag(String, int)} from performing a layout
 	 */
 	int OPTION_NO_LAYOUT = 0x4;
+	/**
+	 * Option to put items in the bank but not in the layout at the bottom
+	 */
+	int OPTION_ITEMS_NOT_IN_LAYOUT_AT_BOTTOM = 0x8;
 
 	/**
 	 * Open the given bank tag. The tag may have an associated {@link net.runelite.client.plugins.banktags.tabs.TagTab},

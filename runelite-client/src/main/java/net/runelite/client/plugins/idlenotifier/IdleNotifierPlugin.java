@@ -200,6 +200,8 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_CANOEING_CARVE_CRYSTAL_2H_AXE_INACTIVE:
 			case AnimationID.HUMAN_CANOEING_CARVE_3A_2H_AXE:
 			case AnimationID.TBW_CLEANUP_PLAYER_SURPRISE_STEPBACK:
+			/* Sap collection */
+			case AnimationID.HUMAN_PICKUPTABLE_WALKMERGE_NOHELD:
 			/* Firemaking */
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_ARCTIC_PINE_LOG:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_BLISTERWOOD_LOGS:

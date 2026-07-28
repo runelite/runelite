@@ -33250,6 +33250,11 @@ public final class ObjectID extends ObjectID1
 	public static final int MOTHERLODE_SHORTCUT = 10047;
 
 	/**
+	 * Engorged bloodwood tree
+	 */
+	public static final int AFK_BLOODWOOD_TREE = 10048;
+
+	/**
 	 * Grave
 	 */
 	public static final int MACRO_DIGGER_OPEN_GRAVE_COFFIN_5 = 10049;
