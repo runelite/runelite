@@ -237,6 +237,7 @@ public enum Quest
 	CURRENT_AFFAIRS(7105, "Current Affairs"),
 	TROUBLED_TORTUGANS(7106, "Troubled Tortugans"),
 	THE_RED_REEF(7107, "The Red Reef"),
+	FALLEN_FROM_GRACE(7133, "Fallen From Grace"),
 	LEARNING_THE_ROPES(9643, "Learning the Ropes"),
 	THE_IDES_OF_MILK(9645, "The Ides of Milk"),
 	THE_BLOOD_MOON_RISES(16414, "The Blood Moon Rises"),
