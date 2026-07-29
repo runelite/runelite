@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
  * Copyright (c) 2026, Adam <Adam@sigterm.info>
- * Copyright (c) 2026, StaySleeping <https://github.com/StaySleeping>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
