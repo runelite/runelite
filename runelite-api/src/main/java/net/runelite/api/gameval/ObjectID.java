@@ -21272,7 +21272,7 @@ public final class ObjectID extends ObjectID1
 	public static final int ZOGRE_COFFIN_SPECIAL_SEARCHED = 6845;
 
 	/**
-	 * Broken Lecturn
+	 * Broken lectern
 	 */
 	public static final int ZOGRE_LECTURN = 6846;
 
@@ -35556,6 +35556,7 @@ public final class ObjectID extends ObjectID1
 	 * Boxes
 	 */
 	public static final int CW_BANK_BOXES_2 = 10803;
+	public static final int WALLKIT_WOODEN01_WINDOW01_UPPER = 10804;
 
 	/**
 	 * Sandy's Desk

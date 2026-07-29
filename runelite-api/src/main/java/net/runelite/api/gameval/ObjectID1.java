@@ -50995,6 +50995,22 @@ class ObjectID1
 	 */
 	public static final int PMOON_GRUB_SAPLING = 51365;
 	public static final int PMOON_CAMP_BARRIER_SHORT = 51366;
+	public static final int SAILING_GANGPLANK_PROXY_WIDE_VIKING = 51367;
+
+	/**
+	 * Bank chest
+	 */
+	public static final int WYRMSCRAIG_BANK_CHEST_BUILT = 51368;
+
+	/**
+	 * Chest pieces
+	 */
+	public static final int WYRMSCRAIG_BANK_CHEST_NOTBUILT = 51369;
+
+	/**
+	 * Roses
+	 */
+	public static final int WYRMSCRAIG_ROSE = 51370;
 
 	/**
 	 * Supply crates
@@ -54681,6 +54697,7 @@ class ObjectID1
 	public static final int PMOON_TRAP_1 = 52994;
 	public static final int PMOON_TRAP_2 = 52995;
 	public static final int PMOON_TRAP_3 = 52996;
+	public static final int BASALT_SINGLE_01 = 52997;
 	public static final int VARLAMORE_THIEVING_HOUSE_WINDOW_MULTI = 52998;
 	public static final int FORTIS_WINDMILL_BASE = 52999;
 	public static final int HUNTER_PITFALL_FULL_ANTELOPE_SUNLIGHT = 53000;
@@ -79403,6 +79420,7 @@ class ObjectID1
 	 * Locker
 	 */
 	public static final int MYQ6_HIDEOUT_SHRINE_HIDDEN = 61179;
+	public static final int BASALT_SINGLE_02 = 61180;
 	public static final int DARKM_CASTLE_DOOR_OUTSIDE_ESCAPE = 61181;
 
 	/**
@@ -82671,5 +82689,496 @@ class ObjectID1
 	 * Box trap
 	 */
 	public static final int HUNTING_BOXTRAP_TRAPPING_LETVEK_W = 62200;
+	public static final int BASALT_SINGLE_03 = 62201;
+	public static final int BASALT_SINGLE_04 = 62202;
+	public static final int BASALT_SINGLE_05 = 62203;
+	public static final int BASALT_SINGLE_06 = 62204;
+	public static final int BASALT_SINGLE_07 = 62205;
+	public static final int BASALT_SINGLE_08 = 62206;
+	public static final int BASALT_SINGLE_09 = 62207;
+
+	/**
+	 * Dead tree
+	 */
+	public static final int TREE_DEAD_01 = 62208;
+
+	/**
+	 * Tree stump
+	 */
+	public static final int TREE_DEAD_01_STUMP = 62209;
+
+	/**
+	 * Dead tree
+	 */
+	public static final int TREE_DEAD_02 = 62210;
+
+	/**
+	 * Tree stump
+	 */
+	public static final int TREE_DEAD_02_STUMP = 62211;
+
+	/**
+	 * Dead tree
+	 */
+	public static final int TREE_DEAD_03 = 62212;
+
+	/**
+	 * Tree stump
+	 */
+	public static final int TREE_DEAD_03_STUMP = 62213;
+
+	/**
+	 * Dead tree
+	 */
+	public static final int TREE_DEAD_04 = 62214;
+
+	/**
+	 * Tree stump
+	 */
+	public static final int TREE_DEAD_04_STUMP = 62215;
+
+	/**
+	 * Sunstone monolith
+	 */
+	public static final int WYRMSCRAIG_SUNSTONE01 = 62216;
+
+	/**
+	 * Cave
+	 */
+	public static final int WYRMSCRAIG_CAVE_ENTRANCE_SAILABLE = 62217;
+
+	/**
+	 * Cave
+	 */
+	public static final int WYRMSCRAIG_CAVE_EXIT_SAILABLE = 62218;
+
+	/**
+	 * Cave
+	 */
+	public static final int WYRMSCRAIG_CAVE_ENTRANCE = 62219;
+
+	/**
+	 * Cave
+	 */
+	public static final int WYRMSCRAIG_CAVE_EXIT = 62220;
+
+	/**
+	 * Mine cart
+	 */
+	public static final int WYRMSCRAIG_WALL_DEPOSIT = 62221;
+
+	/**
+	 * Cave
+	 */
+	public static final int WYRMSCRAIG_CAVE_WATERFALL = 62222;
+	public static final int CAVE_OUTCROP_JAGGED01 = 62223;
+	public static final int CAVE_OUTCROP_JAGGED02 = 62224;
+	public static final int CAVE_OUTCROP_JAGGED03 = 62225;
+	public static final int CAVE_OUTCROP_JAGGED04 = 62226;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT01 = 62227;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT01A = 62228;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02 = 62229;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02A = 62230;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02A_MIRROR = 62231;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02B = 62232;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02B_MIRROR = 62233;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02C = 62234;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02C_MIRROR = 62235;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02D = 62236;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02D_MIRROR = 62237;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02E = 62238;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02E_MIRROR = 62239;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02F = 62240;
+	public static final int WYRMSCRAIG_CATHEDRAL_WALLKIT02G = 62241;
+	public static final int FLOOR_TILES01_DEFAULT01 = 62242;
+	public static final int FLOOR_TILES01_BROKEN01 = 62243;
+	public static final int FLOOR_TILES01_BROKEN02 = 62244;
+	public static final int FLOOR_TILES01_BROKEN03 = 62245;
+	public static final int WYRMSCRAIG_CATHEDRAL_LIGHTRAY01 = 62246;
+
+	/**
+	 * Church pew
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_PEW_BROKEN01 = 62247;
+
+	/**
+	 * Church pew
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_PEW_BROKEN02 = 62248;
+
+	/**
+	 * Church pew
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_PEW_BROKEN03 = 62249;
+
+	/**
+	 * Church pew
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_PEW_BROKEN_CLIMB = 62250;
+
+	/**
+	 * Church pew
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_PEW_BROKEN_EXIT = 62251;
+	public static final int WYRMSCRAIG_CATHEDRAL_CANDLE_WALL = 62252;
+
+	/**
+	 * Stand
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_CANDLE_TABLE = 62253;
+
+	/**
+	 * Staircase
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_SPIRALSTAIRSTOP = 62254;
+
+	/**
+	 * Staircase
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_SPIRALSTAIRS = 62255;
+	public static final int WYRMSCRAIG_CAVE_SHORTCUT = 62256;
+
+	/**
+	 * Crevice
+	 */
+	public static final int WYRMSCRAIG_BASEMENT_SHORTCUT = 62257;
+
+	/**
+	 * Throne
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_THRONE = 62258;
+	public static final int WYRMSCRAIG_CATHEDRAL_THRONE_FLOOR = 62259;
+
+	/**
+	 * Basalt stepping stone
+	 */
+	public static final int WYRMSCRAIG_STEPPING_STONE_1 = 62260;
+
+	/**
+	 * Extra slippery basalt stepping stone
+	 */
+	public static final int WYRMSCRAIG_STEPPING_STONE_2 = 62261;
+
+	/**
+	 * Slippery basalt stepping stone
+	 */
+	public static final int WYRMSCRAIG_STEPPING_STONE_3 = 62262;
+	public static final int WYRMSCRAIG_CLIFF_SHORTCUT_BLOCKAGE = 62263;
+
+	/**
+	 * Rocks
+	 */
+	public static final int WYRMSCRAIG_CLIFF_SHORTCUT_BLOCKAGE_VIS = 62264;
+	public static final int WYRMSCRAIG_CLIFF_SHORTCUT_TOP = 62265;
+
+	/**
+	 * Rocks
+	 */
+	public static final int WYRMSCRAIG_CLIFF_SHORTCUT_TOP_VIS = 62266;
+
+	/**
+	 * Rocks
+	 */
+	public static final int WYRMSCRAIG_CLIFF_SHORTCUT_BOTTOM = 62267;
+
+	/**
+	 * Stalagmite
+	 */
+	public static final int WYRMSCRAIG_LORE_NOTE_STALAGMITE = 62268;
+
+	/**
+	 * Bones
+	 */
+	public static final int WYRMSCRAIG_CAVERN_LORE_BONES = 62269;
+
+	/**
+	 * Tent
+	 */
+	public static final int WYRMSCRAIG_CRAFTING_TENT = 62270;
+
+	/**
+	 * Crate
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_CRATE = 62271;
+
+	/**
+	 * Crates
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_CRATES = 62272;
+
+	/**
+	 * Shelves
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_SHELF = 62273;
+
+	/**
+	 * Shelves
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_SHELF2 = 62274;
+
+	/**
+	 * Shelves
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_SHELF3 = 62275;
+
+	/**
+	 * Shelves
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_SHELF4 = 62276;
+
+	/**
+	 * Barrel
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_BARREL_TAP = 62277;
+
+	/**
+	 * Chair
+	 */
+	public static final int WYRMSCRAIG_CATHEDRAL_CHAIR = 62278;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT01 = 62279;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT02 = 62280;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT03 = 62281;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT04 = 62282;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT05 = 62283;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT06 = 62284;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT07 = 62285;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT08 = 62286;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT09 = 62287;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT10 = 62288;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT11 = 62289;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT12 = 62290;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT13 = 62291;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT14 = 62292;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT15 = 62293;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT16 = 62294;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT17 = 62295;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT18 = 62296;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT19 = 62297;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT20 = 62298;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT21 = 62299;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT22 = 62300;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT23 = 62301;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT24 = 62302;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT25 = 62303;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT26 = 62304;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT27 = 62305;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT28 = 62306;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT29 = 62307;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT30 = 62308;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT31 = 62309;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT32 = 62310;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT33 = 62311;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT34 = 62312;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT35 = 62313;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT36 = 62314;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT37 = 62315;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT38 = 62316;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT39 = 62317;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT40 = 62318;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT41 = 62319;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT42 = 62320;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT43 = 62321;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT44 = 62322;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT45 = 62323;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT46 = 62324;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT47 = 62325;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT48 = 62326;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT49 = 62327;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT50 = 62328;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT51 = 62329;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT52 = 62330;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT53 = 62331;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT54 = 62332;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT55 = 62333;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT56 = 62334;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT57 = 62335;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT58 = 62336;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT59 = 62337;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT60 = 62338;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT61 = 62339;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT62 = 62340;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT63 = 62341;
+	public static final int WYRMSCRAIG_CATHEDRAL_ROOFKIT64 = 62342;
+	public static final int GOAT_PIT = 62343;
+
+	/**
+	 * Goat Pit
+	 */
+	public static final int GOAT_PIT_MULTI_EMPTY = 62344;
+
+	/**
+	 * Goat Pit
+	 */
+	public static final int GOAT_PIT_MULTI_SPIKES = 62345;
+
+	/**
+	 * Goat Pit
+	 */
+	public static final int GOAT_PIT_MULTI_ONE = 62346;
+
+	/**
+	 * Goat Pit
+	 */
+	public static final int GOAT_PIT_MULTI_SOME = 62347;
+
+	/**
+	 * Goat Pit
+	 */
+	public static final int GOAT_PIT_MULTI_FULL = 62348;
+
+	/**
+	 * Spikes supply
+	 */
+	public static final int GOAT_PIT_SPIKES = 62349;
+
+	/**
+	 * Cattle prod supply
+	 */
+	public static final int GOAT_PIT_PROD = 62350;
+	public static final int GOLEM_STATION_1 = 62351;
+	public static final int GOLEM_STATION_2 = 62352;
+
+	/**
+	 * Empty plinth
+	 */
+	public static final int GOLEM_STATION_EMPTY = 62353;
+
+	/**
+	 * Golem base
+	 */
+	public static final int GOLEM_STATION_BASE = 62354;
+
+	/**
+	 * Unfinished golem
+	 */
+	public static final int GOLEM_STATION_SHAPED_1 = 62355;
+
+	/**
+	 * Unfinished golem
+	 */
+	public static final int GOLEM_STATION_SHAPED_2 = 62356;
+
+	/**
+	 * Unfinished golem
+	 */
+	public static final int GOLEM_STATION_SHAPED_3 = 62357;
+
+	/**
+	 * Unpowered golem
+	 */
+	public static final int GOLEM_STATION_SHAPED_4 = 62358;
+	public static final int GOLEM_RUBBLE_NORTH_1 = 62359;
+	public static final int GOLEM_RUBBLE_EAST_1 = 62360;
+	public static final int GOLEM_RUBBLE_SOUTH_1 = 62361;
+	public static final int GOLEM_RUBBLE_WEST_1 = 62362;
+	public static final int GOLEM_RUBBLE_NORTH_2 = 62363;
+	public static final int GOLEM_RUBBLE_EAST_2 = 62364;
+	public static final int GOLEM_RUBBLE_SOUTH_2 = 62365;
+	public static final int GOLEM_RUBBLE_WEST_2 = 62366;
+	public static final int GOLEM_RUBBLE = 62367;
+
+	/**
+	 * Cathedral door
+	 */
+	public static final int MAD_ANGEL_CATHERDRAL_DOORL = 62368;
+
+	/**
+	 * Cathedral door
+	 */
+	public static final int MAD_ANGEL_CATHERDRAL_DOORR = 62369;
+	public static final int QUEST_START_ICON_FALLENFROMGRACE = 62370;
+
+	/**
+	 * Rocks
+	 */
+	public static final int FFG_NOTEBOOK_ROCK = 62371;
+	public static final int FFG_DUST = 62372;
+
+	/**
+	 * Dust
+	 */
+	public static final int FFG_DUST_VIS = 62373;
+	public static final int FFG_CORPSE_KEENAN = 62374;
+
+	/**
+	 * Body
+	 */
+	public static final int FFG_CORPSE_KEENAN_VIS = 62375;
+
+	/**
+	 * Chest
+	 */
+	public static final int FFG_CATHEDRAL_CHEST = 62376;
+	public static final int FFG_CATHEDRAL_CHEST_OPEN = 62377;
+
+	/**
+	 * Bookcase
+	 */
+	public static final int FFG_CATHEDRAL_BOOKCASE = 62378;
+
+	/**
+	 * Gangplank
+	 */
+	public static final int FFG_ESCAPE_GANGPLANK = 62379;
+	public static final int FFG_FAKE_ROCKS_1 = 62380;
+	public static final int FFG_FAKE_ROCKS_1_VIS = 62381;
+	public static final int FFG_FAKE_ROCKS_2 = 62382;
+	public static final int FFG_FAKE_ROCKS_2_VIS = 62383;
+	public static final int VIKING_PIER_NO_MAPSCENE = 62384;
+	public static final int INVISIBLE_SHADOW = 62385;
+
+	/**
+	 * Tree
+	 */
+	public static final int TREE_AUTUMN01 = 62386;
+
+	/**
+	 * Tree
+	 */
+	public static final int TREE_AUTUMN02 = 62387;
+
+	/**
+	 * Tree
+	 */
+	public static final int TREE2_AUTUMN01 = 62388;
+
+	/**
+	 * Tree
+	 */
+	public static final int TREE2_AUTUMN02 = 62389;
+	public static final int AMENITY_BANKCHEST_WYRMSCRAIG = 62390;
+
+	/**
+	 * Bank chest space
+	 */
+	public static final int AMENITY_BANKCHEST_UNBUILT_INDOORS = 62391;
+
+	/**
+	 * Mad Angel display
+	 */
+	public static final int POH_DISPLAY_ANGEL = 62392;
+
+	/**
+	 * Sunstone rocks
+	 */
+	public static final int SUNSTONEROCK1 = 62393;
+
+	/**
+	 * Sunstone rocks
+	 */
+	public static final int SUNSTONEROCK2 = 62394;
+
+	/**
+	 * Buoy
+	 */
+	public static final int SAILING_DOCKING_BUOY_WYRMSCRAIG = 62395;
+
+	/**
+	 * Buoy
+	 */
+	public static final int SAILING_DOCKING_BUOY_WYRMSCRAIG_CAVE = 62396;
+	public static final int SAILING_GANGPLANK_WYRMSCRAIG = 62397;
+	public static final int SAILING_GANGPLANK_WYRMSCRAIG_CAVE = 62398;
+	public static final int HAVEN_TOWER_BASEMENT_WALL_STONE_CREVICE = 62399;
 /* This file is automatically generated. Do not edit. */
 }

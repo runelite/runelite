@@ -240,6 +240,7 @@ public final class InterfaceID
 	public static final int LEVELUP_DISPLAY = 233;
 	public static final int DEADMANLOOT = 234;
 	public static final int HOSIDIUS_SERVERY_HUD = 235;
+	public static final int SLAYER_TASK_CHOICE = 236;
 	public static final int GE_PRICELIST = 237;
 	public static final int GE_PRICECHECKER_SIDE = 238;
 	public static final int MUSIC = 239;
@@ -3616,73 +3617,7 @@ public final class InterfaceID
 		public static final int FRAME = 0x004b_0002;
 		public static final int CONTENTS = 0x004b_0003;
 		public static final int SCROLLLAYER = 0x004b_0004;
-		public static final int HONESTJIMMY = 0x004b_0005;
-		public static final int HONESTJIMMY_MODEL = 0x004b_0006;
-		public static final int HONESTJIMMY_TEXT = 0x004b_0007;
-		public static final int SANDMAN = 0x004b_0008;
-		public static final int SANDMAN_MODEL = 0x004b_0009;
-		public static final int SANDMAN_TEXT = 0x004b_000a;
-		public static final int GHRIM = 0x004b_000b;
-		public static final int GHRIM_MODEL = 0x004b_000c;
-		public static final int GHRIM_TEXT = 0x004b_000d;
-		public static final int DARKMAGE = 0x004b_000e;
-		public static final int DARKMAGE_MODEL = 0x004b_000f;
-		public static final int DARKMAGE_TEXT = 0x004b_0010;
-		public static final int LANTHUS = 0x004b_0011;
-		public static final int LANTHUS_MODEL = 0x004b_0012;
-		public static final int LANTHUS_TEXT = 0x004b_0013;
-		public static final int SLAYERMASTER1 = 0x004b_0014;
-		public static final int SLAYERMASTER1_MODEL = 0x004b_0015;
-		public static final int SLAYERMASTER1_TEXT = 0x004b_0016;
-		public static final int SLAYERMASTER2 = 0x004b_0017;
-		public static final int SLAYERMASTER2_MODEL = 0x004b_0018;
-		public static final int SLAYERMASTER2_TEXT = 0x004b_0019;
-		public static final int SLAYERMASTER3 = 0x004b_001a;
-		public static final int SLAYERMASTER3_MODEL = 0x004b_001b;
-		public static final int SLAYERMASTER3_TEXT = 0x004b_001c;
-		public static final int SLAYERMASTER4 = 0x004b_001d;
-		public static final int SLAYERMASTER4_MODEL = 0x004b_001e;
-		public static final int SLAYERMASTER4_TEXT = 0x004b_001f;
-		public static final int SLAYERMASTER6 = 0x004b_0020;
-		public static final int SLAYERMASTER6_MODEL = 0x004b_0021;
-		public static final int SLAYERMASTER6_TEXT = 0x004b_0022;
-		public static final int SLAYERMASTER5 = 0x004b_0023;
-		public static final int SLAYERMASTER5_MODEL = 0x004b_0024;
-		public static final int SLAYERMASTER5_TEXT = 0x004b_0025;
-		public static final int SLAYERMASTER7 = 0x004b_0026;
-		public static final int SLAYERMASTER7_MODEL = 0x004b_0027;
-		public static final int SLAYERMASTER7_TEXT = 0x004b_0028;
-		public static final int MURPHY = 0x004b_0029;
-		public static final int MURPHY_MODEL = 0x004b_002a;
-		public static final int MURPHY_TEXT = 0x004b_002b;
-		public static final int CYRISUS = 0x004b_002c;
-		public static final int CYRISUS_MODEL = 0x004b_002d;
-		public static final int CYRISUS_TEXT = 0x004b_002e;
-		public static final int SMOGGY = 0x004b_002f;
-		public static final int SMOGGY_MODEL = 0x004b_0030;
-		public static final int SMOGGY_TEXT = 0x004b_0031;
-		public static final int CRIMEFIGHTER = 0x004b_0032;
-		public static final int CRIMEFIGHTER_MODEL = 0x004b_0033;
-		public static final int CRIMEFIGHTER_TEXT = 0x004b_0034;
-		public static final int WATSON = 0x004b_0035;
-		public static final int WATSON_MODEL = 0x004b_0036;
-		public static final int WATSON_TEXT = 0x004b_0037;
-		public static final int BARBGUARD = 0x004b_0038;
-		public static final int BARBGUARD_MODEL = 0x004b_0039;
-		public static final int BARBGUARD_TEXT = 0x004b_003a;
-		public static final int RANDOM = 0x004b_003b;
-		public static final int RANDOM_MODEL = 0x004b_003c;
-		public static final int RANDOM_TEXT = 0x004b_003d;
-		public static final int CON_CONTRACTOR_AMY = 0x004b_003e;
-		public static final int CON_CONTRACTOR_AMY_MODEL = 0x004b_003f;
-		public static final int CON_CONTRACTOR_AMY_TEXT = 0x004b_0040;
-		public static final int SLAYERMASTER8 = 0x004b_0041;
-		public static final int SLAYERMASTER8_MODEL = 0x004b_0042;
-		public static final int SLAYERMASTER8_TEXT = 0x004b_0043;
-		public static final int SLAYERMASTER9 = 0x004b_0044;
-		public static final int SLAYERMASTER9_MODEL = 0x004b_0045;
-		public static final int SLAYERMASTER9_TEXT = 0x004b_0046;
-		public static final int SCROLLBAR = 0x004b_0047;
+		public static final int SCROLLBAR = 0x004b_0005;
 	}
 
 	public static final class Grouping
@@ -9250,6 +9185,15 @@ public final class InterfaceID
 		public static final int STEW_CONTAINER_RECT0 = 0x00eb_000d;
 		public static final int STEW_BAR = 0x00eb_000e;
 		public static final int TOOLTIP = 0x00eb_000f;
+	}
+
+	public static final class SlayerTaskChoice
+	{
+		public static final int INFINITY = 0x00ec_0000;
+		public static final int UNIVERSE = 0x00ec_0001;
+		public static final int FRAME = 0x00ec_0002;
+		public static final int CONTENT = 0x00ec_0003;
+		public static final int CLOSE_BUTTON = 0x00ec_0004;
 	}
 
 	public static final class GePricelist
@@ -16098,30 +16042,16 @@ public final class InterfaceID
 		public static final int BUY_PRICES = 0x01aa_0019;
 		public static final int BUY_SCROLLBAR = 0x01aa_001a;
 		public static final int TASKS = 0x01aa_001b;
-		public static final int REWARDS = 0x01aa_001c;
-		public static final int VIEW_TASKS = 0x01aa_001d;
-		public static final int TASKS_STORED_CONTAINER = 0x01aa_001e;
-		public static final int TASKS_STORED_CONTAINER_RECT0 = 0x01aa_001f;
-		public static final int TASKS_INTRODUCTION = 0x01aa_0020;
-		public static final int TASKS_CURRENT_CONTAINER = 0x01aa_0021;
-		public static final int TASKS_CURRENT_CONTAINER_RECT0 = 0x01aa_0022;
-		public static final int TASKS_CURRENT_CONTAINER_RECT1 = 0x01aa_0023;
-		public static final int TASKS_CURRENT_CONTAINER_RECT2 = 0x01aa_0024;
-		public static final int TASKS_CURRENT_CONTAINER_TEXT3 = 0x01aa_0025;
-		public static final int TASKS_CURRENT = 0x01aa_0026;
-		public static final int TASKS_TEXT4 = 0x01aa_0027;
-		public static final int TASKS_SLOT_1 = 0x01aa_0028;
-		public static final int TASKS_SLOT_2 = 0x01aa_0029;
-		public static final int TASKS_SLOT_3 = 0x01aa_002a;
-		public static final int TASKS_SLOT_4 = 0x01aa_002b;
-		public static final int TASKS_SLOT_5 = 0x01aa_002c;
-		public static final int TASKS_SLOT_6 = 0x01aa_002d;
-		public static final int TASKS_SLOT_DIARY = 0x01aa_002e;
-		public static final int TASKS_STORED_CONTAINER_RECT1 = 0x01aa_002f;
-		public static final int TASKS_STORED_CONTAINER_RECT2 = 0x01aa_0030;
-		public static final int TASKS_STORED = 0x01aa_0031;
-		public static final int REWARDS_CONTENTS = 0x01aa_0032;
-		public static final int REWARDS_SCROLLBAR = 0x01aa_0033;
+		public static final int TASKS_CONTENTS_UPPER = 0x01aa_001c;
+		public static final int REWARDS = 0x01aa_001d;
+		public static final int TASKS_CONTENT_LOWER = 0x01aa_001e;
+		public static final int TASKS_CONTENT_LOWER_RECT0 = 0x01aa_001f;
+		public static final int TASKS_CONTENT_LOWER_RECT1 = 0x01aa_0020;
+		public static final int TASKS_CONTENTS_SCROLLABLE = 0x01aa_0021;
+		public static final int TASKS_SCROLLBAR = 0x01aa_0022;
+		public static final int VIEW_TASKS = 0x01aa_0023;
+		public static final int REWARDS_CONTENTS = 0x01aa_0024;
+		public static final int REWARDS_SCROLLBAR = 0x01aa_0025;
 	}
 
 	public static final class ScrollGodfather
@@ -21268,12 +21198,16 @@ public final class InterfaceID
 		public static final int TITLE_SPIDERCAVE = 0x0255_0048;
 		public static final int TELEPORTSCROLL_COLOSSAL_WYRM = 0x0255_0049;
 		public static final int TELEPORTSCROLL_CHASMOFFIRE = 0x0255_004a;
-		public static final int GFX_COLOSSAL_WYRM = 0x0255_004b;
-		public static final int TEXT_COLOSSAL_WYRM = 0x0255_004c;
-		public static final int TITLE_COLOSSAL_WYRM = 0x0255_004d;
-		public static final int GFX_CHASMOFFIRE = 0x0255_004e;
-		public static final int TEXT_CHASMOFFIRE = 0x0255_004f;
-		public static final int TITLE_CHASMOFFIRE = 0x0255_0050;
+		public static final int TELEPORTSCROLL_ARDEAGLAIS = 0x0255_004b;
+		public static final int GFX_COLOSSAL_WYRM = 0x0255_004c;
+		public static final int TEXT_COLOSSAL_WYRM = 0x0255_004d;
+		public static final int TITLE_COLOSSAL_WYRM = 0x0255_004e;
+		public static final int GFX_CHASMOFFIRE = 0x0255_004f;
+		public static final int TEXT_CHASMOFFIRE = 0x0255_0050;
+		public static final int TITLE_CHASMOFFIRE = 0x0255_0051;
+		public static final int GFX_ARDEAGLAIS = 0x0255_0052;
+		public static final int TEXT_ARDEAGLAIS = 0x0255_0053;
+		public static final int TITLE_ARDEAGLAIS = 0x0255_0054;
 	}
 
 	public static final class LovakengjBlastMiningHud
