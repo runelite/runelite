@@ -55,12 +55,14 @@ import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -117,77 +119,131 @@ public class BankPlugin extends Plugin
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
 	private ContainerPrices prices;
+	private boolean bankOpen;
+	private boolean sharedBankOpen;
+	private boolean seedVaultOpen;
+	private int searchHotkeyTypedKeyCode = KeyEvent.VK_UNDEFINED;
 
 	private final KeyListener searchHotkeyListener = new KeyListener()
 	{
 		@Override
 		public void keyTyped(KeyEvent e)
 		{
+			consumeSearchHotkeyTypedChar(e);
 		}
 
 		@Override
 		public void keyPressed(KeyEvent e)
 		{
 			Keybind keybind = config.searchKeybind();
-			if (keybind.matches(e))
+			if (!keybind.matches(e))
 			{
-				Widget bankContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
-				if (bankContainer != null && !bankContainer.isSelfHidden())
-				{
-					log.debug("Search hotkey pressed");
-					bankSearch.initSearch();
-					e.consume();
-				}
+				return;
+			}
 
-				Widget groupStorageSearchButton = client.getWidget(InterfaceID.SharedBank.SEARCH);
-				if (groupStorageSearchButton != null)
+			if (!isSearchableBankOpen() || isSearchInputOpen())
+			{
+				searchHotkeyTypedKeyCode = KeyEvent.VK_UNDEFINED;
+				return;
+			}
+
+			boolean hotkeyUsed = false;
+			Widget bankContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
+			if (bankOpen
+				&& bankContainer != null
+				&& !bankContainer.isSelfHidden())
+			{
+				log.debug("Search hotkey pressed");
+				bankSearch.initSearch();
+				hotkeyUsed = true;
+			}
+
+			Widget groupStorageSearchButton = client.getWidget(InterfaceID.SharedBank.SEARCH);
+			if (sharedBankOpen && groupStorageSearchButton != null && !groupStorageSearchButton.isSelfHidden())
+			{
+				log.debug("Search hotkey pressed");
+				clientThread.invoke(() ->
 				{
-					log.debug("Search hotkey pressed");
-					clientThread.invoke(() ->
+					Widget searchButton = client.getWidget(InterfaceID.SharedBank.SEARCH);
+					if (searchButton == null || searchButton.isHidden())
 					{
-						Widget searchButton = client.getWidget(InterfaceID.SharedBank.SEARCH);
-						if (searchButton == null || searchButton.isHidden())
-						{
-							return;
-						}
+						return;
+					}
 
-						Object[] searchToggleArgs = searchButton.getOnOpListener();
-						if (searchToggleArgs == null)
-						{
-							return;
-						}
-
-						client.createScriptEventBuilder(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
-							.setOp(1)
-							.build()
-							.run();
-					});
-					e.consume();
-				}
-
-				Widget seedVaultSearchButton = client.getWidget(InterfaceID.SeedVault.SEARCH);
-				if (seedVaultSearchButton != null)
-				{
-					log.debug("Search hotkey pressed");
-					clientThread.invoke(() ->
+					Object[] searchToggleArgs = searchButton.getOnOpListener();
+					if (searchToggleArgs == null)
 					{
-						Widget searchButton = client.getWidget(InterfaceID.SeedVault.SEARCH);
-						if (searchButton == null || searchButton.isHidden())
-						{
-							return;
-						}
-						client.runScript(searchButton.getOnOpListener());
-					});
-					e.consume();
-				}
+						return;
+					}
+
+					client.createScriptEventBuilder(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
+						.setOp(1)
+						.build()
+						.run();
+				});
+				hotkeyUsed = true;
+			}
+
+			Widget seedVaultSearchButton = client.getWidget(InterfaceID.SeedVault.SEARCH);
+			if (seedVaultOpen && seedVaultSearchButton != null && !seedVaultSearchButton.isSelfHidden())
+			{
+				log.debug("Search hotkey pressed");
+				clientThread.invoke(() ->
+				{
+					Widget searchButton = client.getWidget(InterfaceID.SeedVault.SEARCH);
+					if (searchButton == null || searchButton.isHidden())
+					{
+						return;
+					}
+					client.runScript(searchButton.getOnOpListener());
+				});
+				hotkeyUsed = true;
+			}
+
+			if (hotkeyUsed)
+			{
+				searchHotkeyTypedKeyCode = keybind.getKeyCode();
+				e.consume();
 			}
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e)
 		{
+			searchHotkeyTypedKeyCode = KeyEvent.VK_UNDEFINED;
+		}
+
+		@Override
+		public void focusLost()
+		{
+			searchHotkeyTypedKeyCode = KeyEvent.VK_UNDEFINED;
 		}
 	};
+
+	private void consumeSearchHotkeyTypedChar(KeyEvent e)
+	{
+		int keyCode = searchHotkeyTypedKeyCode;
+		if (keyCode == KeyEvent.VK_UNDEFINED)
+		{
+			return;
+		}
+
+		searchHotkeyTypedKeyCode = KeyEvent.VK_UNDEFINED;
+		if (isSearchableBankOpen() && KeyEvent.getExtendedKeyCodeForChar(e.getKeyChar()) == keyCode)
+		{
+			e.consume();
+		}
+	}
+
+	private boolean isSearchableBankOpen()
+	{
+		return bankOpen || sharedBankOpen || seedVaultOpen;
+	}
+
+	private boolean isSearchInputOpen()
+	{
+		return isSearchableBankOpen() && client.getVarcIntValue(VarClientID.MESLAYERMODE) == InputType.SEARCH.getType();
+	}
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -199,6 +255,10 @@ public class BankPlugin extends Plugin
 	protected void startUp()
 	{
 		keyManager.registerKeyListener(searchHotkeyListener);
+		bankOpen = false;
+		sharedBankOpen = false;
+		seedVaultOpen = false;
+		searchHotkeyTypedKeyCode = KeyEvent.VK_UNDEFINED;
 	}
 
 	@Override
@@ -209,6 +269,10 @@ public class BankPlugin extends Plugin
 		forceRightClickFlag = false;
 		itemQuantities = null;
 		searchString = null;
+		bankOpen = false;
+		sharedBankOpen = false;
+		seedVaultOpen = false;
+		searchHotkeyTypedKeyCode = KeyEvent.VK_UNDEFINED;
 	}
 
 	@Subscribe
@@ -304,9 +368,48 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == InterfaceID.SEED_VAULT && config.seedVaultValue())
+		switch (event.getGroupId())
 		{
-			clientThread.invokeLater(this::updateSeedVaultTotal);
+			case InterfaceID.BANKMAIN:
+				bankOpen = true;
+				break;
+			case InterfaceID.SHARED_BANK:
+				sharedBankOpen = true;
+				break;
+			case InterfaceID.SEED_VAULT:
+				seedVaultOpen = true;
+				if (config.seedVaultValue())
+				{
+					clientThread.invokeLater(this::updateSeedVaultTotal);
+				}
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed event)
+	{
+		if (!event.isUnload())
+		{
+			return;
+		}
+
+		switch (event.getGroupId())
+		{
+			case InterfaceID.BANKMAIN:
+				bankOpen = false;
+				break;
+			case InterfaceID.SHARED_BANK:
+				sharedBankOpen = false;
+				break;
+			case InterfaceID.SEED_VAULT:
+				seedVaultOpen = false;
+				break;
+		}
+
+		if (!isSearchableBankOpen())
+		{
+			searchHotkeyTypedKeyCode = KeyEvent.VK_UNDEFINED;
 		}
 	}
 
