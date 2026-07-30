@@ -238,22 +238,6 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		}
 	}
 
-	private void layoutSharedBank()
-	{
-		Widget w = client.getWidget(InterfaceID.SharedBank.ITEMS);
-		if (w != null)
-		{
-			Object[] args = w.getOnInvTransmitListener();
-			if (args != null)
-			{
-				client.createScriptEventBuilder(args)
-					.setSource(w)
-					.build()
-					.run();
-			}
-		}
-	}
-
 	@Deprecated
 	private void cleanConfig()
 	{
@@ -492,8 +476,6 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 
 					// If a tab if active, rebuild the bank to apply the changes
 					tabInterface.reloadActiveTab();
-					// If the shared bank is open, rebuild it to reapply an active tag: search
-					layoutSharedBank();
 				}))
 			.build();
 	}
