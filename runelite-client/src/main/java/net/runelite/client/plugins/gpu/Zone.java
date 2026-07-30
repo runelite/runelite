@@ -156,7 +156,7 @@ class Zone
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_SHORT, false, VERT_SIZE, 0);
+		glVertexAttribPointer(0, 4, GL_SHORT, false, VERT_SIZE, 0);
 
 		glEnableVertexAttribArray(1);
 		glVertexAttribIPointer(1, 1, GL_INT, VERT_SIZE, 8);
