@@ -270,31 +270,43 @@ public class InteractHighlightPlugin extends Plugin
 		{
 			for (GameObject gameObject : tile.getGameObjects())
 			{
-				if (gameObject != null && gameObject.getId() == id)
+				if (gameObject != null && objIdEquals(id, gameObject.getId()))
 				{
 					return gameObject;
 				}
 			}
 
 			WallObject wallObject = tile.getWallObject();
-			if (wallObject != null && wallObject.getId() == id)
+			if (wallObject != null && objIdEquals(id, wallObject.getId()))
 			{
 				return wallObject;
 			}
 
 			DecorativeObject decorativeObject = tile.getDecorativeObject();
-			if (decorativeObject != null && decorativeObject.getId() == id)
+			if (decorativeObject != null && objIdEquals(id, decorativeObject.getId()))
 			{
 				return decorativeObject;
 			}
 
 			GroundObject groundObject = tile.getGroundObject();
-			if (groundObject != null && groundObject.getId() == id)
+			if (groundObject != null && objIdEquals(id, groundObject.getId()))
 			{
 				return groundObject;
 			}
 		}
 		return null;
+	}
+
+	private boolean objIdEquals(int id1 /* base id or multiloc id */, int id2 /* base id */)
+	{
+		if (id1 == id2)
+		{
+			return true;
+		}
+
+		var obj = client.getObjectDefinition(id2);
+		obj = obj.getImpostorIds() == null ? obj : obj.getImpostor();
+		return obj != null && obj.getId() == id1;
 	}
 
 	ItemLayer findItemLayer(int worldId, int x, int y)
