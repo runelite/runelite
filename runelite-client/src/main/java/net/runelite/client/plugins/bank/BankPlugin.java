@@ -294,8 +294,10 @@ public class BankPlugin extends Plugin
 					}
 
 					log.debug("Bank pin keypress");
-
-					client.runScript(onOpListener);
+					client.createScriptEventBuilder(onOpListener)
+						.build()
+						.setCanSendPackets(true)
+						.run();
 					// Block the key press this tick in keypress_permit so it doesn't enter the chatbox
 					client.setVarcIntValue(VarClientID.KEYBOARD_TIMEOUT, client.getGameCycle() + 1);
 				});
