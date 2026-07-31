@@ -38,9 +38,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -90,36 +92,6 @@ public class HiscorePanel extends PluginPanel
 		MAGIC, FLETCHING, WOODCUTTING,
 		RUNECRAFT, SLAYER, FARMING,
 		CONSTRUCTION, HUNTER, SAILING
-	);
-
-	/**
-	 * Bosses, ordered in the way they should be displayed in the panel.
-	 */
-	private static final List<HiscoreSkill> BOSSES = ImmutableList.of(
-		ABYSSAL_SIRE, ALCHEMICAL_HYDRA, AMOXLIATL,
-		ARAXXOR, ARTIO, BARROWS_CHESTS,
-		BRUTUS, BRYOPHYTA, CALLISTO,
-		CALVARION, CERBERUS, CHAMBERS_OF_XERIC,
-		CHAMBERS_OF_XERIC_CHALLENGE_MODE, CHAOS_ELEMENTAL, CHAOS_FANATIC,
-		COMMANDER_ZILYANA, CORPOREAL_BEAST, CRAZY_ARCHAEOLOGIST,
-		DAGANNOTH_PRIME, DAGANNOTH_REX, DAGANNOTH_SUPREME,
-		DERANGED_ARCHAEOLOGIST, DOOM_OF_MOKHAIOTL, DUKE_SUCELLUS,
-		GENERAL_GRAARDOR, GIANT_MOLE, GROTESQUE_GUARDIANS,
-		HESPORI, KALPHITE_QUEEN, KING_BLACK_DRAGON,
-		KRAKEN, KREEARRA, KRIL_TSUTSAROTH,
-		LUNAR_CHESTS, MAGGOT_KING, MIMIC,
-		NEX, NIGHTMARE, PHOSANIS_NIGHTMARE,
-		OBOR, PHANTOM_MUSPAH, SARACHNIS,
-		SCORPIA, SCURRIUS, SHELLBANE_GRYPHON,
-		SKOTIZO, SOL_HEREDIT, SPINDEL,
-		TEMPOROSS, THE_GAUNTLET, THE_CORRUPTED_GAUNTLET,
-		THE_HUEYCOATL, THE_LEVIATHAN, THE_ROYAL_TITANS,
-		THE_WHISPERER, THEATRE_OF_BLOOD, THEATRE_OF_BLOOD_HARD_MODE,
-		THERMONUCLEAR_SMOKE_DEVIL, TOMBS_OF_AMASCUT, TOMBS_OF_AMASCUT_EXPERT,
-		TZKAL_ZUK, TZTOK_JAD, VARDORVIS,
-		VENENATIS, VETION, VORKATH,
-		WINTERTODT, YAMA, ZALCANO,
-		ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
@@ -299,7 +271,11 @@ public class HiscorePanel extends PluginPanel
 		bossPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		// For each boss on the hi-scores, create a Label and add it to the UI
-		for (HiscoreSkill skill : BOSSES)
+		var bosses = Arrays.stream(HiscoreSkill.values())
+			.filter(hs -> hs.getType() == HiscoreSkillType.BOSS)
+			.sorted()
+			.collect(Collectors.toList());
+		for (HiscoreSkill skill : bosses)
 		{
 			JPanel panel = makeHiscorePanel(skill);
 			bossPanel.add(panel);
