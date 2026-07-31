@@ -137,7 +137,12 @@ public class ClientUI
 	private static final String CONFIG_CLIENT_SIDEBAR_CLOSED = "clientSidebarClosed";
 	public static final BufferedImage ICON_128 = ImageUtil.loadImageResource(ClientUI.class, "runelite_128.png");
 	public static final BufferedImage ICON_16 = ImageUtil.loadImageResource(ClientUI.class, "runelite_16.png");
-	public enum SidebarLayout {Scroll,Wrap}
+
+	public enum SidebarLayout
+	{
+		Scroll,
+		Wrap
+	}
 
 	@Getter
 	private TrayIcon trayIcon;

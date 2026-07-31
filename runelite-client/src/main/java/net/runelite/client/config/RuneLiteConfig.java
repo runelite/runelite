@@ -192,7 +192,10 @@ public interface RuneLiteConfig extends Config
 			position = 20,
 			section = windowSettings
 	)
-	default SidebarLayout sidebarLayout() { return SidebarLayout.Wrap; }
+	default SidebarLayout sidebarLayout()
+	{
+		return SidebarLayout.Wrap;
+	}
 
 	@ConfigItem(
 		keyName = "trayIcon",
