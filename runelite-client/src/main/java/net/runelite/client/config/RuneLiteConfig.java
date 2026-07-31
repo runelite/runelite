@@ -30,6 +30,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import net.runelite.api.Constants;
 import net.runelite.client.ui.ContainableFrame;
+import net.runelite.client.ui.ClientUI.SidebarLayout;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.util.OSType;
 
@@ -185,11 +186,20 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "sidebarLayout",
+			name = "Sidebar layout",
+			description = "Select your preferred sidebar layout style.",
+			position = 20,
+			section = windowSettings
+	)
+	default SidebarLayout sidebarLayout() { return SidebarLayout.Wrap; }
+
+	@ConfigItem(
 		keyName = "trayIcon",
 		name = "Enable tray icon",
 		description = "Enables icon in system tray.",
 		warning = "Disabling this may limit your ability to receive tray notifications.\nPlease restart your client after changing this setting.",
-		position = 20,
+		position = 21,
 		section = notificationSettings
 	)
 	default boolean enableTrayIcon()
@@ -201,7 +211,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
 		description = "Enables tray notifications.",
-		position = 21,
+		position = 22,
 		section = notificationSettings
 	)
 	default boolean enableTrayNotifications()
@@ -213,7 +223,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationRequestFocus",
 		name = "Request focus",
 		description = "Configures the window focus request type on notification.",
-		position = 22,
+		position = 23,
 		section = notificationSettings
 	)
 	default RequestFocusType notificationRequestFocus()
@@ -225,7 +235,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationSound",
 		name = "Notification sound",
 		description = "Enables the playing of a beep sound when notifications are displayed.",
-		position = 23,
+		position = 24,
 		section = notificationSettings
 	)
 	default NotificationSound notificationSound()

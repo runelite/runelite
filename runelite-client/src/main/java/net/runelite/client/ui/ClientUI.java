@@ -137,6 +137,7 @@ public class ClientUI
 	private static final String CONFIG_CLIENT_SIDEBAR_CLOSED = "clientSidebarClosed";
 	public static final BufferedImage ICON_128 = ImageUtil.loadImageResource(ClientUI.class, "runelite_128.png");
 	public static final BufferedImage ICON_16 = ImageUtil.loadImageResource(ClientUI.class, "runelite_16.png");
+	public enum SidebarLayout {Scroll,Wrap}
 
 	@Getter
 	private TrayIcon trayIcon;
@@ -223,6 +224,22 @@ public class ClientUI
 			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
 			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
+			return;
+		}
+		if (event.getKey().equals("sidebarLayout"))
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				sidebar.setTabLayoutPolicy(
+						config.sidebarLayout() == SidebarLayout.Scroll
+								? JTabbedPane.SCROLL_TAB_LAYOUT
+								: JTabbedPane.WRAP_TAB_LAYOUT
+				);
+
+				sidebar.revalidate();
+				sidebar.repaint();
+			});
+
 			return;
 		}
 
@@ -399,10 +416,11 @@ public class ClientUI
 			clientPanel = new ClientPanel(client);
 			content.add(clientPanel);
 
-			sidebar = new JTabbedPane(JTabbedPane.RIGHT);
+			sidebar = new JTabbedPane(JTabbedPane.RIGHT, config.sidebarLayout() == SidebarLayout.Scroll ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
 			sidebar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
+			sidebar.putClientProperty(FlatClientProperties.TABBED_PANE_TABS_POPUP_POLICY, FlatClientProperties.TABBED_PANE_POLICY_NEVER);
 			sidebar.setSelectedIndex(-1);
 			sidebar.addChangeListener(ev ->
 			{
