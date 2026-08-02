@@ -106,7 +106,7 @@ enum TeleportLocationData
 	TARNS_LAIR(TeleportType.JEWELLERY, "Slayer Ring" , "Tarn's Lair", new WorldPoint(3187, 4601, 0), "slayer_ring_teleport_icon.png"),
 	STRONGHOLD_SLAYER_CAVE(TeleportType.JEWELLERY, "Slayer Ring" , "Stronghold Slayer Cave", new WorldPoint(2433, 3421, 0), "slayer_ring_teleport_icon.png"),
 	DARK_BEASTS(TeleportType.JEWELLERY, "Slayer Ring" , "Dark Beasts", new WorldPoint(2028, 4638, 0), "slayer_ring_teleport_icon.png"),
-	WYRMSCRAIG_CAVERN(TeleportType.JEWELLERY, "Slayer Ring", "Wyrmscraig Cavern", new WorldPoint(2581 + 64*3, 8633, 0), "slayer_ring_teleport_icon.png"),
+	WYRMSCRAIG_CAVERN(TeleportType.JEWELLERY, "Slayer Ring", "Wyrmscraig Cavern", new WorldPoint(2581 + 64 * 3, 8633, 0), "slayer_ring_teleport_icon.png"),
 	WYRMSCRAIG_CAVERN_OUTSIDE(TeleportType.JEWELLERY, "Slayer Ring", "Wyrmscraig Cavern (inside)", new WorldPoint(2533, 2206, 0), "slayer_ring_teleport_icon.png"),
 	DIGSITE(TeleportType.JEWELLERY, "Digsite Pendant" , "Digsite", new WorldPoint(3339, 3445, 0), "digsite_pendant_teleport_icon.png"),
 	HOUSE_ON_THE_HILL(TeleportType.JEWELLERY, "Digsite Pendant" , "House on the Hill", new WorldPoint(3763, 3869, 0), "digsite_pendant_teleport_icon.png"),
