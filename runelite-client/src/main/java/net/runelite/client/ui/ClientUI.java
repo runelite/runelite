@@ -26,6 +26,7 @@ package net.runelite.client.ui;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatNativeWindowBorder;
+import com.formdev.flatlaf.ui.FlatTitlePane;
 import com.formdev.flatlaf.util.SystemInfo;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -586,6 +587,49 @@ public class ClientUI
 
 					frame.setUndecorated(true);
 					rp.setWindowDecorationStyle(JRootPane.FRAME);
+
+
+					// Forward events so the embedded menu bar doesn't block title bar dragging when native decorations are off.
+					java.awt.event.MouseAdapter titleBarForwarder = new java.awt.event.MouseAdapter()
+					{
+						private void forward(MouseEvent e)
+						{
+							for (Component c : rp.getLayeredPane().getComponents())
+							{
+								if (c instanceof FlatTitlePane)
+								{
+									c.dispatchEvent(SwingUtilities.convertMouseEvent(e.getComponent(), e, c));
+									break;
+								}
+							}
+						}
+
+						@Override
+						public void mousePressed(MouseEvent e)
+						{
+							forward(e);
+						}
+
+						@Override
+						public void mouseReleased(MouseEvent e)
+						{
+							forward(e);
+						}
+
+						@Override
+						public void mouseClicked(MouseEvent e)
+						{
+							forward(e);
+						}
+
+						@Override
+						public void mouseDragged(MouseEvent e)
+						{
+							forward(e);
+						}
+					};
+					menuBar.addMouseListener(titleBarForwarder);
+					menuBar.addMouseMotionListener(titleBarForwarder);
 				}
 
 				frame.addWindowStateListener(_ev -> applyCustomChromeBorder());
