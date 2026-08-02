@@ -117,4 +117,9 @@ class SnapCorners
 			configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, SNAPCORNER_PREFIX + s.position + SNAPCORNER_CONFIG_LOCATION);
 		}
 	}
+
+	void setInDragMode(boolean inDragMode)
+	{
+		getSnapCorners().forEach(s -> s.inDragMode = inDragMode);
+	}
 }

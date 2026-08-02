@@ -425,6 +425,7 @@ public class OverlayRenderer extends MouseAdapter
 			inOverlayDraggingMode = !inOverlayResizingMode;
 			startedMovingOverlay = true;
 			currentManagedBounds = new Rectangle(currentManagedOverlay.getBounds());
+			snapCorners.setInDragMode(inOverlayDraggingMode);
 		}
 		else
 		{
@@ -817,6 +818,7 @@ public class OverlayRenderer extends MouseAdapter
 		dragTargetOverlay = null;
 		currentManagedBounds = null;
 		clientUI.setCursor(clientUI.getDefaultCursor());
+		snapCorners.setInDragMode(false);
 	}
 
 	private void positionSnapcorners()
