@@ -64,6 +64,7 @@ import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -82,7 +83,6 @@ public class KourendLibraryPlugin extends Plugin
 {
 	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
 	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
-	static final int REGION = 6459;
 
 	static final boolean debug = false;
 
@@ -200,8 +200,7 @@ public class KourendLibraryPlugin extends Plugin
 				else
 				{
 					Player lp = client.getLocalPlayer();
-					boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
-					if (inRegion)
+					if (lp != null && GameArea.ARCEUUS_LIBRARY.containsRegion(lp.getWorldLocation().getRegionID()))
 					{
 						clientToolbar.addNavigation(navButton);
 					}
@@ -214,7 +213,7 @@ public class KourendLibraryPlugin extends Plugin
 		}
 		else if (ev.getKey().equals("showTargetHintArrow"))
 		{
-			if (client.getLocalPlayer() == null || client.getLocalPlayer().getWorldLocation().getRegionID() != REGION)
+			if (client.getLocalPlayer() == null || !GameArea.ARCEUUS_LIBRARY.containsRegion(client.getLocalPlayer().getWorldLocation().getRegionID()))
 			{
 				return;
 			}
@@ -279,7 +278,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
+		boolean inRegion = GameArea.ARCEUUS_LIBRARY.containsRegion(client.getLocalPlayer().getWorldLocation().getRegionID());
 		if (config.hideButton() && inRegion != buttonAttached)
 		{
 			SwingUtilities.invokeLater(() ->
