@@ -22,7 +22,7 @@
    string_length         
    iconst                 0
    if_icmpgt              LABEL15
-   jump                   LABEL149
+   jump                   LABEL148
 LABEL15:
    iload                  0
    if_getwidth           
@@ -34,7 +34,7 @@ LABEL15:
 LABEL22:
    oload                  0
    ostore                 2
-   jump                   LABEL44
+   jump                   LABEL43
 LABEL25:
    oload                  0
    iload                  2
@@ -42,22 +42,21 @@ LABEL25:
    paraheight            
    iconst                 2
    if_icmple              LABEL32
-   jump                   LABEL39
+   jump                   LABEL38
 LABEL32:
    oload                  0
-   sconst                 "<br>"
-   sconst                 "<br>"
+   sconst                 "<br><br>"
    oload                  1
-   join_string            4
+   join_string            3
    ostore                 2
-   jump                   LABEL44
-LABEL39:
+   jump                   LABEL43
+LABEL38:
    oload                  0
    sconst                 "<br>"
    oload                  1
    join_string            3
    ostore                 2
-LABEL44:
+LABEL43:
 
    oload                  0 ; examine
    oload                  1 ; Convenience fee
@@ -116,14 +115,14 @@ LABEL44:
    if_setposition        
    invoke                 6811
    iconst                 1
-   if_icmpeq              LABEL94
-   jump                   LABEL98
-LABEL94:
+   if_icmpeq              LABEL93
+   jump                   LABEL97
+LABEL93:
    iconst                 1
    iload                  1
    if_sethide            
-   jump                   LABEL148
-LABEL98:
+   jump                   LABEL147
+LABEL97:
    iconst                 0
    iload                  1
    if_sethide            
@@ -174,9 +173,9 @@ LABEL98:
    sconst                 "Info"
    iload                  1
    if_setop              
+LABEL147:
+   jump                   LABEL169
 LABEL148:
-   jump                   LABEL170
-LABEL149:
    oload                  0
    ostore                 2
 
@@ -208,7 +207,7 @@ LABEL149:
    if_setonop            
    iload                  1
    if_clearops           
-LABEL170:
+LABEL169:
    oload                  2
    iload                  0
    if_settext            
