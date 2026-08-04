@@ -201,6 +201,9 @@ enum FishingSpotLocation
 		new WorldPoint(3362, 3802, 0), new WorldPoint(3347, 3813, 0)),
 	WILDERNESS_LAVA_MAZE(FishingSpot.LAVA_EEL, new WorldPoint(3071, 3840, 0)),
 	WILDERNESS_RESOURCE_AREA(FishingSpot.DARK_CRAB, new WorldPoint(3186, 3925, 0)),
+	WYRMSCRAIG(new FishingSpot[]{FishingSpot.SHARK, FishingSpot.LOBSTER},
+		new WorldPoint(2574, 2219, 0)),
+	WYRMSCRAIG_CAVERN(FishingSpot.LAVA_EEL, new WorldPoint(2802, 8598, 0)),
 	ZUL_ANDRA(FishingSpot.SACRED_EEL,
 		new WorldPoint(2183, 3068, 0), new WorldPoint(2195, 3067, 0)),
 	;

@@ -111,7 +111,11 @@ enum RareTreeLocation
 		new WorldPoint(1389, 3381, 0),
 		new WorldPoint(1370, 3344, 0),
 		new WorldPoint(1392, 3339, 0),
-		new WorldPoint(1431, 3352, 0)),
+		new WorldPoint(1431, 3352, 0),
+
+		// Wyrmscraig
+		new WorldPoint(2578, 2199, 0),
+		new WorldPoint(2561, 2191, 0)),
 
 	MAHOGANY("Mahogany tree", 50,
 		// Zeah
@@ -253,7 +257,10 @@ enum RareTreeLocation
 		// Zanaris
 		new WorldPoint(2412, 4464, 0),
 		new WorldPoint(2465, 4427, 0),
-		new WorldPoint(2491, 4426, 0)),
+		new WorldPoint(2491, 4426, 0),
+
+		// Wyrmscraig
+		new WorldPoint(2542, 2184, 0)),
 
 	YEW_JATOBA("Yew/Jatoba trees", 60,
 		// Great Conch
