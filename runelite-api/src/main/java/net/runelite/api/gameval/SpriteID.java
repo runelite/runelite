@@ -862,6 +862,7 @@ public final class SpriteID
 	public static final int LEAFYTREE_TILED_AUTUMN01 = 8557;
 	public static final int LEAFYTREE_AUTUMN02 = 8558;
 	public static final int LEAFYTREE_TILED_AUTUMN02 = 8559;
+	public static final int MINIMENU_ICONS = 8560;
 
 	public static final class _2XStandardSpellsOn
 	{

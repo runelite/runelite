@@ -89146,6 +89146,11 @@ public final class ItemID
 	 */
 	public static final int SAILING_SKILLGUIDE_PORTS_WYRMSCRAIG = 34058;
 
+	/**
+	 * Fairy tale quest lamp
+	 */
+	public static final int DEADMAN_QUEST_LAMP_TIER_11 = 34059;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
@@ -93851,6 +93856,7 @@ public final class ItemID
 		public static final int GOAT_PIT_FUR = 34018;
 		public static final int HALLOWFELL = 34028;
 		public static final int MAD_ANGEL_SWORD = 34036;
+		public static final int BH_EMBLEM_5 = 34060;
 	}
 
 	public static final class Placeholder
