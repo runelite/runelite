@@ -403,6 +403,12 @@ public class SlayerPlugin extends Plugin
 			}
 
 			int initialAmount = client.getVarpValue(VarPlayerID.SLAYER_COUNT_ORIGINAL);
+			if (client.getVarbitValue(VarbitID.SLAYER_MODIFIER_ID) == 2)
+			{
+				boolean isNegative = client.getVarbitValue(VarbitID.SLAYER_MODIFIER_NEGATIVE) == 1;
+				int modifierValue = client.getVarbitValue(VarbitID.SLAYER_MODIFIER_VALUE);
+				initialAmount += isNegative ? -modifierValue : modifierValue;
+			}
 
 			if (loginFlag)
 			{
