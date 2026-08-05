@@ -83,6 +83,7 @@ import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -1080,6 +1081,20 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testCounters()
 	{
+		// Original interface style.
+		testCounters(InterfaceID.MENU, InterfaceID.Menu.LJ_LAYER2);
+	}
+
+	@Test
+	public void testCountersNewMenu()
+	{
+		// Newer interface style: the same adventure log, a different menu
+		// interface. Both are live and the player's setting decides which.
+		testCounters(InterfaceID.MENU_NEW, InterfaceID.MenuNew.TITLE);
+	}
+
+	private void testCounters(int menuGroupId, int titleComponentId)
+	{
 		final String[] log = {
 			"Chompy Hunting",
 			"Kills: <col=ffffff>1,003</col>",
@@ -1220,9 +1235,17 @@ public class ChatCommandsPluginTest
 		// adv log
 		Widget advLogWidget = mock(Widget.class);
 		Widget advLogExploitsTextWidget = mock(Widget.class);
-		when(advLogWidget.getChild(ChatCommandsPlugin.ADV_LOG_EXPLOITS_TEXT_INDEX)).thenReturn(advLogExploitsTextWidget);
 		when(advLogExploitsTextWidget.getText()).thenReturn("The Exploits of " + PLAYER_NAME);
-		when(client.getWidget(InterfaceID.Menu.LJ_LAYER2)).thenReturn(advLogWidget);
+		Widget advLogNonMatchingWidget = mock(Widget.class);
+		when(advLogNonMatchingWidget.getText()).thenReturn("");
+		// The title is a later dynamic child, surrounded by null and non-text
+		// children; the widget after it must never be read once matched.
+		Widget advLogDecoyWidget = mock(Widget.class);
+		lenient().when(advLogDecoyWidget.getText()).thenReturn("The Exploits of Someone Else");
+		when(advLogWidget.getChildren()).thenReturn(new Widget[]{
+			null, mock(Widget.class), advLogNonMatchingWidget,
+			advLogExploitsTextWidget, advLogDecoyWidget});
+		when(client.getWidget(titleComponentId)).thenReturn(advLogWidget);
 
 		// counters
 		when(client.getWidget(InterfaceID.Journalscroll.TEXTLAYER)).thenAnswer(a ->
@@ -1241,7 +1264,7 @@ public class ChatCommandsPluginTest
 		});
 
 		WidgetLoaded advLogEvent = new WidgetLoaded();
-		advLogEvent.setGroupId(InterfaceID.MENU);
+		advLogEvent.setGroupId(menuGroupId);
 		chatCommandsPlugin.onWidgetLoaded(advLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 

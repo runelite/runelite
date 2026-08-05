@@ -145,8 +145,6 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String CA_COMMAND = "!ca";
 	private static final String CLOG_COMMAND = "!clog";
 
-	@VisibleForTesting
-	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
 	static final int COL_LOG_ENTRY_HEADER_TITLE_INDEX = 0;
 
 	private static final Map<String, String> KILLCOUNT_RENAMES = ImmutableMap.of(
@@ -681,6 +679,70 @@ public class ChatCommandsPlugin extends Plugin
 		return Double.parseDouble(timeString);
 	}
 
+	/**
+	 * The adventure log owner, or null when the loaded menu is not an
+	 * adventure log.
+	 *
+	 * <p>The log opens in one of two menu interfaces depending on the player's
+	 * interface style setting, so both are read. The title sits at a different
+	 * child index in each and is surrounded by null and non-text children, so
+	 * each container is scanned for the first line matching the title pattern
+	 * rather than indexed.
+	 */
+	private String readAdventureLogOwner()
+	{
+		String owner = readAdventureLogOwner(InterfaceID.MenuNew.TITLE);
+		return owner != null ? owner : readAdventureLogOwner(InterfaceID.Menu.LJ_LAYER2);
+	}
+
+	private String readAdventureLogOwner(int componentId)
+	{
+		Widget container = client.getWidget(componentId);
+		if (container == null)
+		{
+			return null;
+		}
+
+		String own = matchAdventureLogOwner(container.getText());
+		if (own != null)
+		{
+			return own;
+		}
+
+		Widget[] children = container.getChildren();
+		if (children == null)
+		{
+			return null;
+		}
+
+		for (Widget child : children)
+		{
+			if (child == null)
+			{
+				continue;
+			}
+
+			String found = matchAdventureLogOwner(child.getText());
+			if (found != null)
+			{
+				return found;
+			}
+		}
+
+		return null;
+	}
+
+	private static String matchAdventureLogOwner(String text)
+	{
+		if (text == null)
+		{
+			return null;
+		}
+
+		Matcher matcher = ADVENTURE_LOG_TITLE_PATTERN.matcher(Text.removeTags(text));
+		return matcher.find() ? matcher.group(1) : null;
+	}
+
 	@VisibleForTesting
 	static String secondsToTimeString(double seconds)
 	{
@@ -735,15 +797,11 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			advLogLoaded = false;
 
-			Widget adventureLog = client.getWidget(InterfaceID.Menu.LJ_LAYER2);
+			String owner = readAdventureLogOwner();
 
-			if (adventureLog != null)
+			if (owner != null)
 			{
-				Matcher advLogExploitsText = ADVENTURE_LOG_TITLE_PATTERN.matcher(adventureLog.getChild(ADV_LOG_EXPLOITS_TEXT_INDEX).getText());
-				if (advLogExploitsText.find())
-				{
-					pohOwner = advLogExploitsText.group(1);
-				}
+				pohOwner = owner;
 			}
 		}
 
@@ -883,6 +941,7 @@ public class ChatCommandsPlugin extends Plugin
 		switch (widget.getGroupId())
 		{
 			case InterfaceID.MENU:
+			case InterfaceID.MENU_NEW:
 				advLogLoaded = true;
 				break;
 			case InterfaceID.KILL_LOG:
