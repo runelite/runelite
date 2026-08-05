@@ -57,6 +57,7 @@ class SnapCorner
 	CornerOverlay overlay;
 	private final int offx, offy; // default offset from origin
 	int curx, cury; // current offset from origin
+	boolean inDragMode;
 
 	private int cx, cy; // corner point
 	private int px, py; // current point
@@ -297,8 +298,11 @@ class SnapCorner
 			// overlay location depends on its size, which depends on how many things it renders
 			setPreferredLocation(translateOffsetForAlignment());
 			var s = getSize();
-			graphics.setColor(mouseover ? SNAP_CORNER_ACTIVE_COLOR : SNAP_CORNER_COLOR);
-			graphics.fill(new Rectangle(s));
+			if (mouseover || inDragMode)
+			{
+				graphics.setColor(mouseover ? SNAP_CORNER_ACTIVE_COLOR : SNAP_CORNER_COLOR);
+				graphics.fill(new Rectangle(s));
+			}
 			mouseover = false;
 			return s;
 		}

@@ -176,6 +176,11 @@ enum TransportationPointLocation
 	CANOE_EDGEVILLE("Canoe", new WorldPoint(3130, 3509, 0)),
 	CANOE_LUMBRIDGE("Canoe", new WorldPoint(3241, 3238, 0)),
 	CANOE_FEROXENCLAVE("Canoe", new WorldPoint(3155, 3630, 0)),
+	CANOE_CASTLEWARS("Canoe", new WorldPoint(2439, 3137, 0)),
+	CANOE_GNOMEVILLAGE("Canoe", new WorldPoint(2484, 3192, 0)),
+	CANOE_CLOCKTOWER("Canoe", new WorldPoint(2576, 3262, 0)),
+	CANOE_CHAOSDRUIDTOWER("Canoe", new WorldPoint(2572, 3358, 0)),
+	CANOE_GNOMESTRONGHOLD("Canoe", new WorldPoint(2524, 3409, 0)),
 
 	//Gnome Gliders
 	GNOME_GLIDER_KHARID("Gnome Glider", new WorldPoint(3278, 3213, 0)),
