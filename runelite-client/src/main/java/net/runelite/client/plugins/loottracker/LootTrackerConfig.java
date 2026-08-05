@@ -82,6 +82,24 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "itemValueOverrides",
+		name = "Item value overrides",
+		description = "Manually set the value of specific items, useful for untradeable items whose GE/HA price isn't accurate. Set via right-click on an item in the loot tracker, or bulk edit via 'Edit custom values...' on the totals bar.",
+		hidden = true
+	)
+	default String getItemValueOverrides()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "itemValueOverrides",
+		name = "",
+		description = ""
+	)
+	void setItemValueOverrides(String key);
+
+	@ConfigItem(
 		keyName = "syncPanel",
 		name = "Remember loot",
 		description = "Saves loot between client sessions."

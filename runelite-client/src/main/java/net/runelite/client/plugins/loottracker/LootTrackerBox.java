@@ -45,6 +45,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
@@ -77,6 +78,7 @@ class LootTrackerBox extends JPanel
 	private long totalPrice;
 	private final boolean hideIgnoredItems;
 	private final BiConsumer<String, Boolean> onItemToggle;
+	private final BiConsumer<String, Integer> onItemPriceOverride;
 
 	LootTrackerBox(
 		final ItemManager itemManager,
@@ -86,11 +88,13 @@ class LootTrackerBox extends JPanel
 		final boolean showPriceType,
 		final BiConsumer<String, Boolean> onItemToggle,
 		final BiConsumer<String, Boolean> onEventToggle,
+		final BiConsumer<String, Integer> onItemPriceOverride,
 		final boolean eventIgnored)
 	{
 		this.record = record;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
+		this.onItemPriceOverride = onItemPriceOverride;
 		this.hideIgnoredItems = hideIgnoredItems;
 		this.priceType = priceType;
 		this.showPriceType = showPriceType;
@@ -150,6 +154,19 @@ class LootTrackerBox extends JPanel
 	boolean matches(final LootTrackerRecord r)
 	{
 		return r.getType() == record.getType() && r.getTitle().equals(record.getTitle());
+	}
+
+	/**
+	 * Checks if this box is backed by the exact given record instance, as opposed to
+	 * {@link #matches(LootTrackerRecord)} which only compares title and type and can
+	 * match multiple boxes in ungrouped view (e.g. repeat kills of the same NPC).
+	 *
+	 * @param r record to compare by identity
+	 * @return true if this box's underlying record is the same instance as r
+	 */
+	boolean isBackedBy(final LootTrackerRecord r)
+	{
+		return record == r;
 	}
 
 	/**
@@ -251,7 +268,7 @@ class LootTrackerBox extends JPanel
 						qty = Integer.MAX_VALUE;
 					}
 
-					return new LootTrackerItem(oldItem.getId(), oldItem.getName(), qty, oldItem.getGePrice(), oldItem.getHaPrice(), oldItem.isIgnored());
+					return new LootTrackerItem(oldItem.getId(), oldItem.getName(), qty, oldItem.getGePrice(), oldItem.getHaPrice(), oldItem.getCustomPrice(), oldItem.isIgnored());
 				},
 				LinkedHashMap::new
 			));
@@ -319,12 +336,58 @@ class LootTrackerBox extends JPanel
 				});
 
 				popupMenu.add(toggle);
+
+				final JMenuItem setValue = new JMenuItem(item.getCustomPrice() >= 0 ? "Edit custom value" : "Set custom value");
+				setValue.addActionListener(e -> promptForCustomPrice(item));
+				popupMenu.add(setValue);
+
+				if (item.getCustomPrice() >= 0)
+				{
+					final JMenuItem clearValue = new JMenuItem("Clear custom value");
+					clearValue.addActionListener(e -> onItemPriceOverride.accept(item.getName(), null));
+					popupMenu.add(clearValue);
+				}
 			}
 
 			itemContainer.add(slotContainer);
 		}
 
 		itemContainer.revalidate();
+	}
+
+	private void promptForCustomPrice(LootTrackerItem item)
+	{
+		final String currentValue = item.getCustomPrice() >= 0 ? String.valueOf(item.getCustomPrice()) : "";
+		final String input = JOptionPane.showInputDialog(this,
+			"Enter a custom value for " + item.getName() + ":", currentValue);
+
+		if (input == null)
+		{
+			return;
+		}
+
+		final String trimmed = input.trim();
+		if (trimmed.isEmpty())
+		{
+			onItemPriceOverride.accept(item.getName(), null);
+			return;
+		}
+
+		try
+		{
+			final int value = Integer.parseInt(trimmed);
+			if (value < 0)
+			{
+				JOptionPane.showMessageDialog(this, "Value must not be negative.", "Invalid value", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			onItemPriceOverride.accept(item.getName(), value);
+		}
+		catch (NumberFormatException ex)
+		{
+			JOptionPane.showMessageDialog(this, "\"" + trimmed + "\" is not a valid whole number.", "Invalid value", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private static String buildToolTip(LootTrackerItem item)
@@ -338,6 +401,17 @@ class LootTrackerBox extends JPanel
 		sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity)).append(ignoredLabel);
 		if (item.getId() == ItemID.COINS)
 		{
+			sb.append("</html>");
+			return sb.toString();
+		}
+
+		if (item.getCustomPrice() >= 0)
+		{
+			sb.append("<br>Custom value: ").append(QuantityFormatter.quantityToStackSize(gePrice));
+			if (quantity > 1)
+			{
+				sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getCustomPrice())).append(" ea)");
+			}
 			sb.append("</html>");
 			return sb.toString();
 		}
