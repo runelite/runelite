@@ -165,6 +165,8 @@ enum TeleportLocationData
 	TELEPORT_CRYSTAL_PRIFDDINAS(TeleportType.OTHER, "Teleport crystal", "Prifddinas", new WorldPoint(3264, 6065, 0), "teleport_crystal_icon.png"),
 	DRAKANS_MEDALLION_VER_SINHAZA(TeleportType.OTHER, "Drakan's medallion", "Ver Sinhaza", new WorldPoint(3649, 3230, 0), "drakans_medallion_teleport_icon.png"),
 	DRAKANS_MEDALLION_DARKMEYER(TeleportType.OTHER, "Drakan's medallion", "Darkmeyer", new WorldPoint(3592, 3337, 0), "drakans_medallion_teleport_icon.png"),
+	DRAKANS_MEDALLION_SLEPE(TeleportType.OTHER, "Drakan's medallion", "Slepe", new WorldPoint(3808, 9700, 0), "drakans_medallion_teleport_icon.png"),
+	DRAKANS_MEDALLION_CASTLE_DRAKAN(TeleportType.OTHER, "Drakan's medallion", "Castle Drakan", new WorldPoint(3557, 3358, 0), "drakans_medallion_teleport_icon.png"),
 	RING_OF_THE_ELEMENTS_AIR(TeleportType.OTHER, "Ring of the elements", "Air Altar", new WorldPoint(2981, 3276, 0), "ring_of_the_elements_teleport_icon.png"),
 	RING_OF_THE_ELEMENTS_WATER(TeleportType.OTHER, "Ring of the elements", "Water Altar", new WorldPoint(3166, 3158, 0), "ring_of_the_elements_teleport_icon.png"),
 	RING_OF_THE_ELEMENTS_EARTH(TeleportType.OTHER, "Ring of the elements", "Earth Altar", new WorldPoint(3288, 3468, 0), "ring_of_the_elements_teleport_icon.png"),
