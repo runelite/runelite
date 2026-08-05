@@ -36,6 +36,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -153,6 +154,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int interfaceTexture;
 	private int interfacePbo;
+
+	private static final int FRAME_PBO_COUNT = 3;
+	private final int[] framePbos = new int[FRAME_PBO_COUNT];
+	private final long[] framePboFences = new long[FRAME_PBO_COUNT];
+	private int framePboIndex;
+	private int framePboWidth;
+	private int framePboHeight;
+	private int[] framePixels;
 
 	private int vaoUiHandle;
 	private int vboUiHandle;
@@ -461,6 +470,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				root.free();
 
 				shutdownInterfaceTexture();
+				shutdownFramePbos();
 				shutdownProgram();
 				shutdownVao();
 				shutdownBuffers();
@@ -769,6 +779,45 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDeleteBuffers(interfacePbo);
 		glDeleteTextures(interfaceTexture);
 		interfaceTexture = -1;
+	}
+
+	private void initFramePbos(int width, int height)
+	{
+		shutdownFramePbos();
+
+		for (int i = 0; i < FRAME_PBO_COUNT; ++i)
+		{
+			framePbos[i] = glGenBuffers();
+			glBindBuffer(GL_PIXEL_PACK_BUFFER, framePbos[i]);
+			glBufferData(GL_PIXEL_PACK_BUFFER, (long) width * height * Integer.BYTES, GL_STREAM_READ);
+		}
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+
+		framePboWidth = width;
+		framePboHeight = height;
+		framePixels = new int[width * height];
+	}
+
+	private void shutdownFramePbos()
+	{
+		for (int i = 0; i < FRAME_PBO_COUNT; ++i)
+		{
+			if (framePbos[i] != 0)
+			{
+				glDeleteBuffers(framePbos[i]);
+				framePbos[i] = 0;
+			}
+			if (framePboFences[i] != 0)
+			{
+				glDeleteSync(framePboFences[i]);
+				framePboFences[i] = 0;
+			}
+		}
+
+		framePboIndex = 0;
+		framePboWidth = 0;
+		framePboHeight = 0;
+		framePixels = null;
 	}
 
 	private void initFbo(int width, int height, int aaSamples)
@@ -1539,6 +1588,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		drawManager.processDrawComplete(this::screenshot);
 
+		if (drawManager.hasFrameListeners())
+		{
+			captureFrame();
+		}
+		else if (framePboWidth != 0)
+		{
+			shutdownFramePbos();
+		}
+
 		glBindFramebuffer(GL_FRAMEBUFFER, awtContext.getFramebuffer(false));
 
 		checkGLErrors();
@@ -1598,11 +1656,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	/**
-	 * Convert the front framebuffer to an Image
-	 *
-	 * @return
+	 * Size of the rendered frame in the front framebuffer
 	 */
-	private Image screenshot()
+	private Dimension frameSize()
 	{
 		int width = client.getCanvasWidth();
 		int height = client.getCanvasHeight();
@@ -1616,8 +1672,19 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
 		final AffineTransform t = graphicsConfiguration.getDefaultTransform();
-		width = getScaledValue(t.getScaleX(), width);
-		height = getScaledValue(t.getScaleY(), height);
+		return new Dimension(getScaledValue(t.getScaleX(), width), getScaledValue(t.getScaleY(), height));
+	}
+
+	/**
+	 * Convert the front framebuffer to an Image
+	 *
+	 * @return
+	 */
+	private Image screenshot()
+	{
+		Dimension frameSize = frameSize();
+		int width = frameSize.width;
+		int height = frameSize.height;
 
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -1635,6 +1702,70 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 
 		return image;
+	}
+
+	/**
+	 * Asynchronously read the front framebuffer back through a ring of PBOs and
+	 * deliver completed readbacks to frame listeners. Each call maps the buffer
+	 * enqueued FRAME_PBO_COUNT frames earlier, so delivery does not stall on the
+	 * GPU, at the cost of a few frames of latency.
+	 */
+	private void captureFrame()
+	{
+		Dimension frameSize = frameSize();
+		final int width = frameSize.width;
+		final int height = frameSize.height;
+		if (width <= 0 || height <= 0)
+		{
+			return;
+		}
+
+		if (width != framePboWidth || height != framePboHeight)
+		{
+			initFramePbos(width, height);
+		}
+
+		final int idx = framePboIndex;
+		framePboIndex = (framePboIndex + 1) % FRAME_PBO_COUNT;
+
+		// deliver the oldest pending readback before reusing its buffer
+		if (framePboFences[idx] != 0)
+		{
+			int status = glClientWaitSync(framePboFences[idx], GL_SYNC_FLUSH_COMMANDS_BIT, 0);
+			glDeleteSync(framePboFences[idx]);
+			framePboFences[idx] = 0;
+
+			// if the GPU still isn't done FRAME_PBO_COUNT frames later, drop the frame instead of stalling
+			if (status == GL_ALREADY_SIGNALED || status == GL_CONDITION_SATISFIED)
+			{
+				glBindBuffer(GL_PIXEL_PACK_BUFFER, framePbos[idx]);
+				ByteBuffer mapped = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
+				if (mapped != null)
+				{
+					// rows are bottom-up, flip while copying out
+					IntBuffer buf = mapped.asIntBuffer();
+					for (int y = 0; y < height; ++y)
+					{
+						buf.position((height - y - 1) * width);
+						buf.get(framePixels, y * width, width);
+					}
+					glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+					glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+
+					drawManager.processFrame(framePixels, width, height);
+				}
+				else
+				{
+					glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+				}
+			}
+		}
+
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, framePbos[idx]);
+		glReadBuffer(awtContext.getBufferMode());
+		glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, 0L);
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+		framePboFences[idx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 	}
 
 	@Subscribe
