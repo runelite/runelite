@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2019, Kusha Gharahi<kusha.me>
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026, Juston <contact@justonh.art>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,6 +37,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.Notification;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,6 +91,7 @@ public class WintertodtPluginTest
 	public void matchStartingNotification_shouldNotify_when15SecondsOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(15);
+		when(config.notifyRoundStart()).thenReturn(Notification.ON);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
@@ -99,13 +102,14 @@ public class WintertodtPluginTest
 		varbitChanged.setValue(25);
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
 
-		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+		verify(notifier, times(1)).notify(Notification.ON, "Wintertodt round is about to start");
 	}
 
 	@Test
 	public void matchStartingNotification_shouldNotify_when10SecondsOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(10);
+		when(config.notifyRoundStart()).thenReturn(Notification.ON);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
@@ -116,13 +120,14 @@ public class WintertodtPluginTest
 		varbitChanged.setValue(16);
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
 
-		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+		verify(notifier, times(1)).notify(Notification.ON, "Wintertodt round is about to start");
 	}
 
 	@Test
 	public void matchStartingNotification_shouldNotify_when5SecondsOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(5);
+		when(config.notifyRoundStart()).thenReturn(Notification.ON);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
@@ -133,13 +138,14 @@ public class WintertodtPluginTest
 		varbitChanged.setValue(8);
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
 
-		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+		verify(notifier, times(1)).notify(Notification.ON, "Wintertodt round is about to start");
 	}
 
 	@Test
 	public void matchStartingNotification_shouldNotifyOnce()
 	{
 		when(config.roundNotification()).thenReturn(5);
+		when(config.notifyRoundStart()).thenReturn(Notification.ON);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
@@ -157,18 +163,19 @@ public class WintertodtPluginTest
 		varbitChanged.setValue(4);
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
 
-		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+		verify(notifier, times(1)).notify(Notification.ON, "Wintertodt round is about to start");
 	}
 
 	@Test
 	public void matchStartingNotification_shouldNotNotify_whenNoneOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(5);
+		when(config.notifyRoundStart()).thenReturn(Notification.OFF);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
 
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
-		verify(notifier, times(0)).notify("Wintertodt round is about to start");
+		verify(notifier, times(0)).notify(Notification.OFF, "Wintertodt round is about to start");
 	}
 }

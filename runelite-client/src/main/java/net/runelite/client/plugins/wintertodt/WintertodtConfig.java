@@ -2,6 +2,7 @@
  * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, loldudester <HannahRyanster@gmail.com>
+ * Copyright (c) 2026, Juston <contact@justonh.art>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +31,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
@@ -113,9 +115,9 @@ public interface WintertodtConfig extends Config
 		name = "Full inventory notification",
 		description = "Notifies when your inventory fills up with bruma roots."
 	)
-	default boolean notifyFullInv()
+	default Notification notifyFullInv()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -124,9 +126,9 @@ public interface WintertodtConfig extends Config
 		name = "Empty inventory notification",
 		description = "Notifies when you run out of bruma roots."
 	)
-	default boolean notifyEmptyInv()
+	default Notification notifyEmptyInv()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -135,8 +137,30 @@ public interface WintertodtConfig extends Config
 		name = "Brazier extinguish notification",
 		description = "Notifies when the brazier goes out."
 	)
-	default boolean notifyBrazierOut()
+	default Notification notifyBrazierOut()
 	{
-		return true;
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "notifyRoundStart",
+		name = "Round start notification",
+		description = "Notifies when the Wintertodt round is about to start."
+	)
+	default Notification notifyRoundStart()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+			position = 10,
+			keyName = "customDamageNotification",
+			name = "Custom damage notification",
+			description = "Enables custom settings for damage notifications"
+	)
+	default Notification customDamageNotification()
+	{
+		return Notification.ON;
 	}
 }
