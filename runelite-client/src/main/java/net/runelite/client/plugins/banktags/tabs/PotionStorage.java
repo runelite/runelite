@@ -51,10 +51,21 @@ import net.runelite.client.plugins.banktags.BankTagsPlugin;
 
 class Potion
 {
+	int idx;
 	EnumComposition potionEnum;
 	int itemId;
 	int doses;
 	int withdrawDoses;
+
+	int withdrawChildId()
+	{
+		return idx * PotionStorage.COMPONENTS_PER_POTION;
+	}
+
+	int dosesChildId()
+	{
+		return withdrawChildId() + 1;
+	}
 }
 
 @Singleton
@@ -110,13 +121,19 @@ class PotionStorage
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (potionStoreVars != null && potionStoreVars.contains(varbitChanged.getVarpId()))
+		int id = varbitChanged.getVarpId();;
+		if (potionStoreVars != null && potionStoreVars.contains(id) // quantity changing
+			|| id == VarPlayerID.POTIONSTORE_BASE_VAR_1 // doses changing
+			|| id == VarPlayerID.POTIONSTORE_BASE_VAR_2
+			|| id == VarPlayerID.POTIONSTORE_BASE_VAR_3
+			|| id == VarPlayerID.POTIONSTORE_BASE_VAR_4
+			|| id == VarPlayerID.POTIONSTORE_BASE_VAR_5
+			|| id == VarPlayerID.POTIONSTORE_BASE_VAR_6)
 		{
 			cachePotions = true;
-			layout = true; // trigger a bank rebuild as the qty has changed
+			layout = true; // trigger a bank rebuild
 		}
 	}
-
 
 	@Subscribe
 	public void onWidgetClosed(WidgetClosed event)
@@ -147,6 +164,7 @@ class PotionStorage
 				if (doses > 0 && withdrawDoses > 0)
 				{
 					Potion p = new Potion();
+					p.idx = potionsIdx;
 					p.potionEnum = potionEnum;
 					p.itemId = potionEnum.getIntValue(withdrawDoses);
 					p.doses = doses;
@@ -232,33 +250,22 @@ class PotionStorage
 		return 0;
 	}
 
-	int getIdx(int itemId)
+	Potion findPotion(int itemId /* must be current dose id */)
 	{
 		if (potions == null)
 		{
-			return -1;
+			return null;
 		}
 
-		if (itemId == ItemID.VIAL_EMPTY)
-		{
-			if (hasVialsInPotionStorage())
-			{
-				return potions.length * COMPONENTS_PER_POTION + 4;
-			}
-
-			return -1;
-		}
-
-		int potionIdx = 0;
 		for (Potion potion : potions)
 		{
-			++potionIdx;
 			if (potion != null && potion.itemId == itemId)
 			{
-				return (potionIdx - 1) * COMPONENTS_PER_POTION;
+				return potion;
 			}
 		}
-		return -1;
+
+		return null;
 	}
 
 	boolean hasVialsInPotionStorage()
@@ -269,6 +276,11 @@ class PotionStorage
 	int getVialsInPotionStorage()
 	{
 		return client.getVarpValue(VarPlayerID.POTIONSTORE_VIALS);
+	}
+
+	int getVialsChildIdx()
+	{
+		return hasVialsInPotionStorage() && potions != null ? potions.length * COMPONENTS_PER_POTION + 4 : -1;
 	}
 
 	void prepareWidgets()

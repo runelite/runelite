@@ -422,6 +422,35 @@ public class LayoutManager
 				{
 					c.setAction(10, "Examine");
 				}
+				if (isPotStorage)
+				{
+					Potion potion = potionStorage.findPotion(item);
+					if (potion != null)
+					{
+						var potionEnum = potion.potionEnum;
+						int potionItemId1 = potionEnum.getIntValue(1);
+						int potionItemId2 = potionEnum.getIntValue(2);
+						int potionItemId3 = potionEnum.getIntValue(3);
+						int potionItemId4 = potionEnum.getIntValue(4);
+						c.setAction(10, "Doses");
+						if (potionItemId1 > -1)
+						{
+							c.setSubOp(10, 6, "1 Dose");
+						}
+						if (potionItemId2 > -1)
+						{
+							c.setSubOp(10, 7, "2 Dose");
+						}
+						if (potionItemId3 > -1)
+						{
+							c.setSubOp(10, 8, "3 Dose");
+						}
+						if (potionItemId4 > -1)
+						{
+							c.setSubOp(10, 9, "4 Dose");
+						}
+					}
+				}
 				c.setOpacity(0);
 			}
 
@@ -689,12 +718,28 @@ public class LayoutManager
 					return;
 				}
 
-				idx = potionStorage.getIdx(w.getItemId());
-				if (idx > -1)
+				Potion p = potionStorage.findPotion(w.getItemId());
+				if (p != null)
 				{
 					potionStorage.prepareWidgets();
 					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
-					menu.setParam0(idx);
+					if (event.getId() > 0xffff)
+					{
+						// submenu click for doses
+						menu.setParam0(p.dosesChildId());
+						menu.setIdentifier((event.getId() >> 16) - 1);
+					}
+					else
+					{
+						menu.setParam0(p.withdrawChildId());
+					}
+				}
+
+				if (w.getItemId() == ItemID.VIAL_EMPTY)
+				{
+					potionStorage.prepareWidgets();
+					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
+					menu.setParam0(potionStorage.getVialsChildIdx());
 				}
 			}
 		}
