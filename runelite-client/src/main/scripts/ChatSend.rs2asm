@@ -5,67 +5,65 @@
    get_varbit             4394
    iconst                 1
    if_icmpeq              LABEL4
-   jump                   LABEL24
+   jump                   LABEL22
 LABEL4:
    iload                  0
    iconst                 1
    if_icmpeq              LABEL8
-   jump                   LABEL16
+   jump                   LABEL15
 LABEL8:
    chat_playername       
-   sconst                 ": "
-   sconst                 "<col=2020ef>"
+   sconst                 ": <col=2020ef>"
    oload                  0
    sconst                 "</col>"
-   join_string            5
+   join_string            4
    mes                   
-   jump                   LABEL23
-LABEL16:
+   jump                   LABEL21
+LABEL15:
    chat_playername       
-   sconst                 ": "
-   sconst                 "<col=0000ff>"
+   sconst                 ": <col=0000ff>"
    oload                  0
    sconst                 "</col>"
-   join_string            5
+   join_string            4
    mes                   
-LABEL23:
+LABEL21:
    return                
-LABEL24:
+LABEL22:
    invoke                 5262
    iconst                 0
-   if_icmpeq              LABEL28
-   jump                   LABEL34
-LABEL28:
+   if_icmpeq              LABEL26
+   jump                   LABEL32
+LABEL26:
    iload                  3
    iconst                 4
-   if_icmpeq              LABEL32
-   jump                   LABEL34
-LABEL32:
+   if_icmpeq              LABEL30
+   jump                   LABEL32
+LABEL30:
    get_varc_int           945
    istore                 3
-LABEL34:
+LABEL32:
    iload                  3
    iconst                 -1
-   if_icmpne              LABEL38
-   jump                   LABEL75
-LABEL38:
+   if_icmpne              LABEL36
+   jump                   LABEL71
+LABEL36:
    iload                  3
    iconst                 4
-   if_icmple              LABEL42
-   jump                   LABEL75
-LABEL42:
+   if_icmple              LABEL40
+   jump                   LABEL71
+LABEL40:
    iload                  3
    get_varc_int           945
-   if_icmpne              LABEL46
-   jump                   LABEL75
-LABEL46:
+   if_icmpne              LABEL44
+   jump                   LABEL71
+LABEL44:
    iload                  3
    set_varc_int           945
    iload                  3
    iconst                 0
-   if_icmpne              LABEL52
-   jump                   LABEL66
-LABEL52:
+   if_icmpne              LABEL50
+   jump                   LABEL62
+LABEL50:
    sconst                 "Your chatbox mode is now set to "
    iconst                 105
    iconst                 115
@@ -74,13 +72,11 @@ LABEL52:
    enum                  
    sconst                 " chat. To reset your mode, type "
    sconst                 "<col=ef1020>"
-   sconst                 "/@p"
-   sconst                 "</col>"
-   sconst                 "."
-   join_string            7
+   sconst                 "/@p</col>."
+   join_string            5
    mes                   
-   jump                   LABEL75
-LABEL66:
+   jump                   LABEL71
+LABEL62:
    sconst                 "Your chatbox mode has been reset to "
    iconst                 105
    iconst                 115
@@ -90,41 +86,41 @@ LABEL66:
    sconst                 " chat."
    join_string            3
    mes                   
-LABEL75:
+LABEL71:
    iload                  2
    iconst                 1
-   if_icmpeq              LABEL79
-   jump                   LABEL99
-LABEL79:
+   if_icmpeq              LABEL75
+   jump                   LABEL95
+LABEL75:
    get_varc_int           945
    switch                
-      1: LABEL82
-      2: LABEL85
-      3: LABEL90
-      4: LABEL95
-   jump                   LABEL99
-LABEL82:
+      1: LABEL78
+      2: LABEL81
+      3: LABEL86
+      4: LABEL91
+   jump                   LABEL95
+LABEL78:
    iconst                 2
    istore                 0
-   jump                   LABEL99
-LABEL85:
+   jump                   LABEL95
+LABEL81:
    iconst                 3
    iconst                 0
    istore                 1
    istore                 0
-   jump                   LABEL99
-LABEL90:
+   jump                   LABEL95
+LABEL86:
    iconst                 4
    iconst                 0
    istore                 1
    istore                 0
-   jump                   LABEL99
-LABEL95:
+   jump                   LABEL95
+LABEL91:
    iconst                 3
    iconst                 1
    istore                 1
    istore                 0
-LABEL99:
+LABEL95:
    oload                  0              ; load input
    iload                  0              ; load chat type
    iload                  1              ; load clan target
@@ -141,26 +137,26 @@ CONTINUE:
    ostore                 1
    iload                  0
    switch                
-      3: LABEL104
-      4: LABEL104
-   jump                   LABEL154
-LABEL104:
+      3: LABEL100
+      4: LABEL100
+   jump                   LABEL150
+LABEL100:
    oload                  0
    invoke                 5501
    iconst                 1
-   if_icmpeq              LABEL109
-   jump                   LABEL113
-LABEL109:
+   if_icmpeq              LABEL105
+   jump                   LABEL109
+LABEL105:
    oload                  0
    invoke                 632
    ostore                 0
    ostore                 1
-LABEL113:
+LABEL109:
    iload                  1
    iconst                 1
-   if_icmpeq              LABEL117
-   jump                   LABEL143
-LABEL117:
+   if_icmpeq              LABEL113
+   jump                   LABEL139
+LABEL113:
    oload                  0
    iconst                 0
    iconst                 1
@@ -180,40 +176,40 @@ LABEL117:
    oload                  0
    string_length         
    iconst                 80
-   if_icmpgt              LABEL138
-   jump                   LABEL143
-LABEL138:
+   if_icmpgt              LABEL134
+   jump                   LABEL139
+LABEL134:
    oload                  0
    iconst                 0
    iconst                 80
    substring             
    ostore                 0
-LABEL143:
+LABEL139:
    oload                  0
    string_length         
    iconst                 0
-   if_icmple              LABEL148
-   jump                   LABEL149
-LABEL148:
+   if_icmple              LABEL144
+   jump                   LABEL145
+LABEL144:
    return                
-LABEL149:
+LABEL145:
    oload                  0
    iload                  0
    iload                  1
    chat_sendclan         
-   jump                   LABEL185
-LABEL154:
+   jump                   LABEL181
+LABEL150:
    iload                  0
    iconst                 2
-   if_icmpeq              LABEL158
-   jump                   LABEL176
-LABEL158:
+   if_icmpeq              LABEL154
+   jump                   LABEL172
+LABEL154:
    oload                  0
    string_length         
    iconst                 0
-   if_icmpgt              LABEL163
-   jump                   LABEL176
-LABEL163:
+   if_icmpgt              LABEL159
+   jump                   LABEL172
+LABEL159:
    oload                  0
    iconst                 0
    iconst                 1
@@ -221,26 +217,26 @@ LABEL163:
    sconst                 "/"
    compare               
    iconst                 0
-   if_icmpne              LABEL172
-   jump                   LABEL176
-LABEL172:
+   if_icmpne              LABEL168
+   jump                   LABEL172
+LABEL168:
    sconst                 "/"
    oload                  0
    append                
    ostore                 0
-LABEL176:
+LABEL172:
    oload                  0
    string_length         
    iconst                 0
-   if_icmple              LABEL181
-   jump                   LABEL182
-LABEL181:
+   if_icmple              LABEL177
+   jump                   LABEL178
+LABEL177:
    return                
-LABEL182:
+LABEL178:
    oload                  0
    iload                  0
    chat_sendpublic       
-LABEL185:
+LABEL181:
    clientclock           
    set_varc_int           61
    return                

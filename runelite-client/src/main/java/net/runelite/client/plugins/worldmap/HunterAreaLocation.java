@@ -95,6 +95,7 @@ enum HunterAreaLocation
 	VAMPYRIUM_WEST(new WorldPoint(2540, 7766, 0), HunterCreature.LETVEK),
 	VAMPYRIUM_NORTH(new WorldPoint(2653, 7845, 0), HunterCreature.STYMPHIKE),
 	WILDERNESS(new WorldPoint(3142, 3771, 0), HunterCreature.BLACK_CHINCHOMPA),
+	WYRMSCRAIG(new WorldPoint(2571, 2195, 0), HunterCreature.WYRMSCRAIG_GOAT),
 	;
 
 	private final WorldPoint location;
@@ -158,6 +159,7 @@ enum HunterAreaLocation
 		TROPICAL_WAGTAIL("Tropical wagtail", 19),
 		WHITE_RABBIT("White rabbit", 27),
 		WILD_KEBBIT("Wild kebbit", 23),
+		WYRMSCRAIG_GOAT("Wyrmscraig goat", 60),
 		;
 
 		private String name;

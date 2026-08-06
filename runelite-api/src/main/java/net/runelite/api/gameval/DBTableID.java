@@ -7020,6 +7020,7 @@ public final class DBTableID
 			public static final int HISCORES_BOSSES_YAMA = 5130;
 			public static final int HISCORES_BOSSES_DOOM_OF_MOKHAIOTL = 5484;
 			public static final int HISCORES_BOSSES_MAD_ANGEL = 7208;
+			public static final int HISCORES_BOSSES_MAGGOT_KING = 7209;
 			public static final int HISCORES_BOSSES_GRYPHON_BOSS = 9447;
 			public static final int HISCORES_BOSSES_COWBOSS = 9655;
 		}
