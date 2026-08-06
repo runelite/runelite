@@ -246,10 +246,10 @@ public class SpecialCounterPlugin extends Plugin
 					return;
 				}
 
-				Hitsplat last = hitsplats.get(hitsplats.size() - 1);
-				Hitsplat secondToLast = hitsplats.get(hitsplats.size() - 2);
+				Hitsplat first = hitsplats.get(0);
+				Hitsplat second = hitsplats.get(1);
 
-				int hit = Math.min(last.getAmount(), 1) + Math.min(secondToLast.getAmount(), 1);
+				int hit = Math.min(first.getAmount(), 1) + Math.min(second.getAmount(), 1);
 
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
 			}
@@ -260,9 +260,15 @@ public class SpecialCounterPlugin extends Plugin
 					return;
 				}
 
-				// The weapon hitsplat is always last, after other hitsplats which occur on the same tick such as from
-				// venge or thralls.
-				Hitsplat hitsplat = hitsplats.get(hitsplats.size() - 1);
+				// Hitsplat order is [player range/mage hits, thrall hit, veng, player melee hits]
+				// If melee hit choose last, otherwise choose first for range/mage
+				boolean meleeHit = specialWeapon.getHitDelay(1) <= 1;
+				// Note: Elder maul has a delay of 2 but has its own case above. @KEVIN Look into this and resolve before PR
+				// Alternative: Add style parameter to SpecialWeapon
+				// Alternative 2: Track xp drops (and fake xp drops).
+				// Customizable xp drops plugin has a manual table for exact numbers but maybe we could get away with hit/miss
+				Hitsplat hitsplat = hitsplats.get(meleeHit ? hitsplats.size() - 1 : 0);
+				// Existing bug - splash spec with mage = 1 hitsplat and thrall takes it
 				specialAttackHit(specialWeapon, hitsplat.getAmount(), lastSpecTarget);
 			}
 
