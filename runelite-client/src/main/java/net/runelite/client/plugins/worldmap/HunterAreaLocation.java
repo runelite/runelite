@@ -42,6 +42,7 @@ enum HunterAreaLocation
 	BONEYARD_HUNTER_AREA(new WorldPoint(3294, 3673, 0), HunterCreature.BLACK_SALAMANDER),
 	CANIFIS_HUNTER_AREA1(new WorldPoint(3553, 3438, 0), HunterCreature.SWAMP_LIZARD),
 	CANIFIS_HUNTER_AREA2(new WorldPoint(3535, 3445, 0), HunterCreature.SWAMP_LIZARD),
+	CHARRED_ISLAND(new WorldPoint(2644, 2401, 0), HunterCreature.RED_SALAMANDER),
 	FALCONRY(new WorldPoint(2379, 3599, 0), HunterCreature.SPOTTED_KEBBIT, HunterCreature.DARK_KEBBIT,
 		HunterCreature.DASHING_KEBBIT),
 	FELDIP_HUNTER_AREA(new WorldPoint(2557, 2912, 0), HunterCreature.CRIMSON_SWIFT, HunterCreature.FELDIP_WEASEL,
@@ -94,6 +95,7 @@ enum HunterAreaLocation
 	VAMPYRIUM_WEST(new WorldPoint(2540, 7766, 0), HunterCreature.LETVEK),
 	VAMPYRIUM_NORTH(new WorldPoint(2653, 7845, 0), HunterCreature.STYMPHIKE),
 	WILDERNESS(new WorldPoint(3142, 3771, 0), HunterCreature.BLACK_CHINCHOMPA),
+	WYRMSCRAIG(new WorldPoint(2571, 2195, 0), HunterCreature.WYRMSCRAIG_GOAT),
 	;
 
 	private final WorldPoint location;
@@ -157,6 +159,7 @@ enum HunterAreaLocation
 		TROPICAL_WAGTAIL("Tropical wagtail", 19),
 		WHITE_RABBIT("White rabbit", 27),
 		WILD_KEBBIT("Wild kebbit", 23),
+		WYRMSCRAIG_GOAT("Wyrmscraig goat", 60),
 		;
 
 		private String name;

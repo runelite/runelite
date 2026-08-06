@@ -858,6 +858,11 @@ public final class SpriteID
 	public static final int LEAFYTREE_DARKWOOD = 8512;
 	public static final int LEAFYTREE_DARKWOOD_TILED = 8513;
 	public static final int SANGVESTI = 8515;
+	public static final int LEAFYTREE_AUTUMN01 = 8556;
+	public static final int LEAFYTREE_TILED_AUTUMN01 = 8557;
+	public static final int LEAFYTREE_AUTUMN02 = 8558;
+	public static final int LEAFYTREE_TILED_AUTUMN02 = 8559;
+	public static final int MINIMENU_ICONS = 8560;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -2682,6 +2687,10 @@ public final class SpriteID
 		public static final int _57 = 5246;
 		public static final int _58 = 5247;
 		public static final int _59 = 5248;
+		public static final int _60 = 8516;
+		public static final int _61 = 8517;
+		public static final int _62 = 8518;
+		public static final int _63 = 8519;
 
 		public static final int YES = _0;
 		public static final int NO = _1;
@@ -4009,6 +4018,21 @@ public final class SpriteID
 		public static final int _15 = 8354;
 		public static final int _16 = 8355;
 		public static final int _17 = 8356;
+		public static final int _18 = 8520;
+		public static final int _19 = 8521;
+		public static final int _20 = 8522;
+		public static final int _21 = 8523;
+		public static final int _22 = 8524;
+		public static final int _23 = 8525;
+		public static final int _24 = 8526;
+		public static final int _25 = 8527;
+		public static final int _26 = 8528;
+		public static final int _27 = 8529;
+		public static final int _28 = 8530;
+		public static final int _29 = 8531;
+		public static final int _30 = 8532;
+		public static final int _31 = 8533;
+		public static final int _32 = 8534;
 
 		public static final int NONE = _0;
 		public static final int USA = _1;
@@ -7906,6 +7930,7 @@ public final class SpriteID
 		public static final int SHELLBANE_GRYPHON = _66;
 		public static final int BRUTUS = _69;
 		public static final int MAGGOT_KING = _70;
+		public static final int MAD_ANGEL = _71;
 	}
 
 	public static final class IconBoss50x50
@@ -11026,6 +11051,16 @@ public final class SpriteID
 		public static final int _57 = 7172;
 		public static final int _58 = 7173;
 		public static final int _59 = 7174;
+		public static final int _60 = 8535;
+		public static final int _61 = 8536;
+		public static final int _62 = 8537;
+		public static final int _63 = 8538;
+		public static final int _64 = 8539;
+		public static final int _65 = 8540;
+		public static final int _66 = 8541;
+		public static final int _67 = 8542;
+		public static final int _68 = 8543;
+		public static final int _69 = 8544;
 	}
 
 	public static final class IconSailingStatus18x18
@@ -12317,5 +12352,24 @@ public final class SpriteID
 		public static final int _2 = 8456;
 		public static final int _3 = 8457;
 		public static final int _4 = 8514;
+	}
+
+	public static final class BackingSlayerModifiers01_35x35
+	{
+		public static final int _0 = 8545;
+		public static final int _1 = 8546;
+		public static final int _2 = 8547;
+		public static final int _3 = 8548;
+		public static final int _4 = 8549;
+		public static final int _5 = 8550;
+	}
+
+	public static final class IconSlayerModifiers01_25x25
+	{
+		public static final int _0 = 8551;
+		public static final int _1 = 8552;
+		public static final int _2 = 8553;
+		public static final int _3 = 8554;
+		public static final int _4 = 8555;
 	}
 }

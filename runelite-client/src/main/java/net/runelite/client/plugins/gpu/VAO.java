@@ -198,8 +198,16 @@ class VAOList
 	// this needs to be larger than the largest single model
 	private static final int VAO_SIZE = 4 * 1024 * 1024;
 
+	private final boolean rt;
+	private boolean needAlloc;
+
 	private int curIdx;
 	final List<VAO> vaos = new ArrayList<>();
+
+	VAOList(boolean rt)
+	{
+		this.rt = rt;
+	}
 
 	VAO get(int size)
 	{
@@ -210,6 +218,11 @@ class VAOList
 			VAO vao = vaos.get(curIdx);
 			if (!vao.vbo.mapped)
 			{
+				if (rt)
+				{
+					needAlloc = true;
+					return null;
+				}
 				vao.vbo.map();
 			}
 
@@ -222,12 +235,36 @@ class VAOList
 			curIdx++;
 		}
 
+		if (rt)
+		{
+			needAlloc = true;
+			return null;
+		}
+
 		VAO vao = new VAO(VAO_SIZE);
 		vao.init();
 		vao.vbo.map();
 		vaos.add(vao);
 		log.debug("Allocated VAO {} request {}", vao.vao, size);
 		return vao;
+	}
+
+	void map()
+	{
+		for (VAO vao : vaos)
+		{
+			assert !vao.vbo.mapped;
+			vao.vbo.map();
+		}
+		if (needAlloc)
+		{
+			VAO vao = new VAO(VAO_SIZE);
+			vao.init();
+			vao.vbo.map();
+			vaos.add(vao);
+			log.debug("Allocated VAO {}", vao.vao);
+			needAlloc = false;
+		}
 	}
 
 	int unmap()
@@ -279,5 +316,16 @@ class VAOList
 				log.debug("  endpos: {} proj: {} hsl: {},{},{},{} renderMethod: {}", r.endpos, r.projection, r.h, r.s, r.l, r.a, r.renderMethod);
 			}
 		}
+	}
+
+	int size()
+	{
+		int szKb = 0;
+		for (int i = 0; i < vaos.size(); ++i) // NOPMD: ForLoopCanBeForeach
+		{
+			VAO vao = vaos.get(i);
+			szKb += vao.vbo.size >> 10;
+		}
+		return szKb;
 	}
 }

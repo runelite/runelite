@@ -106,12 +106,15 @@ enum TeleportLocationData
 	TARNS_LAIR(TeleportType.JEWELLERY, "Slayer Ring" , "Tarn's Lair", new WorldPoint(3187, 4601, 0), "slayer_ring_teleport_icon.png"),
 	STRONGHOLD_SLAYER_CAVE(TeleportType.JEWELLERY, "Slayer Ring" , "Stronghold Slayer Cave", new WorldPoint(2433, 3421, 0), "slayer_ring_teleport_icon.png"),
 	DARK_BEASTS(TeleportType.JEWELLERY, "Slayer Ring" , "Dark Beasts", new WorldPoint(2028, 4638, 0), "slayer_ring_teleport_icon.png"),
+	WYRMSCRAIG_CAVERN(TeleportType.JEWELLERY, "Slayer Ring", "Wyrmscraig Cavern", new WorldPoint(2581 + 64 * 3, 8633, 0), "slayer_ring_teleport_icon.png"),
+	WYRMSCRAIG_CAVERN_OUTSIDE(TeleportType.JEWELLERY, "Slayer Ring", "Wyrmscraig Cavern (inside)", new WorldPoint(2533, 2206, 0), "slayer_ring_teleport_icon.png"),
 	DIGSITE(TeleportType.JEWELLERY, "Digsite Pendant" , "Digsite", new WorldPoint(3339, 3445, 0), "digsite_pendant_teleport_icon.png"),
 	HOUSE_ON_THE_HILL(TeleportType.JEWELLERY, "Digsite Pendant" , "House on the Hill", new WorldPoint(3763, 3869, 0), "digsite_pendant_teleport_icon.png"),
 	LITHKREN(TeleportType.JEWELLERY, "Digsite Pendant" , "Lithkren", new WorldPoint(3547, 10456, 0), "digsite_pendant_teleport_icon.png"),
 	WIZARDS_TOWER(TeleportType.JEWELLERY, "Necklace of Passage" , "Wizards' Tower", new WorldPoint(3114, 3181, 0), "necklace_of_passage_teleport_icon.png"),
 	JORRALS_OUTPOST(TeleportType.JEWELLERY, "Necklace of Passage" , "Jorral's Outpost", new WorldPoint(2431, 3348, 0), "necklace_of_passage_teleport_icon.png"),
 	DESERT_EAGLE_STATION(TeleportType.JEWELLERY, "Necklace of Passage" , "Desert eagle station of the eagle transport system", new WorldPoint(3406, 3157, 0), "necklace_of_passage_teleport_icon.png"),
+	WYRMSCRAIG(TeleportType.JEWELLERY, "Necklace of Passage", "Wyrmscraig", new WorldPoint(2591, 2221, 0), "necklace_of_passage_teleport_icon.png"),
 	CHAOS_TEMPLE(TeleportType.JEWELLERY, "Burning Amulet" , "Chaos Temple (lvl 15)", new WorldPoint(3234, 3637, 0), "burning_amulet_teleport_icon.png"),
 	BANDIT_CAMP(TeleportType.JEWELLERY, "Burning Amulet" , "Bandit Camp (lvl 17)", new WorldPoint(3038, 3651, 0), "burning_amulet_teleport_icon.png"),
 	LAVA_MAZE(TeleportType.JEWELLERY, "Burning Amulet" , "Lava Maze (lvl 41)", new WorldPoint(3028, 3840, 0), "burning_amulet_teleport_icon.png"),
@@ -125,6 +128,10 @@ enum TeleportLocationData
 	OBOR_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Obor's Lair", new WorldPoint(3096, 9833, 0), "giantsoul_amulet_teleport_icon.png"),
 	BRANDA_AND_ELDRIC_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Branda and Eldric's Lair", new WorldPoint(2952, 9574, 0), "giantsoul_amulet_teleport_icon.png"),
 	COWBELL_AMULET(TeleportType.JEWELLERY, "Cowbell Amulet", "Cow field", new WorldPoint(3259, 3276, 0), "cowbell_amulet_teleport_icon.png"),
+	PANDEMONIUM(TeleportType.JEWELLERY, "Sailors' Amulet", "The Pandemonium", new WorldPoint(3060, 2974, 0), "sailors_amulet_teleport_icon.png"),
+	PORT_ROBERTS(TeleportType.JEWELLERY, "Sailors' Amulet", "Port Roberts", new WorldPoint(1889, 3292, 0), "sailors_amulet_teleport_icon.png"),
+	RED_ROCK(TeleportType.JEWELLERY, "Sailors' Amulet", "Red Rock", new WorldPoint(2797, 2521, 0), "sailors_amulet_teleport_icon.png"),
+	DEEPFIN_POINT(TeleportType.JEWELLERY, "Sailors' Amulet", "Deepfin Point", new WorldPoint(1943, 2758, 0), "sailors_amulet_teleport_icon.png"),
 
 	// Misc
 	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
@@ -158,6 +165,8 @@ enum TeleportLocationData
 	TELEPORT_CRYSTAL_PRIFDDINAS(TeleportType.OTHER, "Teleport crystal", "Prifddinas", new WorldPoint(3264, 6065, 0), "teleport_crystal_icon.png"),
 	DRAKANS_MEDALLION_VER_SINHAZA(TeleportType.OTHER, "Drakan's medallion", "Ver Sinhaza", new WorldPoint(3649, 3230, 0), "drakans_medallion_teleport_icon.png"),
 	DRAKANS_MEDALLION_DARKMEYER(TeleportType.OTHER, "Drakan's medallion", "Darkmeyer", new WorldPoint(3592, 3337, 0), "drakans_medallion_teleport_icon.png"),
+	DRAKANS_MEDALLION_SLEPE(TeleportType.OTHER, "Drakan's medallion", "Slepe", new WorldPoint(3808, 9700, 0), "drakans_medallion_teleport_icon.png"),
+	DRAKANS_MEDALLION_CASTLE_DRAKAN(TeleportType.OTHER, "Drakan's medallion", "Castle Drakan", new WorldPoint(3557, 3358, 0), "drakans_medallion_teleport_icon.png"),
 	RING_OF_THE_ELEMENTS_AIR(TeleportType.OTHER, "Ring of the elements", "Air Altar", new WorldPoint(2981, 3276, 0), "ring_of_the_elements_teleport_icon.png"),
 	RING_OF_THE_ELEMENTS_WATER(TeleportType.OTHER, "Ring of the elements", "Water Altar", new WorldPoint(3166, 3158, 0), "ring_of_the_elements_teleport_icon.png"),
 	RING_OF_THE_ELEMENTS_EARTH(TeleportType.OTHER, "Ring of the elements", "Earth Altar", new WorldPoint(3288, 3468, 0), "ring_of_the_elements_teleport_icon.png"),
@@ -213,6 +222,7 @@ enum TeleportLocationData
 	SPIDER_CAVE_SCROLL(TeleportType.SCROLL, "Spider cave teleport", new WorldPoint(3658, 3403, 0), "scroll_teleport_icon.png"),
 	COLOSSAL_WYRM_SCROLL(TeleportType.SCROLL, "Colossal Wyrm Teleport", new WorldPoint(1641, 2921, 0), "scroll_teleport_icon.png"),
 	CHASM_TELEPORT_SCROLL(TeleportType.SCROLL, "Chasm of Fire teleport", new WorldPoint(1311, 9882, 0), "scroll_teleport_icon.png"),
+	ARDEAGLAIS_SCROLL(TeleportType.SCROLL, "Ardeaglais teleport", new WorldPoint(2543, 2216, 0), "scroll_teleport_icon.png"),
 
 	// Skillcapes
 	ACHIEVEMENT_CAPE_TWO_PINTS(TeleportType.OTHER, "Achievement Cape", "Two-pints", new WorldPoint(2574, 3324, 0), "achievement_cape_icon.png"),

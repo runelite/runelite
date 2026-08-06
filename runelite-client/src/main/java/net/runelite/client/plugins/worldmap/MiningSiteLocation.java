@@ -67,6 +67,8 @@ enum MiningSiteLocation
 	CAMDOZAAL_MINES_EAST(new WorldPoint(2934, 5811, 0), new Rock(8, Ore.BARRONITE), new Rock(1, Ore.CLAY), new Rock(2, Ore.TIN), new Rock(1, Ore.COPPER)),
 	CAMDOZAAL_MINES_WEST(new WorldPoint(2914, 5811, 0), new Rock(10, Ore.BARRONITE), new Rock(2, Ore.COPPER), new Rock(2, Ore.CLAY), new Rock(1, Ore.TIN)),
 	CENTRAL_FREMENIK_ISLES(new WorldPoint(2374, 3850, 0), new Rock(7, Ore.COAL), new Rock(1, Ore.RUNITE)),
+	CHARRED_DUNGEON(new WorldPoint(2698, 8785, 0), new Rock(10, Ore.COAL), new Rock(3, Ore.ADAMANTITE), new Rock(2, Ore.RUNITE)),
+	CHARRED_ISLAND(new WorldPoint(2640, 2390, 0), new Rock(11, Ore.COAL)),
 	CITHAREDE_ABBEY(new WorldPoint(3400, 3170, 0), new Rock(3, Ore.IRON), new Rock (3, Ore.COAL)),
 	COAL_TRUCKS(new WorldPoint(2580, 3484, 0), new Rock(18, Ore.COAL)),
 	CRAFTING_GUILD(new WorldPoint(2939, 3283, 0), new Rock(6, Ore.CLAY), new Rock(6, Ore.SILVER), new Rock(7, Ore.GOLD)),
@@ -256,6 +258,9 @@ enum MiningSiteLocation
 		new Rock(6, Ore.IRON), new Rock(11, Ore.COAL), new Rock(4, Ore.GOLD), new Rock(1, Ore.MITHRIL), new Rock(6, Ore.ADAMANTITE)),
 	WILDERNESS_SOUTH(new WorldPoint(3104, 3569, 0), new Rock(2, Ore.IRON), new Rock(3, Ore.COAL)),
 	WILDERNESS_SOUTH_WEST(new WorldPoint(3013, 3589, 0), new Rock(34, Ore.COAL)),
+	WYRMSCRAIG_CAVERN(new WorldPoint(2807, 8593, 0), new Rock(10, Ore.SILVER), new Rock(7, Ore.LEAD), new Rock(2, Ore.COAL), new Rock(6, Ore.NICKEL), new Rock(1, Ore.RUNITE)),
+	WYRMSCRAIG_EAST(new WorldPoint(2613, 2237, 0), new Rock(9, Ore.SUNSTONE), new Rock(5, Ore.COAL), new Rock(2, Ore.MITHRIL), new Rock(1, Ore.RUNITE)),
+	WYRMSCRAIG_WEST(new WorldPoint(2597, 2239, 0), new Rock(13, Ore.SUNSTONE), new Rock(5, Ore.IRON), new Rock(8, Ore.COAL)),
 	YNYSDAIL(new WorldPoint(2224, 3476, 0), new Rock(4, Ore.IRON), new Rock(3, Ore.NICKEL)),
 	YNYSDAIL_CAVERN_NORTH(new WorldPoint(2267, 9892, 0), new Rock(5, Ore.MITHRIL), new Rock(8, Ore.ADAMANTITE)),
 	YNYSDAIL_CAVERN_WEST(new WorldPoint(2249, 9878, 0), new Rock(2, Ore.MITHRIL), new Rock(2, Ore.RUNITE))
@@ -318,7 +323,8 @@ enum MiningSiteLocation
 		AMETHYST("Amethyst"),
 		GEMSTONE_CRAB("Gemstone Crab"),
 		LEAD("Lead"),
-		NICKEL("Nickel")
+		NICKEL("Nickel"),
+		SUNSTONE("Sunstone"),
 		;
 
 		private final String name;

@@ -67,6 +67,7 @@ enum FishingSpotLocation
 	CAMDOZAAL_NORTH(FishingSpot.CAMDOZAAL_CAVE_EEL, new WorldPoint(2921, 5808, 0)),
 	CAMDOZAAL_SOUTH(FishingSpot.CAMDOZAAL_TETRA, new WorldPoint(2927, 5778, 0),
 		new WorldPoint(2921, 5787, 0)),
+	CHARRED_DUNGEON(FishingSpot.LAVA_EEL, new WorldPoint(2788, 8781, 0)),
 	CIVITAS_ILLA_FORTIS_PARK(FishingSpot.CIVITAS_ILLA_FORTIS_PARK, new WorldPoint(1737, 3101, 0)),
 	CUSTODIA(FishingSpot.SALMON, new WorldPoint(1290, 3382, 0),
 		new WorldPoint(1260, 3408, 0), new WorldPoint(1250, 3400, 0)),
@@ -200,6 +201,9 @@ enum FishingSpotLocation
 		new WorldPoint(3362, 3802, 0), new WorldPoint(3347, 3813, 0)),
 	WILDERNESS_LAVA_MAZE(FishingSpot.LAVA_EEL, new WorldPoint(3071, 3840, 0)),
 	WILDERNESS_RESOURCE_AREA(FishingSpot.DARK_CRAB, new WorldPoint(3186, 3925, 0)),
+	WYRMSCRAIG(new FishingSpot[]{FishingSpot.SHARK, FishingSpot.LOBSTER},
+		new WorldPoint(2574, 2219, 0)),
+	WYRMSCRAIG_CAVERN(FishingSpot.LAVA_EEL, new WorldPoint(2802, 8598, 0)),
 	ZUL_ANDRA(FishingSpot.SACRED_EEL,
 		new WorldPoint(2183, 3068, 0), new WorldPoint(2195, 3067, 0)),
 	;

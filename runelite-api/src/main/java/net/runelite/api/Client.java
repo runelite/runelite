@@ -628,6 +628,18 @@ public interface Client extends OAuthApi, GameEngine
 	void setMenuEntries(MenuEntry[] entries);
 
 	/**
+	 * Gets whether the mouse over text in top-left corner of the screen is enabled
+	 * @return
+	 */
+	boolean isMouseoverTextEnabled();
+
+	/**
+	 * Sets whether the mouse over text in top-left corner of the screen is enabled
+	 * @param enabled
+	 */
+	void setMouseoverTextEnabled(boolean enabled);
+
+	/**
 	 * Checks whether a right-click menu is currently open.
 	 *
 	 * @return true if a menu is open, false otherwise

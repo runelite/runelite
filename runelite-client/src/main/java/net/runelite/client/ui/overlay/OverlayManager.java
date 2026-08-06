@@ -884,7 +884,7 @@ public class OverlayManager
 					g.putEdge(overlayWidget, originWidget);
 				}
 
-				if (position != null)
+				if (overlayWidget != null && position != null)
 				{
 					assert originWidget == null;
 					SnapCorner s = snapCorners.forPosition(position);
