@@ -249,7 +249,6 @@ public class PrayerPlugin extends Plugin
 	private void updatePotionBonus(ItemContainer inventory, @Nullable ItemContainer equip)
 	{
 		boolean hasPrayerPotion = false;
-		boolean hasEgniolPotion = false;
 		boolean hasSuperRestore = false;
 		boolean hasSanfew = false;
 		boolean hasWrench = false;
@@ -264,9 +263,6 @@ public class PrayerPlugin extends Plugin
 				{
 					case PRAYERPOT:
 						hasPrayerPotion = true;
-						break;
-					case EGNIOLPOT:
-						hasEgniolPotion = true;
 						break;
 					case RESTOREPOT:
 						hasSuperRestore = true;
@@ -296,7 +292,6 @@ public class PrayerPlugin extends Plugin
 		}
 
 		// Prayer potion: floor(7 + 25% of base level) - 27% with holy wrench
-		// Egniol potion: floor(7 + 25% of base level)
 		// Super restore: floor(8 + 25% of base level) - 27% with holy wrench
 		// Sanfew serum: floor(4 + 30% of base level) - 32% with holy wrench
 		final int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
@@ -309,7 +304,7 @@ public class PrayerPlugin extends Plugin
 		{
 			restored = Math.max(restored, 8 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
 		}
-		if (hasPrayerPotion || hasEgniolPotion)
+		if (hasPrayerPotion)
 		{
 			restored = Math.max(restored, 7 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
 		}
