@@ -37,15 +37,22 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldView;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -70,6 +77,12 @@ public class PyramidPlunderPlugin extends Plugin
 	// Total time of a pyramid plunder game (5 minutes)
 	private static final Duration PYRAMID_PLUNDER_DURATION = Duration.of(501, RSTimeUnit.GAME_TICKS);
 	private static final int PYRAMID_PLUNDER_REGION = 7749;
+	private static final int SOPHANEM_REGION = 13099;
+	private static final int MAX_PENDING_DOOR_TICKS = 30;
+
+	static final Set<Integer> PYRAMID_ENTRANCE_IDS = ImmutableSet.of(
+		ObjectID.NTK_PYRAMID_DOOR_NORTH_MULTI, ObjectID.NTK_PYRAMID_DOOR_EAST_MULTI,
+		ObjectID.NTK_PYRAMID_DOOR_SOUTH_MULTI, ObjectID.NTK_PYRAMID_DOOR_WEST_MULTI);
 
 	static final Set<Integer> TOMB_DOOR_WALL_IDS = ImmutableSet.of(ObjectID.NTK_TOMB_DOOR1, ObjectID.NTK_TOMB_DOOR2, ObjectID.NTK_TOMB_DOOR3, ObjectID.NTK_TOMB_DOOR4);
 	static final int TOMB_DOOR_CLOSED_ID = ObjectID.NTK_TOMB_DOOR_NOANIM;
@@ -114,6 +127,13 @@ public class PyramidPlunderPlugin extends Plugin
 	@Getter
 	private final List<GameObject> objectsToHighlight = new ArrayList<>();
 
+	@Getter
+	private GameObject highlightedEntrance;
+
+	private WorldPoint lastGoodEntrance;
+	private WorldPoint pendingEntrance;
+	private int pendingEntranceTicks;
+	private int timerAtEntranceAttempt;
 	private PyramidPlunderTimer timer;
 
 	@Provides
@@ -125,6 +145,9 @@ public class PyramidPlunderPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		lastGoodEntrance = null;
+		pendingEntrance = null;
+		highlightedEntrance = null;
 		overlayManager.add(overlay);
 	}
 
@@ -133,6 +156,9 @@ public class PyramidPlunderPlugin extends Plugin
 	{
 		tilesToHighlight.clear();
 		objectsToHighlight.clear();
+		lastGoodEntrance = null;
+		pendingEntrance = null;
+		highlightedEntrance = null;
 		overlayManager.remove(overlay);
 		timer = null;
 		infoBoxManager.removeIf(PyramidPlunderTimer.class::isInstance);
@@ -154,12 +180,20 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			tilesToHighlight.clear();
 			objectsToHighlight.clear();
+			highlightedEntrance = null;
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		boolean inPyramidPlunderRegion = isInPyramidPlunderRegion();
+
+		if (isInSophanem() || inPyramidPlunderRegion)
+		{
+			updateLastGoodEntrance();
+		}
+
 		if (isInPyramidPlunder())
 		{
 			if (timer == null)
@@ -204,12 +238,136 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			objectsToHighlight.add(object);
 		}
+		considerForEntranceHighlight(object);
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!"Search".equalsIgnoreCase(event.getMenuOption()))
+		{
+			return;
+		}
+
+		if (!PYRAMID_ENTRANCE_IDS.contains(event.getId()))
+		{
+			return;
+		}
+
+		pendingEntrance = WorldPoint.fromScene(client.getTopLevelWorldView(), event.getParam0(), event.getParam1(), client.getPlane());
+		pendingEntranceTicks = 0;
+		timerAtEntranceAttempt = client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT);
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		if (pendingEntrance != null && isGuardianMummy(event.getNpc()))
+		{
+			confirmPendingEntrance();
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		clearHighlightedEntranceIfMatches(event.getGameObject());
+	}
+
+	private void updateLastGoodEntrance()
+	{
+		if (pendingEntrance != null)
+		{
+			boolean timerStarted = timerAtEntranceAttempt <= 0
+				&& client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT) > 0;
+			if (hasGuardianMummy() || timerStarted)
+			{
+				confirmPendingEntrance();
+			}
+			else if (pendingEntrance.equals(lastGoodEntrance) && isInPyramidPlunderRegion())
+			{
+				lastGoodEntrance = null;
+				highlightedEntrance = null;
+				pendingEntrance = null;
+			}
+			else if (++pendingEntranceTicks > MAX_PENDING_DOOR_TICKS)
+			{
+				pendingEntrance = null;
+			}
+		}
+	}
+
+	private boolean hasGuardianMummy()
+	{
+		WorldView worldView = client.getTopLevelWorldView();
+		if (worldView == null)
+		{
+			return false;
+		}
+
+		for (NPC npc : worldView.npcs())
+		{
+			if (isGuardianMummy(npc))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean isGuardianMummy(NPC npc)
+	{
+		return npc.getId() == NpcID.NTK_MUMMY_GUARDIAN;
+	}
+
+	private void confirmPendingEntrance()
+	{
+		lastGoodEntrance = pendingEntrance;
+		pendingEntrance = null;
+	}
+
+	private void considerForEntranceHighlight(GameObject object)
+	{
+		if (lastGoodEntrance != null && matchesEntrance(object, lastGoodEntrance))
+		{
+			highlightedEntrance = object;
+		}
+	}
+
+	private void clearHighlightedEntranceIfMatches(GameObject object)
+	{
+		if (object == highlightedEntrance)
+		{
+			highlightedEntrance = null;
+		}
+	}
+
+	private boolean matchesEntrance(GameObject object, WorldPoint point)
+	{
+		return object != null && isPyramidEntrance(object)
+			&& point.distanceTo(object.getWorldLocation()) <= 1;
+	}
+
+	private static boolean isPyramidEntrance(GameObject object)
+	{
+		return PYRAMID_ENTRANCE_IDS.contains(object.getId());
+	}
+
+	private boolean isInSophanem()
+	{
+		return client.getLocalPlayer() != null
+			&& SOPHANEM_REGION == client.getLocalPlayer().getWorldLocation().getRegionID();
+	}
+
+	private boolean isInPyramidPlunderRegion()
+	{
+		return client.getLocalPlayer() != null
+			&& PYRAMID_PLUNDER_REGION == client.getLocalPlayer().getWorldLocation().getRegionID();
 	}
 
 	public boolean isInPyramidPlunder()
 	{
-		return client.getLocalPlayer() != null
-			&& PYRAMID_PLUNDER_REGION == client.getLocalPlayer().getWorldLocation().getRegionID()
+		return isInPyramidPlunderRegion()
 			&& client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT) > 0;
 	}
 }
