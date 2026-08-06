@@ -186,6 +186,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private RenderThread[] rts;
 
+	// Frustum culling
+	private final float[] frustumPlanes = new float[16]; // 4 planes × (a, b, c, d)
+	private boolean frustumPlanesValid;
+
 	private SceneUploader clientUploader, mapUploader;
 
 	static class SceneContext
@@ -421,6 +425,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			| (config.removeVertexSnapping() ? DrawCallbacks.NO_VERTEX_SNAPPING : 0)
 			| DrawCallbacks.ZBUF
 			| DrawCallbacks.RENDER_THREADS(threads)
+			| (config.frustumCulling() ? DrawCallbacks.ZBUF_ZONE_FRUSTUM_CHECK : 0)
 		);
 	}
 
@@ -515,7 +520,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					}
 				});
 			}
-			else if (configChanged.getKey().equals("removeVertexSnapping"))
+			else if (configChanged.getKey().equals("removeVertexSnapping")
+				|| configChanged.getKey().equals("frustumCulling"))
 			{
 				log.debug("Toggle {}", configChanged.getKey());
 				setupGpuFlags();
@@ -1029,6 +1035,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		drawSkybox(scene, sky, cameraX, cameraY, cameraZ);
 
+		extractFrustumPlanes(projectionMatrix);
+		frustumPlanesValid = true;
+
 		checkGLErrors();
 	}
 
@@ -1079,6 +1088,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDisable(GL_BLEND);
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
+
+		frustumPlanesValid = false;
 
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, awtContext.getFramebuffer(false));
 		sceneFboValid = true;
@@ -2154,6 +2165,71 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int getDrawDistance()
 	{
 		return Ints.constrainToRange(config.drawDistance(), 0, MAX_DISTANCE);
+	}
+
+	private void extractFrustumPlanes(float[] m)
+	{
+		// Column-major: m[r + c*4]. Plane convention (Gribb-Hartmann): dot(plane, point) >= 0 is inside.
+		// Lateral planes only — near skipped (zones too large to be fully behind it),
+		// far skipped (uninitialized zones are already gated in drawZoneOpaque).
+
+		// Left:   row3 + row0
+		frustumPlanes[0]  = m[3] + m[0];
+		frustumPlanes[1]  = m[7] + m[4];
+		frustumPlanes[2]  = m[11] + m[8];
+		frustumPlanes[3]  = m[15] + m[12];
+		// Right:  row3 - row0
+		frustumPlanes[4]  = m[3] - m[0];
+		frustumPlanes[5]  = m[7] - m[4];
+		frustumPlanes[6]  = m[11] - m[8];
+		frustumPlanes[7]  = m[15] - m[12];
+		// Bottom: row3 + row1
+		frustumPlanes[8]  = m[3] + m[1];
+		frustumPlanes[9]  = m[7] + m[5];
+		frustumPlanes[10] = m[11] + m[9];
+		frustumPlanes[11] = m[15] + m[13];
+		// Top:    row3 - row1
+		frustumPlanes[12] = m[3] - m[1];
+		frustumPlanes[13] = m[7] - m[5];
+		frustumPlanes[14] = m[11] - m[9];
+		frustumPlanes[15] = m[15] - m[13];
+	}
+
+	@Override
+	public boolean zoneInFrustum(int zoneX, int zoneZ, int maxY, int minY)
+	{
+		if (!frustumPlanesValid || !config.frustumCulling())
+		{
+			return true;
+		}
+
+		final int zoneOffset = SCENE_OFFSET >> 3; // tile offset to zone offset (8 tiles per zone)
+		final int zoneWorldSize = 8 * Perspective.LOCAL_TILE_SIZE; // world units per zone
+		final float worldXMin = (zoneX - zoneOffset) * zoneWorldSize;
+		final float worldXMax = worldXMin + zoneWorldSize;
+		final float worldYMin = minY;
+		final float worldYMax = maxY;
+		final float worldZMin = (zoneZ - zoneOffset) * zoneWorldSize;
+		final float worldZMax = worldZMin + zoneWorldSize;
+
+		for (int plane = 0; plane < 4; plane++)
+		{
+			final float normalX = frustumPlanes[plane * 4];
+			final float normalY = frustumPlanes[plane * 4 + 1];
+			final float normalZ = frustumPlanes[plane * 4 + 2];
+			final float planeW = frustumPlanes[plane * 4 + 3];
+
+			// Pick the AABB corner that maximizes dot(normal, corner) — if it's still outside, cull the zone.
+			final float cornerX = normalX >= 0 ? worldXMax : worldXMin;
+			final float cornerY = normalY >= 0 ? worldYMax : worldYMin;
+			final float cornerZ = normalZ >= 0 ? worldZMax : worldZMin;
+
+			if (((normalX * cornerX) + (normalY * cornerY) + (normalZ * cornerZ) + planeW) < 0)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void checkGLErrors()
