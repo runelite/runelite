@@ -260,15 +260,10 @@ public class SpecialCounterPlugin extends Plugin
 					return;
 				}
 
-				// Hitsplat order is [player range/mage hits, thrall hit, veng, player melee hits]
-				// If melee hit choose last, otherwise choose first for range/mage
-				boolean meleeHit = specialWeapon.getHitDelay(1) <= 1;
-				// Note: Elder maul has a delay of 2 but has its own case above. @KEVIN Look into this and resolve before PR
-				// Alternative: Add style parameter to SpecialWeapon
-				// Alternative 2: Track xp drops (and fake xp drops).
-				// Customizable xp drops plugin has a manual table for exact numbers but maybe we could get away with hit/miss
-				Hitsplat hitsplat = hitsplats.get(meleeHit ? hitsplats.size() - 1 : 0);
-				// Existing bug - splash spec with mage = 1 hitsplat and thrall takes it
+				// Hitsplat arrival order on the same tick: [delayed hits, thrall hit, veng, instant hits]
+				// All range and magic specs are delayed, all melee specs other than elder maul are instant
+				boolean delayedHit = specialWeapon.getHitDelay(1) > 1;
+				Hitsplat hitsplat = hitsplats.get(delayedHit ? 0 : hitsplats.size() - 1);
 				specialAttackHit(specialWeapon, hitsplat.getAmount(), lastSpecTarget);
 			}
 
