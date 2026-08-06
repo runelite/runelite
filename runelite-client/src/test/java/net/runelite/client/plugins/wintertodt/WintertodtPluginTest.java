@@ -170,7 +170,6 @@ public class WintertodtPluginTest
 	public void matchStartingNotification_shouldNotNotify_whenNoneOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(5);
-		when(config.notifyRoundStart()).thenReturn(Notification.OFF);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
