@@ -159,8 +159,12 @@ public class ClueScrollPlugin extends Plugin
 	};
 	private static final String CLUE_NOTE_KEY_PREFIX = "note_";
 
+	private static final int MAX_CLUES = 6;
+
 	@Getter
-	private ClueScroll clue;
+	private final List<ClueState> clues = new ArrayList<>();
+
+	private final List<ClueScrollOverlay> clueScrollOverlays = new ArrayList<>();
 
 	@Getter
 	private final List<NPC> npcsToMark = new ArrayList<>();
@@ -195,9 +199,6 @@ public class ClueScrollPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private ClueScrollOverlay clueScrollOverlay;
 
 	@Inject
 	private ClueScrollEmoteOverlay clueScrollEmoteOverlay;
@@ -253,7 +254,12 @@ public class ClueScrollPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(clueScrollOverlay);
+		for (int i = 0; i < MAX_CLUES; i++)
+		{
+			final ClueScrollOverlay overlay = new ClueScrollOverlay(this, client, config, i);
+			clueScrollOverlays.add(overlay);
+			overlayManager.add(overlay);
+		}
 		overlayManager.add(clueScrollEmoteOverlay);
 		overlayManager.add(clueScrollWorldOverlay);
 		overlayManager.add(clueScrollMusicOverlay);
@@ -274,7 +280,11 @@ public class ClueScrollPlugin extends Plugin
 		tagManager.unregisterTag(ARMOUR_CASE_TAG_NAME);
 		tagManager.unregisterTag(CAPE_RACK_TAG_NAME);
 		tagManager.unregisterTag(TOY_BOX_TAG_NAME);
-		overlayManager.remove(clueScrollOverlay);
+		for (final ClueScrollOverlay overlay : clueScrollOverlays)
+		{
+			overlayManager.remove(overlay);
+		}
+		clueScrollOverlays.clear();
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
 		overlayManager.remove(clueScrollMusicOverlay);
@@ -296,6 +306,7 @@ public class ClueScrollPlugin extends Plugin
 			case SPAM:
 			{
 				String message = event.getMessage();
+				final ClueScroll clue = getClue();
 
 				if (clue instanceof HotColdClue)
 				{
@@ -367,9 +378,9 @@ public class ClueScrollPlugin extends Plugin
 				updateClue(findClueScroll(clueItemId));
 			}
 		}
-		else if (event.getMenuOption().equals("Search")	&& clue instanceof EmoteClue)
+		else if (event.getMenuOption().equals("Search")	&& getClue() instanceof EmoteClue)
 		{
-			EmoteClue emoteClue = (EmoteClue) clue;
+			EmoteClue emoteClue = (EmoteClue) getClue();
 			if (emoteClue.getStashUnit() != null && emoteClue.getStashUnit().getObjectId() == event.getId())
 			{
 				clickedSTASHClue = emoteClue;
@@ -421,17 +432,24 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		// Check if item was removed from inventory
-		if (clue != null && clueItemId != null)
+		if (!clues.isEmpty())
 		{
-			// Check if clue was removed from inventory
-			if (!itemContainer.contains(clueItemId))
+			final List<ClueScroll> removed = new ArrayList<>();
+			for (final ClueState clueState : clues)
 			{
-				resetClue(true);
+				if (clueState.getItemId() != null && !itemContainer.contains(clueState.getItemId()))
+				{
+					removed.add(clueState.getClue());
+				}
+			}
+			for (final ClueScroll removedClue : removed)
+			{
+				removeClue(removedClue);
 			}
 		}
 
 		// if three step clue check for clue scroll pieces
+		final ClueScroll clue = getClue();
 		if (clue instanceof ThreeStepCrypticClue)
 		{
 			if (((ThreeStepCrypticClue) clue).update(event.getContainerId(), itemContainer))
@@ -471,7 +489,7 @@ public class ClueScrollPlugin extends Plugin
 			final ClueScrollConfig.IdentificationMode identificationMode = config.identify();
 
 			if (identificationMode == ClueScrollConfig.IdentificationMode.ON_PICKUP
-				|| (identificationMode == ClueScrollConfig.IdentificationMode.IF_INACTIVE && clue == null && clueItemId == null))
+				|| (identificationMode == ClueScrollConfig.IdentificationMode.IF_INACTIVE && getClue() == null && clueItemId == null))
 			{
 				setActiveClue(newClueId);
 			}
@@ -523,7 +541,7 @@ public class ClueScrollPlugin extends Plugin
 	public void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
-		checkClueNPCs(clue, Collections.singletonList(npc));
+		checkClueNPCs(getClue(), Collections.singletonList(npc));
 	}
 
 	@Subscribe
@@ -600,15 +618,28 @@ public class ClueScrollPlugin extends Plugin
 
 	private void tileObjectSpawnedHandler(final TileObject spawned)
 	{
-		checkClueNamedObject(clue, spawned);
+		checkClueNamedObject(getClue(), spawned);
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals(ClueScrollConfig.GROUP) && !config.displayHintArrows())
+		if (!event.getGroup().equals(ClueScrollConfig.GROUP))
+		{
+			return;
+		}
+
+		if (!config.displayHintArrows())
 		{
 			client.clearHintArrow();
+		}
+
+		if (!config.parallelSolving())
+		{
+			while (clues.size() > 1)
+			{
+				removeClue(clues.get(clues.size() - 1).getClue());
+			}
 		}
 	}
 
@@ -636,6 +667,8 @@ public class ClueScrollPlugin extends Plugin
 	public void onGameTick(final GameTick event)
 	{
 		objectsToMark.clear();
+
+		final ClueScroll clue = getClue();
 
 		if (clue instanceof LocationsClueScroll)
 		{
@@ -716,7 +749,7 @@ public class ClueScrollPlugin extends Plugin
 		if (chatDialogClueItem != null
 			&& (chatDialogClueItem.getItemId() == ItemID.TRAIL_CLUE_BEGINNER || chatDialogClueItem.getItemId() == ItemID.TRAIL_CLUE_MASTER))
 		{
-			resetClue(false);
+			removeCluesByItemId(chatDialogClueItem.getItemId());
 		}
 	}
 
@@ -743,7 +776,18 @@ public class ClueScrollPlugin extends Plugin
 					else
 					{
 						log.info("Unknown clue scroll (id {}) for text '{}'", clueItemId, clueScrollText.getText());
-						resetClue(true);
+						if (config.parallelSolving())
+						{
+							if (clueItemId != null)
+							{
+								removeCluesByItemId(clueItemId);
+							}
+							clueItemId = null;
+						}
+						else
+						{
+							resetClue(true);
+						}
 					}
 				}
 			});
@@ -804,30 +848,165 @@ public class ClueScrollPlugin extends Plugin
 		return mapArrow;
 	}
 
+	public ClueScroll getClue()
+	{
+		return clues.isEmpty() ? null : clues.get(0).getClue();
+	}
+
 	void resetClue(boolean withItemId)
 	{
-		if (clue instanceof LocationsClueScroll)
+		for (final ClueState clueState : clues)
 		{
-			((LocationsClueScroll) clue).reset();
+			if (clueState.getClue() instanceof LocationsClueScroll)
+			{
+				((LocationsClueScroll) clueState.getClue()).reset();
+			}
 		}
+
+		clues.clear();
 
 		if (withItemId)
 		{
 			clueItemId = null;
 		}
 
-		clue = null;
-		worldMapPointManager.removeIf(ClueScrollWorldMapPoint.class::isInstance);
-		worldMapPointsSet = false;
+		clearWorldState();
+		updateOverlayMenuEntries();
+	}
+
+	void removeClueAt(int index)
+	{
+		if (index >= 0 && index < clues.size())
+		{
+			removeClue(clues.get(index).getClue());
+		}
+	}
+
+	void removeClue(ClueScroll clue)
+	{
+		removeClue(clue, true);
+	}
+
+	// clearItemIdWhenEmpty is false when a clue advances to its next step: the same item stays in the
+	// inventory, so clueItemId is kept to identify the following step.
+	private void removeClue(ClueScroll clue, boolean clearItemIdWhenEmpty)
+	{
+		final int index = indexOfClue(clue);
+		if (index < 0)
+		{
+			return;
+		}
+
+		final ClueState removed = clues.remove(index);
+		if (removed.getClue() instanceof LocationsClueScroll)
+		{
+			((LocationsClueScroll) removed.getClue()).reset();
+		}
+
+		if (clues.isEmpty() && clearItemIdWhenEmpty)
+		{
+			clueItemId = null;
+		}
+
+		if (index == 0)
+		{
+			refreshActiveClue();
+		}
+
+		updateOverlayMenuEntries();
+	}
+
+	private void removeCluesByItemId(int itemId)
+	{
+		final List<ClueScroll> removed = new ArrayList<>();
+		for (final ClueState clueState : clues)
+		{
+			if (clueState.getItemId() != null && clueState.getItemId() == itemId)
+			{
+				removed.add(clueState.getClue());
+			}
+		}
+		for (final ClueScroll removedClue : removed)
+		{
+			removeClue(removedClue, false);
+		}
+	}
+
+	// Rebuilds world state (marks, map points, hint arrow) for whichever clue is now on top.
+	private void refreshActiveClue()
+	{
+		clearWorldState();
+		scanActiveClue();
+	}
+
+	private void scanActiveClue()
+	{
+		final ClueScroll clue = getClue();
+		if (clue != null)
+		{
+			checkClueNPCs(clue, client.getTopLevelWorldView().npcs());
+			checkClueNamedObjects(clue);
+		}
+	}
+
+	private void clearWorldState()
+	{
+		objectsToMark.clear();
 		npcsToMark.clear();
 		namedObjectsToMark.clear();
+		worldMapPointManager.removeIf(ClueScrollWorldMapPoint.class::isInstance);
+		worldMapPointsSet = false;
 
 		if (config.displayHintArrows())
 		{
 			client.clearHintArrow();
 		}
+	}
 
-		updateOverlayMenuEntries();
+	private int indexOfClue(ClueScroll clue)
+	{
+		for (int i = 0; i < clues.size(); i++)
+		{
+			if (clues.get(i).getClue() == clue)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private int indexOfItemId(int itemId)
+	{
+		for (int i = 0; i < clues.size(); i++)
+		{
+			final Integer id = clues.get(i).getItemId();
+			if (id != null && id == itemId)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	@Nullable
+	private String getClueTierName(@Nullable Integer itemId)
+	{
+		if (itemId == null)
+		{
+			return null;
+		}
+
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final String name = itemComposition.getName();
+		final int open = name.indexOf('(');
+		final int close = name.indexOf(')', open + 1);
+		if (open < 0 || close <= open + 1)
+		{
+			return null;
+		}
+
+		final String tier = name.substring(open + 1, close);
+		return Character.toUpperCase(tier.charAt(0)) + tier.substring(1);
 	}
 
 	private ClueScroll findClueScroll(String rawText)
@@ -1224,17 +1403,49 @@ public class ClueScrollPlugin extends Plugin
 
 	private void updateClue(final ClueScroll clue)
 	{
-		if (clue == null || clue == this.clue)
+		if (clue == null)
 		{
 			return;
 		}
 
-		resetClue(false);
-		checkClueNPCs(clue, client.getTopLevelWorldView().npcs());
-		checkClueNamedObjects(clue);
-		// If we have a clue, save that knowledge
-		// so the clue window doesn't have to be open.
-		this.clue = clue;
+		int existingIndex = indexOfClue(clue);
+		// In parallel mode a re-read of the same clue item reuses its panel rather than opening a duplicate.
+		if (existingIndex < 0 && config.parallelSolving() && clueItemId != null)
+		{
+			existingIndex = indexOfItemId(clueItemId);
+		}
+
+		if (existingIndex == 0)
+		{
+			// Already the active clue on top; nothing to do.
+			return;
+		}
+
+		if (!config.parallelSolving())
+		{
+			resetClue(false);
+		}
+		else if (existingIndex > 0)
+		{
+			// Move an already-open clue back to the top.
+			clues.remove(existingIndex);
+		}
+		else if (clues.size() >= MAX_CLUES)
+		{
+			// At capacity, drop the oldest clue to make room.
+			removeClue(clues.get(clues.size() - 1).getClue());
+		}
+
+		clues.add(0, new ClueState(clue, clueItemId, getClueTierName(clueItemId)));
+
+		if (config.parallelSolving())
+		{
+			refreshActiveClue();
+		}
+		else
+		{
+			scanActiveClue();
+		}
 
 		updateOverlayMenuEntries();
 	}
@@ -1317,7 +1528,7 @@ public class ClueScrollPlugin extends Plugin
 
 	private boolean testClueTag(int itemId)
 	{
-		ClueScroll c = clue;
+		ClueScroll c = getClue();
 		if (c == null)
 		{
 			return false;
@@ -1464,11 +1675,18 @@ public class ClueScrollPlugin extends Plugin
 
 	private void updateOverlayMenuEntries()
 	{
+		if (clueScrollOverlays.isEmpty())
+		{
+			return;
+		}
+
+		final ClueScrollOverlay clueScrollOverlay = clueScrollOverlays.get(0);
 		clueScrollOverlay.removeMenuEntry(RUNELITE_OVERLAY, "Set note", "Clue Scroll overlay");
 		clueScrollOverlay.removeMenuEntry(RUNELITE_OVERLAY, "Set note 1", "Clue Scroll overlay");
 		clueScrollOverlay.removeMenuEntry(RUNELITE_OVERLAY, "Set note 2", "Clue Scroll overlay");
 		clueScrollOverlay.removeMenuEntry(RUNELITE_OVERLAY, "Set note 3", "Clue Scroll overlay");
 
+		final ClueScroll clue = getClue();
 		if (clue != null)
 		{
 			int[] keys = clue.getConfigKeys();

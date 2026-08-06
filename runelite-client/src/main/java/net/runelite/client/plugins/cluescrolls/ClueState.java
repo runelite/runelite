@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2026, Michael Cousins <https://github.com/miccou>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,49 +24,25 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import javax.annotation.Nullable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 
-@ConfigGroup(ClueScrollConfig.GROUP)
-public interface ClueScrollConfig extends Config
+// An active clue tracked by the ClueScrollPlugin. With parallel solving on, the plugin holds an ordered list of
+// these with the most recently opened clue at the head.
+@Getter
+@RequiredArgsConstructor
+class ClueState
 {
-	String GROUP = "cluescroll";
+	private final ClueScroll clue;
 
-	enum IdentificationMode
-	{
-		ON_READ,
-		IF_INACTIVE,
-		ON_PICKUP,
-	}
+	// Item id the clue was identified from, or null if unknown (e.g. identified from scroll text alone). Used to
+	// detect when the clue leaves the inventory.
+	@Nullable
+	private final Integer itemId;
 
-	@ConfigItem(
-		keyName = "displayHintArrows",
-		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues."
-	)
-	default boolean displayHintArrows()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "identify",
-		name = "Identify",
-		description = "Identify clue scrolls when read, picked up, or always on pickup. Does not work for beginner or master clues."
-	)
-	default IdentificationMode identify()
-	{
-		return IdentificationMode.ON_READ;
-	}
-
-	@ConfigItem(
-		keyName = "parallelSolving",
-		name = "Parallel solving",
-		description = "Show a separate solution panel for each active clue instead of replacing the previous one."
-	)
-	default boolean parallelSolving()
-	{
-		return false;
-	}
+	// Difficulty tier (e.g. "Medium") shown as a discriminator when several panels are open; null if unresolved.
+	@Nullable
+	private final String tierName;
 }
