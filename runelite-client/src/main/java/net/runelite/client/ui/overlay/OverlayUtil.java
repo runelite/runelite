@@ -45,6 +45,13 @@ public class OverlayUtil
 {
 	private static final int MINIMAP_DOT_RADIUS = 4;
 
+	/**
+	 * Whether the overlay currently being rendered draws into the native overlay buffer.
+	 * Used by shared helpers (e.g. {@code ModelOutlineRenderer}) that draw outside the
+	 * overlay's {@link Graphics2D}.
+	 */
+	private static final ThreadLocal<Boolean> CURRENT_OVERLAY_NATIVE = ThreadLocal.withInitial(() -> false);
+
 	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
 		renderPolygon(graphics, poly, color, new BasicStroke(2));
@@ -203,5 +210,20 @@ public class OverlayUtil
 	public static void setGraphicProperties(Graphics2D graphics)
 	{
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	}
+
+	/**
+	 * @return previous value
+	 */
+	public static boolean setCurrentOverlayNative(boolean nativePass)
+	{
+		boolean previous = CURRENT_OVERLAY_NATIVE.get();
+		CURRENT_OVERLAY_NATIVE.set(nativePass);
+		return previous;
+	}
+
+	public static boolean isCurrentOverlayNative()
+	{
+		return CURRENT_OVERLAY_NATIVE.get();
 	}
 }
