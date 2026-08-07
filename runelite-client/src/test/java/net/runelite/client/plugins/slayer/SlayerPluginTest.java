@@ -292,11 +292,27 @@ public class SlayerPluginTest
 		assertTrue(matches("Aquanite", Task.AQUANITES));
 		assertTrue(matches("Elder Aquanite", Task.AQUANITES));
 		assertTrue(matches("Frost dragon", Task.FROST_DRAGONS));
+		assertTrue(matches("Kraken", Task.CAVE_KRAKEN));
+		assertTrue(matches("Kraken", Task.KRAKEN));
+		assertTrue(matches("Rock Crab", Task.CRABS));
+		assertTrue(matches("Brutus", Task.COWS));
+		assertTrue(matches("Vyrewatch Sentinel", Task.VAMPYRES));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));
 		assertFalse(matches("Scorpia's offspring", Task.SCORPIA));
 		assertFalse(matches("Jonny the beard", Task.BEARS));
+		assertFalse(matches("Armoured kraken", Task.CAVE_KRAKEN));
+		assertFalse(matches("Pygmy kraken", Task.CAVE_KRAKEN));
+		assertFalse(matches("Spined kraken", Task.CAVE_KRAKEN));
+		assertFalse(matches("Vampyre kraken", Task.CAVE_KRAKEN));
+		assertFalse(matches("Armoured kraken", Task.KRAKEN));
+		assertFalse(matches("Pygmy kraken", Task.KRAKEN));
+		assertFalse(matches("Spined kraken", Task.KRAKEN));
+		assertFalse(matches("Vampyre kraken", Task.KRAKEN));
+		assertFalse(matches("Vampyre kraken", Task.VAMPYRES));
+		assertFalse(matches("Hermit crab", Task.CRABS));
+		assertFalse(matches("Demonic Brutus", Task.COWS));
 	}
 
 	private boolean matches(final String npcName, final Task task)
