@@ -68,7 +68,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(ItemID.TRAIL_CLUE_MEDIUM_MAP004, new WorldPoint(2658, 3488, 0), ObjectID.CRATE2_OLD, "The crate in McGrubor's Wood. Fairy ring ALS"),
 		new MapClue(ItemID.TRAIL_CLUE_MEDIUM_MAP005, new WorldPoint(2651, 3231, 0), "North of the Tower of Life. Fairy ring DJP"),
 		new MapClue(ItemID.TRAIL_CLUE_MEDIUM_MAP006, new WorldPoint(2565, 3248, 0), ObjectID.CRATE2, "The crate west of the Clocktower."),
-		new MapClue(ItemID.TRAIL_CLUE_MEDIUM_MAP007, new WorldPoint(2924, 3210, 0), "Behind the Chemist's house in Rimmington."),
+		new MapClue(ItemID.TRAIL_CLUE_MEDIUM_MAP007, new WorldPoint(2924, 3209, 0), "Behind the Chemist's house in Rimmington."),
 		new MapClue(ItemID.TRAIL_CLUE_MEDIUM_MAP008, new WorldPoint(2536, 3865, 0), "Miscellania. Fairy ring CIP"),
 		new MapClue(ItemID.TRAIL_CLUE_MEDIUM_MAP009, new WorldPoint(3434, 3265, 0), "Mort Myre Swamp, west of Mort'ton. Fairy ring BIP"),
 		new MapClue(ItemID.TRAIL_CLUE_MEDIUM_MAP010, new WorldPoint(2454, 3230, 0), "At the entrance to the Ourania Cave."),
