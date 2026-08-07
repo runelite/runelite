@@ -34,7 +34,6 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
-import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
 
 @ConfigGroup("wintertodt")
 public interface WintertodtConfig extends Config
@@ -63,17 +62,13 @@ public interface WintertodtConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "roundNotification",
-		name = "Round notification",
-		description = "Notifies you before the round starts (in seconds)."
+		keyName = "notifyDamageInterruptOnly",
+		name = "Only notify damage on interrupt",
+		description = "Damage notifications will only be sent if your action is interrupted"
 	)
-	@Range(
-		max = 60
-	)
-	@Units(Units.SECONDS)
-	default int roundNotification()
+	default boolean notifyDamageInterruptOnly()
 	{
-		return 5;
+		return true;
 	}
 
 	@ConfigItem(
@@ -82,9 +77,9 @@ public interface WintertodtConfig extends Config
 		name = "Ambient damage notification",
 		description = "Notifies when hit by the Wintertodt's ambient cold damage."
 	)
-	default WintertodtNotifyDamage notifyCold()
+	default Notification notifyCold()
 	{
-		return WintertodtNotifyDamage.INTERRUPT;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -93,9 +88,9 @@ public interface WintertodtConfig extends Config
 		name = "Snowfall damage notification",
 		description = "Notifies when hit by the Wintertodt's snowfall attack."
 	)
-	default WintertodtNotifyDamage notifySnowfall()
+	default Notification notifySnowfall()
 	{
-		return WintertodtNotifyDamage.INTERRUPT;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -104,9 +99,9 @@ public interface WintertodtConfig extends Config
 		name = "Brazier damage notification",
 		description = "Notifies when hit by the brazier breaking."
 	)
-	default WintertodtNotifyDamage notifyBrazierDamage()
+	default Notification notifyBrazierDamage()
 	{
-		return WintertodtNotifyDamage.INTERRUPT;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -154,13 +149,17 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
-			keyName = "customDamageNotification",
-			name = "Custom damage notification",
-			description = "Enables custom settings for damage notifications"
+		position = 10,
+		keyName = "roundNotification",
+		name = "Round notification",
+		description = "Notifies you before the round starts (in seconds)."
 	)
-	default Notification customDamageNotification()
+	@Range(
+		max = 60
+	)
+	@Units(Units.SECONDS)
+	default int roundNotification()
 	{
-		return Notification.ON;
+		return 5;
 	}
 }

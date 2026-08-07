@@ -55,11 +55,8 @@ import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import static net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage.ALWAYS;
-import static net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage.INTERRUPT;
 
 @PluginDescriptor(
 	name = "Wintertodt",
@@ -321,47 +318,36 @@ public class WintertodtPlugin extends Plugin
 
 		if (!neverNotify)
 		{
-			boolean shouldNotify = false;
-			WintertodtNotifyDamage damageNotifyConfig;
+			boolean notifyDamageInterruptOnly = config.notifyDamageInterruptOnly();
+			boolean damageNotification = false;
 			Notification notification = null;
 			switch (interruptType)
 			{
 				case COLD:
-					damageNotifyConfig = config.notifyCold();
-					if(damageNotifyConfig == ALWAYS || (damageNotifyConfig == INTERRUPT && wasInterrupted)) {
-						shouldNotify = true;
-						notification = config.customDamageNotification().isEnabled() ? config.customDamageNotification() : null;
-					}
+					notification = config.notifyCold();
+					damageNotification = true;
 					break;
 				case SNOWFALL:
-					damageNotifyConfig = config.notifySnowfall();
-					if(damageNotifyConfig == ALWAYS || (damageNotifyConfig == INTERRUPT && wasInterrupted)) {
-						shouldNotify = true;
-						notification = config.customDamageNotification().isEnabled() ? config.customDamageNotification() : null;
-					}
+					notification = config.notifySnowfall();
+					damageNotification = true;
 					break;
 				case BRAZIER:
-					damageNotifyConfig = config.notifyBrazierDamage();
-					if(damageNotifyConfig == ALWAYS || (damageNotifyConfig == INTERRUPT && wasInterrupted)) {
-						shouldNotify = true;
-						notification = config.customDamageNotification().isEnabled() ? config.customDamageNotification() : null;
-					}
+					notification = config.notifyBrazierDamage();
+					damageNotification = true;
 					break;
 				case INVENTORY_FULL:
 					notification = config.notifyFullInv();
-					shouldNotify = notification.isEnabled();
 					break;
 				case OUT_OF_ROOTS:
 					notification = config.notifyEmptyInv();
-					shouldNotify = notification.isEnabled();
 					break;
 				case BRAZIER_WENT_OUT:
 					notification = config.notifyBrazierOut();
-					shouldNotify = notification.isEnabled();
 					break;
 			}
 
-			if (shouldNotify)
+			// prevent non-interrupting damage notification when notifyDamageInterruptOnly is true
+			if (!damageNotification || !notifyDamageInterruptOnly || wasInterrupted)
 			{
 				notifyInterrupted(interruptType, wasInterrupted, notification);
 			}
@@ -388,12 +374,7 @@ public class WintertodtPlugin extends Plugin
 		str.append(interruptType.getInterruptSourceString());
 
 		String notificationMessage = str.toString();
-		log.debug("Sending notification: {}", notificationMessage);
-		if(notification == null) {
-			notifier.notify(notificationMessage);
-		} else {
-			notifier.notify(notification, notificationMessage);
-		}
+		notifier.notify(notification, notificationMessage);
 	}
 
 	@Subscribe
