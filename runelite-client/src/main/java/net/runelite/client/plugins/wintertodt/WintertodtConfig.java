@@ -2,6 +2,7 @@
  * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, loldudester <HannahRyanster@gmail.com>
+ * Copyright (c) 2026, Juston <contact@justonh.art>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,9 +31,9 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
-import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
 
 @ConfigGroup("wintertodt")
 public interface WintertodtConfig extends Config
@@ -61,6 +62,94 @@ public interface WintertodtConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "notifyDamageInterruptOnly",
+		name = "Only notify damage on interrupt",
+		description = "Damage notifications will only be sent if your action is interrupted"
+	)
+	default boolean notifyDamageInterruptOnly()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "notifyCold",
+		name = "Ambient damage notification",
+		description = "Notifies when hit by the Wintertodt's ambient cold damage."
+	)
+	default Notification notifyCold()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "notifySnowfall",
+		name = "Snowfall damage notification",
+		description = "Notifies when hit by the Wintertodt's snowfall attack."
+	)
+	default Notification notifySnowfall()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "notifyBrazierDamage",
+		name = "Brazier damage notification",
+		description = "Notifies when hit by the brazier breaking."
+	)
+	default Notification notifyBrazierDamage()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "notifyFullInv",
+		name = "Full inventory notification",
+		description = "Notifies when your inventory fills up with bruma roots."
+	)
+	default Notification notifyFullInv()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "notifyEmptyInv",
+		name = "Empty inventory notification",
+		description = "Notifies when you run out of bruma roots."
+	)
+	default Notification notifyEmptyInv()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "notifyBrazierOut",
+		name = "Brazier extinguish notification",
+		description = "Notifies when the brazier goes out."
+	)
+	default Notification notifyBrazierOut()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "notifyRoundStart",
+		name = "Round start notification",
+		description = "Notifies when the Wintertodt round is about to start."
+	)
+	default Notification notifyRoundStart()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 10,
 		keyName = "roundNotification",
 		name = "Round notification",
 		description = "Notifies you before the round starts (in seconds)."
@@ -72,71 +161,5 @@ public interface WintertodtConfig extends Config
 	default int roundNotification()
 	{
 		return 5;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "notifyCold",
-		name = "Ambient damage notification",
-		description = "Notifies when hit by the Wintertodt's ambient cold damage."
-	)
-	default WintertodtNotifyDamage notifyCold()
-	{
-		return WintertodtNotifyDamage.INTERRUPT;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "notifySnowfall",
-		name = "Snowfall damage notification",
-		description = "Notifies when hit by the Wintertodt's snowfall attack."
-	)
-	default WintertodtNotifyDamage notifySnowfall()
-	{
-		return WintertodtNotifyDamage.INTERRUPT;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "notifyBrazierDamage",
-		name = "Brazier damage notification",
-		description = "Notifies when hit by the brazier breaking."
-	)
-	default WintertodtNotifyDamage notifyBrazierDamage()
-	{
-		return WintertodtNotifyDamage.INTERRUPT;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "notifyFullInv",
-		name = "Full inventory notification",
-		description = "Notifies when your inventory fills up with bruma roots."
-	)
-	default boolean notifyFullInv()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 7,
-		keyName = "notifyEmptyInv",
-		name = "Empty inventory notification",
-		description = "Notifies when you run out of bruma roots."
-	)
-	default boolean notifyEmptyInv()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 8,
-		keyName = "notifyBrazierOut",
-		name = "Brazier extinguish notification",
-		description = "Notifies when the brazier goes out."
-	)
-	default boolean notifyBrazierOut()
-	{
-		return true;
 	}
 }

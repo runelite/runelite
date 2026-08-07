@@ -2,6 +2,7 @@
  * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, loldudester <HannahRyanster@gmail.com>
+ * Copyright (c) 2026, Juston <contact@justonh.art>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,12 +51,10 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
-import static net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage.ALWAYS;
-import static net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage.INTERRUPT;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
@@ -189,7 +188,10 @@ public class WintertodtPlugin extends Plugin
 
 				if (prevTimeInSeconds > timeToNotify && timeInSeconds <= timeToNotify)
 				{
-					notifier.notify("Wintertodt round is about to start");
+					if (config.notifyRoundStart().isEnabled())
+					{
+						notifier.notify(config.notifyRoundStart(), "Wintertodt round is about to start");
+					}
 					needRoundNotif = false;
 				}
 			}
@@ -316,35 +318,38 @@ public class WintertodtPlugin extends Plugin
 
 		if (!neverNotify)
 		{
-			boolean shouldNotify = false;
+			boolean notifyDamageInterruptOnly = config.notifyDamageInterruptOnly();
+			boolean damageNotification = false;
+			Notification notification = null;
 			switch (interruptType)
 			{
 				case COLD:
-					WintertodtNotifyDamage notify = config.notifyCold();
-					shouldNotify = notify == ALWAYS || (notify == INTERRUPT && wasInterrupted);
+					notification = config.notifyCold();
+					damageNotification = true;
 					break;
 				case SNOWFALL:
-					notify = config.notifySnowfall();
-					shouldNotify = notify == ALWAYS || (notify == INTERRUPT && wasInterrupted);
+					notification = config.notifySnowfall();
+					damageNotification = true;
 					break;
 				case BRAZIER:
-					notify = config.notifyBrazierDamage();
-					shouldNotify = notify == ALWAYS || (notify == INTERRUPT && wasInterrupted);
+					notification = config.notifyBrazierDamage();
+					damageNotification = true;
 					break;
 				case INVENTORY_FULL:
-					shouldNotify = config.notifyFullInv();
+					notification = config.notifyFullInv();
 					break;
 				case OUT_OF_ROOTS:
-					shouldNotify = config.notifyEmptyInv();
+					notification = config.notifyEmptyInv();
 					break;
 				case BRAZIER_WENT_OUT:
-					shouldNotify = config.notifyBrazierOut();
+					notification = config.notifyBrazierOut();
 					break;
 			}
 
-			if (shouldNotify)
+			// prevent non-interrupting damage notification when notifyDamageInterruptOnly is true
+			if (!damageNotification || !notifyDamageInterruptOnly || wasInterrupted)
 			{
-				notifyInterrupted(interruptType, wasInterrupted);
+				notifyInterrupted(interruptType, wasInterrupted, notification);
 			}
 		}
 
@@ -354,7 +359,7 @@ public class WintertodtPlugin extends Plugin
 		}
 	}
 
-	private void notifyInterrupted(WintertodtInterruptType interruptType, boolean wasActivityInterrupted)
+	private void notifyInterrupted(WintertodtInterruptType interruptType, boolean wasActivityInterrupted, Notification notification)
 	{
 		final StringBuilder str = new StringBuilder();
 
@@ -368,9 +373,8 @@ public class WintertodtPlugin extends Plugin
 
 		str.append(interruptType.getInterruptSourceString());
 
-		String notification = str.toString();
-		log.debug("Sending notification: {}", notification);
-		notifier.notify(notification);
+		String notificationMessage = str.toString();
+		notifier.notify(notification, notificationMessage);
 	}
 
 	@Subscribe
