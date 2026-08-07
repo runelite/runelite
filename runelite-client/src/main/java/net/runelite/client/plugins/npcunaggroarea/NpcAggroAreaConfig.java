@@ -84,12 +84,23 @@ public interface NpcAggroAreaConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "npcUnaggroShowMinimapAreaLines",
+		name = "Show minimap area lines",
+		description = "Display minimap lines, when walked past, the unaggressive timer resets.",
+		position = 5
+	)
+	default boolean showMinimapAreaLines()
+	{
+		return false;
+	}
+
 	@Alpha
 	@ConfigItem(
 		keyName = "npcAggroAreaColor",
 		name = "Aggressive color",
 		description = "Choose color to use for marking NPC unaggressive area when NPCs are aggressive.",
-		position = 5
+		position = 6
 	)
 	default Color aggroAreaColor()
 	{
@@ -101,7 +112,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "npcUnaggroAreaColor",
 		name = "Unaggressive color",
 		description = "Choose color to use for marking NPC unaggressive area after NPCs have lost aggression.",
-		position = 6
+		position = 7
 	)
 	default Color unaggroAreaColor()
 	{
@@ -112,7 +123,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "notifyExpire",
 		name = "Notify expiration",
 		description = "Send a notification when the unaggressive timer expires.",
-		position = 7
+		position = 8
 	)
 	default Notification notifyExpire()
 	{
@@ -123,7 +134,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "hideIfOutOfCombat",
 		name = "Hide when out of combat",
 		description = "Hides unaggressive area lines when out of combat.",
-		position = 8
+		position = 9
 	)
 	default boolean hideIfOutOfCombat()
 	{
@@ -134,7 +145,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "showOnSlayerTask",
 		name = "Show on slayer task",
 		description = "Enable for current slayer task NPCs.",
-		position = 9
+		position = 10
 	)
 	default boolean showOnSlayerTask()
 	{
