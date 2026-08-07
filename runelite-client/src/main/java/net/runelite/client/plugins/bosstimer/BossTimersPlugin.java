@@ -83,7 +83,7 @@ public class BossTimersPlugin extends Plugin
 	{
 		NPC npc = npcChanged.getNpc();
 		Boss boss = Boss.find(npc.getId());
-		if (boss == Boss.HUEYCOATL)
+		if (boss == Boss.HUEYCOATL || boss == Boss.MAD_ANGEL)
 		{
 			createTimer(npc, boss);
 		}
