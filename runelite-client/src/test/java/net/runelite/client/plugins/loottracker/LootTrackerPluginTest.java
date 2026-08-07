@@ -31,6 +31,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +45,10 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -60,6 +63,7 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.ServerNpcLoot;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
@@ -83,6 +87,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -685,5 +690,83 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Large salvage", -1, LootRecordType.EVENT, null, Collections.singletonList(new ItemStack(ItemID.NAILS, 4)));
+	}
+
+	@Test
+	public void testPhosanisNightmareSplitTertiaryDropDoesNotCountTwice()
+	{
+		NPCComposition npc = mock(NPCComposition.class);
+		when(npc.getName()).thenReturn("Phosani's Nightmare");
+		when(npc.getCombatLevel()).thenReturn(1024);
+		when(npc.getId()).thenReturn(9416);
+
+		when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
+
+		final int eliteClueVariantId = 12110;
+
+		ItemComposition eliteClueComposition = mock(ItemComposition.class);
+		when(itemManager.getItemComposition(eliteClueVariantId)).thenReturn(eliteClueComposition);
+		when(eliteClueComposition.getMembersName()).thenReturn("Clue scroll (elite)");
+
+		List<ItemStack> mainDrop = Collections.singletonList(
+				new ItemStack(ItemID.COINS, 1000)
+		);
+
+		List<ItemStack> tertiaryDrop = Collections.singletonList(
+				new ItemStack(eliteClueVariantId, 1)
+		);
+
+		doNothing().when(lootTrackerPlugin).addLoot(
+				anyString(),
+				anyInt(),
+				any(LootRecordType.class),
+				any(),
+				anyCollection(),
+				anyInt()
+		);
+
+		when(client.getTickCount()).thenReturn(100);
+		lootTrackerPlugin.onServerNpcLoot(new ServerNpcLoot(npc, mainDrop));
+
+		when(client.getTickCount()).thenReturn(101);
+		lootTrackerPlugin.onServerNpcLoot(new ServerNpcLoot(npc, tertiaryDrop));
+
+		verify(lootTrackerPlugin).addLoot(
+				"Phosani's Nightmare",
+				1024,
+				LootRecordType.NPC,
+				9416,
+				mainDrop,
+				1
+		);
+
+		verify(lootTrackerPlugin).addLoot(
+				"Phosani's Nightmare",
+				1024,
+				LootRecordType.NPC,
+				9416,
+				tertiaryDrop,
+				0
+		);
+
+		ArgumentCaptor<Integer> amountCaptor = ArgumentCaptor.forClass(Integer.class);
+
+		verify(lootTrackerPlugin, times(2)).addLoot(
+				anyString(),
+				anyInt(),
+				any(LootRecordType.class),
+				any(),
+				anyCollection(),
+				amountCaptor.capture()
+		);
+
+		List<Integer> amounts = amountCaptor.getAllValues();
+		int trackedKills = amounts.stream().mapToInt(Integer::intValue).sum();
+
+		System.out.println("Phosani addLoot amounts: " + amounts);
+		System.out.println("Phosani tracked kill increment: " + trackedKills);
+
+		assertEquals(Arrays.asList(1, 0), amounts);
+		assertEquals(1, trackedKills);
 	}
 }
