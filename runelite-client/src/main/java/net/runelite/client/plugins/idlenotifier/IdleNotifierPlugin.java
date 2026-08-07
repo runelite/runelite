@@ -238,6 +238,7 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_LEATHER_CRAFTING:
 			case AnimationID.HUMAN_POTTERYWHEEL:
 			case AnimationID.HUMAN_CUTTING_RESTART:
+			case AnimationID.HUMAN_GOLEM_CHISEL_END:
 			/* Fletching(Cutting, Stringing, Adding feathers and heads) */
 			case AnimationID.HUMAN_FLETCHING:
 			case AnimationID.XBOWS_FLETCHING_WOOD_BRONZE:
