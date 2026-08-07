@@ -29,6 +29,8 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.time.Duration;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -75,6 +77,13 @@ public class ItemStatOverlay extends Overlay
 	@Inject
 	private ItemStatConfig config;
 
+	private ItemStatsHotkeyListener hotkeyListener;
+
+	public void setHotkeyListener(ItemStatsHotkeyListener hotkeyListener)
+	{
+		this.hotkeyListener = hotkeyListener;
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -82,6 +91,16 @@ public class ItemStatOverlay extends Overlay
 		{
 			return null;
 		}
+
+		// Determine if stats should be shown based on hotkey configuration
+		// If hotkey is set: only show when hotkey is held AND individual setting is enabled
+		// If hotkey is null: show based on individual setting only
+		boolean hotkeyRequired = config.statsHotkey() != null;
+		boolean hotkeyHeld = hotkeyListener != null && hotkeyListener.isHotkeyHeld();
+		boolean allowStatsDisplay = hotkeyRequired ? hotkeyHeld : true;
+
+		boolean showEquipmentStats = config.equipmentStats() && allowStatsDisplay;
+		boolean showConsumableStats = config.consumableStats() && allowStatsDisplay;
 
 		final MenuEntry[] menu = client.getMenuEntries();
 		final int menuSize = menu.length;
@@ -125,7 +144,7 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
-		if (config.consumableStats())
+		if (showConsumableStats)
 		{
 			final Effect change = statChanges.get(itemId);
 			if (change != null)
@@ -185,7 +204,7 @@ public class ItemStatOverlay extends Overlay
 			}
 		}
 
-		if (config.equipmentStats())
+		if (showEquipmentStats)
 		{
 			final ItemStats stats = itemManager.getItemStats(itemId);
 
@@ -448,5 +467,23 @@ public class ItemStatOverlay extends Overlay
 		b.append("</br>");
 
 		return b.toString();
+	}
+
+	@Override
+	public void setPreferredSize(Dimension dimension)
+	{
+		// Not used for this overlay type
+	}
+
+	@Override
+	public void setPreferredLocation(Point position)
+	{
+		// Not used for this overlay type
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		return new Rectangle();
 	}
 }
