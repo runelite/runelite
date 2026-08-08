@@ -53,7 +53,8 @@ enum ItemChargeType
 	POTION(ItemChargeConfig::showPotionDoseCount),
 	GUTHIX_REST(ItemChargeConfig::showGuthixRestDoses),
 	BLOOD_ESSENCE(ItemChargeConfig::showBloodEssenceCharges),
-	BRACELET_OF_CLAY(ItemChargeConfig::showBraceletOfClayCharges);
+	BRACELET_OF_CLAY(ItemChargeConfig::showBraceletOfClayCharges),
+	BOW_STRING_SPOOL(ItemChargeConfig::showBowStringSpoolCharges);
 
 	private final Predicate<ItemChargeConfig> enabled;
 }
