@@ -31,10 +31,10 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import javax.inject.Singleton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -50,30 +50,31 @@ public class LinkBrowser
 	 * Tries to navigate to specified URL in browser. In case operation fails, displays message box with message
 	 * and copies link to clipboard to navigate to.
 	 */
-	public static void browse(final String url)
+	public static void browse(@NonNull final String urlString)
 	{
+		URI uri = URI.create(urlString);
+
+		if (!("https".equalsIgnoreCase(uri.getScheme()) || "http".equalsIgnoreCase(uri.getScheme())))
+		{
+			throw new IllegalArgumentException("Unsupported scheme " + uri.getScheme());
+		}
+
 		new Thread(() ->
 		{
-			if (Strings.isNullOrEmpty(url))
+			if (shouldAttemptXdg && attemptXdgOpen(uri.toString()))
 			{
-				log.warn("LinkBrowser.browse() called with invalid input");
+				log.debug("Opened url through xdg-open to {}", uri);
 				return;
 			}
 
-			if (shouldAttemptXdg && attemptXdgOpen(url))
+			if (attemptDesktopBrowse(uri))
 			{
-				log.debug("Opened url through xdg-open to {}", url);
+				log.debug("Opened url through Desktop#browse to {}", uri);
 				return;
 			}
 
-			if (attemptDesktopBrowse(url))
-			{
-				log.debug("Opened url through Desktop#browse to {}", url);
-				return;
-			}
-
-			log.warn("LinkBrowser.browse() could not open {}", url);
-			showMessageBox("Unable to open link. Press 'OK' and the link will be copied to your clipboard.", url);
+			log.warn("LinkBrowser.browse() could not open {}", uri);
+			showMessageBox("Unable to open link. Press 'OK' and the link will be copied to your clipboard.", uri.toString());
 		}).start();
 	}
 
@@ -137,7 +138,7 @@ public class LinkBrowser
 		}
 	}
 
-	private static boolean attemptDesktopBrowse(String url)
+	private static boolean attemptDesktopBrowse(URI url)
 	{
 		if (!Desktop.isDesktopSupported())
 		{
@@ -153,10 +154,10 @@ public class LinkBrowser
 
 		try
 		{
-			desktop.browse(new URI(url));
+			desktop.browse(url);
 			return true;
 		}
-		catch (IOException | URISyntaxException ex)
+		catch (IOException ex)
 		{
 			log.warn("Failed to open Desktop#browse {}", url, ex);
 			return false;
