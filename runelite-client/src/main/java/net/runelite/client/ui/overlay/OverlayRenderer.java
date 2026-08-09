@@ -523,13 +523,21 @@ public class OverlayRenderer extends MouseAdapter
 	/**
 	 * Tells decorations drawn into the native overlay buffer how much to shrink: widget item
 	 * overlays follow the stretched inventory, world overlays cancel the stretch per axis, and
-	 * interface overlays follow the panel content scale.
+	 * interface overlays follow the panel content scale. HUD overlays (FPS/ping) and world text
+	 * (player names, ground items) opt into the panel content scale instead.
 	 */
 	private void setNativeContentScale(final Graphics2D graphics, final Overlay overlay, final OverlayPosition position)
 	{
 		if (overlay instanceof WidgetItemOverlay)
 		{
 			OverlayUtil.setNativeOverlayProperties(graphics, 1, 1);
+		}
+		else if (overlay.isPreferPanelContentScale() || overlay.isPreferPanelGlyphScale())
+		{
+			OverlayUtil.setNativeOverlayProperties(graphics,
+				nativeOverlayBuffer.getPanelContentScaleX(),
+				nativeOverlayBuffer.getPanelContentScaleY(),
+				overlay.isPreferPanelGlyphScale());
 		}
 		else if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
@@ -936,8 +944,12 @@ public class OverlayRenderer extends MouseAdapter
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			// World overlays draw at stretch scale, so shrink the glyphs to keep their canvas size
-			final float sizeFactor = nativePass && position == OverlayPosition.DYNAMIC && !(overlay instanceof WidgetItemOverlay)
+			// World overlays draw at stretch scale, so shrink the glyphs to keep their canvas size.
+			// Panel content/glyph scale overlays are scaled by the transform or per draw instead.
+			final float sizeFactor = nativePass && position == OverlayPosition.DYNAMIC
+				&& !(overlay instanceof WidgetItemOverlay)
+				&& !overlay.isPreferPanelContentScale()
+				&& !overlay.isPreferPanelGlyphScale()
 				? (float) nativeOverlayBuffer.getFixedSizeContentScaleX()
 				: 1f;
 			graphics.setFont(sizeFactor == 1f ? font : font.deriveFont(font.getSize2D() * sizeFactor));
@@ -953,7 +965,8 @@ public class OverlayRenderer extends MouseAdapter
 
 		graphics.translate(point.x, point.y);
 
-		if (nativePass && position != OverlayPosition.DYNAMIC && position != OverlayPosition.TOOLTIP)
+		if (nativePass && (overlay.isPreferPanelContentScale()
+			|| (position != OverlayPosition.DYNAMIC && position != OverlayPosition.TOOLTIP)))
 		{
 			graphics.scale(nativeOverlayBuffer.getPanelContentScaleX(), nativeOverlayBuffer.getPanelContentScaleY());
 		}

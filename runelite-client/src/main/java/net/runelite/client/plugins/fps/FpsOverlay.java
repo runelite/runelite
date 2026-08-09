@@ -67,6 +67,7 @@ public class FpsOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(PRIORITY_HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
+		setPreferPanelContentScale(true);
 	}
 
 	void onFocusChanged(FocusChanged event)
@@ -106,7 +107,8 @@ public class FpsOverlay extends Overlay
 		final int textWidth = graphics.getFontMetrics().stringWidth(text);
 		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
 
-		final int width = (int) client.getRealDimensions().getWidth();
+		// Content-space width so panel scale (size/aspect) keeps this flush-right.
+		final int width = OverlayUtil.getContentSpaceWidth(graphics, (int) client.getRealDimensions().getWidth());
 		final Point point = new Point(width - textWidth - xOffset, textHeight + Y_OFFSET);
 		OverlayUtil.renderTextLocation(graphics, point, text, getFpsValueColor());
 

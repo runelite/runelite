@@ -34,6 +34,11 @@ import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.fps.FpsConfig;
+import net.runelite.client.plugins.fps.FpsPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -41,22 +46,32 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class WorldHopperPingOverlay extends Overlay
 {
-	private static final int Y_OFFSET = 11;
+	private static final int Y_OFFSET = 1;
 	private static final int X_OFFSET = 1;
 
 	private final Client client;
 	private final WorldHopperPlugin worldHopperPlugin;
 	private final WorldHopperConfig worldHopperConfig;
+	private final ConfigManager configManager;
+	private final PluginManager pluginManager;
 
 	@Inject
-	private WorldHopperPingOverlay(Client client, WorldHopperPlugin worldHopperPlugin, WorldHopperConfig worldHopperConfig)
+	private WorldHopperPingOverlay(
+		Client client,
+		WorldHopperPlugin worldHopperPlugin,
+		WorldHopperConfig worldHopperConfig,
+		ConfigManager configManager,
+		PluginManager pluginManager)
 	{
 		this.client = client;
 		this.worldHopperPlugin = worldHopperPlugin;
 		this.worldHopperConfig = worldHopperConfig;
+		this.configManager = configManager;
+		this.pluginManager = pluginManager;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(PRIORITY_HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
+		setPreferPanelContentScale(true);
 	}
 
 	@Override
@@ -78,14 +93,19 @@ class WorldHopperPingOverlay extends Overlay
 
 		final FontMetrics fm = graphics.getFontMetrics();
 		final int textHeight = fm.getAscent() - fm.getDescent();
-		final int width = (int) client.getRealDimensions().getWidth();
+		// Content-space width so panel scale (size/aspect) keeps this flush-right.
+		final int width = OverlayUtil.getContentSpaceWidth(graphics, (int) client.getRealDimensions().getWidth());
+		// Stack under FPS when that indicator is visible; otherwise occupy the top row.
+		final int y = isFpsIndicatorShown()
+			? Y_OFFSET + fm.getHeight() + textHeight
+			: textHeight + Y_OFFSET;
 
 		final int ping = worldHopperPlugin.getCurrentPing();
 		if (ping >= 0)
 		{
 			String text = ping + " ms";
 			int textWidth = fm.stringWidth(text);
-			Point point = new Point(width - textWidth - xOffset, textHeight + Y_OFFSET);
+			Point point = new Point(width - textWidth - xOffset, y);
 			OverlayUtil.renderTextLocation(graphics, point, text, Color.YELLOW);
 			xOffset += textWidth + fm.stringWidth(" ");
 		}
@@ -94,10 +114,26 @@ class WorldHopperPingOverlay extends Overlay
 		if (percRetransmit > 0)
 		{
 			String text = percRetransmit + "% loss";
-			Point point = new Point(width - fm.stringWidth(text) - xOffset, textHeight + Y_OFFSET);
+			Point point = new Point(width - fm.stringWidth(text) - xOffset, y);
 			OverlayUtil.renderTextLocation(graphics, point, text, Color.RED);
 		}
 
 		return null;
+	}
+
+	private boolean isFpsIndicatorShown()
+	{
+		if (!configManager.getConfig(FpsConfig.class).drawFps())
+		{
+			return false;
+		}
+		for (Plugin plugin : pluginManager.getPlugins())
+		{
+			if (plugin instanceof FpsPlugin)
+			{
+				return pluginManager.isPluginEnabled(plugin);
+			}
+		}
+		return false;
 	}
 }

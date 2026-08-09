@@ -132,4 +132,26 @@ public class NativeOverlayBufferTest
 		assertEquals(1.0 / 3.0, buffer.getFixedSizeContentScaleX(), 1e-9);
 		assertEquals(0.5, buffer.getFixedSizeContentScaleY(), 1e-9);
 	}
+
+	@Test
+	public void panelContentScale_fixedAspectOnlyScalesUniformly()
+	{
+		when(stretchedModeConfig.fixedOverlayAspectRatio()).thenReturn(true);
+
+		// sx=3, sy=2: panels net out at min(sx, sy) on both axes, world overlays ignore aspect
+		assertEquals(2.0 / 3.0, buffer.getPanelContentScaleX(), 1e-9);
+		assertEquals(1.0, buffer.getPanelContentScaleY(), 1e-9);
+		assertEquals(1.0, buffer.getFixedSizeContentScaleX(), 0.0);
+		assertEquals(1.0, buffer.getFixedSizeContentScaleY(), 0.0);
+	}
+
+	@Test
+	public void panelContentScale_fixedSizeAndAspectIsTrueCanvasPixels()
+	{
+		when(stretchedModeConfig.fixedOverlaySize()).thenReturn(true);
+		when(stretchedModeConfig.fixedOverlayAspectRatio()).thenReturn(true);
+
+		assertEquals(1.0 / 3.0, buffer.getPanelContentScaleX(), 1e-9);
+		assertEquals(0.5, buffer.getPanelContentScaleY(), 1e-9);
+	}
 }

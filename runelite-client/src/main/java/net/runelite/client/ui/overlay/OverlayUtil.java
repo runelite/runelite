@@ -76,6 +76,20 @@ public class OverlayUtil
 		}
 	};
 
+	/**
+	 * When true, {@link #renderTextLocation} and {@link net.runelite.client.ui.overlay.components.TextComponent}
+	 * apply {@link #KEY_NATIVE_VISUAL_SIZE_FACTOR} locally around each glyph draw, so world-anchored
+	 * text can use panel size/aspect scales without shifting canvas positions.
+	 */
+	public static final RenderingHints.Key KEY_NATIVE_LOCAL_TEXT_SCALE = new RenderingHints.Key(0x4e4f4c54)
+	{
+		@Override
+		public boolean isCompatibleValue(Object val)
+		{
+			return val instanceof Boolean;
+		}
+	};
+
 	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
 		renderPolygon(graphics, poly, color, new BasicStroke(2));
@@ -125,14 +139,31 @@ public class OverlayUtil
 
 		int x = txtLoc.getX();
 		int y = txtLoc.getY();
+		final Color textColor = ColorUtil.colorWithAlpha(color, 0xFF);
+
+		double fx = getNativeVisualSizeFactor(graphics);
+		double fy = getNativeVisualSizeFactorY(graphics);
+
+		if (isNativeLocalTextScale(graphics) && (fx != 1.0 || fy != 1.0))
+		{
+			AffineTransform transform = graphics.getTransform();
+			graphics.translate(x, y);
+			graphics.scale(fx, fy);
+			graphics.setColor(Color.BLACK);
+			graphics.drawString(text, screenPixelOffsetX(graphics), screenPixelOffsetY(graphics));
+			graphics.setColor(textColor);
+			graphics.drawString(text, 0, 0);
+			graphics.setTransform(transform);
+			return;
+		}
 
 		// Keep the shadow one display pixel off the glyphs when they are scaled down
-		float shadow = (float) getNativeVisualSizeFactor(graphics);
+		float shadow = (float) fx;
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, x + shadow, y + shadow);
 
-		graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
+		graphics.setColor(textColor);
 		graphics.drawString(text, x, y);
 	}
 
@@ -305,9 +336,80 @@ public class OverlayUtil
 	 */
 	public static void setNativeOverlayProperties(Graphics2D graphics, double visualSizeFactorX, double visualSizeFactorY)
 	{
+		setNativeOverlayProperties(graphics, visualSizeFactorX, visualSizeFactorY, false);
+	}
+
+	/**
+	 * @param localTextScale see {@link #KEY_NATIVE_LOCAL_TEXT_SCALE}
+	 */
+	public static void setNativeOverlayProperties(Graphics2D graphics, double visualSizeFactorX, double visualSizeFactorY,
+		boolean localTextScale)
+	{
 		setGraphicProperties(graphics);
 		graphics.setRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR, visualSizeFactorX);
 		graphics.setRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR_Y, visualSizeFactorY);
+		graphics.setRenderingHint(KEY_NATIVE_LOCAL_TEXT_SCALE, localTextScale);
+	}
+
+	public static boolean isNativeLocalTextScale(Graphics2D graphics)
+	{
+		return Boolean.TRUE.equals(graphics.getRenderingHint(KEY_NATIVE_LOCAL_TEXT_SCALE));
+	}
+
+	/**
+	 * User-space offset that maps to approximately one device pixel on X after the current
+	 * transform (outer stretch × local content scale).
+	 */
+	public static float screenPixelOffsetX(Graphics2D graphics)
+	{
+		double scale = Math.abs(graphics.getTransform().getScaleX());
+		return scale == 0.0 ? 1f : (float) (1.0 / scale);
+	}
+
+	/**
+	 * User-space offset that maps to approximately one device pixel on Y after the current
+	 * transform (outer stretch × local content scale).
+	 */
+	public static float screenPixelOffsetY(Graphics2D graphics)
+	{
+		double scale = Math.abs(graphics.getTransform().getScaleY());
+		return scale == 0.0 ? 1f : (float) (1.0 / scale);
+	}
+
+	/**
+	 * Shifts a canvas text location so a left-aligned {@code drawString} stays centered when
+	 * {@link #isNativeLocalTextScale} shrinks the glyph width by the X size factor.
+	 */
+	public static Point adjustLocalTextScaleLocation(Graphics2D graphics, Point textLocation, String text)
+	{
+		if (textLocation == null || Strings.isNullOrEmpty(text) || !isNativeLocalTextScale(graphics))
+		{
+			return textLocation;
+		}
+
+		double fx = getNativeVisualSizeFactor(graphics);
+		if (fx == 1.0)
+		{
+			return textLocation;
+		}
+
+		int fullWidth = graphics.getFontMetrics().stringWidth(text);
+		int layoutWidth = Math.max(0, (int) Math.round(fullWidth * fx));
+		return new Point(textLocation.getX() + (fullWidth - layoutWidth) / 2, textLocation.getY());
+	}
+
+	/**
+	 * Width of the drawable area in the current native content-scale user space. Right-aligned HUD
+	 * (FPS/ping) must use this after panel content scale so the right edge stays flush.
+	 */
+	public static int getContentSpaceWidth(Graphics2D graphics, int canvasWidth)
+	{
+		double cx = getNativeVisualSizeFactor(graphics);
+		if (cx == 0.0 || cx == 1.0)
+		{
+			return canvasWidth;
+		}
+		return Math.max(1, (int) Math.round(canvasWidth / cx));
 	}
 
 	/**

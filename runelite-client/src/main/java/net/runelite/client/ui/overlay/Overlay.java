@@ -109,6 +109,22 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	@Setter(AccessLevel.PROTECTED)
 	private boolean preferNativeResolution = true;
 
+	/**
+	 * DYNAMIC overlays that should follow Fixed overlay size / aspect ratio like infoboxes
+	 * (e.g. FPS and ping counters), instead of world-overlay scaling. Applies the panel content
+	 * scale to the whole Graphics2D, so positions are in content space.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean preferPanelContentScale;
+
+	/**
+	 * World-anchored DYNAMIC overlays whose glyphs and images should follow Fixed overlay size /
+	 * aspect ratio (e.g. player names, ground item text) without moving canvas positions. Text is
+	 * scaled locally around each draw; polygons stay at full stretch.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean preferPanelGlyphScale;
+
 	protected Overlay()
 	{
 		plugin = null;

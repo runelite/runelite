@@ -162,8 +162,8 @@ public class NativeOverlayBuffer
 	}
 
 	/**
-	 * When true, overlays keep their original unstretched size instead of growing with
-	 * the stretched UI.
+	 * When true, overlays keep their original unstretched size.
+	 * When false, overlays grow with stretch (same visual size as the stretched UI).
 	 */
 	public boolean fixedOverlaySize()
 	{
@@ -171,33 +171,58 @@ public class NativeOverlayBuffer
 	}
 
 	/**
+	 * When true (and fixed overlay size is off), interface overlays scale uniformly to the
+	 * game/canvas aspect instead of matching a non-uniform window stretch.
+	 */
+	public boolean fixedOverlayAspectRatio()
+	{
+		return stretchedModeConfig.fixedOverlayAspectRatio();
+	}
+
+	/**
 	 * Content scale applied after the outer stretch transform for interface overlays
-	 * (infoboxes, panels). Fixed overlay size shrinks them uniformly by {@code 1/min(sx, sy)},
-	 * so they stay within the window's aspect; otherwise they follow the full stretch.
+	 * (infoboxes, panels, tooltips), with {@code s = min(sx, sy)}:
+	 * <ul>
+	 * <li>Fixed size + fixed aspect: {@code 1/sx, 1/sy} (net 1×1 canvas pixels)</li>
+	 * <li>Fixed size only: {@code 1/s, 1/s} (smaller, window aspect)</li>
+	 * <li>Fixed aspect only: {@code s/sx, s/sy} (uniform {@code s})</li>
+	 * <li>Else: {@code 1, 1} (full window stretch)</li>
+	 * </ul>
 	 */
 	public double getPanelContentScaleX()
 	{
-		return getPanelContentScale();
+		return getPanelContentScale(getScaleX());
 	}
 
 	public double getPanelContentScaleY()
 	{
-		return getPanelContentScale();
+		return getPanelContentScale(getScaleY());
 	}
 
-	private double getPanelContentScale()
+	private double getPanelContentScale(double axisScale)
 	{
-		if (!fixedOverlaySize())
+		if (axisScale == 0)
 		{
 			return 1;
 		}
-		double scale = Math.min(getScaleX(), getScaleY());
-		return scale == 0 ? 1 : 1 / scale;
+		if (fixedOverlaySize())
+		{
+			return 1 / (fixedOverlayAspectRatio() ? axisScale : minScale());
+		}
+		return fixedOverlayAspectRatio() ? minScale() / axisScale : 1;
+	}
+
+	private double minScale()
+	{
+		double sx = getScaleX();
+		double sy = getScaleY();
+		return Math.min(sx == 0 ? 1 : sx, sy == 0 ? 1 : sy);
 	}
 
 	/**
-	 * Content scale for world/DYNAMIC decorations, which cancel the stretch per axis so
-	 * they stay anchored to the stretched scene at their unstretched size.
+	 * Content scale for world/DYNAMIC decorations, which cancel the stretch per axis so they
+	 * stay anchored to the stretched scene at their unstretched size. Ignores fixed overlay
+	 * aspect ratio so object-tied overlays stay aligned with the scene.
 	 */
 	public double getFixedSizeContentScaleX()
 	{

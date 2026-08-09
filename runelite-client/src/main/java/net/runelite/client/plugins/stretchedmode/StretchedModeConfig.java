@@ -36,7 +36,8 @@ public interface StretchedModeConfig extends Config
 	@ConfigItem(
 		keyName = "keepAspectRatio",
 		name = "Keep aspect ratio",
-		description = "Keeps the aspect ratio when stretching."
+		description = "Keeps the aspect ratio when stretching.",
+		position = 0
 	)
 	default boolean keepAspectRatio()
 	{
@@ -46,7 +47,8 @@ public interface StretchedModeConfig extends Config
 	@ConfigItem(
 		keyName = "increasedPerformance",
 		name = "Increased performance mode",
-		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance."
+		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance.",
+		position = 1
 	)
 	default boolean increasedPerformance()
 	{
@@ -56,7 +58,8 @@ public interface StretchedModeConfig extends Config
 	@ConfigItem(
 		keyName = "integerScaling",
 		name = "Integer scaling",
-		description = "Forces use of a whole number scale factor when stretching."
+		description = "Forces use of a whole number scale factor when stretching.",
+		position = 2
 	)
 	default boolean integerScaling()
 	{
@@ -66,7 +69,8 @@ public interface StretchedModeConfig extends Config
 	@ConfigItem(
 		keyName = "scalingFactor",
 		name = "Resizable scaling",
-		description = "In resizable mode, the game is reduced in size this much before it's stretched."
+		description = "In resizable mode, the game is reduced in size this much before it's stretched.",
+		position = 3
 	)
 	@Units(Units.PERCENT)
 	default int scalingFactor()
@@ -77,10 +81,21 @@ public interface StretchedModeConfig extends Config
 	@ConfigItem(
 		keyName = "fixedOverlaySize",
 		name = "Fixed overlay size",
-		description = "Keeps interface overlays at their unstretched size instead of growing with the stretched UI. Requires native resolution overlays.",
+		description = "Keep interface overlays smaller than full UI stretch. With Fixed overlay aspect ratio off, they still match the window's aspect; with it on, they stay true canvas 1×1 pixels.",
 		position = 4
 	)
 	default boolean fixedOverlaySize()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "fixedOverlayAspectRatio",
+		name = "Fixed overlay aspect ratio",
+		description = "Keep interface overlays (infoboxes, panels, tooltips, FPS/ping) and world HUD text (player indicators, ground items) at the game's aspect ratio instead of matching a non-uniform window stretch. Only applies when horizontal and vertical stretch differ (typically with Keep aspect ratio off). Does not affect world geometry or inventory overlays. With Fixed overlay size on, forces true canvas 1×1 pixels.",
+		position = 5
+	)
+	default boolean fixedOverlayAspectRatio()
 	{
 		return false;
 	}
