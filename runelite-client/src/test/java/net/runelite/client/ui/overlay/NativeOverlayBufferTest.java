@@ -30,6 +30,8 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.Dimension;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.stretchedmode.StretchedModeConfig;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,12 +47,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class NativeOverlayBufferTest
 {
-	private static final int CANVAS_W = 4;
-	private static final int CANVAS_H = 2;
+	private static final int CANVAS_W = 100;
+	private static final int CANVAS_H = 80;
 
 	@Mock
 	@Bind
 	private Client client;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	private StretchedModeConfig stretchedModeConfig;
 
 	@Inject
 	private NativeOverlayBuffer buffer;
@@ -58,13 +67,14 @@ public class NativeOverlayBufferTest
 	@Before
 	public void before()
 	{
+		lenient().when(configManager.getConfig(StretchedModeConfig.class)).thenReturn(stretchedModeConfig);
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
 		lenient().when(client.isStretchedEnabled()).thenReturn(true);
 		lenient().when(client.isGpu()).thenReturn(true);
 		lenient().when(client.getCanvasWidth()).thenReturn(CANVAS_W);
 		lenient().when(client.getCanvasHeight()).thenReturn(CANVAS_H);
-		lenient().when(client.getStretchedDimensions()).thenReturn(new Dimension(12, 4));
+		lenient().when(client.getStretchedDimensions()).thenReturn(new Dimension(300, 160));
 	}
 
 	@Test
@@ -81,11 +91,11 @@ public class NativeOverlayBufferTest
 	{
 		int[] canvas = {0xFF112233, 0xFF445566, 0, 0, 0xFF778899, 0, 0, 0};
 
-		buffer.captureAndClearOverheads(canvas, CANVAS_W, CANVAS_H);
+		buffer.captureAndClearOverheads(canvas, 4, 2);
 
 		assertTrue(buffer.isOverheadsDirty());
-		assertEquals(CANVAS_W, buffer.getOverheadsWidth());
-		assertEquals(CANVAS_H, buffer.getOverheadsHeight());
+		assertEquals(4, buffer.getOverheadsWidth());
+		assertEquals(2, buffer.getOverheadsHeight());
 		assertArrayEquals(new int[] {0xFF112233, 0xFF445566, 0, 0, 0xFF778899, 0, 0, 0},
 			java.util.Arrays.copyOf(buffer.getOverheadPixels(), canvas.length));
 		assertArrayEquals(new int[canvas.length], canvas);
@@ -101,5 +111,25 @@ public class NativeOverlayBufferTest
 
 		assertFalse(buffer.isOverheadsDirty());
 		assertEquals(0xFF112233, canvas[0]);
+	}
+
+	@Test
+	public void contentScales_followStretchWhenFixedSizeOff()
+	{
+		assertEquals(1.0, buffer.getPanelContentScaleX(), 0.0);
+		assertEquals(1.0, buffer.getPanelContentScaleY(), 0.0);
+		assertEquals(1.0, buffer.getFixedSizeContentScaleX(), 0.0);
+		assertEquals(1.0, buffer.getFixedSizeContentScaleY(), 0.0);
+	}
+
+	@Test
+	public void contentScales_cancelStretchWhenFixedSizeOn()
+	{
+		when(stretchedModeConfig.fixedOverlaySize()).thenReturn(true);
+
+		assertEquals(0.5, buffer.getPanelContentScaleX(), 1e-9);
+		assertEquals(0.5, buffer.getPanelContentScaleY(), 1e-9);
+		assertEquals(1.0 / 3.0, buffer.getFixedSizeContentScaleX(), 1e-9);
+		assertEquals(0.5, buffer.getFixedSizeContentScaleY(), 1e-9);
 	}
 }

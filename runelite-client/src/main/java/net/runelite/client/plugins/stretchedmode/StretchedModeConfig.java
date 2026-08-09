@@ -73,4 +73,15 @@ public interface StretchedModeConfig extends Config
 	{
 		return 50;
 	}
+
+	@ConfigItem(
+		keyName = "fixedOverlaySize",
+		name = "Fixed overlay size",
+		description = "Keeps interface overlays at their unstretched size instead of growing with the stretched UI. Requires native resolution overlays.",
+		position = 4
+	)
+	default boolean fixedOverlaySize()
+	{
+		return false;
+	}
 }

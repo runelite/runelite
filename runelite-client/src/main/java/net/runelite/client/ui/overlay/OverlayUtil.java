@@ -126,8 +126,11 @@ public class OverlayUtil
 		int x = txtLoc.getX();
 		int y = txtLoc.getY();
 
+		// Keep the shadow one display pixel off the glyphs when they are scaled down
+		float shadow = (float) getNativeVisualSizeFactor(graphics);
+
 		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, x + 1, y + 1);
+		graphics.drawString(text, x + shadow, y + shadow);
 
 		graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
 		graphics.drawString(text, x, y);
@@ -294,6 +297,17 @@ public class OverlayUtil
 	public static void setGraphicProperties(Graphics2D graphics)
 	{
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	}
+
+	/**
+	 * Sets the canvas-space size factors decorations drawn into the native overlay buffer
+	 * should use, so they can shrink to their unstretched size without moving.
+	 */
+	public static void setNativeOverlayProperties(Graphics2D graphics, double visualSizeFactorX, double visualSizeFactorY)
+	{
+		setGraphicProperties(graphics);
+		graphics.setRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR, visualSizeFactorX);
+		graphics.setRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR_Y, visualSizeFactorY);
 	}
 
 	/**

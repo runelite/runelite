@@ -32,6 +32,8 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.stretchedmode.StretchedModeConfig;
 
 /**
  * Offscreen buffers for drawing RuneLite overlays at stretched (display) resolution
@@ -68,6 +70,7 @@ public class NativeOverlayBuffer
 	}
 
 	private final Client client;
+	private final StretchedModeConfig stretchedModeConfig;
 
 	private BufferedImage aboveSceneImage;
 	private BufferedImage underWidgetsImage;
@@ -86,9 +89,10 @@ public class NativeOverlayBuffer
 	private final PassState overheads = new PassState();
 
 	@Inject
-	private NativeOverlayBuffer(Client client)
+	private NativeOverlayBuffer(Client client, ConfigManager configManager)
 	{
 		this.client = client;
+		this.stretchedModeConfig = configManager.getConfig(StretchedModeConfig.class);
 	}
 
 	/**
@@ -155,6 +159,59 @@ public class NativeOverlayBuffer
 		}
 		int canvasHeight = client.getCanvasHeight();
 		return canvasHeight == 0 ? 1 : client.getStretchedDimensions().getHeight() / canvasHeight;
+	}
+
+	/**
+	 * When true, overlays keep their original unstretched size instead of growing with
+	 * the stretched UI.
+	 */
+	public boolean fixedOverlaySize()
+	{
+		return stretchedModeConfig.fixedOverlaySize();
+	}
+
+	/**
+	 * Content scale applied after the outer stretch transform for interface overlays
+	 * (infoboxes, panels). Fixed overlay size shrinks them uniformly by {@code 1/min(sx, sy)},
+	 * so they stay within the window's aspect; otherwise they follow the full stretch.
+	 */
+	public double getPanelContentScaleX()
+	{
+		return getPanelContentScale();
+	}
+
+	public double getPanelContentScaleY()
+	{
+		return getPanelContentScale();
+	}
+
+	private double getPanelContentScale()
+	{
+		if (!fixedOverlaySize())
+		{
+			return 1;
+		}
+		double scale = Math.min(getScaleX(), getScaleY());
+		return scale == 0 ? 1 : 1 / scale;
+	}
+
+	/**
+	 * Content scale for world/DYNAMIC decorations, which cancel the stretch per axis so
+	 * they stay anchored to the stretched scene at their unstretched size.
+	 */
+	public double getFixedSizeContentScaleX()
+	{
+		return inverseScale(getScaleX());
+	}
+
+	public double getFixedSizeContentScaleY()
+	{
+		return inverseScale(getScaleY());
+	}
+
+	private double inverseScale(double scale)
+	{
+		return fixedOverlaySize() && scale != 0 ? 1 / scale : 1;
 	}
 
 	/**

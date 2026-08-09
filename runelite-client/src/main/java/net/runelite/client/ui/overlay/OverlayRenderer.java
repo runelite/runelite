@@ -336,7 +336,8 @@ public class OverlayRenderer extends MouseAdapter
 					&& overlayPosition != OverlayPosition.DETACHED && preferredLocation == null)
 				{
 					snapCorner = snapCorners.forPosition(overlayPosition);
-					snapCorner.getNextDrawPosition(bounds, location);
+					// Align on the visual size so right/bottom anchors stay flush when scaled down
+					snapCorner.getNextDrawPosition(new Rectangle(getVisualSize(overlay, bounds.width, bounds.height)), location);
 				}
 				else if (preferredLocation != null)
 				{
@@ -348,11 +349,17 @@ public class OverlayRenderer extends MouseAdapter
 				}
 
 				// Clamp the overlay position to ensure it is on screen or within parent bounds
-				clampOverlayLocation(location.x, location.y, bounds.width, bounds.height, overlay.getParentBounds(), location);
+				final Dimension visualSize = getVisualSize(overlay, bounds.width, bounds.height);
+				clampOverlayLocation(location.x, location.y, visualSize.width, visualSize.height, overlay.getParentBounds(), location);
 
 				if (overlay.getPreferredSize() != null)
 				{
 					bounds.setSize(overlay.getPreferredSize());
+				}
+
+				if (overlayNative)
+				{
+					setNativeContentScale(graphics, overlay, overlayPosition);
 				}
 
 				final boolean previousNative = OverlayUtil.setCurrentOverlayNative(overlayNative);
@@ -362,7 +369,7 @@ public class OverlayRenderer extends MouseAdapter
 				}
 				try
 				{
-					safeRender(overlay, graphics, location);
+					safeRender(overlay, graphics, location, overlayNative);
 				}
 				finally
 				{
@@ -376,7 +383,7 @@ public class OverlayRenderer extends MouseAdapter
 				// Adjust snap corner based on where the overlay was drawn
 				if (snapCorner != null && bounds.width + bounds.height > 0)
 				{
-					snapCorner.shift(bounds, PADDING);
+					snapCorner.shift(getHitBounds(overlay), PADDING);
 				}
 
 				// Restore graphics2d properties prior to drawing bounds
@@ -393,6 +400,8 @@ public class OverlayRenderer extends MouseAdapter
 
 				if (!bounds.isEmpty())
 				{
+					final Rectangle hitBounds = getHitBounds(overlay);
+
 					if (inOverlayManagingMode && overlay.isMovable())
 					{
 						Color boundsColor;
@@ -417,11 +426,11 @@ public class OverlayRenderer extends MouseAdapter
 						}
 
 						graphics.setColor(boundsColor);
-						graphics.draw(bounds);
+						graphics.draw(hitBounds);
 						graphics.setPaint(paint);
 					}
 
-					if (!client.isMenuOpen() && !client.isWidgetSelected() && bounds.contains(mousePosition))
+					if (!client.isMenuOpen() && !client.isWidgetSelected() && hitBounds.contains(mousePosition))
 					{
 						if (curHoveredOverlay == null || bounds.width * bounds.height <= curHoveredOverlay.getBounds().width * curHoveredOverlay.getBounds().height)
 						{
@@ -511,6 +520,65 @@ public class OverlayRenderer extends MouseAdapter
 		return nativeOverlayBuffer;
 	}
 
+	/**
+	 * Tells decorations drawn into the native overlay buffer how much to shrink: widget item
+	 * overlays follow the stretched inventory, world overlays cancel the stretch per axis, and
+	 * interface overlays follow the panel content scale.
+	 */
+	private void setNativeContentScale(final Graphics2D graphics, final Overlay overlay, final OverlayPosition position)
+	{
+		if (overlay instanceof WidgetItemOverlay)
+		{
+			OverlayUtil.setNativeOverlayProperties(graphics, 1, 1);
+		}
+		else if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
+		{
+			OverlayUtil.setNativeOverlayProperties(graphics,
+				nativeOverlayBuffer.getFixedSizeContentScaleX(),
+				nativeOverlayBuffer.getFixedSizeContentScaleY());
+		}
+		else
+		{
+			OverlayUtil.setNativeOverlayProperties(graphics,
+				nativeOverlayBuffer.getPanelContentScaleX(),
+				nativeOverlayBuffer.getPanelContentScaleY());
+		}
+	}
+
+	/**
+	 * Canvas-space size the overlay occupies once the native overlay content scale is applied.
+	 * Widget overlays only reposition game interfaces, which follow the UI stretch, so they keep
+	 * their logical size.
+	 */
+	private Dimension getVisualSize(final Overlay overlay, final int logicalWidth, final int logicalHeight)
+	{
+		final OverlayPosition position = getCorrectedOverlayPosition(overlay);
+
+		if (!nativeOverlayBuffer.isActive()
+			|| !overlay.isPreferNativeResolution()
+			|| overlay instanceof WidgetOverlays.WidgetOverlay
+			|| position == OverlayPosition.DYNAMIC
+			|| position == OverlayPosition.TOOLTIP)
+		{
+			return new Dimension(logicalWidth, logicalHeight);
+		}
+
+		return new Dimension(
+			Math.max(0, (int) Math.round(logicalWidth * nativeOverlayBuffer.getPanelContentScaleX())),
+			Math.max(0, (int) Math.round(logicalHeight * nativeOverlayBuffer.getPanelContentScaleY())));
+	}
+
+	/**
+	 * Bounds to hit-test and outline the overlay with, which is its drawn size rather than the
+	 * size it laid out at.
+	 */
+	private Rectangle getHitBounds(final Overlay overlay)
+	{
+		final Rectangle bounds = overlay.getBounds();
+		final Dimension visualSize = getVisualSize(overlay, bounds.width, bounds.height);
+		return new Rectangle(bounds.getLocation(), visualSize);
+	}
+
 	@Override
 	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
@@ -579,7 +647,7 @@ public class OverlayRenderer extends MouseAdapter
 			return mouseEvent;
 		}
 
-		final Rectangle toleranceRect = new Rectangle(currentManagedOverlay.getBounds());
+		final Rectangle toleranceRect = getHitBounds(currentManagedOverlay);
 		toleranceRect.grow(-OVERLAY_RESIZE_TOLERANCE, -OVERLAY_RESIZE_TOLERANCE);
 		final int outcode = toleranceRect.outcode(mouseEvent.getPoint());
 
@@ -738,7 +806,8 @@ public class OverlayRenderer extends MouseAdapter
 
 			// Clamp drag to parent component
 			final Rectangle overlayBounds = currentManagedOverlay.getBounds();
-			clampOverlayLocation(overlayPosition.x, overlayPosition.y, overlayBounds.width, overlayBounds.height, currentManagedOverlay.getParentBounds(), overlayPosition);
+			final Dimension visualSize = getVisualSize(currentManagedOverlay, overlayBounds.width, overlayBounds.height);
+			clampOverlayLocation(overlayPosition.x, overlayPosition.y, visualSize.width, visualSize.height, currentManagedOverlay.getParentBounds(), overlayPosition);
 
 			if (currentManagedOverlay.getOrigin() == OverlayOrigin.AUTO)
 			{
@@ -860,14 +929,18 @@ public class OverlayRenderer extends MouseAdapter
 		}
 	}
 
-	private void safeRender(Overlay overlay, Graphics2D graphics, Point point)
+	private void safeRender(Overlay overlay, Graphics2D graphics, Point point, boolean nativePass)
 	{
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			graphics.setFont(font);
+			// World overlays draw at stretch scale, so shrink the glyphs to keep their canvas size
+			final float sizeFactor = nativePass && position == OverlayPosition.DYNAMIC && !(overlay instanceof WidgetItemOverlay)
+				? (float) nativeOverlayBuffer.getFixedSizeContentScaleX()
+				: 1f;
+			graphics.setFont(sizeFactor == 1f ? font : font.deriveFont(font.getSize2D() * sizeFactor));
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
@@ -879,6 +952,12 @@ public class OverlayRenderer extends MouseAdapter
 		}
 
 		graphics.translate(point.x, point.y);
+
+		if (nativePass && position != OverlayPosition.DYNAMIC && position != OverlayPosition.TOOLTIP)
+		{
+			graphics.scale(nativeOverlayBuffer.getPanelContentScaleX(), nativeOverlayBuffer.getPanelContentScaleY());
+		}
+
 		overlay.getBounds().setLocation(point);
 
 		final Dimension overlayDimension;
