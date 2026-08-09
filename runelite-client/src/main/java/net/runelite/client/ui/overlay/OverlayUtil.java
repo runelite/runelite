@@ -34,6 +34,8 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -117,6 +119,91 @@ public class OverlayUtil
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2 + 1, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
 		graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
+	}
+
+	/**
+	 * Draws a circular ring. With antialiasing on this is a stroked ellipse; with antialiasing
+	 * off (GPU nearest UI pixel grid) it is a symmetric Euclidean annulus, which is slightly
+	 * smaller than a centered {@link BasicStroke} but free of aliasing artifacts.
+	 *
+	 * @param x top-left of the diameter×diameter oval frame, as for {@code drawOval}
+	 * @param thickness stroke width in pixels
+	 */
+	public static void drawPixelRing(Graphics2D graphics, int x, int y, int diameter, int thickness)
+	{
+		drawPixelArc(graphics, x, y, diameter, thickness, 0, -360);
+	}
+
+	/**
+	 * Same as {@link #drawPixelRing} but limited to an arc using {@link Arc2D} angle conventions:
+	 * {@code startAngle} in degrees (0 = 3 o'clock, counter-clockwise positive) and
+	 * {@code extentAngle} in degrees (negative = clockwise).
+	 */
+	public static void drawPixelArc(Graphics2D graphics, int x, int y, int diameter, int thickness,
+		double startAngle, double extentAngle)
+	{
+		if (diameter <= 0 || thickness <= 0 || extentAngle == 0)
+		{
+			return;
+		}
+
+		thickness = Math.min(thickness, diameter);
+		final boolean fullCircle = Math.abs(extentAngle) >= 360;
+
+		if (graphics.getRenderingHint(RenderingHints.KEY_ANTIALIASING) != RenderingHints.VALUE_ANTIALIAS_OFF)
+		{
+			final Stroke originalStroke = graphics.getStroke();
+			graphics.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
+			graphics.draw(fullCircle
+				? new Ellipse2D.Double(x - 0.5, y - 0.5, diameter, diameter)
+				: new Arc2D.Double(x - 0.5, y - 0.5, diameter, diameter, startAngle, extentAngle, Arc2D.OPEN));
+			graphics.setStroke(originalStroke);
+			return;
+		}
+
+		final double cx = x + diameter / 2.0 - 0.5;
+		final double cy = y + diameter / 2.0 - 0.5;
+		final double radius = diameter / 2.0 - 0.5;
+		final double rOuter = radius + thickness / 2.0;
+		final double rInner = Math.max(0, radius - thickness / 2.0);
+		final double outerSq = rOuter * rOuter;
+		final double innerSq = rInner * rInner;
+		final int pad = (int) Math.ceil(thickness / 2.0) + 1;
+
+		for (int py = y - pad; py < y + diameter + pad; py++)
+		{
+			final double dy = py - cy;
+			final double dySq = dy * dy;
+			for (int px = x - pad; px < x + diameter + pad; px++)
+			{
+				final double dx = px - cx;
+				final double distanceSq = dx * dx + dySq;
+				if (distanceSq > outerSq || distanceSq <= innerSq)
+				{
+					continue;
+				}
+				if (!fullCircle && !isAngleOnArc(Math.toDegrees(Math.atan2(cy - py, px - cx)), startAngle, extentAngle))
+				{
+					continue;
+				}
+				graphics.fillRect(px, py, 1, 1);
+			}
+		}
+	}
+
+	private static boolean isAngleOnArc(double degrees, double startAngle, double extentAngle)
+	{
+		final double start = normalizeDegrees(startAngle);
+		final double angle = normalizeDegrees(degrees);
+		return extentAngle < 0
+			? normalizeDegrees(start - angle) <= -extentAngle
+			: normalizeDegrees(angle - start) <= extentAngle;
+	}
+
+	private static double normalizeDegrees(double degrees)
+	{
+		final double normalized = degrees % 360;
+		return normalized < 0 ? normalized + 360 : normalized;
 	}
 
 	@Deprecated
@@ -327,7 +414,13 @@ public class OverlayUtil
 
 	public static void setGraphicProperties(Graphics2D graphics)
 	{
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		setGraphicProperties(graphics, true);
+	}
+
+	public static void setGraphicProperties(Graphics2D graphics, boolean antialias)
+	{
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+			antialias ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
 	}
 
 	/**

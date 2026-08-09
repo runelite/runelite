@@ -24,14 +24,10 @@
  */
 package net.runelite.client.plugins.regenmeter;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
-import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.annotations.Component;
@@ -40,13 +36,15 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class RegenMeterOverlay extends Overlay
 {
 	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
 	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
-	private static final double DIAMETER = 26D;
+	private static final int DIAMETER = 26;
 	private static final int OFFSET = 27;
+	private static final int STROKE = 2;
 
 	private final Client client;
 	private final RegenMeterPlugin plugin;
@@ -64,6 +62,7 @@ class RegenMeterOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPreferUiPixelGrid(true);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
@@ -72,8 +71,6 @@ class RegenMeterOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
-		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-
 		if (config.showHitpoints())
 		{
 			renderRegen(g, InterfaceID.Orbs.ORB_HEALTH, InterfaceID.OrbsNomap.ORB_HEALTH, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
@@ -99,11 +96,10 @@ class RegenMeterOverlay extends Overlay
 			return;
 		}
 		Rectangle bounds = widget.getBounds();
+		final int x = bounds.x + OFFSET;
+		final int y = bounds.y + (bounds.height / 2 - DIAMETER / 2);
 
-		Arc2D.Double arc = new Arc2D.Double(bounds.x + OFFSET, bounds.y + (bounds.height / 2 - DIAMETER / 2), DIAMETER, DIAMETER, 90.d, -360.d * percent, Arc2D.OPEN);
-		final Stroke STROKE = new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
-		g.setStroke(STROKE);
 		g.setColor(color);
-		g.draw(arc);
+		OverlayUtil.drawPixelArc(g, x, y, DIAMETER, STROKE, 90, -360.0 * percent);
 	}
 }

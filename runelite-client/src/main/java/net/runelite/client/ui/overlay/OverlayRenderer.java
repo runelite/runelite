@@ -61,6 +61,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -68,6 +69,8 @@ import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.plugins.gpu.GpuPluginConfig;
+import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
@@ -95,6 +98,7 @@ public class OverlayRenderer extends MouseAdapter
 	private final ChatMessageManager chatMessageManager;
 	private final SnapCorners snapCorners;
 	private final NativeOverlayBuffer nativeOverlayBuffer;
+	private final GpuPluginConfig gpuPluginConfig;
 
 	private Font font, tooltipFont, interfaceFont;
 
@@ -124,7 +128,8 @@ public class OverlayRenderer extends MouseAdapter
 		final EventBus eventBus,
 		final ChatMessageManager chatMessageManager,
 		final SnapCorners snapCorners,
-		final NativeOverlayBuffer nativeOverlayBuffer
+		final NativeOverlayBuffer nativeOverlayBuffer,
+		final ConfigManager configManager
 	)
 	{
 		this.client = client;
@@ -135,6 +140,7 @@ public class OverlayRenderer extends MouseAdapter
 		this.chatMessageManager = chatMessageManager;
 		this.snapCorners = snapCorners;
 		this.nativeOverlayBuffer = nativeOverlayBuffer;
+		this.gpuPluginConfig = configManager.getConfig(GpuPluginConfig.class);
 
 		HotkeyListener hotkeyListener = new HotkeyListener(runeLiteConfig::dragHotkey)
 		{
@@ -324,6 +330,12 @@ public class OverlayRenderer extends MouseAdapter
 				final RenderingHints renderingHints = graphics.getRenderingHints();
 				final Color background = graphics.getBackground();
 
+				if (!overlayNative && overlay.isPreferUiPixelGrid() && isGpuUiNearest())
+				{
+					// Shapes sharing the UI pixel grid must not be antialiased across its texels
+					OverlayUtil.setGraphicProperties(graphics, false);
+				}
+
 				graphics.setClip(clip);
 
 				final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
@@ -454,13 +466,20 @@ public class OverlayRenderer extends MouseAdapter
 	/**
 	 * Whether this overlay draws into a native overlay buffer. On CPU only above-UI layers
 	 * can: the software frame already merges scene and widgets, so an under-UI composite
-	 * would draw on top of interfaces.
+	 * would draw on top of interfaces. Overlays opting into the UI pixel grid stay on the
+	 * canvas under GPU nearest sampling, so their shapes are upscaled with the UI texels.
 	 */
 	private boolean shouldUseNativePass(final Overlay overlay, final OverlayLayer layer)
 	{
 		return nativeOverlayBuffer.isActive()
 			&& overlay.isPreferNativeResolution()
+			&& !(overlay.isPreferUiPixelGrid() && isGpuUiNearest())
 			&& (client.isGpu() || NativeOverlayBuffer.isAboveUiLayer(layer));
+	}
+
+	private boolean isGpuUiNearest()
+	{
+		return client.isGpu() && gpuPluginConfig.uiScalingMode() == UIScalingMode.NEAREST;
 	}
 
 	/**

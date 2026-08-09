@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -43,6 +42,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
@@ -51,6 +51,7 @@ class PrayerDoseOverlay extends Overlay
 {
 	private static final float PULSE_TIME = 2f * Constants.GAME_TICK_LENGTH;
 	private static final double DARKEN_FACTOR = 0.36078;
+	private static final int RING_THICKNESS = 2;
 	private final Client client;
 	private final PrayerPlugin plugin;
 	private final PrayerConfig config;
@@ -70,6 +71,7 @@ class PrayerDoseOverlay extends Overlay
 		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPreferUiPixelGrid(true);
 	}
 
 	void onTick()
@@ -155,8 +157,7 @@ class PrayerDoseOverlay extends Overlay
 			endColor(startColor),
 			Math.sin(t)));
 
-		graphics.setStroke(new BasicStroke(2));
-		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
+		OverlayUtil.drawPixelRing(graphics, orbInnerX, orbInnerY, orbInnerSize, RING_THICKNESS);
 		return null;
 	}
 

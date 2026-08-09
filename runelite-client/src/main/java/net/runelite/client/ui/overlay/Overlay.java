@@ -110,6 +110,14 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private boolean preferNativeResolution = true;
 
 	/**
+	 * When GPU UI scaling is nearest neighbor, draw this overlay on the canvas instead of the
+	 * native buffer so its shapes share the game UI pixel grid. Opt in only for geometry
+	 * overlays (orb rings, arcs); text and panels stay on the native path.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean preferUiPixelGrid;
+
+	/**
 	 * DYNAMIC overlays that should follow Fixed overlay size / aspect ratio like infoboxes
 	 * (e.g. FPS and ping counters), instead of world-overlay scaling. Applies the panel content
 	 * scale to the whole Graphics2D, so positions are in content space.
