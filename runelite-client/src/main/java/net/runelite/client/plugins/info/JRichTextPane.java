@@ -24,15 +24,13 @@
  */
 package net.runelite.client.plugins.info;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.LinkBrowser;
 
 @Slf4j
 public class JRichTextPane extends JEditorPane
@@ -68,17 +66,7 @@ public class JRichTextPane extends JEditorPane
 				{
 					if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
 					{
-						if (Desktop.isDesktopSupported())
-						{
-							try
-							{
-								Desktop.getDesktop().browse(e.getURL().toURI());
-							}
-							catch (URISyntaxException | IOException ex)
-							{
-								log.warn("Error opening link", ex);
-							}
-						}
+						LinkBrowser.browse(e.getURL().toString());
 					}
 				};
 				addHyperlinkListener(linkHandler);
