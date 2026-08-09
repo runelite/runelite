@@ -34,6 +34,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -89,7 +90,7 @@ class AbyssMinimapOverlay extends Overlay
 
 			if (miniMapImage != null)
 			{
-				graphics.drawImage(image, miniMapImage.getX(), miniMapImage.getY(), null);
+				OverlayUtil.renderImageLocation(graphics, miniMapImage, image);
 			}
 		}
 

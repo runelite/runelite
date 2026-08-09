@@ -101,6 +101,14 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	@Setter(AccessLevel.PROTECTED)
 	private boolean snappable = true;
 
+	/**
+	 * When stretched mode is on, whether this overlay draws into the native
+	 * (display-resolution) buffer. Builtin overlays default to true. Hub and
+	 * sideloaded plugin overlays default to false and must opt in.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean preferNativeResolution = true;
+
 	protected Overlay()
 	{
 		plugin = null;
@@ -109,6 +117,18 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	protected Overlay(@Nullable Plugin plugin)
 	{
 		this.plugin = plugin;
+		if (plugin != null && !isBuiltinPlugin(plugin))
+		{
+			preferNativeResolution = false;
+		}
+	}
+
+	/**
+	 * Builtin plugins share the client classloader; hub/sideload plugins use a separate loader.
+	 */
+	private static boolean isBuiltinPlugin(Plugin plugin)
+	{
+		return plugin.getClass().getClassLoader() == Plugin.class.getClassLoader();
 	}
 
 	public void setPriority(float priority)

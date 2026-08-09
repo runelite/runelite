@@ -27,11 +27,13 @@ package net.runelite.client.ui.overlay;
 import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -51,6 +53,28 @@ public class OverlayUtil
 	 * overlay's {@link Graphics2D}.
 	 */
 	private static final ThreadLocal<Boolean> CURRENT_OVERLAY_NATIVE = ThreadLocal.withInitial(() -> false);
+
+	/**
+	 * Canvas-space scale for decorations (images, text) drawn into the native overlay buffer.
+	 * Defaults to 1.0, meaning sprites grow with stretch like the scene they are anchored to.
+	 */
+	public static final RenderingHints.Key KEY_NATIVE_VISUAL_SIZE_FACTOR = new RenderingHints.Key(0x4e4f5649)
+	{
+		@Override
+		public boolean isCompatibleValue(Object val)
+		{
+			return val instanceof Number;
+		}
+	};
+
+	public static final RenderingHints.Key KEY_NATIVE_VISUAL_SIZE_FACTOR_Y = new RenderingHints.Key(0x4e4f5659)
+	{
+		@Override
+		public boolean isCompatibleValue(Object val)
+		{
+			return val instanceof Number;
+		}
+	};
 
 	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
@@ -118,12 +142,72 @@ public class OverlayUtil
 		}
 	}
 
+	/**
+	 * Canvas-space width/height the image occupies after native overlay size scaling.
+	 * Use this for layout next to text instead of {@link BufferedImage#getWidth()}/{@link BufferedImage#getHeight()}.
+	 */
+	public static Dimension getImageLayoutSize(Graphics2D graphics, BufferedImage image)
+	{
+		double fx = getNativeVisualSizeFactor(graphics);
+		double fy = getNativeVisualSizeFactorY(graphics);
+		if (fx == 1.0 && fy == 1.0)
+		{
+			return new Dimension(image.getWidth(), image.getHeight());
+		}
+		return new Dimension(
+			Math.max(1, (int) Math.round(image.getWidth() * fx)),
+			Math.max(1, (int) Math.round(image.getHeight() * fy)));
+	}
+
+	/**
+	 * Renders an image at a canvas location. {@code imgLoc} is the top-left of the full bitmap
+	 * footprint (as returned by {@link Perspective#getCanvasImageLocation} / actor canvas image
+	 * helpers), so a scaled-down sprite stays centered in that footprint.
+	 */
 	public static void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
 	{
-		int x = imgLoc.getX();
-		int y = imgLoc.getY();
+		Dimension layout = getImageLayoutSize(graphics, image);
+		int x = imgLoc.getX() + (image.getWidth() - layout.width) / 2;
+		int y = imgLoc.getY() + (image.getHeight() - layout.height) / 2;
+		renderImageLocationExact(graphics, x, y, image);
+	}
 
-		graphics.drawImage(image, x, y, null);
+	/**
+	 * Renders an image with {@code (x, y)} as the top-left of the drawn (layout-sized) sprite.
+	 * Use with {@link #getImageLayoutSize} when packing icons next to text.
+	 */
+	public static void renderImageLocationExact(Graphics2D graphics, Point imgLoc, BufferedImage image)
+	{
+		renderImageLocationExact(graphics, imgLoc.getX(), imgLoc.getY(), image);
+	}
+
+	private static void renderImageLocationExact(Graphics2D graphics, int x, int y, BufferedImage image)
+	{
+		double fx = getNativeVisualSizeFactor(graphics);
+		double fy = getNativeVisualSizeFactorY(graphics);
+		if (fx == 1.0 && fy == 1.0)
+		{
+			graphics.drawImage(image, x, y, null);
+			return;
+		}
+
+		AffineTransform transform = graphics.getTransform();
+		graphics.translate(x, y);
+		graphics.scale(fx, fy);
+		graphics.drawImage(image, 0, 0, null);
+		graphics.setTransform(transform);
+	}
+
+	public static double getNativeVisualSizeFactor(Graphics2D graphics)
+	{
+		Object value = graphics.getRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR);
+		return value instanceof Number ? ((Number) value).doubleValue() : 1.0;
+	}
+
+	public static double getNativeVisualSizeFactorY(Graphics2D graphics)
+	{
+		Object value = graphics.getRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR_Y);
+		return value instanceof Number ? ((Number) value).doubleValue() : getNativeVisualSizeFactor(graphics);
 	}
 
 	public static void renderActorOverlay(Graphics2D graphics, Actor actor, String text, Color color)

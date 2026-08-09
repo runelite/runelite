@@ -45,6 +45,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.util.ColorUtil;
 
@@ -131,7 +132,7 @@ public class BlastMineRockOverlay extends Overlay
 
 		if (loc != null)
 		{
-			graphics.drawImage(icon, loc.getX(), loc.getY(), null);
+			OverlayUtil.renderImageLocation(graphics, loc, icon);
 		}
 	}
 

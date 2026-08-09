@@ -139,7 +139,7 @@ class MotherlodeSceneOverlay extends Overlay
 
 		if (canvasLoc != null)
 		{
-			graphics.drawImage(miningIcon, canvasLoc.getX(), canvasLoc.getY(), null);
+			OverlayUtil.renderImageLocation(graphics, canvasLoc, miningIcon);
 		}
 	}
 

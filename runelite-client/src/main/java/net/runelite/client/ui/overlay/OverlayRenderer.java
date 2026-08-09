@@ -289,37 +289,43 @@ public class OverlayRenderer extends MouseAdapter
 			nativeOverlayBuffer.prepareFrame();
 		}
 
-		final Graphics2D nativeGraphics = createNativeGraphics(layer);
-		final Graphics2D graphics = nativeGraphics == null ? canvasGraphics : nativeGraphics;
-		final boolean previousNative = OverlayUtil.setCurrentOverlayNative(nativeGraphics != null);
-		if (nativeGraphics != null)
-		{
-			nativeOverlayBuffer.setActivePass(nativeOverlayBuffer.passForLayer(layer));
-		}
+		OverlayUtil.setGraphicProperties(canvasGraphics);
+
+		// Cache overlay fonts
+		this.font = runeLiteConfig.dynamicOverlayFont().getFont();
+		this.tooltipFont = runeLiteConfig.tooltipFont().getFont();
+		this.interfaceFont = runeLiteConfig.interfaceFont().getFont();
+
+		final Rectangle clip = clipBounds(layer);
+		final Point location = new Point();
+		Graphics2D nativeGraphics = null;
 
 		try
 		{
-			OverlayUtil.setGraphicProperties(graphics);
-
-			// Save graphics2d properties so we can restore them later
-			final AffineTransform transform = graphics.getTransform();
-			final Stroke stroke = graphics.getStroke();
-			final Composite composite = graphics.getComposite();
-			final Paint paint = graphics.getPaint();
-			final RenderingHints renderingHints = graphics.getRenderingHints();
-			final Color background = graphics.getBackground();
-
-			// Cache overlay fonts
-			this.font = runeLiteConfig.dynamicOverlayFont().getFont();
-			this.tooltipFont = runeLiteConfig.tooltipFont().getFont();
-			this.interfaceFont = runeLiteConfig.interfaceFont().getFont();
-
-			final Rectangle clip = clipBounds(layer);
-			graphics.setClip(clip);
-
-			final Point location = new Point();
 			for (Overlay overlay : overlays)
 			{
+				boolean overlayNative = shouldUseNativePass(overlay, layer);
+				if (overlayNative)
+				{
+					if (nativeGraphics == null)
+					{
+						nativeGraphics = createNativeGraphics(layer);
+					}
+					overlayNative = nativeGraphics != null;
+				}
+
+				final Graphics2D graphics = overlayNative ? nativeGraphics : canvasGraphics;
+
+				// Save graphics2d properties so we can restore them later
+				final AffineTransform transform = graphics.getTransform();
+				final Stroke stroke = graphics.getStroke();
+				final Composite composite = graphics.getComposite();
+				final Paint paint = graphics.getPaint();
+				final RenderingHints renderingHints = graphics.getRenderingHints();
+				final Color background = graphics.getBackground();
+
+				graphics.setClip(clip);
+
 				final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
 				final Rectangle bounds = overlay.getBounds();
 				final Point preferredLocation = overlay.getPreferredLocation();
@@ -349,7 +355,23 @@ public class OverlayRenderer extends MouseAdapter
 					bounds.setSize(overlay.getPreferredSize());
 				}
 
-				safeRender(overlay, graphics, location);
+				final boolean previousNative = OverlayUtil.setCurrentOverlayNative(overlayNative);
+				if (overlayNative)
+				{
+					nativeOverlayBuffer.setActivePass(nativeOverlayBuffer.passForLayer(layer));
+				}
+				try
+				{
+					safeRender(overlay, graphics, location);
+				}
+				finally
+				{
+					OverlayUtil.setCurrentOverlayNative(previousNative);
+					if (overlayNative)
+					{
+						nativeOverlayBuffer.setActivePass(null);
+					}
+				}
 
 				// Adjust snap corner based on where the overlay was drawn
 				if (snapCorner != null && bounds.width + bounds.height > 0)
@@ -412,9 +434,6 @@ public class OverlayRenderer extends MouseAdapter
 		}
 		finally
 		{
-			OverlayUtil.setCurrentOverlayNative(previousNative);
-			nativeOverlayBuffer.setActivePass(null);
-
 			if (nativeGraphics != null)
 			{
 				nativeGraphics.dispose();
@@ -424,13 +443,14 @@ public class OverlayRenderer extends MouseAdapter
 	}
 
 	/**
-	 * Whether this layer draws into a native overlay buffer. On CPU only above-UI layers
+	 * Whether this overlay draws into a native overlay buffer. On CPU only above-UI layers
 	 * can: the software frame already merges scene and widgets, so an under-UI composite
 	 * would draw on top of interfaces.
 	 */
-	private boolean shouldUseNativePass(final OverlayLayer layer)
+	private boolean shouldUseNativePass(final Overlay overlay, final OverlayLayer layer)
 	{
 		return nativeOverlayBuffer.isActive()
+			&& overlay.isPreferNativeResolution()
 			&& (client.isGpu() || NativeOverlayBuffer.isAboveUiLayer(layer));
 	}
 
@@ -438,22 +458,19 @@ public class OverlayRenderer extends MouseAdapter
 	 * Graphics2D into the native overlay buffer for this layer's pass. Overlays keep
 	 * drawing in canvas coordinates but rasterize at display resolution.
 	 *
-	 * @return null when this layer does not use a native buffer
+	 * @return null when the buffer for this layer is unavailable
 	 */
 	private Graphics2D createNativeGraphics(final OverlayLayer layer)
 	{
-		if (!shouldUseNativePass(layer))
-		{
-			return null;
-		}
-
 		final BufferedImage target = nativeOverlayBuffer.getImage(nativeOverlayBuffer.passForLayer(layer));
 		if (target == null)
 		{
 			return null;
 		}
 
-		return createScaledGraphics(target);
+		final Graphics2D nativeGraphics = createScaledGraphics(target);
+		OverlayUtil.setGraphicProperties(nativeGraphics);
+		return nativeGraphics;
 	}
 
 	private Graphics2D createScaledGraphics(final BufferedImage target)
