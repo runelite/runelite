@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
@@ -53,7 +54,10 @@ import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
@@ -127,6 +131,40 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 
 	@Inject
 	private TabInterface tabInterface;
+
+	@Inject
+	private KeyManager keyManager;
+
+	private final KeyListener filterHotkeyListener = new KeyListener()
+	{
+		@Override
+		public void keyTyped(KeyEvent e)
+		{
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			Keybind keybind = config.filterTagTabsKeybind();
+			if (keybind.matches(e))
+			{
+				e.consume();
+				clientThread.invoke(() ->
+				{
+					Widget bank = client.getWidget(InterfaceID.Bankmain.ITEMS_CONTAINER);
+					if (bank != null && !bank.isHidden())
+					{
+						tabInterface.filterTagTabs();
+					}
+				});
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+		}
+	};
 
 	@Inject
 	private LayoutManager layoutManager;
@@ -207,6 +245,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		spriteManager.addSpriteOverrides(TabSprites.values());
 		eventBus.register(tabInterface);
 		layoutManager.register();
+		keyManager.registerKeyListener(filterHotkeyListener);
 		clientThread.invokeLater(this::reinitBank);
 	}
 
@@ -215,6 +254,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	{
 		eventBus.unregister(tabInterface);
 		layoutManager.unregister();
+		keyManager.unregisterKeyListener(filterHotkeyListener);
 		clientThread.invokeLater(() ->
 		{
 			// since the tab interface is unregistered from the eventbus, manually deinit it
