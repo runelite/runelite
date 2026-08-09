@@ -99,4 +99,26 @@ public interface StretchedModeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "fixedMenuSize",
+		name = "Fixed menu size",
+		description = "Keep the right-click menu smaller than full UI stretch. With Fixed menu aspect ratio off, it still matches the window's aspect; with it on, it stays true canvas size. Requires native resolution overlays.",
+		position = 6
+	)
+	default boolean fixedMenuSize()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "fixedMenuAspectRatio",
+		name = "Fixed menu aspect ratio",
+		description = "When the menu scales with stretch, keep its aspect ratio so it is not squashed on ultrawide layouts. Only applies when horizontal and vertical stretch differ (typically with Keep aspect ratio off). With Fixed menu size on, forces true canvas size.",
+		position = 7
+	)
+	default boolean fixedMenuAspectRatio()
+	{
+		return false;
+	}
 }
