@@ -83,6 +83,7 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.NativeOverlayBuffer;
+import net.runelite.client.ui.overlay.NativeOverlayMenu;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -106,6 +107,7 @@ public class Hooks implements Callbacks
 
 	private final Client client;
 	private final OverlayRenderer renderer;
+	private final NativeOverlayMenu nativeOverlayMenu;
 	private final EventBus eventBus;
 	private final DeferredEventBus deferredEventBus;
 	private final Scheduler scheduler;
@@ -181,6 +183,7 @@ public class Hooks implements Callbacks
 	private Hooks(
 		Client client,
 		OverlayRenderer renderer,
+		NativeOverlayMenu nativeOverlayMenu,
 		EventBus eventBus,
 		DeferredEventBus deferredEventBus,
 		Scheduler scheduler,
@@ -201,6 +204,7 @@ public class Hooks implements Callbacks
 	{
 		this.client = client;
 		this.renderer = renderer;
+		this.nativeOverlayMenu = nativeOverlayMenu;
 		this.eventBus = eventBus;
 		this.deferredEventBus = deferredEventBus;
 		this.scheduler = scheduler;
@@ -491,6 +495,13 @@ public class Hooks implements Callbacks
 					stretchedGraphics.drawImage(above, 0, 0, null);
 					nativeBuffer.finishComposite(NativeOverlayBuffer.Pass.ABOVE_UI);
 				}
+			}
+
+			// Deferred translucent menu over the sharp above-UI overlays.
+			if (nativeOverlayMenu.hasDeferredMenu())
+			{
+				stretchedGraphics.setComposite(AlphaComposite.SrcOver);
+				nativeOverlayMenu.compositeOntoStretched(stretchedGraphics);
 			}
 
 			finalImage = stretchedImage;

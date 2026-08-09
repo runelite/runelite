@@ -253,6 +253,11 @@ public class InterfaceStylesPlugin extends Plugin
 	@Subscribe
 	public void onBeforeMenuRender(BeforeMenuRender event)
 	{
+		if (event.isConsumed())
+		{
+			return;
+		}
+
 		if (config.hdMenu())
 		{
 			client.draw2010Menu(config.menuAlpha());

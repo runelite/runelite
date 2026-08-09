@@ -78,6 +78,7 @@ import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.NativeOverlayBuffer;
+import net.runelite.client.ui.overlay.NativeOverlayMenu;
 import net.runelite.rlawt.AWTContext;
 import org.lwjgl.opengl.GL;
 import static org.lwjgl.opengl.GL33C.*;
@@ -138,6 +139,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Inject
 	private NativeOverlayBuffer nativeOverlayBuffer;
 
+	@Inject
+	private NativeOverlayMenu nativeOverlayMenu;
+
 	private Canvas canvas;
 	private AWTContext awtContext;
 	private Callback debugCallback;
@@ -169,6 +173,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int overheadsTexture;
 	private int lastOverheadsWidth = -1;
 	private int lastOverheadsHeight = -1;
+	private int menuTexture;
 
 	private int vaoUiHandle;
 	private int vboUiHandle;
@@ -801,6 +806,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		// Separate from overlayTexture so the deferred menu does not resize it every frame.
+		menuTexture = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, menuTexture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	private void shutdownInterfaceTexture()
@@ -817,6 +831,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			glDeleteTextures(overheadsTexture);
 			overheadsTexture = 0;
+		}
+		if (menuTexture != 0)
+		{
+			glDeleteTextures(menuTexture);
+			menuTexture = 0;
 		}
 		lastOverlayWidth = lastOverlayHeight = -1;
 		lastOverheadsWidth = lastOverheadsHeight = -1;
@@ -1561,6 +1580,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		drawNativeOverlays(NativeOverlayBuffer.Pass.UNDER_WIDGETS);
 		drawUi(overlayColor, canvasHeight, canvasWidth);
 		drawNativeOverlays(NativeOverlayBuffer.Pass.ABOVE_UI);
+		drawDeferredMenu(overlayColor);
 
 		try
 		{
@@ -1759,6 +1779,70 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDisable(GL_BLEND);
 
 		nativeOverlayBuffer.finishComposite(pass);
+	}
+
+	/**
+	 * Composite a deferred right-click menu after ABOVE_UI, so translucent Interface
+	 * Styles menus blend over the sharp native overlays instead of under them.
+	 * Sampled nearest so glyph edges do not pick up neighbouring translucent fill.
+	 */
+	private void drawDeferredMenu(final int overlayColor)
+	{
+		final BufferedImage menuImage = nativeOverlayMenu.captureMenuLayer();
+		final Rectangle dest = nativeOverlayMenu.getLastCaptureDest();
+		if (menuImage == null || dest == null || !client.isStretchedEnabled())
+		{
+			return;
+		}
+
+		final int width = menuImage.getWidth();
+		final int height = menuImage.getHeight();
+		final int[] argb = ((DataBufferInt) menuImage.getRaster().getDataBuffer()).getData();
+		for (int i = 0; i < argb.length; ++i)
+		{
+			final int p = argb[i];
+			final int a = p >>> 24;
+			if (a != 0 && a != 255)
+			{
+				final int r = p >> 16 & 0xFF;
+				final int g = p >> 8 & 0xFF;
+				final int b = p & 0xFF;
+				argb[i] = a << 24
+					| ((r * a + 127) / 255) << 16
+					| ((g * a + 127) / 255) << 8
+					| (b * a + 127) / 255;
+			}
+		}
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		glBindTexture(GL_TEXTURE_2D, menuTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, argb);
+
+		glUseProgram(glUiProgram);
+		glUniform1i(uniTex, 0);
+		glUniform2i(uniTexSourceDimensions, width, height);
+		glUniform4f(uniUiAlphaOverlay,
+			(overlayColor >> 16 & 0xFF) / 255f,
+			(overlayColor >> 8 & 0xFF) / 255f,
+			(overlayColor & 0xFF) / 255f,
+			(overlayColor >>> 24) / 255f
+		);
+		glUniform1f(uniUiColorblindIntensity, config.colorBlindIntensity());
+		glUniform2i(uniTexTargetDimensions, dest.width, dest.height);
+
+		// OpenGL viewport origin is bottom-left; dest is top-left AWT space.
+		final Dimension stretched = client.getStretchedDimensions();
+		glDpiAwareViewport(dest.x, stretched.height - dest.y - dest.height, dest.width, dest.height);
+
+		glBindVertexArray(vaoUiHandle);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindVertexArray(0);
+		glUseProgram(0);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDisable(GL_BLEND);
 	}
 
 	/**
