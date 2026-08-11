@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -469,7 +468,7 @@ class PluginHubPanel extends PluginPanel
 	private final JLabel refreshing;
 	private final JPanel mainPanel;
 	private final JScrollPane scrollPane;
-	private final AtomicLong filterGeneration = new AtomicLong();
+	private long filterGeneration;
 	private List<PluginItem> plugins = null;
 	private List<PluginItem> filteredPlugins = Collections.emptyList();
 	private int renderedPluginCount;
@@ -515,19 +514,19 @@ class PluginHubPanel extends PluginPanel
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
-				executor.execute(PluginHubPanel.this::filter);
+				filter();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e)
 			{
-				executor.execute(PluginHubPanel.this::filter);
+				filter();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
 			{
-				executor.execute(PluginHubPanel.this::filter);
+				filter();
 			}
 		});
 
@@ -617,7 +616,7 @@ class PluginHubPanel extends PluginPanel
 		filteredPlugins = Collections.emptyList();
 		renderedPluginCount = 0;
 		lastScrollValue = 0;
-		filterGeneration.incrementAndGet();
+		filterGeneration++;
 
 		executor.submit(() ->
 		{
@@ -690,52 +689,63 @@ class PluginHubPanel extends PluginPanel
 			}
 
 			refreshing.setVisible(false);
-			executor.execute(PluginHubPanel.this::filter);
+			filter();
 		});
 	}
 
 	void filter()
 	{
-		long generation = filterGeneration.incrementAndGet();
+		if (!SwingUtilities.isEventDispatchThread())
+		{
+			SwingUtilities.invokeLater(this::filter);
+			return;
+		}
+
+		long generation = ++filterGeneration;
 		if (refreshing.isVisible() || plugins == null)
 		{
 			return;
 		}
 
 		String query = searchBar.getText();
-		boolean isSearching = query != null && !query.trim().isEmpty();
-		List<PluginItem> pluginItems;
-		if (isSearching)
-		{
-			pluginItems = PluginSearch.search(plugins, query);
-		}
-		else
-		{
-			pluginItems = plugins.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
-				.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
-					.thenComparing(PluginItem::isInstalled)
-					.thenComparingInt(PluginItem::getUserCount)
-					.reversed()
-					.thenComparing(p -> p.manifest.getDisplayName())
-				)
-				.collect(Collectors.toList());
-		}
+		List<PluginItem> pluginSnapshot = plugins;
 
-		SwingUtilities.invokeLater(() ->
+		executor.execute(() ->
 		{
-			if (generation != filterGeneration.get())
+			boolean isSearching = query != null && !query.trim().isEmpty();
+			List<PluginItem> pluginItems;
+			if (isSearching)
 			{
-				return;
+				pluginItems = PluginSearch.search(pluginSnapshot, query);
+			}
+			else
+			{
+				pluginItems = pluginSnapshot.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
+					.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
+						.thenComparing(PluginItem::isInstalled)
+						.thenComparingInt(PluginItem::getUserCount)
+						.reversed()
+						.thenComparing(p -> p.manifest.getDisplayName())
+					)
+					.collect(Collectors.toList());
 			}
 
-			mainPanel.removeAll();
-			filteredPlugins = pluginItems;
-			renderedPluginCount = 0;
-			addPluginBatch(INITIAL_PLUGIN_COUNT);
-			scrollPane.getVerticalScrollBar().setValue(0);
-			lastScrollValue = 0;
-			mainPanel.revalidate();
-			mainPanel.repaint();
+			SwingUtilities.invokeLater(() ->
+			{
+				if (generation != filterGeneration)
+				{
+					return;
+				}
+
+				mainPanel.removeAll();
+				filteredPlugins = pluginItems;
+				renderedPluginCount = 0;
+				addPluginBatch(INITIAL_PLUGIN_COUNT);
+				scrollPane.getVerticalScrollBar().setValue(0);
+				lastScrollValue = 0;
+				mainPanel.revalidate();
+				mainPanel.repaint();
+			});
 		});
 	}
 
@@ -798,7 +808,7 @@ class PluginHubPanel extends PluginPanel
 		filteredPlugins = Collections.emptyList();
 		renderedPluginCount = 0;
 		lastScrollValue = 0;
-		filterGeneration.incrementAndGet();
+		filterGeneration++;
 		lastManifest = null;
 
 		synchronized (iconLoadQueue)
