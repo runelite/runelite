@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.agility;
 
 import java.awt.Color;
+
 import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -283,5 +284,18 @@ public interface AgilityConfig extends Config
 	default boolean highlightSepulchreSkilling()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "sepulchreTrueTile",
+		name = "True Tile",
+		description = "Use true tile for sepulchre obstacles instead of tile highlighting",
+		position = 21,
+		section = sepulchreSection
+	)
+
+	default boolean sepulchreTrueTile()
+	{
+		return false;
 	}
 }
