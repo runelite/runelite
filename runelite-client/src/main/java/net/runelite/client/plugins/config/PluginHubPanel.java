@@ -35,6 +35,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -472,6 +473,7 @@ class PluginHubPanel extends PluginPanel
 	private List<PluginItem> plugins = null;
 	private List<PluginItem> filteredPlugins = Collections.emptyList();
 	private int renderedPluginCount;
+	private int lastScrollValue;
 	private PluginHubManifest.ManifestFull lastManifest;
 
 	@Inject
@@ -571,7 +573,7 @@ class PluginHubPanel extends PluginPanel
 		// Can't use Short.MAX_VALUE like the docs say because of JDK-8079640
 		scrollPane.setPreferredSize(new Dimension(0x7000, 0x7000));
 		scrollPane.setViewportView(mainPanelWrapper);
-		scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> loadMorePluginsIfNeeded());
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(this::onScroll);
 
 		{
 			GroupLayout layout = new GroupLayout(this);
@@ -614,6 +616,7 @@ class PluginHubPanel extends PluginPanel
 		mainPanel.removeAll();
 		filteredPlugins = Collections.emptyList();
 		renderedPluginCount = 0;
+		lastScrollValue = 0;
 		filterGeneration.incrementAndGet();
 
 		executor.submit(() ->
@@ -730,9 +733,23 @@ class PluginHubPanel extends PluginPanel
 			renderedPluginCount = 0;
 			addPluginBatch(INITIAL_PLUGIN_COUNT);
 			scrollPane.getVerticalScrollBar().setValue(0);
+			lastScrollValue = 0;
 			mainPanel.revalidate();
 			mainPanel.repaint();
 		});
+	}
+
+	private void onScroll(AdjustmentEvent event)
+	{
+		int scrollValue = event.getValue();
+		if (scrollValue <= lastScrollValue)
+		{
+			lastScrollValue = scrollValue;
+			return;
+		}
+
+		lastScrollValue = scrollValue;
+		loadMorePluginsIfNeeded();
 	}
 
 	private void loadMorePluginsIfNeeded()
@@ -780,6 +797,7 @@ class PluginHubPanel extends PluginPanel
 		plugins = null;
 		filteredPlugins = Collections.emptyList();
 		renderedPluginCount = 0;
+		lastScrollValue = 0;
 		filterGeneration.incrementAndGet();
 		lastManifest = null;
 
