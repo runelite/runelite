@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -103,6 +104,9 @@ class PluginHubPanel extends PluginPanel
 	private static final ImageIcon CONFIGURE_ICON;
 	private static final ImageIcon PLUGIN_UNAVAILABLE_ICON;
 	private static final Pattern SPACES = Pattern.compile(" +");
+	private static final int INITIAL_PLUGIN_COUNT = 40;
+	private static final int PLUGIN_PAGE_SIZE = 30;
+	private static final int SCROLL_BUFFER_ROWS = 10;
 
 	static
 	{
@@ -463,7 +467,11 @@ class PluginHubPanel extends PluginPanel
 	private final IconTextField searchBar;
 	private final JLabel refreshing;
 	private final JPanel mainPanel;
+	private final JScrollPane scrollPane;
+	private final AtomicLong filterGeneration = new AtomicLong();
 	private List<PluginItem> plugins = null;
+	private List<PluginItem> filteredPlugins = Collections.emptyList();
+	private int renderedPluginCount;
 	private PluginHubManifest.ManifestFull lastManifest;
 
 	@Inject
@@ -558,11 +566,12 @@ class PluginHubPanel extends PluginPanel
 				.addComponent(refreshing, 0, Short.MAX_VALUE, Short.MAX_VALUE));
 		}
 
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// Can't use Short.MAX_VALUE like the docs say because of JDK-8079640
 		scrollPane.setPreferredSize(new Dimension(0x7000, 0x7000));
 		scrollPane.setViewportView(mainPanelWrapper);
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> loadMorePluginsIfNeeded());
 
 		{
 			GroupLayout layout = new GroupLayout(this);
@@ -603,6 +612,9 @@ class PluginHubPanel extends PluginPanel
 
 		refreshing.setVisible(true);
 		mainPanel.removeAll();
+		filteredPlugins = Collections.emptyList();
+		renderedPluginCount = 0;
+		filterGeneration.incrementAndGet();
 
 		executor.submit(() ->
 		{
@@ -681,6 +693,7 @@ class PluginHubPanel extends PluginPanel
 
 	void filter()
 	{
+		long generation = filterGeneration.incrementAndGet();
 		if (refreshing.isVisible() || plugins == null)
 		{
 			return;
@@ -707,10 +720,47 @@ class PluginHubPanel extends PluginPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
+			if (generation != filterGeneration.get())
+			{
+				return;
+			}
+
 			mainPanel.removeAll();
-			pluginItems.forEach(mainPanel::add);
+			filteredPlugins = pluginItems;
+			renderedPluginCount = 0;
+			addPluginBatch(INITIAL_PLUGIN_COUNT);
+			scrollPane.getVerticalScrollBar().setValue(0);
 			mainPanel.revalidate();
+			mainPanel.repaint();
 		});
+	}
+
+	private void loadMorePluginsIfNeeded()
+	{
+		if (refreshing.isVisible() || renderedPluginCount >= filteredPlugins.size())
+		{
+			return;
+		}
+
+		int remainingPixels = scrollPane.getVerticalScrollBar().getMaximum()
+			- scrollPane.getVerticalScrollBar().getVisibleAmount()
+			- scrollPane.getVerticalScrollBar().getValue();
+		if (remainingPixels <= PluginItem.HEIGHT * SCROLL_BUFFER_ROWS)
+		{
+			addPluginBatch(PLUGIN_PAGE_SIZE);
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
+	}
+
+	private void addPluginBatch(int count)
+	{
+		int end = Math.min(renderedPluginCount + count, filteredPlugins.size());
+		for (int i = renderedPluginCount; i < end; i++)
+		{
+			mainPanel.add(filteredPlugins.get(i));
+		}
+		renderedPluginCount = end;
 	}
 
 	@Override
@@ -728,6 +778,9 @@ class PluginHubPanel extends PluginPanel
 		mainPanel.removeAll();
 		refreshing.setVisible(false);
 		plugins = null;
+		filteredPlugins = Collections.emptyList();
+		renderedPluginCount = 0;
+		filterGeneration.incrementAndGet();
 		lastManifest = null;
 
 		synchronized (iconLoadQueue)
