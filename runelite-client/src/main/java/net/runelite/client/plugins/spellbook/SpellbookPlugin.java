@@ -239,7 +239,6 @@ public class SpellbookPlugin extends Plugin {
 			if (spellbookConfig.swapMode()) {
 				setPosition(spellbookId, spellbook.getIntValue(order[fromIdx]), toIdx);
 				setPosition(spellbookId, spellbook.getIntValue(order[toIdx]), fromIdx);
-
 			} else {
 				if (fromIdx < toIdx) {
 					for (int i = fromIdx + 1; i <= toIdx; ++i) {
