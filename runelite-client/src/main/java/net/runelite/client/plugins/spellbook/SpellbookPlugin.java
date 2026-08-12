@@ -462,7 +462,8 @@ public class SpellbookPlugin extends Plugin
 
 	private int[] defaultSpellbookOrder(EnumComposition spellbook)
 	{
-		return IntStream.range(0, spellbook.size()).boxed().sorted((idx1, idx2) -> {
+		return IntStream.range(0, spellbook.size()).boxed().sorted((idx1, idx2) ->
+		{
 			var i1 = client.getItemDefinition(spellbook.getIntValue(idx1));
 			var i2 = client.getItemDefinition(spellbook.getIntValue(idx2));
 			int l1 = i1.getIntValue(ParamID.SPELL_LEVELREQ);
