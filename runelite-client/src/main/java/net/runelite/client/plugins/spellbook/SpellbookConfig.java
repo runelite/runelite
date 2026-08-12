@@ -38,7 +38,8 @@ public interface SpellbookConfig extends Config
 			name = "Swap Mode",
 			description = "Enables swapping spell positions instead of pushing the spell into the desired position."
 	)
-	default boolean swapMode() {
+	default boolean swapMode()
+	{
 		return false;
 	}
 }

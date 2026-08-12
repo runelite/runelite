@@ -398,7 +398,8 @@ public class SpellbookPlugin extends Plugin
 			// spells with no target mask have an existing op listener, capture it to
 			// call it later
 			Object[] opListener = w.getOnOpListener();
-			w.setOnOpListener((JavaScriptCallback) e -> {
+			w.setOnOpListener((JavaScriptCallback) e ->
+			{
 				if (e.getOp() == HIDE_UNHIDE_OP + 1)
 				{
 					Widget s = e.getSource();
