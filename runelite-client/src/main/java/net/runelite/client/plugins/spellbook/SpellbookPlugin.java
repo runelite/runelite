@@ -168,7 +168,8 @@ public class SpellbookPlugin extends Plugin
 			menuManager.addManagedCustomMenu(FIXED_MAGIC_TAB_LOCK, e -> reordering(false));
 			menuManager.addManagedCustomMenu(RESIZABLE_MAGIC_TAB_LOCK, e -> reordering(false));
 			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_MAGIC_TAB_LOCK, e -> reordering(false));
-		} else
+		}
+		else
 		{
 			menuManager.addManagedCustomMenu(FIXED_MAGIC_TAB_UNLOCK, e -> reordering(true));
 			menuManager.addManagedCustomMenu(RESIZABLE_MAGIC_TAB_UNLOCK, e -> reordering(true));
@@ -242,7 +243,8 @@ public class SpellbookPlugin extends Plugin
 			{
 				setPosition(spellbookId, spellbook.getIntValue(order[fromIdx]), toIdx);
 				setPosition(spellbookId, spellbook.getIntValue(order[toIdx]), fromIdx);
-			} else
+			}
+			else
 			{
 				if (fromIdx < toIdx)
 				{
@@ -251,7 +253,8 @@ public class SpellbookPlugin extends Plugin
 						log.debug("Set {} to {}", client.getItemDefinition(spellbook.getIntValue(order[i])).getStringValue(ParamID.SPELL_NAME), i - 1);
 						setPosition(spellbookId, spellbook.getIntValue(order[i]), i - 1);
 					}
-				} else
+				}
+				else
 				{
 					for (int i = toIdx; i < fromIdx; ++i)
 					{
@@ -317,7 +320,8 @@ public class SpellbookPlugin extends Plugin
 				{
 					w.setOpacity(100);
 					w.setAction(HIDE_UNHIDE_OP, "Unhide");
-				} else
+				}
+				else
 				{
 					w.setOpacity(0);
 					w.setAction(HIDE_UNHIDE_OP, "Hide");
@@ -325,12 +329,14 @@ public class SpellbookPlugin extends Plugin
 
 				newSpells[numNewSpells++] = spells[i];
 				widgetConfig |= DRAG | DRAG_ON;
-			} else
+			}
+			else
 			{
 				if (hidden)
 				{
 					w.setHidden(true);
-				} else
+				}
+				else
 				{
 					newSpells[numNewSpells++] = spells[i];
 					w.setOpacity(0);
@@ -475,7 +481,8 @@ public class SpellbookPlugin extends Plugin
 		if (hidden)
 		{
 			configManager.setConfiguration(SpellbookConfig.GROUP, "spell_hidden_book_" + spellbook + "_" + spell, true);
-		} else
+		}
+		else
 		{
 			configManager.unsetConfiguration(SpellbookConfig.GROUP, "spell_hidden_book_" + spellbook + "_" + spell);
 		}
