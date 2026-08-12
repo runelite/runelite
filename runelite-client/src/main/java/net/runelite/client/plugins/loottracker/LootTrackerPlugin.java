@@ -172,10 +172,11 @@ public class LootTrackerPlugin extends Plugin
 
 	// Wyrmscraig golem crafting
 	private static final Pattern GOLEM_CRAFTING_PATTERN = Pattern.compile(
-		"^As you complete the golem it leaves a gift on the ground for you: 1 x " +
+		"^As you complete the golem it leaves a gift " +
+		"(?:on the ground|in your gem (?:bag|sack)) for you: 1 x " +
 		"(?<item>Uncut diamond|Uncut emerald|Uncut ruby|Uncut sapphire|Jeweller's chisel)\\.?$");
 
-	private static final String GOLEM_CRAFTING_EVENT = "Golem Crafting";
+	static final String GOLEM_CRAFTING_EVENT = "Golem Crafting";
 	private static final Map<String, Integer> GOLEM_CRAFTING_REWARDS = ImmutableMap.of(
 		"Uncut diamond", ItemID.UNCUT_DIAMOND,
 		"Uncut emerald", ItemID.UNCUT_EMERALD,
