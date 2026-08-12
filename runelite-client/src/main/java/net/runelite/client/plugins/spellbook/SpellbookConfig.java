@@ -26,9 +26,19 @@ package net.runelite.client.plugins.spellbook;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(SpellbookConfig.GROUP)
 public interface SpellbookConfig extends Config
 {
 	String GROUP = "spellbook";
+
+	@ConfigItem(
+			keyName = "swap",
+			name = "Swap Mode",
+			description = "Enables swapping spell positions instead of pushing the spell into the desired position."
+	)
+	default boolean swapMode() {
+		return false;
+	}
 }
