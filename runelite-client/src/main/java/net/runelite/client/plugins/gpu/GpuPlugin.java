@@ -1139,12 +1139,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			return;
 		}
 
-		// this is a noop after the first zone
-		for (int i = 0; i < rts.length; ++i) // NOPMD: ForLoopCanBeForeach
-		{
-			rts[i].vaoA.unmap();
-		}
-
 		Zone z = ctx.zones[zx][zz];
 		if (!z.initialized)
 		{
@@ -1204,6 +1198,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		else if (pass == DrawCallbacks.PRE_PASS_ALPHA)
 		{
+			for (int i = 0; i < rts.length; ++i)
+			{
+				rts[i].vaoA.unmap();
+			}
+
 			glUniformMatrix4fv(uniEntityProj, false, ctx.projection);
 			glUniform4i(uniEntityTint, scene.getOverrideHue(), scene.getOverrideSaturation(), scene.getOverrideLuminance(), scene.getOverrideAmount());
 		}
