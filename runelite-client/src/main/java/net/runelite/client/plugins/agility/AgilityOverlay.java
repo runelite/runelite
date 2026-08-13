@@ -33,6 +33,7 @@ import java.awt.Shape;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+import net.runelite.api.CameraFocusableEntity;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
@@ -68,7 +69,13 @@ class AgilityOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
+		CameraFocusableEntity cameraFocus = client.getCameraFocusEntity();
+		if (cameraFocus == null)
+		{
+			return null;
+		}
+
+		LocalPoint playerLocation = cameraFocus.getCameraFocus();
 		Point mousePosition = client.getMouseCanvasPosition();
 		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
 		final Tile stickTile = plugin.getStickTile();

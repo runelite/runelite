@@ -31,6 +31,7 @@ import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -60,7 +61,8 @@ class ImplingsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getLocalPlayer().getWorldLocation().getRegionID() != PURO_PURO)
+		Player player = client.getLocalPlayer();
+		if (player == null || player.getWorldLocation().getRegionID() != PURO_PURO)
 		{
 			return null;
 		}

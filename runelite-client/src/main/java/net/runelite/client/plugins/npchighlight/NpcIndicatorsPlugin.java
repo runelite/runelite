@@ -53,6 +53,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.Player;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -640,7 +641,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		removeOldHighlightedRespawns();
 		validateSpawnedNpcs();
 		lastTickUpdate = Instant.now();
-		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
+		Player local = client.getLocalPlayer();
+		if (local != null)
+		{
+			lastPlayerLocation = local.getWorldLocation();
+		}
 	}
 
 	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)

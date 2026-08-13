@@ -308,7 +308,8 @@ public class ChatFilterPlugin extends Plugin
 
 	boolean canFilterPlayer(String playerName)
 	{
-		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
+		Player local = client.getLocalPlayer();
+		boolean isMessageFromSelf = local != null && playerName.equals(local.getName());
 		return !isMessageFromSelf &&
 			(config.filterFriends() || !client.isFriended(playerName, false)) &&
 			(config.filterFriendsChat() || !isFriendsChatMember(playerName)) &&

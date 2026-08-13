@@ -39,6 +39,7 @@ import net.runelite.api.GroundObject;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Node;
+import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
@@ -349,6 +350,17 @@ public class InteractHighlightPlugin extends Plugin
 	@Nullable
 	Actor getInteractedTarget()
 	{
-		return interactedActor != null ? interactedActor : client.getLocalPlayer().getInteracting();
+		if (interactedActor != null)
+		{
+			return interactedActor;
+		}
+
+		Player local = client.getLocalPlayer();
+		if (local != null)
+		{
+			return local.getInteracting();
+		}
+
+		return null;
 	}
 }
