@@ -43,20 +43,22 @@ World/`DYNAMIC` decorations that stay tied to the scene use **fixed-size content
 
 ```
 Scene (GPU / software)
-    → under-UI native overlays   (ABOVE_SCENE, UNDER_WIDGETS; model outlines)
-    → game UI (bank, inventory, …)  [stretched; menu skipped when deferred]
-    → above-UI native overlays   (ABOVE_WIDGETS, ALWAYS_ON_TOP, tooltips,
+    → native ABOVE_SCENE overlays (tiles, model outlines)
+    → stretched overheads         (HP bars, hitsplats; canvas snapshot)
+    → native UNDER_WIDGETS        (player names, default-layer world overlays)
+    → stretched game UI           (bank, inventory, …; menu skipped when deferred)
+    → native ABOVE_UI             (ABOVE_WIDGETS, ALWAYS_ON_TOP, tooltips,
                                   WidgetItemOverlay / drawAfter* hooks)
-    → deferred right-click menu  [after ABOVE_UI so translucent menus blend over sharp overlays]
+    → deferred right-click menu   [after ABOVE_UI so translucent menus blend over sharp overlays]
 ```
 
-Layer ordering matches classic `OverlayLayer` rules: default under-widget overlays stay **under** the bank; `ABOVE_WIDGETS` / inventory item overlays stay **under** the menu; overlays promoted to above-widgets (e.g. after Alt-dragging) still draw on top of the UI.
+Layer ordering matches classic `OverlayLayer` rules: `ABOVE_SCENE` stays **under** HP bars; default under-widget overlays stay **above** overheads and **under** the bank; `ABOVE_WIDGETS` / inventory item overlays stay **under** the menu; overlays promoted to above-widgets (e.g. after Alt-dragging) still draw on top of the UI.
 
-### Two buffers
+### Overlay buffers and the overhead snapshot
 
-Core code uses `NativeOverlayBuffer` with passes `UNDER_UI` and `ABOVE_UI`. GPU composites under before `drawUi`, then above after, then the deferred menu. That preserves bank-over-infobox behaviour and menu-over-rune-pouch behaviour. Active whenever stretched mode actually upscales.
+`NativeOverlayBuffer` has three overlay passes: `ABOVE_SCENE`, `UNDER_WIDGETS`, and `ABOVE_UI`. GPU cannot composite between overheads and widgets while they share one canvas upload, so at `drawAboveOverheads` the canvas is **copied then cleared**. Overheads are stretched with the same UI shader as widgets; widgets then paint onto the empty canvas. Active whenever stretched mode actually upscales.
 
-CPU path: under-UI stays on the canvas so the bank covers it; only ABOVE_UI (+ deferred menu) composites after stretch.
+CPU path: under-UI stays on the canvas (the software frame already includes the scene, so it cannot be cleared); only ABOVE_UI (+ deferred menu) composites after stretch.
 
 ### Deferred right-click menu
 
@@ -183,7 +185,7 @@ Overlays that only reposition client widgets (XP tracker, health bar, etc.) are 
 - `net.runelite.client.ui.overlay.OverlayUtil` — image/text helpers, local text scale, content-space width
 - `net.runelite.client.ui.overlay.Overlay#setPreferNativeResolution`
 - `net.runelite.client.ui.overlay.Overlay#setPreferPanelContentScale` / `#setPreferPanelGlyphScale` / `#setPreferUiPixelGrid`
-- `net.runelite.client.ui.overlay.outline.ModelOutlineRenderer` — display-resolution outlines on native UNDER_UI
+- `net.runelite.client.ui.overlay.outline.ModelOutlineRenderer` — display-resolution outlines on the calling overlay’s native pass
 
 ## See also
 
