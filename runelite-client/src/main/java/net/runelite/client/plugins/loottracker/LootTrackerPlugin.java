@@ -754,6 +754,38 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+
+	//Get rid of this later, it sucks. It's just for this boss specifically.
+	private static final String PHOSANIS_NIGHTMARE = "Phosani's Nightmare";
+
+	private static final Set<String> PHOSANI_TERTIARY_DROP_NAMES = ImmutableSet.of(
+			"Clue scroll (elite)",
+			"Jar of dreams",
+			"Little nightmare",
+			"Slepey tablet"
+	);
+
+	private boolean isPhosaniTertiaryDrop(Collection<ItemStack> items)
+	{
+		return !items.isEmpty()
+				&& items.stream().allMatch(this::isPhosaniTertiaryItem);
+	}
+
+	private boolean isPhosaniTertiaryItem(ItemStack item)
+	{
+		final ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+		if (itemComposition == null)
+		{
+			return false;
+		}
+
+		return PHOSANI_TERTIARY_DROP_NAMES.contains(itemComposition.getMembersName());
+	}
+
+	private String lastNpcLootName;
+	private int lastNpcLootTick = -1;
+
+
 	@Subscribe
 	public void onServerNpcLoot(final ServerNpcLoot event)
 	{
@@ -768,7 +800,19 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		addLoot(name, combat, LootRecordType.NPC, buildNpcMetadata(npc), items);
+		final int tick = client.getTickCount();
+		final Object metadata = buildNpcMetadata(npc);
+
+		final boolean splitPhosaniTertiaryDrop =
+				name.equals(PHOSANIS_NIGHTMARE)
+						&& name.equals(lastNpcLootName)
+						&& tick == lastNpcLootTick + 1
+						&& isPhosaniTertiaryDrop(items);
+
+		addLoot(name, combat, LootRecordType.NPC, buildNpcMetadata(npc), items, splitPhosaniTertiaryDrop ? 0 : 1);
+
+		lastNpcLootName = name;
+		lastNpcLootTick = tick;
 
 		if (config.npcKillChatMessage())
 		{
