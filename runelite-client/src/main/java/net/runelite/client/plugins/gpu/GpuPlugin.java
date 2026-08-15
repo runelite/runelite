@@ -166,6 +166,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int overlayTexture;
 	private int lastOverlayWidth = -1;
 	private int lastOverlayHeight = -1;
+	private int overheadsTexture;
+	private int lastOverheadsWidth = -1;
+	private int lastOverheadsHeight = -1;
 
 	private int vaoUiHandle;
 	private int vboUiHandle;
@@ -790,6 +793,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		overheadsTexture = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, overheadsTexture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	private void shutdownInterfaceTexture()
@@ -802,7 +813,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDeleteTextures(overlayTexture);
 			overlayTexture = 0;
 		}
+		if (overheadsTexture != 0)
+		{
+			glDeleteTextures(overheadsTexture);
+			overheadsTexture = 0;
+		}
 		lastOverlayWidth = lastOverlayHeight = -1;
+		lastOverheadsWidth = lastOverheadsHeight = -1;
 	}
 
 	private void initFbo(int width, int height, int aaSamples)
@@ -1537,8 +1554,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			blitSceneFbo();
 		}
 
-		// Texture on UI — under-UI overlays sit between scene and interfaces (bank, etc.)
-		drawNativeOverlays(NativeOverlayBuffer.Pass.UNDER_UI);
+		// Overheads are snapshotted out of the canvas so ABOVE_SCENE / UNDER_WIDGETS
+		// can sit on either side of HP bars while widgets stay in drawUi.
+		drawNativeOverlays(NativeOverlayBuffer.Pass.ABOVE_SCENE);
+		drawOverheads(overlayColor, canvasHeight, canvasWidth);
+		drawNativeOverlays(NativeOverlayBuffer.Pass.UNDER_WIDGETS);
 		drawUi(overlayColor, canvasHeight, canvasWidth);
 		drawNativeOverlays(NativeOverlayBuffer.Pass.ABOVE_UI);
 
@@ -1581,11 +1601,51 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void drawUi(final int overlayColor, final int canvasHeight, final int canvasWidth)
 	{
+		drawStretchedCanvasTexture(interfaceTexture, overlayColor, canvasHeight, canvasWidth);
+	}
+
+	/**
+	 * Composite snapshotted overheads (HP bars, hitsplats) after ABOVE_SCENE overlays
+	 * and before UNDER_WIDGETS, using the same UI stretch/sampling as widgets.
+	 */
+	private void drawOverheads(final int overlayColor, final int canvasHeight, final int canvasWidth)
+	{
+		if (!nativeOverlayBuffer.isActive() || !nativeOverlayBuffer.isOverheadsDirty())
+		{
+			return;
+		}
+
+		final int width = nativeOverlayBuffer.getOverheadsWidth();
+		final int height = nativeOverlayBuffer.getOverheadsHeight();
+		final int[] pixels = nativeOverlayBuffer.getOverheadUploadPixels();
+		if (pixels == null || width <= 0 || height <= 0)
+		{
+			return;
+		}
+
+		glBindTexture(GL_TEXTURE_2D, overheadsTexture);
+		if (lastOverheadsWidth != width || lastOverheadsHeight != height)
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixels);
+			lastOverheadsWidth = width;
+			lastOverheadsHeight = height;
+		}
+		else
+		{
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixels);
+		}
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		drawStretchedCanvasTexture(overheadsTexture, overlayColor, canvasHeight, canvasWidth);
+		nativeOverlayBuffer.finishOverheadsComposite();
+	}
+
+	private void drawStretchedCanvasTexture(final int texture, final int overlayColor, final int canvasHeight, final int canvasWidth)
+	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		glBindTexture(GL_TEXTURE_2D, interfaceTexture);
+		glBindTexture(GL_TEXTURE_2D, texture);
 
-		// Use the texture bound in the first pass
 		final UIScalingMode uiScalingMode = config.uiScalingMode();
 		glUseProgram(glUiProgram);
 		glUniform1i(uniTex, 0);
@@ -1620,11 +1680,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, function);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, function);
 
-		// Texture on UI
 		glBindVertexArray(vaoUiHandle);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
-		// Reset
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
 		glUseProgram(0);
@@ -1633,8 +1691,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	/**
-	 * Composite a native-resolution overlay pass. UNDER_UI is drawn before the stretched
-	 * game UI; ABOVE_UI after — matching OverlayLayer under/above widget ordering.
+	 * Composite a native-resolution overlay pass around the split client 2D textures.
 	 */
 	private void drawNativeOverlays(NativeOverlayBuffer.Pass pass)
 	{

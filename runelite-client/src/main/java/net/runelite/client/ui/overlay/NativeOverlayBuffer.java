@@ -37,9 +37,11 @@ import net.runelite.api.Client;
  * Offscreen buffers for drawing RuneLite overlays at stretched (display) resolution
  * so they are not upscaled with the game UI.
  * <p>
- * Two passes mirror {@link OverlayLayer} ordering relative to game interfaces:
- * under-UI ({@link OverlayLayer#ABOVE_SCENE}, {@link OverlayLayer#UNDER_WIDGETS})
- * and above-UI ({@link OverlayLayer#ABOVE_WIDGETS}, {@link OverlayLayer#ALWAYS_ON_TOP}).
+ * Three overlay passes match {@link OverlayLayer} around the split client 2D texture:
+ * {@link OverlayLayer#ABOVE_SCENE} under overheads, {@link OverlayLayer#UNDER_WIDGETS}
+ * above overheads, and above-UI ({@link OverlayLayer#ABOVE_WIDGETS},
+ * {@link OverlayLayer#ALWAYS_ON_TOP}). Overheads are snapshotted out of the canvas
+ * at {@code drawAboveOverheads} so widgets can paint onto a clean buffer.
  * <p>
  * Inactive when stretched mode is off, or when stretch does not actually upscale
  * (stretched size equals canvas) — then the legacy single-buffer path is enough.
@@ -52,9 +54,13 @@ public class NativeOverlayBuffer
 	public enum Pass
 	{
 		/**
-		 * Drawn after the scene and before the game UI (bank, inventory, etc.).
+		 * Drawn after the scene and before overheads (HP bars, hitsplats).
 		 */
-		UNDER_UI,
+		ABOVE_SCENE,
+		/**
+		 * Drawn after overheads and before interfaces (bank, inventory, etc.).
+		 */
+		UNDER_WIDGETS,
 		/**
 		 * Drawn after the game UI (tooltips, overlays moved over interfaces, etc.).
 		 */
@@ -63,14 +69,21 @@ public class NativeOverlayBuffer
 
 	private final Client client;
 
-	private BufferedImage underImage;
+	private BufferedImage aboveSceneImage;
+	private BufferedImage underWidgetsImage;
 	private BufferedImage aboveImage;
 	private int[] uploadScratch;
+	private int[] overheadPixels;
+	private int overheadsWidth;
+	private int overheadsHeight;
 	private int frameId;
 	private int preparedFrameId = -1;
+	private Pass activePass;
 
-	private final PassState under = new PassState();
+	private final PassState aboveScene = new PassState();
+	private final PassState underWidgets = new PassState();
 	private final PassState above = new PassState();
+	private final PassState overheads = new PassState();
 
 	@Inject
 	private NativeOverlayBuffer(Client client)
@@ -103,7 +116,25 @@ public class NativeOverlayBuffer
 
 	public Pass passForLayer(OverlayLayer layer)
 	{
-		return isAboveUiLayer(layer) ? Pass.ABOVE_UI : Pass.UNDER_UI;
+		if (layer == OverlayLayer.ABOVE_SCENE)
+		{
+			return Pass.ABOVE_SCENE;
+		}
+		if (layer == OverlayLayer.UNDER_WIDGETS)
+		{
+			return Pass.UNDER_WIDGETS;
+		}
+		return Pass.ABOVE_UI;
+	}
+
+	public void setActivePass(Pass pass)
+	{
+		activePass = pass;
+	}
+
+	public Pass getActivePass()
+	{
+		return activePass;
 	}
 
 	public double getScaleX()
@@ -128,7 +159,7 @@ public class NativeOverlayBuffer
 
 	/**
 	 * Ensures required buffers exist and are cleared once per client frame.
-	 * Under-UI is only allocated on GPU (CPU keeps under-UI overlays on the canvas,
+	 * Under-UI passes are only allocated on GPU (CPU keeps those overlays on the canvas,
 	 * since the software renderer already merges scene and widgets).
 	 */
 	public void prepareFrame()
@@ -143,19 +174,29 @@ public class NativeOverlayBuffer
 
 		if (client.isGpu())
 		{
-			underImage = ensureImage(underImage, dim);
+			aboveSceneImage = ensureImage(aboveSceneImage, dim);
+			underWidgetsImage = ensureImage(underWidgetsImage, dim);
 		}
-		else if (underImage != null)
+		else
 		{
-			underImage = null;
-			under.reset();
+			if (aboveSceneImage != null)
+			{
+				aboveSceneImage = null;
+				aboveScene.reset();
+			}
+			if (underWidgetsImage != null)
+			{
+				underWidgetsImage = null;
+				underWidgets.reset();
+			}
 		}
 
 		aboveImage = ensureImage(aboveImage, dim);
 
 		if (preparedFrameId != frameId)
 		{
-			beginFrame(Pass.UNDER_UI);
+			beginFrame(Pass.ABOVE_SCENE);
+			beginFrame(Pass.UNDER_WIDGETS);
 			beginFrame(Pass.ABOVE_UI);
 			preparedFrameId = frameId;
 		}
@@ -233,7 +274,17 @@ public class NativeOverlayBuffer
 
 	public BufferedImage getImage(Pass pass)
 	{
-		return pass == Pass.ABOVE_UI ? aboveImage : underImage;
+		switch (pass)
+		{
+			case ABOVE_SCENE:
+				return aboveSceneImage;
+			case UNDER_WIDGETS:
+				return underWidgetsImage;
+			case ABOVE_UI:
+				return aboveImage;
+			default:
+				return null;
+		}
 	}
 
 	public int[] getPixels(Pass pass)
@@ -316,19 +367,105 @@ public class NativeOverlayBuffer
 		return uploadScratch;
 	}
 
+	/**
+	 * Copy canvas pixels (overheads) then zero the canvas so widgets paint onto a clean buffer.
+	 * GPU + native only; the software renderer already has the scene in this buffer.
+	 */
+	public void captureAndClearOverheads(int[] canvasPixels, int width, int height)
+	{
+		if (canvasPixels == null || width <= 0 || height <= 0 || !isActive() || !client.isGpu())
+		{
+			return;
+		}
+
+		final int need = width * height;
+		if (overheadPixels == null || overheadPixels.length < need)
+		{
+			overheadPixels = new int[need];
+		}
+		System.arraycopy(canvasPixels, 0, overheadPixels, 0, need);
+		Arrays.fill(canvasPixels, 0, need, 0);
+		overheadsWidth = width;
+		overheadsHeight = height;
+		overheads.touched = true;
+	}
+
+	public boolean isOverheadsDirty()
+	{
+		return overheads.touched || overheads.hadContent;
+	}
+
+	public int[] getOverheadPixels()
+	{
+		return overheadPixels;
+	}
+
+	public int getOverheadsWidth()
+	{
+		return overheadsWidth;
+	}
+
+	public int getOverheadsHeight()
+	{
+		return overheadsHeight;
+	}
+
+	/**
+	 * Upload zeros when a prior overhead frame needs to be cleared from the GL texture.
+	 */
+	public int[] getOverheadUploadPixels()
+	{
+		if (!isOverheadsDirty())
+		{
+			return null;
+		}
+		if (overheads.touched)
+		{
+			return overheadPixels;
+		}
+		if (overheadsWidth <= 0 || overheadsHeight <= 0)
+		{
+			return null;
+		}
+		return getTransparentTextureInit(overheadsWidth, overheadsHeight);
+	}
+
+	public void finishOverheadsComposite()
+	{
+		overheads.hadContent = overheads.touched;
+		overheads.touched = false;
+	}
+
 	private PassState state(Pass pass)
 	{
-		return pass == Pass.ABOVE_UI ? above : under;
+		switch (pass)
+		{
+			case ABOVE_SCENE:
+				return aboveScene;
+			case UNDER_WIDGETS:
+				return underWidgets;
+			case ABOVE_UI:
+				return above;
+			default:
+				throw new IllegalArgumentException(String.valueOf(pass));
+		}
 	}
 
 	public void release()
 	{
-		underImage = null;
+		aboveSceneImage = null;
+		underWidgetsImage = null;
 		aboveImage = null;
 		uploadScratch = null;
+		overheadPixels = null;
+		overheadsWidth = 0;
+		overheadsHeight = 0;
 		preparedFrameId = -1;
-		under.reset();
+		activePass = null;
+		aboveScene.reset();
+		underWidgets.reset();
 		above.reset();
+		overheads.reset();
 	}
 
 	private static final class PassState

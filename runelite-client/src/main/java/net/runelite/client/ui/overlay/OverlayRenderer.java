@@ -292,6 +292,10 @@ public class OverlayRenderer extends MouseAdapter
 		final Graphics2D nativeGraphics = createNativeGraphics(layer);
 		final Graphics2D graphics = nativeGraphics == null ? canvasGraphics : nativeGraphics;
 		final boolean previousNative = OverlayUtil.setCurrentOverlayNative(nativeGraphics != null);
+		if (nativeGraphics != null)
+		{
+			nativeOverlayBuffer.setActivePass(nativeOverlayBuffer.passForLayer(layer));
+		}
 
 		try
 		{
@@ -409,6 +413,7 @@ public class OverlayRenderer extends MouseAdapter
 		finally
 		{
 			OverlayUtil.setCurrentOverlayNative(previousNative);
+			nativeOverlayBuffer.setActivePass(null);
 
 			if (nativeGraphics != null)
 			{

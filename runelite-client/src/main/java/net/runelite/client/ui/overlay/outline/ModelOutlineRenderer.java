@@ -723,7 +723,12 @@ public class ModelOutlineRenderer
 	{
 		if (nativePass)
 		{
-			return nativeOverlayBuffer.getImage(NativeOverlayBuffer.Pass.UNDER_UI);
+			NativeOverlayBuffer.Pass pass = nativeOverlayBuffer.getActivePass();
+			if (pass == null)
+			{
+				pass = NativeOverlayBuffer.Pass.ABOVE_SCENE;
+			}
+			return nativeOverlayBuffer.getImage(pass);
 		}
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		return (BufferedImage) bufferProvider.getImage();
@@ -1098,7 +1103,8 @@ public class ModelOutlineRenderer
 
 		if (nativePass)
 		{
-			nativeOverlayBuffer.markDirty(NativeOverlayBuffer.Pass.UNDER_UI);
+			NativeOverlayBuffer.Pass pass = nativeOverlayBuffer.getActivePass();
+			nativeOverlayBuffer.markDirty(pass != null ? pass : NativeOverlayBuffer.Pass.ABOVE_SCENE);
 		}
 
 		resetVisited(croppedWidth * croppedHeight);

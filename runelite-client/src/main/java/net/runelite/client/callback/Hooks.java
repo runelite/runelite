@@ -556,6 +556,13 @@ public class Hooks implements Callbacks
 	public void drawAboveOverheads()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		NativeOverlayBuffer nativeBuffer = renderer.getNativeOverlayBuffer();
+		if (nativeBuffer.isActive() && client.isGpu())
+		{
+			nativeBuffer.captureAndClearOverheads(bufferProvider.getPixels(),
+				bufferProvider.getWidth(), bufferProvider.getHeight());
+		}
+
 		Graphics2D graphics2d = getGraphics(bufferProvider);
 
 		try
