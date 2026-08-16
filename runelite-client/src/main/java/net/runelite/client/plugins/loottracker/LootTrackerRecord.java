@@ -83,6 +83,7 @@ class LootTrackerRecord
 						qty,
 						r.getGePrice(),
 						r.getHaPrice(),
+						item.getCustomPrice(),
 						r.isIgnored()
 					);
 					continue outer;

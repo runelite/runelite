@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -685,5 +687,64 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Large salvage", -1, LootRecordType.EVENT, null, Collections.singletonList(new ItemStack(ItemID.NAILS, 4)));
+	}
+
+	// LootTrackerPlugin#startUp() constructs the real LootTrackerPanel, which asserts it is
+	// running on the EDT, so it must be invoked from there rather than the test thread.
+	private void startUpOnEdt() throws Exception
+	{
+		try
+		{
+			SwingUtilities.invokeAndWait(() ->
+			{
+				try
+				{
+					lootTrackerPlugin.startUp();
+				}
+				catch (Exception e)
+				{
+					throw new RuntimeException(e);
+				}
+			});
+		}
+		catch (InvocationTargetException e)
+		{
+			throw new RuntimeException(e.getCause());
+		}
+	}
+
+	@Test
+	public void testItemValueOverrideParsing() throws Exception
+	{
+		when(lootTrackerConfig.getIgnoredItems()).thenReturn("");
+		when(lootTrackerConfig.getIgnoredEvents()).thenReturn("");
+		when(lootTrackerConfig.getItemValueOverrides()).thenReturn(
+			"Elder venator fang:120000000, Crystal shard : 13000 ,Duplicate item:100,Duplicate item:200,Foo: Bar:50");
+
+		startUpOnEdt();
+
+		assertEquals(120000000, lootTrackerPlugin.getCustomPrice("Elder venator fang"));
+		assertEquals(13000, lootTrackerPlugin.getCustomPrice("Crystal shard"));
+		// later entries win when the same name is repeated
+		assertEquals(200, lootTrackerPlugin.getCustomPrice("Duplicate item"));
+		// only the last colon in an entry is treated as the name/value separator
+		assertEquals(50, lootTrackerPlugin.getCustomPrice("Foo: Bar"));
+		// items with no configured override fall back to -1
+		assertEquals(-1, lootTrackerPlugin.getCustomPrice("Unconfigured item"));
+	}
+
+	@Test
+	public void testItemValueOverrideParsingIgnoresMalformedEntries() throws Exception
+	{
+		when(lootTrackerConfig.getIgnoredItems()).thenReturn("");
+		when(lootTrackerConfig.getIgnoredEvents()).thenReturn("");
+		when(lootTrackerConfig.getItemValueOverrides()).thenReturn(
+			"no colon here,:100,Not a number:abc,Valid item:500");
+
+		startUpOnEdt();
+
+		assertEquals(-1, lootTrackerPlugin.getCustomPrice("no colon here"));
+		assertEquals(-1, lootTrackerPlugin.getCustomPrice("Not a number"));
+		assertEquals(500, lootTrackerPlugin.getCustomPrice("Valid item"));
 	}
 }

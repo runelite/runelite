@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import com.google.common.base.Splitter;
 import static com.google.common.collect.Iterables.concat;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -51,6 +52,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -64,6 +67,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.LootRecordType;
 
 class LootTrackerPanel extends PluginPanel
@@ -338,13 +342,107 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		final JMenuItem editCustomValues = new JMenuItem("Edit custom values...");
+		editCustomValues.addActionListener(e -> showEditCustomValuesDialog(overallPanel));
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
+		popupMenu.add(editCustomValues);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		return overallPanel;
+	}
+
+	private static final Splitter LINE_SPLITTER = Splitter.on('\n').trimResults().omitEmptyStrings();
+
+	/**
+	 * Opens a dialog with a bulk text editor for the item value overrides, since the
+	 * raw config string is hidden from the settings UI in favor of right-click editing.
+	 */
+	private void showEditCustomValuesDialog(JPanel parent)
+	{
+		final List<String> currentEntries = Text.fromCSV(config.getItemValueOverrides());
+		final JTextArea textArea = new JTextArea(String.join("\n", currentEntries));
+		textArea.setRows(10);
+		textArea.setColumns(30);
+
+		final JPanel dialogPanel = new JPanel(new BorderLayout(0, 5));
+		dialogPanel.add(new JLabel("One itemName:value per line"), BorderLayout.NORTH);
+		dialogPanel.add(new JScrollPane(textArea), BorderLayout.CENTER);
+
+		final int result = JOptionPane.showConfirmDialog(parent, dialogPanel,
+			"Edit custom item values",
+			JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+		if (result != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		final List<String> entries = new ArrayList<>();
+		final List<String> errors = new ArrayList<>();
+		for (String line : LINE_SPLITTER.split(textArea.getText()))
+		{
+			if (line.indexOf(',') != -1)
+			{
+				errors.add("\"" + line + "\" contains a comma, which is not allowed");
+				continue;
+			}
+
+			final int idx = line.lastIndexOf(':');
+			if (idx == -1)
+			{
+				errors.add("\"" + line + "\" is missing a \":\" separating the item name and value");
+				continue;
+			}
+
+			final String name = line.substring(0, idx).trim();
+			final String value = line.substring(idx + 1).trim();
+			if (name.isEmpty())
+			{
+				errors.add("\"" + line + "\" is missing an item name");
+				continue;
+			}
+
+			try
+			{
+				if (Integer.parseInt(value) < 0)
+				{
+					errors.add("\"" + line + "\" has a negative value");
+					continue;
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				errors.add("\"" + line + "\" has an invalid value");
+				continue;
+			}
+
+			entries.add(name + ":" + value);
+		}
+
+		if (!errors.isEmpty())
+		{
+			JOptionPane.showMessageDialog(parent,
+				"Nothing was saved. Fix the following and try again:\n" + String.join("\n", errors),
+				"Invalid entries", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (entries.isEmpty() && !currentEntries.isEmpty())
+		{
+			final int confirm = JOptionPane.showConfirmDialog(parent,
+				"This will remove all " + currentEntries.size() + " configured custom value(s). Continue?",
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (confirm != JOptionPane.YES_OPTION)
+			{
+				return;
+			}
+		}
+
+		config.setItemValueOverrides(Text.toCSV(entries));
 	}
 
 	void updateCollapseText()
@@ -502,6 +600,52 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
+	 * After the item value overrides changed, iterate all the records and update
+	 * the custom price of all items of the same name. Only the boxes containing
+	 * a changed item are rebuilt, rather than the whole panel, since this can be
+	 * triggered by every edit to the overrides config.
+	 */
+	void updateCustomPrices()
+	{
+		List<LootTrackerRecord> changedRecords = new ArrayList<>();
+
+		for (LootTrackerRecord record : concat(aggregateRecords.values(), sessionRecords))
+		{
+			boolean recordChanged = false;
+
+			for (LootTrackerItem item : record.getItems())
+			{
+				int customPrice = plugin.getCustomPrice(item.getName());
+				if (item.getCustomPrice() != customPrice)
+				{
+					item.setCustomPrice(customPrice);
+					recordChanged = true;
+				}
+			}
+
+			if (recordChanged)
+			{
+				changedRecords.add(record);
+			}
+		}
+
+		if (changedRecords.isEmpty())
+		{
+			return;
+		}
+
+		for (LootTrackerBox box : boxes)
+		{
+			if (changedRecords.stream().anyMatch(box::isBackedBy))
+			{
+				box.rebuild();
+			}
+		}
+
+		updateOverall();
+	}
+
+	/**
 	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
 	void rebuild()
@@ -569,7 +713,8 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record,
-			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored);
+			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent,
+			plugin::setCustomPrice, isIgnored);
 
 		// Use the existing popup menu or create a new one
 		JPopupMenu popupMenu = box.getComponentPopupMenu();

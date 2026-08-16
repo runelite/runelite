@@ -46,6 +46,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -390,6 +391,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
+	private Map<String, Integer> itemValueOverrides = new LinkedHashMap<>();
 
 	private int inventoryId = -1;
 	private Multiset<Integer> inventorySnapshot;
@@ -585,6 +587,11 @@ public class LootTrackerPlugin extends Plugin
 			{
 				SwingUtilities.invokeLater(panel::rebuild);
 			}
+			else if ("itemValueOverrides".equals(event.getKey()))
+			{
+				itemValueOverrides = parseItemValueOverrides(config.getItemValueOverrides());
+				SwingUtilities.invokeLater(panel::updateCustomPrices);
+			}
 		}
 	}
 
@@ -594,6 +601,7 @@ public class LootTrackerPlugin extends Plugin
 		profileKey = null;
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
 		ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
+		itemValueOverrides = parseItemValueOverrides(config.getItemValueOverrides());
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.SideIcons.INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -911,9 +919,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			long totalValue = items.stream()
 				.filter(item -> item.getId() > -1)
-				.mapToLong(item -> config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE ?
-					(long) itemManager.getItemPrice(item.getId()) * item.getQuantity() :
-					(long) itemManager.getItemComposition(item.getId()).getHaPrice() * item.getQuantity())
+				.mapToLong(item -> (long) getItemValue(item.getId()) * item.getQuantity())
 				.sum();
 
 			String chatMessage = new ChatMessageBuilder()
@@ -1664,12 +1670,93 @@ public class LootTrackerPlugin extends Plugin
 		return ignoredEvents.contains(name);
 	}
 
+	int getCustomPrice(String name)
+	{
+		return itemValueOverrides.getOrDefault(name, -1);
+	}
+
+	void setCustomPrice(String name, Integer value)
+	{
+		final Map<String, Integer> overrides = new LinkedHashMap<>(itemValueOverrides);
+
+		if (value == null)
+		{
+			overrides.remove(name);
+		}
+		else
+		{
+			overrides.put(name, value);
+		}
+
+		final List<String> entries = new ArrayList<>();
+		for (Map.Entry<String, Integer> entry : overrides.entrySet())
+		{
+			entries.add(entry.getKey() + ":" + entry.getValue());
+		}
+
+		config.setItemValueOverrides(Text.toCSV(entries));
+		// the config changed will update the panel
+	}
+
+	private static Map<String, Integer> parseItemValueOverrides(String input)
+	{
+		final Map<String, Integer> overrides = new LinkedHashMap<>();
+
+		for (String entry : Text.fromCSV(input))
+		{
+			final int idx = entry.lastIndexOf(':');
+			if (idx == -1)
+			{
+				continue;
+			}
+
+			final String name = entry.substring(0, idx).trim();
+			final String value = entry.substring(idx + 1).trim();
+			if (name.isEmpty())
+			{
+				continue;
+			}
+
+			try
+			{
+				overrides.put(name, Integer.parseInt(value));
+			}
+			catch (NumberFormatException e)
+			{
+				log.debug("Invalid item value override: {}", entry);
+			}
+		}
+
+		return overrides;
+	}
+
+	/**
+	 * Gets the value of an item, using the configured override if one is set for it,
+	 * otherwise falling back to the current price type (GE or HA).
+	 */
+	private int getItemValue(int itemId)
+	{
+		if (!itemValueOverrides.isEmpty())
+		{
+			final int override = getCustomPrice(itemManager.getItemComposition(itemId).getMembersName());
+			if (override >= 0)
+			{
+				return override;
+			}
+		}
+
+		return config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE
+			? itemManager.getItemPrice(itemId)
+			: itemManager.getItemComposition(itemId).getHaPrice();
+	}
+
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int gePrice = itemManager.getItemPrice(itemId);
 		final int haPrice = itemComposition.getHaPrice();
 		final boolean ignored = ignoredItems.contains(itemComposition.getMembersName());
+		final int customPrice = getCustomPrice(itemComposition.getMembersName());
 
 		return new LootTrackerItem(
 			itemId,
@@ -1677,6 +1764,7 @@ public class LootTrackerPlugin extends Plugin
 			quantity,
 			gePrice,
 			haPrice,
+			customPrice,
 			ignored);
 	}
 
@@ -1727,9 +1815,7 @@ public class LootTrackerPlugin extends Plugin
 	private void lootReceivedChatMessage(final Collection<ItemStack> items, final String name)
 	{
 		long totalPrice = items.stream()
-			.mapToLong(item -> config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE ?
-				(long) itemManager.getItemPrice(item.getId()) * item.getQuantity() :
-				(long) itemManager.getItemComposition(item.getId()).getHaPrice() * item.getQuantity())
+			.mapToLong(item -> (long) getItemValue(item.getId()) * item.getQuantity())
 			.sum();
 
 		final String message = new ChatMessageBuilder()
