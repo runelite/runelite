@@ -90,7 +90,7 @@ setPreferNativeResolution(true);
 
 Only do this after you have verified drawing under stretch (see checklist below). Prefer submitting a PR to the hub plugin after testing with the author when possible.
 
-`ModelOutlineRenderer` follows the **calling overlay’s** preference: hub overlays that have not opted in keep soft outlines; after opt-in, outlines rasterize into the native UNDER_UI buffer at display resolution with that overlay.
+`ModelOutlineRenderer` follows the **calling overlay’s** preference: hub overlays that have not opted in keep soft outlines; after opt-in, outlines rasterize into that overlay’s native pass at display resolution.
 
 Detection: overlays whose plugin classloader is not the client classloader get `preferNativeResolution = false` automatically in `Overlay(Plugin)`.
 
