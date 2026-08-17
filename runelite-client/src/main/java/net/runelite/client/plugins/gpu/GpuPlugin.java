@@ -174,6 +174,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastOverheadsWidth = -1;
 	private int lastOverheadsHeight = -1;
 	private int menuTexture;
+	private int overlayColorTexture;
+	private final int[] overlayColorPixel = new int[1];
 
 	private int vaoUiHandle;
 	private int vboUiHandle;
@@ -815,6 +817,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		overlayColorTexture = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, overlayColorTexture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	private void shutdownInterfaceTexture()
@@ -836,6 +846,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			glDeleteTextures(menuTexture);
 			menuTexture = 0;
+		}
+		if (overlayColorTexture != 0)
+		{
+			glDeleteTextures(overlayColorTexture);
+			overlayColorTexture = 0;
 		}
 		lastOverlayWidth = lastOverlayHeight = -1;
 		lastOverheadsWidth = lastOverheadsHeight = -1;
@@ -1573,14 +1588,28 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			blitSceneFbo();
 		}
 
+		// Split canvas: the overheads texture is transparent where the interface chrome
+		// will be, so the UI shader's overlayColor must not run on that pass (it would
+		// paint the fade over the frame). Fade the scene here instead; widgets cover chrome.
+		final int uiOverlayColor;
+		if (nativeOverlayBuffer.isActive())
+		{
+			drawViewportFade(overlayColor);
+			uiOverlayColor = 0;
+		}
+		else
+		{
+			uiOverlayColor = overlayColor;
+		}
+
 		// Overheads are snapshotted out of the canvas so ABOVE_SCENE / UNDER_WIDGETS
 		// can sit on either side of HP bars while widgets stay in drawUi.
 		drawNativeOverlays(NativeOverlayBuffer.Pass.ABOVE_SCENE);
-		drawOverheads(overlayColor, canvasHeight, canvasWidth);
+		drawOverheads(canvasHeight, canvasWidth);
 		drawNativeOverlays(NativeOverlayBuffer.Pass.UNDER_WIDGETS);
-		drawUi(overlayColor, canvasHeight, canvasWidth);
+		drawUi(uiOverlayColor, canvasHeight, canvasWidth);
 		drawNativeOverlays(NativeOverlayBuffer.Pass.ABOVE_UI);
-		drawDeferredMenu(overlayColor);
+		drawDeferredMenu(uiOverlayColor);
 
 		try
 		{
@@ -1625,10 +1654,59 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	/**
+	 * Composite Jagex overlayColor over the scene only. Must run before the split
+	 * UI passes: the overheads texture is transparent in the chrome, so applying
+	 * overlayColor there covers the frame.
+	 */
+	private void drawViewportFade(final int overlayColor)
+	{
+		final int alpha = overlayColor >>> 24;
+		if (alpha == 0)
+		{
+			return;
+		}
+
+		final int r = overlayColor >> 16 & 0xFF;
+		final int g = overlayColor >> 8 & 0xFF;
+		final int b = overlayColor & 0xFF;
+		overlayColorPixel[0] = (alpha << 24)
+			| ((r * alpha + 127) / 255) << 16
+			| ((g * alpha + 127) / 255) << 8
+			| (b * alpha + 127) / 255;
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		glBindTexture(GL_TEXTURE_2D, overlayColorTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, overlayColorPixel);
+
+		glUseProgram(glOverlayProgram);
+		glUniform1i(uniOverlayTex, 0);
+
+		if (client.isStretchedEnabled())
+		{
+			Dimension dim = client.getStretchedDimensions();
+			glDpiAwareViewport(0, 0, dim.width, dim.height);
+		}
+		else
+		{
+			glDpiAwareViewport(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
+		}
+
+		glBindVertexArray(vaoUiHandle);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindVertexArray(0);
+		glUseProgram(0);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDisable(GL_BLEND);
+	}
+
+	/**
 	 * Composite snapshotted overheads (HP bars, hitsplats) after ABOVE_SCENE overlays
 	 * and before UNDER_WIDGETS, using the same UI stretch/sampling as widgets.
 	 */
-	private void drawOverheads(final int overlayColor, final int canvasHeight, final int canvasWidth)
+	private void drawOverheads(final int canvasHeight, final int canvasWidth)
 	{
 		if (!nativeOverlayBuffer.isActive() || !nativeOverlayBuffer.isOverheadsDirty())
 		{
@@ -1656,7 +1734,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		drawStretchedCanvasTexture(overheadsTexture, overlayColor, canvasHeight, canvasWidth);
+		drawStretchedCanvasTexture(overheadsTexture, 0, canvasHeight, canvasWidth);
 		nativeOverlayBuffer.finishOverheadsComposite();
 	}
 
