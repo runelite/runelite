@@ -177,7 +177,7 @@ public class LootTrackerPlugin extends Plugin
 		"(?<item>Uncut diamond|Uncut emerald|Uncut ruby|Uncut sapphire|Jeweller's chisel)\\.?$");
 
 	static final String GOLEM_CRAFTING_EVENT = "Golem Crafting";
-	private static final Map<String, Integer> GOLEM_CRAFTING_REWARDS = ImmutableMap.of(
+	private static final Map<String, Integer> GOLEM_CRAFTING_REWARDS = Map.of(
 		"Uncut diamond", ItemID.UNCUT_DIAMOND,
 		"Uncut emerald", ItemID.UNCUT_EMERALD,
 		"Uncut ruby", ItemID.UNCUT_RUBY,
