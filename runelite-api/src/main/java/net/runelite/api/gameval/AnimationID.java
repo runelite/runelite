@@ -14169,7 +14169,6 @@ public final class AnimationID
 	public static final int PORTAL_VAMPYRIUM01_DESPAWN01 = 14169;
 	public static final int PORTAL_VAMPYRIUM01_IDLE01 = 14170;
 	public static final int PORTAL_VAMPYRIUM01_SPAWN_TO_IDLE01 = 14171;
-	public static final int PORTAL_VAMPYRIUM01_FULL_SEQUENCE = 14172;
 	public static final int PORTAL_VAMPYRIUM01_SPAWN02 = 14173;
 	public static final int PORTAL_VAMPYRIUM01_SPAWN02_FAST = 14174;
 	public static final int PORTAL_VAMPYRIUM01_DESPAWN02 = 14175;
