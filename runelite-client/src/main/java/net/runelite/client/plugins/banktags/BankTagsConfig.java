@@ -76,6 +76,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "enableTagTabSound",
+			name = "Enable tag tab UI sound",
+			description = "Enables a UI feedback sound when a tag tab is selected.",
+			position = 5
+	)
+	default boolean enableTagTabSound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",
