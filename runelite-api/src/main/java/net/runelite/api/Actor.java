@@ -142,6 +142,20 @@ public interface Actor extends Renderable, CameraFocusableEntity
 	int getAnimation();
 
 	/**
+	 * Values above 512 indicate an item and can be converted to the item ID by subtracting 512.
+	 * @return the item ID
+	 * @see ItemID
+	 */
+	int getAnimationLeftHandItem();
+
+	/**
+	 * Values above 512 indicate an item and can be converted to the item ID by subtracting 512.
+	 * @return the item ID
+	 * @see ItemID
+	 */
+	int getAnimationRightHandItem();
+
+	/**
 	 * Gets the secondary animation the actor is performing. Usually an idle animation, or one of the walking ones.
 	 *
 	 * @return the animation ID
