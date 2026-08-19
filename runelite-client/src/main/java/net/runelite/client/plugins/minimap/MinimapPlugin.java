@@ -192,13 +192,68 @@ public class MinimapPlugin extends Plugin
 			return;
 		}
 
-		applyDot(mapDots, DOT_ITEM, config.itemColor());
-		applyDot(mapDots, DOT_NPC, config.npcColor());
-		applyDot(mapDots, DOT_PLAYER, config.playerColor());
-		applyDot(mapDots, DOT_FRIEND, config.friendColor());
-		applyDot(mapDots, DOT_TEAM, config.teamColor());
-		applyDot(mapDots, DOT_FRIENDSCHAT, config.friendsChatColor());
-		applyDot(mapDots, DOT_CLAN, config.clanChatColor());
+		if (config.hideItem())
+		{
+			hideDot(mapDots, DOT_ITEM);
+		}
+		else
+		{
+			applyDot(mapDots, DOT_ITEM, config.itemColor());
+		}
+
+		if (config.hideNpc())
+		{
+			hideDot(mapDots, DOT_NPC);
+		}
+		else
+		{
+			applyDot(mapDots, DOT_NPC, config.npcColor());
+		}
+
+		if (config.hidePlayer())
+		{
+			hideDot(mapDots, DOT_PLAYER);
+		}
+		else
+		{
+			applyDot(mapDots, DOT_PLAYER, config.playerColor());
+		}
+
+		if (config.hideFriend())
+		{
+			hideDot(mapDots, DOT_FRIEND);
+		}
+		else
+		{
+			applyDot(mapDots, DOT_FRIEND, config.friendColor());
+		}
+
+		if (config.hideTeam())
+		{
+			hideDot(mapDots, DOT_TEAM);
+		}
+		else
+		{
+			applyDot(mapDots, DOT_TEAM, config.teamColor());
+		}
+
+		if (config.hideFriendsChat())
+		{
+			hideDot(mapDots, DOT_FRIENDSCHAT);
+		}
+		else
+		{
+			applyDot(mapDots, DOT_FRIENDSCHAT, config.friendsChatColor());
+		}
+
+		if (config.hideClanChat())
+		{
+			hideDot(mapDots, DOT_CLAN);
+		}
+		else
+		{
+			applyDot(mapDots, DOT_CLAN, config.clanChatColor());
+		}
 	}
 
 	private void applyDot(SpritePixels[] mapDots, int id, Color color)
@@ -206,6 +261,14 @@ public class MinimapPlugin extends Plugin
 		if (id < mapDots.length && color != null)
 		{
 			mapDots[id] = MinimapDot.create(client, color);
+		}
+	}
+
+	private void hideDot(SpritePixels[] mapDots, int id)
+	{
+		if (id < mapDots.length)
+		{
+			mapDots[id] = null;
 		}
 	}
 
