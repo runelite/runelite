@@ -61,10 +61,21 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "nameOnPingedTile",
+		name = "Name on ping",
+		description = "Displays the name of the user who pinged on the tile.",
+		position = 3
+	)
+	default boolean nameOnPingedTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "recolorNames",
 		name = "Recolor names",
 		description = "Recolor party members names based on unique color hash.",
-		position = 3
+		position = 4
 	)
 	default boolean recolorNames()
 	{
@@ -76,7 +87,7 @@ public interface PartyConfig extends Config
 		name = "Ping hotkey",
 		description = "Key to hold to send a tile ping.<br>"
 			+ "To ping, hold the ping hotkey down and click on the tile you want to ping.",
-		position = 4
+		position = 5
 	)
 	default Keybind pingHotkey()
 	{
@@ -87,7 +98,7 @@ public interface PartyConfig extends Config
 		keyName = "memberColor",
 		name = "Self-color",
 		description = "Which color you will appear as in the party panel and tile pings.",
-		position = 5
+		position = 6
 	)
 	Color memberColor();
 
@@ -95,7 +106,7 @@ public interface PartyConfig extends Config
 		keyName = "memberColor",
 		name = "",
 		description = "",
-		position = 5
+		position = 7
 	)
 	void setMemberColor(Color newMemberColor);
 
