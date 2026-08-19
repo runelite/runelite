@@ -149,6 +149,11 @@ public class TrapOverlay extends Overlay
 			return;
 		}
 
+		if (trap.isIgnoreTimer())
+		{
+			drawCircleOnTrap(graphics, trap, fill, border);
+			return;
+		}
 		double timeLeft = 1 - trap.getTrapTimeRelative();
 
 		ProgressPieComponent pie = new ProgressPieComponent();
