@@ -55,7 +55,7 @@ class FishingSpotOverlay extends Overlay
 {
 	private static final Duration MINNOW_MOVE = Duration.ofSeconds(15);
 	private static final Duration MINNOW_WARN = Duration.ofSeconds(3);
-	private static final int ONE_OR_TWO_TICK_AERIAL_FISHING = 4;
+	private static final int ONE_OR_TWO_TICK_AERIAL_FISHING = 6;
 
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
