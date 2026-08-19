@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
+ * Copyright (c) 2026, George Green <green.gw@pm.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,33 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.data;
+package net.runelite.client.plugins.party.messages;
 
-import java.awt.Color;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.party.messages.PartyMemberMessage;
 
-@Setter
-@Getter
-@RequiredArgsConstructor
-public class PartyData
+/**
+ * Sent by a party member to start a ready check. Every member is expected to
+ * answer with a {@link ReadyCheckResponse}.
+ */
+public class ReadyCheckRequest extends PartyMemberMessage
 {
-	private final long memberId;
-	private final WorldMapPoint worldMapPoint;
-	private final PanelComponent panel = new PanelComponent();
-	private Color color = Color.WHITE;
-
-	private int hitpoints;
-	private int maxHitpoints;
-	private int prayer;
-	private int maxPrayer;
-	private int runEnergy;
-	private int specEnergy;
-	private boolean vengeanceActive;
-
-	// Ready check state: null = no response in the current check, TRUE = ready, FALSE = not ready
-	private Boolean ready;
 }
