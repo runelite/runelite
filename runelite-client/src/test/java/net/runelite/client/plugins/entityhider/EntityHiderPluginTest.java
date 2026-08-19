@@ -285,4 +285,30 @@ public class EntityHiderPluginTest
 		assertTrue(plugin.shouldDraw(player, true));
 		assertTrue(plugin.shouldDraw(player, false));
 	}
+
+	// hide others except when they're attacking you
+	@Test
+	public void testHideOthersAttacker()
+	{
+		when(config.hideOthers()).thenReturn(true);
+		when(config.hideOthers2D()).thenReturn(true);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		Player attacker = mock(Player.class);
+		when(attacker.getName()).thenReturn("Attacker");
+
+		assertFalse(plugin.shouldDraw(attacker, true));
+		assertFalse(plugin.shouldDraw(attacker, false));
+
+		when(attacker.getInteracting()).thenReturn(player);
+
+		assertTrue(plugin.shouldDraw(attacker, true));
+		assertTrue(plugin.shouldDraw(attacker, false));
+	}
 }
