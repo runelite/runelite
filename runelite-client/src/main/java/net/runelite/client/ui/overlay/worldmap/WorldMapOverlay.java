@@ -27,11 +27,17 @@ package net.runelite.client.ui.overlay.worldmap;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Composite;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -62,6 +68,11 @@ public class WorldMapOverlay extends Overlay
 	private static final int TOOLTIP_PADDING_HEIGHT = 1;
 	private static final int TOOLTIP_PADDING_WIDTH = 2;
 	private static final int TOOLTIP_TEXT_OFFSET_HEIGHT = -2;
+
+	private static final Color HIGHLIGHTED_IMAGE_CIRCLE_COLOR = Color.decode("#FFEE8C");
+	private static final Stroke HIGHLIGHTED_IMAGE_CIRCLE_STROKE = new BasicStroke(3);
+	private static final int HIGHLIGHTED_IMAGE_CIRCLE_SIZE = 16;
+	private static final int HIGHLIGHTED_IMAGE_ANIMATION_TICKS = 4;
 
 	private static final Splitter TOOLTIP_SPLITTER = Splitter.on("<br>").trimResults().omitEmptyStrings();
 
@@ -210,6 +221,24 @@ public class WorldMapOverlay extends Overlay
 				}
 
 				graphics.drawImage(image, drawX, drawY, null);
+
+				if (worldPoint.isImageHighlighted())
+				{
+					Composite composite = graphics.getComposite();
+
+					final int animationStage = client.getTickCount() % HIGHLIGHTED_IMAGE_ANIMATION_TICKS;
+					final float opacity = 0.5f
+							* (1 + (float)Math.sin(2 * Math.PI * (1f / HIGHLIGHTED_IMAGE_ANIMATION_TICKS) * animationStage));
+					graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+					graphics.setColor(HIGHLIGHTED_IMAGE_CIRCLE_COLOR);
+					graphics.setStroke(HIGHLIGHTED_IMAGE_CIRCLE_STROKE);
+					graphics.drawOval(drawX + image.getWidth() / 2 - HIGHLIGHTED_IMAGE_CIRCLE_SIZE / 2,
+							drawY + image.getHeight() / 2 - HIGHLIGHTED_IMAGE_CIRCLE_SIZE / 2,
+							HIGHLIGHTED_IMAGE_CIRCLE_SIZE, HIGHLIGHTED_IMAGE_CIRCLE_SIZE);
+
+					graphics.setComposite(composite);
+				}
+
 				Rectangle clickbox = new Rectangle(drawX, drawY, image.getWidth(), image.getHeight());
 				if (mousePos != null && clickbox.contains(mousePos.getX(), mousePos.getY()))
 				{
