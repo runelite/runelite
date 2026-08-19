@@ -25,6 +25,7 @@
 
 package net.runelite.client.plugins.playerindicators;
 
+import net.runelite.api.Client;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -33,17 +34,21 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.Perspective;
 
 public class PlayerIndicatorsTileOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
+	private final Client client;
 
 	@Inject
-	private PlayerIndicatorsTileOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	private PlayerIndicatorsTileOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService, Client client)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
+		this.client = client;
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
@@ -59,11 +64,23 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 
 		playerIndicatorsService.forEachPlayer((player, decorations) ->
 		{
-			final Polygon poly = player.getCanvasTilePoly();
-
-			if (poly != null)
+			Polygon tilePoly = null;
+			if (config.trueTile())
 			{
-				OverlayUtil.renderPolygon(graphics, poly, decorations.getColor());
+				LocalPoint lp = LocalPoint.fromWorld(client, player.getWorldLocation());
+				if (lp != null)
+				{
+					tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
+				}
+			}
+			else
+			{
+				tilePoly = player.getCanvasTilePoly();
+			}
+
+			if (tilePoly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, tilePoly, decorations.getColor());
 			}
 		});
 
