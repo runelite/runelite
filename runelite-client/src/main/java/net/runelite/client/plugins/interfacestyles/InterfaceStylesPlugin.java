@@ -279,11 +279,12 @@ public class InterfaceStylesPlugin extends Plugin
 			{
 				if (skin == configuredSkin)
 				{
-					final String configSkin = skin.getExtendSkin() != null
-						? skin.getExtendSkin().toString()
-						: skin.toString();
-					String file = configSkin + "/" + spriteOverride.getSpriteID() + ".png";
-					SpritePixels spritePixels = getFileSpritePixels(file);
+					// Prefer the skin's own sprite, falling back to the skin it extends
+					SpritePixels spritePixels = getFileSpritePixels(skin + "/" + spriteOverride.getSpriteID() + ".png");
+					if (spritePixels == null && skin.getExtendSkin() != null)
+					{
+						spritePixels = getFileSpritePixels(skin.getExtendSkin() + "/" + spriteOverride.getSpriteID() + ".png");
+					}
 
 					if (spriteOverride.getSpriteID() == SpriteID.COMPASS)
 					{
