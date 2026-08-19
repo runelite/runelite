@@ -867,7 +867,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Drunken soldier")
 			.location(new WorldPoint(1551, 3565, 0))
 			.area("Shayzien pub")
-			.question("If 13 Shayzien Soldiers kill 46 Lizardmen each in a day, how many Lizardmen have they killed in total in a single day?")
+			.question("If 13 Shayzien soldiers kill 46 lizardmen each in a day, how many lizardmen have they killed in a total in a single day?")
 			.answer("598")
 			.build(),
 		AnagramClue.builder()
