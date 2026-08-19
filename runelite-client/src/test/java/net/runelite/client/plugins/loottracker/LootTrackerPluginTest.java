@@ -63,6 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
+import static net.runelite.client.plugins.loottracker.LootTrackerPlugin.GOLEM_CRAFTING_EVENT;
 import static net.runelite.client.plugins.loottracker.LootTrackerPlugin.ZOMBIE_PIRATE_LOCKER_EVENT;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.item.ItemPrice;
@@ -685,5 +686,33 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Large salvage", -1, LootRecordType.EVENT, null, Collections.singletonList(new ItemStack(ItemID.NAILS, 4)));
+	}
+
+	@Test
+	public void testGolemCrafting()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=229628>As you complete the golem it leaves a gift on the ground for you: 1 x Jeweller's chisel</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+		verify(lootTrackerPlugin).addLoot(GOLEM_CRAFTING_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.JEWELLERS_CHISEL, 1)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=06600c>As you complete the golem it leaves a gift on the ground for you: 1 x Uncut sapphire</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+		verify(lootTrackerPlugin).addLoot(GOLEM_CRAFTING_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.UNCUT_SAPPHIRE, 1)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=229628>As you complete the golem it leaves a gift in your gem bag for you: 1 x Uncut diamond</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+		verify(lootTrackerPlugin).addLoot(GOLEM_CRAFTING_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.UNCUT_DIAMOND, 1)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=06600c>As you complete the golem it leaves a gift in your gem sack for you: 1 x Uncut ruby</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+		verify(lootTrackerPlugin).addLoot(GOLEM_CRAFTING_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.UNCUT_RUBY, 1)
+		));
 	}
 }

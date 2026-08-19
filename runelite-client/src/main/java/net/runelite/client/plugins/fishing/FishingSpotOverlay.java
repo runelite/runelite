@@ -55,7 +55,7 @@ class FishingSpotOverlay extends Overlay
 {
 	private static final Duration MINNOW_MOVE = Duration.ofSeconds(15);
 	private static final Duration MINNOW_WARN = Duration.ofSeconds(3);
-	private static final int ONE_TICK_AERIAL_FISHING = 3;
+	private static final int ONE_OR_TWO_TICK_AERIAL_FISHING = 4;
 
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
@@ -111,7 +111,7 @@ class FishingSpotOverlay extends Overlay
 			{
 				color = config.getMinnowsOverlayColor();
 			}
-			else if (spot == FishingSpot.COMMON_TENCH && npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+			else if (spot == FishingSpot.COMMON_TENCH && npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_OR_TWO_TICK_AERIAL_FISHING)
 			{
 				color = config.getAerialOverlayColor();
 			}
@@ -165,7 +165,7 @@ class FishingSpotOverlay extends Overlay
 				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
 
 				if (spot == FishingSpot.COMMON_TENCH
-					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_OR_TWO_TICK_AERIAL_FISHING)
 				{
 					fishImage = ImageUtil.outlineImage(itemManager.getImage(spot.getFishSpriteId()), color);
 				}
