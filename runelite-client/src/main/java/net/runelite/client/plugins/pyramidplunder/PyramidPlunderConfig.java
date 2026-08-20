@@ -155,4 +155,27 @@ public interface PyramidPlunderConfig extends Config
 	{
 		return 9;
 	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "highlightLastGoodEntrance",
+		name = "Highlight last good entrance",
+		description = "Highlights the last entrance where the Guardian mummy was found."
+	)
+	default boolean highlightLastGoodEntrance()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 12,
+		keyName = "lastGoodEntranceColor",
+		name = "Entrance highlight color",
+		description = "Selects the color for highlighting the last good entrance."
+	)
+	default Color lastGoodEntranceColor()
+	{
+		return new Color(0, 255, 0, 100);
+	}
 }
