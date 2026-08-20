@@ -51,6 +51,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.Experience;
@@ -125,6 +126,9 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern HUNTER_RUMOUR_KC_PATTERN = Pattern.compile("You have completed <col=[0-9a-f]{6}>([0-9,]+)</col> rumours? for the Hunter Guild\\.");
 	private static final Pattern BIRD_EGG_OFFERING_PATTERN = Pattern.compile("You have made <col=ff0000>(?<kc>[\\d,]+|one)</col> offerings?\\.");
 	private static final Pattern CHEST_OPENING_PATTERN = Pattern.compile("You have (?<never>never )?opened (the )?(?<chest>crystal chest|Larran's big chest|Larran's small chest|Brimstone chest)( (?<kc>[\\d,]+ times|once))?\\.");
+	private static final Pattern DOM_COLLECTION_LOG_PB_PATTERN = Pattern.compile("Personal Best: (?<time>(?:\\d+:)?\\d+:\\d{2}(?:\\.\\d+)?)");
+	private static final Pattern DOM_FULL_PB_PATTERN = Pattern.compile("Delve level 1 - 8 duration: <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
+	private static final Pattern DOM_FULL_DURATION_PATTERN = Pattern.compile("Delve level 1 - 8 duration: <col=[0-9a-f]{6}>[0-9:.]+</col>\\. Personal best: <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col>");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -152,6 +156,20 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Map<String, String> KILLCOUNT_RENAMES = ImmutableMap.of(
 		"Barrows chest", "Barrows Chests"
 	);
+
+	// Doom of Mokhaiotl stores its per-level personal best delve times in varbits (in game ticks).
+	// The full 1-8 run pb is not stored in a varbit and is instead read from the chat message.
+	private static final Map<Integer, String> DOM_BEST_TIME_VARBITS = ImmutableMap.<Integer, String>builder()
+		.put(VarbitID.DOM_LEVEL_1_BEST_TIME, "Doom of Mokhaiotl Level 1")
+		.put(VarbitID.DOM_LEVEL_2_BEST_TIME, "Doom of Mokhaiotl Level 2")
+		.put(VarbitID.DOM_LEVEL_3_BEST_TIME, "Doom of Mokhaiotl Level 3")
+		.put(VarbitID.DOM_LEVEL_4_BEST_TIME, "Doom of Mokhaiotl Level 4")
+		.put(VarbitID.DOM_LEVEL_5_BEST_TIME, "Doom of Mokhaiotl Level 5")
+		.put(VarbitID.DOM_LEVEL_6_BEST_TIME, "Doom of Mokhaiotl Level 6")
+		.put(VarbitID.DOM_LEVEL_7_BEST_TIME, "Doom of Mokhaiotl Level 7")
+		.put(VarbitID.DOM_LEVEL_8_BEST_TIME, "Doom of Mokhaiotl Level 8")
+		.put(VarbitID.DOM_LEVEL_8_PLUS_BEST_TIME, "Doom of Mokhaiotl Level 8+")
+		.build();
 
 	private boolean bossLogLoaded;
 	private boolean advLogLoaded;
@@ -537,6 +555,20 @@ public class ChatCommandsPlugin extends Plugin
 			setKc("Duel Arena Losses", losses);
 		}
 
+		matcher = DOM_FULL_PB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			setPb("Doom of Mokhaiotl", timeStringToSeconds(matcher.group("pb")));
+			return;
+		}
+
+		matcher = DOM_FULL_DURATION_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			setPb("Doom of Mokhaiotl", timeStringToSeconds(matcher.group("pb")));
+			return;
+		}
+
 		matcher = KILL_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
@@ -873,6 +905,24 @@ public class ChatCommandsPlugin extends Plugin
 						log.debug("Loaded {} pets", petList.size());
 					}
 				}
+				else if (entryTitle.getText().equals("Doom of Mokhaiotl"))
+				{
+					for (Widget child : collectionLogEntryHeader.getChildren())
+					{
+						String text = child.getText();
+						if (text == null)
+						{
+							continue;
+						}
+
+						Matcher matcher = DOM_COLLECTION_LOG_PB_PATTERN.matcher(Text.removeTags(text));
+						if (matcher.find())
+						{
+							setPb("Doom of Mokhaiotl", timeStringToSeconds(matcher.group("time")));
+							break;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -924,6 +974,12 @@ public class ChatCommandsPlugin extends Plugin
 		if (event.getVarpId() == VarPlayerID.DOM_LEVEL_HIGHSCORES && event.getValue() > 0)
 		{
 			setKc("Doom of Mokhaiotl", event.getValue());
+		}
+
+		final String domBoss = DOM_BEST_TIME_VARBITS.get(event.getVarbitId());
+		if (domBoss != null && event.getValue() > 0)
+		{
+			setPb(domBoss, event.getValue() * (Constants.GAME_TICK_LENGTH / 1000.0));
 		}
 	}
 
@@ -2782,6 +2838,33 @@ public class ChatCommandsPlugin extends Plugin
 			case "dom":
 			case "doom":
 				return "Doom of Mokhaiotl";
+			case "dom 1":
+			case "doom 1":
+				return "Doom of Mokhaiotl Level 1";
+			case "dom 2":
+			case "doom 2":
+				return "Doom of Mokhaiotl Level 2";
+			case "dom 3":
+			case "doom 3":
+				return "Doom of Mokhaiotl Level 3";
+			case "dom 4":
+			case "doom 4":
+				return "Doom of Mokhaiotl Level 4";
+			case "dom 5":
+			case "doom 5":
+				return "Doom of Mokhaiotl Level 5";
+			case "dom 6":
+			case "doom 6":
+				return "Doom of Mokhaiotl Level 6";
+			case "dom 7":
+			case "doom 7":
+				return "Doom of Mokhaiotl Level 7";
+			case "dom 8":
+			case "doom 8":
+				return "Doom of Mokhaiotl Level 8";
+			case "dom 8+":
+			case "doom 8+":
+				return "Doom of Mokhaiotl Level 8+";
 
 			default:
 				return WordUtils.capitalize(boss);
