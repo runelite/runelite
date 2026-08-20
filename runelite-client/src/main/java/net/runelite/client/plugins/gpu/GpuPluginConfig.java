@@ -233,6 +233,17 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "frustumCulling",
+		name = "Frustum culling",
+		description = "Skip draw calls for zones outside the camera frustum.",
+		position = 15
+	)
+	default boolean frustumCulling()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "numThreads",
 		name = "Threads",
 		description = "Number of render threads to use.",
