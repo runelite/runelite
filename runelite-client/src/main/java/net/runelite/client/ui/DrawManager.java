@@ -38,8 +38,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DrawManager
 {
+	/**
+	 * A listener which receives the pixels of every rendered frame.
+	 */
+	public interface FrameListener
+	{
+		/**
+		 * Called with the pixels of a rendered frame. Pixels are packed 32-bit
+		 * 0xAARRGGBB, row-major, top-down; the contents of the alpha channel are
+		 * undefined. The array is reused between frames and may be the renderer's
+		 * live buffer: it is only valid until this method returns and must not be
+		 * modified; copy it if it is needed later. This is called on the render
+		 * thread, so must return quickly. Depending on the renderer, frames may
+		 * be delivered a few frames after they are drawn, and frames may be
+		 * skipped if the readback is not complete in time.
+		 */
+		void onFrame(int[] pixels, int width, int height);
+	}
+
 	private final List<Runnable> everyFrame = new CopyOnWriteArrayList<>();
 	private final Queue<Consumer<Image>> nextFrame = new ConcurrentLinkedQueue<>();
+	private final List<FrameListener> frameListeners = new CopyOnWriteArrayList<>();
 
 	public void registerEveryFrameListener(Runnable everyFrameListener)
 	{
@@ -57,6 +76,48 @@ public class DrawManager
 	public void requestNextFrameListener(Consumer<Image> nextFrameListener)
 	{
 		nextFrame.add(nextFrameListener);
+	}
+
+	public void registerFrameListener(FrameListener frameListener)
+	{
+		if (!frameListeners.contains(frameListener))
+		{
+			frameListeners.add(frameListener);
+		}
+	}
+
+	public void unregisterFrameListener(FrameListener frameListener)
+	{
+		frameListeners.remove(frameListener);
+	}
+
+	/**
+	 * Whether any frame listeners are registered. Renderers may use this to
+	 * skip frame readback entirely when nothing is listening.
+	 */
+	public boolean hasFrameListeners()
+	{
+		return !frameListeners.isEmpty();
+	}
+
+	/**
+	 * Deliver a frame to registered frame listeners. Called by the renderer.
+	 *
+	 * @see FrameListener#onFrame(int[], int, int)
+	 */
+	public void processFrame(int[] pixels, int width, int height)
+	{
+		for (FrameListener frameListener : frameListeners)
+		{
+			try
+			{
+				frameListener.onFrame(pixels, width, height);
+			}
+			catch (Exception e)
+			{
+				log.error("Error in frame listener", e);
+			}
+		}
 	}
 
 	public void processDrawComplete(Supplier<Image> imageSupplier)
