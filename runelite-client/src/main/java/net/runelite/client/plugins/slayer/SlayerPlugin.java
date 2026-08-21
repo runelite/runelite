@@ -674,7 +674,7 @@ public class SlayerPlugin extends Plugin
 				+ " " + initialAmount;
 		}
 
-		int streak;
+		final int streak;
 		switch (client.getVarbitValue(VarbitID.SLAYER_MASTER))
 		{
 			case KRYSTILIA_SLAYER_MASTER:
