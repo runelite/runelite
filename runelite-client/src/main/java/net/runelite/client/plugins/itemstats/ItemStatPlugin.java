@@ -65,6 +65,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.input.KeyManager;
 
 @PluginDescriptor(
 	name = "Item Stats",
@@ -82,6 +83,11 @@ public class ItemStatPlugin extends Plugin
 
 	@Inject
 	private ItemStatOverlay overlay;
+
+	@Inject
+	private KeyManager keyManager;
+
+	private ItemStatsHotkeyListener hotkeyListener;
 
 	@Inject
 	private Client client;
@@ -112,12 +118,17 @@ public class ItemStatPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		hotkeyListener = new ItemStatsHotkeyListener(config);
+		keyManager.registerKeyListener(hotkeyListener);
+		overlay.setHotkeyListener(hotkeyListener);
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		keyManager.unregisterKeyListener(hotkeyListener);
+		overlay.setHotkeyListener(null);
 		overlayManager.remove(overlay);
 		clientThread.invokeLater(this::resetGEInventory);
 	}
