@@ -27,6 +27,7 @@ package net.runelite.client.plugins.entityhider;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Ignore;
@@ -34,6 +35,8 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.party.PartyMember;
@@ -284,5 +287,98 @@ public class EntityHiderPluginTest
 
 		assertTrue(plugin.shouldDraw(player, true));
 		assertTrue(plugin.shouldDraw(player, false));
+	}
+
+	@Test
+	public void testPvpAttackerOnlyHidingIndependentOfHideOthers()
+	{
+		when(config.hideOthers()).thenReturn(false);
+		when(config.pvpAttackerOnlyHiding()).thenReturn(true);
+		when(config.pvpAttackerGracePeriodSeconds()).thenReturn(7);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		Player local = mock(Player.class);
+		Player attacker = mock(Player.class);
+		Player other = mock(Player.class);
+
+		when(attacker.getName()).thenReturn("attacker");
+		when(other.getName()).thenReturn("other");
+		when(attacker.getInteracting()).thenReturn(local);
+		when(attacker.getAnimation()).thenReturn(7516);
+
+		when(client.getLocalPlayer()).thenReturn(local);
+		when(client.getPlayers()).thenReturn(List.of(local, attacker, other));
+		when(client.getVarbitValue(Varbits.IN_WILDERNESS)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.PVP_SPEC_ORB)).thenReturn(0);
+		when(client.getTickCount()).thenReturn(100);
+
+		plugin.onGameTick(new GameTick());
+
+		assertTrue(plugin.shouldDraw(attacker, false));
+		assertFalse(plugin.shouldDraw(other, false));
+	}
+
+	@Test
+	public void testPvpAttackerOnlyHidingGracePeriod()
+	{
+		when(config.hideOthers()).thenReturn(true);
+		when(config.pvpAttackerOnlyHiding()).thenReturn(true);
+		when(config.pvpAttackerGracePeriodSeconds()).thenReturn(1);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		Player local = mock(Player.class);
+		Player attacker = mock(Player.class);
+
+		when(attacker.getName()).thenReturn("attacker");
+		when(client.getLocalPlayer()).thenReturn(local);
+		when(client.getPlayers()).thenReturn(List.of(local, attacker));
+		when(client.getVarbitValue(Varbits.IN_WILDERNESS)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.PVP_SPEC_ORB)).thenReturn(0);
+
+		when(attacker.getInteracting()).thenReturn(local);
+		when(attacker.getAnimation()).thenReturn(7516);
+		when(client.getTickCount()).thenReturn(100);
+		plugin.onGameTick(new GameTick());
+
+		when(attacker.getInteracting()).thenReturn(null);
+		when(client.getTickCount()).thenReturn(101);
+		plugin.onGameTick(new GameTick());
+		assertTrue(plugin.shouldDraw(attacker, false));
+
+		when(client.getTickCount()).thenReturn(103);
+		plugin.onGameTick(new GameTick());
+		assertFalse(plugin.shouldDraw(attacker, false));
+	}
+
+	@Test
+	public void testPvpAttackerOnlyHidingInactiveOutsideDangerousPvp()
+	{
+		when(config.hideOthers()).thenReturn(false);
+		when(config.pvpAttackerOnlyHiding()).thenReturn(true);
+		when(config.pvpAttackerGracePeriodSeconds()).thenReturn(7);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		Player local = mock(Player.class);
+		Player attacker = mock(Player.class);
+		Player other = mock(Player.class);
+
+		when(other.getName()).thenReturn("other");
+
+		when(client.getLocalPlayer()).thenReturn(local);
+		when(client.getVarbitValue(Varbits.IN_WILDERNESS)).thenReturn(0);
+		when(client.getVarbitValue(Varbits.PVP_SPEC_ORB)).thenReturn(0);
+
+		plugin.onGameTick(new GameTick());
+
+		assertTrue(plugin.shouldDraw(other, false));
 	}
 }
