@@ -74,7 +74,7 @@ enum PrayerType
 	REDEMPTION("Redemption", Prayer.REDEMPTION, "Heals the player if they fall below 10% health", SpriteID.Prayeron.REDEMPTION, true, 6),
 	SMITE("Smite", Prayer.SMITE, "Removes 1 Prayer point from an enemy for every 4 damage inflicted on the enemy", SpriteID.Prayeron.SMITE, true, 18),
 	PRESERVE("Preserve", Prayer.PRESERVE, "Boosted stats last 50% longer", SpriteID.Prayeron.PRESERVE, false, 2),
-	CHIVALRY("Chivalry", Prayer.CHIVALRY, "+15% Attack, +18% Strength, +20% Defence", SpriteID.Prayeron.CHIVALRY, false, 24),
+	CHIVALRY("Chivalry", Prayer.CHIVALRY, "+15% Attack, +18% Strength, +20% Defence", SpriteID.Prayeron.CHIVALRY, false, 12),
 	DEADEYE("Deadeye", Prayer.DEADEYE, "+18% Ranged attack, +18% Ranged strength, +5% Defence", SpriteID.Prayeron.DEADEYE, false, 12)
 	{
 		@Override
