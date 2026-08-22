@@ -188,10 +188,7 @@ public class WintertodtPlugin extends Plugin
 
 				if (prevTimeInSeconds > timeToNotify && timeInSeconds <= timeToNotify)
 				{
-					if (config.notifyRoundStart().isEnabled())
-					{
-						notifier.notify(config.notifyRoundStart(), "Wintertodt round is about to start");
-					}
+					notifier.notify(config.notifyRoundStart(), "Wintertodt round is about to start");
 					needRoundNotif = false;
 				}
 			}
@@ -318,7 +315,6 @@ public class WintertodtPlugin extends Plugin
 
 		if (!neverNotify)
 		{
-			boolean notifyDamageInterruptOnly = config.notifyDamageInterruptOnly();
 			boolean damageNotification = false;
 			Notification notification = null;
 			switch (interruptType)
@@ -347,7 +343,7 @@ public class WintertodtPlugin extends Plugin
 			}
 
 			// prevent non-interrupting damage notification when notifyDamageInterruptOnly is true
-			if (!damageNotification || !notifyDamageInterruptOnly || wasInterrupted)
+			if (!damageNotification || !config.notifyDamageInterruptOnly() || wasInterrupted)
 			{
 				notifyInterrupted(interruptType, wasInterrupted, notification);
 			}

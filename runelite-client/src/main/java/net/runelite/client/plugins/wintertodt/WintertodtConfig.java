@@ -63,8 +63,8 @@ public interface WintertodtConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "notifyDamageInterruptOnly",
-		name = "Only notify damage on interrupt",
-		description = "Damage notifications will only be sent if your action is interrupted"
+		name = "Only notify when interrupted",
+		description = "Damage notifications will only be sent if your action is interrupted."
 	)
 	default boolean notifyDamageInterruptOnly()
 	{
