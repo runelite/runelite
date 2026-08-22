@@ -170,6 +170,21 @@ public class LootTrackerPlugin extends Plugin
 	// Shipwreck salvaging
 	private static final Pattern SALVAGE_PATTERN = Pattern.compile("You sort through the\\s+(?<tier>\\S+)\\s+salvage.*");
 
+	// Wyrmscraig golem crafting
+	private static final Pattern GOLEM_CRAFTING_PATTERN = Pattern.compile(
+		"^As you complete the golem it leaves a gift " +
+		"(?:on the ground|in your gem (?:bag|sack)) for you: 1 x " +
+		"(?<item>Uncut diamond|Uncut emerald|Uncut ruby|Uncut sapphire|Jeweller's chisel)\\.?$");
+
+	static final String GOLEM_CRAFTING_EVENT = "Golem Crafting";
+	private static final Map<String, Integer> GOLEM_CRAFTING_REWARDS = Map.of(
+		"Uncut diamond", ItemID.UNCUT_DIAMOND,
+		"Uncut emerald", ItemID.UNCUT_EMERALD,
+		"Uncut ruby", ItemID.UNCUT_RUBY,
+		"Uncut sapphire", ItemID.UNCUT_SAPPHIRE,
+		"Jeweller's chisel", ItemID.JEWELLERS_CHISEL
+	);
+
 	// Seed Pack loot handling
 	private static final String SEEDPACK_EVENT = "Seed pack";
 
@@ -1047,6 +1062,18 @@ public class LootTrackerPlugin extends Plugin
 			String tier = shipwreckSalvagingMatcher.group("tier");
 			String eventName = WordUtils.capitalizeFully(tier) + " salvage";
 			onInvChange(collectInvItems(LootRecordType.EVENT, eventName));
+			return;
+		}
+
+		final Matcher golemCraftingMatcher = GOLEM_CRAFTING_PATTERN.matcher(Text.removeTags(message));
+		if (golemCraftingMatcher.matches())
+		{
+			final String itemName = golemCraftingMatcher.group("item");
+			final Integer itemId = GOLEM_CRAFTING_REWARDS.get(itemName);
+			if (itemId != null)
+			{
+				addLoot(GOLEM_CRAFTING_EVENT, -1, LootRecordType.EVENT, null, List.of(new ItemStack(itemId, 1)));
+			}
 			return;
 		}
 

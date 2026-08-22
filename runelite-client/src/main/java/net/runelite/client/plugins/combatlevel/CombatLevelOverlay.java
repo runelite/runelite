@@ -59,7 +59,7 @@ class CombatLevelOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showLevelsUntil() || client.getLocalPlayer().getCombatLevel() == Experience.MAX_COMBAT_LEVEL)
+		if (!config.showLevelsUntil() || (client.getLocalPlayer() != null && client.getLocalPlayer().getCombatLevel() == Experience.MAX_COMBAT_LEVEL))
 		{
 			return null;
 		}

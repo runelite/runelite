@@ -34,7 +34,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
@@ -213,12 +213,6 @@ public class TimeTrackingPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick t)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			lastTickLocation = null;
-			return;
-		}
-
 		// bird house data is only sent after exiting the post-login screen
 		Widget motd = client.getWidget(InterfaceID.WelcomeScreen.MOTW);
 		if (motd != null && !motd.isHidden())
@@ -234,9 +228,10 @@ public class TimeTrackingPlugin extends Plugin
 		}
 
 		WorldPoint loc = lastTickLocation;
-		lastTickLocation = client.getLocalPlayer().getWorldLocation();
+		Player player = client.getLocalPlayer();
+		lastTickLocation = player == null ? null : player.getWorldLocation();
 
-		if (loc == null || loc.getRegionID() != lastTickLocation.getRegionID())
+		if (loc == null || lastTickLocation == null || loc.getRegionID() != lastTickLocation.getRegionID())
 		{
 			return;
 		}

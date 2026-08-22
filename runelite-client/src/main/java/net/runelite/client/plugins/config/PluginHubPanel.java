@@ -275,6 +275,10 @@ class PluginHubPanel extends PluginPanel
 					descriptionText = "Plugin is incompatible, requires update by its author";
 				}
 			}
+			if (descriptionText == null)
+			{
+				descriptionText = "";
+			}
 			if (!descriptionText.startsWith("<html>"))
 			{
 				descriptionText = "<html>" + HtmlEscapers.htmlEscaper().escape(descriptionText) + "</html>";

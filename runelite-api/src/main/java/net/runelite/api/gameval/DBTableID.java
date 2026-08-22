@@ -4460,10 +4460,19 @@ public final class DBTableID
 			public static final int CW_SHOP_DATA = 5063;
 			public static final int ENT_TOTEMS_SHOP = 5458;
 			public static final int ENT_TOTEMS_SHOP_IRONMAN = 5459;
+			public static final int GOTR_REWARD_SHOP_ALL = 7142;
+			public static final int GOTR_REWARD_SHOP_NONE = 7226;
+			public static final int GOTR_REWARD_SHOP_LAW = 7227;
+			public static final int GOTR_REWARD_SHOP_DEATH = 7228;
+			public static final int GOTR_REWARD_SHOP_BLOOD = 7229;
+			public static final int GOTR_REWARD_SHOP_LAW_DEATH = 7230;
+			public static final int GOTR_REWARD_SHOP_LAW_BLOOD = 7231;
+			public static final int GOTR_REWARD_SHOP_DEATH_BLOOD = 7232;
 			public static final int SAILING_BOAT_SHOP = 8548;
 			public static final int DEADMAN_SKULL_SHOP = 9575;
 			public static final int VAMPYRIUM_CONSUMABLE_SHOP = 16873;
 			public static final int VAMPYRIUM_CONSUMABLE_SHOP_IVAN = 16874;
+			public static final int TEMPOROSS_SHOP_DATA = 16951;
 		}
 	}
 
@@ -4793,6 +4802,16 @@ public final class DBTableID
 			public static final int ENT_TOTEMS_SHOP_STOCK_MASK = 5463;
 			public static final int ENT_TOTEMS_SHOP_IRONMAN_STOCK_MASK = 5464;
 			public static final int ENT_TOTEMS_SHOP_STOCK_BRANCH = 5465;
+			public static final int GOTR_SHOP_DATA_BLOOD_TALISMAN = 7233;
+			public static final int GOTR_SHOP_DATA_DEATH_TALISMAN = 7234;
+			public static final int GOTR_SHOP_DATA_LAW_TALISMAN = 7235;
+			public static final int GOTR_SHOP_DATA_NATURE_TALISMAN = 7236;
+			public static final int GOTR_SHOP_DATA_COSMIC_TALISMAN = 7237;
+			public static final int GOTR_SHOP_DATA_CHAOS_TALISMAN = 7238;
+			public static final int GOTR_SHOP_DATA_BODY_TALISMAN = 7239;
+			public static final int GOTR_SHOP_DATA_MIND_TALISMAN = 7240;
+			public static final int GOTR_SHOP_DATA_FIRE_TALISMAN = 7241;
+			public static final int GOTR_SHOP_DATA_EARTH_TALISMAN = 7242;
 			public static final int SAILING_SHIP_STOCK_RAFT = 8549;
 			public static final int SAILING_SHIP_STOCK_SKIFF = 8550;
 			public static final int SAILING_SHIP_STOCK_SLOOP = 8551;
@@ -4879,6 +4898,18 @@ public final class DBTableID
 			public static final int VAMPYRIUM_FROTHY_POTION_3 = 16891;
 			public static final int VAMPYRIUM_FROTHY_POTION_2 = 16892;
 			public static final int VAMPYRIUM_FROTHY_POTION_1 = 16893;
+			public static final int GOTR_SHOP_DATA_WATER_TALISMAN = 16898;
+			public static final int GOTR_SHOP_DATA_AIR_TALISMAN = 16940;
+			public static final int GOTR_SHOP_DATA_ABYSSAL_NEEDLE = 16941;
+			public static final int GOTR_SHOP_DATA_GUARDIANS_EYE = 16942;
+			public static final int GOTR_SHOP_DATA_RING_OF_ELEMENTS = 16943;
+			public static final int GOTR_SHOP_DATA_HAT_OF_THE_EYE = 16944;
+			public static final int GOTR_SHOP_DATA_ROBE_TOP_OF_THE_EYE = 16945;
+			public static final int GOTR_SHOP_DATA_ROBE_BOTTOM_OF_THE_EYE = 16946;
+			public static final int GOTR_SHOP_DATA_BOOTS_OF_THE_EYE = 16947;
+			public static final int GOTR_SHOP_DATA_ABYSSAL_LANTERN = 16948;
+			public static final int TEMPOROSS_SHOP_DATA_FISH_BARREL = 16952;
+			public static final int TEMPOROSS_SHOP_DATA_TACKLE_BOX = 16953;
 		}
 	}
 
@@ -4952,6 +4983,8 @@ public final class DBTableID
 			public static final int OMNISHOP_CURRENCY_CW_PLAUDITS = 5105;
 			public static final int OMNISHOP_CURRENCY_ENT_TOTEMS_RESEARCH_POINTS = 5460;
 			public static final int OMNISHOP_CURRENCY_DEADMAN_SKULL_POINTS = 9576;
+			public static final int OMNISHOP_CURRENCY_ABYSSAL_PEARL = 16949;
+			public static final int OMNISHOP_CURRENCY_SPIRIT_FLAKES = 16954;
 		}
 	}
 
@@ -10789,6 +10822,7 @@ public final class DBTableID
 			public static final int ACTION_POH_SKILLCAPE_DEPOSIT = 6860;
 			public static final int ACTION_DRINK_STEAMFORGE_BREW_INSIDE_SYO_INN = 6861;
 			public static final int ACTION_EAT_CABBAGE_INFRONT_OF_BRASSICAN_MAGE = 6862;
+			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_2376 = 7210;
 			public static final int LEAGUE_TASK_ALL_EASY_COMBAT_ACHIEVEMENTS = 13323;
 			public static final int LEAGUE_TASK_ALL_MEDIUM_COMBAT_ACHIEVEMENTS = 13324;
 			public static final int LEAGUE_TASK_SCURRIUS_COMBAT_ACHIEVEMENTS = 13325;
@@ -19016,9 +19050,23 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_CRAFTING_OTHER_SUNSTONE_GOLEM = 7139;
 			public static final int SKILL_FEATURE_HUNTER_GOAT_PIT = 7140;
 			public static final int SKILL_FEATURE_MINING_SUNSTONE = 7141;
-			public static final int SKILL_FEATURE_RUNECRAFT_SUNSTONE_GOLEMS = 7142;
 			public static final int SKILL_FEATURE_SAILING_PORTS_WYRMSCRAIG = 7143;
 			public static final int SKILL_FEATURE_SLAYER_MASTER_WYRMSCRAIG = 7144;
+			public static final int SKILL_FEATURE_AGILITY_PIPEWITHINEDGEVILLEDUNGEON = 7211;
+			public static final int SKILL_FEATURE_AGILITY_DRAYNOR_MANOR_FENCE = 7212;
+			public static final int SKILL_FEATURE_AGILITY_GIANTS_PLATEAU = 7213;
+			public static final int SKILL_FEATURE_AGILITY_MOS_LEHARMLESS_STEPPING_STONES = 7214;
+			public static final int SKILL_FEATURE_AGILITY_NORTH_SOPHANEM_STEPPING_STONES = 7215;
+			public static final int SKILL_FEATURE_AGILITY_ARCEUUS_LIBRARY_RAILING = 7216;
+			public static final int SKILL_FEATURE_AGILITY_ARCEUUS_LIBRARY_RAILING2 = 7217;
+			public static final int SKILL_FEATURE_AGILITY_CHAMPIONS_GUILD_STEPPING_STONES = 7218;
+			public static final int SKILL_FEATURE_AGILITY_CLIMBCATHERBYCLIFF = 7219;
+			public static final int SKILL_FEATURE_AGILITY_ESCAPEFROMTHEWATEROBELISKISLAND_OVERLEVELLED = 7220;
+			public static final int SKILL_FEATURE_AGILITY_KARAMJACROSSINGSOUTHOFVOLCANO_OVERLEVELLED = 7221;
+			public static final int SKILL_FEATURE_AGILITY_POLLNIVNEACH_SCRAMBLE = 7222;
+			public static final int SKILL_FEATURE_AGILITY_YANILLEWALLCLIMB_OVERLEVELLED = 7223;
+			public static final int SKILL_FEATURE_AGILITY_FALADORWALLCLIMB_OVERLEVELLED = 7224;
+			public static final int SKILL_FEATURE_AGILITY_JUMPACROSSTHERIVERLUMTOALKHARID = 7225;
 			public static final int SKILL_FEATURE_AGILITY_OVERVIEW_0 = 9662;
 			public static final int SKILL_FEATURE_AGILITY_OVERVIEW_1 = 9663;
 			public static final int SKILL_FEATURE_AGILITY_OVERVIEW_2 = 9664;
@@ -20857,7 +20905,6 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_LLM_UNFINISHED = 11592;
 			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_LLA_UNFINISHED = 11593;
 			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_MAL_UNFINISHED = 11594;
-			public static final int SKILL_FEATURE_HERBLORE_MM_SECONDARY_POUCH = 11595;
 			public static final int SKILL_FEATURE_HERBLORE_SKILLCAPE = 11596;
 			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_0 = 11602;
 			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_1 = 11603;
@@ -21056,7 +21103,6 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_YEW = 11810;
 			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_MAGIC = 11811;
 			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_REDWOOD = 11812;
-			public static final int SKILL_FEATURE_HUNTER_1TRAP = 11813;
 			public static final int SKILL_FEATURE_HUNTER_OJIBWAY_BIRD_SNARE = 11814;
 			public static final int SKILL_FEATURE_HUNTER_NOOSE_WAND = 11815;
 			public static final int SKILL_FEATURE_HUNTER_BUTTERFLY_NET = 11816;
@@ -22466,6 +22512,7 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_SLAYER_VENATOR = 16903;
 			public static final int SKILL_FEATURE_STRENGTH_CRIMSON_KISTEN = 16904;
 			public static final int SKILL_FEATURE_WOODCUTTING_BLOODWOOD_LOGS = 16905;
+			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_TREASURE_CHEST_MAHOGANY = 16950;
 		}
 	}
 

@@ -169,13 +169,13 @@ public class ChatNotificationsPlugin extends Plugin
 			case TRADEREQ:
 				if (chatMessage.getMessage().contains("wishes to trade with you."))
 				{
-					notifier.notify(config.notifyOnTrade(), chatMessage.getMessage());
+					notifier.notify(config.notifyOnTrade(), Text.unescapeJagex(chatMessage.getMessage()));
 				}
 				break;
 			case CHALREQ_TRADE:
 				if (chatMessage.getMessage().contains("wishes to duel with you."))
 				{
-					notifier.notify(config.notifyOnDuel(), chatMessage.getMessage());
+					notifier.notify(config.notifyOnDuel(), Text.unescapeJagex(chatMessage.getMessage()));
 				}
 				break;
 			case BROADCAST:
@@ -189,11 +189,11 @@ public class ChatNotificationsPlugin extends Plugin
 					broadcast = broadcast.substring(0, urlTokenIndex);
 				}
 
-				notifier.notify(config.notifyOnBroadcast(), Text.removeFormattingTags(broadcast));
+				notifier.notify(config.notifyOnBroadcast(), Text.unescapeJagex(broadcast));
 				break;
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
-				notifier.notify(config.notifyOnPM(), Text.removeTags(chatMessage.getName()) + ": " + chatMessage.getMessage());
+				notifier.notify(config.notifyOnPM(), Text.unescapeJagex(chatMessage.getName() + ": " + chatMessage.getMessage()));
 				break;
 			case PRIVATECHATOUT:
 			case DIALOG:
@@ -319,7 +319,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 	private void sendNotification(Notification notification, ChatMessage message)
 	{
-		String name = Text.removeTags(message.getName());
+		String name = Text.unescapeJagex(message.getName());
 		String sender = message.getSender();
 		StringBuilder stringBuilder = new StringBuilder();
 
@@ -333,7 +333,7 @@ public class ChatNotificationsPlugin extends Plugin
 			stringBuilder.append(name).append(": ");
 		}
 
-		stringBuilder.append(Text.removeTags(message.getMessage()));
+		stringBuilder.append(Text.unescapeJagex(message.getMessage()));
 		String m = stringBuilder.toString();
 		notifier.notify(notification, m);
 	}

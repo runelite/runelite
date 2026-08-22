@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.chatfilter;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
@@ -97,7 +96,6 @@ public class ChatFilterPlugin extends Plugin
 		NPC_SAY
 	);
 
-	private static final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private List<Pattern> filteredPatterns = Collections.emptyList();
 	private List<Pattern> filteredNamePatterns = Collections.emptyList();
 
@@ -310,7 +308,8 @@ public class ChatFilterPlugin extends Plugin
 
 	boolean canFilterPlayer(String playerName)
 	{
-		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
+		Player local = client.getLocalPlayer();
+		boolean isMessageFromSelf = local != null && playerName.equals(local.getName());
 		return !isMessageFromSelf &&
 			(config.filterFriends() || !client.isFriended(playerName, false)) &&
 			(config.filterFriendsChat() || !isFriendsChatMember(playerName)) &&
@@ -342,25 +341,23 @@ public class ChatFilterPlugin extends Plugin
 
 	String censorMessage(final String username, final String message)
 	{
-		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
-			.replace('\u00A0', ' ')
-			.replace("<lt>", "<")
-			.replace("<gt>", ">");
-		String strippedAccents = stripAccents(strippedMessage);
-		assert strippedMessage.length() == strippedAccents.length();
-
 		if (username != null && isNameFiltered(username))
 		{
 			switch (config.filterType())
 			{
 				case CENSOR_WORDS:
-					return StringUtils.repeat('*', strippedMessage.length());
+					return StringUtils.repeat('*', Text.unescapeJagex(message).length());
 				case CENSOR_MESSAGE:
 					return CENSOR_MESSAGE;
 				case REMOVE_MESSAGE:
 					return null;
 			}
 		}
+
+		String strippedMessage = Text.JAGEX_PRINTABLE_CHAR_MATCHER.retainFrom(Text.unescapeJagex(message))
+			.replace('\u00A0', ' ');
+		String strippedAccents = stripAccents(strippedMessage);
+		assert strippedMessage.length() == strippedAccents.length();
 
 		boolean filtered = false;
 		for (Pattern pattern : filteredPatterns)
@@ -393,7 +390,7 @@ public class ChatFilterPlugin extends Plugin
 			assert strippedMessage.length() == strippedAccents.length();
 		}
 
-		return filtered ? strippedMessage : message;
+		return filtered ? Text.escapeJagex(strippedMessage) : message;
 	}
 
 	private String censorMessage(MessageNode messageNode, String username, String message)

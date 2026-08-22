@@ -390,7 +390,11 @@ public class HunterPlugin extends Plugin
 			}
 		}
 
-		lastTickLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
+		Player local = client.getLocalPlayer();
+		if (local != null)
+		{
+			lastTickLocalPlayerLocation =  local.getWorldLocation();
+		}
 	}
 
 	@Subscribe

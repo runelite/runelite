@@ -315,7 +315,7 @@ public final class ItemID
 	public static final int IKOV_LEVER = 83;
 
 	/**
-	 * Staff of armadyl
+	 * Staff of Armadyl
 	 */
 	public static final int IKOV_STAFFOFARMARDYL = 84;
 
@@ -325,7 +325,7 @@ public final class ItemID
 	public static final int IKOV_SHINYKEY = 85;
 
 	/**
-	 * Pendant of lucien
+	 * Pendant of Lucien
 	 */
 	public static final int IKOV_PENDANTOFLUCIEN = 86;
 
@@ -735,7 +735,7 @@ public final class ItemID
 	public static final int BLUE_DRAGON_SCALE = 243;
 
 	/**
-	 * Wine of zamorak
+	 * Wine of Zamorak
 	 */
 	public static final int WINE_OF_ZAMORAK = 245;
 
@@ -900,7 +900,7 @@ public final class ItemID
 	public static final int RESEARCH_NOTES = 291;
 
 	/**
-	 * Book on baxtorian
+	 * Book on Baxtorian
 	 */
 	public static final int BAXTORIAN_BOOK_WATERFALL_QUEST = 292;
 
@@ -1780,12 +1780,12 @@ public final class ItemID
 	public static final int BUCKET_BAILINGFULL = 585;
 
 	/**
-	 * Orb of protection
+	 * Orb of Protection
 	 */
 	public static final int ORB_OF_PROTECTION = 587;
 
 	/**
-	 * Orbs of protection
+	 * Orbs of Protection
 	 */
 	public static final int ORBS_OF_PROTECTION = 588;
 
@@ -1906,7 +1906,7 @@ public final class ItemID
 	public static final int ZQCRYSTAL_WHITE = 615;
 
 	/**
-	 * Beads of the dead
+	 * Beads of the Dead
 	 */
 	public static final int ZQDEADBEADS = 616;
 
@@ -3240,7 +3240,7 @@ public final class ItemID
 	public static final int CERT_HIGHWAYMAN_MASK = 980;
 
 	/**
-	 * Disk of returning
+	 * Disk of Returning
 	 */
 	public static final int DISCOFRETURNING = 981;
 
@@ -4570,7 +4570,7 @@ public final class ItemID
 	public static final int CAVEWITCHCAT = 1491;
 
 	/**
-	 * Doll of iban
+	 * Doll of Iban
 	 */
 	public static final int IBANDOLL = 1492;
 
@@ -4580,7 +4580,7 @@ public final class ItemID
 	public static final int UPASS_JOURNAL = 1493;
 
 	/**
-	 * History of iban
+	 * History of Iban
 	 */
 	public static final int OLD_JOURNAL = 1494;
 
@@ -4595,17 +4595,17 @@ public final class ItemID
 	public static final int IBANSDOVE = 1496;
 
 	/**
-	 * Amulet of othanian
+	 * Amulet of Othanian
 	 */
 	public static final int OTHAINIAN_AMULET = 1497;
 
 	/**
-	 * Amulet of doomion
+	 * Amulet of Doomion
 	 */
 	public static final int DOOMION_AMULET = 1498;
 
 	/**
-	 * Amulet of holthion
+	 * Amulet of Holthion
 	 */
 	public static final int HOLTHION_AMULET = 1499;
 
@@ -12301,7 +12301,7 @@ public final class ItemID
 	public static final int UNFINISHED_GUTHIXBOOK = 3843;
 
 	/**
-	 * Book of balance
+	 * Book of Balance
 	 */
 	public static final int GUTHIXBOOK_COMPLETE = 3844;
 
@@ -13523,7 +13523,7 @@ public final class ItemID
 	public static final int FENK_CONDUCTOR = 4201;
 
 	/**
-	 * Ring of charos
+	 * Ring of Charos
 	 */
 	public static final int RING_OF_CHAROS = 4202;
 
@@ -13743,7 +13743,7 @@ public final class ItemID
 	public static final int AHOY_ROBES_OF_NECROVARUS = 4247;
 
 	/**
-	 * Book of haricanto
+	 * Book of Haricanto
 	 */
 	public static final int AHOY_BOOK_OF_HARICANTO = 4248;
 
@@ -15573,7 +15573,7 @@ public final class ItemID
 	public static final int ZOGRE_BOW = 4827;
 
 	/**
-	 * Book of 'h.a.m'
+	 * Book of 'H.A.M'
 	 */
 	public static final int ZOGRE_HAMBOOK = 4829;
 
@@ -19320,7 +19320,7 @@ public final class ItemID
 	public static final int MAGIC_STRING = 6038;
 
 	/**
-	 * Amulet of nature
+	 * Amulet of Nature
 	 */
 	public static final int NATURE_AMULET = 6040;
 
@@ -20561,7 +20561,7 @@ public final class ItemID
 	public static final int GARDEN_WHITE_TREE_PLANTPOT_SAPLING = 6464;
 
 	/**
-	 * Ring of charos(a)
+	 * Ring of Charos(a)
 	 */
 	public static final int RING_OF_CHAROS_UNLOCKED = 6465;
 
@@ -21621,12 +21621,12 @@ public final class ItemID
 	public static final int ELID_STATUETTE = 6785;
 
 	/**
-	 * Robe of elidinis
+	 * Robe of Elidinis
 	 */
 	public static final int ELID_ROBETOP = 6786;
 
 	/**
-	 * Robe of elidinis
+	 * Robe of Elidinis
 	 */
 	public static final int ELID_ROBEBOTTOMS = 6787;
 
@@ -22856,7 +22856,7 @@ public final class ItemID
 	public static final int FEVER_PLUNDER = 7143;
 
 	/**
-	 * Book o' piracy
+	 * Book o' Piracy
 	 */
 	public static final int FEVER_PIRACY_BOOK = 7144;
 
@@ -24314,7 +24314,7 @@ public final class ItemID
 	public static final int CRAB_SHELL_BROKEN = 7541;
 
 	/**
-	 * Cake of guidance
+	 * Cake of Guidance
 	 */
 	public static final int _100GUIDE_GUIDECAKE = 7542;
 
@@ -24691,7 +24691,7 @@ public final class ItemID
 	public static final int BURGH_BOOK_SEVENWARRIORS = 7633;
 
 	/**
-	 * Histories of the hallowland
+	 * Histories of the Hallowland
 	 */
 	public static final int BURGH_BOOK_HISTORIESOFHALLOWLAND = 7634;
 
@@ -24716,52 +24716,52 @@ public final class ItemID
 	public static final int BURGH_ROD_COMMAND2 = 7638;
 
 	/**
-	 * Rod of ivandis (10)
+	 * Rod of Ivandis (10)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_10 = 7639;
 
 	/**
-	 * Rod of ivandis (9)
+	 * Rod of Ivandis (9)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_9 = 7640;
 
 	/**
-	 * Rod of ivandis (8)
+	 * Rod of Ivandis (8)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_8 = 7641;
 
 	/**
-	 * Rod of ivandis (7)
+	 * Rod of Ivandis (7)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_7 = 7642;
 
 	/**
-	 * Rod of ivandis (6)
+	 * Rod of Ivandis (6)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_6 = 7643;
 
 	/**
-	 * Rod of ivandis (5)
+	 * Rod of Ivandis (5)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_5 = 7644;
 
 	/**
-	 * Rod of ivandis (4)
+	 * Rod of Ivandis (4)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_4 = 7645;
 
 	/**
-	 * Rod of ivandis (3)
+	 * Rod of Ivandis (3)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_3 = 7646;
 
 	/**
-	 * Rod of ivandis (2)
+	 * Rod of Ivandis (2)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_2 = 7647;
 
 	/**
-	 * Rod of ivandis (1)
+	 * Rod of Ivandis (1)
 	 */
 	public static final int BURGH_ROD_COMMAND_FINAL_1 = 7648;
 
@@ -34248,62 +34248,62 @@ public final class ItemID
 	public static final int TRAIL_LOGS_PURPLE = 10329;
 
 	/**
-	 * 3rd age range top
+	 * 3rd Age range top
 	 */
 	public static final int TRAIL_RANGER_TORSO = 10330;
 
 	/**
-	 * 3rd age range legs
+	 * 3rd Age range legs
 	 */
 	public static final int TRAIL_RANGER_LEGS = 10332;
 
 	/**
-	 * 3rd age range coif
+	 * 3rd Age range coif
 	 */
 	public static final int TRAIL_RANGER_COIF = 10334;
 
 	/**
-	 * 3rd age vambraces
+	 * 3rd Age vambraces
 	 */
 	public static final int TRAIL_RANGER_VAMBRACES = 10336;
 
 	/**
-	 * 3rd age robe top
+	 * 3rd Age robe top
 	 */
 	public static final int TRAIL_MAGE_TORSO = 10338;
 
 	/**
-	 * 3rd age robe
+	 * 3rd Age robe
 	 */
 	public static final int TRAIL_MAGE_LEGS = 10340;
 
 	/**
-	 * 3rd age mage hat
+	 * 3rd Age mage hat
 	 */
 	public static final int TRAIL_MAGE_HAT = 10342;
 
 	/**
-	 * 3rd age amulet
+	 * 3rd Age amulet
 	 */
 	public static final int TRAIL_MAGE_AMULET = 10344;
 
 	/**
-	 * 3rd age platelegs
+	 * 3rd Age platelegs
 	 */
 	public static final int TRAIL_SILVER_PLATE_LEGS = 10346;
 
 	/**
-	 * 3rd age platebody
+	 * 3rd Age platebody
 	 */
 	public static final int TRAIL_SILVER_PLATE_CHEST = 10348;
 
 	/**
-	 * 3rd age full helmet
+	 * 3rd Age full helmet
 	 */
 	public static final int TRAIL_FIGHTER_HELM = 10350;
 
 	/**
-	 * 3rd age kiteshield
+	 * 3rd Age kiteshield
 	 */
 	public static final int TRAIL_FIGHTER_SHIELD = 10352;
 
@@ -36184,7 +36184,7 @@ public final class ItemID
 	public static final int FREMMENIK_ROUND_SHIELD = 10826;
 
 	/**
-	 * Helm of neitiznot
+	 * Helm of Neitiznot
 	 */
 	public static final int FRIS_KINGLY_HELM = 10828;
 
@@ -38716,7 +38716,7 @@ public final class ItemID
 	public static final int PATTERN_HUNDRED_KNIFE_DUMMY = 11639;
 
 	/**
-	 * Book of knowledge
+	 * Book of Knowledge
 	 */
 	public static final int PATTERN_REWARD = 11640;
 	public static final int PATTERN_COCKTAIL_SHAKER_DUMMY = 11641;
@@ -39130,7 +39130,7 @@ public final class ItemID
 	public static final int NZONE_HERBBOX_OPENED = 11739;
 
 	/**
-	 * Scroll of redirection
+	 * Scroll of Redirection
 	 */
 	public static final int NZONE_REDIRECTION = 11740;
 
@@ -39370,7 +39370,7 @@ public final class ItemID
 	public static final int MYSTIC_STEAM_BATTLESTAFF = 11789;
 
 	/**
-	 * Staff of the dead
+	 * Staff of the Dead
 	 */
 	public static final int SOTD = 11791;
 
@@ -39523,7 +39523,7 @@ public final class ItemID
 	public static final int THANKSGIVING_TURKEY = 11848;
 
 	/**
-	 * Mark of grace
+	 * Mark of Grace
 	 */
 	public static final int GRACE = 11849;
 
@@ -39763,12 +39763,12 @@ public final class ItemID
 	public static final int SLAYER_CAVE_DIARY = 11904;
 
 	/**
-	 * Trident of the seas (full)
+	 * Trident of the Seas (full)
 	 */
 	public static final int TOTS = 11905;
 
 	/**
-	 * Trident of the seas
+	 * Trident of the Seas
 	 */
 	public static final int TOTS_CHARGED = 11907;
 
@@ -40018,7 +40018,7 @@ public final class ItemID
 	public static final int LAVA_SHARD = 11994;
 
 	/**
-	 * Pet chaos elemental
+	 * Pet Chaos Elemental
 	 */
 	public static final int CHAOSELEPET = 11995;
 
@@ -40058,7 +40058,7 @@ public final class ItemID
 	public static final int ABYSSAL_TENTACLE = 12006;
 
 	/**
-	 * Jar of dirt
+	 * Jar of Dirt
 	 */
 	public static final int JAR_OF_DIRT = 12007;
 
@@ -41599,17 +41599,17 @@ public final class ItemID
 	public static final int INFINITY_BOTTOM_GOLD = 12421;
 
 	/**
-	 * 3rd age wand
+	 * 3rd Age wand
 	 */
 	public static final int TRAIL_MAGE_WAND = 12422;
 
 	/**
-	 * 3rd age bow
+	 * 3rd Age bow
 	 */
 	public static final int TRAIL_RANGER_BOW = 12424;
 
 	/**
-	 * 3rd age longsword
+	 * 3rd Age longsword
 	 */
 	public static final int TRAIL_FIGHTER_SWORD = 12426;
 
@@ -41639,7 +41639,7 @@ public final class ItemID
 	public static final int FURY_ORNAMENT = 12436;
 
 	/**
-	 * 3rd age cloak
+	 * 3rd Age cloak
 	 */
 	public static final int TRAIL_THIRD_CAPE = 12437;
 
@@ -42204,7 +42204,7 @@ public final class ItemID
 	public static final int UNFINISHED_BANDOSBOOK = 12607;
 
 	/**
-	 * Book of war
+	 * Book of War
 	 */
 	public static final int BANDOSBOOK_COMPLETE = 12608;
 
@@ -42214,7 +42214,7 @@ public final class ItemID
 	public static final int UNFINISHED_ARMADYLBOOK = 12609;
 
 	/**
-	 * Book of law
+	 * Book of Law
 	 */
 	public static final int ARMADYLBOOK_COMPLETE = 12610;
 
@@ -42224,7 +42224,7 @@ public final class ItemID
 	public static final int UNFINISHED_ZAROSBOOK = 12611;
 
 	/**
-	 * Book of darkness
+	 * Book of Darkness
 	 */
 	public static final int ZAROSBOOK_COMPLETE = 12612;
 
@@ -42349,67 +42349,67 @@ public final class ItemID
 	public static final int TELEPORTSCROLL_LUMBERYARD = 12642;
 
 	/**
-	 * Pet dagannoth supreme
+	 * Pet Dagannoth Supreme
 	 */
 	public static final int SUPREMEPET = 12643;
 
 	/**
-	 * Pet dagannoth prime
+	 * Pet Dagannoth Prime
 	 */
 	public static final int PRIMEPET = 12644;
 
 	/**
-	 * Pet dagannoth rex
+	 * Pet Dagannoth Rex
 	 */
 	public static final int REXPET = 12645;
 
 	/**
-	 * Baby mole
+	 * Baby Mole
 	 */
 	public static final int MOLEPET = 12646;
 
 	/**
-	 * Kalphite princess
+	 * Kalphite Princess
 	 */
 	public static final int KQPET_WALKING = 12647;
 
 	/**
-	 * Pet smoke devil
+	 * Pet Smoke Devil
 	 */
 	public static final int SMOKEPET = 12648;
 
 	/**
-	 * Pet kree'arra
+	 * Pet Kree'arra
 	 */
 	public static final int ARMADYLPET = 12649;
 
 	/**
-	 * Pet general graardor
+	 * Pet General Graardor
 	 */
 	public static final int BANDOSPET = 12650;
 
 	/**
-	 * Pet zilyana
+	 * Pet Zilyana
 	 */
 	public static final int SARADOMINPET = 12651;
 
 	/**
-	 * Pet k'ril tsutsaroth
+	 * Pet K'ril Tsutsaroth
 	 */
 	public static final int ZAMORAKPET = 12652;
 
 	/**
-	 * Prince black dragon
+	 * Prince Black Dragon
 	 */
 	public static final int KBDPET = 12653;
 
 	/**
-	 * Kalphite princess
+	 * Kalphite Princess
 	 */
 	public static final int KQPET_FLYING = 12654;
 
 	/**
-	 * Pet kraken
+	 * Pet Kraken
 	 */
 	public static final int KRAKENPET = 12655;
 
@@ -42629,7 +42629,7 @@ public final class ItemID
 	public static final int _1DOSE2COMBAT = 12701;
 
 	/**
-	 * Pet penance queen
+	 * Pet Penance Queen
 	 */
 	public static final int PENANCEPET = 12703;
 
@@ -42802,11 +42802,6 @@ public final class ItemID
 	 * Archaic emblem (tier 1)
 	 */
 	public static final int BH_EMBLEM = 12746;
-
-	/**
-	 * Archaic emblem (tier 1)
-	 */
-	public static final int CERT_BH_EMBLEM = 12747;
 
 	/**
 	 * Archaic emblem (tier 2)
@@ -43204,12 +43199,12 @@ public final class ItemID
 	public static final int GRANITE_CLAMP = 12849;
 
 	/**
-	 * Amulet of the damned (full)
+	 * Amulet of the Damned (full)
 	 */
 	public static final int DAMNED_AMULET = 12851;
 
 	/**
-	 * Amulet of the damned
+	 * Amulet of the Damned
 	 */
 	public static final int DAMNED_AMULET_DEGRADED = 12853;
 
@@ -43304,7 +43299,7 @@ public final class ItemID
 	public static final int SET_BARROWS_KARIL = 12883;
 
 	/**
-	 * Jar of sand
+	 * Jar of Sand
 	 */
 	public static final int JAR_OF_SAND = 12885;
 
@@ -43369,7 +43364,7 @@ public final class ItemID
 	public static final int ANTISANTA_COALBOX_FULL = 12898;
 
 	/**
-	 * Trident of the swamp
+	 * Trident of the Swamp
 	 */
 	public static final int TOXIC_TOTS_CHARGED = 12899;
 
@@ -43429,7 +43424,7 @@ public final class ItemID
 	public static final int ANTIVENOM_1 = 12919;
 
 	/**
-	 * Pet snakeling
+	 * Pet Snakeling
 	 */
 	public static final int SNAKEPET = 12921;
 
@@ -43479,7 +43474,7 @@ public final class ItemID
 	public static final int SNAKEBOSS_BOOK = 12935;
 
 	/**
-	 * Jar of swamp
+	 * Jar of Swamp
 	 */
 	public static final int JAR_OF_SWAMP = 12936;
 
@@ -43489,12 +43484,12 @@ public final class ItemID
 	public static final int TELEPORTSCROLL_ZULANDRA = 12938;
 
 	/**
-	 * Pet snakeling
+	 * Pet Snakeling
 	 */
 	public static final int SNAKEPET_ORANGE = 12939;
 
 	/**
-	 * Pet snakeling
+	 * Pet Snakeling
 	 */
 	public static final int SNAKEPET_BLUE = 12940;
 
@@ -44214,22 +44209,22 @@ public final class ItemID
 	public static final int SET_UNHOLY_BOOK = 13151;
 
 	/**
-	 * Book of balance page set
+	 * Book of Balance page set
 	 */
 	public static final int SET_BOOK_BALANCE = 13153;
 
 	/**
-	 * Book of war page set
+	 * Book of War page set
 	 */
 	public static final int SET_BOOK_WAR = 13155;
 
 	/**
-	 * Book of law page set
+	 * Book of Law page set
 	 */
 	public static final int SET_BOOK_LAW = 13157;
 
 	/**
-	 * Book of darkness page set
+	 * Book of Darkness page set
 	 */
 	public static final int SET_BOOK_DARKNESS = 13159;
 
@@ -44391,7 +44386,7 @@ public final class ItemID
 	public static final int NZONE_ROTG = 13202;
 
 	/**
-	 * Mask of balance
+	 * Mask of Balance
 	 */
 	public static final int SUMMER2015_MASK = 13203;
 
@@ -44469,7 +44464,7 @@ public final class ItemID
 	public static final int DUMMY_MUSIC_CAPE = 13224;
 
 	/**
-	 * Tzrek-jad
+	 * TzRek-Jad
 	 */
 	public static final int JAD_PET = 13225;
 
@@ -44534,7 +44529,7 @@ public final class ItemID
 	public static final int INFERNAL_PICKAXE_EMPTY = 13244;
 
 	/**
-	 * Jar of souls
+	 * Jar of Souls
 	 */
 	public static final int JAR_OF_SOULS = 13245;
 
@@ -44644,7 +44639,7 @@ public final class ItemID
 	public static final int ABYSSAL_BLUDGEON_3 = 13276;
 
 	/**
-	 * Jar of miasma
+	 * Jar of Miasma
 	 */
 	public static final int JAR_OF_MIASMA = 13277;
 
@@ -45683,7 +45678,7 @@ public final class ItemID
 	public static final int ARCEUUS_LIBRARY_DARKMANUSCRIPT_10 = 13523;
 
 	/**
-	 * Rada's census
+	 * Rada's Census
 	 */
 	public static final int ARCEUUS_LIBRARY_CENSUSRADA = 13524;
 
@@ -45693,12 +45688,12 @@ public final class ItemID
 	public static final int ARCEUUS_LIBRARY_DIARYRICKTOR7 = 13525;
 
 	/**
-	 * Eathram &#38; rada extract
+	 * Eathram &#38; Rada extract
 	 */
 	public static final int ARCEUUS_LIBRARY_EATHRAMRADA = 13526;
 
 	/**
-	 * Killing of a king
+	 * Killing of a King
 	 */
 	public static final int ARCEUUS_LIBRARY_KILLINGKING = 13527;
 
@@ -45708,47 +45703,47 @@ public final class ItemID
 	public static final int ARCEUUS_LIBRARY_HOSIDIUSLETTER = 13528;
 
 	/**
-	 * Wintertodt parable
+	 * Wintertodt Parable
 	 */
 	public static final int ARCEUUS_LIBRARY_WINTERTODTPARABLE = 13529;
 
 	/**
-	 * Twill accord
+	 * Twill Accord
 	 */
 	public static final int ARCEUUS_LIBRARY_TWILLACCORD = 13530;
 
 	/**
-	 * Byrne's coronation speech
+	 * Byrne's Coronation Speech
 	 */
 	public static final int ARCEUUS_LIBRARY_BYRNESPEECH = 13531;
 
 	/**
-	 * Ideology of darkness
+	 * Ideology of Darkness
 	 */
 	public static final int ARCEUUS_LIBRARY_IDEOLOGYDARKNESS = 13532;
 
 	/**
-	 * Rada's journey
+	 * Rada's Journey
 	 */
 	public static final int ARCEUUS_LIBRARY_RADAJOURNEY = 13533;
 
 	/**
-	 * Transvergence theory
+	 * Transvergence Theory
 	 */
 	public static final int ARCEUUS_LIBRARY_TRANSVERGENCETHEORY = 13534;
 
 	/**
-	 * Tristessa's tragedy
+	 * Tristessa's Tragedy
 	 */
 	public static final int ARCEUUS_LIBRARY_TRISTESSATRAGEDY = 13535;
 
 	/**
-	 * Treachery of royalty
+	 * Treachery of Royalty
 	 */
 	public static final int ARCEUUS_LIBRARY_TREACHERYROYALTY = 13536;
 
 	/**
-	 * Transportation incantations
+	 * Transportation Incantations
 	 */
 	public static final int ARCEUUS_LIBRARY_TELEPORTUNLOCK = 13537;
 
@@ -46821,7 +46816,7 @@ public final class ItemID
 	public static final int MM2_TRANSLATED_NOTE = 19513;
 
 	/**
-	 * Book of spyology
+	 * Book of Spyology
 	 */
 	public static final int MM2_SPY_BOOK = 19515;
 
@@ -47101,7 +47096,7 @@ public final class ItemID
 	public static final int ARCEUUS_SOULBEARER_DAMAGED = 19636;
 
 	/**
-	 * Soul journey
+	 * Soul Journey
 	 */
 	public static final int ARCEUUS_LIBRARY_SOULBEARERBOOK = 19637;
 
@@ -47211,7 +47206,7 @@ public final class ItemID
 	public static final int CATA_TOTEM = 19685;
 
 	/**
-	 * Helm of raedwald
+	 * Helm of Raedwald
 	 */
 	public static final int RAEDWALD_HELM = 19687;
 
@@ -47246,7 +47241,7 @@ public final class ItemID
 	public static final int MIDSUM_HELM16 = 19699;
 
 	/**
-	 * Jar of darkness
+	 * Jar of Darkness
 	 */
 	public static final int JAR_OF_DARKNESS = 19701;
 
@@ -48376,12 +48371,12 @@ public final class ItemID
 	public static final int FANCY_TIARA = 20008;
 
 	/**
-	 * 3rd age axe
+	 * 3rd Age axe
 	 */
 	public static final int _3A_AXE = 20011;
 
 	/**
-	 * 3rd age pickaxe
+	 * 3rd Age pickaxe
 	 */
 	public static final int _3A_PICKAXE = 20014;
 
@@ -49942,12 +49937,12 @@ public final class ItemID
 	public static final int BR_INFINITY_LEGS = 20575;
 
 	/**
-	 * 3rd age robe top
+	 * 3rd Age robe top
 	 */
 	public static final int BR_3A_MAGE_BODY = 20576;
 
 	/**
-	 * 3rd age robe
+	 * 3rd Age robe
 	 */
 	public static final int BR_3A_MAGE_LEGS = 20577;
 
@@ -50294,7 +50289,7 @@ public final class ItemID
 	public static final int NZONE_ZENYTE_RING_ENCHANTED_RECOIL = 20657;
 
 	/**
-	 * Giant squirrel
+	 * Giant Squirrel
 	 */
 	public static final int SKILLPETAGILITY = 20659;
 
@@ -50454,12 +50449,12 @@ public final class ItemID
 	public static final int PYROMANCER_GLOVES = 20712;
 
 	/**
-	 * Tome of fire
+	 * Tome of Fire
 	 */
 	public static final int TOME_OF_FIRE = 20714;
 
 	/**
-	 * Tome of fire (empty)
+	 * Tome of Fire (empty)
 	 */
 	public static final int TOME_OF_FIRE_UNCHARGED = 20716;
 
@@ -52280,7 +52275,7 @@ public final class ItemID
 	public static final int EASTER17_LEMON = 21242;
 
 	/**
-	 * Bucket of wester sand
+	 * Bucket of Wester sand
 	 */
 	public static final int EASTER17_SAND = 21243;
 
@@ -52445,7 +52440,7 @@ public final class ItemID
 	public static final int SKILLCAPE_MAX_INFERNALCAPE_BROKEN = 21289;
 
 	/**
-	 * Jal-nib-rek
+	 * Jal-Nib-Rek
 	 */
 	public static final int INFERNOPET = 21291;
 
@@ -53607,7 +53602,7 @@ public final class ItemID
 	public static final int GRANITE_HAMMER = 21742;
 
 	/**
-	 * Jar of stone
+	 * Jar of Stone
 	 */
 	public static final int JAR_OF_STONE = 21745;
 
@@ -53652,27 +53647,27 @@ public final class ItemID
 	public static final int VEOS_KHAREDSTS_MEMOIRS = 21760;
 
 	/**
-	 * Lunch by the lancalliums
+	 * Lunch by the Lancalliums
 	 */
 	public static final int VEOS_MEMOIRS_HOS_PAGE = 21762;
 
 	/**
-	 * The fisher's flute
+	 * The Fisher's Flute
 	 */
 	public static final int VEOS_MEMOIRS_PISC_PAGE = 21764;
 
 	/**
-	 * History and hearsay
+	 * History and Hearsay
 	 */
 	public static final int VEOS_MEMOIRS_SHAY_PAGE = 21766;
 
 	/**
-	 * Jewellery of jubilation
+	 * Jewellery of Jubilation
 	 */
 	public static final int VEOS_MEMOIRS_LOVA_PAGE = 21768;
 
 	/**
-	 * A dark disposition
+	 * A Dark Disposition
 	 */
 	public static final int VEOS_MEMOIRS_ARC_PAGE = 21770;
 
@@ -53692,32 +53687,32 @@ public final class ItemID
 	public static final int PISCQUEST_FAVOUR_SCROLL = 21775;
 
 	/**
-	 * Imbued saradomin max cape
+	 * Imbued Saradomin max cape
 	 */
 	public static final int SKILLCAPE_MAX_SARADOMIN2 = 21776;
 
 	/**
-	 * Imbued saradomin max hood
+	 * Imbued Saradomin max hood
 	 */
 	public static final int SKILLCAPE_MAX_HOOD_SARADOMIN2 = 21778;
 
 	/**
-	 * Imbued zamorak max cape
+	 * Imbued Zamorak max cape
 	 */
 	public static final int SKILLCAPE_MAX_ZAMORAK2 = 21780;
 
 	/**
-	 * Imbued zamorak max hood
+	 * Imbued Zamorak max hood
 	 */
 	public static final int SKILLCAPE_MAX_HOOD_ZAMORAK2 = 21782;
 
 	/**
-	 * Imbued guthix max cape
+	 * Imbued Guthix max cape
 	 */
 	public static final int SKILLCAPE_MAX_GUTHIX2 = 21784;
 
 	/**
-	 * Imbued guthix max hood
+	 * Imbued Guthix max hood
 	 */
 	public static final int SKILLCAPE_MAX_HOOD_GUTHIX2 = 21786;
 
@@ -53729,17 +53724,17 @@ public final class ItemID
 	public static final int TELEPORTSCROLL_REVENANTS_SELECTED_DUMMY = 21790;
 
 	/**
-	 * Imbued saradomin cape
+	 * Imbued Saradomin cape
 	 */
 	public static final int MA2_SARADOMIN_CAPE = 21791;
 
 	/**
-	 * Imbued guthix cape
+	 * Imbued Guthix cape
 	 */
 	public static final int MA2_GUTHIX_CAPE = 21793;
 
 	/**
-	 * Imbued zamorak cape
+	 * Imbued Zamorak cape
 	 */
 	public static final int MA2_ZAMORAK_CAPE = 21795;
 
@@ -54610,7 +54605,7 @@ public final class ItemID
 	public static final int DRAGON_LUMP = 22103;
 
 	/**
-	 * Jar of decay
+	 * Jar of Decay
 	 */
 	public static final int JAR_OF_DECAY = 22106;
 
@@ -55005,7 +55000,7 @@ public final class ItemID
 	public static final int LEATHER_SHIELD_INFO = 22287;
 
 	/**
-	 * Trident of the seas (e)
+	 * Trident of the Seas (e)
 	 */
 	public static final int TOTS_I_CHARGED = 22288;
 
@@ -55015,7 +55010,7 @@ public final class ItemID
 	public static final int TOTS_I_UNCHARGED = 22290;
 
 	/**
-	 * Trident of the swamp (e)
+	 * Trident of the Swamp (e)
 	 */
 	public static final int TOXIC_TOTS_I_CHARGED = 22292;
 
@@ -55025,7 +55020,7 @@ public final class ItemID
 	public static final int TOXIC_TOTS_I_UNCHARGED = 22294;
 
 	/**
-	 * Staff of light
+	 * Staff of Light
 	 */
 	public static final int STAFF_OF_LIGHT = 22296;
 
@@ -55090,12 +55085,12 @@ public final class ItemID
 	public static final int OSB5_SWORD = 22316;
 
 	/**
-	 * Pet corporeal critter
+	 * Pet Corporeal Critter
 	 */
 	public static final int CORPPET = 22318;
 
 	/**
-	 * Tzrek-zuk
+	 * TzRek-Zuk
 	 */
 	public static final int INFERNOPET_ZUK = 22319;
 
@@ -55125,7 +55120,7 @@ public final class ItemID
 	public static final int GHRAZI_RAPIER = 22324;
 
 	/**
-	 * Scythe of vitur
+	 * Scythe of Vitur
 	 */
 	public static final int SCYTHE_OF_VITUR = 22325;
 
@@ -55312,7 +55307,7 @@ public final class ItemID
 	public static final int VANGUARDPET = 22380;
 
 	/**
-	 * Vasa minirio
+	 * Vasa Minirio
 	 */
 	public static final int VASAPET = 22382;
 
@@ -55427,12 +55422,12 @@ public final class ItemID
 	public static final int MYQ4_XP_TOME = 22415;
 
 	/**
-	 * The turncloak
+	 * The Turncloak
 	 */
 	public static final int SLEPE_BOOK_SISTER1 = 22416;
 
 	/**
-	 * Explosive discovery
+	 * Explosive Discovery
 	 */
 	public static final int SLEPE_BOOK_SISTER2 = 22418;
 
@@ -55442,12 +55437,12 @@ public final class ItemID
 	public static final int SLEPE_BOOK_SISTER3 = 22420;
 
 	/**
-	 * Elixir of everlasting
+	 * Elixir of Everlasting
 	 */
 	public static final int SLEPE_MANUSCRIPT_ELIXIR = 22422;
 
 	/**
-	 * Buried alive
+	 * Buried Alive
 	 */
 	public static final int SLEPE_MANUSCRIPT_BURIED_ALIVE = 22424;
 
@@ -55542,7 +55537,7 @@ public final class ItemID
 	public static final int _1DOSEBASTION = 22470;
 
 	/**
-	 * Lil' zik
+	 * Lil' Zik
 	 */
 	public static final int VERZIKPET = 22473;
 
@@ -55562,7 +55557,7 @@ public final class ItemID
 	public static final int SANGUINESTI_STAFF_UNCHARGED = 22481;
 
 	/**
-	 * Scythe of vitur (uncharged)
+	 * Scythe of Vitur (uncharged)
 	 */
 	public static final int SCYTHE_OF_VITUR_UNCHARGED = 22486;
 
@@ -55597,27 +55592,27 @@ public final class ItemID
 	public static final int TOB_BOOK_MAIDEN = 22504;
 
 	/**
-	 * The butcher
+	 * The Butcher
 	 */
 	public static final int TOB_BOOK_BLOAT = 22506;
 
 	/**
-	 * Arachnids of vampyrium
+	 * Arachnids of Vampyrium
 	 */
 	public static final int TOB_BOOK_NYLOCAS = 22508;
 
 	/**
-	 * The shadow realm
+	 * The Shadow Realm
 	 */
 	public static final int TOB_BOOK_SOTETSEG = 22510;
 
 	/**
-	 * The wild hunt
+	 * The Wild Hunt
 	 */
 	public static final int TOB_BOOK_XARPUS = 22512;
 
 	/**
-	 * Verzik vitur - patient record
+	 * Verzik Vitur - Patient Record
 	 */
 	public static final int TOB_BOOK_VERZIK = 22514;
 
@@ -55855,22 +55850,22 @@ public final class ItemID
 	public static final int BASALT = 22603;
 
 	/**
-	 * Fire of eternal light
+	 * Fire of Eternal Light
 	 */
 	public static final int MY2ARM_DUMMY_FIRE_LIGHT = 22606;
 
 	/**
-	 * Fire of dehumidification
+	 * Fire of Dehumidification
 	 */
 	public static final int MY2ARM_DUMMY_FIRE_GHAST = 22607;
 
 	/**
-	 * Fire of nourishment
+	 * Fire of Nourishment
 	 */
 	public static final int MY2ARM_DUMMY_FIRE_HERB = 22608;
 
 	/**
-	 * Fire of unseasonal warmth
+	 * Fire of Unseasonal Warmth
 	 */
 	public static final int MY2ARM_DUMMY_FIRE_GWD = 22609;
 
@@ -55966,12 +55961,12 @@ public final class ItemID
 	public static final int PACK_BUCKET = 22660;
 
 	/**
-	 * Pet smoke devil
+	 * Pet Smoke Devil
 	 */
 	public static final int SMOKEPET_OLD = 22663;
 
 	/**
-	 * Scythe of vitur
+	 * Scythe of Vitur
 	 */
 	public static final int ROTTEN_SCYTHE = 22664;
 
@@ -56246,22 +56241,22 @@ public final class ItemID
 	public static final int CERT_BRUT_DRAGON_SPEAR_KP = 22744;
 
 	/**
-	 * Ikkle hydra
+	 * Ikkle Hydra
 	 */
 	public static final int HYDRAPET = 22746;
 
 	/**
-	 * Ikkle hydra
+	 * Ikkle Hydra
 	 */
 	public static final int HYDRAPET_ELECTRIC = 22748;
 
 	/**
-	 * Ikkle hydra
+	 * Ikkle Hydra
 	 */
 	public static final int HYDRAPET_FIRE = 22750;
 
 	/**
-	 * Ikkle hydra
+	 * Ikkle Hydra
 	 */
 	public static final int HYDRAPET_EXTINGUISHED = 22752;
 
@@ -56695,7 +56690,7 @@ public final class ItemID
 	public static final int TELETAB_BATTLEFRONT = 22949;
 
 	/**
-	 * Boots of brimstone
+	 * Boots of Brimstone
 	 */
 	public static final int BOOTS_OF_BRIMSTONE = 22951;
 
@@ -56943,7 +56938,7 @@ public final class ItemID
 	public static final int NEST_BOX_DECENTSEEDS_JAN2019 = 23062;
 
 	/**
-	 * Jar of chemicals
+	 * Jar of Chemicals
 	 */
 	public static final int JAR_OF_CHEMICALS = 23064;
 
@@ -57389,7 +57384,7 @@ public final class ItemID
 	public static final int TRAIL_MIMIC_CASKET = 23184;
 
 	/**
-	 * Ring of 3rd age
+	 * Ring of 3rd Age
 	 */
 	public static final int RING_OF_3RD_AGE = 23185;
 
@@ -57489,7 +57484,7 @@ public final class ItemID
 	public static final int JEWL_BESERKER_NECKLACE_ORNAMENT = 23240;
 
 	/**
-	 * 3rd age plateskirt
+	 * 3rd Age plateskirt
 	 */
 	public static final int TRAIL_SILVER_PLATE_SKIRT = 23242;
 
@@ -57624,17 +57619,17 @@ public final class ItemID
 	public static final int SANDWICH_LADY_BOTTOM = 23318;
 
 	/**
-	 * Rune scimitar ornament kit (guthix)
+	 * Rune scimitar ornament kit (Guthix)
 	 */
 	public static final int RUNE_SCIMITAR_ORNAMENT_KIT_GUTHIX = 23321;
 
 	/**
-	 * Rune scimitar ornament kit (saradomin)
+	 * Rune scimitar ornament kit (Saradomin)
 	 */
 	public static final int RUNE_SCIMITAR_ORNAMENT_KIT_SARADOMIN = 23324;
 
 	/**
-	 * Rune scimitar ornament kit (zamorak)
+	 * Rune scimitar ornament kit (Zamorak)
 	 */
 	public static final int RUNE_SCIMITAR_ORNAMENT_KIT_ZAMORAK = 23327;
 
@@ -57654,22 +57649,22 @@ public final class ItemID
 	public static final int RUNE_SCIMITAR_ZAMORAK = 23334;
 
 	/**
-	 * 3rd age druidic robe top
+	 * 3rd Age druidic robe top
 	 */
 	public static final int _3A_DRUIDIC_TOP = 23336;
 
 	/**
-	 * 3rd age druidic robe bottoms
+	 * 3rd Age druidic robe bottoms
 	 */
 	public static final int _3A_DRUIDIC_BOTTOMS = 23339;
 
 	/**
-	 * 3rd age druidic staff
+	 * 3rd Age druidic staff
 	 */
 	public static final int _3A_DRUIDIC_STAFF = 23342;
 
 	/**
-	 * 3rd age druidic cloak
+	 * 3rd Age druidic cloak
 	 */
 	public static final int _3A_DRUIDIC_CLOAK = 23345;
 
@@ -57699,7 +57694,7 @@ public final class ItemID
 	public static final int JOINT_OF_HAM = 23360;
 
 	/**
-	 * Staff of bob the cat
+	 * Staff of Bob the Cat
 	 */
 	public static final int STAFF_OF_BOBCAT = 23363;
 
@@ -58124,7 +58119,7 @@ public final class ItemID
 	public static final int CERT_BH_EMBLEM_10 = 23487;
 
 	/**
-	 * Wine of zamorak
+	 * Wine of Zamorak
 	 */
 	public static final int FAKE_WINE_OF_ZAMORAK = 23489;
 
@@ -58157,17 +58152,17 @@ public final class ItemID
 	public static final int HOSDUN_TEMPLE_KEY = 23502;
 
 	/**
-	 * Tome of the moon
+	 * Tome of the Moon
 	 */
 	public static final int HOSDUN_MOON_TOME = 23504;
 
 	/**
-	 * Tome of the sun
+	 * Tome of the Sun
 	 */
 	public static final int HOSDUN_SUN_TOME = 23506;
 
 	/**
-	 * Tome of the temple
+	 * Tome of the Temple
 	 */
 	public static final int HOSDUN_TEMPLE_TOME = 23508;
 
@@ -58202,12 +58197,12 @@ public final class ItemID
 	public static final int HOSDUN_EGG_SAC = 23520;
 
 	/**
-	 * Mask of ranul
+	 * Mask of Ranul
 	 */
 	public static final int HOSDUN_TEMPLE_MASK = 23522;
 
 	/**
-	 * Jar of eyes
+	 * Jar of Eyes
 	 */
 	public static final int JAR_OF_EYES = 23525;
 
@@ -58342,7 +58337,7 @@ public final class ItemID
 	public static final int BR_1DOSESTAMINA = 23589;
 
 	/**
-	 * Helm of neitiznot
+	 * Helm of Neitiznot
 	 */
 	public static final int BR_FRIS_KINGLY_HELM = 23591;
 
@@ -58372,17 +58367,17 @@ public final class ItemID
 	public static final int BR_XBOWS_CROSSBOW_RUNITE = 23601;
 
 	/**
-	 * Imbued guthix cape
+	 * Imbued Guthix cape
 	 */
 	public static final int BR_MA2_GUTHIX_CAPE = 23603;
 
 	/**
-	 * Imbued zamorak cape
+	 * Imbued Zamorak cape
 	 */
 	public static final int BR_MA2_ZAMORAK_CAPE = 23605;
 
 	/**
-	 * Imbued saradomin cape
+	 * Imbued Saradomin cape
 	 */
 	public static final int BR_MA2_SARADOMIN_CAPE = 23607;
 
@@ -58397,7 +58392,7 @@ public final class ItemID
 	public static final int BR_ACB = 23611;
 
 	/**
-	 * Staff of the dead
+	 * Staff of the Dead
 	 */
 	public static final int BR_SOTD = 23613;
 
@@ -58723,7 +58718,7 @@ public final class ItemID
 	public static final int GAUNTLETPET = 23757;
 
 	/**
-	 * Corrupted youngllef
+	 * Corrupted Youngllef
 	 */
 	public static final int GAUNTLETPET_CORRUPT = 23759;
 
@@ -59386,42 +59381,42 @@ public final class ItemID
 	public static final int CRYSTAL_CROWN_AMLODD = 23925;
 
 	/**
-	 * Crystal of ithell
+	 * Crystal of Ithell
 	 */
 	public static final int PRIF_CLAN_CRYSTAL_ITHELL = 23927;
 
 	/**
-	 * Crystal of iorwerth
+	 * Crystal of Iorwerth
 	 */
 	public static final int PRIF_CLAN_CRYSTAL_IORWERTH = 23929;
 
 	/**
-	 * Crystal of trahaearn
+	 * Crystal of Trahaearn
 	 */
 	public static final int PRIF_CLAN_CRYSTAL_TRAHAEARN = 23931;
 
 	/**
-	 * Crystal of cadarn
+	 * Crystal of Cadarn
 	 */
 	public static final int PRIF_CLAN_CRYSTAL_CADARN = 23933;
 
 	/**
-	 * Crystal of crwys
+	 * Crystal of Crwys
 	 */
 	public static final int PRIF_CLAN_CRYSTAL_CRWYS = 23935;
 
 	/**
-	 * Crystal of meilyr
+	 * Crystal of Meilyr
 	 */
 	public static final int PRIF_CLAN_CRYSTAL_MEILYR = 23937;
 
 	/**
-	 * Crystal of hefin
+	 * Crystal of Hefin
 	 */
 	public static final int PRIF_CLAN_CRYSTAL_HEFIN = 23939;
 
 	/**
-	 * Crystal of amlodd
+	 * Crystal of Amlodd
 	 */
 	public static final int PRIF_CLAN_CRYSTAL_AMLODD = 23941;
 
@@ -59536,12 +59531,12 @@ public final class ItemID
 	public static final int CRYSTAL_SHIELD_INACTIVE = 23993;
 
 	/**
-	 * Blade of saeldor
+	 * Blade of Saeldor
 	 */
 	public static final int BLADE_OF_SAELDOR = 23995;
 
 	/**
-	 * Blade of saeldor (inactive)
+	 * Blade of Saeldor (inactive)
 	 */
 	public static final int BLADE_OF_SAELDOR_INACTIVE = 23997;
 
@@ -59646,12 +59641,12 @@ public final class ItemID
 	public static final int PRIF_RANDAS_BOOK = 24049;
 
 	/**
-	 * A dear friend
+	 * A Dear Friend
 	 */
 	public static final int PRIF_AMLODD_BOOK = 24051;
 
 	/**
-	 * On leprechauns
+	 * On Leprechauns
 	 */
 	public static final int PRIF_LEPRECHAUN_BOOK = 24053;
 
@@ -59661,7 +59656,7 @@ public final class ItemID
 	public static final int PRIF_ARCLIGHT_BOOK = 24055;
 
 	/**
-	 * The eight clans
+	 * The Eight Clans
 	 */
 	public static final int PRIF_HYMN_SCROLL = 24057;
 
@@ -59671,7 +59666,7 @@ public final class ItemID
 	public static final int PRIF_GOLLWYN_BOOK = 24059;
 
 	/**
-	 * Niff &#38; harry
+	 * Niff &#38; Harry
 	 */
 	public static final int PRIF_POEM_SCROLL = 24061;
 
@@ -59691,22 +59686,22 @@ public final class ItemID
 	public static final int PRIF_ZULRAH_BOOK = 24067;
 
 	/**
-	 * The truth behind the myth (excerpt)
+	 * The Truth Behind the Myth (excerpt)
 	 */
 	public static final int PRIF_CAMORRA_BOOK = 24069;
 
 	/**
-	 * The living statues
+	 * The Living Statues
 	 */
 	public static final int PRIF_GARGOYLE_BOOK = 24071;
 
 	/**
-	 * The spurned demon
+	 * The Spurned Demon
 	 */
 	public static final int PRIF_ZALCANO_BOOK = 24073;
 
 	/**
-	 * Legends of the mountain
+	 * Legends of the Mountain
 	 */
 	public static final int PRIF_MOUNTAIN_BOOK = 24075;
 	public static final int FLETCHING_BOLT_TIP_OPAL = 24077;
@@ -59843,7 +59838,7 @@ public final class ItemID
 	public static final int DRAGON_PARRYINGDAGGER_TROUVER = 24143;
 
 	/**
-	 * Staff of balance
+	 * Staff of Balance
 	 */
 	public static final int STAFF_OF_BALANCE = 24144;
 
@@ -60158,17 +60153,17 @@ public final class ItemID
 	public static final int GRANITE_MAUL_UPGRADE = 24229;
 
 	/**
-	 * Imbued saradomin max cape (l)
+	 * Imbued Saradomin max cape (l)
 	 */
 	public static final int SKILLCAPE_MAX_SARADOMIN2_TROUVER = 24232;
 
 	/**
-	 * Imbued zamorak max cape (l)
+	 * Imbued Zamorak max cape (l)
 	 */
 	public static final int SKILLCAPE_MAX_ZAMORAK2_TROUVER = 24233;
 
 	/**
-	 * Imbued guthix max cape (l)
+	 * Imbued Guthix max cape (l)
 	 */
 	public static final int SKILLCAPE_MAX_GUTHIX2_TROUVER = 24234;
 
@@ -60178,47 +60173,47 @@ public final class ItemID
 	public static final int POH_BOARD = 24235;
 
 	/**
-	 * Imbued saradomin cape (broken)
+	 * Imbued Saradomin cape (broken)
 	 */
 	public static final int MA2_SARADOMIN_CAPE_BROKEN = 24236;
 
 	/**
-	 * Imbued saradomin max cape (broken)
+	 * Imbued Saradomin max cape (broken)
 	 */
 	public static final int SKILLCAPE_MAX_SARADOMIN2_BROKEN = 24238;
 
 	/**
-	 * Imbued guthix cape (broken)
+	 * Imbued Guthix cape (broken)
 	 */
 	public static final int MA2_GUTHIX_CAPE_BROKEN = 24240;
 
 	/**
-	 * Imbued guthix max cape (broken)
+	 * Imbued Guthix max cape (broken)
 	 */
 	public static final int SKILLCAPE_MAX_GUTHIX2_BROKEN = 24242;
 
 	/**
-	 * Imbued zamorak cape (broken)
+	 * Imbued Zamorak cape (broken)
 	 */
 	public static final int MA2_ZAMORAK_CAPE_BROKEN = 24244;
 
 	/**
-	 * Imbued zamorak max cape (broken)
+	 * Imbued Zamorak max cape (broken)
 	 */
 	public static final int SKILLCAPE_MAX_ZAMORAK2_BROKEN = 24246;
 
 	/**
-	 * Imbued saradomin cape (l)
+	 * Imbued Saradomin cape (l)
 	 */
 	public static final int MA2_SARADOMIN_CAPE_TROUVER = 24248;
 
 	/**
-	 * Imbued guthix cape (l)
+	 * Imbued Guthix cape (l)
 	 */
 	public static final int MA2_GUTHIX_CAPE_TROUVER = 24249;
 
 	/**
-	 * Imbued zamorak cape (l)
+	 * Imbued Zamorak cape (l)
 	 */
 	public static final int MA2_ZAMORAK_CAPE_TROUVER = 24250;
 
@@ -60278,7 +60273,7 @@ public final class ItemID
 	public static final int VIKINGEXILE_POLISHING_ROCK = 24262;
 
 	/**
-	 * Ballad of the basilisk
+	 * Ballad of the Basilisk
 	 */
 	public static final int VIKINGEXILE_BALLAD = 24263;
 
@@ -60706,17 +60701,17 @@ public final class ItemID
 	public static final int NIGHTMARE_STAFF = 24422;
 
 	/**
-	 * Harmonised nightmare staff
+	 * Harmonised Nightmare staff
 	 */
 	public static final int NIGHTMARE_STAFF_HARMONISED = 24423;
 
 	/**
-	 * Volatile nightmare staff
+	 * Volatile Nightmare staff
 	 */
 	public static final int NIGHTMARE_STAFF_VOLATILE = 24424;
 
 	/**
-	 * Eldritch nightmare staff
+	 * Eldritch Nightmare staff
 	 */
 	public static final int NIGHTMARE_STAFF_ELDRITCH = 24425;
 
@@ -60888,7 +60883,7 @@ public final class ItemID
 	public static final int SET_INQUISITORS_ARMOUR = 24488;
 
 	/**
-	 * Little nightmare
+	 * Little Nightmare
 	 */
 	public static final int NIGHTMAREPET = 24491;
 
@@ -60903,7 +60898,7 @@ public final class ItemID
 	public static final int TRAIL_HARD_ANAGRAM_EXP15_PUZZLEBOX = 24494;
 
 	/**
-	 * Jar of dreams
+	 * Jar of Dreams
 	 */
 	public static final int JAR_OF_DREAMS = 24495;
 
@@ -60953,7 +60948,7 @@ public final class ItemID
 	public static final int OSB7_REWARD_HELLCAT_EARS = 24527;
 
 	/**
-	 * Lamp of the gatherer
+	 * Lamp of the Gatherer
 	 */
 	public static final int ADVENTUREPATH_GATHERER_LAMP = 24528;
 
@@ -61033,12 +61028,12 @@ public final class ItemID
 	public static final int EASTER20_CAKE = 24549;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE = 24551;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE_DUMMY = 24553;
 
@@ -61265,12 +61260,12 @@ public final class ItemID
 	public static final int TUT2_BONES = 24655;
 
 	/**
-	 * Enraged tektiny
+	 * Enraged Tektiny
 	 */
 	public static final int TEKTONENRAGEDPET = 24656;
 
 	/**
-	 * Flying vespina
+	 * Flying Vespina
 	 */
 	public static final int VESPULAFLYINGPET = 24658;
 
@@ -61400,7 +61395,7 @@ public final class ItemID
 	public static final int BLISTERWOOD_FLAIL = 24699;
 
 	/**
-	 * Dark squirrel
+	 * Dark Squirrel
 	 */
 	public static final int SKILLPETAGILITY_DARK = 24701;
 
@@ -61846,22 +61841,22 @@ public final class ItemID
 	public static final int MM2_MONKEY_AWOWOGEI = 24867;
 
 	/**
-	 * Golden armadyl special attack
+	 * Golden Armadyl special attack
 	 */
 	public static final int BH_AGS_SPEC = 24868;
 
 	/**
-	 * Golden bandos special attack
+	 * Golden Bandos special attack
 	 */
 	public static final int BH_BGS_SPEC = 24869;
 
 	/**
-	 * Golden saradomin special attack
+	 * Golden Saradomin special attack
 	 */
 	public static final int BH_SGS_SPEC = 24870;
 
 	/**
-	 * Golden zamorak special attack
+	 * Golden Zamorak special attack
 	 */
 	public static final int BH_ZGS_SPEC = 24871;
 
@@ -62597,7 +62592,7 @@ public final class ItemID
 	public static final int LEAGUE_TRAILBLAZER_FAIRYS_FLIGHT_TELEPORT = 25102;
 
 	/**
-	 * Crystal of echoes
+	 * Crystal of Echoes
 	 */
 	public static final int LEAGUE_TRAILBLAZER_LAST_RECALL_TELEPORT = 25104;
 
@@ -63312,7 +63307,7 @@ public final class ItemID
 	public static final int SOUL_WARS_ECTOPLASMATOR = 25340;
 
 	/**
-	 * Spoils of war
+	 * Spoils of War
 	 */
 	public static final int SOUL_WARS_SPOILS = 25342;
 
@@ -63327,12 +63322,12 @@ public final class ItemID
 	public static final int SOUL_CAPE_BLUE = 25346;
 
 	/**
-	 * Lil' creator
+	 * Lil' Creator
 	 */
 	public static final int SOULWARSPET_BLUE = 25348;
 
 	/**
-	 * Lil' destructor
+	 * Lil' Destructor
 	 */
 	public static final int SOULWARSPET_RED = 25350;
 
@@ -63823,7 +63818,7 @@ public final class ItemID
 	public static final int BR_BARROWS_DHAROK_WEAPON = 25516;
 
 	/**
-	 * Volatile nightmare staff
+	 * Volatile Nightmare staff
 	 */
 	public static final int BR_NIGHTMARE_STAFF_VOLATILE = 25517;
 
@@ -63833,17 +63828,17 @@ public final class ItemID
 	public static final int BR_ANCESTRAL_HAT = 25518;
 
 	/**
-	 * Jalrek-jad
+	 * JalRek-Jad
 	 */
 	public static final int JAD_PET_INFERNO = 25519;
 
 	/**
-	 * Jar of spirits
+	 * Jar of Spirits
 	 */
 	public static final int JAR_OF_SPIRITS = 25521;
 
 	/**
-	 * Jar of smoke
+	 * Jar of Smoke
 	 */
 	public static final int JAR_OF_SMOKE = 25524;
 
@@ -63967,12 +63962,12 @@ public final class ItemID
 	public static final int TEMPOROSS_DAMP_EGG = 25571;
 
 	/**
-	 * Tome of water
+	 * Tome of Water
 	 */
 	public static final int TOME_OF_WATER = 25574;
 
 	/**
-	 * Tome of water (empty)
+	 * Tome of Water (empty)
 	 */
 	public static final int TOME_OF_WATER_UNCHARGED = 25576;
 
@@ -64082,7 +64077,7 @@ public final class ItemID
 	public static final int POH_WALLCHART_WATSON_MATERIAL = 25612;
 
 	/**
-	 * Baby mole-rat
+	 * Baby Mole-rat
 	 */
 	public static final int MOLEPET_NAKED = 25613;
 
@@ -64509,27 +64504,27 @@ public final class ItemID
 	public static final int TOB_HARDMODE_DUST = 25746;
 
 	/**
-	 * Lil' maiden
+	 * Lil' Maiden
 	 */
 	public static final int MAIDENPET = 25748;
 
 	/**
-	 * Lil' bloat
+	 * Lil' Bloat
 	 */
 	public static final int BLOATPET = 25749;
 
 	/**
-	 * Lil' nylo
+	 * Lil' Nylo
 	 */
 	public static final int NYLOCASPET = 25750;
 
 	/**
-	 * Lil' sot
+	 * Lil' Sot
 	 */
 	public static final int SOTETSEGPET = 25751;
 
 	/**
-	 * Lil' xarp
+	 * Lil' Xarp
 	 */
 	public static final int XARPUSPET = 25752;
 
@@ -64804,7 +64799,7 @@ public final class ItemID
 	public static final int AKD_ACCORD_DUMMY = 25817;
 
 	/**
-	 * Book of the dead
+	 * Book of the Dead
 	 */
 	public static final int BOOK_OF_THE_DEAD = 25818;
 
@@ -64916,92 +64911,92 @@ public final class ItemID
 	public static final int PRIF_WEAPON_SEED_ENHANCED = 25859;
 
 	/**
-	 * Bow of faerdhinen (inactive)
+	 * Bow of Faerdhinen (inactive)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INACTIVE = 25862;
 
 	/**
-	 * Bow of faerdhinen
+	 * Bow of Faerdhinen
 	 */
 	public static final int BOW_OF_FAERDHINEN = 25865;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE = 25867;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_DUMMY = 25869;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE_ITHELL = 25870;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE_IORWERTH = 25872;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE_TRAHAEARN = 25874;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE_CADARN = 25876;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE_CRWYS = 25878;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE_MEILYR = 25880;
 
 	/**
-	 * Blade of saeldor (c)
+	 * Blade of Saeldor (c)
 	 */
 	public static final int BLADE_OF_SAELDOR_INFINITE_AMLODD = 25882;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_ITHELL = 25884;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_IORWERTH = 25886;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_TRAHAEARN = 25888;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_CADARN = 25890;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_CRWYS = 25892;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_MEILYR = 25894;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_AMLODD = 25896;
 
@@ -66472,22 +66467,22 @@ public final class ItemID
 	public static final int NEX_FROZEN_KEY = 26356;
 
 	/**
-	 * Frozen key piece (armadyl)
+	 * Frozen key piece (Armadyl)
 	 */
 	public static final int NEX_FROZEN_KEY_ARMADYL = 26358;
 
 	/**
-	 * Frozen key piece (bandos)
+	 * Frozen key piece (Bandos)
 	 */
 	public static final int NEX_FROZEN_KEY_BANDOS = 26360;
 
 	/**
-	 * Frozen key piece (zamorak)
+	 * Frozen key piece (Zamorak)
 	 */
 	public static final int NEX_FROZEN_KEY_ZAMORAK = 26362;
 
 	/**
-	 * Frozen key piece (saradomin)
+	 * Frozen key piece (Saradomin)
 	 */
 	public static final int NEX_FROZEN_KEY_SARADOMIN = 26364;
 
@@ -66709,22 +66704,22 @@ public final class ItemID
 	public static final int LEAGUE_3_RUNE_XBOW = 26486;
 
 	/**
-	 * Book of balance (or)
+	 * Book of Balance (or)
 	 */
 	public static final int LEAGUE_3_BOOK_GUTHIX = 26488;
 
 	/**
-	 * Book of darkness (or)
+	 * Book of Darkness (or)
 	 */
 	public static final int LEAGUE_3_BOOK_ZAROS = 26490;
 
 	/**
-	 * Book of law (or)
+	 * Book of Law (or)
 	 */
 	public static final int LEAGUE_3_BOOK_ARMADYL = 26492;
 
 	/**
-	 * Book of war (or)
+	 * Book of War (or)
 	 */
 	public static final int LEAGUE_3_BOOK_BANDOS = 26494;
 
@@ -66938,7 +66933,7 @@ public final class ItemID
 	public static final int LOTG_KEY_YELLOW = 26576;
 
 	/**
-	 * Plain of mud sphere
+	 * Plain of Mud sphere
 	 */
 	public static final int LOTG_TELEPORT_ARTIFACT = 26577;
 
@@ -67498,42 +67493,42 @@ public final class ItemID
 	public static final int PVPA_CENTURION_CUIRASS_TROUVER = 26722;
 
 	/**
-	 * Wristbands of the arena
+	 * Wristbands of the Arena
 	 */
 	public static final int PVPA_ARENA_WRISTBANDS = 26723;
 
 	/**
-	 * Wristbands of the arena (l)
+	 * Wristbands of the Arena (l)
 	 */
 	public static final int PVPA_ARENA_WRISTBANDS_TROUVER = 26724;
 
 	/**
-	 * Wristbands of the arena (c)
+	 * Wristbands of the Arena (c)
 	 */
 	public static final int PVPA_ARENA_WRISTBANDS_CHARGED = 26725;
 
 	/**
-	 * Wristbands of the arena (cl)
+	 * Wristbands of the Arena (cl)
 	 */
 	public static final int PVPA_ARENA_WRISTBANDS_CHARGED_TROUVER = 26726;
 
 	/**
-	 * Wristbands of the arena (i)
+	 * Wristbands of the Arena (i)
 	 */
 	public static final int PVPA_ARENA_WRISTBANDS_I = 26727;
 
 	/**
-	 * Wristbands of the arena (il)
+	 * Wristbands of the Arena (il)
 	 */
 	public static final int PVPA_ARENA_WRISTBANDS_I_TROUVER = 26728;
 
 	/**
-	 * Wristbands of the arena (ic)
+	 * Wristbands of the Arena (ic)
 	 */
 	public static final int PVPA_ARENA_WRISTBANDS_I_CHARGED = 26729;
 
 	/**
-	 * Wristbands of the arena (ilc)
+	 * Wristbands of the Arena (ilc)
 	 */
 	public static final int PVPA_ARENA_WRISTBANDS_I_CHARGED_TROUVER = 26730;
 
@@ -67942,67 +67937,67 @@ public final class ItemID
 	public static final int ABYSSAL_LANTERN_REDWOOD = 26848;
 
 	/**
-	 * Hat of the eye
+	 * Hat of the Eye
 	 */
 	public static final int HAT_OF_THE_EYE = 26850;
 
 	/**
-	 * Robe top of the eye
+	 * Robe top of the Eye
 	 */
 	public static final int ROBE_TOP_OF_THE_EYE = 26852;
 
 	/**
-	 * Robe bottoms of the eye
+	 * Robe bottoms of the Eye
 	 */
 	public static final int ROBE_BOTTOM_OF_THE_EYE = 26854;
 
 	/**
-	 * Boots of the eye
+	 * Boots of the Eye
 	 */
 	public static final int BOOTS_OF_THE_EYE = 26856;
 
 	/**
-	 * Hat of the eye (red)
+	 * Hat of the Eye (red)
 	 */
 	public static final int HAT_OF_THE_EYE_RED = 26858;
 
 	/**
-	 * Robe top of the eye (red)
+	 * Robe top of the Eye (red)
 	 */
 	public static final int ROBE_TOP_OF_THE_EYE_RED = 26860;
 
 	/**
-	 * Robe bottoms of the eye (red)
+	 * Robe bottoms of the Eye (red)
 	 */
 	public static final int ROBE_BOTTOM_OF_THE_EYE_RED = 26862;
 
 	/**
-	 * Hat of the eye (green)
+	 * Hat of the Eye (green)
 	 */
 	public static final int HAT_OF_THE_EYE_GREEN = 26864;
 
 	/**
-	 * Robe top of the eye (green)
+	 * Robe top of the Eye (green)
 	 */
 	public static final int ROBE_TOP_OF_THE_EYE_GREEN = 26866;
 
 	/**
-	 * Robe bottoms of the eye (green)
+	 * Robe bottoms of the Eye (green)
 	 */
 	public static final int ROBE_BOTTOM_OF_THE_EYE_GREEN = 26868;
 
 	/**
-	 * Hat of the eye (blue)
+	 * Hat of the Eye (blue)
 	 */
 	public static final int HAT_OF_THE_EYE_BLUE = 26870;
 
 	/**
-	 * Robe top of the eye (blue)
+	 * Robe top of the Eye (blue)
 	 */
 	public static final int ROBE_TOP_OF_THE_EYE_BLUE = 26872;
 
 	/**
-	 * Robe bottoms of the eye (blue)
+	 * Robe bottoms of the Eye (blue)
 	 */
 	public static final int ROBE_BOTTOM_OF_THE_EYE_BLUE = 26874;
 
@@ -68162,7 +68157,7 @@ public final class ItemID
 	public static final int GOTR_LOST_BAG = 26912;
 
 	/**
-	 * Amulet of the eye
+	 * Amulet of the Eye
 	 */
 	public static final int GOTR_AMULET_OF_THE_EYE = 26914;
 
@@ -68354,7 +68349,7 @@ public final class ItemID
 	public static final int BCS_TOMB_KEY = 26960;
 
 	/**
-	 * Lily of the elid
+	 * Lily of the Elid
 	 */
 	public static final int BCS_LILY = 26961;
 
@@ -68444,17 +68439,17 @@ public final class ItemID
 	public static final int GOTR_LOST_BAG_BLUE = 26988;
 
 	/**
-	 * Amulet of the eye
+	 * Amulet of the Eye
 	 */
 	public static final int GOTR_AMULET_OF_THE_EYE_RED = 26990;
 
 	/**
-	 * Amulet of the eye
+	 * Amulet of the Eye
 	 */
 	public static final int GOTR_AMULET_OF_THE_EYE_GREEN = 26992;
 
 	/**
-	 * Amulet of the eye
+	 * Amulet of the Eye
 	 */
 	public static final int GOTR_AMULET_OF_THE_EYE_BLUE = 26994;
 
@@ -68896,7 +68891,7 @@ public final class ItemID
 	public static final int BR_SARADOMIN_CHAPS = 27182;
 
 	/**
-	 * 3rd age mage hat
+	 * 3rd Age mage hat
 	 */
 	public static final int BR_3A_MAGE_HAT = 27183;
 
@@ -68916,7 +68911,7 @@ public final class ItemID
 	public static final int BR_ZARYTE_XBOW = 27186;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BR_BOW_OF_FAERDHINEN = 27187;
 
@@ -68976,17 +68971,17 @@ public final class ItemID
 	public static final int BR_INQUISITORS_MACE = 27198;
 
 	/**
-	 * 3rd age range top
+	 * 3rd Age range top
 	 */
 	public static final int BR_3A_RANGER_TORSO = 27199;
 
 	/**
-	 * 3rd age range legs
+	 * 3rd Age range legs
 	 */
 	public static final int BR_3A_RANGER_LEGS = 27200;
 
 	/**
-	 * 3rd age range coif
+	 * 3rd Age range coif
 	 */
 	public static final int BR_3A_RANGER_COIF = 27201;
 
@@ -69131,7 +69126,7 @@ public final class ItemID
 	public static final int ARMADYLEAN_COMPONENT = 27269;
 
 	/**
-	 * Lily of the sands
+	 * Lily of the Sands
 	 */
 	public static final int LILY_OF_THE_SANDS = 27272;
 
@@ -69146,7 +69141,7 @@ public final class ItemID
 	public static final int TUMEKENS_SHADOW_UNCHARGED = 27277;
 
 	/**
-	 * Thread of elidinis
+	 * Thread of Elidinis
 	 */
 	public static final int THREAD_OF_ELIDINIS = 27279;
 
@@ -69156,12 +69151,12 @@ public final class ItemID
 	public static final int DIVINE_RUNE_POUCH = 27281;
 
 	/**
-	 * Breach of the scarab
+	 * Breach of the Scarab
 	 */
 	public static final int BREACH_OF_THE_SCARAB = 27283;
 
 	/**
-	 * Eye of the corruptor
+	 * Eye of the Corruptor
 	 */
 	public static final int EYE_OF_THE_CORRUPTOR = 27285;
 
@@ -69171,7 +69166,7 @@ public final class ItemID
 	public static final int KERIS_PARTISAN_CORRUPTION = 27287;
 
 	/**
-	 * Jewel of the sun
+	 * Jewel of the Sun
 	 */
 	public static final int JEWEL_OF_THE_SUN = 27289;
 
@@ -69281,22 +69276,22 @@ public final class ItemID
 	public static final int TOA_SUPPLY_HEAL_OVERTIME_1 = 27325;
 
 	/**
-	 * Tears of elidinis (4)
+	 * Tears of Elidinis (4)
 	 */
 	public static final int TOA_SUPPLY_PRAYER_4 = 27327;
 
 	/**
-	 * Tears of elidinis (3)
+	 * Tears of Elidinis (3)
 	 */
 	public static final int TOA_SUPPLY_PRAYER_3 = 27329;
 
 	/**
-	 * Tears of elidinis (2)
+	 * Tears of Elidinis (2)
 	 */
 	public static final int TOA_SUPPLY_PRAYER_2 = 27331;
 
 	/**
-	 * Tears of elidinis (1)
+	 * Tears of Elidinis (1)
 	 */
 	public static final int TOA_SUPPLY_PRAYER_1 = 27333;
 
@@ -69361,7 +69356,7 @@ public final class ItemID
 	public static final int SET_MASORI_FORTIFIED = 27355;
 
 	/**
-	 * Tome of fire
+	 * Tome of Fire
 	 */
 	public static final int BR_TOME_OF_FIRE = 27358;
 
@@ -69401,7 +69396,7 @@ public final class ItemID
 	public static final int TOA_CAMEL_KEY = 27369;
 
 	/**
-	 * Mask of rebirth
+	 * Mask of Rebirth
 	 */
 	public static final int TOA_AMASCUT_MASK = 27370;
 
@@ -69421,22 +69416,22 @@ public final class ItemID
 	public static final int AVAS_ASSEMBLER_MASORI_TROUVER = 27376;
 
 	/**
-	 * Remnant of akkha
+	 * Remnant of Akkha
 	 */
 	public static final int TOA_PET_MORPH_AKKHA = 27377;
 
 	/**
-	 * Remnant of ba-ba
+	 * Remnant of Ba-Ba
 	 */
 	public static final int TOA_PET_MORPH_BABA = 27378;
 
 	/**
-	 * Remnant of kephri
+	 * Remnant of Kephri
 	 */
 	public static final int TOA_PET_MORPH_KEPHRI = 27379;
 
 	/**
-	 * Remnant of zebak
+	 * Remnant of Zebak
 	 */
 	public static final int TOA_PET_MORPH_ZEBAK = 27380;
 
@@ -70268,12 +70263,12 @@ public final class ItemID
 	public static final int CALLISTO_PET_LEGACY = 27649;
 
 	/**
-	 * Vet'ion jr.
+	 * Vet'ion Jr.
 	 */
 	public static final int VETION_PET_LEGACY = 27650;
 
 	/**
-	 * Vet'ion jr.
+	 * Vet'ion Jr.
 	 */
 	public static final int VETION_PET2_LEGACY = 27651;
 
@@ -70308,17 +70303,17 @@ public final class ItemID
 	public static final int WILD_CAVE_ACCURSED_CHARGED = 27665;
 
 	/**
-	 * Claws of callisto
+	 * Claws of Callisto
 	 */
 	public static final int WBR_CALLISTO_CLAWS = 27667;
 
 	/**
-	 * Fangs of venenatis
+	 * Fangs of Venenatis
 	 */
 	public static final int WBR_VENENATIS_FANG = 27670;
 
 	/**
-	 * Skull of vet'ion
+	 * Skull of Vet'ion
 	 */
 	public static final int WBR_VETION_SKULL = 27673;
 
@@ -71356,7 +71351,7 @@ public final class ItemID
 	public static final int BH_BARBASSAULT_PENANCE_FIGHTER_TORSO_CORRUPTED_TROUVER = 28069;
 
 	/**
-	 * Helm of neitiznot (or)
+	 * Helm of Neitiznot (or)
 	 */
 	public static final int BH_FRIS_KINGLY_HELM_CORRUPTED = 28070;
 
@@ -71806,7 +71801,7 @@ public final class ItemID
 	public static final int CERT_CRYSTAL_AXE_2H_INACTIVE = 28224;
 
 	/**
-	 * 3rd age felling axe
+	 * 3rd Age felling axe
 	 */
 	public static final int _3A_AXE_2H = 28226;
 
@@ -72041,7 +72036,7 @@ public final class ItemID
 	public static final int SOULREAPER_AXE_HEAD = 28319;
 
 	/**
-	 * Eye of the duke
+	 * Eye of the Duke
 	 */
 	public static final int SOULREAPER_AXE_EYE = 28321;
 
@@ -73629,7 +73624,7 @@ public final class ItemID
 	public static final int DOV_IMBUED_BARRONITE = 28806;
 
 	/**
-	 * Shield of arrav
+	 * Shield of Arrav
 	 */
 	public static final int DOV_SHIELD_OF_ARRAV = 28807;
 
@@ -73704,7 +73699,7 @@ public final class ItemID
 	public static final int DIZANAS_QUIVER_BROKEN = 28826;
 
 	/**
-	 * Blessed dizana's quiver (broken)
+	 * Blessed Dizana's quiver (broken)
 	 */
 	public static final int DIZANAS_QUIVER_INFINITE_BROKEN = 28828;
 
@@ -73967,12 +73962,12 @@ public final class ItemID
 	public static final int TRAIL_HARD_MUSIC_VM01 = 28918;
 
 	/**
-	 * Tonalztics of ralos (uncharged)
+	 * Tonalztics of Ralos (uncharged)
 	 */
 	public static final int TONALZTICS_OF_RALOS_UNCHARGED = 28919;
 
 	/**
-	 * Tonalztics of ralos
+	 * Tonalztics of Ralos
 	 */
 	public static final int TONALZTICS_OF_RALOS_CHARGED = 28922;
 
@@ -74040,12 +74035,12 @@ public final class ItemID
 	public static final int DIZANAS_QUIVER_CHARGED_TROUVER = 28953;
 
 	/**
-	 * Blessed dizana's quiver
+	 * Blessed Dizana's quiver
 	 */
 	public static final int DIZANAS_QUIVER_INFINITE = 28955;
 
 	/**
-	 * Blessed dizana's quiver (l)
+	 * Blessed Dizana's quiver (l)
 	 */
 	public static final int DIZANAS_QUIVER_INFINITE_TROUVER = 28957;
 
@@ -74055,7 +74050,7 @@ public final class ItemID
 	public static final int COLOSSEUM_PASSIONATE_SUPPORTER_NOTE = 28958;
 
 	/**
-	 * Smol heredit
+	 * Smol Heredit
 	 */
 	public static final int SOLHEREDITPET = 28960;
 
@@ -74126,7 +74121,7 @@ public final class ItemID
 	public static final int VMQ2_AMULET = 28976;
 
 	/**
-	 * Knight of varlamore
+	 * Knight of Varlamore
 	 */
 	public static final int VMQ2_KNIGHT_5_FOLLOWER_OBJ = 28977;
 
@@ -75211,12 +75206,12 @@ public final class ItemID
 	public static final int PLACEHOLDER_EASTER24_EVENT_BOOK_AYASTER = 29432;
 
 	/**
-	 * Book of egg
+	 * Book of Egg
 	 */
 	public static final int EASTER24_REWARD_BOOK_EASTER = 29433;
 
 	/**
-	 * Book of egg
+	 * Book of Egg
 	 */
 	public static final int EASTER24_REWARD_BOOK_EASTER_OPEN = 29435;
 
@@ -75748,42 +75743,42 @@ public final class ItemID
 	public static final int DEADMAN_BLIGHTED_DARK_BOW = 29599;
 
 	/**
-	 * Corrupted volatile nightmare staff
+	 * Corrupted Volatile Nightmare staff
 	 */
 	public static final int DEADMAN_BLIGHTED_VOLATILE_STAFF = 29602;
 
 	/**
-	 * Armadyl godsword (deadman)
+	 * Armadyl godsword (Deadman)
 	 */
 	public static final int DEADMAN_AGS = 29605;
 
 	/**
-	 * Voidwaker (deadman)
+	 * Voidwaker (Deadman)
 	 */
 	public static final int DEADMAN_VOIDWAKER = 29607;
 
 	/**
-	 * Volatile nightmare staff (deadman)
+	 * Volatile Nightmare staff (Deadman)
 	 */
 	public static final int DEADMAN_NIGHTMARE_STAFF_VOLATILE = 29609;
 
 	/**
-	 * Dark bow (deadman)
+	 * Dark bow (Deadman)
 	 */
 	public static final int DEADMAN_DARKBOW = 29611;
 
 	/**
-	 * Imbued zamorak cape (deadman)
+	 * Imbued Zamorak cape (Deadman)
 	 */
 	public static final int DEADMAN_MA2_ZAMORAK_CAPE = 29613;
 
 	/**
-	 * Imbued guthix cape (deadman)
+	 * Imbued Guthix cape (Deadman)
 	 */
 	public static final int DEADMAN_MA2_GUTHIX_CAPE = 29615;
 
 	/**
-	 * Imbued saradomin cape (deadman)
+	 * Imbued Saradomin cape (Deadman)
 	 */
 	public static final int DEADMAN_MA2_SARADOMIN_CAPE = 29617;
 
@@ -76214,7 +76209,7 @@ public final class ItemID
 	public static final int ARAXYTE_VENOM_SACK = 29784;
 
 	/**
-	 * Jar of venom
+	 * Jar of Venom
 	 */
 	public static final int JAR_OF_VENOM = 29786;
 
@@ -76546,12 +76541,12 @@ public final class ItemID
 	public static final int GLACIAL_TEMOTLI = 29889;
 
 	/**
-	 * Pendant of ates (inert)
+	 * Pendant of Ates (inert)
 	 */
 	public static final int PENDANT_OF_ATES_EMPTY = 29892;
 
 	/**
-	 * Pendant of ates
+	 * Pendant of Ates
 	 */
 	public static final int PENDANT_OF_ATES = 29893;
 
@@ -77087,12 +77082,12 @@ public final class ItemID
 	public static final int WYRM_AGILITY_ZIPLINE_DUMMY = 30063;
 
 	/**
-	 * Tome of earth
+	 * Tome of Earth
 	 */
 	public static final int TOME_OF_EARTH = 30064;
 
 	/**
-	 * Tome of earth (empty)
+	 * Tome of Earth (empty)
 	 */
 	public static final int TOME_OF_EARTH_UNCHARGED = 30066;
 
@@ -77281,7 +77276,7 @@ public final class ItemID
 	public static final int NZONE_TELETAB_ALDARIN = 30149;
 
 	/**
-	 * Bone squirrel
+	 * Bone Squirrel
 	 */
 	public static final int SKILLPETAGILITY_BONE = 30151;
 
@@ -78237,7 +78232,7 @@ public final class ItemID
 	public static final int RING_OF_KINGS = 30378;
 
 	/**
-	 * Gloves of the damned
+	 * Gloves of the Damned
 	 */
 	public static final int DAMNED_GLOVES = 30380;
 
@@ -79300,57 +79295,57 @@ public final class ItemID
 	public static final int WET_CLOTH = 30808;
 
 	/**
-	 * Contract of glyphic attenuation
+	 * Contract of Glyphic Attenuation
 	 */
 	public static final int YAMA_SPECIAL_CONTRACT = 30810;
 
 	/**
-	 * Contract of sensory clouding
+	 * Contract of Sensory Clouding
 	 */
 	public static final int YAMA_SPELL_CONTRACT = 30813;
 
 	/**
-	 * Contract of bloodied blows
+	 * Contract of Bloodied Blows
 	 */
 	public static final int YAMA_2H_CONTRACT = 30816;
 
 	/**
-	 * Contract of divine severance
+	 * Contract of Divine Severance
 	 */
 	public static final int YAMA_HEAVYRANGED_CONTRACT = 30819;
 
 	/**
-	 * Contract of forfeit breath
+	 * Contract of Forfeit Breath
 	 */
 	public static final int YAMA_BINDING_CONTRACT = 30822;
 
 	/**
-	 * Contract of oathplate acquisition
+	 * Contract of Oathplate Acquisition
 	 */
 	public static final int YAMA_ARMOUR_CONTRACT = 30825;
 
 	/**
-	 * Contract of shard acquisition
+	 * Contract of Shard Acquisition
 	 */
 	public static final int YAMA_SHARD_CONTRACT = 30828;
 
 	/**
-	 * Contract of catalyst acquisition
+	 * Contract of Catalyst Acquisition
 	 */
 	public static final int YAMA_CATALYST_CONTRACT = 30831;
 
 	/**
-	 * Contract of worm acquisition
+	 * Contract of Worm Acquisition
 	 */
 	public static final int YAMA_WORM_CONTRACT = 30834;
 
 	/**
-	 * Contract of harmony acquisition
+	 * Contract of Harmony Acquisition
 	 */
 	public static final int YAMA_HORN_CONTRACT = 30837;
 
 	/**
-	 * Contract of familiar acquisition
+	 * Contract of Familiar Acquisition
 	 */
 	public static final int YAMA_PET_CONTRACT = 30840;
 
@@ -79456,7 +79451,7 @@ public final class ItemID
 	public static final int KERIS_PARTISAN_AMASCUT = 30891;
 
 	/**
-	 * Jewel of amascut
+	 * Jewel of Amascut
 	 */
 	public static final int JEWEL_OF_AMASCUT = 30893;
 
@@ -79832,7 +79827,7 @@ public final class ItemID
 	public static final int HEADLESS_ATLATL_DART_5 = 31015;
 
 	/**
-	 * Sacraments of ent folk
+	 * Sacraments of Ent Folk
 	 */
 	public static final int ENT_TOTEMS_INTRO_BOOK = 31016;
 
@@ -80056,12 +80051,12 @@ public final class ItemID
 	public static final int DEMON_TEAR = 31111;
 
 	/**
-	 * Eye of ayak
+	 * Eye of Ayak
 	 */
 	public static final int EYE_OF_AYAK = 31113;
 
 	/**
-	 * Eye of ayak (uncharged)
+	 * Eye of Ayak (uncharged)
 	 */
 	public static final int EYE_OF_AYAK_UNCHARGED = 31115;
 
@@ -80339,12 +80334,12 @@ public final class ItemID
 	public static final int GRYPHON_FEATHER_5 = 31240;
 
 	/**
-	 * Horn of plenty
+	 * Horn of Plenty
 	 */
 	public static final int HORN_OF_PLENTY = 31241;
 
 	/**
-	 * Horn of plenty (empty)
+	 * Horn of Plenty (empty)
 	 */
 	public static final int HORN_OF_PLENTY_UNCHARGED = 31243;
 
@@ -80680,7 +80675,7 @@ public final class ItemID
 	public static final int CURRENT_AFFAIRS_MAYORAL_FISHBOWL = 31330;
 
 	/**
-	 * Mayor of catherby
+	 * Mayor of Catherby
 	 */
 	public static final int CURRENT_AFFAIRS_MAYOR_OF_CATHERBY = 31331;
 
@@ -81573,7 +81568,7 @@ public final class ItemID
 	public static final int SERRATED_KEY = 31756;
 
 	/**
-	 * Heart of ithell
+	 * Heart of Ithell
 	 */
 	public static final int HEART_OF_ITHELL = 31757;
 
@@ -81723,7 +81718,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_SMUGGLED_RUM = 31831;
 
 	/**
-	 * Bottle of sorodamin's bru
+	 * Bottle of sOrodamin's bru
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_SORODAMIN_BRU = 31832;
 
@@ -81733,7 +81728,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES = 31833;
 
 	/**
-	 * Bottle of potterington's marrow wine
+	 * Bottle of Potterington's marrow wine
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_MARROW_WINE = 31834;
 
@@ -81748,7 +81743,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_SPINNERS_GASP = 31836;
 
 	/**
-	 * Bottle of barracuda brew
+	 * Bottle of Barracuda brew
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_BARRACUDA_BREW = 31837;
 
@@ -81758,12 +81753,12 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_BANANA_DAIQUIRI = 31838;
 
 	/**
-	 * Bottle of kharazi cooler
+	 * Bottle of Kharazi cooler
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_KHARAZI_COOLER = 31839;
 
 	/**
-	 * Bottle of dognose draught
+	 * Bottle of Dognose draught
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_DOGNOSE_DRAUGHT = 31840;
 
@@ -81793,7 +81788,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_POINT_PUNCH = 31845;
 
 	/**
-	 * Bottle of oo'glug
+	 * Bottle of Oo'glug
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_OOGLUG = 31846;
 
@@ -81833,7 +81828,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_ZUL_RYE = 31853;
 
 	/**
-	 * Bottle of captain clop's mango gin
+	 * Bottle of Captain Clop's mango gin
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_MANGO_GIN = 31854;
 
@@ -81908,7 +81903,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_TOAD_CIDER = 31871;
 
 	/**
-	 * Bottle of waterbirth blue lagoon
+	 * Bottle of Waterbirth blue lagoon
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_BLUE_LAGOON = 31872;
 
@@ -81953,7 +81948,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_DWARVERN_WIZARD = 31881;
 
 	/**
-	 * Bottle of kgp standard issue martini
+	 * Bottle of KGP standard issue martini
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_KGP_MARTINI = 31882;
 
@@ -81963,7 +81958,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_CORPSE_REVIVER = 31883;
 
 	/**
-	 * Bottle of weiss meltwater
+	 * Bottle of Weiss meltwater
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_WEISS_MELTWATER = 31884;
 
@@ -81973,7 +81968,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_REDDEST_RUM = 31885;
 
 	/**
-	 * Bottle of elidinis's life water
+	 * Bottle of Elidinis's life water
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_LIFE_WATER = 31886;
 
@@ -82028,12 +82023,12 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY = 31896;
 
 	/**
-	 * Bottle of robert's port
+	 * Bottle of Robert's Port
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_ROBERTS_PORT = 31897;
 
 	/**
-	 * Bottle of sea shandy 2
+	 * Bottle of Sea Shandy 2
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_SEA_SHANDY = 31898;
 
@@ -82063,7 +82058,7 @@ public final class ItemID
 	public static final int SAILING_CHARTING_DRINK_CRATE_MYSTERY_FRUIT = 31903;
 
 	/**
-	 * Bottle of captain cat's black rum
+	 * Bottle of Captain Cat's black rum
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_SAILING_CAT = 31905;
 
@@ -83267,7 +83262,7 @@ public final class ItemID
 	public static final int SAILING_SKILLGUIDE_PORTS_ALDARIN = 32275;
 
 	/**
-	 * Ruins of unkah
+	 * Ruins of Unkah
 	 */
 	public static final int SAILING_SKILLGUIDE_PORTS_RUINS_OF_UNKAH = 32276;
 
@@ -83602,7 +83597,7 @@ public final class ItemID
 	public static final int FISH_CRATE_MARLIN_VAR = 32385;
 
 	/**
-	 * Medallion of the deep
+	 * Medallion of the Deep
 	 */
 	public static final int MEDALLION_OF_THE_DEEP = 32386;
 
@@ -86076,7 +86071,7 @@ public final class ItemID
 	public static final int TRAWLING_ICON_DUMMY = 32920;
 
 	/**
-	 * Jar of feathers
+	 * Jar of Feathers
 	 */
 	public static final int JAR_OF_FEATHERS = 32921;
 
@@ -86506,7 +86501,7 @@ public final class ItemID
 	public static final int DEADMAN_2026_HOME_TELEPORT_SCROLL = 33018;
 
 	/**
-	 * Bow of faerdhinen (c)
+	 * Bow of Faerdhinen (c)
 	 */
 	public static final int BOW_OF_FAERDHINEN_INFINITE_DEADMAN = 33021;
 
@@ -86546,7 +86541,7 @@ public final class ItemID
 	public static final int TOXIC_SOTD_DEADMAN = 33035;
 
 	/**
-	 * Toxic staff (deadman)
+	 * Toxic staff (Deadman)
 	 */
 	public static final int TOXIC_SOTD_CHARGED_DEADMAN = 33036;
 
@@ -87235,7 +87230,7 @@ public final class ItemID
 	public static final int DEMONIC_TRIDENT_ORNAMENT_KIT = 33311;
 
 	/**
-	 * Trident of the swamp (o)
+	 * Trident of the Swamp (o)
 	 */
 	public static final int TOXIC_TOTS_CHARGED_ORN = 33314;
 
@@ -87245,7 +87240,7 @@ public final class ItemID
 	public static final int TOXIC_TOTS_UNCHARGED_ORN = 33316;
 
 	/**
-	 * Trident of the swamp (e) (o)
+	 * Trident of the Swamp (e) (o)
 	 */
 	public static final int TOXIC_TOTS_I_CHARGED_ORN = 33318;
 
@@ -87255,17 +87250,17 @@ public final class ItemID
 	public static final int TOXIC_TOTS_I_UNCHARGED_ORN = 33320;
 
 	/**
-	 * Trident of the seas (o)
+	 * Trident of the Seas (o)
 	 */
 	public static final int TOTS_CHARGED_ORN = 33322;
 
 	/**
-	 * Trident of the seas (full) (o)
+	 * Trident of the Seas (full) (o)
 	 */
 	public static final int TOTS_ORN = 33323;
 
 	/**
-	 * Trident of the seas (e) (o)
+	 * Trident of the Seas (e) (o)
 	 */
 	public static final int TOTS_I_CHARGED_ORN = 33326;
 
@@ -87365,7 +87360,7 @@ public final class ItemID
 	public static final int LEAGUE_6_BUTLER_SCROLL = 33368;
 
 	/**
-	 * Mark of grace
+	 * Mark of Grace
 	 */
 	public static final int GRACE_HOTFOOT = 33371;
 
@@ -87736,12 +87731,12 @@ public final class ItemID
 	public static final int DIZANAS_QUIVER_TROUVER_MANGLED = 33526;
 
 	/**
-	 * Blessed dizana's quiver (l) (broken)
+	 * Blessed Dizana's quiver (l) (broken)
 	 */
 	public static final int DIZANAS_QUIVER_INFINITE_TROUVER_BROKEN = 33528;
 
 	/**
-	 * Blessed dizana's quiver (l) (mangled)
+	 * Blessed Dizana's quiver (l) (mangled)
 	 */
 	public static final int DIZANAS_QUIVER_INFINITE_TROUVER_MANGLED = 33530;
 
@@ -89044,7 +89039,7 @@ public final class ItemID
 	public static final int HALLOWFELL = 34027;
 
 	/**
-	 * Jar of light
+	 * Jar of Light
 	 */
 	public static final int JAR_OF_LIGHT = 34030;
 
@@ -89059,14 +89054,24 @@ public final class ItemID
 	public static final int TELEPORTSCROLL_ARDEAGLAIS = 34033;
 
 	/**
-	 * Placeholder
+	 * Null
 	 */
 	public static final int MAD_ANGEL_SWORD = 34035;
+
+	/**
+	 * Null
+	 */
+	public static final int CERT_MAD_ANGEL_SWORD = 34036;
+
+	/**
+	 * Null
+	 */
+	public static final int PLACEHOLDER_MAD_ANGEL_SWORD = 34037;
 	public static final int TELEPORTSCROLL_ARDEAGLAIS_DUMMY = 34038;
 	public static final int TELEPORTSCROLL_ARDEAGLAIS_SELECTED_DUMMY = 34039;
 
 	/**
-	 * Mr mcgroot
+	 * Mr McGroot
 	 */
 	public static final int GOATPITPET = 34040;
 
@@ -89150,6 +89155,21 @@ public final class ItemID
 	 * Fairy tale quest lamp
 	 */
 	public static final int DEADMAN_QUEST_LAMP_TIER_11 = 34059;
+
+	/**
+	 * Vampyre snail shell
+	 */
+	public static final int VAMPYRE_SNAIL_SHELL = 34061;
+
+	/**
+	 * Vampyre snelm
+	 */
+	public static final int SNELM_VAMPYRE = 34063;
+
+	/**
+	 * Shark lure pack
+	 */
+	public static final int SHARK_LURE_PACK = 34065;
 
 	public static final class Cert
 	{
@@ -92206,6 +92226,7 @@ public final class ItemID
 		public static final int PACK_OJIBWAY_BIRD_SNARE = 12741;
 		public static final int PACK_BOX_TRAP = 12743;
 		public static final int PACK_MAGIC_IMP_BOX = 12745;
+		public static final int BH_EMBLEM = 12747;
 		public static final int BH_BLUE_PAINT = 12758;
 		public static final int BH_GREEN_PAINT = 12760;
 		public static final int BH_YELLOW_PAINT = 12762;
@@ -93855,8 +93876,8 @@ public final class ItemID
 		public static final int WYRMSCRAIG_VILLAGER_WORK_SKIRT08 = 34014;
 		public static final int GOAT_PIT_FUR = 34018;
 		public static final int HALLOWFELL = 34028;
-		public static final int MAD_ANGEL_SWORD = 34036;
 		public static final int BH_EMBLEM_5 = 34060;
+		public static final int SHARK_LURE_PACK = 34066;
 	}
 
 	public static final class Placeholder
@@ -103585,9 +103606,11 @@ public final class ItemID
 		public static final int HALLOWFELL = 34029;
 		public static final int JAR_OF_LIGHT = 34031;
 		public static final int TELEPORTSCROLL_ARDEAGLAIS = 34034;
-		public static final int MAD_ANGEL_SWORD = 34037;
 		public static final int GOATPITPET = 34041;
 		public static final int MADANGELPET = 34043;
+		public static final int VAMPYRE_SNAIL_SHELL = 34062;
+		public static final int SNELM_VAMPYRE = 34064;
+		public static final int SHARK_LURE_PACK = 34067;
 	}
 /* This file is automatically generated. Do not edit. */
 }
