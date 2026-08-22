@@ -36,7 +36,6 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
