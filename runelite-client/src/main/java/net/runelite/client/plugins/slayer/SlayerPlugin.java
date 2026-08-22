@@ -108,6 +108,7 @@ public class SlayerPlugin extends Plugin
 
 	// Task streak
 	private static final int KRYSTILIA_SLAYER_MASTER = 7;
+	private static final int MORTIMER_SLAYER_MASTER = 10;
 
 	@Inject
 	private Client client;
@@ -342,7 +343,7 @@ public class SlayerPlugin extends Plugin
 				addCounter();
 			}
 		}
-		else if (varbitId == VarbitID.SLAYER_TASKS_COMPLETED || varbitId == VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED)
+		else if (varbitId == VarbitID.SLAYER_TASKS_COMPLETED || varbitId == VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED || varpId == VarPlayerID.SLAYER_MORTIMER_TASKS_COMPLETED)
 		{
 			setProfileConfig(SlayerConfig.STREAK_KEY, varbitChanged.getValue());
 
@@ -673,9 +674,19 @@ public class SlayerPlugin extends Plugin
 				+ " " + initialAmount;
 		}
 
-		final int streak = client.getVarbitValue(VarbitID.SLAYER_MASTER) == KRYSTILIA_SLAYER_MASTER
-			? client.getVarbitValue(VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED)
-			: client.getVarbitValue(VarbitID.SLAYER_TASKS_COMPLETED);
+		final int streak;
+		switch (client.getVarbitValue(VarbitID.SLAYER_MASTER))
+		{
+			case KRYSTILIA_SLAYER_MASTER:
+				streak = client.getVarbitValue(VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED);
+				break;
+			case MORTIMER_SLAYER_MASTER:
+				streak = client.getVarpValue(VarPlayerID.SLAYER_MORTIMER_TASKS_COMPLETED);
+				break;
+			default:
+				streak = client.getVarbitValue(VarbitID.SLAYER_TASKS_COMPLETED);
+				break;
+		}
 		counter = new TaskCounter(taskImg, this, amount);
 		counter.setTooltip(String.format(taskTooltip, capsString(taskName), client.getVarbitValue(VarbitID.SLAYER_POINTS),  streak));
 
