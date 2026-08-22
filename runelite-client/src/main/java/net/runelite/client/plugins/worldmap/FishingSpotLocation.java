@@ -32,7 +32,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.FishingSpot;
 
 @Getter
-enum FishingSpotLocation
+public enum FishingSpotLocation
 {
 	ALDARIN_NORTH(FishingSpot.SHRIMP, new WorldPoint(1372, 2985, 0)),
 	ALDARIN_WEST(FishingSpot.SHRIMP, new WorldPoint(1313, 2963, 0)),
