@@ -415,8 +415,8 @@ public class WorldMapPlugin extends Plugin
 								salvagingSpot.getLevelReq() > sailingLevel ? NOPE_ICON : BLANK_ICON)
 							.tooltip(config.salvagingSpotTooltips() ? salvagingSpot.getTooltip() : null)
 							.build()
-			)
-			.forEach(worldMapPointManager::add));
+					)
+					.forEach(worldMapPointManager::add));
 		}
 	}
 

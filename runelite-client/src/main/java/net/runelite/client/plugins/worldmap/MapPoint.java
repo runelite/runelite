@@ -50,8 +50,7 @@ class MapPoint extends WorldMapPoint
 		QUEST,
 		RARE_TREE,
 		MOORING_POINT,
-		SALVAGING
-		;
+		SALVAGING,
 	}
 
 	@Getter
