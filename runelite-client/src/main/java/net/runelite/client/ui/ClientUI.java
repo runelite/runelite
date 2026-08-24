@@ -64,6 +64,7 @@ import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
@@ -132,6 +133,7 @@ import net.runelite.client.util.WinUtil;
 public class ClientUI
 {
 	private static final String CONFIG_GROUP = "runelite";
+	private static final String CONFIG_ICON_SIZE = "iconScale";
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final String CONFIG_CLIENT_SIDEBAR_CLOSED = "clientSidebarClosed";
@@ -163,6 +165,7 @@ public class ClientUI
 	private boolean withTitleBar;
 
 	private ContainableFrame frame;
+	private int defaultTopInset;
 	private JPanel content;
 	private ClientPanel clientPanel;
 	private JButton sidebarNavBtn;
@@ -219,6 +222,10 @@ public class ClientUI
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
+		if (event.getGroup().equals(CONFIG_GROUP) && event.getKey().equals(CONFIG_ICON_SIZE))
+		{
+			SwingUtilities.invokeLater(this::refreshIcons);
+		}
 		if (!event.getGroup().equals(CONFIG_GROUP) ||
 			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
 			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
@@ -227,6 +234,18 @@ public class ClientUI
 		}
 
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+	}
+
+	private synchronized void refreshIcons()
+	{
+		List<NavigationButton> navs = new ArrayList<>(sidebarEntries.descendingSet());
+		navs.forEach(n ->
+		{
+			int selected = sidebar.getSelectedIndex();
+			sidebar.remove(n.getPanel().getWrappedPanel());
+			addSidebarIcon(n);
+			sidebar.setSelectedIndex(selected);
+		});
 	}
 
 	void addNavigation(NavigationButton navBtn)
@@ -242,11 +261,7 @@ public class ClientUI
 			return;
 		}
 
-		final int TAB_SIZE = 16;
-		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
-
-		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-			sidebarEntries.headSet(navBtn).size());
+		addSidebarIcon(navBtn);
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)
 		{
@@ -276,6 +291,15 @@ public class ClientUI
 		}
 
 		sidebarEntries.remove(navBtn);
+	}
+
+	private void addSidebarIcon(NavigationButton navBtn)
+	{
+		final int tabSize = (int) (16 * (config.iconScale() / 100.0));
+		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), tabSize, tabSize));
+
+		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
+			sidebarEntries.headSet(navBtn).size());
 	}
 
 	@Subscribe
@@ -392,6 +416,7 @@ public class ClientUI
 					windowBoundsChanged();
 				}
 			});
+			defaultTopInset = frame.getInsets().top;
 
 			content = new JPanel();
 			content.setLayout(new Layout());
