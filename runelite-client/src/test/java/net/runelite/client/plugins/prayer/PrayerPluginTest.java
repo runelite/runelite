@@ -188,7 +188,7 @@ public class PrayerPluginTest
 		assertTime(PrayerType.REDEMPTION, "23:45");
 		assertTime(PrayerType.SMITE, "7:55");
 		assertTime(PrayerType.PRESERVE, "1:11:16");
-		assertTime(PrayerType.CHIVALRY, "5:56");
+		assertTime(PrayerType.CHIVALRY, "11:52");
 		assertTime(PrayerType.PIETY, "5:56");
 		assertTime(PrayerType.RIGOUR, "5:56");
 		assertTime(PrayerType.AUGURY, "5:56");
