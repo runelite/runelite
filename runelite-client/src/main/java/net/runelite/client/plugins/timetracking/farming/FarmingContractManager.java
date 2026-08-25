@@ -27,8 +27,6 @@ package net.runelite.client.plugins.timetracking.farming;
 
 import com.google.inject.Singleton;
 import java.time.Instant;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -36,9 +34,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -46,15 +42,11 @@ import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.Text;
 
 @Singleton
 public class FarmingContractManager
 {
-	private static final int GUILDMASTER_JANE_NPC_ID = NpcID.FARMING_GUILD_MASTER;
 	private static final int FARMING_GUILD_REGION_ID = 4922;
-	private static final Pattern CONTRACT_ASSIGN_PATTERN = Pattern.compile("(?:We need you to grow|Please could you grow) (?:some|a|an) ([a-zA-Z ]+)(?: for us\\?|\\.)");
-	private static final String CONTRACT_REWARDED = "You'll be wanting a reward then. Here you go.";
 	private static final String CONFIG_KEY_CONTRACT = "contract";
 
 	@Getter
@@ -118,7 +110,7 @@ public class FarmingContractManager
 	@Nullable
 	public String getContractName()
 	{
-		return hasContract() ? contract.getContractName() : null;
+		return hasContract() ? contract.getName() : null;
 	}
 
 	public boolean shouldHighlightFarmingTabPanel(@Nonnull FarmingPatch patch)
@@ -148,9 +140,9 @@ public class FarmingContractManager
 		SummaryState oldSummary = summary;
 
 		handleContractState();
+		handleContractVarbit();
 		if (loc.getRegionID() == FARMING_GUILD_REGION_ID)
 		{
-			handleGuildmasterJaneWidgetDialog();
 			handleInfoBox();
 		}
 		else
@@ -181,41 +173,28 @@ public class FarmingContractManager
 		}
 	}
 
-	private void handleGuildmasterJaneWidgetDialog()
+	private void handleContractVarbit()
 	{
-		Widget npcDialog = client.getWidget(InterfaceID.ChatLeft.HEAD);
+		final int contractComplete = client.getVarbitValue(VarbitID.FARMGUILD_CONTRACT_COMPLETE);
 
-		if (npcDialog == null || npcDialog.getModelId() != GUILDMASTER_JANE_NPC_ID)
+		if (contractComplete > 0)
+		{
+			if (contract != null)
+			{
+				setContract(null);
+			}
+			return;
+		}
+
+		final int contractVarbitValue = client.getVarbitValue(VarbitID.FARMGUILD_CONTRACT_TYPE);
+		Produce farmingContract = Produce.getByContractVarbitValue(contractVarbitValue);
+
+		if (farmingContract == contract)
 		{
 			return;
 		}
 
-		String dialogText = Text.removeTags(client.getWidget(InterfaceID.ChatLeft.TEXT).getText());
-
-		if (dialogText.equals(CONTRACT_REWARDED))
-		{
-			setContract(null);
-		}
-
-		Matcher matcher = CONTRACT_ASSIGN_PATTERN.matcher(dialogText);
-
-		if (!matcher.find())
-		{
-			return;
-		}
-
-		String name = matcher.group(1);
-
-		Produce farmingContract = Produce.getByContractName(name);
-
-		if (farmingContract == null)
-		{
-			return;
-		}
-
-		Produce currentFarmingContract = contract;
-
-		if (farmingContract == currentFarmingContract)
+		if (contractVarbitValue != 0 && farmingContract == null)
 		{
 			return;
 		}
@@ -326,7 +305,6 @@ public class FarmingContractManager
 			}
 		}
 	}
-
 
 	@Nullable
 	private Produce getStoredContract()
