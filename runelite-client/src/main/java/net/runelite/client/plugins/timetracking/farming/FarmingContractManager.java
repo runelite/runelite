@@ -177,7 +177,7 @@ public class FarmingContractManager
 	{
 		final int contractComplete = client.getVarbitValue(VarbitID.FARMGUILD_CONTRACT_COMPLETE);
 
-		if (contractComplete == 2)
+		if (contractComplete > 0)
 		{
 			if (contract != null)
 			{

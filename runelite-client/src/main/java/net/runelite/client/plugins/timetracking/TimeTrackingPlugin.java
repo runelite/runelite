@@ -72,8 +72,6 @@ import net.runelite.client.util.ImageUtil;
 )
 public class TimeTrackingPlugin extends Plugin
 {
-	private static final String CONTRACT_COMPLETED = "You've completed a Farming Guild Contract. You should return to Guildmaster Jane.";
-
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -253,17 +251,6 @@ public class TimeTrackingPlugin extends Plugin
 		birdHouseTracker.loadFromConfig();
 		farmingContractManager.loadContractFromConfig();
 		panel.update();
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE || !event.getMessage().equals(CONTRACT_COMPLETED))
-		{
-			return;
-		}
-
-		farmingContractManager.setContract(null);
 	}
 
 	@Subscribe
