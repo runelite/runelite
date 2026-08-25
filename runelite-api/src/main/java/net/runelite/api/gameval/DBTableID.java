@@ -17487,77 +17487,77 @@ public final class DBTableID
 		/**
 		 * (loc, string)
 		 */
-		public static final int COL_FACILITIES_REQUIRED = 10;
+		public static final int COL_FACILITIES_REQUIRED = 11;
 
 		/**
 		 * (loc, string)
 		 */
-		public static final int COL_FACILITITES_RECOMMENDED = 11;
+		public static final int COL_FACILITITES_RECOMMENDED = 12;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_BOAT_COMBAT_REQUIRED = 12;
+		public static final int COL_BOAT_COMBAT_REQUIRED = 13;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_REGULAR_COMBAT_REQUIRED = 13;
+		public static final int COL_REGULAR_COMBAT_REQUIRED = 14;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_COMBAT_RECOMMENDED = 14;
+		public static final int COL_COMBAT_RECOMMENDED = 15;
 
 		/**
 		 * namedobj
 		 */
-		public static final int COL_DELIVERY_OBJECT = 15;
+		public static final int COL_DELIVERY_OBJECT = 16;
 
 		/**
 		 * (namedobj, integer)
 		 */
-		public static final int COL_CARGO = 16;
+		public static final int COL_CARGO = 17;
 
 		/**
 		 * (integer, integer)
 		 */
-		public static final int COL_PORT_CHECKPOINT = 17;
+		public static final int COL_PORT_CHECKPOINT = 18;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_BOUNTY_TARGET_ALIVE = 18;
+		public static final int COL_BOUNTY_TARGET_ALIVE = 19;
 
 		/**
 		 * npc
 		 */
-		public static final int COL_BOUNTY_TARGET_DEAD = 19;
+		public static final int COL_BOUNTY_TARGET_DEAD = 20;
 
 		/**
 		 * namedobj
 		 */
-		public static final int COL_BOUNTY_OBJECT = 20;
+		public static final int COL_BOUNTY_OBJECT = 21;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOUNTY_OBJECT_AMOUNT = 21;
+		public static final int COL_BOUNTY_OBJECT_AMOUNT = 22;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_BOUNTY_OBJECT_RARITY = 22;
+		public static final int COL_BOUNTY_OBJECT_RARITY = 23;
 
 		/**
 		 * model
 		 */
-		public static final int COL_TASK_BOARD_GRAPHIC = 23;
+		public static final int COL_TASK_BOARD_GRAPHIC = 24;
 
 		/**
 		 * string
 		 */
-		public static final int COL_FLAVOUR_TEXT = 24;
+		public static final int COL_FLAVOUR_TEXT = 25;
 
 		public static final class Row
 		{
@@ -20565,17 +20565,11 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_FISHING_RAW_CAVE_EEL = 11236;
 			public static final int SKILL_FEATURE_FISHING_RAW_LAVA_EEL = 11237;
 			public static final int SKILL_FEATURE_FISHING_SHIMMERINGSHOAL = 11238;
-			public static final int SKILL_FEATURE_FISHING_RAW_GIANT_KRILL = 11239;
-			public static final int SKILL_FEATURE_FISHING_RAW_HADDOCK = 11240;
 			public static final int SKILL_FEATURE_FISHING_GLISTENINGSHOAL = 11241;
-			public static final int SKILL_FEATURE_FISHING_RAW_YELLOWFIN = 11242;
 			public static final int SKILL_FEATURE_FISHING_INFERNAL_EEL = 11243;
 			public static final int SKILL_FEATURE_FISHING_RAW_ANGLERFISH = 11244;
-			public static final int SKILL_FEATURE_FISHING_RAW_HALIBUT = 11245;
 			public static final int SKILL_FEATURE_FISHING_VIBRANTSHOAL = 11246;
-			public static final int SKILL_FEATURE_FISHING_RAW_BLUEFIN = 11247;
 			public static final int SKILL_FEATURE_FISHING_SNAKEBOSS_EEL = 11248;
-			public static final int SKILL_FEATURE_FISHING_RAW_MARLIN = 11249;
 			public static final int SKILL_FEATURE_FISHING_RAW_TUNA = 11250;
 			public static final int SKILL_FEATURE_FISHING_RAW_SWORDFISH = 11251;
 			public static final int SKILL_FEATURE_FISHING_RAW_SWORDTIP_SQUID = 11252;
@@ -20905,6 +20899,7 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_LLM_UNFINISHED = 11592;
 			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_LLA_UNFINISHED = 11593;
 			public static final int SKILL_FEATURE_HERBLORE_MM_POTION_MAL_UNFINISHED = 11594;
+			public static final int SKILL_FEATURE_FISHING_GIANTKRILLSHOAL = 11595;
 			public static final int SKILL_FEATURE_HERBLORE_SKILLCAPE = 11596;
 			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_0 = 11602;
 			public static final int SKILL_FEATURE_HITPOINTS_OVERVIEW_1 = 11603;
@@ -21103,6 +21098,7 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_YEW = 11810;
 			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_MAGIC = 11811;
 			public static final int SKILL_FEATURE_HUNTER_BIRDHOUSE_REDWOOD = 11812;
+			public static final int SKILL_FEATURE_FISHING_HADDOCKSHOAL = 11813;
 			public static final int SKILL_FEATURE_HUNTER_OJIBWAY_BIRD_SNARE = 11814;
 			public static final int SKILL_FEATURE_HUNTER_NOOSE_WAND = 11815;
 			public static final int SKILL_FEATURE_HUNTER_BUTTERFLY_NET = 11816;
@@ -22513,6 +22509,10 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_STRENGTH_CRIMSON_KISTEN = 16904;
 			public static final int SKILL_FEATURE_WOODCUTTING_BLOODWOOD_LOGS = 16905;
 			public static final int SKILL_FEATURE_CONSTRUCTION_COS_ROOM_TREASURE_CHEST_MAHOGANY = 16950;
+			public static final int SKILL_FEATURE_FISHING_YELLOWFINSHOAL = 16955;
+			public static final int SKILL_FEATURE_FISHING_HALIBUTSHOAL = 16956;
+			public static final int SKILL_FEATURE_FISHING_BLUEFINSHOAL = 16957;
+			public static final int SKILL_FEATURE_FISHING_MARLINSHOAL = 16958;
 		}
 	}
 

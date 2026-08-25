@@ -89171,6 +89171,806 @@ public final class ItemID
 	 */
 	public static final int SHARK_LURE_PACK = 34065;
 
+	/**
+	 * Sawmill coupon (teak plank)
+	 */
+	public static final int SAWMILL_COUPON_TEAK = 34068;
+
+	/**
+	 * Sawmill coupon (mahogany plank)
+	 */
+	public static final int SAWMILL_COUPON_MAHOGANY = 34070;
+
+	/**
+	 * Sawmill coupon (camphor plank)
+	 */
+	public static final int SAWMILL_COUPON_CAMPHOR = 34072;
+
+	/**
+	 * Sawmill coupon (ironwood plank)
+	 */
+	public static final int SAWMILL_COUPON_IRONWOOD = 34074;
+
+	/**
+	 * Courier reward bag
+	 */
+	public static final int PORT_TASK_LOOTSACK_DROPTRACKING = 34076;
+
+	/**
+	 * Tiny port reward bag (cairn isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_CAIRN_ISLE = 34077;
+
+	/**
+	 * Small port reward bag (cairn isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_CAIRN_ISLE = 34079;
+
+	/**
+	 * Medium port reward bag (cairn isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_CAIRN_ISLE = 34081;
+
+	/**
+	 * Large port reward bag (cairn isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_CAIRN_ISLE = 34083;
+
+	/**
+	 * Huge port reward bag (cairn isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_CAIRN_ISLE = 34085;
+
+	/**
+	 * Tiny port reward bag (entrana)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_ENTRANA = 34087;
+
+	/**
+	 * Small port reward bag (entrana)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_ENTRANA = 34089;
+
+	/**
+	 * Medium port reward bag (entrana)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_ENTRANA = 34091;
+
+	/**
+	 * Large port reward bag (entrana)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_ENTRANA = 34093;
+
+	/**
+	 * Huge port reward bag (entrana)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_ENTRANA = 34095;
+
+	/**
+	 * Tiny port reward bag (neitiznot)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_NEITIZNOT = 34097;
+
+	/**
+	 * Small port reward bag (neitiznot)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_NEITIZNOT = 34099;
+
+	/**
+	 * Medium port reward bag (neitiznot)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_NEITIZNOT = 34101;
+
+	/**
+	 * Large port reward bag (neitiznot)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_NEITIZNOT = 34103;
+
+	/**
+	 * Huge port reward bag (neitiznot)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_NEITIZNOT = 34105;
+
+	/**
+	 * Tiny port reward bag (jatizso)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_JATIZSO = 34107;
+
+	/**
+	 * Small port reward bag (jatizso)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_JATIZSO = 34109;
+
+	/**
+	 * Medium port reward bag (jatizso)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_JATIZSO = 34111;
+
+	/**
+	 * Large port reward bag (jatizso)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_JATIZSO = 34113;
+
+	/**
+	 * Huge port reward bag (jatizso)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_JATIZSO = 34115;
+
+	/**
+	 * Tiny port reward bag (hosidius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_HOSIDIUS = 34117;
+
+	/**
+	 * Small port reward bag (hosidius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_HOSIDIUS = 34119;
+
+	/**
+	 * Medium port reward bag (hosidius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_HOSIDIUS = 34121;
+
+	/**
+	 * Large port reward bag (hosidius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_HOSIDIUS = 34123;
+
+	/**
+	 * Huge port reward bag (hosidius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_HOSIDIUS = 34125;
+
+	/**
+	 * Tiny port reward bag (sunset coast)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_SUNSET_COAST = 34127;
+
+	/**
+	 * Small port reward bag (sunset coast)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_SUNSET_COAST = 34129;
+
+	/**
+	 * Medium port reward bag (sunset coast)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_SUNSET_COAST = 34131;
+
+	/**
+	 * Large port reward bag (sunset coast)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_SUNSET_COAST = 34133;
+
+	/**
+	 * Huge port reward bag (sunset coast)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_SUNSET_COAST = 34135;
+
+	/**
+	 * Tiny port reward bag (piscatoris)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_PISCATORIS = 34137;
+
+	/**
+	 * Small port reward bag (piscatoris)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_PISCATORIS = 34139;
+
+	/**
+	 * Medium port reward bag (piscatoris)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_PISCATORIS = 34141;
+
+	/**
+	 * Large port reward bag (piscatoris)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_PISCATORIS = 34143;
+
+	/**
+	 * Huge port reward bag (piscatoris)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_PISCATORIS = 34145;
+
+	/**
+	 * Tiny port reward bag (etceteria)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_ETCETERIA = 34147;
+
+	/**
+	 * Small port reward bag (etceteria)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_ETCETERIA = 34149;
+
+	/**
+	 * Medium port reward bag (etceteria)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_ETCETERIA = 34151;
+
+	/**
+	 * Large port reward bag (etceteria)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_ETCETERIA = 34153;
+
+	/**
+	 * Huge port reward bag (etceteria)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_ETCETERIA = 34155;
+
+	/**
+	 * Tiny port reward bag (ruins of unkah)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_RUINS_OF_UNKAH = 34157;
+
+	/**
+	 * Small port reward bag (ruins of unkah)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_RUINS_OF_UNKAH = 34159;
+
+	/**
+	 * Medium port reward bag (ruins of unkah)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_RUINS_OF_UNKAH = 34161;
+
+	/**
+	 * Large port reward bag (ruins of unkah)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_RUINS_OF_UNKAH = 34163;
+
+	/**
+	 * Huge port reward bag (ruins of unkah)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_RUINS_OF_UNKAH = 34165;
+
+	/**
+	 * Tiny port reward bag (lunar isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_LUNAR_ISLE = 34167;
+
+	/**
+	 * Small port reward bag (lunar isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_LUNAR_ISLE = 34169;
+
+	/**
+	 * Medium port reward bag (lunar isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_LUNAR_ISLE = 34171;
+
+	/**
+	 * Large port reward bag (lunar isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_LUNAR_ISLE = 34173;
+
+	/**
+	 * Huge port reward bag (lunar isle)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_LUNAR_ISLE = 34175;
+
+	/**
+	 * Tiny port reward bag (corsair cove)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_CORSAIR_COVE = 34177;
+
+	/**
+	 * Small port reward bag (corsair cove)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_CORSAIR_COVE = 34179;
+
+	/**
+	 * Medium port reward bag (corsair cove)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_CORSAIR_COVE = 34181;
+
+	/**
+	 * Large port reward bag (corsair cove)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_CORSAIR_COVE = 34183;
+
+	/**
+	 * Huge port reward bag (corsair cove)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_CORSAIR_COVE = 34185;
+
+	/**
+	 * Tiny port reward bag (prifddinas)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_PRIFDDINAS = 34187;
+
+	/**
+	 * Small port reward bag (prifddinas)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_PRIFDDINAS = 34189;
+
+	/**
+	 * Medium port reward bag (prifddinas)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_PRIFDDINAS = 34191;
+
+	/**
+	 * Large port reward bag (prifddinas)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_PRIFDDINAS = 34193;
+
+	/**
+	 * Huge port reward bag (prifddinas)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_PRIFDDINAS = 34195;
+
+	/**
+	 * Tiny port reward bag (lands end)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_LANDS_END = 34197;
+
+	/**
+	 * Small port reward bag (lands end)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_LANDS_END = 34199;
+
+	/**
+	 * Medium port reward bag (lands end)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_LANDS_END = 34201;
+
+	/**
+	 * Large port reward bag (lands end)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_LANDS_END = 34203;
+
+	/**
+	 * Huge port reward bag (lands end)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_LANDS_END = 34205;
+
+	/**
+	 * Tiny port reward bag (aldarin)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_ALDARIN = 34207;
+
+	/**
+	 * Small port reward bag (aldarin)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_ALDARIN = 34209;
+
+	/**
+	 * Medium port reward bag (aldarin)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_ALDARIN = 34211;
+
+	/**
+	 * Large port reward bag (aldarin)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_ALDARIN = 34213;
+
+	/**
+	 * Huge port reward bag (aldarin)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_ALDARIN = 34215;
+
+	/**
+	 * Tiny port reward bag (summer shore)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_SUMMER_SHORE = 34217;
+
+	/**
+	 * Small port reward bag (summer shore)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_SUMMER_SHORE = 34219;
+
+	/**
+	 * Medium port reward bag (summer shore)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_SUMMER_SHORE = 34221;
+
+	/**
+	 * Large port reward bag (summer shore)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_SUMMER_SHORE = 34223;
+
+	/**
+	 * Huge port reward bag (summer shore)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_SUMMER_SHORE = 34225;
+
+	/**
+	 * Tiny port reward bag (musa point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_MUSA_POINT = 34227;
+
+	/**
+	 * Small port reward bag (musa point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_MUSA_POINT = 34229;
+
+	/**
+	 * Medium port reward bag (musa point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_MUSA_POINT = 34231;
+
+	/**
+	 * Large port reward bag (musa point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_MUSA_POINT = 34233;
+
+	/**
+	 * Huge port reward bag (musa point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_MUSA_POINT = 34235;
+
+	/**
+	 * Tiny port reward bag (rellekka)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_RELLEKKA = 34237;
+
+	/**
+	 * Small port reward bag (rellekka)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_RELLEKKA = 34239;
+
+	/**
+	 * Medium port reward bag (rellekka)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_RELLEKKA = 34241;
+
+	/**
+	 * Large port reward bag (rellekka)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_RELLEKKA = 34243;
+
+	/**
+	 * Huge port reward bag (rellekka)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_RELLEKKA = 34245;
+
+	/**
+	 * Tiny port reward bag (void knights outpost)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_VOID_KNIGHTS_OUTPOST = 34247;
+
+	/**
+	 * Small port reward bag (void knights outpost)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_VOID_KNIGHTS_OUTPOST = 34249;
+
+	/**
+	 * Medium port reward bag (void knights outpost)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_VOID_KNIGHTS_OUTPOST = 34251;
+
+	/**
+	 * Large port reward bag (void knights outpost)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_VOID_KNIGHTS_OUTPOST = 34253;
+
+	/**
+	 * Huge port reward bag (void knights outpost)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_VOID_KNIGHTS_OUTPOST = 34255;
+
+	/**
+	 * Tiny port reward bag (the pandemonium)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_THE_PANDEMONIUM = 34257;
+
+	/**
+	 * Small port reward bag (the pandemonium)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_THE_PANDEMONIUM = 34259;
+
+	/**
+	 * Medium port reward bag (the pandemonium)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_THE_PANDEMONIUM = 34261;
+
+	/**
+	 * Large port reward bag (the pandemonium)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_THE_PANDEMONIUM = 34263;
+
+	/**
+	 * Huge port reward bag (the pandemonium)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_THE_PANDEMONIUM = 34265;
+
+	/**
+	 * Tiny port reward bag (red rock)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_RED_ROCK = 34267;
+
+	/**
+	 * Small port reward bag (red rock)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_RED_ROCK = 34269;
+
+	/**
+	 * Medium port reward bag (red rock)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_RED_ROCK = 34271;
+
+	/**
+	 * Large port reward bag (red rock)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_RED_ROCK = 34273;
+
+	/**
+	 * Huge port reward bag (red rock)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_RED_ROCK = 34275;
+
+	/**
+	 * Tiny port reward bag (brimhaven)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_BRIMHAVEN = 34277;
+
+	/**
+	 * Small port reward bag (brimhaven)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_BRIMHAVEN = 34279;
+
+	/**
+	 * Medium port reward bag (brimhaven)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_BRIMHAVEN = 34281;
+
+	/**
+	 * Large port reward bag (brimhaven)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_BRIMHAVEN = 34283;
+
+	/**
+	 * Huge port reward bag (brimhaven)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_BRIMHAVEN = 34285;
+
+	/**
+	 * Tiny port reward bag (port tyras)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_PORT_TYRAS = 34287;
+
+	/**
+	 * Small port reward bag (port tyras)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_PORT_TYRAS = 34289;
+
+	/**
+	 * Medium port reward bag (port tyras)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_PORT_TYRAS = 34291;
+
+	/**
+	 * Large port reward bag (port tyras)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_PORT_TYRAS = 34293;
+
+	/**
+	 * Huge port reward bag (port tyras)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_PORT_TYRAS = 34295;
+
+	/**
+	 * Tiny port reward bag (catherby)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_CATHERBY = 34297;
+
+	/**
+	 * Small port reward bag (catherby)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_CATHERBY = 34299;
+
+	/**
+	 * Medium port reward bag (catherby)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_CATHERBY = 34301;
+
+	/**
+	 * Large port reward bag (catherby)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_CATHERBY = 34303;
+
+	/**
+	 * Huge port reward bag (catherby)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_CATHERBY = 34305;
+
+	/**
+	 * Tiny port reward bag (civitas illa fortis)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_CIVITAS_ILLA_FORTIS = 34307;
+
+	/**
+	 * Small port reward bag (civitas illa fortis)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_CIVITAS_ILLA_FORTIS = 34309;
+
+	/**
+	 * Medium port reward bag (civitas illa fortis)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_CIVITAS_ILLA_FORTIS = 34311;
+
+	/**
+	 * Large port reward bag (civitas illa fortis)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_CIVITAS_ILLA_FORTIS = 34313;
+
+	/**
+	 * Huge port reward bag (civitas illa fortis)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_CIVITAS_ILLA_FORTIS = 34315;
+
+	/**
+	 * Tiny port reward bag (ardougne)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_ARDOUGNE = 34317;
+
+	/**
+	 * Small port reward bag (ardougne)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_ARDOUGNE = 34319;
+
+	/**
+	 * Medium port reward bag (ardougne)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_ARDOUGNE = 34321;
+
+	/**
+	 * Large port reward bag (ardougne)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_ARDOUGNE = 34323;
+
+	/**
+	 * Huge port reward bag (ardougne)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_ARDOUGNE = 34325;
+
+	/**
+	 * Tiny port reward bag (port khazard)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_PORT_KHAZARD = 34327;
+
+	/**
+	 * Small port reward bag (port khazard)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_PORT_KHAZARD = 34329;
+
+	/**
+	 * Medium port reward bag (port khazard)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_PORT_KHAZARD = 34331;
+
+	/**
+	 * Large port reward bag (port khazard)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_PORT_KHAZARD = 34333;
+
+	/**
+	 * Huge port reward bag (port khazard)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_PORT_KHAZARD = 34335;
+
+	/**
+	 * Tiny port reward bag (deepfin point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_DEEPFIN_POINT = 34337;
+
+	/**
+	 * Small port reward bag (deepfin point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_DEEPFIN_POINT = 34339;
+
+	/**
+	 * Medium port reward bag (deepfin point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_DEEPFIN_POINT = 34341;
+
+	/**
+	 * Large port reward bag (deepfin point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_DEEPFIN_POINT = 34343;
+
+	/**
+	 * Huge port reward bag (deepfin point)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_DEEPFIN_POINT = 34345;
+
+	/**
+	 * Tiny port reward bag (port sarim)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_PORT_SARIM = 34347;
+
+	/**
+	 * Small port reward bag (port sarim)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_PORT_SARIM = 34349;
+
+	/**
+	 * Medium port reward bag (port sarim)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_PORT_SARIM = 34351;
+
+	/**
+	 * Large port reward bag (port sarim)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_PORT_SARIM = 34353;
+
+	/**
+	 * Huge port reward bag (port sarim)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_PORT_SARIM = 34355;
+
+	/**
+	 * Tiny port reward bag (port piscarilius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_PORT_PISCARILIUS = 34357;
+
+	/**
+	 * Small port reward bag (port piscarilius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_PORT_PISCARILIUS = 34359;
+
+	/**
+	 * Medium port reward bag (port piscarilius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_PORT_PISCARILIUS = 34361;
+
+	/**
+	 * Large port reward bag (port piscarilius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_PORT_PISCARILIUS = 34363;
+
+	/**
+	 * Huge port reward bag (port piscarilius)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_PORT_PISCARILIUS = 34365;
+
+	/**
+	 * Tiny port reward bag (port roberts)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_PORT_ROBERTS = 34367;
+
+	/**
+	 * Small port reward bag (port roberts)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_PORT_ROBERTS = 34369;
+
+	/**
+	 * Medium port reward bag (port roberts)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_PORT_ROBERTS = 34371;
+
+	/**
+	 * Large port reward bag (port roberts)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_PORT_ROBERTS = 34373;
+
+	/**
+	 * Huge port reward bag (port roberts)
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_PORT_ROBERTS = 34375;
+
+	/**
+	 * Tiny port coin bag
+	 */
+	public static final int PORT_TASK_LOOTSACK_T0_COINS = 34377;
+
+	/**
+	 * Small port coin bag
+	 */
+	public static final int PORT_TASK_LOOTSACK_T1_COINS = 34379;
+
+	/**
+	 * Medium port coin bag
+	 */
+	public static final int PORT_TASK_LOOTSACK_T2_COINS = 34381;
+
+	/**
+	 * Large port coin bag
+	 */
+	public static final int PORT_TASK_LOOTSACK_T3_COINS = 34383;
+
+	/**
+	 * Huge port coin bag
+	 */
+	public static final int PORT_TASK_LOOTSACK_T4_COINS = 34385;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
@@ -103611,6 +104411,165 @@ public final class ItemID
 		public static final int VAMPYRE_SNAIL_SHELL = 34062;
 		public static final int SNELM_VAMPYRE = 34064;
 		public static final int SHARK_LURE_PACK = 34067;
+		public static final int SAWMILL_COUPON_TEAK = 34069;
+		public static final int SAWMILL_COUPON_MAHOGANY = 34071;
+		public static final int SAWMILL_COUPON_CAMPHOR = 34073;
+		public static final int SAWMILL_COUPON_IRONWOOD = 34075;
+		public static final int PORT_TASK_LOOTSACK_T0_CAIRN_ISLE = 34078;
+		public static final int PORT_TASK_LOOTSACK_T1_CAIRN_ISLE = 34080;
+		public static final int PORT_TASK_LOOTSACK_T2_CAIRN_ISLE = 34082;
+		public static final int PORT_TASK_LOOTSACK_T3_CAIRN_ISLE = 34084;
+		public static final int PORT_TASK_LOOTSACK_T4_CAIRN_ISLE = 34086;
+		public static final int PORT_TASK_LOOTSACK_T0_ENTRANA = 34088;
+		public static final int PORT_TASK_LOOTSACK_T1_ENTRANA = 34090;
+		public static final int PORT_TASK_LOOTSACK_T2_ENTRANA = 34092;
+		public static final int PORT_TASK_LOOTSACK_T3_ENTRANA = 34094;
+		public static final int PORT_TASK_LOOTSACK_T4_ENTRANA = 34096;
+		public static final int PORT_TASK_LOOTSACK_T0_NEITIZNOT = 34098;
+		public static final int PORT_TASK_LOOTSACK_T1_NEITIZNOT = 34100;
+		public static final int PORT_TASK_LOOTSACK_T2_NEITIZNOT = 34102;
+		public static final int PORT_TASK_LOOTSACK_T3_NEITIZNOT = 34104;
+		public static final int PORT_TASK_LOOTSACK_T4_NEITIZNOT = 34106;
+		public static final int PORT_TASK_LOOTSACK_T0_JATIZSO = 34108;
+		public static final int PORT_TASK_LOOTSACK_T1_JATIZSO = 34110;
+		public static final int PORT_TASK_LOOTSACK_T2_JATIZSO = 34112;
+		public static final int PORT_TASK_LOOTSACK_T3_JATIZSO = 34114;
+		public static final int PORT_TASK_LOOTSACK_T4_JATIZSO = 34116;
+		public static final int PORT_TASK_LOOTSACK_T0_HOSIDIUS = 34118;
+		public static final int PORT_TASK_LOOTSACK_T1_HOSIDIUS = 34120;
+		public static final int PORT_TASK_LOOTSACK_T2_HOSIDIUS = 34122;
+		public static final int PORT_TASK_LOOTSACK_T3_HOSIDIUS = 34124;
+		public static final int PORT_TASK_LOOTSACK_T4_HOSIDIUS = 34126;
+		public static final int PORT_TASK_LOOTSACK_T0_SUNSET_COAST = 34128;
+		public static final int PORT_TASK_LOOTSACK_T1_SUNSET_COAST = 34130;
+		public static final int PORT_TASK_LOOTSACK_T2_SUNSET_COAST = 34132;
+		public static final int PORT_TASK_LOOTSACK_T3_SUNSET_COAST = 34134;
+		public static final int PORT_TASK_LOOTSACK_T4_SUNSET_COAST = 34136;
+		public static final int PORT_TASK_LOOTSACK_T0_PISCATORIS = 34138;
+		public static final int PORT_TASK_LOOTSACK_T1_PISCATORIS = 34140;
+		public static final int PORT_TASK_LOOTSACK_T2_PISCATORIS = 34142;
+		public static final int PORT_TASK_LOOTSACK_T3_PISCATORIS = 34144;
+		public static final int PORT_TASK_LOOTSACK_T4_PISCATORIS = 34146;
+		public static final int PORT_TASK_LOOTSACK_T0_ETCETERIA = 34148;
+		public static final int PORT_TASK_LOOTSACK_T1_ETCETERIA = 34150;
+		public static final int PORT_TASK_LOOTSACK_T2_ETCETERIA = 34152;
+		public static final int PORT_TASK_LOOTSACK_T3_ETCETERIA = 34154;
+		public static final int PORT_TASK_LOOTSACK_T4_ETCETERIA = 34156;
+		public static final int PORT_TASK_LOOTSACK_T0_RUINS_OF_UNKAH = 34158;
+		public static final int PORT_TASK_LOOTSACK_T1_RUINS_OF_UNKAH = 34160;
+		public static final int PORT_TASK_LOOTSACK_T2_RUINS_OF_UNKAH = 34162;
+		public static final int PORT_TASK_LOOTSACK_T3_RUINS_OF_UNKAH = 34164;
+		public static final int PORT_TASK_LOOTSACK_T4_RUINS_OF_UNKAH = 34166;
+		public static final int PORT_TASK_LOOTSACK_T0_LUNAR_ISLE = 34168;
+		public static final int PORT_TASK_LOOTSACK_T1_LUNAR_ISLE = 34170;
+		public static final int PORT_TASK_LOOTSACK_T2_LUNAR_ISLE = 34172;
+		public static final int PORT_TASK_LOOTSACK_T3_LUNAR_ISLE = 34174;
+		public static final int PORT_TASK_LOOTSACK_T4_LUNAR_ISLE = 34176;
+		public static final int PORT_TASK_LOOTSACK_T0_CORSAIR_COVE = 34178;
+		public static final int PORT_TASK_LOOTSACK_T1_CORSAIR_COVE = 34180;
+		public static final int PORT_TASK_LOOTSACK_T2_CORSAIR_COVE = 34182;
+		public static final int PORT_TASK_LOOTSACK_T3_CORSAIR_COVE = 34184;
+		public static final int PORT_TASK_LOOTSACK_T4_CORSAIR_COVE = 34186;
+		public static final int PORT_TASK_LOOTSACK_T0_PRIFDDINAS = 34188;
+		public static final int PORT_TASK_LOOTSACK_T1_PRIFDDINAS = 34190;
+		public static final int PORT_TASK_LOOTSACK_T2_PRIFDDINAS = 34192;
+		public static final int PORT_TASK_LOOTSACK_T3_PRIFDDINAS = 34194;
+		public static final int PORT_TASK_LOOTSACK_T4_PRIFDDINAS = 34196;
+		public static final int PORT_TASK_LOOTSACK_T0_LANDS_END = 34198;
+		public static final int PORT_TASK_LOOTSACK_T1_LANDS_END = 34200;
+		public static final int PORT_TASK_LOOTSACK_T2_LANDS_END = 34202;
+		public static final int PORT_TASK_LOOTSACK_T3_LANDS_END = 34204;
+		public static final int PORT_TASK_LOOTSACK_T4_LANDS_END = 34206;
+		public static final int PORT_TASK_LOOTSACK_T0_ALDARIN = 34208;
+		public static final int PORT_TASK_LOOTSACK_T1_ALDARIN = 34210;
+		public static final int PORT_TASK_LOOTSACK_T2_ALDARIN = 34212;
+		public static final int PORT_TASK_LOOTSACK_T3_ALDARIN = 34214;
+		public static final int PORT_TASK_LOOTSACK_T4_ALDARIN = 34216;
+		public static final int PORT_TASK_LOOTSACK_T0_SUMMER_SHORE = 34218;
+		public static final int PORT_TASK_LOOTSACK_T1_SUMMER_SHORE = 34220;
+		public static final int PORT_TASK_LOOTSACK_T2_SUMMER_SHORE = 34222;
+		public static final int PORT_TASK_LOOTSACK_T3_SUMMER_SHORE = 34224;
+		public static final int PORT_TASK_LOOTSACK_T4_SUMMER_SHORE = 34226;
+		public static final int PORT_TASK_LOOTSACK_T0_MUSA_POINT = 34228;
+		public static final int PORT_TASK_LOOTSACK_T1_MUSA_POINT = 34230;
+		public static final int PORT_TASK_LOOTSACK_T2_MUSA_POINT = 34232;
+		public static final int PORT_TASK_LOOTSACK_T3_MUSA_POINT = 34234;
+		public static final int PORT_TASK_LOOTSACK_T4_MUSA_POINT = 34236;
+		public static final int PORT_TASK_LOOTSACK_T0_RELLEKKA = 34238;
+		public static final int PORT_TASK_LOOTSACK_T1_RELLEKKA = 34240;
+		public static final int PORT_TASK_LOOTSACK_T2_RELLEKKA = 34242;
+		public static final int PORT_TASK_LOOTSACK_T3_RELLEKKA = 34244;
+		public static final int PORT_TASK_LOOTSACK_T4_RELLEKKA = 34246;
+		public static final int PORT_TASK_LOOTSACK_T0_VOID_KNIGHTS_OUTPOST = 34248;
+		public static final int PORT_TASK_LOOTSACK_T1_VOID_KNIGHTS_OUTPOST = 34250;
+		public static final int PORT_TASK_LOOTSACK_T2_VOID_KNIGHTS_OUTPOST = 34252;
+		public static final int PORT_TASK_LOOTSACK_T3_VOID_KNIGHTS_OUTPOST = 34254;
+		public static final int PORT_TASK_LOOTSACK_T4_VOID_KNIGHTS_OUTPOST = 34256;
+		public static final int PORT_TASK_LOOTSACK_T0_THE_PANDEMONIUM = 34258;
+		public static final int PORT_TASK_LOOTSACK_T1_THE_PANDEMONIUM = 34260;
+		public static final int PORT_TASK_LOOTSACK_T2_THE_PANDEMONIUM = 34262;
+		public static final int PORT_TASK_LOOTSACK_T3_THE_PANDEMONIUM = 34264;
+		public static final int PORT_TASK_LOOTSACK_T4_THE_PANDEMONIUM = 34266;
+		public static final int PORT_TASK_LOOTSACK_T0_RED_ROCK = 34268;
+		public static final int PORT_TASK_LOOTSACK_T1_RED_ROCK = 34270;
+		public static final int PORT_TASK_LOOTSACK_T2_RED_ROCK = 34272;
+		public static final int PORT_TASK_LOOTSACK_T3_RED_ROCK = 34274;
+		public static final int PORT_TASK_LOOTSACK_T4_RED_ROCK = 34276;
+		public static final int PORT_TASK_LOOTSACK_T0_BRIMHAVEN = 34278;
+		public static final int PORT_TASK_LOOTSACK_T1_BRIMHAVEN = 34280;
+		public static final int PORT_TASK_LOOTSACK_T2_BRIMHAVEN = 34282;
+		public static final int PORT_TASK_LOOTSACK_T3_BRIMHAVEN = 34284;
+		public static final int PORT_TASK_LOOTSACK_T4_BRIMHAVEN = 34286;
+		public static final int PORT_TASK_LOOTSACK_T0_PORT_TYRAS = 34288;
+		public static final int PORT_TASK_LOOTSACK_T1_PORT_TYRAS = 34290;
+		public static final int PORT_TASK_LOOTSACK_T2_PORT_TYRAS = 34292;
+		public static final int PORT_TASK_LOOTSACK_T3_PORT_TYRAS = 34294;
+		public static final int PORT_TASK_LOOTSACK_T4_PORT_TYRAS = 34296;
+		public static final int PORT_TASK_LOOTSACK_T0_CATHERBY = 34298;
+		public static final int PORT_TASK_LOOTSACK_T1_CATHERBY = 34300;
+		public static final int PORT_TASK_LOOTSACK_T2_CATHERBY = 34302;
+		public static final int PORT_TASK_LOOTSACK_T3_CATHERBY = 34304;
+		public static final int PORT_TASK_LOOTSACK_T4_CATHERBY = 34306;
+		public static final int PORT_TASK_LOOTSACK_T0_CIVITAS_ILLA_FORTIS = 34308;
+		public static final int PORT_TASK_LOOTSACK_T1_CIVITAS_ILLA_FORTIS = 34310;
+		public static final int PORT_TASK_LOOTSACK_T2_CIVITAS_ILLA_FORTIS = 34312;
+		public static final int PORT_TASK_LOOTSACK_T3_CIVITAS_ILLA_FORTIS = 34314;
+		public static final int PORT_TASK_LOOTSACK_T4_CIVITAS_ILLA_FORTIS = 34316;
+		public static final int PORT_TASK_LOOTSACK_T0_ARDOUGNE = 34318;
+		public static final int PORT_TASK_LOOTSACK_T1_ARDOUGNE = 34320;
+		public static final int PORT_TASK_LOOTSACK_T2_ARDOUGNE = 34322;
+		public static final int PORT_TASK_LOOTSACK_T3_ARDOUGNE = 34324;
+		public static final int PORT_TASK_LOOTSACK_T4_ARDOUGNE = 34326;
+		public static final int PORT_TASK_LOOTSACK_T0_PORT_KHAZARD = 34328;
+		public static final int PORT_TASK_LOOTSACK_T1_PORT_KHAZARD = 34330;
+		public static final int PORT_TASK_LOOTSACK_T2_PORT_KHAZARD = 34332;
+		public static final int PORT_TASK_LOOTSACK_T3_PORT_KHAZARD = 34334;
+		public static final int PORT_TASK_LOOTSACK_T4_PORT_KHAZARD = 34336;
+		public static final int PORT_TASK_LOOTSACK_T0_DEEPFIN_POINT = 34338;
+		public static final int PORT_TASK_LOOTSACK_T1_DEEPFIN_POINT = 34340;
+		public static final int PORT_TASK_LOOTSACK_T2_DEEPFIN_POINT = 34342;
+		public static final int PORT_TASK_LOOTSACK_T3_DEEPFIN_POINT = 34344;
+		public static final int PORT_TASK_LOOTSACK_T4_DEEPFIN_POINT = 34346;
+		public static final int PORT_TASK_LOOTSACK_T0_PORT_SARIM = 34348;
+		public static final int PORT_TASK_LOOTSACK_T1_PORT_SARIM = 34350;
+		public static final int PORT_TASK_LOOTSACK_T2_PORT_SARIM = 34352;
+		public static final int PORT_TASK_LOOTSACK_T3_PORT_SARIM = 34354;
+		public static final int PORT_TASK_LOOTSACK_T4_PORT_SARIM = 34356;
+		public static final int PORT_TASK_LOOTSACK_T0_PORT_PISCARILIUS = 34358;
+		public static final int PORT_TASK_LOOTSACK_T1_PORT_PISCARILIUS = 34360;
+		public static final int PORT_TASK_LOOTSACK_T2_PORT_PISCARILIUS = 34362;
+		public static final int PORT_TASK_LOOTSACK_T3_PORT_PISCARILIUS = 34364;
+		public static final int PORT_TASK_LOOTSACK_T4_PORT_PISCARILIUS = 34366;
+		public static final int PORT_TASK_LOOTSACK_T0_PORT_ROBERTS = 34368;
+		public static final int PORT_TASK_LOOTSACK_T1_PORT_ROBERTS = 34370;
+		public static final int PORT_TASK_LOOTSACK_T2_PORT_ROBERTS = 34372;
+		public static final int PORT_TASK_LOOTSACK_T3_PORT_ROBERTS = 34374;
+		public static final int PORT_TASK_LOOTSACK_T4_PORT_ROBERTS = 34376;
+		public static final int PORT_TASK_LOOTSACK_T0_COINS = 34378;
+		public static final int PORT_TASK_LOOTSACK_T1_COINS = 34380;
+		public static final int PORT_TASK_LOOTSACK_T2_COINS = 34382;
+		public static final int PORT_TASK_LOOTSACK_T3_COINS = 34384;
+		public static final int PORT_TASK_LOOTSACK_T4_COINS = 34386;
 	}
 /* This file is automatically generated. Do not edit. */
 }
