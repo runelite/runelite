@@ -31,6 +31,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.NONE;
@@ -60,7 +62,6 @@ import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QuantityFormatter;
-
 public class GroundItemsOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2500;
@@ -74,8 +75,10 @@ public class GroundItemsOverlay extends Overlay
 	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
 	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
 	private static final int TIMER_OVERLAY_DIAMETER = 10;
+	private static final int ICON_GAP = 2;
 
 	private final Client client;
+	private final ItemManager itemManager;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
@@ -85,11 +88,12 @@ public class GroundItemsOverlay extends Overlay
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 
 	@Inject
-	private GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config)
+	private GroundItemsOverlay(Client client, ItemManager itemManager, GroundItemsPlugin plugin, GroundItemsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
+		this.itemManager = itemManager;
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -128,7 +132,8 @@ public class GroundItemsOverlay extends Overlay
 
 			for (GroundItem item : groundItemList)
 			{
-				item.setOffset(offsetMap.compute(item.getItemLayer().getWorldLocation(), (k, v) -> v != null ? v + 1 : 0));
+				item.setOffset(offsetMap.compute(item.getItemLayer().getWorldLocation(),
+						(k, v) -> v != null ? v + 1 : 0));
 
 				if (groundItem != null)
 				{
@@ -136,24 +141,24 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				if (plugin.getTextBoxBounds() != null
-					&& item.equals(plugin.getTextBoxBounds().getValue())
-					&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getTextBoxBounds().getValue())
+						&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 					continue;
 				}
 
 				if (plugin.getHiddenBoxBounds() != null
-					&& item.equals(plugin.getHiddenBoxBounds().getValue())
-					&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getHiddenBoxBounds().getValue())
+						&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 					continue;
 				}
 
 				if (plugin.getHighlightBoxBounds() != null
-					&& item.equals(plugin.getHighlightBoxBounds().getValue())
-					&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getHighlightBoxBounds().getValue())
+						&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 				}
@@ -183,8 +188,8 @@ public class GroundItemsOverlay extends Overlay
 			final LocalPoint groundPoint = LocalPoint.fromWorld(wv, item.getItemLayer().getWorldLocation());
 
 			if (groundPoint == null
-				|| (groundPoint.getWorldView() == WorldView.TOPLEVEL && localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
-				|| !plugin.shouldDisplayItem(ownershipFilterMode, item.getOwnership(), accountType))
+					|| (groundPoint.getWorldView() == WorldView.TOPLEVEL && localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
+					|| !plugin.shouldDisplayItem(ownershipFilterMode, item.getOwnership(), accountType))
 			{
 				continue;
 			}
@@ -235,34 +240,35 @@ public class GroundItemsOverlay extends Overlay
 			if (item.getId() != ItemID.COINS)
 			{
 				PriceDisplayMode displayMode = config.priceDisplayMode();
+
 				if (displayMode == PriceDisplayMode.BOTH)
 				{
 					if (item.getGePrice() > 0)
 					{
 						itemStringBuilder.append(" (GE: ")
-							.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
-							.append(" gp)");
+								.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
+								.append(" gp)");
 					}
 
 					if (item.getHaPrice() > 0)
 					{
 						itemStringBuilder.append(" (HA: ")
-							.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
-							.append(" gp)");
+								.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
+								.append(" gp)");
 					}
 				}
 				else if (displayMode != PriceDisplayMode.OFF)
 				{
 					final int price = displayMode == PriceDisplayMode.GE
-						? item.getGePrice()
-						: item.getHaPrice();
+							? item.getGePrice()
+							: item.getHaPrice();
 
 					if (price > 0)
 					{
 						itemStringBuilder
-							.append(" (")
-							.append(QuantityFormatter.quantityToStackSize(price))
-							.append(" gp)");
+								.append(" (")
+								.append(QuantityFormatter.quantityToStackSize(price))
+								.append(" gp)");
 					}
 				}
 			}
@@ -270,7 +276,8 @@ public class GroundItemsOverlay extends Overlay
 			final String itemString = itemStringBuilder.toString();
 			itemStringBuilder.setLength(0);
 
-			final Point textPoint = Perspective.getCanvasTextLocation(client,
+			final Point textPoint = Perspective.getCanvasTextLocation(
+				client,
 				graphics,
 				groundPoint,
 				itemString,
@@ -282,11 +289,21 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final int offset = plugin.isHotKeyPressed()
-				? item.getOffset()
-				: offsetMap.compute(item.getItemLayer().getWorldLocation(), (k, v) -> v != null ? v + 1 : 0);
+			? item.getOffset()
+			: offsetMap.compute(
+				item.getItemLayer().getWorldLocation(),
+				(k, v) -> v != null ? v + 1 : 0);
 
 			final int textX = textPoint.getX();
 			final int textY = textPoint.getY() - (STRING_GAP * offset);
+
+			final BufferedImage itemImage = config.showItemIcons()
+					? itemManager.getImage(item.getId())
+					: null;
+
+			final int iconSize = config.iconSize();
+			final int iconWidth = itemImage != null ? iconSize + ICON_GAP : 0;
+			final int itemTextX = textX + iconWidth;
 
 			if (plugin.isHotKeyPressed())
 			{
@@ -321,7 +338,6 @@ public class GroundItemsOverlay extends Overlay
 				else if (mouseInHiddenBox)
 				{
 					plugin.setHiddenBoxBounds(new SimpleEntry<>(itemHiddenBox, item));
-
 				}
 				else if (mouseInHighlightBox)
 				{
@@ -329,7 +345,6 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				boolean topItem = topGroundItem == item;
-
 				// Draw background if hovering
 				if (topItem && (mouseInBox || mouseInHiddenBox || mouseInHighlightBox))
 				{
@@ -338,12 +353,21 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				// Draw hidden box
-				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, item.hidden, true);
+				drawRectangle(
+						graphics,
+						itemHiddenBox,
+						topItem && mouseInHiddenBox ? Color.RED : color,
+						item.hidden,
+						true);
 
 				// Draw highlight box
-				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, item.highlighted, false);
+				drawRectangle(
+						graphics,
+						itemHighlightBox,
+						topItem && mouseInHighlightBox ? Color.GREEN : color,
+						item.highlighted,
+						false);
 			}
-
 			// When the hotkey is pressed the hidden/highlight boxes are drawn to the right of the text,
 			// so always draw the pie since it is on the left hand side.
 			if (groundItemTimers == DespawnTimerMode.PIE || plugin.isHotKeyPressed())
@@ -354,10 +378,12 @@ public class GroundItemsOverlay extends Overlay
 			{
 				Instant despawnTime = calculateDespawnTime(item);
 				Color timerColor = getItemTimerColor(item);
+
 				if (despawnTime != null && timerColor != null)
 				{
 					long despawnTimeMillis = despawnTime.toEpochMilli() - Instant.now().toEpochMilli();
 					final String timerText;
+
 					if (groundItemTimers == DespawnTimerMode.SECONDS)
 					{
 						timerText = String.format(" - %.1f", despawnTimeMillis / 1000f);
@@ -370,18 +396,46 @@ public class GroundItemsOverlay extends Overlay
 					// The timer text is drawn separately to have its own color, and is intentionally not included
 					// in the getCanvasTextLocation() call because the timer text can change per frame and we do not
 					// use a monospaced font, which causes the text location on screen to jump around slightly each frame.
-					textComponent.setText(timerText);
-					textComponent.setColor(timerColor);
+					textComponent.setText(itemString + timerText);
+					textComponent.setColor(color);
 					textComponent.setOutline(outline);
-					textComponent.setPosition(new java.awt.Point(textX + fm.stringWidth(itemString), textY));
+					textComponent.setPosition(new java.awt.Point(itemTextX, textY));
 					textComponent.render(graphics);
+
+					if (itemImage != null)
+					{
+						final int iconY = textY - iconSize + 2;
+
+						graphics.drawImage(
+								itemImage,
+								textX,
+								iconY,
+								iconSize,
+								iconSize,
+								null);
+					}
+
+					continue;
 				}
+			}
+
+			if (itemImage != null)
+			{
+				final int iconY = textY - iconSize + 2;
+
+				graphics.drawImage(
+						itemImage,
+						textX,
+						iconY,
+						iconSize,
+						iconSize,
+						null);
 			}
 
 			textComponent.setText(itemString);
 			textComponent.setColor(color);
 			textComponent.setOutline(outline);
-			textComponent.setPosition(new java.awt.Point(textX, textY));
+			textComponent.setPosition(new java.awt.Point(itemTextX, textY));
 			textComponent.render(graphics);
 		}
 
@@ -391,12 +445,14 @@ public class GroundItemsOverlay extends Overlay
 	private Instant calculateDespawnTime(GroundItem groundItem)
 	{
 		Instant spawnTime = groundItem.getSpawnTime();
+
 		if (spawnTime == null)
 		{
 			return null;
 		}
 
 		Instant despawnTime = spawnTime.plus(groundItem.getDespawnTime());
+
 		if (Instant.now().isAfter(despawnTime))
 		{
 			// that's weird
@@ -409,6 +465,7 @@ public class GroundItemsOverlay extends Overlay
 	private Color getItemTimerColor(GroundItem groundItem)
 	{
 		final Instant spawnTime = groundItem.getSpawnTime();
+
 		if (spawnTime == null)
 		{
 			return null;
@@ -429,10 +486,12 @@ public class GroundItemsOverlay extends Overlay
 
 		// otherwise it is private until visibleTime, then it is public
 		final Instant visibleTime = spawnTime.plus(groundItem.getVisibleTime());
+
 		if (visibleTime.isAfter(now))
 		{
 			return PRIVATE_TIMER_COLOR;
 		}
+
 		if (despawnTime.isAfter(now))
 		{
 			return PUBLIC_TIMER_COLOR;
@@ -453,16 +512,18 @@ public class GroundItemsOverlay extends Overlay
 			return;
 		}
 
-		float percent = (float) (now.toEpochMilli() - spawnTime.toEpochMilli()) / (despawnTime.toEpochMilli() - spawnTime.toEpochMilli());
+		float percent = (float) (now.toEpochMilli() - spawnTime.toEpochMilli())
+				/ (despawnTime.toEpochMilli() - spawnTime.toEpochMilli());
 
 		progressPieComponent.setDiameter(TIMER_OVERLAY_DIAMETER);
 		// Shift over to not be on top of the text
 		int x = textX - TIMER_OVERLAY_DIAMETER;
 		int y = textY - TIMER_OVERLAY_DIAMETER / 2;
+
 		progressPieComponent.setPosition(new Point(x, y));
 		progressPieComponent.setFill(fillColor);
 		progressPieComponent.setBorderColor(fillColor);
-		progressPieComponent.setProgress(1 - percent); // inverse so pie drains over time
+		progressPieComponent.setProgress(1 - percent);
 		progressPieComponent.render(graphics);
 	}
 
@@ -481,25 +542,20 @@ public class GroundItemsOverlay extends Overlay
 
 		graphics.setColor(Color.WHITE);
 		// Minus symbol
-		graphics.drawLine
-			(
+		graphics.drawLine(
 				rect.x + 2,
 				rect.y + (rect.height / 2),
 				rect.x + rect.width - 2,
-				rect.y + (rect.height / 2)
-			);
+				rect.y + (rect.height / 2));
 
 		if (!hiddenBox)
 		{
 			// Plus symbol
-			graphics.drawLine
-				(
+			graphics.drawLine(
 					rect.x + (rect.width / 2),
 					rect.y + 2,
 					rect.x + (rect.width / 2),
-					rect.y + rect.height - 2
-				);
+					rect.y + rect.height - 2);
 		}
-
 	}
 }
