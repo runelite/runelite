@@ -137,13 +137,14 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
+
 		LocalPoint localLoc = LocalPoint.fromWorld(client, trap.getWorldLocation());
 		if (localLoc == null)
 		{
 			return;
 		}
-		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 
+		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 		if (loc == null)
 		{
 			return;
@@ -154,6 +155,7 @@ public class TrapOverlay extends Overlay
 			drawCircleOnTrap(graphics, trap, fill, border);
 			return;
 		}
+
 		double timeLeft = 1 - trap.getTrapTimeRelative();
 
 		ProgressPieComponent pie = new ProgressPieComponent();
