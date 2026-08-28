@@ -107,6 +107,8 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_FISHING_SPOT_TOOLTIPS = "fishingSpotTooltips";
 	static final String CONFIG_KEY_MOORING_LOCATION_TOOLTIPS = "mooringLocationTooltips";
 	static final String CONFIG_KEY_MOORING_LOCATION_LEVEL_ICON = "mooringLocationShortcutIcon";
+	static final String CONFIG_KEY_SALVAGING_SPOT_TOOLTIPS = "salvagingSpotTooltips";
+	static final String CONFIG_KEY_SALVAGING_SPOT_LEVEL_ICON = "salvagingSpotIcon";
 
 	static
 	{
@@ -236,6 +238,7 @@ public class WorldMapPlugin extends Plugin
 				{
 					sailingLevel = newSailingLevel;
 					updateMooringPointIcons();
+					updateSalvagingSpotIcons();
 				}
 				break;
 			}
@@ -396,6 +399,27 @@ public class WorldMapPlugin extends Plugin
 		}
 	}
 
+	private void updateSalvagingSpotIcons()
+	{
+		worldMapPointManager.removeIf(isType(MapPoint.Type.SALVAGING));
+
+		if (config.salvagingSpotTooltips() || config.salvagingSpotLevelIcon())
+		{
+			Arrays.stream(SalvagingSpotLocation.values()).forEach(salvagingSpot ->
+				Arrays.stream(salvagingSpot.getLocations())
+					.map(point ->
+						MapPoint.builder()
+							.type(MapPoint.Type.SALVAGING)
+							.worldPoint(point)
+							.image(sailingLevel > 0 && config.salvagingSpotLevelIcon() &&
+								salvagingSpot.getLevelReq() > sailingLevel ? NOPE_ICON : BLANK_ICON)
+							.tooltip(config.salvagingSpotTooltips() ? salvagingSpot.getTooltip() : null)
+							.build()
+					)
+					.forEach(worldMapPointManager::add));
+		}
+	}
+
 	private void updateShownIcons()
 	{
 		updateAgilityIcons();
@@ -403,6 +427,7 @@ public class WorldMapPlugin extends Plugin
 		updateMooringPointIcons();
 		updateRareTreeIcons();
 		updateQuestStartPointIcons();
+		updateSalvagingSpotIcons();
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.FAIRY_RING));
 		if (config.fairyRingIcon() || config.fairyRingTooltips())
