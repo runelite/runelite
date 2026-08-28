@@ -61,10 +61,10 @@ class HunterTrap
 	private final int objectId;
 
 	@Getter
-	private final int varbitId;
+	private final WorldPoint worldLocation;
 
 	@Getter
-	private final WorldPoint worldLocation;
+	private final int varbitId;
 
 	@Setter
 	@Getter
@@ -100,7 +100,7 @@ class HunterTrap
 	/**
 	 * Constructor for a HunterTrap object
 	 *
-	 * @param gameObject The gameobject thats corresponds with this trap.
+	 * @param gameObject The game object that corresponds with this trap.
 	 */
 	HunterTrap(GameObject gameObject)
 	{
@@ -109,13 +109,13 @@ class HunterTrap
 		this.objectId = gameObject.getId();
 		this.worldLocation = gameObject.getWorldLocation();
 		this.varbitId = -1;
-		this.ignoreTimer = false;
 	}
 
 	/**
-	 * Constructor for a HunterTrap object
+	 * Constructor for a HunterTrap object whose state is represented by some {@link net.runelite.api.gameval.VarbitID}.
 	 *
-	 * @param gameObject The gameobject thats corresponds with this trap.
+	 * @param gameObject The game object that corresponds with this trap.
+	 * @param varbitId   The {@link net.runelite.api.gameval.VarbitID varbit} whose value shows the state of the trap.
 	 */
 	HunterTrap(GameObject gameObject, int varbitId)
 	{
@@ -124,7 +124,6 @@ class HunterTrap
 		this.objectId = gameObject.getId();
 		this.worldLocation = gameObject.getWorldLocation();
 		this.varbitId = varbitId;
-		this.ignoreTimer = false;
 	}
 
 	/**

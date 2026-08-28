@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.hunter;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.HashMap;
@@ -79,28 +81,28 @@ public class HunterPlugin extends Plugin
 	@Getter
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
 
-	private static final Map<Integer, Integer> CRAB_TRAP_VARBITS = Map.ofEntries(
-		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_1, ObjectID.CRAB_TRAP_PANDEMONIUM_1),
-		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_2, ObjectID.CRAB_TRAP_PANDEMONIUM_2),
-		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_3, ObjectID.CRAB_TRAP_PANDEMONIUM_3),
-		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_4, ObjectID.CRAB_TRAP_PANDEMONIUM_4),
-		Map.entry(VarbitID.CRAB_TRAP_PANDEMONIUM_5, ObjectID.CRAB_TRAP_PANDEMONIUM_5),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_1, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_1),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_2, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_2),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_3, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_3),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_4, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_4),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_5, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_5),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_1, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_1),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_2, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_2),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_3, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_3),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_4, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_4),
-		Map.entry(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_5, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_5),
-		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_1, ObjectID.CRAB_TRAP_CROWN_JEWEL_1),
-		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_2, ObjectID.CRAB_TRAP_CROWN_JEWEL_2),
-		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_3, ObjectID.CRAB_TRAP_CROWN_JEWEL_3),
-		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_4, ObjectID.CRAB_TRAP_CROWN_JEWEL_4),
-		Map.entry(VarbitID.CRAB_TRAP_CROWN_JEWEL_5, ObjectID.CRAB_TRAP_CROWN_JEWEL_5)
-	);
+	private static final BiMap<Integer, Integer> CRAB_TRAP_VARBITS = new ImmutableBiMap.Builder<Integer, Integer>()
+		.put(VarbitID.CRAB_TRAP_PANDEMONIUM_1, ObjectID.CRAB_TRAP_PANDEMONIUM_1)
+		.put(VarbitID.CRAB_TRAP_PANDEMONIUM_2, ObjectID.CRAB_TRAP_PANDEMONIUM_2)
+		.put(VarbitID.CRAB_TRAP_PANDEMONIUM_3, ObjectID.CRAB_TRAP_PANDEMONIUM_3)
+		.put(VarbitID.CRAB_TRAP_PANDEMONIUM_4, ObjectID.CRAB_TRAP_PANDEMONIUM_4)
+		.put(VarbitID.CRAB_TRAP_PANDEMONIUM_5, ObjectID.CRAB_TRAP_PANDEMONIUM_5)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_1, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_1)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_2, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_2)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_3, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_3)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_4, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_4)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_NORTH_5, ObjectID.CRAB_TRAP_GREAT_CONCH_NORTH_5)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_1, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_1)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_2, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_2)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_3, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_3)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_4, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_4)
+		.put(VarbitID.CRAB_TRAP_GREAT_CONCH_EAST_5, ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_5)
+		.put(VarbitID.CRAB_TRAP_CROWN_JEWEL_1, ObjectID.CRAB_TRAP_CROWN_JEWEL_1)
+		.put(VarbitID.CRAB_TRAP_CROWN_JEWEL_2, ObjectID.CRAB_TRAP_CROWN_JEWEL_2)
+		.put(VarbitID.CRAB_TRAP_CROWN_JEWEL_3, ObjectID.CRAB_TRAP_CROWN_JEWEL_3)
+		.put(VarbitID.CRAB_TRAP_CROWN_JEWEL_4, ObjectID.CRAB_TRAP_CROWN_JEWEL_4)
+		.put(VarbitID.CRAB_TRAP_CROWN_JEWEL_5, ObjectID.CRAB_TRAP_CROWN_JEWEL_5)
+		.build();
 
 	private WorldPoint lastTickLocalPlayerLocation;
 
@@ -168,7 +170,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_3:
 			case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_4:
 			case ObjectID.CRAB_TRAP_GREAT_CONCH_EAST_5:
-				HunterTrap crabTrap = new HunterTrap(gameObject, getCrabVarbitId(gameObject.getId()));
+				HunterTrap crabTrap = new HunterTrap(gameObject, CRAB_TRAP_VARBITS.inverse().get(gameObject.getId()));
 				// crab traps do not expire, so we will ignore the pie timer
 				crabTrap.setIgnoreTimer(true);
 				updateCrabTrapState(crabTrap);
@@ -481,19 +483,5 @@ public class HunterPlugin extends Plugin
 		}
 
 		trap.setState(state);
-	}
-
-	// returns the varbit for a crab trap based on the object id
-	private Integer getCrabVarbitId(int objectId)
-	{
-		for (Map.Entry<Integer, Integer> entry : CRAB_TRAP_VARBITS.entrySet())
-		{
-			if (entry.getValue() == objectId)
-			{
-				return entry.getKey();
-			}
-		}
-
-		return null;
 	}
 }
