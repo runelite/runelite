@@ -136,7 +136,7 @@ class InteractHighlightOverlay extends Overlay
 			case EXAMINE_NPC:
 			{
 				NPC npc = entry.getNpc();
-				if (npc != null && config.npcShowHover() && (npc != plugin.getInteractedTarget() || !config.npcShowInteract()))
+				if (npc != null && config.npcShowHover() && (npc != plugin.getInteractedActor() || !config.npcShowInteract()))
 				{
 					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION
 						|| menuAction == MenuAction.WIDGET_TARGET_ON_NPC && WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.MAGIC_SPELLBOOK
@@ -156,7 +156,7 @@ class InteractHighlightOverlay extends Overlay
 			case PLAYER_EIGHTH_OPTION:
 			{
 				Player player = entry.getPlayer();
-				if (player != null && config.playerShowHover() && (player != plugin.getInteractedTarget() || !config.npcShowInteract()))
+				if (player != null && config.playerShowHover() && (player != plugin.getInteractedActor() || !config.npcShowInteract()))
 				{
 					modelOutlineRenderer.drawOutline(player, config.borderWidth(), config.playerHoverHighlightColor(), config.outlineFeather());
 				}
@@ -182,7 +182,7 @@ class InteractHighlightOverlay extends Overlay
 			modelOutlineRenderer.drawOutline(interactedObject, config.borderWidth(), clickColor, config.outlineFeather());
 		}
 
-		Actor target = plugin.getInteractedTarget();
+		Actor target = plugin.getInteractedActor();
 		if (target instanceof NPC && config.npcShowInteract())
 		{
 			Color startColor = plugin.isAttacked() ? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
