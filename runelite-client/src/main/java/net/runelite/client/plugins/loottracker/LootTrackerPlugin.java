@@ -27,6 +27,7 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
@@ -47,9 +48,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -84,8 +86,8 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
@@ -137,6 +139,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final int MAX_DROPS = 1024;
 	private static final Duration MAX_AGE = Duration.ofDays(365L);
 	private static final int INVCHANGE_TIMEOUT = 10; // server ticks
+	private static final int VARBCHANGE_TIMEOUT = 10;
 
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails?\\.");
@@ -350,9 +353,25 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.PORT_TASK_LOOTSACK_T4_VOID_KNIGHTS_OUTPOST
 	);
 
+	private static final Set<Integer> PORT_TASK_VARBS = Set.of(
+		VarbitID.PORT_TASK_SLOT_0_ID,
+		VarbitID.PORT_TASK_SLOT_1_ID,
+		VarbitID.PORT_TASK_SLOT_2_ID,
+		VarbitID.PORT_TASK_SLOT_3_ID,
+		VarbitID.PORT_TASK_SLOT_4_ID
+	);
+	private static final HashMultimap<Integer, String> PORT_TASK_VARB_NAMES = HashMultimap.create();
+	static {
+		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_0_ID, "Slot 0 ID");
+		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_1_ID, "Slot 1 ID");
+		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_2_ID, "Slot 2 ID");
+		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_3_ID, "Slot 3 ID");
+		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_4_ID, "Slot 4 ID");
+	}
+
 	private static final String PORT_TASK_REWARD_EVENT = "Port Tasks";
 	private static final Pattern PORT_TASK_REWARD_PATTERN = Pattern.compile("You have finished the @sail_txt@(?<task>.+)</col> port task and been given @sail_txt@(?<qty>[0-9]+) x (?<item>.+)</col> as payment\\.");
-
+	private Queue<String> portTaskChatMessages;
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -607,6 +626,11 @@ public class LootTrackerPlugin extends Plugin
 	private Multiset<Integer> inventorySnapshot;
 	private InvChangeCallback inventorySnapshotCb;
 	private int inventoryTimeout;
+
+	private Set<Integer> trackedVarbitIds;
+	private HashMap<Integer, Integer> varbitSnapshot;
+	private HashMap<Integer, Integer> varbitChanges;
+	private int varbitTimeout;
 
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 	private String profileKey;
@@ -925,6 +949,15 @@ public class LootTrackerPlugin extends Plugin
 			{
 				log.debug("Inventory snapshot: Loot timeout");
 				resetEvent();
+			}
+		}
+
+		if (varbitTimeout > 0)
+		{
+			if (--varbitTimeout == 0)
+			{
+				log.info("Varbit snapshot: Loot timeout");
+				resetVarbEvent();
 			}
 		}
 	}
@@ -1274,6 +1307,19 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		final Matcher portTaskMatcher = PORT_TASK_REWARD_PATTERN.matcher(message);
+		if (portTaskChatMessages != null && portTaskMatcher.matches())
+		{
+			String taskName = portTaskMatcher.group("task");
+			String reward = portTaskMatcher.group("item");
+			portTaskChatMessages.add(reward);
+			log.info("New chat message: {}", reward);
+		}
+		else if (portTaskMatcher.matches())
+		{
+			log.info("New chat message (non-tracked): {}", message);
+		}
+
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
 		{
 			if (processHerbiboarHerbSackLoot(event.getTimestamp()))
@@ -1469,6 +1515,19 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	private void onVarbitChanged(VarbitChanged event)
+	{
+		if (trackedVarbitIds != null && trackedVarbitIds.contains(event.getVarbitId()))
+		{
+			varbitChanges.put(event.getVarbitId(), event.getValue());
+			log.info("onVarbitChanged() tracked varbit updated: {}, {}", event.getVarbitId(), event.getValue());
+		} else if (PORT_TASK_VARBS.contains(event.getVarbitId()))
+		{
+			log.info("onVarbitChanged() port task update when null varbitChanges: {}, {}", event.getVarbitId(), event.getValue());
+		}
+	}
+
 	private void countChangedItems(int itemId, Object metadata)
 	{
 		countChangedItems(itemId, metadata, null);
@@ -1552,9 +1611,64 @@ public class LootTrackerPlugin extends Plugin
 			{
 				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, SHADE_CHEST_OBJECTS.get(event.getId())));
 			}
-			else if (event.getMenuOption().equals("Deposit-cargo") && event.getId() == ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_DEPOSIT)
+			else if (event.getMenuOption().equals("Deposit-cargo"))
 			{
-				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, "Port Tasks"));
+				// TODO: Use onVarbChange() function here
+				varbitTimeout = 15 * Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH;
+				varbitSnapshot = new HashMap<>();
+				varbitChanges = new HashMap<>();
+				trackedVarbitIds = PORT_TASK_VARBS;
+				portTaskChatMessages = new LinkedList<>();
+				PORT_TASK_VARBS.forEach(varbId -> varbitSnapshot.put(varbId, client.getVarbitValue(varbId)));
+				log.info("Beginning Port Task inventory watching");
+
+				onInvChange(InventoryID.INV, ((invItems, groundItems, removedItems) ->
+				{
+					// logging details
+					log.info("Port Task Callback:");
+					varbitSnapshot.forEach((key, value) -> log.info("Snapshot Varbit ID: {}, Varbit Value: {}", key, value));
+					varbitChanges.forEach((key, value) -> log.info("Change Varbit ID: {}, Value: {}", key, value));
+					invItems.forEach(itemStack -> log.info("Item {} change {}", itemManager.getItemComposition(itemStack.getId()).getMembersName(), itemStack.getQuantity()));
+					portTaskChatMessages.forEach(msg -> log.info("Loot message: {}", msg));
+
+					// processing
+					varbitSnapshot.keySet().retainAll(varbitChanges.keySet());
+					invItems.forEach(itemStack -> {
+						log.info("{} ({})",  itemManager.getItemComposition(itemStack.getId()).getMembersName(), itemStack.getId());
+					});
+					invItems.forEach(itemStack -> {
+
+						log.info("Item change: {}", itemManager.getItemComposition(itemStack.getId()).getMembersName());
+					});
+
+
+					varbitChanges.forEach((key, value) -> {
+						final String msg = portTaskChatMessages.peek() != null ? portTaskChatMessages.poll() : "";
+						final int taskId = varbitSnapshot.get(key);
+
+						invItems.forEach(itemStack -> {
+							String itemName = itemManager.getItemComposition(itemStack.getId()).getMembersName();
+							if (msg.equals(itemName)) {
+								log.info("{} equals {}", msg, itemName);
+							} else {
+								log.info("{} not equals {}", msg, itemName);
+							}
+						});
+						ItemStack loot = invItems.stream()
+							.filter(itemStack -> msg.equals(itemManager.getItemComposition(itemStack.getId()).getMembersName()))
+							.findFirst()
+							.orElse(null);
+
+
+						if (loot != null)
+						{
+							log.info("addLoot({}, -1, LootRecordType.EVENT, {}, {}", PORT_TASK_REWARD_EVENT, taskId, List.of(new ItemStack(loot.getId(), 1)));
+						} else {
+							log.info("loot is null");
+						}
+						addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, taskId, List.of(new ItemStack(loot.getId(), 1)));
+					});
+				}), 15);
 			}
 		}
 		else if (event.isItemOp())
@@ -1762,6 +1876,14 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshot = null;
 		inventorySnapshotCb = null;
 		inventoryTimeout = 0;
+	}
+
+	private void resetVarbEvent()
+	{
+		trackedVarbitIds = null;
+		varbitSnapshot = null;
+		varbitChanges = null;
+		varbitTimeout = 0;
 	}
 
 	@FunctionalInterface
