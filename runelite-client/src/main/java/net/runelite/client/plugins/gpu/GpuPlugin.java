@@ -771,13 +771,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		interfaceTexture = -1;
 	}
 
-	private void initFbo(int width, int height, int aaSamples)
+	private void initFbo(int width, int height, int aaSamples, double renderScale)
 	{
 		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
 		final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
 
-		width = getScaledValue(transform.getScaleX(), width);
-		height = getScaledValue(transform.getScaleY(), height);
+		width = getScaledValue(transform.getScaleX() * renderScale, width);
+		height = getScaledValue(transform.getScaleY() * renderScale, height);
 
 		if (aaSamples > 0)
 		{
@@ -838,8 +838,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Override
 	public void preSceneDraw(Scene scene, Projection entityProjection,
-		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
-		int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
+	                         float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
+	                         int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
 	{
 		SceneContext ctx = context(scene);
 		if (ctx == null)
@@ -876,7 +876,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	private void preSceneDrawToplevel(Scene scene,
-		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw)
+	                                  float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw)
 	{
 		scene.setDrawDistance(getDrawDistance());
 
@@ -906,8 +906,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int viewportWidth = client.getViewportWidth();
 
 		// Setup FBO and anti-aliasing
+		final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
 		{
-			final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
 			final Dimension stretchedDimensions = client.getStretchedDimensions();
 
 			final int stretchedCanvasWidth = client.isStretchedEnabled() ? stretchedDimensions.width : canvasWidth;
@@ -926,10 +926,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				final int maxSamples = glGetInteger(GL_MAX_SAMPLES);
 				final int samples = forcedAASamples != 0 ? forcedAASamples :
 					Math.min(antiAliasingMode.getSamples(), maxSamples);
+				final double renderScale = antiAliasingMode.getRenderScale();
 
-				log.debug("AA samples: {}, max samples: {}, forced samples: {}", samples, maxSamples, forcedAASamples);
+				log.debug("AA samples: {}, max samples: {}, forced samples: {}, render scale: {}", samples, maxSamples, forcedAASamples, renderScale);
 
-				initFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
+				initFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples, renderScale);
 
 				lastStretchedCanvasWidth = stretchedCanvasWidth;
 				lastStretchedCanvasHeight = stretchedCanvasHeight;
@@ -974,7 +975,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			renderWidthOff = (int) Math.floor(scaleFactorX * (renderWidthOff)) - padding;
 		}
 
-		glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
+		glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight, antiAliasingMode.getRenderScale());
 
 		glUseProgram(glProgram);
 
@@ -1091,6 +1092,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
 		final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+		final double renderScale = config.antiAliasingMode().getRenderScale();
+
+		int srcWidth = getScaledValue(transform.getScaleX() * renderScale, width);
+		int srcHeight = getScaledValue(transform.getScaleY() * renderScale, height);
 
 		width = getScaledValue(transform.getScaleX(), width);
 		height = getScaledValue(transform.getScaleY(), height);
@@ -1098,7 +1103,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		int defaultFbo = awtContext.getFramebuffer(false);
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, fboScene);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFbo);
-		glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
+		glBlitFramebuffer(0, 0, srcWidth, srcHeight, 0, 0, width, height,
 			GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		// Reset
@@ -2142,13 +2147,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void glDpiAwareViewport(final int x, final int y, final int width, final int height)
 	{
+		glDpiAwareViewport(x, y, width, height, 1.0);
+	}
+
+	private void glDpiAwareViewport(final int x, final int y, final int width, final int height, final double renderScale)
+	{
 		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
 		final AffineTransform t = graphicsConfiguration.getDefaultTransform();
 		glViewport(
-			getScaledValue(t.getScaleX(), x),
-			getScaledValue(t.getScaleY(), y),
-			getScaledValue(t.getScaleX(), width),
-			getScaledValue(t.getScaleY(), height));
+			getScaledValue(t.getScaleX() * renderScale, x),
+			getScaledValue(t.getScaleY() * renderScale, y),
+			getScaledValue(t.getScaleX() * renderScale, width),
+			getScaledValue(t.getScaleY() * renderScale, height));
 	}
 
 	private int getDrawDistance()

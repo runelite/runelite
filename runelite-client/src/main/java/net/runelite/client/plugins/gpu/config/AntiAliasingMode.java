@@ -31,14 +31,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum AntiAliasingMode
 {
-	DISABLED("Disabled", 0),
-	MSAA_2("MSAA x2", 2),
-	MSAA_4("MSAA x4", 4),
-	MSAA_8("MSAA x8", 8),
-	MSAA_16("MSAA x16", 16);
+	SCALE_QUARTER("x0.25", 0, 0.25),
+	SCALE_HALF("x0.5", 0, 0.5),
+	DISABLED("Disabled", 0, 1.0),
+	MSAA_2("MSAA x2", 2, 1.0),
+	MSAA_4("MSAA x4", 4, 1.0),
+	MSAA_8("MSAA x8", 8, 1.0),
+	MSAA_16("MSAA x16", 16, 1.0);
 
 	private final String name;
 	private final int samples;
+	private final double renderScale;
 
 	@Override
 	public String toString()
