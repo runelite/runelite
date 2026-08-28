@@ -159,6 +159,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int vboUiHandle;
 
 	private int fboScene;
+	private int fboSceneResolve;
+	private int fboSceneResolveColor;
 	private boolean sceneFboValid;
 	private int rboColorBuffer;
 	private int rboDepthBuffer;
@@ -173,8 +175,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastStretchedCanvasHeight;
 	private AntiAliasingMode lastAntiAliasingMode;
 	private double lastGameResolutionScale;
-	private GameScalingMode lastGameScalingMode;
+	private int lastGameScalingMode;
 	private int lastAnisotropicFilteringLevel = -1;
+
+	private boolean sceneFooResolveRequired;
 
 	private GpuFloatBuffer uniformBuffer;
 
@@ -298,6 +302,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			try
 			{
 				fboScene = -1;
+				fboSceneResolve = -1;
+				fboSceneResolveColor = -1;
 				lastAnisotropicFilteringLevel = -1;
 
 				AWTContext.loadNatives();
@@ -813,6 +819,25 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			throw new RuntimeException("FBO is incomplete. status: " + status);
 		}
 
+		//  Resolve render buffer
+		if (aaSamples > 0 && renderScale != 1.0)
+		{
+			fboSceneResolve = glGenFramebuffers();
+			glBindFramebuffer(GL_FRAMEBUFFER, fboSceneResolve);
+
+			fboSceneResolveColor = glGenRenderbuffers();
+			glBindRenderbuffer(GL_RENDERBUFFER, fboSceneResolveColor);
+
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, fboSceneResolveColor);
+
+			int statusResolve = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+			if (statusResolve != GL_FRAMEBUFFER_COMPLETE)
+			{
+				throw new RuntimeException("FBO is incomplete. status: " + statusResolve);
+			}
+		}
+
 		// Reset
 		glBindFramebuffer(GL_FRAMEBUFFER, awtContext.getFramebuffer(false));
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -824,6 +849,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			glDeleteFramebuffers(fboScene);
 			fboScene = -1;
+		}
+
+		if (fboSceneResolve != -1)
+		{
+			glDeleteFramebuffers(fboSceneResolve);
+			fboSceneResolve = -1;
+		}
+
+		if (fboSceneResolveColor != -1)
+		{
+			glDeleteRenderbuffers(fboSceneResolveColor);
+			fboSceneResolveColor = -1;
 		}
 
 		if (rboColorBuffer != 0)
@@ -914,7 +951,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
 			final Dimension stretchedDimensions = client.getStretchedDimensions();
-			final GameScalingMode gameScalingMode = config.gameScalingMode();
+			final int gameScalingMode = config.gameScalingMode().getScalingMode();
 
 			final int stretchedCanvasWidth = client.isStretchedEnabled() ? stretchedDimensions.width : canvasWidth;
 			final int stretchedCanvasHeight = client.isStretchedEnabled() ? stretchedDimensions.height : canvasHeight;
@@ -934,6 +971,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				final int maxSamples = glGetInteger(GL_MAX_SAMPLES);
 				final int samples = forcedAASamples != 0 ? forcedAASamples :
 					Math.min(antiAliasingMode.getSamples(), maxSamples);
+				sceneFooResolveRequired = samples > 0 && gameResolutionScale != 1.0;
 
 				log.debug("AA samples: {}, max samples: {}, forced samples: {}, render scale: {}", samples, maxSamples, forcedAASamples, gameResolutionScale);
 
@@ -1099,9 +1137,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		int width = lastStretchedCanvasWidth;
 		int height = lastStretchedCanvasHeight;
 
+		double gameResolutionScale = lastGameResolutionScale;
+
 		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
 		final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
-		final double gameResolutionScale = config.gameResolutionScale() * 0.01;
 
 		int srcWidth = getScaledValue(transform.getScaleX() * gameResolutionScale, width);
 		int srcHeight = getScaledValue(transform.getScaleY() * gameResolutionScale, height);
@@ -1110,10 +1149,25 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		height = getScaledValue(transform.getScaleY(), height);
 
 		int defaultFbo = awtContext.getFramebuffer(false);
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, fboScene);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFbo);
-		glBlitFramebuffer(0, 0, srcWidth, srcHeight, 0, 0, width, height,
-			GL_COLOR_BUFFER_BIT, config.gameScalingMode().getScalingMode());
+
+		if (sceneFooResolveRequired) {
+			glBindFramebuffer(GL_READ_FRAMEBUFFER, fboScene);
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboSceneResolve);
+			glBlitFramebuffer(0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight,
+				GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+			glBindFramebuffer(GL_READ_FRAMEBUFFER, fboSceneResolve);
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFbo);
+			glBlitFramebuffer(0, 0, srcWidth, srcHeight, 0, 0, width, height,
+				GL_COLOR_BUFFER_BIT, lastGameScalingMode);
+		}
+		else
+		{
+			glBindFramebuffer(GL_READ_FRAMEBUFFER, fboScene);
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFbo);
+			glBlitFramebuffer(0, 0, srcWidth, srcHeight, 0, 0, width, height,
+				GL_COLOR_BUFFER_BIT, lastGameScalingMode);
+		}
 
 		// Reset
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, defaultFbo);
