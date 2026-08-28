@@ -325,7 +325,7 @@ public class ItemStatChanges
 		add(heal(RUN_ENERGY, 40), ItemID._1DOSE3ENERGY, ItemID._2DOSE3ENERGY, ItemID._3DOSE3ENERGY, ItemID._4DOSE3ENERGY);
 		add(combo(heal(HITPOINTS, 99), heal(PRAYER, 99), heal(RUN_ENERGY, 100)), ItemID.VAMPYRIUM_CONGEALED_BLOOD);
 
-		// Castlewars Brew (Super Combat + Super Ranging + Stamina + Super Restore + Imbued Heart)
+		// Castlewars Brew (Super Combat + Ranging + Stamina + Super Restore + Imbued Heart)
 		add(castlewarsBrew, ItemID._4DOSE_CASTLEWARS_SKILL_POTION, ItemID._3DOSE_CASTLEWARS_SKILL_POTION, ItemID._2DOSE_CASTLEWARS_SKILL_POTION, ItemID._1DOSE_CASTLEWARS_SKILL_POTION);
 
 		// Mixed recovery potions
