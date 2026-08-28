@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, NonaNonia <https://github.com/NonaNonia>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,19 +26,18 @@ package net.runelite.client.plugins.gpu.config;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 @Getter
 @RequiredArgsConstructor
-public enum AntiAliasingMode
+public enum GameScalingMode
 {
-	DISABLED("Disabled", 0),
-	MSAA_2("MSAA x2", 2),
-	MSAA_4("MSAA x4", 4),
-	MSAA_8("MSAA x8", 8),
-	MSAA_16("MSAA x16", 16);
+	NEAREST("Nearest", GL_NEAREST),
+	LINEAR("Bilinear", GL_LINEAR);
 
 	private final String name;
-	private final int samples;
+	private final int scalingMode;
 
 	@Override
 	public String toString()
@@ -46,3 +45,8 @@ public enum AntiAliasingMode
 		return name;
 	}
 }
+
+
+
+
+
