@@ -277,14 +277,14 @@ public class LootTrackerPlugin extends Plugin
 	// Birdhouses
 	private static final Pattern BIRDHOUSE_PATTERN = Pattern.compile("You dismantle and discard the trap, retrieving (?:(?:a|\\d{1,2}) nests?, )?10 dead birds, \\d{1,3} feathers and (\\d,?\\d{1,3}) Hunter XP\\.");
 	private static final Map<Integer, String> BIRDHOUSE_XP_TO_TYPE = new ImmutableMap.Builder<Integer, String>().
-		put(280, "Regular Bird House").
-		put(420, "Oak Bird House").
-		put(560, "Willow Bird House").
-		put(700, "Teak Bird House").
-		put(820, "Maple Bird House").
-		put(960, "Mahogany Bird House").
-		put(1020, "Yew Bird House").
-		put(1140, "Magic Bird House").
+		put(112, "Regular Bird House").
+		put(168, "Oak Bird House").
+		put(224, "Willow Bird House").
+		put(280, "Teak Bird House").
+		put(369, "Maple Bird House").
+		put(480, "Mahogany Bird House").
+		put(612, "Yew Bird House").
+		put(969, "Magic Bird House").
 		put(1200, "Redwood Bird House").
 		build();
 

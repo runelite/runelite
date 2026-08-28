@@ -329,7 +329,7 @@ public class LootTrackerPluginTest
 		);
 
 		// No bird nests
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 10 dead birds, 30 feathers and 1140 Hunter XP.", "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 10 dead birds, 30 feathers and 969 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		sendInvChange(InventoryID.INV, items);
@@ -338,7 +338,7 @@ public class LootTrackerPluginTest
 		when(client.getItemContainer(InventoryID.INV)).thenReturn(null);
 
 		// Single bird nest
-		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving a nest, 10 dead birds, 50 feathers and 700 Hunter XP.", "", 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving a nest, 10 dead birds, 50 feathers and 280 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		sendInvChange(InventoryID.INV, items);
@@ -347,7 +347,7 @@ public class LootTrackerPluginTest
 		when(client.getItemContainer(InventoryID.INV)).thenReturn(null);
 
 		// Multiple nests
-		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 2 nests, 10 dead birds, 40 feathers and 280 Hunter XP.", "", 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 2 nests, 10 dead birds, 40 feathers and 112 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		sendInvChange(InventoryID.INV, items);
