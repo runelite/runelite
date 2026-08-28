@@ -72,7 +72,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
-import net.runelite.client.plugins.gpu.config.GameScalingMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.ClientUI;
@@ -1150,7 +1149,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		int defaultFbo = awtContext.getFramebuffer(false);
 
-		if (sceneFooResolveRequired) {
+		if (sceneFooResolveRequired)
+		{
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, fboScene);
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboSceneResolve);
 			glBlitFramebuffer(0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight,
