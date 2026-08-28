@@ -838,8 +838,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Override
 	public void preSceneDraw(Scene scene, Projection entityProjection,
-	                         float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
-	                         int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
+		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
+		int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
 	{
 		SceneContext ctx = context(scene);
 		if (ctx == null)
@@ -876,7 +876,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	private void preSceneDrawToplevel(Scene scene,
-	                                  float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw)
+		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw)
 	{
 		scene.setDrawDistance(getDrawDistance());
 
