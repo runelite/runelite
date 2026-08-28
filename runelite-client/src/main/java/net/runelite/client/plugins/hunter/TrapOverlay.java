@@ -137,15 +137,22 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
+
 		LocalPoint localLoc = LocalPoint.fromWorld(client, trap.getWorldLocation());
 		if (localLoc == null)
 		{
 			return;
 		}
-		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 
+		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 		if (loc == null)
 		{
+			return;
+		}
+
+		if (trap.isIgnoreTimer())
+		{
+			drawCircleOnTrap(graphics, trap, fill, border);
 			return;
 		}
 

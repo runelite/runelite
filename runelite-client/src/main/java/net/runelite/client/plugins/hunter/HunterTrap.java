@@ -63,6 +63,13 @@ class HunterTrap
 	@Getter
 	private final WorldPoint worldLocation;
 
+	@Getter
+	private final int varbitId;
+
+	@Setter
+	@Getter
+	private boolean ignoreTimer;
+
 	/**
 	 * The states a trap can be in.
 	 */
@@ -83,13 +90,17 @@ class HunterTrap
 		/**
 		 * A trap that is closing.
 		 */
-		TRANSITION
+		TRANSITION,
+		/**
+		 * Not placed
+		 */
+		NOT_PLACED
 	}
 
 	/**
 	 * Constructor for a HunterTrap object
 	 *
-	 * @param gameObject The gameobject thats corresponds with this trap.
+	 * @param gameObject The game object that corresponds with this trap.
 	 */
 	HunterTrap(GameObject gameObject)
 	{
@@ -97,6 +108,22 @@ class HunterTrap
 		this.placedOn = Instant.now();
 		this.objectId = gameObject.getId();
 		this.worldLocation = gameObject.getWorldLocation();
+		this.varbitId = -1;
+	}
+
+	/**
+	 * Constructor for a HunterTrap object whose state is represented by some {@link net.runelite.api.gameval.VarbitID}.
+	 *
+	 * @param gameObject The game object that corresponds with this trap.
+	 * @param varbitId   The {@link net.runelite.api.gameval.VarbitID varbit} whose value shows the state of the trap.
+	 */
+	HunterTrap(GameObject gameObject, int varbitId)
+	{
+		this.state = State.OPEN;
+		this.placedOn = Instant.now();
+		this.objectId = gameObject.getId();
+		this.worldLocation = gameObject.getWorldLocation();
+		this.varbitId = varbitId;
 	}
 
 	/**
