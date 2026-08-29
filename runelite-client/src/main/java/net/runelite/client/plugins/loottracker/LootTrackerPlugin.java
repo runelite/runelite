@@ -1262,7 +1262,8 @@ public class LootTrackerPlugin extends Plugin
 			ItemStack itemStack = new ItemStack(rewardId, quantity);
 			queuedPortTaskLoot.add(itemStack);
 
-			if (lastCompletedPortTask > 0) {
+			if (lastCompletedPortTask > 0)
+			{
 				addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, lastCompletedPortTask, queuedPortTaskLoot);
 				lastCompletedPortTask = -1;
 				queuedPortTaskLoot.clear();
@@ -1655,7 +1656,8 @@ public class LootTrackerPlugin extends Plugin
 					default:
 						int eventItemId = event.getItemId();
 
-						if (PORT_TASK_REWARDS.containsValue(eventItemId)) {
+						if (PORT_TASK_REWARDS.containsValue(eventItemId))
+						{
 							countChangedItems(eventItemId, eventItemId, PORT_TASK_REWARD_EVENT);
 						}
 				}
