@@ -27,7 +27,6 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
@@ -47,6 +46,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,6 +82,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostClientTick;
@@ -162,216 +163,178 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.WILDY_LOOT_KEY4
 	);
 
-	private static final List<Integer> PORT_TASK_COIN_BAGS = List.of(
-		ItemID.PORT_TASK_LOOTSACK_T0_COINS,
-		ItemID.PORT_TASK_LOOTSACK_T1_COINS,
-		ItemID.PORT_TASK_LOOTSACK_T2_COINS,
-		ItemID.PORT_TASK_LOOTSACK_T3_COINS,
-		ItemID.PORT_TASK_LOOTSACK_T4_COINS
+	private static final Map<String, Integer> COURIER_TASK_REWARDS = Map.<String, Integer>ofEntries(
+		Map.entry("Tiny port coin bag", ItemID.PORT_TASK_LOOTSACK_T0_COINS),
+		Map.entry("Small port coin bag", ItemID.PORT_TASK_LOOTSACK_T1_COINS),
+		Map.entry("Medium port coin bag", ItemID.PORT_TASK_LOOTSACK_T2_COINS),
+		Map.entry("Large port coin bag", ItemID.PORT_TASK_LOOTSACK_T3_COINS),
+		Map.entry("Huge port coin bag", ItemID.PORT_TASK_LOOTSACK_T4_COINS),
+		Map.entry("Tiny port reward bag (aldarin)",  ItemID.PORT_TASK_LOOTSACK_T0_ALDARIN),
+		Map.entry("Small port reward bag (aldarin)",  ItemID.PORT_TASK_LOOTSACK_T1_ALDARIN),
+		Map.entry("Medium port reward bag (aldarin)",  ItemID.PORT_TASK_LOOTSACK_T2_ALDARIN),
+		Map.entry("Large port reward bag (aldarin)",  ItemID.PORT_TASK_LOOTSACK_T3_ALDARIN),
+		Map.entry("Huge port reward bag (aldarin)",  ItemID.PORT_TASK_LOOTSACK_T4_ALDARIN),
+		Map.entry("Tiny port reward bag (ardougne)",  ItemID.PORT_TASK_LOOTSACK_T0_ARDOUGNE),
+		Map.entry("Small port reward bag (ardougne)",  ItemID.PORT_TASK_LOOTSACK_T1_ARDOUGNE),
+		Map.entry("Medium port reward bag (ardougne)",  ItemID.PORT_TASK_LOOTSACK_T2_ARDOUGNE),
+		Map.entry("Large port reward bag (ardougne)",  ItemID.PORT_TASK_LOOTSACK_T3_ARDOUGNE),
+		Map.entry("Huge port reward bag (ardougne)",  ItemID.PORT_TASK_LOOTSACK_T4_ARDOUGNE),
+		Map.entry("Tiny port reward bag (brimhaven)",  ItemID.PORT_TASK_LOOTSACK_T0_BRIMHAVEN),
+		Map.entry("Small port reward bag (brimhaven)",  ItemID.PORT_TASK_LOOTSACK_T1_BRIMHAVEN),
+		Map.entry("Medium port reward bag (brimhaven)",  ItemID.PORT_TASK_LOOTSACK_T2_BRIMHAVEN),
+		Map.entry("Large port reward bag (brimhaven)",  ItemID.PORT_TASK_LOOTSACK_T3_BRIMHAVEN),
+		Map.entry("Huge port reward bag (brimhaven)",  ItemID.PORT_TASK_LOOTSACK_T4_BRIMHAVEN),
+		Map.entry("Tiny port reward bag (cairn isle)",  ItemID.PORT_TASK_LOOTSACK_T0_CAIRN_ISLE),
+		Map.entry("Small port reward bag (cairn isle)",  ItemID.PORT_TASK_LOOTSACK_T1_CAIRN_ISLE),
+		Map.entry("Medium port reward bag (cairn isle)",  ItemID.PORT_TASK_LOOTSACK_T2_CAIRN_ISLE),
+		Map.entry("Large port reward bag (cairn isle)",  ItemID.PORT_TASK_LOOTSACK_T3_CAIRN_ISLE),
+		Map.entry("Huge port reward bag (cairn isle)",  ItemID.PORT_TASK_LOOTSACK_T4_CAIRN_ISLE),
+		Map.entry("Tiny port reward bag (catherby)",  ItemID.PORT_TASK_LOOTSACK_T0_CATHERBY),
+		Map.entry("Small port reward bag (catherby)",  ItemID.PORT_TASK_LOOTSACK_T1_CATHERBY),
+		Map.entry("Medium port reward bag (catherby)",  ItemID.PORT_TASK_LOOTSACK_T2_CATHERBY),
+		Map.entry("Large port reward bag (catherby)",  ItemID.PORT_TASK_LOOTSACK_T3_CATHERBY),
+		Map.entry("Huge port reward bag (catherby)",  ItemID.PORT_TASK_LOOTSACK_T4_CATHERBY),
+		Map.entry("Tiny port reward bag (civitas illa fortis)",  ItemID.PORT_TASK_LOOTSACK_T0_CIVITAS_ILLA_FORTIS),
+		Map.entry("Small port reward bag (civitas illa fortis)",  ItemID.PORT_TASK_LOOTSACK_T1_CIVITAS_ILLA_FORTIS),
+		Map.entry("Medium port reward bag (civitas illa fortis)",  ItemID.PORT_TASK_LOOTSACK_T2_CIVITAS_ILLA_FORTIS),
+		Map.entry("Large port reward bag (civitas illa fortis)",  ItemID.PORT_TASK_LOOTSACK_T3_CIVITAS_ILLA_FORTIS),
+		Map.entry("Huge port reward bag (civitas illa fortis)",  ItemID.PORT_TASK_LOOTSACK_T4_CIVITAS_ILLA_FORTIS),
+		Map.entry("Tiny port reward bag (corsair cove)",  ItemID.PORT_TASK_LOOTSACK_T0_CORSAIR_COVE),
+		Map.entry("Small port reward bag (corsair cove)",  ItemID.PORT_TASK_LOOTSACK_T1_CORSAIR_COVE),
+		Map.entry("Medium port reward bag (corsair cove)",  ItemID.PORT_TASK_LOOTSACK_T2_CORSAIR_COVE),
+		Map.entry("Large port reward bag (corsair cove)",  ItemID.PORT_TASK_LOOTSACK_T3_CORSAIR_COVE),
+		Map.entry("Huge port reward bag (corsair cove)",  ItemID.PORT_TASK_LOOTSACK_T4_CORSAIR_COVE),
+		Map.entry("Tiny port reward bag (deepfin point)",  ItemID.PORT_TASK_LOOTSACK_T0_DEEPFIN_POINT),
+		Map.entry("Small port reward bag (deepfin point)",  ItemID.PORT_TASK_LOOTSACK_T1_DEEPFIN_POINT),
+		Map.entry("Medium port reward bag (deepfin point)",  ItemID.PORT_TASK_LOOTSACK_T2_DEEPFIN_POINT),
+		Map.entry("Large port reward bag (deepfin point)",  ItemID.PORT_TASK_LOOTSACK_T3_DEEPFIN_POINT),
+		Map.entry("Huge port reward bag (deepfin point)",  ItemID.PORT_TASK_LOOTSACK_T4_DEEPFIN_POINT),
+		Map.entry("Tiny port reward bag (entrana)",  ItemID.PORT_TASK_LOOTSACK_T0_ENTRANA),
+		Map.entry("Small port reward bag (entrana)",  ItemID.PORT_TASK_LOOTSACK_T1_ENTRANA),
+		Map.entry("Medium port reward bag (entrana)",  ItemID.PORT_TASK_LOOTSACK_T2_ENTRANA),
+		Map.entry("Large port reward bag (entrana)",  ItemID.PORT_TASK_LOOTSACK_T3_ENTRANA),
+		Map.entry("Huge port reward bag (entrana)",  ItemID.PORT_TASK_LOOTSACK_T4_ENTRANA),
+		Map.entry("Tiny port reward bag (etceteria)",  ItemID.PORT_TASK_LOOTSACK_T0_ETCETERIA),
+		Map.entry("Small port reward bag (etceteria)",  ItemID.PORT_TASK_LOOTSACK_T1_ETCETERIA),
+		Map.entry("Medium port reward bag (etceteria)",  ItemID.PORT_TASK_LOOTSACK_T2_ETCETERIA),
+		Map.entry("Large port reward bag (etceteria)",  ItemID.PORT_TASK_LOOTSACK_T3_ETCETERIA),
+		Map.entry("Huge port reward bag (etceteria)",  ItemID.PORT_TASK_LOOTSACK_T4_ETCETERIA),
+		Map.entry("Tiny port reward bag (hosidius)",  ItemID.PORT_TASK_LOOTSACK_T0_HOSIDIUS),
+		Map.entry("Small port reward bag (hosidius)",  ItemID.PORT_TASK_LOOTSACK_T1_HOSIDIUS),
+		Map.entry("Medium port reward bag (hosidius)",  ItemID.PORT_TASK_LOOTSACK_T2_HOSIDIUS),
+		Map.entry("Large port reward bag (hosidius)",  ItemID.PORT_TASK_LOOTSACK_T3_HOSIDIUS),
+		Map.entry("Huge port reward bag (hosidius)",  ItemID.PORT_TASK_LOOTSACK_T4_HOSIDIUS),
+		Map.entry("Tiny port reward bag (jatizso)",  ItemID.PORT_TASK_LOOTSACK_T0_JATIZSO),
+		Map.entry("Small port reward bag (jatizso)",  ItemID.PORT_TASK_LOOTSACK_T1_JATIZSO),
+		Map.entry("Medium port reward bag (jatizso)",  ItemID.PORT_TASK_LOOTSACK_T2_JATIZSO),
+		Map.entry("Large port reward bag (jatizso)",  ItemID.PORT_TASK_LOOTSACK_T3_JATIZSO),
+		Map.entry("Huge port reward bag (jatizso)",  ItemID.PORT_TASK_LOOTSACK_T4_JATIZSO),
+		Map.entry("Tiny port reward bag (lands end)",  ItemID.PORT_TASK_LOOTSACK_T0_LANDS_END),
+		Map.entry("Small port reward bag (lands end)",  ItemID.PORT_TASK_LOOTSACK_T1_LANDS_END),
+		Map.entry("Medium port reward bag (lands end)",  ItemID.PORT_TASK_LOOTSACK_T2_LANDS_END),
+		Map.entry("Large port reward bag (lands end)",  ItemID.PORT_TASK_LOOTSACK_T3_LANDS_END),
+		Map.entry("Huge port reward bag (lands end)",  ItemID.PORT_TASK_LOOTSACK_T4_LANDS_END),
+		Map.entry("Tiny port reward bag (lunar isle)",  ItemID.PORT_TASK_LOOTSACK_T0_LUNAR_ISLE),
+		Map.entry("Small port reward bag (lunar isle)",  ItemID.PORT_TASK_LOOTSACK_T1_LUNAR_ISLE),
+		Map.entry("Medium port reward bag (lunar isle)",  ItemID.PORT_TASK_LOOTSACK_T2_LUNAR_ISLE),
+		Map.entry("Large port reward bag (lunar isle)",  ItemID.PORT_TASK_LOOTSACK_T3_LUNAR_ISLE),
+		Map.entry("Huge port reward bag (lunar isle)",  ItemID.PORT_TASK_LOOTSACK_T4_LUNAR_ISLE),
+		Map.entry("Tiny port reward bag (musa point)",  ItemID.PORT_TASK_LOOTSACK_T0_MUSA_POINT),
+		Map.entry("Small port reward bag (musa point)",  ItemID.PORT_TASK_LOOTSACK_T1_MUSA_POINT),
+		Map.entry("Medium port reward bag (musa point)",  ItemID.PORT_TASK_LOOTSACK_T2_MUSA_POINT),
+		Map.entry("Large port reward bag (musa point)",  ItemID.PORT_TASK_LOOTSACK_T3_MUSA_POINT),
+		Map.entry("Huge port reward bag (musa point)",  ItemID.PORT_TASK_LOOTSACK_T4_MUSA_POINT),
+		Map.entry("Tiny port reward bag (neitiznot)",  ItemID.PORT_TASK_LOOTSACK_T0_NEITIZNOT),
+		Map.entry("Small port reward bag (neitiznot)",  ItemID.PORT_TASK_LOOTSACK_T1_NEITIZNOT),
+		Map.entry("Medium port reward bag (neitiznot)",  ItemID.PORT_TASK_LOOTSACK_T2_NEITIZNOT),
+		Map.entry("Large port reward bag (neitiznot)",  ItemID.PORT_TASK_LOOTSACK_T3_NEITIZNOT),
+		Map.entry("Huge port reward bag (neitiznot)",  ItemID.PORT_TASK_LOOTSACK_T4_NEITIZNOT),
+		Map.entry("Tiny port reward bag (piscatoris)",  ItemID.PORT_TASK_LOOTSACK_T0_PISCATORIS),
+		Map.entry("Small port reward bag (piscatoris)",  ItemID.PORT_TASK_LOOTSACK_T1_PISCATORIS),
+		Map.entry("Medium port reward bag (piscatoris)",  ItemID.PORT_TASK_LOOTSACK_T2_PISCATORIS),
+		Map.entry("Large port reward bag (piscatoris)",  ItemID.PORT_TASK_LOOTSACK_T3_PISCATORIS),
+		Map.entry("Huge port reward bag (piscatoris)",  ItemID.PORT_TASK_LOOTSACK_T4_PISCATORIS),
+		Map.entry("Tiny port reward bag (port khazard)",  ItemID.PORT_TASK_LOOTSACK_T0_PORT_KHAZARD),
+		Map.entry("Small port reward bag (port khazard)",  ItemID.PORT_TASK_LOOTSACK_T1_PORT_KHAZARD),
+		Map.entry("Medium port reward bag (port khazard)",  ItemID.PORT_TASK_LOOTSACK_T2_PORT_KHAZARD),
+		Map.entry("Large port reward bag (port khazard)",  ItemID.PORT_TASK_LOOTSACK_T3_PORT_KHAZARD),
+		Map.entry("Huge port reward bag (port khazard)",  ItemID.PORT_TASK_LOOTSACK_T4_PORT_KHAZARD),
+		Map.entry("Tiny port reward bag (port piscarilius)",  ItemID.PORT_TASK_LOOTSACK_T0_PORT_PISCARILIUS),
+		Map.entry("Small port reward bag (port piscarilius)",  ItemID.PORT_TASK_LOOTSACK_T1_PORT_PISCARILIUS),
+		Map.entry("Medium port reward bag (port piscarilius)",  ItemID.PORT_TASK_LOOTSACK_T2_PORT_PISCARILIUS),
+		Map.entry("Large port reward bag (port piscarilius)",  ItemID.PORT_TASK_LOOTSACK_T3_PORT_PISCARILIUS),
+		Map.entry("Huge port reward bag (port piscarilius)",  ItemID.PORT_TASK_LOOTSACK_T4_PORT_PISCARILIUS),
+		Map.entry("Tiny port reward bag (port roberts)",  ItemID.PORT_TASK_LOOTSACK_T0_PORT_ROBERTS),
+		Map.entry("Small port reward bag (port roberts)",  ItemID.PORT_TASK_LOOTSACK_T1_PORT_ROBERTS),
+		Map.entry("Medium port reward bag (port roberts)",  ItemID.PORT_TASK_LOOTSACK_T2_PORT_ROBERTS),
+		Map.entry("Large port reward bag (port roberts)",  ItemID.PORT_TASK_LOOTSACK_T3_PORT_ROBERTS),
+		Map.entry("Huge port reward bag (port roberts)",  ItemID.PORT_TASK_LOOTSACK_T4_PORT_ROBERTS),
+		Map.entry("Tiny port reward bag (port sarim)",  ItemID.PORT_TASK_LOOTSACK_T0_PORT_SARIM),
+		Map.entry("Small port reward bag (port sarim)",  ItemID.PORT_TASK_LOOTSACK_T1_PORT_SARIM),
+		Map.entry("Medium port reward bag (port sarim)",  ItemID.PORT_TASK_LOOTSACK_T2_PORT_SARIM),
+		Map.entry("Large port reward bag (port sarim)",  ItemID.PORT_TASK_LOOTSACK_T3_PORT_SARIM),
+		Map.entry("Huge port reward bag (port sarim)",  ItemID.PORT_TASK_LOOTSACK_T4_PORT_SARIM),
+		Map.entry("Tiny port reward bag (port tyras)",  ItemID.PORT_TASK_LOOTSACK_T0_PORT_TYRAS),
+		Map.entry("Small port reward bag (port tyras)",  ItemID.PORT_TASK_LOOTSACK_T1_PORT_TYRAS),
+		Map.entry("Medium port reward bag (port tyras)",  ItemID.PORT_TASK_LOOTSACK_T2_PORT_TYRAS),
+		Map.entry("Large port reward bag (port tyras)",  ItemID.PORT_TASK_LOOTSACK_T3_PORT_TYRAS),
+		Map.entry("Huge port reward bag (port tyras)",  ItemID.PORT_TASK_LOOTSACK_T4_PORT_TYRAS),
+		Map.entry("Tiny port reward bag (prifddinas)",  ItemID.PORT_TASK_LOOTSACK_T0_PRIFDDINAS),
+		Map.entry("Small port reward bag (prifddinas)",  ItemID.PORT_TASK_LOOTSACK_T1_PRIFDDINAS),
+		Map.entry("Medium port reward bag (prifddinas)",  ItemID.PORT_TASK_LOOTSACK_T2_PRIFDDINAS),
+		Map.entry("Large port reward bag (prifddinas)",  ItemID.PORT_TASK_LOOTSACK_T3_PRIFDDINAS),
+		Map.entry("Huge port reward bag (prifddinas)",  ItemID.PORT_TASK_LOOTSACK_T4_PRIFDDINAS),
+		Map.entry("Tiny port reward bag (red rock)",  ItemID.PORT_TASK_LOOTSACK_T0_RED_ROCK),
+		Map.entry("Small port reward bag (red rock)",  ItemID.PORT_TASK_LOOTSACK_T1_RED_ROCK),
+		Map.entry("Medium port reward bag (red rock)",  ItemID.PORT_TASK_LOOTSACK_T2_RED_ROCK),
+		Map.entry("Large port reward bag (red rock)",  ItemID.PORT_TASK_LOOTSACK_T3_RED_ROCK),
+		Map.entry("Huge port reward bag (red rock)",  ItemID.PORT_TASK_LOOTSACK_T4_RED_ROCK),
+		Map.entry("Tiny port reward bag (rellekka)",  ItemID.PORT_TASK_LOOTSACK_T0_RELLEKKA),
+		Map.entry("Small port reward bag (rellekka)",  ItemID.PORT_TASK_LOOTSACK_T1_RELLEKKA),
+		Map.entry("Medium port reward bag (rellekka)",  ItemID.PORT_TASK_LOOTSACK_T2_RELLEKKA),
+		Map.entry("Large port reward bag (rellekka)",  ItemID.PORT_TASK_LOOTSACK_T3_RELLEKKA),
+		Map.entry("Huge port reward bag (rellekka)",  ItemID.PORT_TASK_LOOTSACK_T4_RELLEKKA),
+		Map.entry("Tiny port reward bag (ruins of unkah)",  ItemID.PORT_TASK_LOOTSACK_T0_RUINS_OF_UNKAH),
+		Map.entry("Small port reward bag (ruins of unkah)",  ItemID.PORT_TASK_LOOTSACK_T1_RUINS_OF_UNKAH),
+		Map.entry("Medium port reward bag (ruins of unkah)",  ItemID.PORT_TASK_LOOTSACK_T2_RUINS_OF_UNKAH),
+		Map.entry("Large port reward bag (ruins of unkah)",  ItemID.PORT_TASK_LOOTSACK_T3_RUINS_OF_UNKAH),
+		Map.entry("Huge port reward bag (ruins of unkah)",  ItemID.PORT_TASK_LOOTSACK_T4_RUINS_OF_UNKAH),
+		Map.entry("Tiny port reward bag (summer shore)",  ItemID.PORT_TASK_LOOTSACK_T0_SUMMER_SHORE),
+		Map.entry("Small port reward bag (summer shore)",  ItemID.PORT_TASK_LOOTSACK_T1_SUMMER_SHORE),
+		Map.entry("Medium port reward bag (summer shore)",  ItemID.PORT_TASK_LOOTSACK_T2_SUMMER_SHORE),
+		Map.entry("Large port reward bag (summer shore)",  ItemID.PORT_TASK_LOOTSACK_T3_SUMMER_SHORE),
+		Map.entry("Huge port reward bag (summer shore)",  ItemID.PORT_TASK_LOOTSACK_T4_SUMMER_SHORE),
+		Map.entry("Tiny port reward bag (sunset coast)",  ItemID.PORT_TASK_LOOTSACK_T0_SUNSET_COAST),
+		Map.entry("Small port reward bag (sunset coast)",  ItemID.PORT_TASK_LOOTSACK_T1_SUNSET_COAST),
+		Map.entry("Medium port reward bag (sunset coast)",  ItemID.PORT_TASK_LOOTSACK_T2_SUNSET_COAST),
+		Map.entry("Large port reward bag (sunset coast)",  ItemID.PORT_TASK_LOOTSACK_T3_SUNSET_COAST),
+		Map.entry("Huge port reward bag (sunset coast)",  ItemID.PORT_TASK_LOOTSACK_T4_SUNSET_COAST),
+		Map.entry("Tiny port reward bag (the pandemonium)",  ItemID.PORT_TASK_LOOTSACK_T0_THE_PANDEMONIUM),
+		Map.entry("Small port reward bag (the pandemonium)",  ItemID.PORT_TASK_LOOTSACK_T1_THE_PANDEMONIUM),
+		Map.entry("Medium port reward bag (the pandemonium)",  ItemID.PORT_TASK_LOOTSACK_T2_THE_PANDEMONIUM),
+		Map.entry("Large port reward bag (the pandemonium)",  ItemID.PORT_TASK_LOOTSACK_T3_THE_PANDEMONIUM),
+		Map.entry("Huge port reward bag (the pandemonium)",  ItemID.PORT_TASK_LOOTSACK_T4_THE_PANDEMONIUM),
+		Map.entry("Tiny port reward bag (void knights outpost)",  ItemID.PORT_TASK_LOOTSACK_T0_VOID_KNIGHTS_OUTPOST),
+		Map.entry("Small port reward bag (void knights outpost)",  ItemID.PORT_TASK_LOOTSACK_T1_VOID_KNIGHTS_OUTPOST),
+		Map.entry("Medium port reward bag (void knights outpost)",  ItemID.PORT_TASK_LOOTSACK_T2_VOID_KNIGHTS_OUTPOST),
+		Map.entry("Large port reward bag (void knights outpost)",  ItemID.PORT_TASK_LOOTSACK_T3_VOID_KNIGHTS_OUTPOST),
+		Map.entry("Huge port reward bag (void knights outpost)",  ItemID.PORT_TASK_LOOTSACK_T4_VOID_KNIGHTS_OUTPOST)
 	);
-
-	private static final List<Integer> PORT_TASK_REWARD_BAGS = List.of(
-
-		ItemID.PORT_TASK_LOOTSACK_T0_ALDARIN,
-		ItemID.PORT_TASK_LOOTSACK_T1_ALDARIN,
-		ItemID.PORT_TASK_LOOTSACK_T2_ALDARIN,
-		ItemID.PORT_TASK_LOOTSACK_T3_ALDARIN,
-		ItemID.PORT_TASK_LOOTSACK_T4_ALDARIN,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_ARDOUGNE,
-		ItemID.PORT_TASK_LOOTSACK_T1_ARDOUGNE,
-		ItemID.PORT_TASK_LOOTSACK_T2_ARDOUGNE,
-		ItemID.PORT_TASK_LOOTSACK_T3_ARDOUGNE,
-		ItemID.PORT_TASK_LOOTSACK_T4_ARDOUGNE,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_BRIMHAVEN,
-		ItemID.PORT_TASK_LOOTSACK_T1_BRIMHAVEN,
-		ItemID.PORT_TASK_LOOTSACK_T2_BRIMHAVEN,
-		ItemID.PORT_TASK_LOOTSACK_T3_BRIMHAVEN,
-		ItemID.PORT_TASK_LOOTSACK_T4_BRIMHAVEN,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_CAIRN_ISLE,
-		ItemID.PORT_TASK_LOOTSACK_T1_CAIRN_ISLE,
-		ItemID.PORT_TASK_LOOTSACK_T2_CAIRN_ISLE,
-		ItemID.PORT_TASK_LOOTSACK_T3_CAIRN_ISLE,
-		ItemID.PORT_TASK_LOOTSACK_T4_CAIRN_ISLE,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_CATHERBY,
-		ItemID.PORT_TASK_LOOTSACK_T1_CATHERBY,
-		ItemID.PORT_TASK_LOOTSACK_T2_CATHERBY,
-		ItemID.PORT_TASK_LOOTSACK_T3_CATHERBY,
-		ItemID.PORT_TASK_LOOTSACK_T4_CATHERBY,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_CIVITAS_ILLA_FORTIS,
-		ItemID.PORT_TASK_LOOTSACK_T1_CIVITAS_ILLA_FORTIS,
-		ItemID.PORT_TASK_LOOTSACK_T2_CIVITAS_ILLA_FORTIS,
-		ItemID.PORT_TASK_LOOTSACK_T3_CIVITAS_ILLA_FORTIS,
-		ItemID.PORT_TASK_LOOTSACK_T4_CIVITAS_ILLA_FORTIS,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_CORSAIR_COVE,
-		ItemID.PORT_TASK_LOOTSACK_T1_CORSAIR_COVE,
-		ItemID.PORT_TASK_LOOTSACK_T2_CORSAIR_COVE,
-		ItemID.PORT_TASK_LOOTSACK_T3_CORSAIR_COVE,
-		ItemID.PORT_TASK_LOOTSACK_T4_CORSAIR_COVE,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_DEEPFIN_POINT,
-		ItemID.PORT_TASK_LOOTSACK_T1_DEEPFIN_POINT,
-		ItemID.PORT_TASK_LOOTSACK_T2_DEEPFIN_POINT,
-		ItemID.PORT_TASK_LOOTSACK_T3_DEEPFIN_POINT,
-		ItemID.PORT_TASK_LOOTSACK_T4_DEEPFIN_POINT,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_ENTRANA,
-		ItemID.PORT_TASK_LOOTSACK_T1_ENTRANA,
-		ItemID.PORT_TASK_LOOTSACK_T2_ENTRANA,
-		ItemID.PORT_TASK_LOOTSACK_T3_ENTRANA,
-		ItemID.PORT_TASK_LOOTSACK_T4_ENTRANA,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_ETCETERIA,
-		ItemID.PORT_TASK_LOOTSACK_T1_ETCETERIA,
-		ItemID.PORT_TASK_LOOTSACK_T2_ETCETERIA,
-		ItemID.PORT_TASK_LOOTSACK_T3_ETCETERIA,
-		ItemID.PORT_TASK_LOOTSACK_T4_ETCETERIA,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_HOSIDIUS,
-		ItemID.PORT_TASK_LOOTSACK_T1_HOSIDIUS,
-		ItemID.PORT_TASK_LOOTSACK_T2_HOSIDIUS,
-		ItemID.PORT_TASK_LOOTSACK_T3_HOSIDIUS,
-		ItemID.PORT_TASK_LOOTSACK_T4_HOSIDIUS,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_JATIZSO,
-		ItemID.PORT_TASK_LOOTSACK_T1_JATIZSO,
-		ItemID.PORT_TASK_LOOTSACK_T2_JATIZSO,
-		ItemID.PORT_TASK_LOOTSACK_T3_JATIZSO,
-		ItemID.PORT_TASK_LOOTSACK_T4_JATIZSO,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_LANDS_END,
-		ItemID.PORT_TASK_LOOTSACK_T1_LANDS_END,
-		ItemID.PORT_TASK_LOOTSACK_T2_LANDS_END,
-		ItemID.PORT_TASK_LOOTSACK_T3_LANDS_END,
-		ItemID.PORT_TASK_LOOTSACK_T4_LANDS_END,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_LUNAR_ISLE,
-		ItemID.PORT_TASK_LOOTSACK_T1_LUNAR_ISLE,
-		ItemID.PORT_TASK_LOOTSACK_T2_LUNAR_ISLE,
-		ItemID.PORT_TASK_LOOTSACK_T3_LUNAR_ISLE,
-		ItemID.PORT_TASK_LOOTSACK_T4_LUNAR_ISLE,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_MUSA_POINT,
-		ItemID.PORT_TASK_LOOTSACK_T1_MUSA_POINT,
-		ItemID.PORT_TASK_LOOTSACK_T2_MUSA_POINT,
-		ItemID.PORT_TASK_LOOTSACK_T3_MUSA_POINT,
-		ItemID.PORT_TASK_LOOTSACK_T4_MUSA_POINT,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_NEITIZNOT,
-		ItemID.PORT_TASK_LOOTSACK_T1_NEITIZNOT,
-		ItemID.PORT_TASK_LOOTSACK_T2_NEITIZNOT,
-		ItemID.PORT_TASK_LOOTSACK_T3_NEITIZNOT,
-		ItemID.PORT_TASK_LOOTSACK_T4_NEITIZNOT,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_PISCATORIS,
-		ItemID.PORT_TASK_LOOTSACK_T1_PISCATORIS,
-		ItemID.PORT_TASK_LOOTSACK_T2_PISCATORIS,
-		ItemID.PORT_TASK_LOOTSACK_T3_PISCATORIS,
-		ItemID.PORT_TASK_LOOTSACK_T4_PISCATORIS,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_PORT_KHAZARD,
-		ItemID.PORT_TASK_LOOTSACK_T1_PORT_KHAZARD,
-		ItemID.PORT_TASK_LOOTSACK_T2_PORT_KHAZARD,
-		ItemID.PORT_TASK_LOOTSACK_T3_PORT_KHAZARD,
-		ItemID.PORT_TASK_LOOTSACK_T4_PORT_KHAZARD,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_PORT_PISCARILIUS,
-		ItemID.PORT_TASK_LOOTSACK_T1_PORT_PISCARILIUS,
-		ItemID.PORT_TASK_LOOTSACK_T2_PORT_PISCARILIUS,
-		ItemID.PORT_TASK_LOOTSACK_T3_PORT_PISCARILIUS,
-		ItemID.PORT_TASK_LOOTSACK_T4_PORT_PISCARILIUS,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_PORT_ROBERTS,
-		ItemID.PORT_TASK_LOOTSACK_T1_PORT_ROBERTS,
-		ItemID.PORT_TASK_LOOTSACK_T2_PORT_ROBERTS,
-		ItemID.PORT_TASK_LOOTSACK_T3_PORT_ROBERTS,
-		ItemID.PORT_TASK_LOOTSACK_T4_PORT_ROBERTS,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_PORT_SARIM,
-		ItemID.PORT_TASK_LOOTSACK_T1_PORT_SARIM,
-		ItemID.PORT_TASK_LOOTSACK_T2_PORT_SARIM,
-		ItemID.PORT_TASK_LOOTSACK_T3_PORT_SARIM,
-		ItemID.PORT_TASK_LOOTSACK_T4_PORT_SARIM,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_PORT_TYRAS,
-		ItemID.PORT_TASK_LOOTSACK_T1_PORT_TYRAS,
-		ItemID.PORT_TASK_LOOTSACK_T2_PORT_TYRAS,
-		ItemID.PORT_TASK_LOOTSACK_T3_PORT_TYRAS,
-		ItemID.PORT_TASK_LOOTSACK_T4_PORT_TYRAS,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_PRIFDDINAS,
-		ItemID.PORT_TASK_LOOTSACK_T1_PRIFDDINAS,
-		ItemID.PORT_TASK_LOOTSACK_T2_PRIFDDINAS,
-		ItemID.PORT_TASK_LOOTSACK_T3_PRIFDDINAS,
-		ItemID.PORT_TASK_LOOTSACK_T4_PRIFDDINAS,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_RED_ROCK,
-		ItemID.PORT_TASK_LOOTSACK_T1_RED_ROCK,
-		ItemID.PORT_TASK_LOOTSACK_T2_RED_ROCK,
-		ItemID.PORT_TASK_LOOTSACK_T3_RED_ROCK,
-		ItemID.PORT_TASK_LOOTSACK_T4_RED_ROCK,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_RELLEKKA,
-		ItemID.PORT_TASK_LOOTSACK_T1_RELLEKKA,
-		ItemID.PORT_TASK_LOOTSACK_T2_RELLEKKA,
-		ItemID.PORT_TASK_LOOTSACK_T3_RELLEKKA,
-		ItemID.PORT_TASK_LOOTSACK_T4_RELLEKKA,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_RUINS_OF_UNKAH,
-		ItemID.PORT_TASK_LOOTSACK_T1_RUINS_OF_UNKAH,
-		ItemID.PORT_TASK_LOOTSACK_T2_RUINS_OF_UNKAH,
-		ItemID.PORT_TASK_LOOTSACK_T3_RUINS_OF_UNKAH,
-		ItemID.PORT_TASK_LOOTSACK_T4_RUINS_OF_UNKAH,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_SUMMER_SHORE,
-		ItemID.PORT_TASK_LOOTSACK_T1_SUMMER_SHORE,
-		ItemID.PORT_TASK_LOOTSACK_T2_SUMMER_SHORE,
-		ItemID.PORT_TASK_LOOTSACK_T3_SUMMER_SHORE,
-		ItemID.PORT_TASK_LOOTSACK_T4_SUMMER_SHORE,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_SUNSET_COAST,
-		ItemID.PORT_TASK_LOOTSACK_T1_SUNSET_COAST,
-		ItemID.PORT_TASK_LOOTSACK_T2_SUNSET_COAST,
-		ItemID.PORT_TASK_LOOTSACK_T3_SUNSET_COAST,
-		ItemID.PORT_TASK_LOOTSACK_T4_SUNSET_COAST,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_THE_PANDEMONIUM,
-		ItemID.PORT_TASK_LOOTSACK_T1_THE_PANDEMONIUM,
-		ItemID.PORT_TASK_LOOTSACK_T2_THE_PANDEMONIUM,
-		ItemID.PORT_TASK_LOOTSACK_T3_THE_PANDEMONIUM,
-		ItemID.PORT_TASK_LOOTSACK_T4_THE_PANDEMONIUM,
-
-		ItemID.PORT_TASK_LOOTSACK_T0_VOID_KNIGHTS_OUTPOST,
-		ItemID.PORT_TASK_LOOTSACK_T1_VOID_KNIGHTS_OUTPOST,
-		ItemID.PORT_TASK_LOOTSACK_T2_VOID_KNIGHTS_OUTPOST,
-		ItemID.PORT_TASK_LOOTSACK_T3_VOID_KNIGHTS_OUTPOST,
-		ItemID.PORT_TASK_LOOTSACK_T4_VOID_KNIGHTS_OUTPOST
-	);
-
-	private static final Set<Integer> PORT_TASK_VARBS = Set.of(
-		VarbitID.PORT_TASK_SLOT_0_ID,
-		VarbitID.PORT_TASK_SLOT_1_ID,
-		VarbitID.PORT_TASK_SLOT_2_ID,
-		VarbitID.PORT_TASK_SLOT_3_ID,
-		VarbitID.PORT_TASK_SLOT_4_ID
-	);
-	private static final HashMultimap<Integer, String> PORT_TASK_VARB_NAMES = HashMultimap.create();
-	static {
-		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_0_ID, "Slot 0 ID");
-		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_1_ID, "Slot 1 ID");
-		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_2_ID, "Slot 2 ID");
-		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_3_ID, "Slot 3 ID");
-		PORT_TASK_VARB_NAMES.put(VarbitID.PORT_TASK_SLOT_4_ID, "Slot 4 ID");
+	private static final Map<Integer, Integer> PORT_TASK_VARBITS = new HashMap<>();
+	static
+	{
+		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_0_ID, -1);
+		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_1_ID, -1);
+		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_2_ID, -1);
+		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_3_ID, -1);
+		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_4_ID, -1);
 	}
+	private Queue<Integer> taskIds = new LinkedList<>();
+	private Queue<ItemStack> portTaskLoot = new LinkedList<>();
 
 	private static final String PORT_TASK_REWARD_EVENT = "Port Tasks";
 	private static final Pattern PORT_TASK_REWARD_PATTERN = Pattern.compile("You have finished the @sail_txt@(?<task>.+)</col> port task and been given @sail_txt@(?<qty>[0-9]+) x (?<item>.+)</col> as payment\\.");
-	private Queue<String> portTaskChatMessages;
+	private static final Pattern COURIER_TASK_PAINT_PATTERN = Pattern.compile("@mes_hl_pur@You've received some paint!");
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -1308,16 +1271,25 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final Matcher portTaskMatcher = PORT_TASK_REWARD_PATTERN.matcher(message);
-		if (portTaskChatMessages != null && portTaskMatcher.matches())
+		if (portTaskMatcher.matches())
 		{
-			String taskName = portTaskMatcher.group("task");
 			String reward = portTaskMatcher.group("item");
-			portTaskChatMessages.add(reward);
-			log.info("New chat message: {}", reward);
+			int rewardId = COURIER_TASK_REWARDS.get(reward);
+			int quantity = Integer.parseInt(portTaskMatcher.group("qty"));
+			ItemStack itemStack = new ItemStack(rewardId, quantity);
+			portTaskLoot.add(itemStack);
+
+			if (taskIds.peek() != null) {
+				addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, taskIds.poll(), portTaskLoot);
+				portTaskLoot.clear();
+			}
 		}
-		else if (portTaskMatcher.matches())
+		final Matcher portTaskPaintMatcher = COURIER_TASK_PAINT_PATTERN.matcher(message);
+		if (portTaskPaintMatcher.matches())
 		{
-			log.info("New chat message (non-tracked): {}", message);
+			int quantity = 1;
+			ItemStack itemStack = new ItemStack(ItemID.SAILING_PAINT_SHARK, quantity);
+			portTaskLoot.add(itemStack);
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
@@ -1518,13 +1490,14 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
-		if (trackedVarbitIds != null && trackedVarbitIds.contains(event.getVarbitId()))
+		if (PORT_TASK_VARBITS.containsKey(event.getVarbitId()))
 		{
-			varbitChanges.put(event.getVarbitId(), event.getValue());
-			log.info("onVarbitChanged() tracked varbit updated: {}, {}", event.getVarbitId(), event.getValue());
-		} else if (PORT_TASK_VARBS.contains(event.getVarbitId()))
-		{
-			log.info("onVarbitChanged() port task update when null varbitChanges: {}, {}", event.getVarbitId(), event.getValue());
+			Integer completedTaskId = PORT_TASK_VARBITS.put(event.getVarbitId(), event.getValue());
+			if (completedTaskId != null && completedTaskId > 0)
+			{
+				taskIds.add(completedTaskId);
+				log.debug("Queued courier task {} for processing complete", completedTaskId);
+			}
 		}
 	}
 
@@ -1610,65 +1583,6 @@ public class LootTrackerPlugin extends Plugin
 			if (event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
 			{
 				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, SHADE_CHEST_OBJECTS.get(event.getId())));
-			}
-			else if (event.getMenuOption().equals("Deposit-cargo"))
-			{
-				// TODO: Use onVarbChange() function here
-				varbitTimeout = 15 * Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH;
-				varbitSnapshot = new HashMap<>();
-				varbitChanges = new HashMap<>();
-				trackedVarbitIds = PORT_TASK_VARBS;
-				portTaskChatMessages = new LinkedList<>();
-				PORT_TASK_VARBS.forEach(varbId -> varbitSnapshot.put(varbId, client.getVarbitValue(varbId)));
-				log.info("Beginning Port Task inventory watching");
-
-				onInvChange(InventoryID.INV, ((invItems, groundItems, removedItems) ->
-				{
-					// logging details
-					log.info("Port Task Callback:");
-					varbitSnapshot.forEach((key, value) -> log.info("Snapshot Varbit ID: {}, Varbit Value: {}", key, value));
-					varbitChanges.forEach((key, value) -> log.info("Change Varbit ID: {}, Value: {}", key, value));
-					invItems.forEach(itemStack -> log.info("Item {} change {}", itemManager.getItemComposition(itemStack.getId()).getMembersName(), itemStack.getQuantity()));
-					portTaskChatMessages.forEach(msg -> log.info("Loot message: {}", msg));
-
-					// processing
-					varbitSnapshot.keySet().retainAll(varbitChanges.keySet());
-					invItems.forEach(itemStack -> {
-						log.info("{} ({})",  itemManager.getItemComposition(itemStack.getId()).getMembersName(), itemStack.getId());
-					});
-					invItems.forEach(itemStack -> {
-
-						log.info("Item change: {}", itemManager.getItemComposition(itemStack.getId()).getMembersName());
-					});
-
-
-					varbitChanges.forEach((key, value) -> {
-						final String msg = portTaskChatMessages.peek() != null ? portTaskChatMessages.poll() : "";
-						final int taskId = varbitSnapshot.get(key);
-
-						invItems.forEach(itemStack -> {
-							String itemName = itemManager.getItemComposition(itemStack.getId()).getMembersName();
-							if (msg.equals(itemName)) {
-								log.info("{} equals {}", msg, itemName);
-							} else {
-								log.info("{} not equals {}", msg, itemName);
-							}
-						});
-						ItemStack loot = invItems.stream()
-							.filter(itemStack -> msg.equals(itemManager.getItemComposition(itemStack.getId()).getMembersName()))
-							.findFirst()
-							.orElse(null);
-
-
-						if (loot != null)
-						{
-							log.info("addLoot({}, -1, LootRecordType.EVENT, {}, {}", PORT_TASK_REWARD_EVENT, taskId, List.of(new ItemStack(loot.getId(), 1)));
-						} else {
-							log.info("loot is null");
-						}
-						addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, taskId, List.of(new ItemStack(loot.getId(), 1)));
-					});
-				}), 15);
 			}
 		}
 		else if (event.isItemOp())
@@ -1764,7 +1678,8 @@ public class LootTrackerPlugin extends Plugin
 						break;
 					default:
 						int eventItemId = event.getItemId();
-						if (PORT_TASK_REWARD_BAGS.contains(eventItemId) || PORT_TASK_COIN_BAGS.contains(eventItemId)) {
+
+						if (COURIER_TASK_REWARDS.containsValue(eventItemId)) {
 							countChangedItems(eventItemId, null, PORT_TASK_REWARD_EVENT);
 						}
 				}
