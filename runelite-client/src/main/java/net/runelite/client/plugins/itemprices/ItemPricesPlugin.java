@@ -173,8 +173,8 @@ public class ItemPricesPlugin extends Plugin
 
 	private String makeValueTooltip(MenuEntry menuEntry)
 	{
-		// Disabling both disables all value tooltips
-		if (!config.showGEPrice() && !config.showHAValue())
+		// Disabling all "show" options disables all value tooltips
+		if (!config.showGEPrice() && !config.showHAValue() && !config.showLAValue())
 		{
 			return null;
 		}
@@ -229,8 +229,11 @@ public class ItemPricesPlugin extends Plugin
 
 		int gePrice = 0;
 		int haPrice = 0;
+		int laPrice = 0;
 		int haProfit = 0;
 		final int itemHaPrice = itemDef.getHaPrice();
+		final int itemLaPrice = (int) Math.ceil(itemHaPrice * 0.666666);
+
 
 		if (config.showGEPrice())
 		{
@@ -240,20 +243,25 @@ public class ItemPricesPlugin extends Plugin
 		{
 			haPrice = itemHaPrice;
 		}
+		if (config.showLAValue())
+		{
+			laPrice = itemLaPrice;
+		}
+
 		if (gePrice > 0 && itemHaPrice > 0 && config.showAlchProfit())
 		{
 			haProfit = calculateHAProfit(itemHaPrice, gePrice);
 		}
 
-		if (gePrice > 0 || haPrice > 0)
+		if (gePrice > 0 || haPrice > 0 || laPrice > 0)
 		{
-			return stackValueText(qty, gePrice, haPrice, haProfit);
+			return stackValueText(qty, gePrice, laPrice, haPrice, haProfit);
 		}
 
 		return null;
 	}
 
-	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
+	private String stackValueText(int qty, int gePrice, int laValue, int haValue, int haProfit)
 	{
 		if (gePrice > 0)
 		{
@@ -281,6 +289,23 @@ public class ItemPricesPlugin extends Plugin
 			{
 				itemStringBuilder.append(" (")
 					.append(QuantityFormatter.quantityToStackSize(haValue))
+					.append(" ea)");
+			}
+		}
+		if (laValue > 0)
+		{
+			if (gePrice > 0 || haValue > 0)
+			{
+				itemStringBuilder.append("</br>");
+			}
+
+			itemStringBuilder.append("LA: ")
+				.append(QuantityFormatter.quantityToStackSize((long) laValue * qty))
+				.append(" gp");
+			if (config.showEA() && qty > 1)
+			{
+				itemStringBuilder.append(" (")
+					.append(QuantityFormatter.quantityToStackSize(laValue))
 					.append(" ea)");
 			}
 		}
