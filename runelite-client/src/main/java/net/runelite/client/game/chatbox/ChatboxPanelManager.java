@@ -104,6 +104,11 @@ public class ChatboxPanelManager
 
 	private void unsafeOpenInput(ChatboxInput input)
 	{
+		if (currentInput != null)
+		{
+			killCurrentPanel();
+		}
+
 		client.runScript(ScriptID.MESSAGE_LAYER_OPEN, 0);
 
 		eventBus.register(input);
