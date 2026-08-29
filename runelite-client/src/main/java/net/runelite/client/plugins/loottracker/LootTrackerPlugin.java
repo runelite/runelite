@@ -601,6 +601,25 @@ public class LootTrackerPlugin extends Plugin
 				SwingUtilities.invokeLater(panel::rebuild);
 			}
 		}
+
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
+
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
+
+			navButton = NavigationButton.builder()
+					.tooltip("Loot Tracker")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(panel)
+					.build();
+
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 
 	@Override
@@ -617,7 +636,7 @@ public class LootTrackerPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.tooltip("Loot Tracker")
 			.icon(icon)
-			.priority(5)
+			.priority(config.navButtonPriority())
 			.panel(panel)
 			.build();
 
