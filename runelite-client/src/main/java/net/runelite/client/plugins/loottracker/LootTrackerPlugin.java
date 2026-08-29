@@ -326,7 +326,7 @@ public class LootTrackerPlugin extends Plugin
 		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_3_ID, -1);
 		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_4_ID, -1);
 	}
-	private final Queue<Integer> queuedPortTaskIds = new LinkedList<>();
+	private int lastCompletedPortTask = -1;
 	private final Queue<ItemStack> queuedPortTaskLoot = new LinkedList<>();
 
 	private static final String PORT_TASK_REWARD_EVENT = "Port Tasks";
@@ -1262,8 +1262,9 @@ public class LootTrackerPlugin extends Plugin
 			ItemStack itemStack = new ItemStack(rewardId, quantity);
 			queuedPortTaskLoot.add(itemStack);
 
-			if (queuedPortTaskIds.peek() != null) {
-				addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, queuedPortTaskIds.poll(), queuedPortTaskLoot);
+			if (lastCompletedPortTask >= 0) {
+				addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, lastCompletedPortTask, queuedPortTaskLoot);
+				lastCompletedPortTask = -1;
 				queuedPortTaskLoot.clear();
 			}
 		}
@@ -1476,10 +1477,9 @@ public class LootTrackerPlugin extends Plugin
 		if (PORT_TASK_VARBITS.containsKey(event.getVarbitId()))
 		{
 			Integer completedTaskId = PORT_TASK_VARBITS.put(event.getVarbitId(), event.getValue());
-			if (completedTaskId != null && completedTaskId > 0)
+			if (completedTaskId != null && completedTaskId >= 0)
 			{
-				queuedPortTaskIds.add(completedTaskId);
-				log.debug("Queued courier task {} for processing complete", completedTaskId);
+				lastCompletedPortTask = completedTaskId;
 			}
 		}
 	}
