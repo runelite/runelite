@@ -1657,7 +1657,7 @@ public class LootTrackerPlugin extends Plugin
 						int eventItemId = event.getItemId();
 
 						if (PORT_TASK_REWARDS.containsValue(eventItemId)) {
-							countChangedItems(eventItemId, null, PORT_TASK_REWARD_EVENT);
+							countChangedItems(eventItemId, eventItemId, PORT_TASK_REWARD_EVENT);
 						}
 				}
 			}
