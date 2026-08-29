@@ -46,7 +46,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,7 +81,6 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostClientTick;
@@ -140,7 +138,6 @@ public class LootTrackerPlugin extends Plugin
 	private static final int MAX_DROPS = 1024;
 	private static final Duration MAX_AGE = Duration.ofDays(365L);
 	private static final int INVCHANGE_TIMEOUT = 10; // server ticks
-	private static final int VARBCHANGE_TIMEOUT = 10;
 
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails?\\.");
@@ -163,7 +160,7 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.WILDY_LOOT_KEY4
 	);
 
-	private static final Map<String, Integer> COURIER_TASK_REWARDS = Map.<String, Integer>ofEntries(
+	private static final Map<String, Integer> PORT_TASK_REWARDS = Map.<String, Integer>ofEntries(
 		Map.entry("Tiny port coin bag", ItemID.PORT_TASK_LOOTSACK_T0_COINS),
 		Map.entry("Small port coin bag", ItemID.PORT_TASK_LOOTSACK_T1_COINS),
 		Map.entry("Medium port coin bag", ItemID.PORT_TASK_LOOTSACK_T2_COINS),
@@ -329,8 +326,8 @@ public class LootTrackerPlugin extends Plugin
 		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_3_ID, -1);
 		PORT_TASK_VARBITS.put(VarbitID.PORT_TASK_SLOT_4_ID, -1);
 	}
-	private Queue<Integer> taskIds = new LinkedList<>();
-	private Queue<ItemStack> portTaskLoot = new LinkedList<>();
+	private final Queue<Integer> queuedPortTaskIds = new LinkedList<>();
+	private final Queue<ItemStack> queuedPortTaskLoot = new LinkedList<>();
 
 	private static final String PORT_TASK_REWARD_EVENT = "Port Tasks";
 	private static final Pattern PORT_TASK_REWARD_PATTERN = Pattern.compile("You have finished the @sail_txt@(?<task>.+)</col> port task and been given @sail_txt@(?<qty>[0-9]+) x (?<item>.+)</col> as payment\\.");
@@ -589,11 +586,6 @@ public class LootTrackerPlugin extends Plugin
 	private Multiset<Integer> inventorySnapshot;
 	private InvChangeCallback inventorySnapshotCb;
 	private int inventoryTimeout;
-
-	private Set<Integer> trackedVarbitIds;
-	private HashMap<Integer, Integer> varbitSnapshot;
-	private HashMap<Integer, Integer> varbitChanges;
-	private int varbitTimeout;
 
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 	private String profileKey;
@@ -912,15 +904,6 @@ public class LootTrackerPlugin extends Plugin
 			{
 				log.debug("Inventory snapshot: Loot timeout");
 				resetEvent();
-			}
-		}
-
-		if (varbitTimeout > 0)
-		{
-			if (--varbitTimeout == 0)
-			{
-				log.info("Varbit snapshot: Loot timeout");
-				resetVarbEvent();
 			}
 		}
 	}
@@ -1274,14 +1257,14 @@ public class LootTrackerPlugin extends Plugin
 		if (portTaskMatcher.matches())
 		{
 			String reward = portTaskMatcher.group("item");
-			int rewardId = COURIER_TASK_REWARDS.get(reward);
+			int rewardId = PORT_TASK_REWARDS.get(reward);
 			int quantity = Integer.parseInt(portTaskMatcher.group("qty"));
 			ItemStack itemStack = new ItemStack(rewardId, quantity);
-			portTaskLoot.add(itemStack);
+			queuedPortTaskLoot.add(itemStack);
 
-			if (taskIds.peek() != null) {
-				addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, taskIds.poll(), portTaskLoot);
-				portTaskLoot.clear();
+			if (queuedPortTaskIds.peek() != null) {
+				addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, queuedPortTaskIds.poll(), queuedPortTaskLoot);
+				queuedPortTaskLoot.clear();
 			}
 		}
 		final Matcher portTaskPaintMatcher = COURIER_TASK_PAINT_PATTERN.matcher(message);
@@ -1289,7 +1272,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			int quantity = 1;
 			ItemStack itemStack = new ItemStack(ItemID.SAILING_PAINT_SHARK, quantity);
-			portTaskLoot.add(itemStack);
+			queuedPortTaskLoot.add(itemStack);
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
@@ -1495,7 +1478,7 @@ public class LootTrackerPlugin extends Plugin
 			Integer completedTaskId = PORT_TASK_VARBITS.put(event.getVarbitId(), event.getValue());
 			if (completedTaskId != null && completedTaskId > 0)
 			{
-				taskIds.add(completedTaskId);
+				queuedPortTaskIds.add(completedTaskId);
 				log.debug("Queued courier task {} for processing complete", completedTaskId);
 			}
 		}
@@ -1513,12 +1496,9 @@ public class LootTrackerPlugin extends Plugin
 			int cnt = removedItems.count(itemId);
 			if (cnt > 0)
 			{
-				String name = "";
-				if (nameOverride != null) {
-					name = nameOverride;
-				} else {
-					name = itemManager.getItemComposition(itemId).getMembersName();
-				}
+				String name = nameOverride != null ?
+					nameOverride :
+					itemManager.getItemComposition(itemId).getMembersName();
 				List<ItemStack> combined = new ArrayList<>();
 				combined.addAll(invItems);
 				combined.addAll(groundItems);
@@ -1578,12 +1558,9 @@ public class LootTrackerPlugin extends Plugin
 				lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
 			}
 		}
-		else if (isObjectOp(event.getMenuAction()))
+		else if (isObjectOp(event.getMenuAction()) && event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
 		{
-			if (event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
-			{
-				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, SHADE_CHEST_OBJECTS.get(event.getId())));
-			}
+			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, SHADE_CHEST_OBJECTS.get(event.getId())));
 		}
 		else if (event.isItemOp())
 		{
@@ -1679,7 +1656,7 @@ public class LootTrackerPlugin extends Plugin
 					default:
 						int eventItemId = event.getItemId();
 
-						if (COURIER_TASK_REWARDS.containsValue(eventItemId)) {
+						if (PORT_TASK_REWARDS.containsValue(eventItemId)) {
 							countChangedItems(eventItemId, null, PORT_TASK_REWARD_EVENT);
 						}
 				}
@@ -1791,14 +1768,6 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshot = null;
 		inventorySnapshotCb = null;
 		inventoryTimeout = 0;
-	}
-
-	private void resetVarbEvent()
-	{
-		trackedVarbitIds = null;
-		varbitSnapshot = null;
-		varbitChanges = null;
-		varbitTimeout = 0;
 	}
 
 	@FunctionalInterface
