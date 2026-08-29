@@ -331,7 +331,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String PORT_TASK_REWARD_EVENT = "Port Tasks";
 	private static final Pattern PORT_TASK_REWARD_PATTERN = Pattern.compile("You have finished the @sail_txt@(?<task>.+)</col> port task and been given @sail_txt@(?<qty>[0-9]+) x (?<item>.+)</col> as payment\\.");
-	private static final Pattern COURIER_TASK_PAINT_PATTERN = Pattern.compile("@mes_hl_pur@You've received some paint!");
+	private static final String COURIER_TASK_PAINT_PATTERN = "@mes_hl_pur@You've received some paint!";
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -1268,8 +1268,7 @@ public class LootTrackerPlugin extends Plugin
 				queuedPortTaskLoot.clear();
 			}
 		}
-		final Matcher portTaskPaintMatcher = COURIER_TASK_PAINT_PATTERN.matcher(message);
-		if (portTaskPaintMatcher.matches())
+		if (COURIER_TASK_PAINT_PATTERN.equals(message))
 		{
 			int quantity = 1;
 			ItemStack itemStack = new ItemStack(ItemID.SAILING_PAINT_SHARK, quantity);
