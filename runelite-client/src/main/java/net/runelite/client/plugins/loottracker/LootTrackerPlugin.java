@@ -1257,23 +1257,29 @@ public class LootTrackerPlugin extends Plugin
 		if (portTaskMatcher.matches())
 		{
 			String reward = portTaskMatcher.group("item").toLowerCase();
-			int rewardId = PORT_TASK_REWARDS.get(reward);
-			int quantity = Integer.parseInt(portTaskMatcher.group("qty"));
-			ItemStack itemStack = new ItemStack(rewardId, quantity);
-			queuedPortTaskLoot.add(itemStack);
-
-			if (lastCompletedPortTask > 0)
+			Integer rewardId = PORT_TASK_REWARDS.get(reward);
+			if (rewardId != null)
 			{
+				int quantity = Integer.parseInt(portTaskMatcher.group("qty"));
+				ItemStack itemStack = new ItemStack(rewardId, quantity);
+				queuedPortTaskLoot.add(itemStack);
 				addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, lastCompletedPortTask, queuedPortTaskLoot);
-				lastCompletedPortTask = -1;
-				queuedPortTaskLoot.clear();
 			}
+			else
+			{
+				log.debug("Unknown task reward {}", reward);
+			}
+
+			lastCompletedPortTask = -1;
+			queuedPortTaskLoot.clear();
+			return;
 		}
 		if (PORT_TASK_PAINT_STRING.equals(message))
 		{
 			int quantity = 1;
 			ItemStack itemStack = new ItemStack(ItemID.SAILING_PAINT_SHARK, quantity);
 			queuedPortTaskLoot.add(itemStack);
+			return;
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
