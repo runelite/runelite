@@ -474,9 +474,8 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
-
-		if (chatMsg.equals(CHAT_SUPERIOR_MESSAGE))
+		var msg = event.getMessage();
+		if (msg.contains(CHAT_SUPERIOR_MESSAGE))
 		{
 			notifier.notify(config.showSuperiorNotification(), CHAT_SUPERIOR_MESSAGE);
 		}

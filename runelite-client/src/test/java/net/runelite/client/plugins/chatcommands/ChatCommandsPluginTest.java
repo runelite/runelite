@@ -426,11 +426,11 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testAgilityLap()
 	{
-		final String NEW_PB = "Lap duration: <col=ff0000>1:01</col> (new personal best).";
-		final String NEW_PB_PRECISE = "Lap duration: <col=ff0000>1:01.20</col> (new personal best).";
+		final String NEW_PB = "Lap duration: @mes_hl_red@1:01</col> (new personal best).";
+		final String NEW_PB_PRECISE = "Lap duration: @mes_hl_red@1:01.20</col> (new personal best).";
 
 		// This sets lastBoss
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Prifddinas Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Prifddinas Agility Course lap count is: @mes_hl_red@2</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", NEW_PB, null, 0);
@@ -450,17 +450,17 @@ public class ChatCommandsPluginTest
 	public void testShayzienAdvancedAgilityLap()
 	{
 		// This sets lastBoss
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Shayzien Advanced Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Shayzien Advanced Agility Course lap count is: @mes_hl_red@2</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01</col> (new personal best).", null, 0);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: @mes_hl_red@1:01</col> (new personal best).", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien advanced agility course", 61.0);
 		verify(configManager).setRSProfileConfiguration("killcount", "shayzien advanced agility course", 2);
 
 		// Precise times
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01.20</col> (new personal best).", null, 0);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: @mes_hl_red@1:01.20</col> (new personal best).", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien advanced agility course", 61.2);
@@ -470,17 +470,17 @@ public class ChatCommandsPluginTest
 	public void testShayzienBasicAgilityLap()
 	{
 		// This sets lastBoss
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Shayzien Basic Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Shayzien Basic Agility Course lap count is: @mes_hl_red@2</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01</col> (new personal best).", null, 0);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: @mes_hl_red@1:01</col> (new personal best).", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien basic agility course", 61.0);
 		verify(configManager).setRSProfileConfiguration("killcount", "shayzien basic agility course", 2);
 
 		// Precise times
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01.20</col> (new personal best).", null, 0);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: @mes_hl_red@1:01.20</col> (new personal best).", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien basic agility course", 61.2);
@@ -1335,13 +1335,13 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testHunterRumours()
 	{
-		testKillCountChatMessage("hunter rumours", "You have completed <col=ff3045>77</col> rumours for the Hunter Guild.", 77);
+		testKillCountChatMessage("hunter rumours", "You have completed @mes_hl_red@77</col> rumours for the Hunter Guild.", 77);
 		// single kc has no s.
-		testKillCountChatMessage("hunter rumours", "You have completed <col=ff3045>1</col> rumour for the Hunter Guild.", 1);
+		testKillCountChatMessage("hunter rumours", "You have completed @mes_hl_red@1</col> rumour for the Hunter Guild.", 1);
 		// opaque chatbox has different color
-		testKillCountChatMessage("hunter rumours", "You have completed <col=e00a19>2</col> rumours for the Hunter Guild.", 2);
+		testKillCountChatMessage("hunter rumours", "You have completed @mes_hl_red@2</col> rumours for the Hunter Guild.", 2);
 		// with comma in number
-		testKillCountChatMessage("hunter rumours", "You have completed <col=ff3045>1,032</col> rumours for the Hunter Guild.", 1032);
+		testKillCountChatMessage("hunter rumours", "You have completed @mes_hl_red@1,032</col> rumours for the Hunter Guild.", 1032);
 	}
 
 	@Test

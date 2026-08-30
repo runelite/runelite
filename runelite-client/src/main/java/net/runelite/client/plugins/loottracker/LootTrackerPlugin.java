@@ -172,7 +172,7 @@ public class LootTrackerPlugin extends Plugin
 
 	// Wyrmscraig golem crafting
 	private static final Pattern GOLEM_CRAFTING_PATTERN = Pattern.compile(
-		"^As you complete the golem it leaves a gift " +
+		"As you complete the golem it leaves a gift " +
 		"(?:on the ground|in your gem (?:bag|sack)) for you: 1 x " +
 		"(?<item>Uncut diamond|Uncut emerald|Uncut ruby|Uncut sapphire|Jeweller's chisel)\\.?$");
 
@@ -1066,7 +1066,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final Matcher golemCraftingMatcher = GOLEM_CRAFTING_PATTERN.matcher(Text.removeTags(message));
-		if (golemCraftingMatcher.matches())
+		if (golemCraftingMatcher.find())
 		{
 			final String itemName = golemCraftingMatcher.group("item");
 			final Integer itemId = GOLEM_CRAFTING_REWARDS.get(itemName);
