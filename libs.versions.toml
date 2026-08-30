@@ -70,7 +70,7 @@ logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback"
 lwjgl-core = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
 lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl", version.ref = "lwjgl" }
 lwjgl-opencl = { module = "org.lwjgl:lwjgl-opencl", version.ref = "lwjgl" }
-mockito = "org.mockito:mockito-core:3.1.0"
+mockito = "org.mockito:mockito-core:5.23.0"
 okhttp-mockserver = "com.squareup.okhttp3:mockwebserver:3.14.9"
 protobuf = "com.google.protobuf:protobuf-javalite:3.21.12"
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
