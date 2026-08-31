@@ -1085,7 +1085,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			onInvChange((((invItems, groundItems, removedItems) ->
 			{
-				int cnt = (int) invItems.stream().
+				int cnt = invItems.stream().
 					filter(item -> item.getId() != ItemID.SAILING_PAINT_SHARK).
 					mapToInt(ItemStack::getQuantity).
 					sum();
