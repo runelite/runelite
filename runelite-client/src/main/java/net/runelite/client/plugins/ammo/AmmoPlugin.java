@@ -24,24 +24,21 @@
  */
 package net.runelite.client.plugins.ammo;
 
-import com.google.common.collect.ImmutableSet;
 import java.awt.image.BufferedImage;
-import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ParamID;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
-import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -54,12 +51,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class AmmoPlugin extends Plugin
 {
-	private static final Set<Integer> DIZANAS_QUIVER_IDS = ImmutableSet.<Integer>builder()
-		.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.DIZANAS_QUIVER_CHARGED)))
-		.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.DIZANAS_QUIVER_INFINITE)))
-		.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.SKILLCAPE_MAX_DIZANAS)))
-		.build();
-
 	@Inject
 	private Client client;
 
@@ -122,7 +113,7 @@ public class AmmoPlugin extends Plugin
 	private void checkInventory(ItemContainer equipment)
 	{
 		final Item cape = equipment.getItem(EquipmentInventorySlot.CAPE.getSlotIdx());
-		isWearingQuiver = cape != null && DIZANAS_QUIVER_IDS.contains(cape.getId());
+		isWearingQuiver = cape != null && itemManager.getItemComposition(cape.getId()).getIntValue(ParamID.QUIVER_AMMO_AVAILABLE) == 1;
 		checkQuiver();
 
 		// Check for weapon slot items. This overrides the ammo slot,
