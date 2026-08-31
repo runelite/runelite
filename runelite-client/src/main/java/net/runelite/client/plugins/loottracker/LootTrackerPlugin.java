@@ -314,12 +314,9 @@ public class LootTrackerPlugin extends Plugin
 		Map.entry("large port reward bag (void knights outpost)", ItemID.PORT_TASK_LOOTSACK_T3_VOID_KNIGHTS_OUTPOST),
 		Map.entry("huge port reward bag (void knights outpost)", ItemID.PORT_TASK_LOOTSACK_T4_VOID_KNIGHTS_OUTPOST)
 	);
-	private final List<ItemStack> queuedPortTaskLoot = new ArrayList<>();
-
 	private static final String PORT_TASK_REWARD_EVENT = "Port tasks";
 	private static final String PORT_REWARD_BAG_EVENT = "Port reward bag";
-	private static final Pattern PORT_TASK_REWARD_PATTERN = Pattern.compile("You have finished the @sail_txt@(?<task>.+)</col> port task and been given @sail_txt@(?<qty>[0-9]+) x (?<item>.+)</col> as payment\\.");
-	private static final String PORT_TASK_PAINT_MESSAGE = "@mes_hl_pur@You've received some paint!";
+	private static final String PORT_TASK_COMPLETE_MESSAGE = "and complete your courier task!";
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -1241,30 +1238,19 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		final Matcher portTaskMatcher = PORT_TASK_REWARD_PATTERN.matcher(message);
-		if (portTaskMatcher.matches())
+		if (message.endsWith(PORT_TASK_COMPLETE_MESSAGE))
 		{
-			String reward = portTaskMatcher.group("item").toLowerCase();
-			Integer rewardId = PORT_TASK_REWARDS.get(reward);
-			if (rewardId != null)
+			onInvChange((((invItems, groundItems, removedItems) ->
 			{
-				queuedPortTaskLoot.add(new ItemStack(rewardId, 1));
-				addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, null, queuedPortTaskLoot);
-			}
-			else
-			{
-				log.debug("Unknown task reward {}", reward);
-			}
-
-			queuedPortTaskLoot.clear();
-			return;
-		}
-		if (PORT_TASK_PAINT_MESSAGE.equals(message))
-		{
-			int quantity = 1;
-			ItemStack itemStack = new ItemStack(ItemID.SAILING_PAINT_SHARK, quantity);
-			queuedPortTaskLoot.add(itemStack);
-			return;
+				int cnt = (int) invItems.stream().
+					filter(item -> item.getId() != ItemID.SAILING_PAINT_SHARK).
+					mapToInt(ItemStack::getQuantity).
+					sum();
+				if (cnt > 0)
+				{
+					addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, null, invItems, cnt);
+				}
+			})));
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
