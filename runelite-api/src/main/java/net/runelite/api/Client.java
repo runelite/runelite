@@ -2419,7 +2419,7 @@ public interface Client extends OAuthApi, GameEngine
 	FileDescriptor getSocketFD();
 
 	/**
-	 * Expand macros such as @mes_hl_blu@, @blu@, etc. with their corresponding values, eg. <col=0000ff>
+	 * Expand macros such as @mes_hl_blu@, @blu@, etc. with their corresponding values, eg. &lt;col=0000ff&gt;
 	 */
 	String macroExpand(String s);
 }
