@@ -108,6 +108,17 @@ gradle.afterProject {
         }
     }
 
+    // https://github.com/freefair/gradle-plugins/pull/1858
+    // For source sets that have multiple input directories, the lombok plugin only checks the last-registered
+    // directory for freshness, which can cause stale outputs. This applies to us via runelite-gradle-plugin.component
+    pluginManager.withPlugin("io.freefair.lombok") {
+        tasks.named("delombok").configure {
+            if ((project.extensions.getByName("sourceSets") as SourceSetContainer).any { it.java.srcDirs.size > 1 }) {
+                doNotTrackState("always re-run due to bug in up-to-date checking within lombok plugin")
+            }
+        }
+    }
+
     extensions.findByType<org.gradle.plugins.ide.idea.model.IdeaModel>()?.run {
         module {
             isDownloadSources = true
