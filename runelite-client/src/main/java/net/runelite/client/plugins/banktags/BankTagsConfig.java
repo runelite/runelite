@@ -76,6 +76,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "ignoreRearrangeMode",
+			name = "Use swap for bank layouts",
+			description = "When using bank layouts the bank rearrange mode will always act as swap.",
+			position = 5
+	)
+	default boolean ignoreRearrangeMode()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",
