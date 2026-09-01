@@ -138,7 +138,10 @@ public interface ItemStatConfig extends Config
 		name = "Show item name",
 		description = "Show item name in tooltip."
 	)
-	default boolean showName()	{ return false;	}
+	default boolean showName()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "colorBetterSomecapped",
