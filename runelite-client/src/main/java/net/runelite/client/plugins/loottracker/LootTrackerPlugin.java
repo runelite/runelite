@@ -157,6 +157,10 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.WILDY_LOOT_KEY4
 	);
 
+	private static final String PORT_TASK_REWARD_EVENT = "Port tasks";
+	private static final String PORT_REWARD_BAG_EVENT = "Port reward bag";
+	private static final String PORT_TASK_COMPLETE_MESSAGE = "and complete your courier task!";
+
 	// Herbiboar loot handling
 	@VisibleForTesting
 	static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes.";
@@ -1077,6 +1081,21 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		if (message.endsWith(PORT_TASK_COMPLETE_MESSAGE))
+		{
+			onInvChange((((invItems, groundItems, removedItems) ->
+			{
+				int cnt = invItems.stream().
+					filter(item -> item.getId() != ItemID.SAILING_PAINT_SHARK).
+					mapToInt(ItemStack::getQuantity).
+					sum();
+				if (cnt > 0)
+				{
+					addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, null, invItems, cnt);
+				}
+			})));
+		}
+
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
 		{
 			if (processHerbiboarHerbSackLoot(event.getTimestamp()))
@@ -1274,12 +1293,19 @@ public class LootTrackerPlugin extends Plugin
 
 	private void countChangedItems(int itemId, Object metadata)
 	{
+		countChangedItems(itemId, metadata, null);
+	}
+
+	private void countChangedItems(int itemId, Object metadata, @Nullable String nameOverride)
+	{
 		onInvChange((((invItems, groundItems, removedItems) ->
 		{
 			int cnt = removedItems.count(itemId);
 			if (cnt > 0)
 			{
-				String name = itemManager.getItemComposition(itemId).getMembersName();
+				String name = nameOverride != null ?
+					nameOverride :
+					itemManager.getItemComposition(itemId).getMembersName();
 				List<ItemStack> combined = new ArrayList<>();
 				combined.addAll(invItems);
 				combined.addAll(groundItems);
@@ -1434,6 +1460,14 @@ public class LootTrackerPlugin extends Plugin
 							}
 						})));
 						break;
+					default:
+						int eventItemId = event.getItemId();
+						ItemComposition itemComposition = client.getItemDefinition(eventItemId);
+
+						if (itemComposition.getIntValue(2645) != -1)
+						{
+							countChangedItems(eventItemId, eventItemId, PORT_REWARD_BAG_EVENT);
+						}
 				}
 			}
 			else if (event.getMenuOption().equals("Pop"))
