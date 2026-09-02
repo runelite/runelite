@@ -771,9 +771,9 @@ id=128
 [seed_vault]
 id=631
 title_container=2
-item_container=16
-item_text=17
-search_button=26
+item_container=17
+item_text=18
+search_button=28
 
 [seed_vault_inventory]
 id=630
