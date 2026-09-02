@@ -26,6 +26,8 @@ package net.runelite.client.plugins.itemprices;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
@@ -38,6 +40,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -45,6 +48,8 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.Text;
+import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
 	name = "Item Prices",
@@ -68,14 +73,27 @@ public class ItemPricesPlugin extends Plugin
 
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 
+	private List<String> disabledItems = Collections.emptyList();
+
 	@Override
 	protected void startUp()
 	{
+		disabledItems = Text.fromCSV(config.disabledItems());
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		disabledItems = Collections.emptyList();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("itemprices") && event.getKey().equals("disabledItems"))
+		{
+			disabledItems = Text.fromCSV(config.disabledItems());
+		}
 	}
 
 	@Provides
@@ -227,6 +245,11 @@ public class ItemPricesPlugin extends Plugin
 			return null;
 		}
 
+		if (isDisabled(itemDef.getName()))
+		{
+			return null;
+		}
+
 		int gePrice = 0;
 		int haPrice = 0;
 		int haProfit = 0;
@@ -305,6 +328,18 @@ public class ItemPricesPlugin extends Plugin
 		final String text = itemStringBuilder.toString();
 		itemStringBuilder.setLength(0);
 		return text;
+	}
+
+	private boolean isDisabled(String itemName)
+	{
+		for (String pattern : disabledItems)
+		{
+			if (WildcardMatcher.matches(pattern, itemName))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private int calculateHAProfit(int haPrice, int gePrice)
