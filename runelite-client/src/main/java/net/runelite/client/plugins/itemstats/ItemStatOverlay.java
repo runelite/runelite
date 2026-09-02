@@ -185,7 +185,10 @@ public class ItemStatOverlay extends Overlay
 			}
 		}
 
-		if (config.equipmentStats())
+		final Widget bankWidget = client.getWidget(InterfaceID.Bankmain.ITEMS);
+		final boolean isBankOpen = bankWidget != null && !bankWidget.isSelfHidden();
+
+		if (config.equipmentStats() && (!config.equipmentStatsOnlyInBank() || isBankOpen))
 		{
 			final ItemStats stats = itemManager.getItemStats(itemId);
 

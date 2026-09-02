@@ -113,6 +113,16 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "equipmentStatsOnlyInBank",
+			name = "Equipment stats only in bank",
+			description = "Only enables tooltips for equipment items when the bank is open."
+	)
+	default boolean equipmentStatsOnlyInBank()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "alwaysShowBaseStats",
 		name = "Always show base stats",
 		description = "Always include the base items stats in the tooltip."
