@@ -231,7 +231,6 @@ public final class InterfaceID
 	public static final int MISC_SHIPJOURNEY = 224;
 	public static final int MM_MESSAGE = 225;
 	public static final int DEADMANPROTECT = 226;
-	public static final int MOURNING_DEATHALTER_LIST = 227;
 	public static final int DEADMAN_DELAY = 228;
 	public static final int MESSAGEBOX = 229;
 	public static final int DEADMAN_SAFEBOX = 230;
@@ -973,6 +972,7 @@ public final class InterfaceID
 	public static final int CASTLE_DRAKAN_PLAQUE = 966;
 	public static final int CASTLE_DRAKAN_WORLD_MAP = 967;
 	public static final int MYQ6_INTEGRITY_BAR = 968;
+	public static final int MOURNING_DEATHALTAR_LIST = 969;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -1921,25 +1921,17 @@ public final class InterfaceID
 		public static final int FRAME = 0x001f_0001;
 		public static final int CONTENTS = 0x001f_0002;
 		public static final int GAMES = 0x001f_0003;
-		public static final int DRAUGHTS = 0x001f_0004;
-		public static final int DRAUGHTS_RADIO = 0x001f_0005;
-		public static final int DRAUGHTS_TEXT1 = 0x001f_0006;
+		public static final int GAMES_TEXT0 = 0x001f_0004;
+		public static final int GAMES_TEXT1 = 0x001f_0005;
+		public static final int DRAUGHTS = 0x001f_0006;
 		public static final int DRAUGHTS_RANK = 0x001f_0007;
 		public static final int RUNELINK = 0x001f_0008;
-		public static final int RUNELINK_RADIO = 0x001f_0009;
-		public static final int RUNELINK_TEXT1 = 0x001f_000a;
-		public static final int RUNELINK_RANK = 0x001f_000b;
-		public static final int RUNESQUARES = 0x001f_000c;
-		public static final int RUNESQUARES_RADIO = 0x001f_000d;
-		public static final int RUNESQUARES_TEXT1 = 0x001f_000e;
-		public static final int RUNESQUARES_RANK = 0x001f_000f;
-		public static final int RUNEVERSI = 0x001f_0010;
-		public static final int RUNEVERSI_RADIO = 0x001f_0011;
-		public static final int RUNEVERSI_TEXT1 = 0x001f_0012;
-		public static final int RUNEVERSI_RANK = 0x001f_0013;
-		public static final int GAMES_TEXT4 = 0x001f_0014;
-		public static final int GAMES_TEXT5 = 0x001f_0015;
-		public static final int SELECT = 0x001f_0016;
+		public static final int RUNELINK_RANK = 0x001f_0009;
+		public static final int RUNESQUARES = 0x001f_000a;
+		public static final int RUNESQUARES_RANK = 0x001f_000b;
+		public static final int RUNEVERSI = 0x001f_000c;
+		public static final int RUNEVERSI_RANK = 0x001f_000d;
+		public static final int SELECT = 0x001f_000e;
 	}
 
 	public static final class BoardgamesDraughts
@@ -8981,18 +8973,6 @@ public final class InterfaceID
 		public static final int ITEMLOSS_CONTAINER_TEXT1 = 0x00e2_000a;
 		public static final int ITEMLOSS_CONTAINER_LINE2 = 0x00e2_000b;
 		public static final int ITEMLOSS_LIST = 0x00e2_000c;
-	}
-
-	public static final class MourningDeathalterList
-	{
-		public static final int UNIVERSE = 0x00e3_0000;
-		public static final int MOURNING_DEATHALTER_LAYER2 = 0x00e3_0001;
-		public static final int LIST_CONTAINER = 0x00e3_0002;
-		public static final int LIST_TEXT = 0x00e3_0003;
-		public static final int TITLE = 0x00e3_0004;
-		public static final int SCROLLBAR = 0x00e3_0005;
-		public static final int CLOSEBUTTON = 0x00e3_0006;
-		public static final int MOURNING_DEATHALTER_LAYER2_MODEL0 = 0x00e3_0007;
 	}
 
 	public static final class DeadmanDelay
@@ -22256,37 +22236,39 @@ public final class InterfaceID
 		public static final int UNIVERSE = 0x0277_0001;
 		public static final int FRAME = 0x0277_0002;
 		public static final int CONTENT = 0x0277_0003;
-		public static final int LEFT_PANEL = 0x0277_0004;
-		public static final int LEFT_SCROLL = 0x0277_0005;
-		public static final int LEFT_LIST = 0x0277_0006;
-		public static final int CATEGORY_BACKGROUNDS = 0x0277_0007;
-		public static final int CATEGORY_LIST = 0x0277_0008;
-		public static final int RIGHT_PANEL = 0x0277_0009;
-		public static final int RIGHT_SCROLL = 0x0277_000a;
-		public static final int LIST = 0x0277_000b;
-		public static final int CONTRACT_SEEDS = 0x0277_000c;
-		public static final int MAIN_VAULT = 0x0277_000d;
-		public static final int FAVES = 0x0277_000e;
-		public static final int CATEGORY_HEADERS = 0x0277_000f;
-		public static final int CATEGORY_LINES = 0x0277_0010;
-		public static final int OBJ_LIST = 0x0277_0011;
-		public static final int TEXT_LIST = 0x0277_0012;
-		public static final int BUTTONS = 0x0277_0013;
-		public static final int BUTTONS_LINE0 = 0x0277_0014;
-		public static final int X1 = 0x0277_0015;
-		public static final int X5 = 0x0277_0016;
-		public static final int X10 = 0x0277_0017;
-		public static final int XX = 0x0277_0018;
-		public static final int XALL = 0x0277_0019;
-		public static final int SEARCH = 0x0277_001a;
-		public static final int DEPOSIT_ALL = 0x0277_001b;
-		public static final int DEPOSIT_ALL_GFX = 0x0277_001c;
-		public static final int TEXT_1 = 0x0277_001d;
-		public static final int TEXT_5 = 0x0277_001e;
-		public static final int TEXT_10 = 0x0277_001f;
-		public static final int TEXT_X = 0x0277_0020;
-		public static final int TEXT_ALL = 0x0277_0021;
-		public static final int SEARCH_GFX = 0x0277_0022;
+		public static final int POPUP = 0x0277_0004;
+		public static final int LEFT_PANEL = 0x0277_0005;
+		public static final int LEFT_SCROLL = 0x0277_0006;
+		public static final int LEFT_LIST = 0x0277_0007;
+		public static final int CATEGORY_BACKGROUNDS = 0x0277_0008;
+		public static final int CATEGORY_LIST = 0x0277_0009;
+		public static final int RIGHT_PANEL = 0x0277_000a;
+		public static final int RIGHT_SCROLL = 0x0277_000b;
+		public static final int LIST = 0x0277_000c;
+		public static final int CONTRACT_SEEDS = 0x0277_000d;
+		public static final int MAIN_VAULT = 0x0277_000e;
+		public static final int FAVES = 0x0277_000f;
+		public static final int CATEGORY_HEADERS = 0x0277_0010;
+		public static final int CATEGORY_LINES = 0x0277_0011;
+		public static final int OBJ_LIST = 0x0277_0012;
+		public static final int TEXT_LIST = 0x0277_0013;
+		public static final int BUTTONS = 0x0277_0014;
+		public static final int LOCK_MENU = 0x0277_0015;
+		public static final int BUTTONS_LINE1 = 0x0277_0016;
+		public static final int X1 = 0x0277_0017;
+		public static final int X5 = 0x0277_0018;
+		public static final int X10 = 0x0277_0019;
+		public static final int XX = 0x0277_001a;
+		public static final int XALL = 0x0277_001b;
+		public static final int SEARCH = 0x0277_001c;
+		public static final int DEPOSIT_ALL = 0x0277_001d;
+		public static final int DEPOSIT_ALL_GFX = 0x0277_001e;
+		public static final int TEXT_1 = 0x0277_001f;
+		public static final int TEXT_5 = 0x0277_0020;
+		public static final int TEXT_10 = 0x0277_0021;
+		public static final int TEXT_X = 0x0277_0022;
+		public static final int TEXT_ALL = 0x0277_0023;
+		public static final int SEARCH_GFX = 0x0277_0024;
 	}
 
 	public static final class HallowedToolSide
@@ -31260,6 +31242,17 @@ public final class InterfaceID
 		public static final int TIMER_BORDER = 0x03c8_000e;
 		public static final int TIMER_BACKING = 0x03c8_000f;
 		public static final int TIMER_TEXT = 0x03c8_0010;
+	}
+
+	public static final class MourningDeathaltarList
+	{
+		public static final int UNIVERSE = 0x03c9_0000;
+		public static final int UNIVERSE_MODEL0 = 0x03c9_0001;
+		public static final int UNIVERSE_GRAPHIC1 = 0x03c9_0002;
+		public static final int UNIVERSE_TEXT2 = 0x03c9_0003;
+		public static final int CONTAINER = 0x03c9_0004;
+		public static final int TEXT = 0x03c9_0005;
+		public static final int SCROLLBAR = 0x03c9_0006;
 	}
 /* This file is automatically generated. Do not edit. */
 }

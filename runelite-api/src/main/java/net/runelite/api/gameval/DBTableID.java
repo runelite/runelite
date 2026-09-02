@@ -20565,11 +20565,17 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_FISHING_RAW_CAVE_EEL = 11236;
 			public static final int SKILL_FEATURE_FISHING_RAW_LAVA_EEL = 11237;
 			public static final int SKILL_FEATURE_FISHING_SHIMMERINGSHOAL = 11238;
+			public static final int SKILL_FEATURE_MAGIC_ELEMENTAL_AMULETS = 11239;
+			public static final int SKILL_FEATURE_RUNECRAFT_AMULET_OF_AIR = 11240;
 			public static final int SKILL_FEATURE_FISHING_GLISTENINGSHOAL = 11241;
+			public static final int SKILL_FEATURE_RUNECRAFT_AMULET_OF_WATER = 11242;
 			public static final int SKILL_FEATURE_FISHING_INFERNAL_EEL = 11243;
 			public static final int SKILL_FEATURE_FISHING_RAW_ANGLERFISH = 11244;
+			public static final int SKILL_FEATURE_RUNECRAFT_AMULET_OF_EARTH = 11245;
 			public static final int SKILL_FEATURE_FISHING_VIBRANTSHOAL = 11246;
+			public static final int SKILL_FEATURE_RUNECRAFT_AMULET_OF_FIRE = 11247;
 			public static final int SKILL_FEATURE_FISHING_SNAKEBOSS_EEL = 11248;
+			public static final int SKILL_FEATURE_RUNECRAFT_ELEMENTAL_AMULET = 11249;
 			public static final int SKILL_FEATURE_FISHING_RAW_TUNA = 11250;
 			public static final int SKILL_FEATURE_FISHING_RAW_SWORDFISH = 11251;
 			public static final int SKILL_FEATURE_FISHING_RAW_SWORDTIP_SQUID = 11252;
