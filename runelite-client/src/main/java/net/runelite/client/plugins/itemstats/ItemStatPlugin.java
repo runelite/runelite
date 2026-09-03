@@ -59,6 +59,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStats;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
@@ -94,6 +95,8 @@ public class ItemStatPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+	@Inject
+	private KeyManager keyManager;
 
 	private Widget itemInformationTitle;
 
@@ -112,12 +115,14 @@ public class ItemStatPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		keyManager.registerKeyListener(overlay);
 		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		keyManager.unregisterKeyListener(overlay);
 		overlayManager.remove(overlay);
 		clientThread.invokeLater(this::resetGEInventory);
 	}

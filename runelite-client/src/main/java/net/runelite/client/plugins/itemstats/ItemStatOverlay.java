@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -39,9 +40,11 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStats;
+import net.runelite.client.input.KeyListener;
 import net.runelite.client.plugins.itemstats.potions.PotionDuration;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
@@ -51,7 +54,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
-public class ItemStatOverlay extends Overlay
+public class ItemStatOverlay extends Overlay implements KeyListener
 {
 	// Unarmed attack speed is 4
 	@VisibleForTesting
@@ -75,12 +78,23 @@ public class ItemStatOverlay extends Overlay
 	@Inject
 	private ItemStatConfig config;
 
+	private boolean isKeyPressed;
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		if (client.isMenuOpen() || (!config.relative() && !config.absolute() && !config.theoretical()))
 		{
 			return null;
+		}
+
+		if (config.requireModifier()) {
+			if (config.modifierKey().getKeyCode() == Keybind.NOT_SET.getKeyCode()) {
+				if (config.modifierKey().getModifiers() == 0)
+				{
+					return null;
+				}
+			}
 		}
 
 		final MenuEntry[] menu = client.getMenuEntries();
@@ -125,7 +139,7 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
-		if (config.consumableStats())
+		if (config.consumableStats() && ((config.requireModifierForConsumables() && isKeyPressed) || !config.requireModifier() || !config.requireModifierForConsumables()))
 		{
 			final Effect change = statChanges.get(itemId);
 			if (change != null)
@@ -185,13 +199,25 @@ public class ItemStatOverlay extends Overlay
 			}
 		}
 
-		if (config.equipmentStats())
+		if (config.equipmentStats() && ((config.requireModifierForEquipment() && isKeyPressed) || !config.requireModifier() || !config.requireModifierForEquipment()))
 		{
 			final ItemStats stats = itemManager.getItemStats(itemId);
 
 			if (stats != null)
 			{
 				final String tooltip = buildStatBonusString(stats);
+
+				if (!tooltip.isEmpty())
+				{
+					tooltipManager.add(new Tooltip(tooltip));
+				}
+			}
+		} else {
+			final ItemStats stats = itemManager.getItemStats(itemId);
+
+			if (stats != null)
+			{
+				final String tooltip = buildWeightString(stats);
 
 				if (!tooltip.isEmpty())
 				{
@@ -369,6 +395,28 @@ public class ItemStatOverlay extends Overlay
 		return b.toString();
 	}
 
+	@VisibleForTesting
+	String buildWeightString(ItemStats s)
+	{
+		ItemStats other = null;
+		// Used if switching into a 2 handed weapon to store off-hand stats
+		ItemStats offHand = null;
+		final ItemEquipmentStats currentEquipment = s.getEquipment();
+
+		final ItemStats subtracted = subtract(subtract(s, other), offHand);
+		final ItemEquipmentStats e = subtracted.getEquipment();
+
+		final StringBuilder b = new StringBuilder();
+
+		if (config.showWeight())
+		{
+			double sw = config.alwaysShowBaseStats() ? subtracted.getWeight() : s.getWeight();
+			b.append(buildStatRow("Weight", s.getWeight(), sw, true, false, s.isEquipable()));
+		}
+
+		return b.toString();
+	}
+
 	private static ItemStats subtract(ItemStats one, ItemStats two)
 	{
 		if (two == null)
@@ -448,5 +496,28 @@ public class ItemStatOverlay extends Overlay
 		b.append("</br>");
 
 		return b.toString();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (config.requireModifier() && config.modifierKey().matches(e))
+		{
+			isKeyPressed = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (config.requireModifier() && config.modifierKey().matches(e))
+		{
+			isKeyPressed = false;
+		}
 	}
 }
