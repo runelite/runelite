@@ -26,60 +26,69 @@ package net.runelite.client.plugins.itemstats;
 
 import java.awt.Color;
 
-import net.runelite.client.config.*;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("itemstat")
 public interface ItemStatConfig extends Config
 {
-	@ConfigSection(name = "General",         description = "General settings",             position = 0)
+	@ConfigSection(
+		name = "General",
+		description = "General settings",
+		position = 0)
 	String sectionGeneral = "general";
 
-	@ConfigSection(name = "Colors",           description = "Color settings",         position = 1)
+	@ConfigSection(
+		name = "Stat Type Display",
+		description = "Stat Type Configuration",
+		position = 1)
+	String sectionStatTypes = "statTypes";
+
+	@ConfigSection(
+		name = "Colors",
+		description = "Color settings",
+		position = 2)
 	String sectionColors = "colors";
 
-	@ConfigSection(name = "Keybind", description = "Keybind settings",       position = 2)
-	String sectionKeybind = "keybind";
+	/*
+	 * GENERAL
+	 */
 
 	@ConfigItem(
-		keyName = "consumableStats",
-		name = "Enable consumable stats",
-		description = "Enables tooltips for consumable items (food, boosts).",
-		section = sectionGeneral
+		keyName = "alwaysShowBaseStats",
+		name = "Always show base stats",
+		description = "Always include the base items stats in the tooltip.",
+		section = sectionGeneral,
+		position = 0
 	)
-	default boolean consumableStats()
+	default boolean alwaysShowBaseStats()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
-		keyName = "equipmentStats",
-		name = "Enable equipment stats",
-		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses).",
-		section = sectionGeneral
+		keyName = "showStatsInBank",
+		name = "Show stats in bank",
+		description = "Show item stats on bank items tooltip.",
+		section = sectionGeneral,
+		position = 1
 	)
-	default boolean equipmentStats()
+	default boolean showStatsInBank()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		keyName = "geStats",
-		name = "Enable GE item information",
+		name = "Show GE item information",
 		description = "Shows an item information panel when buying items in the GE.",
-		section = sectionGeneral
+		section = sectionGeneral,
+		position = 2
 	)
 	default boolean geStats()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "relative",
-		name = "Show relative",
-		description = "Show relative stat change in tooltip.",
-		section = sectionGeneral
-	)
-	default boolean relative()
 	{
 		return true;
 	}
@@ -88,9 +97,22 @@ public interface ItemStatConfig extends Config
 		keyName = "absolute",
 		name = "Show absolute",
 		description = "Show absolute stat change in tooltip.",
-		section = sectionGeneral
+		section = sectionGeneral,
+		position = 3
 	)
 	default boolean absolute()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "relative",
+		name = "Show relative",
+		description = "Show relative stat change in tooltip.",
+		section = sectionGeneral,
+		position = 4
+	)
+	default boolean relative()
 	{
 		return true;
 	}
@@ -99,45 +121,69 @@ public interface ItemStatConfig extends Config
 		keyName = "theoretical",
 		name = "Show theoretical",
 		description = "Show theoretical stat change in tooltip.",
-		section = sectionGeneral
+		section = sectionGeneral,
+		position = 5
 	)
 	default boolean theoretical()
 	{
 		return false;
 	}
 
+	/*
+	 * STAT TYPES
+	 */
+
 	@ConfigItem(
-		keyName = "enableWeight",
-		name = "Enable weight",
+		keyName = "consumableStats",
+		name = "Consumables",
+		description = "Enables tooltips for consumable items (food, boosts).",
+		section = sectionStatTypes,
+		position = 0
+	)
+	default ItemStatDisplayType consumableStats()
+	{
+		return ItemStatDisplayType.ALWAYS;
+	}
+
+	@ConfigItem(
+		keyName = "equipmentStats",
+		name = "Equipment",
+		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses).",
+		section = sectionStatTypes,
+		position = 1
+	)
+	default ItemStatDisplayType equipmentStats()
+	{
+		return ItemStatDisplayType.ALWAYS;
+	}
+
+	@ConfigItem(
+		keyName = "showWeight",
+		name = "Weight",
 		description = "Enable weight in tooltip.",
-		section = sectionGeneral
+		section = sectionStatTypes,
+		position = 2
 	)
-	default boolean showWeight()
+	default ItemStatDisplayType showWeight()
 	{
-		return true;
+		return ItemStatDisplayType.ALWAYS;
 	}
 
 	@ConfigItem(
-		keyName = "showStatsInBank",
-		name = "Show stats in bank",
-		description = "Show item stats on bank items tooltip.",
-		section = sectionGeneral
+		keyName = "modifierKey",
+		name = "Keybind",
+		description = "The key required to display stats in this section, when the respective stat is set to 'On Keybind'",
+		section = sectionStatTypes,
+		position = 3
 	)
-	default boolean showStatsInBank()
+	default Keybind modifierKey()
 	{
-		return true;
+		return Keybind.NOT_SET;
 	}
 
-	@ConfigItem(
-		keyName = "alwaysShowBaseStats",
-		name = "Always show base stats",
-		description = "Always include the base items stats in the tooltip.",
-		section = sectionGeneral
-	)
-	default boolean alwaysShowBaseStats()
-	{
-		return false;
-	}
+	/*
+	 * COLORS
+	 */
 
 	@ConfigItem(
 		keyName = "colorBetterUncapped",
@@ -197,53 +243,5 @@ public interface ItemStatConfig extends Config
 	default Color colorWorse()
 	{
 		return new Color(0xEE3333);
-	}
-
-	@ConfigItem(
-		keyName = "requireModifier",
-		name = "Require modifier key",
-		description = "Require a modifier key to show Item Stats.",
-		section = sectionKeybind,
-		position = 0
-	)
-	default boolean requireModifier()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "requireModifierForConsumables",
-		name = "Require for consumables",
-		description = "Require the key for consumable stats.",
-		section = sectionKeybind,
-		position = 1
-	)
-	default boolean requireModifierForConsumables()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "requireModifierForEquipment",
-		name = "Require for equipment",
-		description = "Require the key for equipment stats.",
-		section = sectionKeybind,
-		position = 2
-	)
-	default boolean requireModifierForEquipment()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "modifierKey",
-		name = "Modifier key",
-		description = "Modifier key for the above option.",
-		section = sectionKeybind,
-		position = 3
-	)
-	default Keybind modifierKey()
-	{
-		return Keybind.NOT_SET;
 	}
 }

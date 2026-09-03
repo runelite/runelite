@@ -95,14 +95,22 @@ public class ItemStatPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
 	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private ConfigManager configManager;
 
 	private Widget itemInformationTitle;
 
 	@Provides
 	ItemStatConfig getConfig(ConfigManager configManager)
 	{
+		migrateBooleanConfig(configManager, "consumableStats");
+		migrateBooleanConfig(configManager, "equipmentStats");
+		migrateBooleanConfig(configManager, "showWeight");
+
 		return configManager.getConfig(ItemStatConfig.class);
 	}
 
@@ -430,6 +438,20 @@ public class ItemStatPlugin extends Plugin
 		else
 		{
 			return client.getWidget(InterfaceID.Toplevel.SIDE3);
+		}
+	}
+
+	private static void migrateBooleanConfig(ConfigManager configManager, String key)
+	{
+		final String value = configManager.getConfiguration("itemstat", key);
+
+		if ("true".equalsIgnoreCase(value))
+		{
+			configManager.setConfiguration("itemstat", key, ItemStatDisplayType.ALWAYS);
+		}
+		else if ("false".equalsIgnoreCase(value))
+		{
+			configManager.setConfiguration("itemstat", key, ItemStatDisplayType.NEVER);
 		}
 	}
 }

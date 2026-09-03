@@ -88,17 +88,6 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 			return null;
 		}
 
-		if (config.requireModifier())
-		{
-			if (config.modifierKey().getKeyCode() == Keybind.NOT_SET.getKeyCode())
-			{
-				if (config.modifierKey().getModifiers() == 0)
-				{
-					return null;
-				}
-			}
-		}
-
 		final MenuEntry[] menu = client.getMenuEntries();
 		final int menuSize = menu.length;
 		if (menuSize <= 0)
@@ -141,7 +130,7 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 			return null;
 		}
 
-		if (config.consumableStats() && ((config.requireModifierForConsumables() && isKeyPressed) || !config.requireModifier() || !config.requireModifierForConsumables()))
+		if (config.consumableStats().equals(ItemStatDisplayType.ALWAYS) || (config.consumableStats().equals(ItemStatDisplayType.ON_KEYBIND) && isKeyPressed))
 		{
 			final Effect change = statChanges.get(itemId);
 			if (change != null)
@@ -201,7 +190,7 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 			}
 		}
 
-		if (config.equipmentStats() && ((config.requireModifierForEquipment() && isKeyPressed) || !config.requireModifier() || !config.requireModifierForEquipment()))
+		if (config.equipmentStats().equals(ItemStatDisplayType.ALWAYS) || (config.equipmentStats().equals(ItemStatDisplayType.ON_KEYBIND) && isKeyPressed))
 		{
 			final ItemStats stats = itemManager.getItemStats(itemId);
 
@@ -215,7 +204,8 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 				}
 			}
 		}
-		else
+
+		if (config.showWeight().equals(ItemStatDisplayType.ALWAYS) || (config.showWeight().equals(ItemStatDisplayType.ON_KEYBIND) && isKeyPressed))
 		{
 			final ItemStats stats = itemManager.getItemStats(itemId);
 
@@ -233,10 +223,7 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 		return null;
 	}
 
-	private String getChangeString(
-		final double value,
-		final boolean inverse,
-		final boolean showPercent)
+	private String getChangeString(final double value, final boolean inverse, final boolean showPercent)
 	{
 		final Color plus = Positivity.getColor(config, Positivity.BETTER_UNCAPPED);
 		final Color minus = Positivity.getColor(config, Positivity.WORSE);
@@ -263,23 +250,12 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 		return ColorUtil.wrapWithColorTag(prefix + valueString + suffix, color);
 	}
 
-	private String buildStatRow(
-		final String label,
-		final double value,
-		final double diffValue,
-		final boolean inverse,
-		final boolean showPercent)
+	private String buildStatRow(final String label, final double value, final double diffValue, final boolean inverse, final boolean showPercent)
 	{
 		return buildStatRow(label, value, diffValue, inverse, showPercent, true);
 	}
 
-	private String buildStatRow(
-		final String label,
-		final double value,
-		final double diffValue,
-		final boolean inverse,
-		final boolean showPercent,
-		final boolean showBase)
+	private String buildStatRow(final String label, final double value, final double diffValue, final boolean inverse, final boolean showPercent, final boolean showBase)
 	{
 		final StringBuilder b = new StringBuilder();
 
@@ -357,12 +333,6 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 
 		final StringBuilder b = new StringBuilder();
 
-		if (config.showWeight())
-		{
-			double sw = config.alwaysShowBaseStats() ? subtracted.getWeight() : s.getWeight();
-			b.append(buildStatRow("Weight", s.getWeight(), sw, true, false, s.isEquipable()));
-		}
-
 		if (subtracted.isEquipable() && e != null)
 		{
 			b.append(buildStatRow("Prayer", currentEquipment.getPrayer(), e.getPrayer(), false, false));
@@ -400,28 +370,25 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	}
 
 	@VisibleForTesting
-	String buildWeightString(ItemStats s)
-	{
+	String buildWeightString(ItemStats s) {
+		final StringBuilder b = new StringBuilder();
+
 		ItemStats other = null;
 		// Used if switching into a 2 handed weapon to store off-hand stats
 		ItemStats offHand = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
 		ItemContainer c = client.getItemContainer(InventoryID.WORN);
-		if (s.isEquipable() && currentEquipment != null && c != null)
-		{
+		if (s.isEquipable() && currentEquipment != null && c != null) {
 			final int slot = currentEquipment.getSlot();
 
 			other = getItemStatsFromContainer(c, slot);
 			// Check if this is a shield and there's a two-handed weapon equipped
-			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx())
-			{
+			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx()) {
 				other = getItemStatsFromContainer(c, EquipmentInventorySlot.WEAPON.getSlotIdx());
-				if (other != null)
-				{
+				if (other != null) {
 					final ItemEquipmentStats otherEquip = other.getEquipment();
-					if (otherEquip != null)
-					{
+					if (otherEquip != null) {
 						// Account for speed change when two handed weapon gets removed
 						// shield - (2h - unarmed) == shield - 2h + unarmed
 						other = otherEquip.isTwoHanded() ? subtract(other, UNARMED) : null;
@@ -429,16 +396,13 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 				}
 			}
 
-			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
-			{
-				if (other == null)
-				{
+			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx()) {
+				if (other == null) {
 					other = UNARMED;
 				}
 
 				// Get offhand's stats to be removed from equipping a 2h weapon
-				if (currentEquipment.isTwoHanded())
-				{
+				if (currentEquipment.isTwoHanded()) {
 					offHand = getItemStatsFromContainer(c, EquipmentInventorySlot.SHIELD.getSlotIdx());
 				}
 			}
@@ -446,14 +410,8 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 
 		final ItemStats subtracted = subtract(subtract(s, other), offHand);
 
-		final StringBuilder b = new StringBuilder();
-
-		if (config.showWeight())
-		{
-			double sw = config.alwaysShowBaseStats() ? subtracted.getWeight() : s.getWeight();
-			b.append(buildStatRow("Weight", s.getWeight(), sw, true, false, s.isEquipable()));
-		}
-
+		double sw = config.alwaysShowBaseStats() ? subtracted.getWeight() : s.getWeight();
+		b.append(buildStatRow("Weight", s.getWeight(), sw, true, false, s.isEquipable()));
 		return b.toString();
 	}
 
@@ -546,18 +504,20 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent key)
 	{
-		if (config.requireModifier() && config.modifierKey().matches(key))
-		{
-			isKeyPressed = true;
+		if (config.consumableStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.equipmentStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.showWeight().equals(ItemStatDisplayType.ON_KEYBIND)) {
+			if (config.modifierKey().matches(key)) {
+				isKeyPressed = true;
+			}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent key)
 	{
-		if (config.requireModifier() && config.modifierKey().matches(key))
-		{
-			isKeyPressed = false;
+		if (config.consumableStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.equipmentStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.showWeight().equals(ItemStatDisplayType.ON_KEYBIND)) {
+			if (config.modifierKey().matches(key)) {
+				isKeyPressed = false;
+			}
 		}
 	}
 }
