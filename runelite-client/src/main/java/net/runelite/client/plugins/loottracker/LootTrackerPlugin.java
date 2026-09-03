@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,6 +73,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
@@ -157,9 +159,9 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.WILDY_LOOT_KEY4
 	);
 
-	private static final String PORT_TASK_REWARD_EVENT = "Port tasks";
-	private static final String PORT_REWARD_BAG_EVENT = "Port reward bag";
-	private static final String PORT_TASK_COMPLETE_MESSAGE = "and complete your courier task!";
+	// Port/Courier tasks and bags
+	private static final String COURIER_TASK_REWARD_EVENT = "Courier tasks";
+	private static final String COURIER_TASK_COMPLETE_MESSAGE = "and complete your courier task!";
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -1081,9 +1083,9 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (message.endsWith(PORT_TASK_COMPLETE_MESSAGE))
+		if (message.endsWith(COURIER_TASK_COMPLETE_MESSAGE))
 		{
-			onInvChange((((invItems, groundItems, removedItems) ->
+			onInvChange((invItems, groundItems, removedItems) ->
 			{
 				int cnt = invItems.stream().
 					filter(item -> item.getId() != ItemID.SAILING_PAINT_SHARK).
@@ -1091,9 +1093,9 @@ public class LootTrackerPlugin extends Plugin
 					sum();
 				if (cnt > 0)
 				{
-					addLoot(PORT_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, null, invItems, cnt);
+					addLoot(COURIER_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, null, invItems, cnt);
 				}
-			})));
+			});
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
@@ -1464,9 +1466,15 @@ public class LootTrackerPlugin extends Plugin
 						int eventItemId = event.getItemId();
 						ItemComposition itemComposition = client.getItemDefinition(eventItemId);
 
-						if (itemComposition.getIntValue(2645) != -1)
+						if (itemComposition.getIntValue(ParamID.COURIER_BAG_TIER) >= 0)
 						{
-							countChangedItems(eventItemId, eventItemId, PORT_REWARD_BAG_EVENT);
+							String itemName = itemComposition.getMembersName();
+							// reward bag with location, else coin bag
+							if (itemName.indexOf(" (") > 0)
+							{
+								itemName = itemName.substring(0, itemName.indexOf(" ("));
+							}
+							countChangedItems(eventItemId, eventItemId, itemName);
 						}
 				}
 			}
