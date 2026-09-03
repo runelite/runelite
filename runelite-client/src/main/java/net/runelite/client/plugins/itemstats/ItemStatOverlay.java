@@ -403,9 +403,49 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	String buildWeightString(ItemStats s)
 	{
 		ItemStats other = null;
+		// Used if switching into a 2 handed weapon to store off-hand stats
 		ItemStats offHand = null;
+		final ItemEquipmentStats currentEquipment = s.getEquipment();
+
+		ItemContainer c = client.getItemContainer(InventoryID.WORN);
+		if (s.isEquipable() && currentEquipment != null && c != null)
+		{
+			final int slot = currentEquipment.getSlot();
+
+			other = getItemStatsFromContainer(c, slot);
+			// Check if this is a shield and there's a two-handed weapon equipped
+			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx())
+			{
+				other = getItemStatsFromContainer(c, EquipmentInventorySlot.WEAPON.getSlotIdx());
+				if (other != null)
+				{
+					final ItemEquipmentStats otherEquip = other.getEquipment();
+					if (otherEquip != null)
+					{
+						// Account for speed change when two handed weapon gets removed
+						// shield - (2h - unarmed) == shield - 2h + unarmed
+						other = otherEquip.isTwoHanded() ? subtract(other, UNARMED) : null;
+					}
+				}
+			}
+
+			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
+			{
+				if (other == null)
+				{
+					other = UNARMED;
+				}
+
+				// Get offhand's stats to be removed from equipping a 2h weapon
+				if (currentEquipment.isTwoHanded())
+				{
+					offHand = getItemStatsFromContainer(c, EquipmentInventorySlot.SHIELD.getSlotIdx());
+				}
+			}
+		}
 
 		final ItemStats subtracted = subtract(subtract(s, other), offHand);
+		final ItemEquipmentStats e = subtracted.getEquipment();
 
 		final StringBuilder b = new StringBuilder();
 
