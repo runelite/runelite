@@ -88,8 +88,10 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 			return null;
 		}
 
-		if (config.requireModifier()) {
-			if (config.modifierKey().getKeyCode() == Keybind.NOT_SET.getKeyCode()) {
+		if (config.requireModifier())
+		{
+			if (config.modifierKey().getKeyCode() == Keybind.NOT_SET.getKeyCode())
+			{
 				if (config.modifierKey().getModifiers() == 0)
 				{
 					return null;
@@ -212,7 +214,9 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 					tooltipManager.add(new Tooltip(tooltip));
 				}
 			}
-		} else {
+		}
+		else
+		{
 			final ItemStats stats = itemManager.getItemStats(itemId);
 
 			if (stats != null)
@@ -399,9 +403,7 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	String buildWeightString(ItemStats s)
 	{
 		ItemStats other = null;
-		// Used if switching into a 2 handed weapon to store off-hand stats
 		ItemStats offHand = null;
-		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
 		final ItemStats subtracted = subtract(subtract(s, other), offHand);
 		final ItemEquipmentStats e = subtracted.getEquipment();
@@ -499,23 +501,23 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e)
+	public void keyTyped(KeyEvent key)
 	{
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e)
+	public void keyPressed(KeyEvent key)
 	{
-		if (config.requireModifier() && config.modifierKey().matches(e))
+		if (config.requireModifier() && config.modifierKey().matches(key))
 		{
 			isKeyPressed = true;
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e)
+	public void keyReleased(KeyEvent key)
 	{
-		if (config.requireModifier() && config.modifierKey().matches(e))
+		if (config.requireModifier() && config.modifierKey().matches(key))
 		{
 			isKeyPressed = false;
 		}
