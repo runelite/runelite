@@ -242,7 +242,7 @@ public interface ItemStatConfig extends Config
 		section = sectionKeybind,
 		position = 3
 	)
-	default Keybind modifierKey() 
+	default Keybind modifierKey()
 	{
 		return Keybind.NOT_SET;
 	}
