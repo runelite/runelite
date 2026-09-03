@@ -40,7 +40,6 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
-import net.runelite.client.config.Keybind;
 import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStats;
@@ -370,7 +369,8 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	}
 
 	@VisibleForTesting
-	String buildWeightString(ItemStats s) {
+	String buildWeightString(ItemStats s)
+	{
 		final StringBuilder b = new StringBuilder();
 
 		ItemStats other = null;
@@ -379,16 +379,20 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
 		ItemContainer c = client.getItemContainer(InventoryID.WORN);
-		if (s.isEquipable() && currentEquipment != null && c != null) {
+		if (s.isEquipable() && currentEquipment != null && c != null)
+		{
 			final int slot = currentEquipment.getSlot();
 
 			other = getItemStatsFromContainer(c, slot);
 			// Check if this is a shield and there's a two-handed weapon equipped
-			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx()) {
+			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx())
+			{
 				other = getItemStatsFromContainer(c, EquipmentInventorySlot.WEAPON.getSlotIdx());
-				if (other != null) {
+				if (other != null)
+				{
 					final ItemEquipmentStats otherEquip = other.getEquipment();
-					if (otherEquip != null) {
+					if (otherEquip != null)
+					{
 						// Account for speed change when two handed weapon gets removed
 						// shield - (2h - unarmed) == shield - 2h + unarmed
 						other = otherEquip.isTwoHanded() ? subtract(other, UNARMED) : null;
@@ -396,13 +400,16 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 				}
 			}
 
-			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx()) {
-				if (other == null) {
+			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
+			{
+				if (other == null)
+				{
 					other = UNARMED;
 				}
 
 				// Get offhand's stats to be removed from equipping a 2h weapon
-				if (currentEquipment.isTwoHanded()) {
+				if (currentEquipment.isTwoHanded())
+				{
 					offHand = getItemStatsFromContainer(c, EquipmentInventorySlot.SHIELD.getSlotIdx());
 				}
 			}
@@ -504,8 +511,10 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent key)
 	{
-		if (config.consumableStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.equipmentStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.showWeight().equals(ItemStatDisplayType.ON_KEYBIND)) {
-			if (config.modifierKey().matches(key)) {
+		if (config.consumableStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.equipmentStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.showWeight().equals(ItemStatDisplayType.ON_KEYBIND))
+		{
+			if (config.modifierKey().matches(key))
+			{
 				isKeyPressed = true;
 			}
 		}
@@ -514,8 +523,10 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent key)
 	{
-		if (config.consumableStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.equipmentStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.showWeight().equals(ItemStatDisplayType.ON_KEYBIND)) {
-			if (config.modifierKey().matches(key)) {
+		if (config.consumableStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.equipmentStats().equals(ItemStatDisplayType.ON_KEYBIND) || config.showWeight().equals(ItemStatDisplayType.ON_KEYBIND))
+		{
+			if (config.modifierKey().matches(key))
+			{
 				isKeyPressed = false;
 			}
 		}
