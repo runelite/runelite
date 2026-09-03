@@ -206,7 +206,10 @@ public interface ItemStatConfig extends Config
 		section = sectionKeybind,
 		position = 0
 	)
-	default boolean requireModifier() { return false; }
+	default boolean requireModifier()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "requireModifierForConsumables",
@@ -215,7 +218,10 @@ public interface ItemStatConfig extends Config
 		section = sectionKeybind,
 		position = 1
 	)
-	default boolean requireModifierForConsumables() { return false; }
+	default boolean requireModifierForConsumables()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "requireModifierForEquipment",
@@ -224,7 +230,10 @@ public interface ItemStatConfig extends Config
 		section = sectionKeybind,
 		position = 2
 	)
-	default boolean requireModifierForEquipment() { return true; }
+	default boolean requireModifierForEquipment()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "modifierKey",
@@ -233,5 +242,8 @@ public interface ItemStatConfig extends Config
 		section = sectionKeybind,
 		position = 3
 	)
-	default Keybind modifierKey() { return Keybind.NOT_SET; }
+	default Keybind modifierKey() 
+	{
+		return Keybind.NOT_SET;
+	}
 }
