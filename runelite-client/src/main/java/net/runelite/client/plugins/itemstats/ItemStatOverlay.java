@@ -125,6 +125,12 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
+		if (config.showName())
+		{
+			final String name = itemManager.getItemComposition(itemId).getName();
+			tooltipManager.add(new Tooltip(name));
+		}
+
 		if (config.consumableStats())
 		{
 			final Effect change = statChanges.get(itemId);
