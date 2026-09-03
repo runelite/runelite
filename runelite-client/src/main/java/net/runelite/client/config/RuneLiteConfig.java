@@ -59,6 +59,13 @@ public interface RuneLiteConfig extends Config
 	)
 	String overlaySettings = "overlaySettings";
 
+	@ConfigSection(
+		name = "Chat settings",
+		description = "Settings relating to chat input.",
+		position = 3
+	)
+	String chatSettings = "chatSettings";
+
 	@ConfigItem(
 		keyName = "gameSize",
 		name = "Game size",
@@ -445,6 +452,30 @@ public interface RuneLiteConfig extends Config
 	default Keybind panelToggleKey()
 	{
 		return new Keybind(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		keyName = "pressEnterToChat",
+		name = "Press key to chat",
+		description = "Locks the chatbox until the chat key is pressed, allowing letter hotkeys to be used outside of chat.",
+		position = 47,
+		section = chatSettings
+	)
+	default boolean pressEnterToChat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "chatActivationKey",
+		name = "Chat key",
+		description = "The key used to activate chat while press key to chat is enabled.",
+		position = 48,
+		section = chatSettings
+	)
+	default ModifierlessKeybind chatActivationKey()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_ENTER, 0);
 	}
 
 	@ConfigItem(

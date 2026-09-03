@@ -42,11 +42,13 @@ import net.runelite.client.eventbus.Subscribe;
 public class KeyManager
 {
 	private final Client client;
+	private final ChatboxInputManager chatboxInputManager;
 
 	@Inject
-	private KeyManager(@Nullable final Client client, final EventBus eventBus)
+	private KeyManager(@Nullable final Client client, final EventBus eventBus, final ChatboxInputManager chatboxInputManager)
 	{
 		this.client = client;
+		this.chatboxInputManager = chatboxInputManager;
 		eventBus.register(this);
 	}
 
@@ -77,9 +79,17 @@ public class KeyManager
 			return;
 		}
 
+		boolean chatInputActive = chatboxInputManager.isChatInputActive();
+		chatboxInputManager.processKeyPressed(keyEvent);
+		chatInputActive |= chatboxInputManager.isChatInputActive();
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
-			if (!shouldProcess(keyListener))
+			if (!shouldProcess(keyListener, chatInputActive))
 			{
 				continue;
 			}
@@ -102,9 +112,15 @@ public class KeyManager
 			return;
 		}
 
+		chatboxInputManager.processKeyReleased(keyEvent);
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
-			if (!shouldProcess(keyListener))
+			if (!shouldProcess(keyListener, false))
 			{
 				continue;
 			}
@@ -127,9 +143,17 @@ public class KeyManager
 			return;
 		}
 
+		boolean chatInputActive = chatboxInputManager.isChatInputActive();
+		chatboxInputManager.processKeyTyped(keyEvent);
+		chatInputActive |= chatboxInputManager.isChatInputActive();
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
-			if (!shouldProcess(keyListener))
+			if (!shouldProcess(keyListener, chatInputActive))
 			{
 				continue;
 			}
@@ -145,7 +169,7 @@ public class KeyManager
 		}
 	}
 
-	private boolean shouldProcess(final KeyListener keyListener)
+	private boolean shouldProcess(final KeyListener keyListener, boolean chatInputActive)
 	{
 		if (client == null)
 		{
@@ -157,6 +181,11 @@ public class KeyManager
 		if (gameState == GameState.LOGIN_SCREEN || gameState == GameState.LOGIN_SCREEN_AUTHENTICATOR)
 		{
 			return keyListener.isEnabledOnLoginScreen();
+		}
+
+		if (chatInputActive)
+		{
+			return keyListener.isEnabledOnChatInput();
 		}
 
 		return true;
