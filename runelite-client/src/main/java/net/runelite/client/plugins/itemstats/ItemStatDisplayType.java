@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ItemStatDisplayType
 {
-    ALWAYS(),
-    ON_KEYBIND(),
-    NEVER();
+	ALWAYS(),
+	ON_KEYBIND(),
+	NEVER();
 }
