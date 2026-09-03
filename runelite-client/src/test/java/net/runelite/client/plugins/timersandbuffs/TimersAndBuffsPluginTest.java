@@ -223,6 +223,32 @@ public class TimersAndBuffsPluginTest
 	}
 
 	@Test
+	public void testFreezeTimerOldFormat()
+	{
+		when(timersAndBuffsConfig.showFreezes()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>You have been frozen!</col>", "", 0);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.ICEBARRAGE, infoBox.getTimer());
+	}
+
+	@Test
+	public void testFreezeTimerNewFormat()
+	{
+		when(timersAndBuffsConfig.showFreezes()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "@mes_hl_red@You have been frozen!</col>", "", 0);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.ICEBARRAGE, infoBox.getTimer());
+	}
+
+	@Test
 	public void testTzhaarTimer()
 	{
 		when(timersAndBuffsConfig.showTzhaarTimers()).thenReturn(true);
