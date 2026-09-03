@@ -445,7 +445,6 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 		}
 
 		final ItemStats subtracted = subtract(subtract(s, other), offHand);
-		final ItemEquipmentStats e = subtracted.getEquipment();
 
 		final StringBuilder b = new StringBuilder();
 
