@@ -28,6 +28,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Sets;
+import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -493,9 +494,19 @@ class ConfigPanel extends PluginPanel
 
 	private JSpinner createDoubleSpinner(ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
-		double value = MoreObjects.firstNonNull(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), double.class), 0d);
+		Double value = MoreObjects.firstNonNull(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), double.class), 0d);
 
-		SpinnerModel model = new SpinnerNumberModel(value, 0, Double.MAX_VALUE, 0.1);
+		Range range = cid.getRange();
+		Double min = 0.0, max = Double.MAX_VALUE, step = 0.1;
+		if (range != null)
+		{
+			min = (double) range.min();
+			max = (double) range.max();
+		}
+
+		value = Doubles.constrainToRange(value, min, max);
+
+		SpinnerModel model = new SpinnerNumberModel(value, min, max, step);
 		JSpinner spinner = new JSpinner(model);
 		Component editor = spinner.getEditor();
 		JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
