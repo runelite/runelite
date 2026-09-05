@@ -114,6 +114,10 @@ public interface ObjectIndicatorsConfig extends Config
 	)
 	Color fillColor();
 
+	@Range(
+		min = 0,
+		max = 5
+	)
 	@ConfigItem(
 		position = 6,
 		keyName = "borderWidth",
