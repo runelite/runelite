@@ -1119,6 +1119,16 @@ public class ConfigManager
 				Object current = getConfiguration(group.value(), item.keyName(), method.getGenericReturnType());
 				if (current != null)
 				{
+					Range range = method.getAnnotation(Range.class);
+					if (range != null && current instanceof Integer)
+					{
+						current = clampIntRange(current, range);
+					}
+
+					if (range != null && current instanceof Double)
+					{
+						current = clampDoubleRange(current, range);
+					}
 					continue; // something else is already set
 				}
 			}
@@ -1645,5 +1655,42 @@ public class ConfigManager
 			key = key.substring(i + 1);
 		}
 		return new String[]{group, profile, key};
+	}
+
+	static Object clampIntRange(Object objectValue, Range range)
+	{
+		// clamp the Integer values that are larger than @range
+		if (range != null && objectValue instanceof Integer)
+		{
+			Integer v = (Integer) objectValue;
+			if (v < range.min())
+			{
+				objectValue = range.min();
+			}
+			if (v > range.max())
+			{
+				objectValue = range.max();
+			}
+		}
+
+		return objectValue;
+	}
+
+	static Object clampDoubleRange(Object objectValue, Range range)
+	{
+		// clamp the Double values that are larger than @range
+		if (range != null && objectValue instanceof Double)
+		{
+			Double v = (Double) objectValue;
+			if (v < range.min())
+			{
+				objectValue = (double) range.min();
+			}
+			if (v > range.max())
+			{
+				objectValue = (double) range.max();
+			}
+		}
+		return objectValue;
 	}
 }
