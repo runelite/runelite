@@ -163,6 +163,10 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HERBIBOAR_EVENT = "Herbiboar";
 	private static final Pattern HERBIBOAR_HERB_SACK_PATTERN = Pattern.compile(".+(Grimy .+?) herb.+");
 
+	// Master Farmer loot handling
+	private static final Pattern MASTER_FARMER_SEED_BOX_MULTIPLE_PATTERN = Pattern.compile("The following stolen loot gets added to your seed box: (.+?) x (\\d+)\\.");
+	private static final Pattern MASTER_FARMER_SEED_BOX_SINGLE_PATTERN = Pattern.compile("You put the stolen (.+?) into your seed box\\.");
+
 	// Zombie Pirate Locker loot handling
 	static final String ZOMBIE_PIRATE_LOCKER_EVENT = "Zombie Pirate's Locker";
 	private static final Pattern ZOMBIE_PIRATE_LOCKER_PATTERN = Pattern.compile("You loot the locker and receive <col=[\\da-f]{6}>(?<qty>[\\d,]+) x (?<item>.+)</col>\\.");
@@ -1098,6 +1102,19 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		Matcher multiSeedBoxMatcher = MASTER_FARMER_SEED_BOX_MULTIPLE_PATTERN.matcher(message);
+		if (multiSeedBoxMatcher.matches())
+		{
+			processMasterFarmerSeedBoxLoot(multiSeedBoxMatcher.group(1), Integer.parseInt(multiSeedBoxMatcher.group(2)));
+			return;
+		}
+		Matcher singleSeedBoxMatcher = MASTER_FARMER_SEED_BOX_SINGLE_PATTERN.matcher(message);
+		if (singleSeedBoxMatcher.matches())
+		{
+			processMasterFarmerSeedBoxLoot(singleSeedBoxMatcher.group(1), 1);
+			return;
+		}
+
 		final Matcher pickpocketMatcher = PICKPOCKET_REGEX.matcher(message);
 		if (pickpocketMatcher.matches())
 		{
@@ -1630,6 +1647,13 @@ public class LootTrackerPlugin extends Plugin
 		int herbloreLevel = client.getBoostedSkillLevel(Skill.HERBLORE);
 		addLoot(HERBIBOAR_EVENT, -1, LootRecordType.EVENT, herbloreLevel, herbs);
 		return true;
+	}
+
+	private void processMasterFarmerSeedBoxLoot(String itemName, int quantityStolen)
+	{
+		List<ItemStack> seeds = Collections.singletonList(new ItemStack(itemManager.search(itemName).get(0).getId(), quantityStolen, client.getLocalPlayer().getLocalLocation()));
+
+		addLoot(lastPickpocketTarget, -1, LootRecordType.PICKPOCKET, client.getBoostedSkillLevel(Skill.THIEVING), seeds);
 	}
 
 	private void processZombiePirateLockerLoot(Matcher matcher)
