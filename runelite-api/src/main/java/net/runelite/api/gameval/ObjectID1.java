@@ -83300,5 +83300,267 @@ class ObjectID1
 	public static final int BOULDER3_INACTIVE = 62429;
 	public static final int BOULDER4_INACTIVE = 62430;
 	public static final int LANSCAPE_MOLE_STICKY_MUD = 62431;
+	public static final int WALLKIT_SCAFFOLD01_FENCE01_LVL1LVLOFFSET = 62432;
+	public static final int WALLKIT_SCAFFOLD01_FENCE01_M_LVL1LVLOFFSET = 62433;
+	public static final int WALLKIT_SCAFFOLD01_FENCE02_LVL1LVLOFFSET = 62434;
+	public static final int WALLKIT_CIVITAS03_JUNCTION05 = 62435;
+	public static final int QUEST_START_ICON_DOGQUEST = 62436;
+	public static final int QUEST_START_ICON_CRABQUEST = 62437;
+	public static final int CRAB_BOTTLE_MULTI = 62438;
+
+	/**
+	 * Bottle
+	 */
+	public static final int CRAB_BOTTLE = 62439;
+
+	/**
+	 * Bottle
+	 */
+	public static final int CRAB_BOTTLE_POST = 62440;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_1 = 62441;
+	public static final int CRAB_SHELL_1_MULTI_FINAL = 62442;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_2 = 62443;
+	public static final int CRAB_SHELL_2_MULTI_FINAL = 62444;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_3 = 62445;
+	public static final int CRAB_SHELL_3_MULTI_FINAL = 62446;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_4 = 62447;
+	public static final int CRAB_SHELL_4_MULTI_FINAL = 62448;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_5 = 62449;
+	public static final int CRAB_SHELL_5_MULTI_FINAL = 62450;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_6 = 62451;
+	public static final int CRAB_SHELL_6_MULTI_FINAL = 62452;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_7 = 62453;
+	public static final int CRAB_SHELL_7_MULTI_FINAL = 62454;
+
+	/**
+	 * Thing
+	 */
+	public static final int CRAB_BASS_NONAME = 62455;
+
+	/**
+	 * Bass guitar
+	 */
+	public static final int CRAB_BASS = 62456;
+
+	/**
+	 * Banjo
+	 */
+	public static final int CRAB_BASS_NAMEDROP = 62457;
+
+	/**
+	 * Disaster
+	 */
+	public static final int CRAB_BASS_DISASTER = 62458;
+	public static final int CRAB_BASS_MULTI_QUEST = 62459;
+
+	/**
+	 * Thing
+	 */
+	public static final int CRAB_BASS_NONAME_CUTSCENE = 62460;
+
+	/**
+	 * Bass guitar
+	 */
+	public static final int CRAB_BASS_CUTSCENE = 62461;
+
+	/**
+	 * Banjo
+	 */
+	public static final int CRAB_BASS_NAMEDROP_CUTSCENE = 62462;
+
+	/**
+	 * Disaster
+	 */
+	public static final int CRAB_BASS_DISASTER_CUTSCENE = 62463;
+	public static final int CRAB_BASS_MULTI_CUTSCENE = 62464;
+
+	/**
+	 * Coconut shell
+	 */
+	public static final int CRAB_DRUMS = 62465;
+	public static final int CRAB_DRUMS_MULTI_1 = 62466;
+	public static final int CRAB_DRUMS_MULTI_2 = 62467;
+	public static final int CRAB_DRUMS_MULTI_3 = 62468;
+	public static final int CRAB_DRUMS_MULTI_4 = 62469;
+
+	/**
+	 * Palm
+	 */
+	public static final int CRAB_PALM_UPDATE01 = 62470;
+
+	/**
+	 * Palm
+	 */
+	public static final int CRAB_PALM_UPDATE02 = 62471;
+
+	/**
+	 * Palm
+	 */
+	public static final int CRAB_PALM_UPDATE03 = 62472;
+
+	/**
+	 * Magic tree
+	 */
+	public static final int CRAB_MAGICTREE = 62473;
+
+	/**
+	 * Magic tree
+	 */
+	public static final int CRAB_MAGICTREE_NOOP = 62474;
+
+	/**
+	 * Tree
+	 */
+	public static final int CRAB_AVIUM_TREE_1 = 62475;
+
+	/**
+	 * Tree
+	 */
+	public static final int CRAB_AVIUM_TREE_2 = 62476;
+
+	/**
+	 * Plant
+	 */
+	public static final int CRAB_GROUNDCOVER_PLANT4_WITHERED = 62477;
+
+	/**
+	 * Bush
+	 */
+	public static final int CRAB_ENAKH_LEAFLESSBUSH = 62478;
+
+	/**
+	 * Circle
+	 */
+	public static final int CRAB_CIRCLE_CRAB = 62479;
+
+	/**
+	 * Circle
+	 */
+	public static final int CRAB_CIRCLE_HUMAN = 62480;
+
+	/**
+	 * Nest
+	 */
+	public static final int CRAB_CIRCLE_CRAB_FINAL = 62481;
+
+	/**
+	 * Nest
+	 */
+	public static final int CRAB_CIRCLE_HUMAN_FINAL = 62482;
+	public static final int DOGQ_DEN_BED_MULTI = 62483;
+
+	/**
+	 * Rough bedding
+	 */
+	public static final int DOGQ_DEN_BED_NOOP = 62484;
+
+	/**
+	 * Rough bedding
+	 */
+	public static final int DOGQ_DEN_BED = 62485;
+	public static final int DOGQ_DEN_SCRAPS_MULTI = 62486;
+
+	/**
+	 * Torn newspaper
+	 */
+	public static final int DOGQ_DEN_SCRAPS_NOOP = 62487;
+
+	/**
+	 * Torn newspaper
+	 */
+	public static final int DOGQ_DEN_SCRAPS = 62488;
+	public static final int DOGQ_DEN_BOX_MULTI = 62489;
+
+	/**
+	 * Chewed box
+	 */
+	public static final int DOGQ_DEN_BOX_NOOP = 62490;
+
+	/**
+	 * Chewed box
+	 */
+	public static final int DOGQ_DEN_BOX = 62491;
+	public static final int DOGQ_GOBLIN_STUFFED_DOG_MULTI_QUEST = 62492;
+	public static final int DOGQ_GOBLIN_STUFFED_DOG_MULTI_OUTPOST = 62493;
+
+	/**
+	 * Stuffed dog
+	 */
+	public static final int DOGQ_GOBLIN_STUFFED_DOG = 62494;
+	public static final int DOGQ_DOG_GUARD_HOUSE_MULTI = 62495;
+	public static final int DOGQ_DOG_GUARD_BALL_MULTI = 62496;
+	public static final int DOGQ_DOG_GUARD_HOUSE = 62497;
+
+	/**
+	 * Doghouse
+	 */
+	public static final int DOGQ_DOGHOUSE01_DEFAULT01 = 62498;
+
+	/**
+	 * Shelter
+	 */
+	public static final int DOGQ_SHELTER01_HUMAN01 = 62499;
+
+	/**
+	 * Kennel
+	 */
+	public static final int DOGQ_DOGHOUSE01_KENNEL01 = 62500;
+
+	/**
+	 * Ball
+	 */
+	public static final int DOGQ_DOGHOUSE01_BALLL01 = 62501;
+
+	/**
+	 * Ball
+	 */
+	public static final int DOGQ_DOGHOUSE01_BALLL02 = 62502;
+
+	/**
+	 * Food bowl
+	 */
+	public static final int DOGQ_BOWL01_FOOD01 = 62503;
+
+	/**
+	 * Water bowl
+	 */
+	public static final int DOGQ_BOWL01_WATER01 = 62504;
+
+	/**
+	 * Wheelbarrow
+	 */
+	public static final int DOGQ_WHEEL01_BARROW01 = 62505;
+	public static final int DOGQ_FENCE_WOODEN01_PLANK01 = 62506;
+	public static final int DOGQ_FENCE_WOODEN01_PLANK01_NONBLOCKING = 62507;
+	public static final int DOGQ_FENCE_WOODEN01_PLANK01_BROKEN01 = 62508;
+	public static final int WOODENSUPPORT2 = 62509;
 /* This file is automatically generated. Do not edit. */
 }
