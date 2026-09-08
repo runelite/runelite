@@ -59,11 +59,13 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStats;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
@@ -95,7 +97,25 @@ public class ItemStatPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private KeyManager keyManager;
+
 	private Widget itemInformationTitle;
+
+	private final HotkeyListener equipmentStatsHotkeyListener = new HotkeyListener(() -> config.equipmentStatsHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			overlay.setEquipmentStatsHotkeyPressed(true);
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			overlay.setEquipmentStatsHotkeyPressed(false);
+		}
+	};
 
 	@Provides
 	ItemStatConfig getConfig(ConfigManager configManager)
@@ -113,12 +133,15 @@ public class ItemStatPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		keyManager.registerKeyListener(equipmentStatsHotkeyListener);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		keyManager.unregisterKeyListener(equipmentStatsHotkeyListener);
+		overlay.setEquipmentStatsHotkeyPressed(false);
 		clientThread.invokeLater(this::resetGEInventory);
 	}
 
