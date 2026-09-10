@@ -1,0 +1,29 @@
+# Number of days of inactivity before a stale issue is closed
+daysUntilClose: 7
+
+# Issues with these labels will never be considered stale
+exemptLabels:
+  - jagex-bug
+  - jvm-bug
+
+# Label to use when marking an issue as stale
+staleLabel: innactive
+closeComment: false
+
+
+# Optionally, specify configuration settings that are specific to just 'issues' or 'pulls':
+pulls:
+  daysUntilStale: 120
+  markComment: >
+    This pull request has been automatically marked as stale because it has not had
+    recent activity. It will be closed if no further activity occurs. Thank you
+    for your contributions.
+
+
+# Optionally, specify configuration settings that are specific to just 'issues' or 'pulls':
+issues:
+  daysUntilStale: 120
+  markComment: >
+    This issue has been automatically marked as stale because it has not had
+    recent activity. It will be closed if no further activity occurs. Thank you
+    for your contributions.
