@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Duration;
+import java.time.Instant;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
@@ -74,6 +75,9 @@ public class ItemStatOverlay extends Overlay
 
 	@Inject
 	private ItemStatConfig config;
+
+	@Inject
+	private PoisonStatus poisonStatus;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -178,6 +182,15 @@ public class ItemStatOverlay extends Overlay
 							sb.append('~');
 							sb.append(DurationFormatUtils.formatDuration(highestDuration.toMillis(), "m:ss"));
 						}
+					}
+				}
+
+				if (p.isPoisonRemedy())
+				{
+					final String venomTooltip = poisonStatus.createTooltip(Instant.now());
+					if (venomTooltip != null)
+					{
+						sb.append("</br>").append(venomTooltip);
 					}
 				}
 

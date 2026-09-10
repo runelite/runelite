@@ -404,6 +404,7 @@ public class ItemStatChanges
 		add(combo(food(15), heal(PRAYER, perc(.25, 0)), staminaPot), ItemID.DT2_SCAR_MAZE_STAMINA);
 		add(new DwarvenRockCake(), ItemID.HUNDRED_DWARF_COOL_ROCKCAKE);
 		add(new LocatorOrb(), ItemID.DS2_ORB);
+		add(heal(HITPOINTS, -4), ItemID.ARAXYTE_VENOM_SACK);
 
 		// Gauntlet
 		add(combo(heal(PRAYER, perc(.25, 7)), heal(RUN_ENERGY, 40)), ItemID.GAUNTLET_POTION_1, ItemID.GAUNTLET_POTION_2, ItemID.GAUNTLET_POTION_3, ItemID.GAUNTLET_POTION_4);

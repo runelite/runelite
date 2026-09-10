@@ -283,6 +283,16 @@ public class ItemStatEffectTest
 	}
 
 	@Test
+	public void testAraxyteVenomSac()
+	{
+		final Effect araxyteVenomSac = itemStats.get(ItemID.ARAXYTE_VENOM_SACK);
+
+		assertEquals(-4, hitpointsChange(99, araxyteVenomSac));
+		assertEquals(-4, hitpointsChange(4, araxyteVenomSac));
+		assertEquals(-3, hitpointsChange(3, araxyteVenomSac));
+	}
+
+	@Test
 	public void testAmbrosia()
 	{
 		final Effect ambrosia = new ItemStatChanges().get(ItemID.TOA_SUPPLY_PANICHEAL_2);
