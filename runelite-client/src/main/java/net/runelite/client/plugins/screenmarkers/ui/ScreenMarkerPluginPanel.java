@@ -28,6 +28,7 @@ package net.runelite.client.plugins.screenmarkers.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
@@ -36,6 +37,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
@@ -50,6 +52,8 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 {
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
+	private static final ImageIcon REMOVE_ALL_ICON;
+	private static final ImageIcon REMOVE_ALL_HOVER_ICON;
 
 	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
 	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
@@ -61,9 +65,11 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	public static final int SELECTED_BORDER_THICKNESS = DEFAULT_BORDER_THICKNESS;
 
 	private final JLabel addMarker = new JLabel(ADD_ICON);
+	private final JLabel removeAllMarkers = new JLabel(REMOVE_ALL_ICON);
 	private final JLabel title = new JLabel();
 	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
 	private final JPanel markerView = new JPanel(new GridBagLayout());
+	private final JPanel markerControls = new JPanel(new FlowLayout());
 
 	private final ScreenMarkerPlugin plugin;
 
@@ -73,8 +79,11 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	static
 	{
 		final BufferedImage addIcon = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "add_icon.png");
+		final BufferedImage removeAllIcon = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "cancel_icon.png");
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+		REMOVE_ALL_ICON = new ImageIcon(removeAllIcon);
+		REMOVE_ALL_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(removeAllIcon, 0.53f));
 	}
 
 	public ScreenMarkerPluginPanel(ScreenMarkerPlugin screenMarkerPlugin)
@@ -91,7 +100,10 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		title.setForeground(Color.WHITE);
 
 		northPanel.add(title, BorderLayout.WEST);
-		northPanel.add(addMarker, BorderLayout.EAST);
+		markerControls.add(removeAllMarkers);
+		markerControls.add(Box.createRigidArea(new Dimension(1, 0)));
+		markerControls.add(addMarker);
+		northPanel.add(markerControls, BorderLayout.EAST);
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		centerPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -138,6 +150,35 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			}
 		});
 
+		removeAllMarkers.setToolTipText("Remove all screen markers");
+		removeAllMarkers.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				int confirm = JOptionPane.showConfirmDialog(ScreenMarkerPluginPanel.this,
+					"Are you sure you want to permanently delete ALL screen markers?",
+					"Warning", JOptionPane.OK_CANCEL_OPTION);
+
+				if (confirm == 0)
+				{
+					plugin.deleteAllMarkers();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				removeAllMarkers.setIcon(REMOVE_ALL_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				removeAllMarkers.setIcon(REMOVE_ALL_ICON);
+			}
+		});
+
 		centerPanel.add(markerView, BorderLayout.CENTER);
 
 		add(northPanel, BorderLayout.NORTH);
@@ -175,6 +216,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 		repaint();
 		revalidate();
+		updateRemoveAllButtonVisibility();
 	}
 
 	/* Enables/Disables new marker creation mode */
@@ -193,7 +235,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		}
 
 		creationPanel.setVisible(on);
-		addMarker.setVisible(!on);
+		markerControls.setVisible(!on);
 
 		if (on)
 		{
@@ -201,5 +243,10 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			plugin.setMouseListenerEnabled(true);
 			plugin.setCreatingScreenMarker(true);
 		}
+	}
+
+	public void updateRemoveAllButtonVisibility()
+	{
+		removeAllMarkers.setVisible((plugin.getScreenMarkers().size() > 0));
 	}
 }
