@@ -313,7 +313,7 @@ public class ItemManager
 	 * @param itemID item id
 	 * @return item price
 	 */
-	public int getItemPrice(int itemID)
+	public long getItemPrice(int itemID)
 	{
 		return getItemPriceWithSource(itemID, runeLiteConfig.useWikiItemPrices());
 	}
@@ -325,7 +325,7 @@ public class ItemManager
 	 * @param useWikiPrice use the actively traded/wiki price
 	 * @return item price
 	 */
-	public int getItemPriceWithSource(int itemID, boolean useWikiPrice)
+	public long getItemPriceWithSource(int itemID, boolean useWikiPrice)
 	{
 		if (itemID == ItemID.COINS)
 		{
@@ -343,10 +343,8 @@ public class ItemManager
 		}
 		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
 
-		int price = 0;
-
+		long price = 0;
 		final Collection<ItemMapping> mappedItems = ItemMapping.map(itemID);
-
 		if (mappedItems == null)
 		{
 			final ItemPrice ip = itemPrices.get(itemID);
@@ -372,10 +370,10 @@ public class ItemManager
 	 * @param itemPrice
 	 * @return
 	 */
-	public int getWikiPrice(ItemPrice itemPrice)
+	public long getWikiPrice(ItemPrice itemPrice)
 	{
-		final int wikiPrice = itemPrice.getWikiPrice();
-		final int jagPrice = itemPrice.getPrice();
+		final long wikiPrice = itemPrice.getWikiPrice();
+		final long jagPrice = itemPrice.getPrice();
 		if (wikiPrice <= 0)
 		{
 			return jagPrice;

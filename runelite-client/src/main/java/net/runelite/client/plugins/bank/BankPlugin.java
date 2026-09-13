@@ -515,7 +515,7 @@ public class BankPlugin extends Plugin
 
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int qty = matcher.group("individual") != null ? 1 : itemQuantities.count(itemId);
-		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
+		final long gePrice = itemManager.getItemPrice(itemId) * qty;
 		final long haPrice = (long) itemComposition.getHaPrice() * qty;
 		final boolean isPlaceholder = itemComposition.getPlaceholderTemplateId() != -1;
 
@@ -629,7 +629,7 @@ public class BankPlugin extends Plugin
 			}
 
 			alch += (long) getHaPrice(id) * qty;
-			ge += (long) itemManager.getItemPrice(id) * qty;
+			ge += itemManager.getItemPrice(id) * qty;
 		}
 
 		return new ContainerPrices(ge, alch);
@@ -668,7 +668,7 @@ public class BankPlugin extends Plugin
 				if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
 				{
 					final int alchPrice = getHaPrice(child.getItemId());
-					geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
+					geTotal += itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
 					haTotal += (long) alchPrice * child.getItemQuantity();
 				}
 			}
@@ -742,7 +742,7 @@ public class BankPlugin extends Plugin
 
 			log.debug("Potion store has {} of {} (doses={}, withdrawDoses={})", qty, itemId, doses, withdrawDoses);
 
-			geTotal += (long) itemManager.getItemPrice(itemId) * qty;
+			geTotal += itemManager.getItemPrice(itemId) * qty;
 			haTotal += (long) getHaPrice(itemId) * qty;
 		}
 

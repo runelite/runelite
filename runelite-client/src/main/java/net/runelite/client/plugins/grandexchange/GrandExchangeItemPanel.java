@@ -52,7 +52,7 @@ class GrandExchangeItemPanel extends JPanel
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	GrandExchangeItemPanel(GrandExchangePlugin grandExchangePlugin, AsyncBufferedImage icon, String name, int itemID,
-		int gePrice, int haPrice, int geItemLimit)
+		long gePrice, int haPrice, int geItemLimit)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);

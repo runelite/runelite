@@ -262,8 +262,8 @@ public class LootTrackerPluginTest
 		});
 		when(client.getItemContainer(InventoryID.RAIDS_REWARDS)).thenReturn(itemContainer);
 
-		when(itemManager.getItemPrice(ItemID.TWISTED_BOW)).thenReturn(1_100_000_000);
-		when(itemManager.getItemPrice(ItemID.BLANKRUNE_HIGH)).thenReturn(6);
+		when(itemManager.getItemPrice(ItemID.TWISTED_BOW)).thenReturn(1_100_000_000L);
+		when(itemManager.getItemPrice(ItemID.BLANKRUNE_HIGH)).thenReturn(6L);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
 		widgetLoaded.setGroupId(InterfaceID.RAIDS_REWARDS);
