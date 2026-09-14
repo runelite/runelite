@@ -193,6 +193,14 @@ enum ItemIdentification
 	REDWOOD_PYRE_LOGS(Type.LOGS_PYRE, "Red P", "REDP", ItemID.REDWOOD_LOGS_PYRE),
 	ROSEWOOD_PYRE_LOGS(Type.LOGS_PYRE, "Rose P", "ROSEP", ItemID.ROSEWOOD_LOGS_PYRE),
 
+	SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Sap.T", "ST", ItemID.SAP_TREATED_LOGS),
+	OAK_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Oak ST", "OAKST", ItemID.SAP_TREATED_OAK_LOGS),
+	WILLOW_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Wil ST", "WILST", ItemID.SAP_TREATED_WILLOW_LOGS),
+	MAPLE_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Map ST", "MAPST", ItemID.SAP_TREATED_MAPLE_LOGS),
+	YEW_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Yew ST", "YEWST", ItemID.SAP_TREATED_YEW_LOGS),
+	MAGIC_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Mag ST", "MAGST", ItemID.SAP_TREATED_MAGIC_LOGS),
+	REDWOOD_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Red ST", "REDST", ItemID.SAP_TREATED_REDWOOD_LOGS),
+
 	//Repair Kits
 	WOODEN_REPAIR_KIT(Type.REPAIR_KIT, "Wooden", "WOOD", ItemID.BOAT_REPAIR_KIT),
 	OAK_REPAIR_KIT(Type.REPAIR_KIT, "Oak", "OAK", ItemID.BOAT_REPAIR_KIT_OAK),
@@ -712,6 +720,7 @@ enum ItemIdentification
 		HERB(ItemIdentificationConfig::showHerbs),
 		LOGS(ItemIdentificationConfig::showLogs),
 		LOGS_PYRE(ItemIdentificationConfig::showPyreLogs),
+		LOGS_SAP_TREATED(ItemIdentificationConfig::showSapTreatedLogs),
 		PLANK(ItemIdentificationConfig::showPlanks),
 		REPAIR_KIT(ItemIdentificationConfig::showRepairKits),
 		YARN(ItemIdentificationConfig::showYarn),
