@@ -50,7 +50,7 @@ enum Courses
 	WILDERNESS(571.4, 11837, new WorldPoint(2993, 3933, 0), new WorldPoint(2994, 3933, 0), new WorldPoint(2995, 3933, 0)),
 	WEREWOLF(730.0, 14234, new WorldPoint(3528, 9873, 0)),
 	SEERS(570.0, 10806, new WorldPoint(2704, 3464, 0)),
-	COLOSSAL_WYRM_ADVANCED(685),
+	COLOSSAL_WYRM_ADVANCED(1053.6),
 	POLLNIVNEACH((client) -> client.getVarbitValue(VarbitID.DESERT_DIARY_HARD_COMPLETE) == 1 ? 1016.0 : 890.0, 13358, new WorldPoint(3363, 2998, 0)),
 	RELLEKA((client) -> client.getVarbitValue(VarbitID.FREMENNIK_DIARY_HARD_COMPLETE) == 1 ? 920.0 : 780.0, 10553, new WorldPoint(2653, 3676, 0)),
 	PRIFDDINAS(1337.0, 12895, new WorldPoint(3240, 6109, 0)),
