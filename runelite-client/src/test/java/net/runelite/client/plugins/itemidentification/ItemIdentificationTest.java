@@ -35,4 +35,12 @@ public class ItemIdentificationTest
 	{
 		assertEquals(ItemIdentification.YEW_SEED, ItemIdentification.get(ItemID.YEW_SEED));
 	}
+
+	@Test
+	public void testNewerTeleportTablets()
+	{
+		assertEquals(ItemIdentification.ALDARIN_TELEPORT, ItemIdentification.get(ItemID.NZONE_TELETAB_ALDARIN));
+		assertEquals(ItemIdentification.TELEPORT_TO_BOAT, ItemIdentification.get(ItemID.POH_TABLET_TELEPORTMETOBOAT));
+		assertEquals(ItemIdentification.SUMMON_BOAT, ItemIdentification.get(ItemID.POH_TABLET_TELEPORTBOATTOME));
+	}
 }
