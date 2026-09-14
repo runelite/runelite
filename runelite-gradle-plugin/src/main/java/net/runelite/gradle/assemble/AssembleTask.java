@@ -30,9 +30,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.savers.ScriptSaver;
@@ -40,21 +37,15 @@ import net.runelite.cache.script.RuneLiteInstructions;
 import net.runelite.cache.script.assembler.Assembler;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.DirectoryProperty;
-import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
-import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
-import org.tomlj.Toml;
-import org.tomlj.TomlParseError;
-import org.tomlj.TomlParseResult;
-import org.tomlj.TomlTable;
 
 @CacheableTask
 public abstract class AssembleTask extends DefaultTask
@@ -66,10 +57,6 @@ public abstract class AssembleTask extends DefaultTask
 	@OutputDirectory
 	public abstract DirectoryProperty getOutputDirectory();
 
-	@InputFile
-	@PathSensitive(PathSensitivity.RELATIVE)
-	public abstract RegularFileProperty getComponentsFile();
-
 	@Input
 	public abstract Property<Boolean> getLongSupport();
 
@@ -80,12 +67,11 @@ public abstract class AssembleTask extends DefaultTask
 	{
 		File scriptDirectory = getScriptDirectory().getAsFile().get();
 		File outputDirectory = getOutputDirectory().getAsFile().get();
-		File componentsFile = getComponentsFile().getAsFile().get();
 
 		RuneLiteInstructions instructions = new RuneLiteInstructions();
 		instructions.init();
 
-		Assembler assembler = new Assembler(instructions, buildComponentSymbols(componentsFile));
+		Assembler assembler = new Assembler(instructions);
 		ScriptSaver saver = new ScriptSaver(getLongSupport().getOrElse(true));
 
 		int count = 0;
@@ -123,67 +109,5 @@ public abstract class AssembleTask extends DefaultTask
 		}
 
 		log.lifecycle("Assembled {} scripts", count);
-	}
-
-	private Map<String, Object> buildComponentSymbols(File file)
-	{
-		TomlParseResult result;
-		try
-		{
-			result = Toml.parse(file.toPath());
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException("unable to read component file " + file.getName(), e);
-		}
-
-		if (result.hasErrors())
-		{
-			for (TomlParseError err : result.errors())
-			{
-				log.error(err.toString());
-			}
-			throw new RuntimeException("unable to parse component file " + file.getName());
-		}
-
-		Map<String, Object> symbols = new HashMap<>();
-		for (var entry : result.entrySet())
-		{
-			var interfaceName = entry.getKey();
-			TomlTable tbl = (TomlTable) entry.getValue();
-
-			if (!tbl.contains("id"))
-			{
-				throw new RuntimeException("interface " + interfaceName + " has no id");
-			}
-
-			int interfaceId = (int) (long) tbl.getLong("id");
-			if (interfaceId < 0 || interfaceId > 0xffff)
-			{
-				throw new RuntimeException("interface id out of range for " + interfaceName);
-			}
-
-			for (var entry2 : tbl.entrySet())
-			{
-				var componentName = entry2.getKey();
-				if (componentName.equals("id"))
-				{
-					continue;
-				}
-
-				int id = (int) (long) entry2.getValue();
-				if (id < 0 || id > 0xffff)
-				{
-					throw new RuntimeException("component id out of range for " + componentName);
-				}
-
-				var fullName = interfaceName.toLowerCase(Locale.ENGLISH) + ":" + componentName.toLowerCase(Locale.ENGLISH);
-				int componentId = (interfaceId << 16) | id;
-
-				symbols.put(fullName, componentId);
-			}
-		}
-
-		return symbols;
 	}
 }

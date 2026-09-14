@@ -58,7 +58,6 @@ guice-core = { module = "com.google.inject:guice", version.ref = "guice" }
 guice-testlib = { module = "com.google.inject.extensions:guice-testlib", version.ref = "guice" }
 guice-grapher = { module = "com.google.inject.extensions:guice-grapher", version.ref = "guice" }
 hamcrest = "org.hamcrest:hamcrest-library:1.3"
-javapoet = "com.squareup:javapoet:1.13.0"
 javax-inject = "javax.inject:javax.inject:1"
 jetbrains-annotations = "org.jetbrains:annotations:23.0.0"
 jna-core = "net.java.dev.jna:jna:5.9.0"
@@ -75,7 +74,6 @@ okhttp-mockserver = "com.squareup.okhttp3:mockwebserver:3.14.9"
 protobuf = "com.google.protobuf:protobuf-javalite:3.21.12"
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
-tomlj = "org.tomlj:tomlj:1.1.0"
 
 
 
