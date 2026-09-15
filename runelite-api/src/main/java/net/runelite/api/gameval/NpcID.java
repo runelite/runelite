@@ -70823,5 +70823,906 @@ public final class NpcID
 	 * &#60;col=00ffff&#62;Mud&#60;/col&#62;
 	 */
 	public static final int LANSCAPE_MOLE_STICKY_MUD_NPC = 16358;
+	public static final int TOB_DOG_STRANGER_MULTI = 16359;
+
+	/**
+	 * Mysterious Stranger
+	 */
+	public static final int TOB_DOG_STRANGER = 16360;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_YELLOW = 16361;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_BROWN = 16362;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_BLACK = 16363;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_TAN = 16364;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_WHITE = 16365;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_TOASTED = 16366;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_CHOCO = 16367;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_MERLE = 16368;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_BW = 16369;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_TAN = 16370;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_YELLOW = 16371;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_TOASTED = 16372;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_TAN = 16373;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_GREY = 16374;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_CREAM = 16375;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_BW = 16376;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_GREY = 16377;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_CHOCO = 16378;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_FAWN = 16379;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_BROWN = 16380;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_BLACK = 16381;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_WHITE = 16382;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_YELLOW = 16383;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_BLACK = 16384;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_CHOCO = 16385;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_MERLE = 16386;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_TOASTED = 16387;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_TAN = 16388;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_WHITE = 16389;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_TOASTED = 16390;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_RED = 16391;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_WHITE = 16392;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_BLACK = 16393;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_BROWN = 16394;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_WHITE = 16395;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_YELLOW = 16396;
+	public static final int CHIHUAHUA_WANDER_MULTI = 16397;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_WANDER = 16398;
+	public static final int COLLIE_WANDER_MULTI = 16399;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_WANDER = 16400;
+	public static final int CORGI_WANDER_MULTI = 16401;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_WANDER = 16402;
+	public static final int GREYHOUND_WANDER_MULTI = 16403;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_WANDER = 16404;
+	public static final int SAMOYED_WANDER_MULTI = 16405;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_WANDER = 16406;
+	public static final int SHEPARD_WANDER_MULTI = 16407;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_WANDER = 16408;
+	public static final int SHIBA_WANDER_MULTI = 16409;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_WANDER = 16410;
+	public static final int HUSKY_WANDER_MULTI = 16411;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_WANDER = 16412;
+	public static final int YORKIE_WANDER_MULTI = 16413;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_WANDER = 16414;
+	public static final int CHIHUAHUA_SHELTER_MULTI = 16415;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_SHELTER = 16416;
+	public static final int COLLIE_SHELTER_MULTI = 16417;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_SHELTER = 16418;
+	public static final int CORGI_SHELTER_MULTI = 16419;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_SHELTER = 16420;
+	public static final int GREYHOUND_SHELTER_MULTI = 16421;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_SHELTER = 16422;
+	public static final int SAMOYED_SHELTER_MULTI = 16423;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_SHELTER = 16424;
+	public static final int SHEPARD_SHELTER_MULTI = 16425;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_SHELTER = 16426;
+	public static final int SHIBA_SHELTER_MULTI = 16427;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_SHELTER = 16428;
+	public static final int HUSKY_SHELTER_MULTI = 16429;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_SHELTER = 16430;
+	public static final int YORKIE_SHELTER_MULTI = 16431;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_SHELTER = 16432;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_YELLOW_PUPPY = 16433;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_CHOCO_PUPPY = 16434;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_BLACK_PUPPY = 16435;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_BW_PUPPY = 16436;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_GREY_PUPPY = 16437;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_CHOCO_PUPPY = 16438;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_TAN_PUPPY = 16439;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_WHITE_PUPPY = 16440;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_TOASTED_PUPPY = 16441;
+
+	/**
+	 * Border Collie puppy
+	 */
+	public static final int COLLIE_CHOCO_PUPPY = 16442;
+
+	/**
+	 * Border Collie puppy
+	 */
+	public static final int COLLIE_MERLE_PUPPY = 16443;
+
+	/**
+	 * Border Collie puppy
+	 */
+	public static final int COLLIE_BW_PUPPY = 16444;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_TAN_PUPPY = 16445;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_YELLOW_PUPPY = 16446;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_TOASTED_PUPPY = 16447;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_TAN_PUPPY = 16448;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_GREY_PUPPY = 16449;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_CREAM_PUPPY = 16450;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_FAWN_PUPPY = 16451;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_BROWN_PUPPY = 16452;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_BLACK_PUPPY = 16453;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_WHITE_PUPPY = 16454;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_YELLOW_PUPPY = 16455;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_BLACK_PUPPY = 16456;
+
+	/**
+	 * Bernese Mountain Dog puppy
+	 */
+	public static final int SHEPARD_CHOCO_PUPPY = 16457;
+
+	/**
+	 * Bernese Mountain Dog puppy
+	 */
+	public static final int SHEPARD_MERLE_PUPPY = 16458;
+
+	/**
+	 * Bernese Mountain Dog puppy
+	 */
+	public static final int SHEPARD_TOASTED_PUPPY = 16459;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_TAN_PUPPY = 16460;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_WHITE_PUPPY = 16461;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_TOASTED_PUPPY = 16462;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_RED_PUPPY = 16463;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_WHITE_PUPPY = 16464;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_BLACK_PUPPY = 16465;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_BROWN_PUPPY = 16466;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_WHITE_PUPPY = 16467;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_YELLOW_PUPPY = 16468;
+	public static final int CRAB_MAINCRAB = 16469;
+	public static final int CRAB_MAINCRAB_PRACTISING = 16470;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_START = 16471;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_BLUSHING = 16472;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_START_NOMOVE = 16473;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_END = 16474;
+
+	/**
+	 * Floatsam
+	 */
+	public static final int CRAB_FLOATSAM_1 = 16475;
+
+	/**
+	 * Floatsam
+	 */
+	public static final int CRAB_FLOATSAM_2 = 16476;
+
+	/**
+	 * Floatsam
+	 */
+	public static final int CRAB_FLOATSAM_3 = 16477;
+	public static final int CRAB_FLOATSAM_MULTI = 16478;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_CUTSCENE = 16479;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_CRAB_CUTSCENE = 16480;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_CRAB_CUTSCENE_ENDCRAB = 16481;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_CRAB_CUTSCENE_DANCING = 16482;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_BANDCRAB = 16483;
+	public static final int CRAB_SHYCRAB = 16484;
+
+	/**
+	 * 'Crab'
+	 */
+	public static final int CRAB_PENGUIN = 16485;
+
+	/**
+	 * Talia
+	 */
+	public static final int DOGQ_TALIA = 16486;
+	public static final int DOGQ_CHASE_MULTI = 16487;
+
+	/**
+	 * Chase
+	 */
+	public static final int DOGQ_CHASE = 16488;
+
+	/**
+	 * Chase
+	 */
+	public static final int DOGQ_CHASE_POST = 16489;
+
+	/**
+	 * Sky
+	 */
+	public static final int DOGQ_BLACK_LAB = 16490;
+	public static final int DOGQ_VARROCK_GUARD_MULTI = 16491;
+	public static final int DOGQ_VARROCK_GUARD_MULTI_POST = 16492;
+
+	/**
+	 * Guard
+	 */
+	public static final int DOGQ_VARROCK_GUARD = 16493;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_PREQUEST = 16494;
+
+	/**
+	 * Guard dog
+	 */
+	public static final int DOG_STRAY_CLEAN = 16495;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST = 16496;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_DEN = 16497;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_GOBLIN = 16498;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_GOBLIN_DURING = 16499;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_GOBLIN_POST = 16500;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_OUTLAW = 16501;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_OUTLAW_POST = 16502;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_FOLLOWER = 16503;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_DOG_STRAY = 16504;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_STRAY_DOG_FOLLOWER = 16505;
+	public static final int DOGQ_PUPPY_ONE_MULTI = 16506;
+	public static final int DOGQ_PUPPY_TWO_MULTI = 16507;
+	public static final int DOGQ_PUPPY_THREE_MULTI = 16508;
+	public static final int DOGQ_PUPPY_ONE_MULTI_DEN = 16509;
+	public static final int DOGQ_PUPPY_TWO_MULTI_DEN = 16510;
+	public static final int DOGQ_PUPPY_THREE_MULTI_DEN = 16511;
+	public static final int DOGQ_PUPPY_ONE_MULTI_SHELTER = 16512;
+	public static final int DOGQ_PUPPY_TWO_MULTI_SHELTER = 16513;
+	public static final int DOGQ_PUPPY_THREE_MULTI_SHELTER = 16514;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_ONE = 16515;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_TWO = 16516;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_THREE = 16517;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int DOGQ_PUPPY_ONE_NOOP = 16518;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int DOGQ_PUPPY_TWO_NOOP = 16519;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int DOGQ_PUPPY_THREE_NOOP = 16520;
+	public static final int DOGQ_GOBLIN_PICKLENOSE_MULTI = 16521;
+	public static final int DOGQ_GOBLIN_TOETALLER_MULTI = 16522;
+
+	/**
+	 * Picklenose
+	 */
+	public static final int DOGQ_GOBLIN_PICKLENOSE = 16523;
+
+	/**
+	 * Toetaller
+	 */
+	public static final int DOGQ_GOBLIN_TOETALLER = 16524;
+
+	/**
+	 * Banker
+	 */
+	public static final int DOGQ_BANKER = 16525;
+
+	/**
+	 * Guard
+	 */
+	public static final int DOGQ_GE_GUARD = 16526;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int DOGQ_OUTLAW1 = 16527;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int DOGQ_OUTLAW2 = 16528;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_DOG_STRAY_COMBAT = 16529;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_DOG_STRAY_CUTSCENE = 16530;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_ONE_CUTSCENE = 16531;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_TWO_CUTSCENE = 16532;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_THREE_CUTSCENE = 16533;
+
+	/**
+	 * Picklenose
+	 */
+	public static final int DOGQ_GOBLIN_CUTSCENE = 16534;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int DOGQ_OUTLAW1_CUTSCENE = 16535;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int DOGQ_OUTLAW2_CUTSCENE = 16536;
+
+	/**
+	 * Talia
+	 */
+	public static final int DOGQ_TALIA_CUTSCENE = 16537;
+
+	/**
+	 * Chase
+	 */
+	public static final int DOGQ_CHASE_CUTSCENE = 16538;
+
+	/**
+	 * Guard
+	 */
+	public static final int DOGQ_VARROCK_GUARD_CUTSCENE = 16539;
+
+	/**
+	 * Labrador
+	 */
+	public static final int POH_LABRADOR_YELLOW = 16540;
+
+	/**
+	 * Labrador
+	 */
+	public static final int POH_LABRADOR_BROWN = 16541;
+
+	/**
+	 * Labrador
+	 */
+	public static final int POH_LABRADOR_BLACK = 16542;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int POH_CHIHUAHUA_TAN = 16543;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int POH_CHIHUAHUA_WHITE = 16544;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int POH_CHIHUAHUA_TOASTED = 16545;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int POH_COLLIE_CHOCO = 16546;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int POH_COLLIE_MERLE = 16547;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int POH_COLLIE_BW = 16548;
+
+	/**
+	 * Corgi
+	 */
+	public static final int POH_CORGI_TAN = 16549;
+
+	/**
+	 * Corgi
+	 */
+	public static final int POH_CORGI_YELLOW = 16550;
+
+	/**
+	 * Corgi
+	 */
+	public static final int POH_CORGI_TOASTED = 16551;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int POH_GREYHOUND_TAN = 16552;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int POH_GREYHOUND_GREY = 16553;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int POH_GREYHOUND_CREAM = 16554;
+
+	/**
+	 * Husky
+	 */
+	public static final int POH_HUSKY_BW = 16555;
+
+	/**
+	 * Husky
+	 */
+	public static final int POH_HUSKY_GREY = 16556;
+
+	/**
+	 * Husky
+	 */
+	public static final int POH_HUSKY_CHOCO = 16557;
+
+	/**
+	 * Pug
+	 */
+	public static final int POH_PUG_FAWN = 16558;
+
+	/**
+	 * Pug
+	 */
+	public static final int POH_PUG_BROWN = 16559;
+
+	/**
+	 * Pug
+	 */
+	public static final int POH_PUG_BLACK = 16560;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int POH_SAMOYED_WHITE = 16561;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int POH_SAMOYED_YELLOW = 16562;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int POH_SAMOYED_BLACK = 16563;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int POH_SHEPARD_CHOCO = 16564;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int POH_SHEPARD_MERLE = 16565;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int POH_SHEPARD_TOASTED = 16566;
+
+	/**
+	 * Shiba
+	 */
+	public static final int POH_SHIBA_TAN = 16567;
+
+	/**
+	 * Shiba
+	 */
+	public static final int POH_SHIBA_WHITE = 16568;
+
+	/**
+	 * Shiba
+	 */
+	public static final int POH_SHIBA_TOASTED = 16569;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int POH_SPANIEL_RED = 16570;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int POH_SPANIEL_WHITE = 16571;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int POH_SPANIEL_BLACK = 16572;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int POH_YORKIE_BROWN = 16573;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int POH_YORKIE_WHITE = 16574;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int POH_YORKIE_YELLOW = 16575;
 /* This file is automatically generated. Do not edit. */
 }

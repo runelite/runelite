@@ -65325,6 +65325,7 @@ public final class ItemID
 	 * Sigil of resilience
 	 */
 	public static final int SIGIL_OF_RESILIENCE_UNATTUNED = 25991;
+	public static final int CERT_SIGIL_OF_RESILIENCE_UNATTUNED = 25992;
 
 	/**
 	 * Sigil of consistency
@@ -65335,6 +65336,7 @@ public final class ItemID
 	 * Sigil of consistency
 	 */
 	public static final int SIGIL_OF_CONSISTENCY_UNATTUNED = 25994;
+	public static final int CERT_SIGIL_OF_CONSISTENCY_UNATTUNED = 25995;
 
 	/**
 	 * Sigil of the formidable fighter
@@ -65345,6 +65347,7 @@ public final class ItemID
 	 * Sigil of the formidable fighter
 	 */
 	public static final int SIGIL_OF_THE_FORMIDABLE_FIGHTER_UNATTUNED = 25997;
+	public static final int CERT_SIGIL_OF_THE_FORMIDABLE_FIGHTER_UNATTUNED = 25998;
 
 	/**
 	 * Sigil of the rigorous ranger
@@ -65355,6 +65358,7 @@ public final class ItemID
 	 * Sigil of the rigorous ranger
 	 */
 	public static final int SIGIL_OF_THE_RIGOROUS_RANGER_UNATTUNED = 26000;
+	public static final int CERT_SIGIL_OF_THE_RIGOROUS_RANGER_UNATTUNED = 26001;
 
 	/**
 	 * Sigil of the meticulous mage
@@ -65365,6 +65369,7 @@ public final class ItemID
 	 * Sigil of the meticulous mage
 	 */
 	public static final int SIGIL_OF_THE_METICULOUS_MAGE_UNATTUNED = 26003;
+	public static final int CERT_SIGIL_OF_THE_METICULOUS_MAGE_UNATTUNED = 26004;
 
 	/**
 	 * Sigil of fortification
@@ -65375,6 +65380,7 @@ public final class ItemID
 	 * Sigil of fortification
 	 */
 	public static final int SIGIL_OF_FORTIFICATION_UNATTUNED = 26006;
+	public static final int CERT_SIGIL_OF_FORTIFICATION_UNATTUNED = 26007;
 
 	/**
 	 * Sigil of barrows
@@ -65385,6 +65391,7 @@ public final class ItemID
 	 * Sigil of barrows
 	 */
 	public static final int SIGIL_OF_BARROWS_UNATTUNED = 26009;
+	public static final int CERT_SIGIL_OF_BARROWS_UNATTUNED = 26010;
 
 	/**
 	 * Sigil of deft strikes
@@ -65395,6 +65402,7 @@ public final class ItemID
 	 * Sigil of deft strikes
 	 */
 	public static final int SIGIL_OF_DEFT_STRIKES_UNATTUNED = 26012;
+	public static final int CERT_SIGIL_OF_DEFT_STRIKES_UNATTUNED = 26013;
 
 	/**
 	 * Sigil of freedom
@@ -65405,6 +65413,7 @@ public final class ItemID
 	 * Sigil of freedom
 	 */
 	public static final int SIGIL_OF_FREEDOM_UNATTUNED = 26015;
+	public static final int CERT_SIGIL_OF_FREEDOM_UNATTUNED = 26016;
 
 	/**
 	 * Sigil of enhanced harvest
@@ -65415,6 +65424,7 @@ public final class ItemID
 	 * Sigil of enhanced harvest
 	 */
 	public static final int SIGIL_OF_ENHANCED_HARVEST_UNATTUNED = 26018;
+	public static final int CERT_SIGIL_OF_ENHANCED_HARVEST_UNATTUNED = 26019;
 
 	/**
 	 * Sigil of storage
@@ -65425,6 +65435,7 @@ public final class ItemID
 	 * Sigil of storage
 	 */
 	public static final int SIGIL_OF_STORAGE_UNATTUNED = 26021;
+	public static final int CERT_SIGIL_OF_STORAGE_UNATTUNED = 26022;
 
 	/**
 	 * Sigil of the smith
@@ -65435,6 +65446,7 @@ public final class ItemID
 	 * Sigil of the smith
 	 */
 	public static final int SIGIL_OF_THE_SMITH_UNATTUNED = 26024;
+	public static final int CERT_SIGIL_OF_THE_SMITH_UNATTUNED = 26025;
 
 	/**
 	 * Sigil of the alchemist
@@ -65445,6 +65457,7 @@ public final class ItemID
 	 * Sigil of the alchemist
 	 */
 	public static final int SIGIL_OF_THE_ALCHEMIST_UNATTUNED = 26027;
+	public static final int CERT_SIGIL_OF_THE_ALCHEMIST_UNATTUNED = 26028;
 
 	/**
 	 * Sigil of the fletcher
@@ -65455,6 +65468,7 @@ public final class ItemID
 	 * Sigil of the fletcher
 	 */
 	public static final int SIGIL_OF_THE_FLETCHER_UNATTUNED = 26030;
+	public static final int CERT_SIGIL_OF_THE_FLETCHER_UNATTUNED = 26031;
 
 	/**
 	 * Sigil of the chef
@@ -65465,6 +65479,7 @@ public final class ItemID
 	 * Sigil of the chef
 	 */
 	public static final int SIGIL_OF_THE_CHEF_UNATTUNED = 26033;
+	public static final int CERT_SIGIL_OF_THE_CHEF_UNATTUNED = 26034;
 
 	/**
 	 * Sigil of the craftsman
@@ -65475,6 +65490,7 @@ public final class ItemID
 	 * Sigil of the craftsman
 	 */
 	public static final int SIGIL_OF_THE_CRAFTER_UNATTUNED = 26036;
+	public static final int CERT_SIGIL_OF_THE_CRAFTER_UNATTUNED = 26037;
 
 	/**
 	 * Sigil of the abyss
@@ -65485,6 +65501,7 @@ public final class ItemID
 	 * Sigil of the abyss
 	 */
 	public static final int SIGIL_OF_THE_ABYSS_UNATTUNED = 26039;
+	public static final int CERT_SIGIL_OF_THE_ABYSS_UNATTUNED = 26040;
 
 	/**
 	 * Sigil of stamina
@@ -65495,6 +65512,7 @@ public final class ItemID
 	 * Sigil of stamina
 	 */
 	public static final int SIGIL_OF_STAMINA_UNATTUNED = 26042;
+	public static final int CERT_SIGIL_OF_STAMINA_UNATTUNED = 26043;
 
 	/**
 	 * Sigil of the potion master
@@ -65505,6 +65523,7 @@ public final class ItemID
 	 * Sigil of the potion master
 	 */
 	public static final int SIGIL_OF_THE_POTION_MASTER_UNATTUNED = 26045;
+	public static final int CERT_SIGIL_OF_THE_POTION_MASTER_UNATTUNED = 26046;
 
 	/**
 	 * Sigil of the eternal jeweller
@@ -65515,6 +65534,7 @@ public final class ItemID
 	 * Sigil of the eternal jeweller
 	 */
 	public static final int SIGIL_OF_THE_ETERNAL_JEWELLER_UNATTUNED = 26048;
+	public static final int CERT_SIGIL_OF_THE_ETERNAL_JEWELLER_UNATTUNED = 26049;
 
 	/**
 	 * Sigil of the treasure hunter
@@ -65525,6 +65545,7 @@ public final class ItemID
 	 * Sigil of the treasure hunter
 	 */
 	public static final int SIGIL_OF_THE_TREASURE_HUNTER_UNATTUNED = 26051;
+	public static final int CERT_SIGIL_OF_THE_TREASURE_HUNTER_UNATTUNED = 26052;
 
 	/**
 	 * Sigil of mobility
@@ -65535,6 +65556,7 @@ public final class ItemID
 	 * Sigil of mobility
 	 */
 	public static final int SIGIL_OF_MOBILITY_UNATTUNED = 26054;
+	public static final int CERT_SIGIL_OF_MOBILITY_UNATTUNED = 26055;
 
 	/**
 	 * Sigil of exaggeration
@@ -65545,6 +65567,7 @@ public final class ItemID
 	 * Sigil of exaggeration
 	 */
 	public static final int SIGIL_OF_EXAGGERATION_UNATTUNED = 26057;
+	public static final int CERT_SIGIL_OF_EXAGGERATION_UNATTUNED = 26058;
 
 	/**
 	 * Sigil of specialised strikes
@@ -65555,6 +65578,7 @@ public final class ItemID
 	 * Sigil of specialised strikes
 	 */
 	public static final int SIGIL_OF_SPECIALISED_STRIKES_UNATTUNED = 26060;
+	public static final int CERT_SIGIL_OF_SPECIALISED_STRIKES_UNATTUNED = 26061;
 
 	/**
 	 * Sigil of the porcupine
@@ -65565,6 +65589,7 @@ public final class ItemID
 	 * Sigil of the porcupine
 	 */
 	public static final int SIGIL_OF_THE_PORCUPINE_UNATTUNED = 26063;
+	public static final int CERT_SIGIL_OF_THE_PORCUPINE_UNATTUNED = 26064;
 
 	/**
 	 * Sigil of binding
@@ -65575,6 +65600,7 @@ public final class ItemID
 	 * Sigil of binding
 	 */
 	public static final int SIGIL_OF_BINDING_UNATTUNED = 26066;
+	public static final int CERT_SIGIL_OF_BINDING_UNATTUNED = 26067;
 
 	/**
 	 * Sigil of escaping
@@ -65585,6 +65611,7 @@ public final class ItemID
 	 * Sigil of escaping
 	 */
 	public static final int SIGIL_OF_ESCAPING_UNATTUNED = 26069;
+	public static final int CERT_SIGIL_OF_ESCAPING_UNATTUNED = 26070;
 
 	/**
 	 * Sigil of the ruthless ranger
@@ -65595,6 +65622,7 @@ public final class ItemID
 	 * Sigil of the ruthless ranger
 	 */
 	public static final int SIGIL_OF_THE_RUTHLESS_RANGER_UNATTUNED = 26072;
+	public static final int CERT_SIGIL_OF_THE_RUTHLESS_RANGER_UNATTUNED = 26073;
 
 	/**
 	 * Sigil of the feral fighter
@@ -65605,6 +65633,7 @@ public final class ItemID
 	 * Sigil of the feral fighter
 	 */
 	public static final int SIGIL_OF_THE_FERAL_FIGHTER_UNATTUNED = 26075;
+	public static final int CERT_SIGIL_OF_THE_FERAL_FIGHTER_UNATTUNED = 26076;
 
 	/**
 	 * Sigil of the menacing mage
@@ -65615,6 +65644,7 @@ public final class ItemID
 	 * Sigil of the menacing mage
 	 */
 	public static final int SIGIL_OF_THE_MENACING_MAGE_UNATTUNED = 26078;
+	public static final int CERT_SIGIL_OF_THE_MENACING_MAGE_UNATTUNED = 26079;
 
 	/**
 	 * Sigil of prosperity
@@ -65625,6 +65655,7 @@ public final class ItemID
 	 * Sigil of prosperity
 	 */
 	public static final int SIGIL_OF_PROSPERITY_UNATTUNED = 26081;
+	public static final int CERT_SIGIL_OF_PROSPERITY_UNATTUNED = 26082;
 
 	/**
 	 * Sigil of the dwarves
@@ -65635,6 +65666,7 @@ public final class ItemID
 	 * Sigil of the dwarves
 	 */
 	public static final int SIGIL_OF_THE_DWARVES_UNATTUNED = 26084;
+	public static final int CERT_SIGIL_OF_THE_DWARVES_UNATTUNED = 26085;
 
 	/**
 	 * Sigil of the elves
@@ -65645,6 +65677,7 @@ public final class ItemID
 	 * Sigil of the elves
 	 */
 	public static final int SIGIL_OF_THE_ELVES_UNATTUNED = 26087;
+	public static final int CERT_SIGIL_OF_THE_ELVES_UNATTUNED = 26088;
 
 	/**
 	 * Sigil of the barbarians
@@ -65655,6 +65688,7 @@ public final class ItemID
 	 * Sigil of the barbarians
 	 */
 	public static final int SIGIL_OF_THE_BARBARIANS_UNATTUNED = 26090;
+	public static final int CERT_SIGIL_OF_THE_BARBARIANS_UNATTUNED = 26091;
 
 	/**
 	 * Sigil of the gnomes
@@ -65665,6 +65699,7 @@ public final class ItemID
 	 * Sigil of the gnomes
 	 */
 	public static final int SIGIL_OF_THE_GNOMES_UNATTUNED = 26093;
+	public static final int CERT_SIGIL_OF_THE_GNOMES_UNATTUNED = 26094;
 
 	/**
 	 * Sigil of nature
@@ -65675,6 +65710,7 @@ public final class ItemID
 	 * Sigil of nature
 	 */
 	public static final int SIGIL_OF_NATURE_UNATTUNED = 26096;
+	public static final int CERT_SIGIL_OF_NATURE_UNATTUNED = 26097;
 
 	/**
 	 * Sigil of devotion
@@ -65685,6 +65721,7 @@ public final class ItemID
 	 * Sigil of devotion
 	 */
 	public static final int SIGIL_OF_DEVOTION_UNATTUNED = 26099;
+	public static final int CERT_SIGIL_OF_DEVOTION_UNATTUNED = 26100;
 
 	/**
 	 * Sigil of the forager
@@ -65695,6 +65732,7 @@ public final class ItemID
 	 * Sigil of the forager
 	 */
 	public static final int SIGIL_OF_THE_FORAGER_UNATTUNED = 26102;
+	public static final int CERT_SIGIL_OF_THE_FORAGER_UNATTUNED = 26103;
 
 	/**
 	 * Sigil of garments
@@ -65705,6 +65743,7 @@ public final class ItemID
 	 * Sigil of garments
 	 */
 	public static final int SIGIL_OF_GARMENTS_UNATTUNED = 26105;
+	public static final int CERT_SIGIL_OF_GARMENTS_UNATTUNED = 26106;
 
 	/**
 	 * Sigil of slaughter
@@ -65715,6 +65754,7 @@ public final class ItemID
 	 * Sigil of slaughter
 	 */
 	public static final int SIGIL_OF_SLAUGHTER_UNATTUNED = 26108;
+	public static final int CERT_SIGIL_OF_SLAUGHTER_UNATTUNED = 26109;
 
 	/**
 	 * Sigil of the fortune farmer
@@ -65725,6 +65765,7 @@ public final class ItemID
 	 * Sigil of the fortune farmer
 	 */
 	public static final int SIGIL_OF_THE_FORTUNE_FARMER_UNATTUNED = 26111;
+	public static final int CERT_SIGIL_OF_THE_FORTUNE_FARMER_UNATTUNED = 26112;
 
 	/**
 	 * Sigil of versatility
@@ -65735,6 +65776,7 @@ public final class ItemID
 	 * Sigil of versatility
 	 */
 	public static final int SIGIL_OF_VERSATILITY_UNATTUNED = 26114;
+	public static final int CERT_SIGIL_OF_VERSATILITY_UNATTUNED = 26115;
 
 	/**
 	 * Sigil of the serpent
@@ -65745,6 +65787,7 @@ public final class ItemID
 	 * Sigil of the serpent
 	 */
 	public static final int SIGIL_OF_THE_SERPENT_UNATTUNED = 26117;
+	public static final int CERT_SIGIL_OF_THE_SERPENT_UNATTUNED = 26118;
 
 	/**
 	 * Sigil of supreme stamina
@@ -65755,6 +65798,7 @@ public final class ItemID
 	 * Sigil of supreme stamina
 	 */
 	public static final int SIGIL_OF_SUPREME_STAMINA_UNATTUNED = 26120;
+	public static final int CERT_SIGIL_OF_SUPREME_STAMINA_UNATTUNED = 26121;
 
 	/**
 	 * Sigil of preservation
@@ -65765,6 +65809,7 @@ public final class ItemID
 	 * Sigil of preservation
 	 */
 	public static final int SIGIL_OF_PRESERVATION_UNATTUNED = 26123;
+	public static final int CERT_SIGIL_OF_PRESERVATION_UNATTUNED = 26124;
 
 	/**
 	 * Sigil of finality
@@ -65775,6 +65820,7 @@ public final class ItemID
 	 * Sigil of finality
 	 */
 	public static final int SIGIL_OF_FINALITY_UNATTUNED = 26126;
+	public static final int CERT_SIGIL_OF_FINALITY_UNATTUNED = 26127;
 
 	/**
 	 * Sigil of pious protection
@@ -65785,6 +65831,7 @@ public final class ItemID
 	 * Sigil of pious protection
 	 */
 	public static final int SIGIL_OF_PIOUS_PROTECTION_UNATTUNED = 26129;
+	public static final int CERT_SIGIL_OF_PIOUS_PROTECTION_UNATTUNED = 26130;
 
 	/**
 	 * Sigil of aggression
@@ -65795,6 +65842,7 @@ public final class ItemID
 	 * Sigil of aggression
 	 */
 	public static final int SIGIL_OF_AGGRESSION_UNATTUNED = 26132;
+	public static final int CERT_SIGIL_OF_AGGRESSION_UNATTUNED = 26133;
 
 	/**
 	 * Sigil of rampage
@@ -65805,6 +65853,7 @@ public final class ItemID
 	 * Sigil of rampage
 	 */
 	public static final int SIGIL_OF_RAMPAGE_UNATTUNED = 26135;
+	public static final int CERT_SIGIL_OF_RAMPAGE_UNATTUNED = 26136;
 
 	/**
 	 * Sigil of the skiller
@@ -65815,6 +65864,7 @@ public final class ItemID
 	 * Sigil of the skiller
 	 */
 	public static final int SIGIL_OF_THE_SKILLER_UNATTUNED = 26138;
+	public static final int CERT_SIGIL_OF_THE_SKILLER_UNATTUNED = 26139;
 
 	/**
 	 * Sigil of remote storage
@@ -65825,6 +65875,7 @@ public final class ItemID
 	 * Sigil of remote storage
 	 */
 	public static final int SIGIL_OF_REMOTE_STORAGE_UNATTUNED = 26141;
+	public static final int CERT_SIGIL_OF_REMOTE_STORAGE_UNATTUNED = 26142;
 
 	/**
 	 * Sigil of last recall
@@ -65835,6 +65886,7 @@ public final class ItemID
 	 * Sigil of last recall
 	 */
 	public static final int SIGIL_OF_LAST_RECALL_UNATTUNED = 26144;
+	public static final int CERT_SIGIL_OF_LAST_RECALL_UNATTUNED = 26145;
 
 	/**
 	 * Sigil of the guardian angel
@@ -65845,6 +65897,7 @@ public final class ItemID
 	 * Sigil of the guardian angel
 	 */
 	public static final int SIGIL_OF_THE_GUARDIAN_ANGEL_UNATTUNED = 26147;
+	public static final int CERT_SIGIL_OF_THE_GUARDIAN_ANGEL_UNATTUNED = 26148;
 
 	/**
 	 * Tuna
@@ -72761,6 +72814,7 @@ public final class ItemID
 	 * Sigil of sustenance
 	 */
 	public static final int SIGIL_OF_SUSTENANCE_UNATTUNED = 28478;
+	public static final int CERT_SIGIL_OF_SUSTENANCE_UNATTUNED = 28479;
 
 	/**
 	 * Sigil of hoarding
@@ -72771,6 +72825,7 @@ public final class ItemID
 	 * Sigil of hoarding
 	 */
 	public static final int SIGIL_OF_HOARDING_UNATTUNED = 28481;
+	public static final int CERT_SIGIL_OF_HOARDING_UNATTUNED = 28482;
 
 	/**
 	 * Sigil of the alchemaniac
@@ -72781,6 +72836,7 @@ public final class ItemID
 	 * Sigil of the alchemaniac
 	 */
 	public static final int SIGIL_OF_THE_ALCHEMANIAC_UNATTUNED = 28484;
+	public static final int CERT_SIGIL_OF_THE_ALCHEMANIAC_UNATTUNED = 28485;
 
 	/**
 	 * Sigil of the hunter
@@ -72791,6 +72847,7 @@ public final class ItemID
 	 * Sigil of the hunter
 	 */
 	public static final int SIGIL_OF_THE_HUNTER_UNATTUNED = 28487;
+	public static final int CERT_SIGIL_OF_THE_HUNTER_UNATTUNED = 28488;
 
 	/**
 	 * Sigil of resistance
@@ -72801,6 +72858,7 @@ public final class ItemID
 	 * Sigil of resistance
 	 */
 	public static final int SIGIL_OF_RESISTANCE_UNATTUNED = 28490;
+	public static final int CERT_SIGIL_OF_RESISTANCE_UNATTUNED = 28491;
 
 	/**
 	 * Sigil of agile fortune
@@ -72811,6 +72869,7 @@ public final class ItemID
 	 * Sigil of agile fortune
 	 */
 	public static final int SIGIL_OF_AGILE_FORTUNE_UNATTUNED = 28493;
+	public static final int CERT_SIGIL_OF_AGILE_FORTUNE_UNATTUNED = 28494;
 
 	/**
 	 * Sigil of the food master
@@ -72821,6 +72880,7 @@ public final class ItemID
 	 * Sigil of the food master
 	 */
 	public static final int SIGIL_OF_THE_FOOD_MASTER_UNATTUNED = 28496;
+	public static final int CERT_SIGIL_OF_THE_FOOD_MASTER_UNATTUNED = 28497;
 
 	/**
 	 * Sigil of the well fed
@@ -72831,6 +72891,7 @@ public final class ItemID
 	 * Sigil of the well fed
 	 */
 	public static final int SIGIL_OF_THE_WELL_FED_UNATTUNED = 28499;
+	public static final int CERT_SIGIL_OF_THE_WELL_FED_UNATTUNED = 28500;
 
 	/**
 	 * Sigil of the infernal chef
@@ -72841,6 +72902,7 @@ public final class ItemID
 	 * Sigil of the infernal chef
 	 */
 	public static final int SIGIL_OF_THE_INFERNAL_CHEF_UNATTUNED = 28502;
+	public static final int CERT_SIGIL_OF_THE_INFERNAL_CHEF_UNATTUNED = 28503;
 
 	/**
 	 * Sigil of the infernal smith
@@ -72851,6 +72913,7 @@ public final class ItemID
 	 * Sigil of the infernal smith
 	 */
 	public static final int SIGIL_OF_THE_INFERNAL_SMITH_UNATTUNED = 28505;
+	public static final int CERT_SIGIL_OF_THE_INFERNAL_SMITH_UNATTUNED = 28506;
 
 	/**
 	 * Sigil of the lightbearer
@@ -72861,6 +72924,7 @@ public final class ItemID
 	 * Sigil of the lightbearer
 	 */
 	public static final int SIGIL_OF_THE_LIGHTBEARER_UNATTUNED = 28508;
+	public static final int CERT_SIGIL_OF_THE_LIGHTBEARER_UNATTUNED = 28509;
 
 	/**
 	 * Sigil of the bloodhound
@@ -72871,6 +72935,7 @@ public final class ItemID
 	 * Sigil of the bloodhound
 	 */
 	public static final int SIGIL_OF_THE_BLOODHOUND_UNATTUNED = 28511;
+	public static final int CERT_SIGIL_OF_THE_BLOODHOUND_UNATTUNED = 28512;
 
 	/**
 	 * Sigil of precision
@@ -72881,6 +72946,7 @@ public final class ItemID
 	 * Sigil of precision
 	 */
 	public static final int SIGIL_OF_PRECISION_UNATTUNED = 28514;
+	public static final int CERT_SIGIL_OF_PRECISION_UNATTUNED = 28515;
 
 	/**
 	 * Sigil of the augmented thrall
@@ -72891,6 +72957,7 @@ public final class ItemID
 	 * Sigil of the augmented thrall
 	 */
 	public static final int SIGIL_OF_THE_AUGMENTED_THRALL_UNATTUNED = 28517;
+	public static final int CERT_SIGIL_OF_THE_AUGMENTED_THRALL_UNATTUNED = 28518;
 
 	/**
 	 * Sigil of faith
@@ -72901,6 +72968,7 @@ public final class ItemID
 	 * Sigil of faith
 	 */
 	public static final int SIGIL_OF_FAITH_UNATTUNED = 28520;
+	public static final int CERT_SIGIL_OF_FAITH_UNATTUNED = 28521;
 
 	/**
 	 * Sigil of titanium
@@ -72911,6 +72979,7 @@ public final class ItemID
 	 * Sigil of titanium
 	 */
 	public static final int SIGIL_OF_TITANIUM_UNATTUNED = 28523;
+	public static final int CERT_SIGIL_OF_TITANIUM_UNATTUNED = 28524;
 
 	/**
 	 * Sigil of the ninja
@@ -72921,6 +72990,7 @@ public final class ItemID
 	 * Sigil of the ninja
 	 */
 	public static final int SIGIL_OF_THE_NINJA_UNATTUNED = 28526;
+	public static final int CERT_SIGIL_OF_THE_NINJA_UNATTUNED = 28527;
 
 	/**
 	 * Sigil of woodcraft
@@ -72931,6 +73001,7 @@ public final class ItemID
 	 * Sigil of woodcraft
 	 */
 	public static final int SIGIL_OF_WOODCRAFT_UNATTUNED = 28529;
+	public static final int CERT_SIGIL_OF_WOODCRAFT_UNATTUNED = 28530;
 
 	/**
 	 * Corrupted voidwaker
@@ -75842,6 +75913,7 @@ public final class ItemID
 	 * Sigil of meticulousness
 	 */
 	public static final int SIGIL_OF_METICULOUSNESS_UNATTUNED = 29649;
+	public static final int CERT_SIGIL_OF_METICULOUSNESS_UNATTUNED = 29650;
 
 	/**
 	 * Sigil of revoked limitation
@@ -75852,6 +75924,7 @@ public final class ItemID
 	 * Sigil of revoked limitation
 	 */
 	public static final int SIGIL_OF_REVOKED_LIMITATION_UNATTUNED = 29652;
+	public static final int CERT_SIGIL_OF_REVOKED_LIMITATION_UNATTUNED = 29653;
 
 	/**
 	 * Sigil of the rampart
@@ -75862,6 +75935,7 @@ public final class ItemID
 	 * Sigil of the rampart
 	 */
 	public static final int SIGIL_OF_RAMPART_UNATTUNED = 29655;
+	public static final int CERT_SIGIL_OF_RAMPART_UNATTUNED = 29656;
 
 	/**
 	 * Sigil of deception
@@ -75872,6 +75946,7 @@ public final class ItemID
 	 * Sigil of deception
 	 */
 	public static final int SIGIL_OF_DECEPTION_UNATTUNED = 29658;
+	public static final int CERT_SIGIL_OF_DECEPTION_UNATTUNED = 29659;
 
 	/**
 	 * Sigil of litheness
@@ -75882,6 +75957,7 @@ public final class ItemID
 	 * Sigil of litheness
 	 */
 	public static final int SIGIL_OF_LITHE_UNATTUNED = 29661;
+	public static final int CERT_SIGIL_OF_LITHE_UNATTUNED = 29662;
 
 	/**
 	 * Sigil of the adroit
@@ -75892,6 +75968,7 @@ public final class ItemID
 	 * Sigil of the adroit
 	 */
 	public static final int SIGIL_OF_ADROIT_UNATTUNED = 29664;
+	public static final int CERT_SIGIL_OF_ADROIT_UNATTUNED = 29665;
 
 	/**
 	 * Sigil of onslaught
@@ -75902,6 +75979,7 @@ public final class ItemID
 	 * Sigil of onslaught
 	 */
 	public static final int SIGIL_OF_ONSLAUGHT_UNATTUNED = 29667;
+	public static final int CERT_SIGIL_OF_ONSLAUGHT_UNATTUNED = 29668;
 
 	/**
 	 * Sigil of restoration
@@ -75912,6 +75990,7 @@ public final class ItemID
 	 * Sigil of restoration
 	 */
 	public static final int SIGIL_OF_RESTORATION_UNATTUNED = 29670;
+	public static final int CERT_SIGIL_OF_RESTORATION_UNATTUNED = 29671;
 
 	/**
 	 * Sigil of the swashbuckler
@@ -75922,6 +76001,7 @@ public final class ItemID
 	 * Sigil of the swashbuckler
 	 */
 	public static final int SIGIL_OF_SWASHBUCKLER_UNATTUNED = 29673;
+	public static final int CERT_SIGIL_OF_SWASHBUCKLER_UNATTUNED = 29674;
 
 	/**
 	 * Sigil of the gunslinger
@@ -75932,6 +76012,7 @@ public final class ItemID
 	 * Sigil of the gunslinger
 	 */
 	public static final int SIGIL_OF_GUNSLINGER_UNATTUNED = 29676;
+	public static final int CERT_SIGIL_OF_GUNSLINGER_UNATTUNED = 29677;
 
 	/**
 	 * Sigil of arcane swiftness
@@ -75942,6 +76023,7 @@ public final class ItemID
 	 * Sigil of arcane swiftness
 	 */
 	public static final int SIGIL_OF_ARCANE_SWIFTNESS_UNATTUNED = 29679;
+	public static final int CERT_SIGIL_OF_ARCANE_SWIFTNESS_UNATTUNED = 29680;
 
 	/**
 	 * Null
@@ -86096,6 +86178,11 @@ public final class ItemID
 	public static final int XMAS25_SERVING_PLATTER = 32926;
 
 	/**
+	 * Null
+	 */
+	public static final int PLACEHOLDER_XMAS25_SERVING_PLATTER = 32927;
+
+	/**
 	 * Lovley jubbly bib
 	 */
 	public static final int XMAS25_BIB = 32928;
@@ -87238,6 +87325,7 @@ public final class ItemID
 	 * Uncharged toxic trident (o)
 	 */
 	public static final int TOXIC_TOTS_UNCHARGED_ORN = 33316;
+	public static final int CERT_TOXIC_TOTS_UNCHARGED_ORN = 33317;
 
 	/**
 	 * Trident of the Swamp (e) (o)
@@ -87248,6 +87336,7 @@ public final class ItemID
 	 * Uncharged toxic trident (e) (o)
 	 */
 	public static final int TOXIC_TOTS_I_UNCHARGED_ORN = 33320;
+	public static final int CERT_TOXIC_TOTS_I_UNCHARGED_ORN = 33321;
 
 	/**
 	 * Trident of the Seas (o)
@@ -87258,6 +87347,7 @@ public final class ItemID
 	 * Trident of the Seas (full) (o)
 	 */
 	public static final int TOTS_ORN = 33323;
+	public static final int CERT_TOTS_ORN = 33324;
 
 	/**
 	 * Trident of the Seas (e) (o)
@@ -87268,6 +87358,7 @@ public final class ItemID
 	 * Uncharged trident (e) (o)
 	 */
 	public static final int TOTS_I_UNCHARGED_ORN = 33328;
+	public static final int CERT_TOTS_I_UNCHARGED_ORN = 33329;
 
 	/**
 	 * Iban's staff (o)
@@ -87288,6 +87379,7 @@ public final class ItemID
 	 * Soulreaper axe (o)
 	 */
 	public static final int SOULREAPER_AXE_ORN = 33335;
+	public static final int CERT_SOULREAPER_AXE_ORN = 33336;
 
 	/**
 	 * Oathplate slayer helmet
@@ -90039,6 +90131,497 @@ public final class ItemID
 	 * Elemental amulet
 	 */
 	public static final int ELEMENTAL_AMULET = 34428;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_YELLOW_OBJECT = 34431;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_BROWN_OBJECT = 34433;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_BLACK_OBJECT = 34435;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_TAN_OBJECT = 34437;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_WHITE_OBJECT = 34439;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_TOASTED_OBJECT = 34441;
+
+	/**
+	 * Border collie
+	 */
+	public static final int COLLIE_CHOCO_OBJECT = 34443;
+
+	/**
+	 * Border collie
+	 */
+	public static final int COLLIE_MERLE_OBJECT = 34445;
+
+	/**
+	 * Border collie
+	 */
+	public static final int COLLIE_BW_OBJECT = 34447;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_TAN_OBJECT = 34449;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_YELLOW_OBJECT = 34451;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_TOASTED_OBJECT = 34453;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_TAN_OBJECT = 34455;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_GREY_OBJECT = 34457;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_CREAM_OBJECT = 34459;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_BW_OBJECT = 34461;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_GREY_OBJECT = 34463;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_CHOCO_OBJECT = 34465;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_FAWN_OBJECT = 34467;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_BROWN_OBJECT = 34469;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_BLACK_OBJECT = 34471;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_WHITE_OBJECT = 34473;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_YELLOW_OBJECT = 34475;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_BLACK_OBJECT = 34477;
+
+	/**
+	 * Bernese mountain dog
+	 */
+	public static final int SHEPARD_CHOCO_OBJECT = 34479;
+
+	/**
+	 * Bernese mountain dog
+	 */
+	public static final int SHEPARD_MERLE_OBJECT = 34481;
+
+	/**
+	 * Bernese mountain dog
+	 */
+	public static final int SHEPARD_TOASTED_OBJECT = 34483;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_TAN_OBJECT = 34485;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_WHITE_OBJECT = 34487;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_TOASTED_OBJECT = 34489;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_RED_OBJECT = 34491;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_WHITE_OBJECT = 34493;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_BLACK_OBJECT = 34495;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_BROWN_OBJECT = 34497;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_WHITE_OBJECT = 34499;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_YELLOW_OBJECT = 34501;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_YELLOW_PUPPY_OBJECT = 34503;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_CHOCO_PUPPY_OBJECT = 34505;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_BLACK_PUPPY_OBJECT = 34507;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_BW_PUPPY_OBJECT = 34509;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_GREY_PUPPY_OBJECT = 34511;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_CHOCO_PUPPY_OBJECT = 34513;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_TAN_PUPPY_OBJECT = 34515;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_WHITE_PUPPY_OBJECT = 34517;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_TOASTED_PUPPY_OBJECT = 34519;
+
+	/**
+	 * Border collie puppy
+	 */
+	public static final int COLLIE_CHOCO_PUPPY_OBJECT = 34521;
+
+	/**
+	 * Border collie puppy
+	 */
+	public static final int COLLIE_MERLE_PUPPY_OBJECT = 34523;
+
+	/**
+	 * Border collie puppy
+	 */
+	public static final int COLLIE_BW_PUPPY_OBJECT = 34525;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_TAN_PUPPY_OBJECT = 34527;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_YELLOW_PUPPY_OBJECT = 34529;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_TOASTED_PUPPY_OBJECT = 34531;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_TAN_PUPPY_OBJECT = 34533;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_GREY_PUPPY_OBJECT = 34535;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_CREAM_PUPPY_OBJECT = 34537;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_FAWN_PUPPY_OBJECT = 34539;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_BROWN_PUPPY_OBJECT = 34541;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_BLACK_PUPPY_OBJECT = 34543;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_WHITE_PUPPY_OBJECT = 34545;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_YELLOW_PUPPY_OBJECT = 34547;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_BLACK_PUPPY_OBJECT = 34549;
+
+	/**
+	 * Bernese mountain dog puppy
+	 */
+	public static final int SHEPARD_CHOCO_PUPPY_OBJECT = 34551;
+
+	/**
+	 * Bernese mountain dog puppy
+	 */
+	public static final int SHEPARD_MERLE_PUPPY_OBJECT = 34553;
+
+	/**
+	 * Bernese mountain dog puppy
+	 */
+	public static final int SHEPARD_TOASTED_PUPPY_OBJECT = 34555;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_TAN_PUPPY_OBJECT = 34557;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_WHITE_PUPPY_OBJECT = 34559;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_TOASTED_PUPPY_OBJECT = 34561;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_RED_PUPPY_OBJECT = 34563;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_WHITE_PUPPY_OBJECT = 34565;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_BLACK_PUPPY_OBJECT = 34567;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_BROWN_PUPPY_OBJECT = 34569;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_WHITE_PUPPY_OBJECT = 34571;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_YELLOW_PUPPY_OBJECT = 34573;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_1 = 34575;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_2 = 34576;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_3 = 34577;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_4 = 34578;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_5 = 34579;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_6 = 34580;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_7 = 34581;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_BAD1 = 34582;
+
+	/**
+	 * Shell
+	 */
+	public static final int CRAB_SHELL_BAD2 = 34583;
+
+	/**
+	 * Weathered rosewood plank
+	 */
+	public static final int CRAB_PLANK = 34584;
+
+	/**
+	 * Battered barrel
+	 */
+	public static final int CRAB_BARREL = 34585;
+
+	/**
+	 * Sea-soaked bowstring
+	 */
+	public static final int CRAB_BOWSTRING = 34586;
+
+	/**
+	 * Instrument
+	 */
+	public static final int CRAB_BASS = 34587;
+	public static final int CRAB_BOTTLE = 34588;
+
+	/**
+	 * Shell collection
+	 */
+	public static final int CRAB_SHELL_CONTAINER = 34589;
+
+	/**
+	 * Shell C
+	 */
+	public static final int CRAB_SHELL_REWARD_1 = 34591;
+
+	/**
+	 * Shell D
+	 */
+	public static final int CRAB_SHELL_REWARD_2 = 34592;
+
+	/**
+	 * Shell E
+	 */
+	public static final int CRAB_SHELL_REWARD_3 = 34593;
+
+	/**
+	 * Shell F
+	 */
+	public static final int CRAB_SHELL_REWARD_4 = 34594;
+
+	/**
+	 * Shell G
+	 */
+	public static final int CRAB_SHELL_REWARD_5 = 34595;
+
+	/**
+	 * Shell A
+	 */
+	public static final int CRAB_SHELL_REWARD_6 = 34596;
+
+	/**
+	 * Shell A#
+	 */
+	public static final int CRAB_SHELL_REWARD_7 = 34597;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_ONE_OBJECT = 34598;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_TWO_OBJECT = 34599;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_THREE_OBJECT = 34600;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_STRAY_DOG_FOLLOWER_OBJECT = 34601;
+
+	/**
+	 * Stuffed dog
+	 */
+	public static final int DOGQ_STUFFED_DOG = 34602;
 
 	public static final class Cert
 	{
@@ -104662,6 +105245,79 @@ public final class ItemID
 		public static final int FIRE_RUBY = 34424;
 		public static final int AMULET_OF_FIRE = 34427;
 		public static final int ELEMENTAL_AMULET = 34430;
+		public static final int LABRADOR_YELLOW_OBJECT = 34432;
+		public static final int LABRADOR_BROWN_OBJECT = 34434;
+		public static final int LABRADOR_BLACK_OBJECT = 34436;
+		public static final int CHIHUAHUA_TAN_OBJECT = 34438;
+		public static final int CHIHUAHUA_WHITE_OBJECT = 34440;
+		public static final int CHIHUAHUA_TOASTED_OBJECT = 34442;
+		public static final int COLLIE_CHOCO_OBJECT = 34444;
+		public static final int COLLIE_MERLE_OBJECT = 34446;
+		public static final int COLLIE_BW_OBJECT = 34448;
+		public static final int CORGI_TAN_OBJECT = 34450;
+		public static final int CORGI_YELLOW_OBJECT = 34452;
+		public static final int CORGI_TOASTED_OBJECT = 34454;
+		public static final int GREYHOUND_TAN_OBJECT = 34456;
+		public static final int GREYHOUND_GREY_OBJECT = 34458;
+		public static final int GREYHOUND_CREAM_OBJECT = 34460;
+		public static final int HUSKY_BW_OBJECT = 34462;
+		public static final int HUSKY_GREY_OBJECT = 34464;
+		public static final int HUSKY_CHOCO_OBJECT = 34466;
+		public static final int PUG_FAWN_OBJECT = 34468;
+		public static final int PUG_BROWN_OBJECT = 34470;
+		public static final int PUG_BLACK_OBJECT = 34472;
+		public static final int SAMOYED_WHITE_OBJECT = 34474;
+		public static final int SAMOYED_YELLOW_OBJECT = 34476;
+		public static final int SAMOYED_BLACK_OBJECT = 34478;
+		public static final int SHEPARD_CHOCO_OBJECT = 34480;
+		public static final int SHEPARD_MERLE_OBJECT = 34482;
+		public static final int SHEPARD_TOASTED_OBJECT = 34484;
+		public static final int SHIBA_TAN_OBJECT = 34486;
+		public static final int SHIBA_WHITE_OBJECT = 34488;
+		public static final int SHIBA_TOASTED_OBJECT = 34490;
+		public static final int SPANIEL_RED_OBJECT = 34492;
+		public static final int SPANIEL_WHITE_OBJECT = 34494;
+		public static final int SPANIEL_BLACK_OBJECT = 34496;
+		public static final int YORKIE_BROWN_OBJECT = 34498;
+		public static final int YORKIE_WHITE_OBJECT = 34500;
+		public static final int YORKIE_YELLOW_OBJECT = 34502;
+		public static final int LABRADOR_YELLOW_PUPPY_OBJECT = 34504;
+		public static final int LABRADOR_CHOCO_PUPPY_OBJECT = 34506;
+		public static final int LABRADOR_BLACK_PUPPY_OBJECT = 34508;
+		public static final int HUSKY_BW_PUPPY_OBJECT = 34510;
+		public static final int HUSKY_GREY_PUPPY_OBJECT = 34512;
+		public static final int HUSKY_CHOCO_PUPPY_OBJECT = 34514;
+		public static final int CHIHUAHUA_TAN_PUPPY_OBJECT = 34516;
+		public static final int CHIHUAHUA_WHITE_PUPPY_OBJECT = 34518;
+		public static final int CHIHUAHUA_TOASTED_PUPPY_OBJECT = 34520;
+		public static final int COLLIE_CHOCO_PUPPY_OBJECT = 34522;
+		public static final int COLLIE_MERLE_PUPPY_OBJECT = 34524;
+		public static final int COLLIE_BW_PUPPY_OBJECT = 34526;
+		public static final int CORGI_TAN_PUPPY_OBJECT = 34528;
+		public static final int CORGI_YELLOW_PUPPY_OBJECT = 34530;
+		public static final int CORGI_TOASTED_PUPPY_OBJECT = 34532;
+		public static final int GREYHOUND_TAN_PUPPY_OBJECT = 34534;
+		public static final int GREYHOUND_GREY_PUPPY_OBJECT = 34536;
+		public static final int GREYHOUND_CREAM_PUPPY_OBJECT = 34538;
+		public static final int PUG_FAWN_PUPPY_OBJECT = 34540;
+		public static final int PUG_BROWN_PUPPY_OBJECT = 34542;
+		public static final int PUG_BLACK_PUPPY_OBJECT = 34544;
+		public static final int SAMOYED_WHITE_PUPPY_OBJECT = 34546;
+		public static final int SAMOYED_YELLOW_PUPPY_OBJECT = 34548;
+		public static final int SAMOYED_BLACK_PUPPY_OBJECT = 34550;
+		public static final int SHEPARD_CHOCO_PUPPY_OBJECT = 34552;
+		public static final int SHEPARD_MERLE_PUPPY_OBJECT = 34554;
+		public static final int SHEPARD_TOASTED_PUPPY_OBJECT = 34556;
+		public static final int SHIBA_TAN_PUPPY_OBJECT = 34558;
+		public static final int SHIBA_WHITE_PUPPY_OBJECT = 34560;
+		public static final int SHIBA_TOASTED_PUPPY_OBJECT = 34562;
+		public static final int SPANIEL_RED_PUPPY_OBJECT = 34564;
+		public static final int SPANIEL_WHITE_PUPPY_OBJECT = 34566;
+		public static final int SPANIEL_BLACK_PUPPY_OBJECT = 34568;
+		public static final int YORKIE_BROWN_PUPPY_OBJECT = 34570;
+		public static final int YORKIE_WHITE_PUPPY_OBJECT = 34572;
+		public static final int YORKIE_YELLOW_PUPPY_OBJECT = 34574;
+		public static final int CRAB_SHELL_CONTAINER = 34590;
 	}
 /* This file is automatically generated. Do not edit. */
 }
