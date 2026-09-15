@@ -35,6 +35,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.game.ItemStats;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
@@ -108,6 +109,10 @@ public class ItemStatOverlayTest
 	@Mock
 	@Bind
 	ItemManager itemManager;
+
+	@Mock
+	@Bind
+	OverlayManager overlayManager;
 
 	@Before
 	public void before()
