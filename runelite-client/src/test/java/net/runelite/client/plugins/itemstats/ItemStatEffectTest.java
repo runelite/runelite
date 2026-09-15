@@ -233,7 +233,8 @@ public class ItemStatEffectTest
 		assertEquals(7, skillChange(Skill.PRAYER, 50, 40, ancientBrew));
 		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, ancientBrew));
 		assertEquals(1, skillChange(Skill.PRAYER, 1, 0, ancientBrew));
-		assertEquals(0, skillChange(Skill.PRAYER, 99, 125, ancientBrew));
+		assertArrayEquals(new int[] { 2, 4, 103 }, skillChanges(Skill.PRAYER, 99, 101, ancientBrew));
+		assertArrayEquals(new int[] { 0, 4, 125 }, skillChanges(Skill.PRAYER, 99, 125, ancientBrew));
 
 		assertEquals(5, skillChange(Skill.MAGIC, 65, 1, ancientBrew));
 		assertEquals(3, skillChange(Skill.MAGIC, 65, 67, ancientBrew));
@@ -545,9 +546,12 @@ public class ItemStatEffectTest
 	{
 		final Effect haddock = itemStats.get(ItemID.HADDOCK);
 
-		assertEquals(10, skillChange(Skill.HITPOINTS, 99, 99, haddock));
-		assertEquals(11, skillChange(Skill.HITPOINTS, 99, 98, haddock));
-		assertEquals(18, skillChange(Skill.HITPOINTS, 99, 1, haddock));
+		assertArrayEquals(new int[] { 0, 10, 121 }, skillChanges(Skill.HITPOINTS, 99, 121, haddock));
+		assertArrayEquals(new int[] { 0, 10, 109 }, skillChanges(Skill.HITPOINTS, 99, 109, haddock));
+		assertArrayEquals(new int[] { 9, 10, 109 }, skillChanges(Skill.HITPOINTS, 99, 100, haddock));
+		assertArrayEquals(new int[] { 10, 10, 109 }, skillChanges(Skill.HITPOINTS, 99, 99, haddock));
+		assertArrayEquals(new int[] { 11, 11, 109 }, skillChanges(Skill.HITPOINTS, 99, 98, haddock));
+		assertArrayEquals(new int[] { 18, 18, 19 }, skillChanges(Skill.HITPOINTS, 99, 1, haddock));
 	}
 
 	@Test
@@ -613,6 +617,30 @@ public class ItemStatEffectTest
 		}
 
 		return 0;
+	}
+
+	private int[] skillChanges(Skill skill, int maxValue, int currentValue, Effect effect)
+	{
+		if (effect == null)
+		{
+			throw new IllegalArgumentException("Applied effect is null");
+		}
+
+		when(client.getRealSkillLevel(skill)).thenReturn(maxValue);
+		when(client.getBoostedSkillLevel(skill)).thenReturn(currentValue);
+		final StatsChanges statsChanges = effect.calculate(client);
+
+		for (final StatChange statChange : statsChanges.getStatChanges())
+		{
+			if (!statChange.getStat().getName().equals(skill.getName()))
+			{
+				continue;
+			}
+
+			return new int[] { statChange.getRelative(), statChange.getTheoretical(), statChange.getAbsolute() };
+		}
+
+		return new int[] { 0, 0, currentValue };
 	}
 
 	private int[] rockCakeChange(int currentHitpoints, Effect effect)
