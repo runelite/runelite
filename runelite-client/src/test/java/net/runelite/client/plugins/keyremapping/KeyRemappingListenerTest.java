@@ -30,8 +30,8 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.input.ChatboxInputManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,11 +50,7 @@ public class KeyRemappingListenerTest
 
 	@Mock
 	@Bind
-	private Client client;
-
-	@Mock
-	@Bind
-	private KeyRemappingPlugin keyRemappingPlugin;
+	private ChatboxInputManager chatboxInputManager;
 
 	@Mock
 	@Bind
@@ -76,7 +72,7 @@ public class KeyRemappingListenerTest
 		when(keyRemappingConfig.left()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_A, 0));
 		when(keyRemappingConfig.right()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_D, 0));
 
-		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+		when(chatboxInputManager.chatboxFocused()).thenReturn(true);
 
 		KeyEvent event = mock(KeyEvent.class);
 		when(event.getKeyChar()).thenReturn('d');
@@ -98,7 +94,7 @@ public class KeyRemappingListenerTest
 
 		verify(event).consume();
 
-		lenient().when(keyRemappingPlugin.isTyping()).thenReturn(true); // release handler no longer checks this
+		lenient().when(chatboxInputManager.isTyping()).thenReturn(true); // release handler no longer checks this
 		// with the plugin now in typing mode, previously pressed and remapped keys should still be mapped
 		// on key release regardless
 		event = mock(KeyEvent.class);
@@ -113,8 +109,8 @@ public class KeyRemappingListenerTest
 	{
 		when(keyRemappingConfig.space()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_NUMPAD1, 0));
 
-		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
-		when(keyRemappingPlugin.isDialogOpen()).thenReturn(true);
+		when(chatboxInputManager.chatboxFocused()).thenReturn(true);
+		when(chatboxInputManager.isDialogOpen()).thenReturn(true);
 
 		KeyEvent event = mock(KeyEvent.class);
 		when(event.getKeyChar()).thenReturn('1');
@@ -130,7 +126,7 @@ public class KeyRemappingListenerTest
 	public void testControlRemap()
 	{
 		when(keyRemappingConfig.control()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_NUMPAD1, 0));
-		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+		when(chatboxInputManager.chatboxFocused()).thenReturn(true);
 
 		KeyEvent event = mock(KeyEvent.class);
 		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1); // for keybind matches()
