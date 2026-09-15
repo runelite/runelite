@@ -84,7 +84,9 @@ class ObjectIndicatorsOverlay extends Overlay
 		}
 
 		WorldView toplevel = client.getTopLevelWorldView();
-		Stroke stroke = new BasicStroke((float) config.borderWidth());
+		double borderWidth = config.borderWidth();
+		Stroke stroke = new BasicStroke((float) borderWidth);
+		Stroke tileStroke = new BasicStroke((float) Math.min(borderWidth, 2));
 		final var defaultFlags =
 			(config.highlightHull() ? HF_HULL : 0) |
 			(config.highlightOutline() ? HF_OUTLINE : 0) |
@@ -157,7 +159,7 @@ class ObjectIndicatorsOverlay extends Overlay
 				if (tilePoly != null)
 				{
 					Color fillColor = MoreObjects.firstNonNull(obj.getFillColor(), ColorUtil.colorWithAlpha(borderColor, borderColor.getAlpha() / 12));
-					OverlayUtil.renderPolygon(graphics, tilePoly, borderColor, fillColor, stroke);
+					OverlayUtil.renderPolygon(graphics, tilePoly, borderColor, fillColor, tileStroke);
 				}
 			}
 		}
