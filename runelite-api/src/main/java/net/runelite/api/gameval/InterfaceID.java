@@ -22257,7 +22257,8 @@ public final class InterfaceID
 	public static final class SeedVaultDeposit
 	{
 		public static final int UNIVERSE = 0x0276_0000;
-		public static final int INV = 0x0276_0001;
+		public static final int LOCKED_SLOT = 0x0276_0001;
+		public static final int INV = 0x0276_0002;
 	}
 
 	public static final class SeedVault

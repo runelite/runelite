@@ -207,7 +207,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 48;
+		public static final int COL_RESTRICTED_CONTENT = 48;
 
 		public static final class Row
 		{
@@ -588,7 +588,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -736,7 +736,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 6;
+		public static final int COL_RESTRICTED_CONTENT = 6;
 
 		public static final class Row
 		{
@@ -831,7 +831,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -903,7 +903,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -1146,7 +1146,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 12;
+		public static final int COL_RESTRICTED_CONTENT = 12;
 
 		/**
 		 * string
@@ -1524,7 +1524,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 13;
+		public static final int COL_RESTRICTED_CONTENT = 13;
 
 		public static final class Row
 		{
@@ -1709,7 +1709,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 9;
+		public static final int COL_RESTRICTED_CONTENT = 9;
 
 		public static final class Row
 		{
@@ -1769,7 +1769,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 7;
+		public static final int COL_RESTRICTED_CONTENT = 7;
 
 		public static final class Row
 		{
@@ -1838,7 +1838,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 7;
+		public static final int COL_RESTRICTED_CONTENT = 7;
 
 		public static final class Row
 		{
@@ -2034,7 +2034,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -2108,7 +2108,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 7;
+		public static final int COL_RESTRICTED_CONTENT = 7;
 
 		public static final class Row
 		{
@@ -5094,7 +5094,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 14;
+		public static final int COL_RESTRICTED_CONTENT = 14;
 
 		public static final class Row
 		{
@@ -9701,7 +9701,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 19;
+		public static final int COL_RESTRICTED_CONTENT = 19;
 
 		public static final class Row
 		{
@@ -10314,7 +10314,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -18561,7 +18561,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{

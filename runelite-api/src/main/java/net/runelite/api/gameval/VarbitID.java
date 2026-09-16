@@ -10468,6 +10468,7 @@ public final class VarbitID
 	public static final int XMAS24_MATCHES = 15905;
 	public static final int DOGQ_STRANGER_INTRO = 15910;
 	public static final int DOGQ_TALIA_INTRO = 15911;
+	public static final int CRAB_1OFF_NET_CHECK = 15912;
 	public static final int BANK_SIDE_SLOT_SHOWOP = 15915;
 	public static final int BANK_DEPOSITBOX_OPLOCU_ASKQUANTITY = 15958;
 	public static final int POH_SPIRIT_TREE_UPROOTED = 15959;

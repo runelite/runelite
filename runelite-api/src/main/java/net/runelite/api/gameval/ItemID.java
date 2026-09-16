@@ -3409,7 +3409,7 @@ public final class ItemID
 	public static final int SANTA_HAT = 1050;
 
 	/**
-	 * Cape of legends
+	 * Cape of Legends
 	 */
 	public static final int CAPE_OF_LEGENDS = 1052;
 
@@ -7782,7 +7782,7 @@ public final class ItemID
 	public static final int BOOTS_WIZARD = 2579;
 
 	/**
-	 * Robin hood hat
+	 * Robin Hood hat
 	 */
 	public static final int ROBINHOODHAT = 2581;
 
@@ -10117,7 +10117,7 @@ public final class ItemID
 	public static final int COOKED_RABBIT = 3228;
 
 	/**
-	 * Big book of bangs
+	 * Big Book of Bangs
 	 */
 	public static final int REGICIDE_ALCHEMY = 3230;
 
@@ -27595,12 +27595,12 @@ public final class ItemID
 	public static final int POH_TROPHY_AMULETOFGLORY = 8283;
 
 	/**
-	 * Cape of legends
+	 * Cape of Legends
 	 */
 	public static final int POH_TROPHY_LEGENDSCAPE = 8284;
 
 	/**
-	 * King arthur
+	 * King Arthur
 	 */
 	public static final int POH_PORTRAIT_1 = 8285;
 
@@ -27610,7 +27610,7 @@ public final class ItemID
 	public static final int POH_PORTRAIT_2 = 8286;
 
 	/**
-	 * Giant dwarf
+	 * Giant Dwarf
 	 */
 	public static final int POH_PORTRAIT_3 = 8287;
 
@@ -27625,7 +27625,7 @@ public final class ItemID
 	public static final int POH_LANDSCAPE_1 = 8289;
 
 	/**
-	 * The desert
+	 * The Desert
 	 */
 	public static final int POH_LANDSCAPE_2 = 8290;
 
@@ -30244,7 +30244,7 @@ public final class ItemID
 	public static final int LUNAR_GROUNDTOOTH = 9082;
 
 	/**
-	 * Seal of passage
+	 * Seal of Passage
 	 */
 	public static final int LUNAR_SEAL_OF_PASSAGE = 9083;
 
@@ -31122,7 +31122,7 @@ public final class ItemID
 	public static final int ALUFT_GNOME_MINT_CAKE = 9475;
 
 	/**
-	 * Aluft aloft box
+	 * Aluft Aloft box
 	 */
 	public static final int ALUFT_DELIVERY_BOX = 9477;
 
@@ -31747,17 +31747,17 @@ public final class ItemID
 	public static final int MYQ3_SANGUINE_LADDER_TOP = 9655;
 
 	/**
-	 * Tome of experience (3)
+	 * Tome of Experience (3)
 	 */
 	public static final int MYQ3_XP_TOME_3 = 9656;
 
 	/**
-	 * Tome of experience (2)
+	 * Tome of Experience (2)
 	 */
 	public static final int MYQ3_XP_TOME_2 = 9657;
 
 	/**
-	 * Tome of experience (1)
+	 * Tome of Experience (1)
 	 */
 	public static final int MYQ3_XP_TOME_1 = 9658;
 
@@ -38527,7 +38527,7 @@ public final class ItemID
 	public static final int PATTERN_LIME_DUMMY = 11526;
 
 	/**
-	 * Mausoleum bridge repair
+	 * Mausoleum bridge reinforcement
 	 */
 	public static final int PATTERN_PINEAPPLE_CHUNKS_DUMMY = 11527;
 	public static final int PATTERN_BLACK_BATTLEAXE_DUMMY = 11528;
@@ -40018,7 +40018,7 @@ public final class ItemID
 	public static final int LAVA_SHARD = 11994;
 
 	/**
-	 * Pet Chaos Elemental
+	 * Pet chaos elemental
 	 */
 	public static final int CHAOSELEPET = 11995;
 
@@ -43379,7 +43379,7 @@ public final class ItemID
 	public static final int TOXIC_SOTD = 12902;
 
 	/**
-	 * Toxic staff of the dead
+	 * Toxic Staff of the Dead
 	 */
 	public static final int TOXIC_SOTD_CHARGED = 12904;
 
@@ -45623,7 +45623,7 @@ public final class ItemID
 	public static final int ARCEUUS_CORPSE_DRAGON = 13511;
 
 	/**
-	 * Book of arcane knowledge
+	 * Book of Arcane Knowledge
 	 */
 	public static final int ARCEUUS_LIBRARY_REWARD = 13513;
 
@@ -53058,7 +53058,7 @@ public final class ItemID
 	public static final int FOSSILQUEST_BONE_CHARM = 21530;
 
 	/**
-	 * Potion of sealegs
+	 * Potion of Sealegs
 	 */
 	public static final int FOSSILQUEST_POTION = 21531;
 
@@ -53627,12 +53627,12 @@ public final class ItemID
 	public static final int SLAYER_ROCK_THROWNHAMMER = 21754;
 
 	/**
-	 * Varlamore envoy
+	 * Varlamore Envoy
 	 */
 	public static final int HOSIDIUSQUEST_BOOK = 21756;
 
 	/**
-	 * Royal accord of twill
+	 * Royal Accord of Twill
 	 */
 	public static final int HOSIDIUSQUEST_ACCORD = 21758;
 
@@ -55417,7 +55417,7 @@ public final class ItemID
 	public static final int MYQ4_CHAIN = 22414;
 
 	/**
-	 * Tome of experience
+	 * Tome of Experience
 	 */
 	public static final int MYQ4_XP_TOME = 22415;
 
@@ -55800,7 +55800,7 @@ public final class ItemID
 	public static final int LOOTING_BAG_OPEN = 22586;
 
 	/**
-	 * Old man's coffin
+	 * Old Man's coffin
 	 */
 	public static final int MY2ARM_COFFIN = 22588;
 
@@ -60928,7 +60928,7 @@ public final class ItemID
 	public static final int OSB7_CAT_EARS = 24522;
 
 	/**
-	 * Death's coffer
+	 * Death's Coffer
 	 */
 	public static final int OSB7_CAT_HAIR = 24523;
 
@@ -61365,7 +61365,7 @@ public final class ItemID
 	public static final int IG_MUD_ARMOUR = 24688;
 
 	/**
-	 * Tome of experience
+	 * Tome of Experience
 	 */
 	public static final int MYQ5_XP_TOME = 24690;
 
@@ -64469,22 +64469,22 @@ public final class ItemID
 	public static final int GHRAZI_RAPIER_OR = 25734;
 
 	/**
-	 * Holy scythe of vitur
+	 * Holy Scythe of Vitur
 	 */
 	public static final int SCYTHE_OF_VITUR_OR = 25736;
 
 	/**
-	 * Holy scythe of vitur (uncharged)
+	 * Holy Scythe of Vitur (uncharged)
 	 */
 	public static final int SCYTHE_OF_VITUR_UNCHARGED_OR = 25738;
 
 	/**
-	 * Sanguine scythe of vitur
+	 * Sanguine Scythe of Vitur
 	 */
 	public static final int SCYTHE_OF_VITUR_BL = 25739;
 
 	/**
-	 * Sanguine scythe of vitur (uncharged)
+	 * Sanguine Scythe of Vitur (uncharged)
 	 */
 	public static final int SCYTHE_OF_VITUR_UNCHARGED_BL = 25741;
 
@@ -64794,7 +64794,7 @@ public final class ItemID
 	public static final int AKD_SHAYZIEN_JOURNAL = 25816;
 
 	/**
-	 * Royal accord of twill
+	 * Royal Accord of Twill
 	 */
 	public static final int AKD_ACCORD_DUMMY = 25817;
 
@@ -65317,23 +65317,23 @@ public final class ItemID
 	public static final int TUMEKENS_HEKA_UNCHARGED = 25989;
 
 	/**
-	 * Sigil of resilience
+	 * Sigil of Resilience
 	 */
 	public static final int SIGIL_OF_RESILIENCE_ATTUNED = 25990;
 
 	/**
-	 * Sigil of resilience
+	 * Sigil of Resilience
 	 */
 	public static final int SIGIL_OF_RESILIENCE_UNATTUNED = 25991;
 	public static final int CERT_SIGIL_OF_RESILIENCE_UNATTUNED = 25992;
 
 	/**
-	 * Sigil of consistency
+	 * Sigil of Consistency
 	 */
 	public static final int SIGIL_OF_CONSISTENCY_ATTUNED = 25993;
 
 	/**
-	 * Sigil of consistency
+	 * Sigil of Consistency
 	 */
 	public static final int SIGIL_OF_CONSISTENCY_UNATTUNED = 25994;
 	public static final int CERT_SIGIL_OF_CONSISTENCY_UNATTUNED = 25995;
@@ -65344,491 +65344,491 @@ public final class ItemID
 	public static final int SIGIL_OF_THE_FORMIDABLE_FIGHTER_ATTUNED = 25996;
 
 	/**
-	 * Sigil of the formidable fighter
+	 * Sigil of the Formidable Fighter
 	 */
 	public static final int SIGIL_OF_THE_FORMIDABLE_FIGHTER_UNATTUNED = 25997;
 	public static final int CERT_SIGIL_OF_THE_FORMIDABLE_FIGHTER_UNATTUNED = 25998;
 
 	/**
-	 * Sigil of the rigorous ranger
+	 * Sigil of the Rigorous Ranger
 	 */
 	public static final int SIGIL_OF_THE_RIGOROUS_RANGER_ATTUNED = 25999;
 
 	/**
-	 * Sigil of the rigorous ranger
+	 * Sigil of the Rigorous Ranger
 	 */
 	public static final int SIGIL_OF_THE_RIGOROUS_RANGER_UNATTUNED = 26000;
 	public static final int CERT_SIGIL_OF_THE_RIGOROUS_RANGER_UNATTUNED = 26001;
 
 	/**
-	 * Sigil of the meticulous mage
+	 * Sigil of the Meticulous Mage
 	 */
 	public static final int SIGIL_OF_THE_METICULOUS_MAGE_ATTUNED = 26002;
 
 	/**
-	 * Sigil of the meticulous mage
+	 * Sigil of the Meticulous Mage
 	 */
 	public static final int SIGIL_OF_THE_METICULOUS_MAGE_UNATTUNED = 26003;
 	public static final int CERT_SIGIL_OF_THE_METICULOUS_MAGE_UNATTUNED = 26004;
 
 	/**
-	 * Sigil of fortification
+	 * Sigil of Fortification
 	 */
 	public static final int SIGIL_OF_FORTIFICATION_ATTUNED = 26005;
 
 	/**
-	 * Sigil of fortification
+	 * Sigil of Fortification
 	 */
 	public static final int SIGIL_OF_FORTIFICATION_UNATTUNED = 26006;
 	public static final int CERT_SIGIL_OF_FORTIFICATION_UNATTUNED = 26007;
 
 	/**
-	 * Sigil of barrows
+	 * Sigil of Barrows
 	 */
 	public static final int SIGIL_OF_BARROWS_ATTUNED = 26008;
 
 	/**
-	 * Sigil of barrows
+	 * Sigil of Barrows
 	 */
 	public static final int SIGIL_OF_BARROWS_UNATTUNED = 26009;
 	public static final int CERT_SIGIL_OF_BARROWS_UNATTUNED = 26010;
 
 	/**
-	 * Sigil of deft strikes
+	 * Sigil of Deft Strikes
 	 */
 	public static final int SIGIL_OF_DEFT_STRIKES_ATTUNED = 26011;
 
 	/**
-	 * Sigil of deft strikes
+	 * Sigil of Deft Strikes
 	 */
 	public static final int SIGIL_OF_DEFT_STRIKES_UNATTUNED = 26012;
 	public static final int CERT_SIGIL_OF_DEFT_STRIKES_UNATTUNED = 26013;
 
 	/**
-	 * Sigil of freedom
+	 * Sigil of Freedom
 	 */
 	public static final int SIGIL_OF_FREEDOM_ATTUNED = 26014;
 
 	/**
-	 * Sigil of freedom
+	 * Sigil of Freedom
 	 */
 	public static final int SIGIL_OF_FREEDOM_UNATTUNED = 26015;
 	public static final int CERT_SIGIL_OF_FREEDOM_UNATTUNED = 26016;
 
 	/**
-	 * Sigil of enhanced harvest
+	 * Sigil of Enhanced Harvest
 	 */
 	public static final int SIGIL_OF_ENHANCED_HARVEST_ATTUNED = 26017;
 
 	/**
-	 * Sigil of enhanced harvest
+	 * Sigil of Enhanced Harvest
 	 */
 	public static final int SIGIL_OF_ENHANCED_HARVEST_UNATTUNED = 26018;
 	public static final int CERT_SIGIL_OF_ENHANCED_HARVEST_UNATTUNED = 26019;
 
 	/**
-	 * Sigil of storage
+	 * Sigil of Storage
 	 */
 	public static final int SIGIL_OF_STORAGE_ATTUNED = 26020;
 
 	/**
-	 * Sigil of storage
+	 * Sigil of Storage
 	 */
 	public static final int SIGIL_OF_STORAGE_UNATTUNED = 26021;
 	public static final int CERT_SIGIL_OF_STORAGE_UNATTUNED = 26022;
 
 	/**
-	 * Sigil of the smith
+	 * Sigil of the Smith
 	 */
 	public static final int SIGIL_OF_THE_SMITH_ATTUNED = 26023;
 
 	/**
-	 * Sigil of the smith
+	 * Sigil of the Smith
 	 */
 	public static final int SIGIL_OF_THE_SMITH_UNATTUNED = 26024;
 	public static final int CERT_SIGIL_OF_THE_SMITH_UNATTUNED = 26025;
 
 	/**
-	 * Sigil of the alchemist
+	 * Sigil of the Alchemist
 	 */
 	public static final int SIGIL_OF_THE_ALCHEMIST_ATTUNED = 26026;
 
 	/**
-	 * Sigil of the alchemist
+	 * Sigil of the Alchemist
 	 */
 	public static final int SIGIL_OF_THE_ALCHEMIST_UNATTUNED = 26027;
 	public static final int CERT_SIGIL_OF_THE_ALCHEMIST_UNATTUNED = 26028;
 
 	/**
-	 * Sigil of the fletcher
+	 * Sigil of the Fletcher
 	 */
 	public static final int SIGIL_OF_THE_FLETCHER_ATTUNED = 26029;
 
 	/**
-	 * Sigil of the fletcher
+	 * Sigil of the Fletcher
 	 */
 	public static final int SIGIL_OF_THE_FLETCHER_UNATTUNED = 26030;
 	public static final int CERT_SIGIL_OF_THE_FLETCHER_UNATTUNED = 26031;
 
 	/**
-	 * Sigil of the chef
+	 * Sigil of the Chef
 	 */
 	public static final int SIGIL_OF_THE_CHEF_ATTUNED = 26032;
 
 	/**
-	 * Sigil of the chef
+	 * Sigil of the Chef
 	 */
 	public static final int SIGIL_OF_THE_CHEF_UNATTUNED = 26033;
 	public static final int CERT_SIGIL_OF_THE_CHEF_UNATTUNED = 26034;
 
 	/**
-	 * Sigil of the craftsman
+	 * Sigil of the Craftsman
 	 */
 	public static final int SIGIL_OF_THE_CRAFTER_ATTUNED = 26035;
 
 	/**
-	 * Sigil of the craftsman
+	 * Sigil of the Craftsman
 	 */
 	public static final int SIGIL_OF_THE_CRAFTER_UNATTUNED = 26036;
 	public static final int CERT_SIGIL_OF_THE_CRAFTER_UNATTUNED = 26037;
 
 	/**
-	 * Sigil of the abyss
+	 * Sigil of the Abyss
 	 */
 	public static final int SIGIL_OF_THE_ABYSS_ATTUNED = 26038;
 
 	/**
-	 * Sigil of the abyss
+	 * Sigil of the Abyss
 	 */
 	public static final int SIGIL_OF_THE_ABYSS_UNATTUNED = 26039;
 	public static final int CERT_SIGIL_OF_THE_ABYSS_UNATTUNED = 26040;
 
 	/**
-	 * Sigil of stamina
+	 * Sigil of Stamina
 	 */
 	public static final int SIGIL_OF_STAMINA_ATTUNED = 26041;
 
 	/**
-	 * Sigil of stamina
+	 * Sigil of Stamina
 	 */
 	public static final int SIGIL_OF_STAMINA_UNATTUNED = 26042;
 	public static final int CERT_SIGIL_OF_STAMINA_UNATTUNED = 26043;
 
 	/**
-	 * Sigil of the potion master
+	 * Sigil of the Potion Master
 	 */
 	public static final int SIGIL_OF_THE_POTION_MASTER_ATTUNED = 26044;
 
 	/**
-	 * Sigil of the potion master
+	 * Sigil of the Potion Master
 	 */
 	public static final int SIGIL_OF_THE_POTION_MASTER_UNATTUNED = 26045;
 	public static final int CERT_SIGIL_OF_THE_POTION_MASTER_UNATTUNED = 26046;
 
 	/**
-	 * Sigil of the eternal jeweller
+	 * Sigil of the Eternal Jeweller
 	 */
 	public static final int SIGIL_OF_THE_ETERNAL_JEWELLER_ATTUNED = 26047;
 
 	/**
-	 * Sigil of the eternal jeweller
+	 * Sigil of the Eternal Jeweller
 	 */
 	public static final int SIGIL_OF_THE_ETERNAL_JEWELLER_UNATTUNED = 26048;
 	public static final int CERT_SIGIL_OF_THE_ETERNAL_JEWELLER_UNATTUNED = 26049;
 
 	/**
-	 * Sigil of the treasure hunter
+	 * Sigil of the Treasure Hunter
 	 */
 	public static final int SIGIL_OF_THE_TREASURE_HUNTER_ATTUNED = 26050;
 
 	/**
-	 * Sigil of the treasure hunter
+	 * Sigil of the Treasure Hunter
 	 */
 	public static final int SIGIL_OF_THE_TREASURE_HUNTER_UNATTUNED = 26051;
 	public static final int CERT_SIGIL_OF_THE_TREASURE_HUNTER_UNATTUNED = 26052;
 
 	/**
-	 * Sigil of mobility
+	 * Sigil of Mobility
 	 */
 	public static final int SIGIL_OF_MOBILITY_ATTUNED = 26053;
 
 	/**
-	 * Sigil of mobility
+	 * Sigil of Mobility
 	 */
 	public static final int SIGIL_OF_MOBILITY_UNATTUNED = 26054;
 	public static final int CERT_SIGIL_OF_MOBILITY_UNATTUNED = 26055;
 
 	/**
-	 * Sigil of exaggeration
+	 * Sigil of Exaggeration
 	 */
 	public static final int SIGIL_OF_EXAGGERATION_ATTUNED = 26056;
 
 	/**
-	 * Sigil of exaggeration
+	 * Sigil of Exaggeration
 	 */
 	public static final int SIGIL_OF_EXAGGERATION_UNATTUNED = 26057;
 	public static final int CERT_SIGIL_OF_EXAGGERATION_UNATTUNED = 26058;
 
 	/**
-	 * Sigil of specialised strikes
+	 * Sigil of Specialised Strikes
 	 */
 	public static final int SIGIL_OF_SPECIALISED_STRIKES_ATTUNED = 26059;
 
 	/**
-	 * Sigil of specialised strikes
+	 * Sigil of Specialised Strikes
 	 */
 	public static final int SIGIL_OF_SPECIALISED_STRIKES_UNATTUNED = 26060;
 	public static final int CERT_SIGIL_OF_SPECIALISED_STRIKES_UNATTUNED = 26061;
 
 	/**
-	 * Sigil of the porcupine
+	 * Sigil of the Porcupine
 	 */
 	public static final int SIGIL_OF_THE_PORCUPINE_ATTUNED = 26062;
 
 	/**
-	 * Sigil of the porcupine
+	 * Sigil of the Porcupine
 	 */
 	public static final int SIGIL_OF_THE_PORCUPINE_UNATTUNED = 26063;
 	public static final int CERT_SIGIL_OF_THE_PORCUPINE_UNATTUNED = 26064;
 
 	/**
-	 * Sigil of binding
+	 * Sigil of Binding
 	 */
 	public static final int SIGIL_OF_BINDING_ATTUNED = 26065;
 
 	/**
-	 * Sigil of binding
+	 * Sigil of Binding
 	 */
 	public static final int SIGIL_OF_BINDING_UNATTUNED = 26066;
 	public static final int CERT_SIGIL_OF_BINDING_UNATTUNED = 26067;
 
 	/**
-	 * Sigil of escaping
+	 * Sigil of Escaping
 	 */
 	public static final int SIGIL_OF_ESCAPING_ATTUNED = 26068;
 
 	/**
-	 * Sigil of escaping
+	 * Sigil of Escaping
 	 */
 	public static final int SIGIL_OF_ESCAPING_UNATTUNED = 26069;
 	public static final int CERT_SIGIL_OF_ESCAPING_UNATTUNED = 26070;
 
 	/**
-	 * Sigil of the ruthless ranger
+	 * Sigil of the Ruthless Ranger
 	 */
 	public static final int SIGIL_OF_THE_RUTHLESS_RANGER_ATTUNED = 26071;
 
 	/**
-	 * Sigil of the ruthless ranger
+	 * Sigil of the Ruthless Ranger
 	 */
 	public static final int SIGIL_OF_THE_RUTHLESS_RANGER_UNATTUNED = 26072;
 	public static final int CERT_SIGIL_OF_THE_RUTHLESS_RANGER_UNATTUNED = 26073;
 
 	/**
-	 * Sigil of the feral fighter
+	 * Sigil of the Feral Fighter
 	 */
 	public static final int SIGIL_OF_THE_FERAL_FIGHTER_ATTUNED = 26074;
 
 	/**
-	 * Sigil of the feral fighter
+	 * Sigil of the Feral Fighter
 	 */
 	public static final int SIGIL_OF_THE_FERAL_FIGHTER_UNATTUNED = 26075;
 	public static final int CERT_SIGIL_OF_THE_FERAL_FIGHTER_UNATTUNED = 26076;
 
 	/**
-	 * Sigil of the menacing mage
+	 * Sigil of the Menacing Mage
 	 */
 	public static final int SIGIL_OF_THE_MENACING_MAGE_ATTUNED = 26077;
 
 	/**
-	 * Sigil of the menacing mage
+	 * Sigil of the Menacing Mage
 	 */
 	public static final int SIGIL_OF_THE_MENACING_MAGE_UNATTUNED = 26078;
 	public static final int CERT_SIGIL_OF_THE_MENACING_MAGE_UNATTUNED = 26079;
 
 	/**
-	 * Sigil of prosperity
+	 * Sigil of Prosperity
 	 */
 	public static final int SIGIL_OF_PROSPERITY_ATTUNED = 26080;
 
 	/**
-	 * Sigil of prosperity
+	 * Sigil of Prosperity
 	 */
 	public static final int SIGIL_OF_PROSPERITY_UNATTUNED = 26081;
 	public static final int CERT_SIGIL_OF_PROSPERITY_UNATTUNED = 26082;
 
 	/**
-	 * Sigil of the dwarves
+	 * Sigil of the Dwarves
 	 */
 	public static final int SIGIL_OF_THE_DWARVES_ATTUNED = 26083;
 
 	/**
-	 * Sigil of the dwarves
+	 * Sigil of the Dwarves
 	 */
 	public static final int SIGIL_OF_THE_DWARVES_UNATTUNED = 26084;
 	public static final int CERT_SIGIL_OF_THE_DWARVES_UNATTUNED = 26085;
 
 	/**
-	 * Sigil of the elves
+	 * Sigil of the Elves
 	 */
 	public static final int SIGIL_OF_THE_ELVES_ATTUNED = 26086;
 
 	/**
-	 * Sigil of the elves
+	 * Sigil of the Elves
 	 */
 	public static final int SIGIL_OF_THE_ELVES_UNATTUNED = 26087;
 	public static final int CERT_SIGIL_OF_THE_ELVES_UNATTUNED = 26088;
 
 	/**
-	 * Sigil of the barbarians
+	 * Sigil of the Barbarians
 	 */
 	public static final int SIGIL_OF_THE_BARBARIANS_ATTUNED = 26089;
 
 	/**
-	 * Sigil of the barbarians
+	 * Sigil of the Barbarians
 	 */
 	public static final int SIGIL_OF_THE_BARBARIANS_UNATTUNED = 26090;
 	public static final int CERT_SIGIL_OF_THE_BARBARIANS_UNATTUNED = 26091;
 
 	/**
-	 * Sigil of the gnomes
+	 * Sigil of the Gnomes
 	 */
 	public static final int SIGIL_OF_THE_GNOMES_ATTUNED = 26092;
 
 	/**
-	 * Sigil of the gnomes
+	 * Sigil of the Gnomes
 	 */
 	public static final int SIGIL_OF_THE_GNOMES_UNATTUNED = 26093;
 	public static final int CERT_SIGIL_OF_THE_GNOMES_UNATTUNED = 26094;
 
 	/**
-	 * Sigil of nature
+	 * Sigil of Nature
 	 */
 	public static final int SIGIL_OF_NATURE_ATTUNED = 26095;
 
 	/**
-	 * Sigil of nature
+	 * Sigil of Nature
 	 */
 	public static final int SIGIL_OF_NATURE_UNATTUNED = 26096;
 	public static final int CERT_SIGIL_OF_NATURE_UNATTUNED = 26097;
 
 	/**
-	 * Sigil of devotion
+	 * Sigil of Devotion
 	 */
 	public static final int SIGIL_OF_DEVOTION_ATTUNED = 26098;
 
 	/**
-	 * Sigil of devotion
+	 * Sigil of Devotion
 	 */
 	public static final int SIGIL_OF_DEVOTION_UNATTUNED = 26099;
 	public static final int CERT_SIGIL_OF_DEVOTION_UNATTUNED = 26100;
 
 	/**
-	 * Sigil of the forager
+	 * Sigil of the Forager
 	 */
 	public static final int SIGIL_OF_THE_FORAGER_ATTUNED = 26101;
 
 	/**
-	 * Sigil of the forager
+	 * Sigil of the Forager
 	 */
 	public static final int SIGIL_OF_THE_FORAGER_UNATTUNED = 26102;
 	public static final int CERT_SIGIL_OF_THE_FORAGER_UNATTUNED = 26103;
 
 	/**
-	 * Sigil of garments
+	 * Sigil of Garments
 	 */
 	public static final int SIGIL_OF_GARMENTS_ATTUNED = 26104;
 
 	/**
-	 * Sigil of garments
+	 * Sigil of Garments
 	 */
 	public static final int SIGIL_OF_GARMENTS_UNATTUNED = 26105;
 	public static final int CERT_SIGIL_OF_GARMENTS_UNATTUNED = 26106;
 
 	/**
-	 * Sigil of slaughter
+	 * Sigil of Slaughter
 	 */
 	public static final int SIGIL_OF_SLAUGHTER_ATTUNED = 26107;
 
 	/**
-	 * Sigil of slaughter
+	 * Sigil of Slaughter
 	 */
 	public static final int SIGIL_OF_SLAUGHTER_UNATTUNED = 26108;
 	public static final int CERT_SIGIL_OF_SLAUGHTER_UNATTUNED = 26109;
 
 	/**
-	 * Sigil of the fortune farmer
+	 * Sigil of the Fortune Farmer
 	 */
 	public static final int SIGIL_OF_THE_FORTUNE_FARMER_ATTUNED = 26110;
 
 	/**
-	 * Sigil of the fortune farmer
+	 * Sigil of the Fortune Farmer
 	 */
 	public static final int SIGIL_OF_THE_FORTUNE_FARMER_UNATTUNED = 26111;
 	public static final int CERT_SIGIL_OF_THE_FORTUNE_FARMER_UNATTUNED = 26112;
 
 	/**
-	 * Sigil of versatility
+	 * Sigil of Versatility
 	 */
 	public static final int SIGIL_OF_VERSATILITY_ATTUNED = 26113;
 
 	/**
-	 * Sigil of versatility
+	 * Sigil of Versatility
 	 */
 	public static final int SIGIL_OF_VERSATILITY_UNATTUNED = 26114;
 	public static final int CERT_SIGIL_OF_VERSATILITY_UNATTUNED = 26115;
 
 	/**
-	 * Sigil of the serpent
+	 * Sigil of the Serpent
 	 */
 	public static final int SIGIL_OF_THE_SERPENT_ATTUNED = 26116;
 
 	/**
-	 * Sigil of the serpent
+	 * Sigil of the Serpent
 	 */
 	public static final int SIGIL_OF_THE_SERPENT_UNATTUNED = 26117;
 	public static final int CERT_SIGIL_OF_THE_SERPENT_UNATTUNED = 26118;
 
 	/**
-	 * Sigil of supreme stamina
+	 * Sigil of Supreme Stamina
 	 */
 	public static final int SIGIL_OF_SUPREME_STAMINA_ATTUNED = 26119;
 
 	/**
-	 * Sigil of supreme stamina
+	 * Sigil of Supreme Stamina
 	 */
 	public static final int SIGIL_OF_SUPREME_STAMINA_UNATTUNED = 26120;
 	public static final int CERT_SIGIL_OF_SUPREME_STAMINA_UNATTUNED = 26121;
 
 	/**
-	 * Sigil of preservation
+	 * Sigil of Preservation
 	 */
 	public static final int SIGIL_OF_PRESERVATION_ATTUNED = 26122;
 
 	/**
-	 * Sigil of preservation
+	 * Sigil of Preservation
 	 */
 	public static final int SIGIL_OF_PRESERVATION_UNATTUNED = 26123;
 	public static final int CERT_SIGIL_OF_PRESERVATION_UNATTUNED = 26124;
 
 	/**
-	 * Sigil of finality
+	 * Sigil of Finality
 	 */
 	public static final int SIGIL_OF_FINALITY_ATTUNED = 26125;
 
 	/**
-	 * Sigil of finality
+	 * Sigil of Finality
 	 */
 	public static final int SIGIL_OF_FINALITY_UNATTUNED = 26126;
 	public static final int CERT_SIGIL_OF_FINALITY_UNATTUNED = 26127;
 
 	/**
-	 * Sigil of pious protection
+	 * Sigil of Pious Protection
 	 */
 	public static final int SIGIL_OF_PIOUS_PROTECTION_ATTUNED = 26128;
 
 	/**
-	 * Sigil of pious protection
+	 * Sigil of Pious Protection
 	 */
 	public static final int SIGIL_OF_PIOUS_PROTECTION_UNATTUNED = 26129;
 	public static final int CERT_SIGIL_OF_PIOUS_PROTECTION_UNATTUNED = 26130;
@@ -65839,62 +65839,62 @@ public final class ItemID
 	public static final int SIGIL_OF_AGGRESSION_ATTUNED = 26131;
 
 	/**
-	 * Sigil of aggression
+	 * Sigil of Aggression
 	 */
 	public static final int SIGIL_OF_AGGRESSION_UNATTUNED = 26132;
 	public static final int CERT_SIGIL_OF_AGGRESSION_UNATTUNED = 26133;
 
 	/**
-	 * Sigil of rampage
+	 * Sigil of Rampage
 	 */
 	public static final int SIGIL_OF_RAMPAGE_ATTUNED = 26134;
 
 	/**
-	 * Sigil of rampage
+	 * Sigil of Rampage
 	 */
 	public static final int SIGIL_OF_RAMPAGE_UNATTUNED = 26135;
 	public static final int CERT_SIGIL_OF_RAMPAGE_UNATTUNED = 26136;
 
 	/**
-	 * Sigil of the skiller
+	 * Sigil of the Skiller
 	 */
 	public static final int SIGIL_OF_THE_SKILLER_ATTUNED = 26137;
 
 	/**
-	 * Sigil of the skiller
+	 * Sigil of the Skiller
 	 */
 	public static final int SIGIL_OF_THE_SKILLER_UNATTUNED = 26138;
 	public static final int CERT_SIGIL_OF_THE_SKILLER_UNATTUNED = 26139;
 
 	/**
-	 * Sigil of remote storage
+	 * Sigil of Remote Storage
 	 */
 	public static final int SIGIL_OF_REMOTE_STORAGE_ATTUNED = 26140;
 
 	/**
-	 * Sigil of remote storage
+	 * Sigil of Remote Storage
 	 */
 	public static final int SIGIL_OF_REMOTE_STORAGE_UNATTUNED = 26141;
 	public static final int CERT_SIGIL_OF_REMOTE_STORAGE_UNATTUNED = 26142;
 
 	/**
-	 * Sigil of last recall
+	 * Sigil of Last Recall
 	 */
 	public static final int SIGIL_OF_LAST_RECALL_ATTUNED = 26143;
 
 	/**
-	 * Sigil of last recall
+	 * Sigil of Last Recall
 	 */
 	public static final int SIGIL_OF_LAST_RECALL_UNATTUNED = 26144;
 	public static final int CERT_SIGIL_OF_LAST_RECALL_UNATTUNED = 26145;
 
 	/**
-	 * Sigil of the guardian angel
+	 * Sigil of the Guardian Angel
 	 */
 	public static final int SIGIL_OF_THE_GUARDIAN_ANGEL_ATTUNED = 26146;
 
 	/**
-	 * Sigil of the guardian angel
+	 * Sigil of the Guardian Angel
 	 */
 	public static final int SIGIL_OF_THE_GUARDIAN_ANGEL_UNATTUNED = 26147;
 	public static final int CERT_SIGIL_OF_THE_GUARDIAN_ANGEL_UNATTUNED = 26148;
@@ -67461,7 +67461,7 @@ public final class ItemID
 	public static final int BLIGHTED_SACK_SURGE = 26705;
 
 	/**
-	 * Scroll of imbuing
+	 * Scroll of Imbuing
 	 */
 	public static final int PVPA_IMBUING_SCROLL = 26706;
 
@@ -69629,32 +69629,32 @@ public final class ItemID
 	public static final int CRACKCLUE_2022 = 27427;
 
 	/**
-	 * Hood of ruin
+	 * Hood of Ruin
 	 */
 	public static final int ROBESOFRUIN_HOOD = 27428;
 
 	/**
-	 * Robe top of ruin
+	 * Robe top of Ruin
 	 */
 	public static final int ROBESOFRUIN_TOP = 27430;
 
 	/**
-	 * Robe bottom of ruin
+	 * Robe bottom of Ruin
 	 */
 	public static final int ROBESOFRUIN_BOTTOM = 27432;
 
 	/**
-	 * Gloves of ruin
+	 * Gloves of Ruin
 	 */
 	public static final int ROBESOFRUIN_GLOVES = 27434;
 
 	/**
-	 * Socks of ruin
+	 * Socks of Ruin
 	 */
 	public static final int ROBESOFRUIN_SOCKS = 27436;
 
 	/**
-	 * Cloak of ruin
+	 * Cloak of Ruin
 	 */
 	public static final int ROBESOFRUIN_CLOAK = 27438;
 
@@ -72806,199 +72806,199 @@ public final class ItemID
 	public static final int ANCIENT_SCEPTRE_SHADOW_TROUVER = 28476;
 
 	/**
-	 * Sigil of sustenance
+	 * Sigil of Sustenance
 	 */
 	public static final int SIGIL_OF_SUSTENANCE_ATTUNED = 28477;
 
 	/**
-	 * Sigil of sustenance
+	 * Sigil of Sustenance
 	 */
 	public static final int SIGIL_OF_SUSTENANCE_UNATTUNED = 28478;
 	public static final int CERT_SIGIL_OF_SUSTENANCE_UNATTUNED = 28479;
 
 	/**
-	 * Sigil of hoarding
+	 * Sigil of Hoarding
 	 */
 	public static final int SIGIL_OF_HOARDING_ATTUNED = 28480;
 
 	/**
-	 * Sigil of hoarding
+	 * Sigil of Hoarding
 	 */
 	public static final int SIGIL_OF_HOARDING_UNATTUNED = 28481;
 	public static final int CERT_SIGIL_OF_HOARDING_UNATTUNED = 28482;
 
 	/**
-	 * Sigil of the alchemaniac
+	 * Sigil of the Alchemaniac
 	 */
 	public static final int SIGIL_OF_THE_ALCHEMANIAC_ATTUNED = 28483;
 
 	/**
-	 * Sigil of the alchemaniac
+	 * Sigil of the Alchemaniac
 	 */
 	public static final int SIGIL_OF_THE_ALCHEMANIAC_UNATTUNED = 28484;
 	public static final int CERT_SIGIL_OF_THE_ALCHEMANIAC_UNATTUNED = 28485;
 
 	/**
-	 * Sigil of the hunter
+	 * Sigil of the Hunter
 	 */
 	public static final int SIGIL_OF_THE_HUNTER_ATTUNED = 28486;
 
 	/**
-	 * Sigil of the hunter
+	 * Sigil of the Hunter
 	 */
 	public static final int SIGIL_OF_THE_HUNTER_UNATTUNED = 28487;
 	public static final int CERT_SIGIL_OF_THE_HUNTER_UNATTUNED = 28488;
 
 	/**
-	 * Sigil of resistance
+	 * Sigil of Resistance
 	 */
 	public static final int SIGIL_OF_RESISTANCE_ATTUNED = 28489;
 
 	/**
-	 * Sigil of resistance
+	 * Sigil of Resistance
 	 */
 	public static final int SIGIL_OF_RESISTANCE_UNATTUNED = 28490;
 	public static final int CERT_SIGIL_OF_RESISTANCE_UNATTUNED = 28491;
 
 	/**
-	 * Sigil of agile fortune
+	 * Sigil of Agile Fortune
 	 */
 	public static final int SIGIL_OF_AGILE_FORTUNE_ATTUNED = 28492;
 
 	/**
-	 * Sigil of agile fortune
+	 * Sigil of Agile Fortune
 	 */
 	public static final int SIGIL_OF_AGILE_FORTUNE_UNATTUNED = 28493;
 	public static final int CERT_SIGIL_OF_AGILE_FORTUNE_UNATTUNED = 28494;
 
 	/**
-	 * Sigil of the food master
+	 * Sigil of the Food Master
 	 */
 	public static final int SIGIL_OF_THE_FOOD_MASTER_ATTUNED = 28495;
 
 	/**
-	 * Sigil of the food master
+	 * Sigil of the Food Master
 	 */
 	public static final int SIGIL_OF_THE_FOOD_MASTER_UNATTUNED = 28496;
 	public static final int CERT_SIGIL_OF_THE_FOOD_MASTER_UNATTUNED = 28497;
 
 	/**
-	 * Sigil of the well fed
+	 * Sigil of the Well Fed
 	 */
 	public static final int SIGIL_OF_THE_WELL_FED_ATTUNED = 28498;
 
 	/**
-	 * Sigil of the well fed
+	 * Sigil of The Well Fed
 	 */
 	public static final int SIGIL_OF_THE_WELL_FED_UNATTUNED = 28499;
 	public static final int CERT_SIGIL_OF_THE_WELL_FED_UNATTUNED = 28500;
 
 	/**
-	 * Sigil of the infernal chef
+	 * Sigil of the Infernal Chef
 	 */
 	public static final int SIGIL_OF_THE_INFERNAL_CHEF_ATTUNED = 28501;
 
 	/**
-	 * Sigil of the infernal chef
+	 * Sigil of the Infernal Chef
 	 */
 	public static final int SIGIL_OF_THE_INFERNAL_CHEF_UNATTUNED = 28502;
 	public static final int CERT_SIGIL_OF_THE_INFERNAL_CHEF_UNATTUNED = 28503;
 
 	/**
-	 * Sigil of the infernal smith
+	 * Sigil of the Infernal Smith
 	 */
 	public static final int SIGIL_OF_THE_INFERNAL_SMITH_ATTUNED = 28504;
 
 	/**
-	 * Sigil of the infernal smith
+	 * Sigil of the Infernal Smith
 	 */
 	public static final int SIGIL_OF_THE_INFERNAL_SMITH_UNATTUNED = 28505;
 	public static final int CERT_SIGIL_OF_THE_INFERNAL_SMITH_UNATTUNED = 28506;
 
 	/**
-	 * Sigil of the lightbearer
+	 * Sigil of the Lightbearer
 	 */
 	public static final int SIGIL_OF_THE_LIGHTBEARER_ATTUNED = 28507;
 
 	/**
-	 * Sigil of the lightbearer
+	 * Sigil of the Lightbearer
 	 */
 	public static final int SIGIL_OF_THE_LIGHTBEARER_UNATTUNED = 28508;
 	public static final int CERT_SIGIL_OF_THE_LIGHTBEARER_UNATTUNED = 28509;
 
 	/**
-	 * Sigil of the bloodhound
+	 * Sigil of the Bloodhound
 	 */
 	public static final int SIGIL_OF_THE_BLOODHOUND_ATTUNED = 28510;
 
 	/**
-	 * Sigil of the bloodhound
+	 * Sigil of the Bloodhound
 	 */
 	public static final int SIGIL_OF_THE_BLOODHOUND_UNATTUNED = 28511;
 	public static final int CERT_SIGIL_OF_THE_BLOODHOUND_UNATTUNED = 28512;
 
 	/**
-	 * Sigil of precision
+	 * Sigil of Precision
 	 */
 	public static final int SIGIL_OF_PRECISION_ATTUNED = 28513;
 
 	/**
-	 * Sigil of precision
+	 * Sigil of Precision
 	 */
 	public static final int SIGIL_OF_PRECISION_UNATTUNED = 28514;
 	public static final int CERT_SIGIL_OF_PRECISION_UNATTUNED = 28515;
 
 	/**
-	 * Sigil of the augmented thrall
+	 * Sigil of the Augmented Thrall
 	 */
 	public static final int SIGIL_OF_THE_AUGMENTED_THRALL_ATTUNED = 28516;
 
 	/**
-	 * Sigil of the augmented thrall
+	 * Sigil of the Augmented Thrall
 	 */
 	public static final int SIGIL_OF_THE_AUGMENTED_THRALL_UNATTUNED = 28517;
 	public static final int CERT_SIGIL_OF_THE_AUGMENTED_THRALL_UNATTUNED = 28518;
 
 	/**
-	 * Sigil of faith
+	 * Sigil of Faith
 	 */
 	public static final int SIGIL_OF_FAITH_ATTUNED = 28519;
 
 	/**
-	 * Sigil of faith
+	 * Sigil of Faith
 	 */
 	public static final int SIGIL_OF_FAITH_UNATTUNED = 28520;
 	public static final int CERT_SIGIL_OF_FAITH_UNATTUNED = 28521;
 
 	/**
-	 * Sigil of titanium
+	 * Sigil of Titanium
 	 */
 	public static final int SIGIL_OF_TITANIUM_ATTUNED = 28522;
 
 	/**
-	 * Sigil of titanium
+	 * Sigil of Titanium
 	 */
 	public static final int SIGIL_OF_TITANIUM_UNATTUNED = 28523;
 	public static final int CERT_SIGIL_OF_TITANIUM_UNATTUNED = 28524;
 
 	/**
-	 * Sigil of the ninja
+	 * Sigil of the Ninja
 	 */
 	public static final int SIGIL_OF_THE_NINJA_ATTUNED = 28525;
 
 	/**
-	 * Sigil of the ninja
+	 * Sigil of the Ninja
 	 */
 	public static final int SIGIL_OF_THE_NINJA_UNATTUNED = 28526;
 	public static final int CERT_SIGIL_OF_THE_NINJA_UNATTUNED = 28527;
 
 	/**
-	 * Sigil of woodcraft
+	 * Sigil of Woodcraft
 	 */
 	public static final int SIGIL_OF_WOODCRAFT_ATTUNED = 28528;
 
 	/**
-	 * Sigil of woodcraft
+	 * Sigil of Woodcraft
 	 */
 	public static final int SIGIL_OF_WOODCRAFT_UNATTUNED = 28529;
 	public static final int CERT_SIGIL_OF_WOODCRAFT_UNATTUNED = 28530;
@@ -73024,12 +73024,12 @@ public final class ItemID
 	public static final int DEADMAN_BLIGHTED_TWISTED_BOW = 28540;
 
 	/**
-	 * Corrupted scythe of vitur
+	 * Corrupted Scythe of Vitur
 	 */
 	public static final int DEADMAN_BLIGHTED_SCYTHE_OF_VITUR = 28543;
 
 	/**
-	 * Corrupted scythe of vitur (uncharged)
+	 * Corrupted Scythe of Vitur (uncharged)
 	 */
 	public static final int DEADMAN_BLIGHTED_SCYTHE_OF_VITUR_UNCHARGED = 28545;
 
@@ -74242,7 +74242,7 @@ public final class ItemID
 	public static final int FROG_QUEST_PLUSHY = 28987;
 
 	/**
-	 * Blue moon spear
+	 * Blue Moon spear
 	 */
 	public static final int FROSTMOON_SPEAR = 28988;
 
@@ -74267,137 +74267,137 @@ public final class ItemID
 	public static final int ECLIPSE_ATLATL_DUMMY = 29003;
 
 	/**
-	 * Eclipse moon chestplate
+	 * Eclipse Moon chestplate
 	 */
 	public static final int ECLIPSE_MOON_CHESTPLATE = 29004;
 
 	/**
-	 * Eclipse moon tassets
+	 * Eclipse Moon tassets
 	 */
 	public static final int ECLIPSE_MOON_TASSETS = 29007;
 
 	/**
-	 * Eclipse moon helm
+	 * Eclipse Moon helm
 	 */
 	public static final int ECLIPSE_MOON_HELM = 29010;
 
 	/**
-	 * Blue moon chestplate
+	 * Blue Moon chestplate
 	 */
 	public static final int FROST_MOON_CHESTPLATE = 29013;
 
 	/**
-	 * Blue moon tassets
+	 * Blue Moon tassets
 	 */
 	public static final int FROST_MOON_TASSETS = 29016;
 
 	/**
-	 * Blue moon helm
+	 * Blue Moon helm
 	 */
 	public static final int FROST_MOON_HELM = 29019;
 
 	/**
-	 * Blood moon chestplate
+	 * Blood Moon chestplate
 	 */
 	public static final int BLOOD_MOON_CHESTPLATE = 29022;
 
 	/**
-	 * Blood moon tassets
+	 * Blood Moon tassets
 	 */
 	public static final int BLOOD_MOON_TASSETS = 29025;
 
 	/**
-	 * Blood moon helm
+	 * Blood Moon helm
 	 */
 	public static final int BLOOD_MOON_HELM = 29028;
 
 	/**
-	 * Eclipse moon chestplate
+	 * Eclipse Moon chestplate
 	 */
 	public static final int ECLIPSE_MOON_CHESTPLATE_DEGRADED = 29031;
 
 	/**
-	 * Eclipse moon tassets
+	 * Eclipse Moon tassets
 	 */
 	public static final int ECLIPSE_MOON_TASSETS_DEGRADED = 29033;
 
 	/**
-	 * Eclipse moon helm
+	 * Eclipse Moon helm
 	 */
 	public static final int ECLIPSE_MOON_HELM_DEGRADED = 29035;
 
 	/**
-	 * Blue moon chestplate
+	 * Blue Moon chestplate
 	 */
 	public static final int FROST_MOON_CHESTPLATE_DEGRADED = 29037;
 
 	/**
-	 * Blue moon tassets
+	 * Blue Moon tassets
 	 */
 	public static final int FROST_MOON_TASSETS_DEGRADED = 29039;
 
 	/**
-	 * Blue moon helm
+	 * Blue Moon helm
 	 */
 	public static final int FROST_MOON_HELM_DEGRADED = 29041;
 
 	/**
-	 * Blood moon chestplate
+	 * Blood Moon chestplate
 	 */
 	public static final int BLOOD_MOON_CHESTPLATE_DEGRADED = 29043;
 
 	/**
-	 * Blood moon tassets
+	 * Blood Moon tassets
 	 */
 	public static final int BLOOD_MOON_TASSETS_DEGRADED = 29045;
 
 	/**
-	 * Blood moon helm
+	 * Blood Moon helm
 	 */
 	public static final int BLOOD_MOON_HELM_DEGRADED = 29047;
 
 	/**
-	 * Eclipse moon chestplate (broken)
+	 * Eclipse Moon chestplate (broken)
 	 */
 	public static final int ECLIPSE_MOON_CHESTPLATE_BROKEN = 29049;
 
 	/**
-	 * Eclipse moon tassets (broken)
+	 * Eclipse Moon tassets (broken)
 	 */
 	public static final int ECLIPSE_MOON_TASSETS_BROKEN = 29052;
 
 	/**
-	 * Eclipse moon helm (broken)
+	 * Eclipse Moon helm (broken)
 	 */
 	public static final int ECLIPSE_MOON_HELM_BROKEN = 29055;
 
 	/**
-	 * Blue moon chestplate (broken)
+	 * Blue Moon chestplate (broken)
 	 */
 	public static final int FROST_MOON_CHESTPLATE_BROKEN = 29058;
 
 	/**
-	 * Blue moon tassets (broken)
+	 * Blue Moon tassets (broken)
 	 */
 	public static final int FROST_MOON_TASSETS_BROKEN = 29061;
 
 	/**
-	 * Blue moon helm (broken)
+	 * Blue Moon helm (broken)
 	 */
 	public static final int FROST_MOON_HELM_BROKEN = 29064;
 
 	/**
-	 * Blood moon chestplate (broken)
+	 * Blood Moon chestplate (broken)
 	 */
 	public static final int BLOOD_MOON_CHESTPLATE_BROKEN = 29067;
 
 	/**
-	 * Blood moon tassets (broken)
+	 * Blood Moon tassets (broken)
 	 */
 	public static final int BLOOD_MOON_TASSETS_BROKEN = 29070;
 
 	/**
-	 * Blood moon helm (broken)
+	 * Blood Moon helm (broken)
 	 */
 	public static final int BLOOD_MOON_HELM_BROKEN = 29073;
 
@@ -75905,122 +75905,122 @@ public final class ItemID
 	public static final int BOUGHT_DEADMAN_POINTS = 29647;
 
 	/**
-	 * Sigil of meticulousness
+	 * Sigil of Meticulousness
 	 */
 	public static final int SIGIL_OF_METICULOUSNESS_ATTUNED = 29648;
 
 	/**
-	 * Sigil of meticulousness
+	 * Sigil of Meticulousness
 	 */
 	public static final int SIGIL_OF_METICULOUSNESS_UNATTUNED = 29649;
 	public static final int CERT_SIGIL_OF_METICULOUSNESS_UNATTUNED = 29650;
 
 	/**
-	 * Sigil of revoked limitation
+	 * Sigil of Revoked Limitation
 	 */
 	public static final int SIGIL_OF_REVOKED_LIMITATION_ATTUNED = 29651;
 
 	/**
-	 * Sigil of revoked limitation
+	 * Sigil of Revoked Limitation
 	 */
 	public static final int SIGIL_OF_REVOKED_LIMITATION_UNATTUNED = 29652;
 	public static final int CERT_SIGIL_OF_REVOKED_LIMITATION_UNATTUNED = 29653;
 
 	/**
-	 * Sigil of the rampart
+	 * Sigil of the Rampart
 	 */
 	public static final int SIGIL_OF_RAMPART_ATTUNED = 29654;
 
 	/**
-	 * Sigil of the rampart
+	 * Sigil of the Rampart
 	 */
 	public static final int SIGIL_OF_RAMPART_UNATTUNED = 29655;
 	public static final int CERT_SIGIL_OF_RAMPART_UNATTUNED = 29656;
 
 	/**
-	 * Sigil of deception
+	 * Sigil of Deception
 	 */
 	public static final int SIGIL_OF_DECEPTION_ATTUNED = 29657;
 
 	/**
-	 * Sigil of deception
+	 * Sigil of Deception
 	 */
 	public static final int SIGIL_OF_DECEPTION_UNATTUNED = 29658;
 	public static final int CERT_SIGIL_OF_DECEPTION_UNATTUNED = 29659;
 
 	/**
-	 * Sigil of litheness
+	 * Sigil of Litheness
 	 */
 	public static final int SIGIL_OF_LITHE_ATTUNED = 29660;
 
 	/**
-	 * Sigil of litheness
+	 * Sigil of Litheness
 	 */
 	public static final int SIGIL_OF_LITHE_UNATTUNED = 29661;
 	public static final int CERT_SIGIL_OF_LITHE_UNATTUNED = 29662;
 
 	/**
-	 * Sigil of the adroit
+	 * Sigil of the Adroit
 	 */
 	public static final int SIGIL_OF_ADROIT_ATTUNED = 29663;
 
 	/**
-	 * Sigil of the adroit
+	 * Sigil of the Adroit
 	 */
 	public static final int SIGIL_OF_ADROIT_UNATTUNED = 29664;
 	public static final int CERT_SIGIL_OF_ADROIT_UNATTUNED = 29665;
 
 	/**
-	 * Sigil of onslaught
+	 * Sigil of Onslaught
 	 */
 	public static final int SIGIL_OF_ONSLAUGHT_ATTUNED = 29666;
 
 	/**
-	 * Sigil of onslaught
+	 * Sigil of Onslaught
 	 */
 	public static final int SIGIL_OF_ONSLAUGHT_UNATTUNED = 29667;
 	public static final int CERT_SIGIL_OF_ONSLAUGHT_UNATTUNED = 29668;
 
 	/**
-	 * Sigil of restoration
+	 * Sigil of Restoration
 	 */
 	public static final int SIGIL_OF_RESTORATION_ATTUNED = 29669;
 
 	/**
-	 * Sigil of restoration
+	 * Sigil of Restoration
 	 */
 	public static final int SIGIL_OF_RESTORATION_UNATTUNED = 29670;
 	public static final int CERT_SIGIL_OF_RESTORATION_UNATTUNED = 29671;
 
 	/**
-	 * Sigil of the swashbuckler
+	 * Sigil of the Swashbuckler
 	 */
 	public static final int SIGIL_OF_SWASHBUCKLER_ATTUNED = 29672;
 
 	/**
-	 * Sigil of the swashbuckler
+	 * Sigil of the Swashbuckler
 	 */
 	public static final int SIGIL_OF_SWASHBUCKLER_UNATTUNED = 29673;
 	public static final int CERT_SIGIL_OF_SWASHBUCKLER_UNATTUNED = 29674;
 
 	/**
-	 * Sigil of the gunslinger
+	 * Sigil of the Gunslinger
 	 */
 	public static final int SIGIL_OF_GUNSLINGER_ATTUNED = 29675;
 
 	/**
-	 * Sigil of the gunslinger
+	 * Sigil of the Gunslinger
 	 */
 	public static final int SIGIL_OF_GUNSLINGER_UNATTUNED = 29676;
 	public static final int CERT_SIGIL_OF_GUNSLINGER_UNATTUNED = 29677;
 
 	/**
-	 * Sigil of arcane swiftness
+	 * Sigil of Arcane Swiftness
 	 */
 	public static final int SIGIL_OF_ARCANE_SWIFTNESS_ATTUNED = 29678;
 
 	/**
-	 * Sigil of arcane swiftness
+	 * Sigil of Arcane Swiftness
 	 */
 	public static final int SIGIL_OF_ARCANE_SWIFTNESS_UNATTUNED = 29679;
 	public static final int CERT_SIGIL_OF_ARCANE_SWIFTNESS_UNATTUNED = 29680;
@@ -76401,52 +76401,52 @@ public final class ItemID
 	public static final int ARAXXORPET_CUTE = 29838;
 
 	/**
-	 * Eclipse moon chestplate
+	 * Eclipse Moon chestplate
 	 */
 	public static final int BR_ECLIPSE_MOON_CHESTPLATE = 29840;
 
 	/**
-	 * Eclipse moon tassets
+	 * Eclipse Moon tassets
 	 */
 	public static final int BR_ECLIPSE_MOON_TASSETS = 29841;
 
 	/**
-	 * Eclipse moon helm
+	 * Eclipse Moon helm
 	 */
 	public static final int BR_ECLIPSE_MOON_HELM = 29842;
 
 	/**
-	 * Blue moon chestplate
+	 * Blue Moon chestplate
 	 */
 	public static final int BR_FROST_MOON_CHESTPLATE = 29843;
 
 	/**
-	 * Blue moon tassets
+	 * Blue Moon tassets
 	 */
 	public static final int BR_FROST_MOON_TASSETS = 29844;
 
 	/**
-	 * Blue moon helm
+	 * Blue Moon helm
 	 */
 	public static final int BR_FROST_MOON_HELM = 29845;
 
 	/**
-	 * Blood moon chestplate
+	 * Blood Moon chestplate
 	 */
 	public static final int BR_BLOOD_MOON_CHESTPLATE = 29846;
 
 	/**
-	 * Blood moon tassets
+	 * Blood Moon tassets
 	 */
 	public static final int BR_BLOOD_MOON_TASSETS = 29847;
 
 	/**
-	 * Blood moon helm
+	 * Blood Moon helm
 	 */
 	public static final int BR_BLOOD_MOON_HELM = 29848;
 
 	/**
-	 * Blue moon spear
+	 * Blue Moon spear
 	 */
 	public static final int BR_FROSTMOON_SPEAR = 29849;
 
@@ -80210,17 +80210,17 @@ public final class ItemID
 	public static final int AGILITY_SWING_AREA = 31135;
 
 	/**
-	 * Blood moon armour set
+	 * Blood Moon armour set
 	 */
 	public static final int SET_BLOOD_MOON_ARMOUR = 31136;
 
 	/**
-	 * Blue moon armour set
+	 * Blue Moon armour set
 	 */
 	public static final int SET_BLUE_MOON_ARMOUR = 31139;
 
 	/**
-	 * Eclipse moon armour set
+	 * Eclipse Moon armour set
 	 */
 	public static final int SET_ECLIPSE_MOON_ARMOUR = 31142;
 
@@ -83789,102 +83789,102 @@ public final class ItemID
 	public static final int LOST_SCHEMATIC_DRAGON_KEEL = 32410;
 
 	/**
-	 * Small key (the pandemonium)
+	 * Small key (The Pandemonium)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_CHINCHOMPA = 32411;
 
 	/**
-	 * Small key (the onyx crest)
+	 * Small key (The Onyx Crest)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_ANGLERS = 32412;
 
 	/**
-	 * Small key (tear of the soul)
+	 * Small key (Tear of the Soul)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_BUCCANEERS = 32413;
 
 	/**
-	 * Small key (ynysdail)
+	 * Small key (Ynysdail)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_LLEDRITH = 32414;
 
 	/**
-	 * Small key (minotaurs' rest)
+	 * Small key (Minotaurs' Rest)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_CROWNJEWEL = 32415;
 
 	/**
-	 * Small key (buccaneers' haven)
+	 * Small key (Buccaneers' Haven)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_DEEPFIN = 32416;
 
 	/**
-	 * Small key (isle of bones)
+	 * Small key (Isle of Bones)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_SHIMMERING = 32417;
 
 	/**
-	 * Small key (charred island)
+	 * Small key (Charred Island)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_BRITTLE = 32418;
 
 	/**
-	 * Small key (laguna aurorae)
+	 * Small key (Laguna Aurorae)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_SUNBLEAK = 32419;
 
 	/**
-	 * Small key (drumstick isle)
+	 * Small key (Drumstick Isle)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_GRIMSTONE = 32420;
 
 	/**
-	 * Lockbox directions (chinchompa island)
+	 * Lockbox directions (Chinchompa Island)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_CHINCHOMPA = 32421;
 
 	/**
-	 * Lockbox directions (anglers' retreat)
+	 * Lockbox directions (Anglers' Retreat)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_ANGLERS = 32422;
 
 	/**
-	 * Lockbox directions (buccaneers' haven)
+	 * Lockbox directions (Buccaneers' Haven)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_BUCCANEERS = 32423;
 
 	/**
-	 * Lockbox directions (lledrith island)
+	 * Lockbox directions (Lledrith Island)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_LLEDRITH = 32424;
 
 	/**
-	 * Lockbox directions (the crown jewel)
+	 * Lockbox directions (The Crown Jewel)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_CROWNJEWEL = 32425;
 
 	/**
-	 * Lockbox directions (deepfin point)
+	 * Lockbox directions (Deepfin Point)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_DEEPFIN = 32426;
 
 	/**
-	 * Lockbox directions (shimmering atoll)
+	 * Lockbox directions (Shimmering Atoll)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_SHIMMERING = 32427;
 
 	/**
-	 * Lockbox directions (brittle isle)
+	 * Lockbox directions (Brittle Isle)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_BRITTLE = 32428;
 
 	/**
-	 * Lockbox directions (sunbleak island)
+	 * Lockbox directions (Sunbleak Island)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_SUNBLEAK = 32429;
 
 	/**
-	 * Lockbox directions (grimstone)
+	 * Lockbox directions (Grimstone)
 	 */
 	public static final int LOST_SCHEMATIC_MAP_GRIMSTONE = 32430;
 
@@ -86658,52 +86658,52 @@ public final class ItemID
 	public static final int MAGIC_ROCK_OF_FORTUITY_ACTIVE = 33050;
 
 	/**
-	 * Sigil of the gods
+	 * Sigil of the Gods
 	 */
 	public static final int SIGIL_OF_THE_GODS_ATTUNED = 33053;
 
 	/**
-	 * Sigil of the gods
+	 * Sigil of the Gods
 	 */
 	public static final int SIGIL_OF_THE_GODS_UNATTUNED = 33054;
 
 	/**
-	 * Sigil of conclusion
+	 * Sigil of Conclusion
 	 */
 	public static final int SIGIL_OF_CONCLUSION_ATTUNED = 33055;
 
 	/**
-	 * Sigil of conclusion
+	 * Sigil of Conclusion
 	 */
 	public static final int SIGIL_OF_CONCLUSION_UNATTUNED = 33056;
 
 	/**
-	 * Sigil of automation
+	 * Sigil of Automation
 	 */
 	public static final int SIGIL_OF_AUTOMATION_ATTUNED = 33057;
 
 	/**
-	 * Sigil of automation
+	 * Sigil of Automation
 	 */
 	public static final int SIGIL_OF_AUTOMATION_UNATTUNED = 33058;
 
 	/**
-	 * Sigil of eternal belief
+	 * Sigil of Eternal Belief
 	 */
 	public static final int SIGIL_OF_ETERNAL_BELIEF_ATTUNED = 33059;
 
 	/**
-	 * Sigil of eternal belief
+	 * Sigil of Eternal Belief
 	 */
 	public static final int SIGIL_OF_ETERNAL_BELIEF_UNATTUNED = 33060;
 
 	/**
-	 * Sigil of efficiency
+	 * Sigil of Efficiency
 	 */
 	public static final int SIGIL_OF_EFFICIENCY_ATTUNED = 33061;
 
 	/**
-	 * Sigil of efficiency
+	 * Sigil of Efficiency
 	 */
 	public static final int SIGIL_OF_EFFICIENCY_UNATTUNED = 33062;
 
@@ -88206,7 +88206,7 @@ public final class ItemID
 	public static final int MYQ6_DERYGULL_JOURNAL = 33704;
 
 	/**
-	 * Pious proceedings
+	 * Pious Proceedings
 	 */
 	public static final int MYQ6_ERYSAIL_JOURNAL = 33705;
 
@@ -90083,7 +90083,7 @@ public final class ItemID
 	public static final int LANSCAPE_2026_CURRENCY_10000 = 34400;
 
 	/**
-	 * Necklace of fangs
+	 * Necklace of Fangs
 	 */
 	public static final int NECKLACE_OF_FANGS = 34401;
 
