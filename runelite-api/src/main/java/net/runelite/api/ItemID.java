@@ -7095,7 +7095,7 @@ public final class ItemID
 	public static final int ZAMORAK_MIX2 = 11521;
 	public static final int ZAMORAK_MIX1 = 11523;
 	public static final int FEATHER_11525 = 11525;
-	public static final int MAUSOLEUM_BRIDGE_REPAIR = 11527;
+	public static final int MAUSOLEUM_BRIDGE_REINFORCEMENT = 11527;
 	public static final int WATER_PUMP = 11547;
 	public static final int COOKING_POT_11548 = 11548;
 	public static final int POTTERY_WHEEL = 11549;
