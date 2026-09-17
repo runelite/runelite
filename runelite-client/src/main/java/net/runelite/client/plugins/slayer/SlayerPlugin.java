@@ -27,8 +27,9 @@ package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.inject.Binder;
+import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.util.Providers;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -152,6 +153,9 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private NpcOverlayService npcOverlayService;
 
+	@Inject
+	private SlayerPluginServiceImpl slayerPluginService;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
 
@@ -201,9 +205,9 @@ public class SlayerPlugin extends Plugin
 	};
 
 	@Override
-	public void configure(Binder binder)
+	public Module getPublicModule()
 	{
-		binder.bind(SlayerPluginService.class).to(SlayerPluginServiceImpl.class);
+		return b -> b.bind(SlayerPluginService.class).toProvider(Providers.of(slayerPluginService));
 	}
 
 	@Override

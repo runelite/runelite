@@ -27,8 +27,9 @@ package net.runelite.client.plugins.xptracker;
 
 import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.base.MoreObjects.firstNonNull;
-import com.google.inject.Binder;
+import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.util.Providers;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
@@ -108,6 +109,9 @@ public class XpTrackerPlugin extends Plugin
 	private XpState xpState;
 
 	@Inject
+	private XpTrackerServiceImpl xpTrackerService;
+
+	@Inject
 	private ConfigManager configManager;
 
 	private NavigationButton navButton;
@@ -131,9 +135,9 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Override
-	public void configure(Binder binder)
+	protected Module getPublicModule()
 	{
-		binder.bind(XpTrackerService.class).to(XpTrackerServiceImpl.class);
+		return b -> b.bind(XpTrackerService.class).toProvider(Providers.of(xpTrackerService));
 	}
 
 	@Override

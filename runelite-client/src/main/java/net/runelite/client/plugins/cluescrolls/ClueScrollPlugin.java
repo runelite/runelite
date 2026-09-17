@@ -28,8 +28,9 @@ package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
-import com.google.inject.Binder;
+import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.util.Providers;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -215,6 +216,9 @@ public class ClueScrollPlugin extends Plugin
 	private WorldMapPointManager worldMapPointManager;
 
 	@Inject
+	private ClueScrollServiceImpl clueScrollService;
+
+	@Inject
 	private TagManager tagManager;
 
 	@Inject
@@ -245,9 +249,9 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	public void configure(Binder binder)
+	public Module getPublicModule()
 	{
-		binder.bind(ClueScrollService.class).to(ClueScrollServiceImpl.class);
+		return b -> b.bind(ClueScrollService.class).toProvider(Providers.of(clueScrollService));
 	}
 
 	@Override
