@@ -75,6 +75,13 @@ public class ItemStatOverlay extends Overlay
 	@Inject
 	private ItemStatConfig config;
 
+	private boolean equipmentStatsHotkeyPressed;
+
+	void setEquipmentStatsHotkeyPressed(boolean equipmentStatsHotkeyPressed)
+	{
+		this.equipmentStatsHotkeyPressed = equipmentStatsHotkeyPressed;
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -185,7 +192,7 @@ public class ItemStatOverlay extends Overlay
 			}
 		}
 
-		if (config.equipmentStats())
+		if (config.equipmentStats() || equipmentStatsHotkeyPressed)
 		{
 			final ItemStats stats = itemManager.getItemStats(itemId);
 

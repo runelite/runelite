@@ -28,6 +28,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("itemstat")
 public interface ItemStatConfig extends Config
@@ -50,6 +51,16 @@ public interface ItemStatConfig extends Config
 	default boolean equipmentStats()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "equipmentStatsHotkey",
+		name = "Equipment stats hotkey",
+		description = "Hold this hotkey to show equipment stats tooltips when hovering over items."
+	)
+	default Keybind equipmentStatsHotkey()
+	{
+		return Keybind.NOT_SET;
 	}
 
 	@ConfigItem(
