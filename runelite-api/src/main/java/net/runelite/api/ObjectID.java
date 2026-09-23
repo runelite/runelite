@@ -30156,6 +30156,7 @@ public final class ObjectID
 	public static final int CHEWED_BOX = 62490;
 	public static final int CHEWED_BOX_62491 = 62491;
 	public static final int STUFFED_DOG = 62494;
+	public static final int DOG_BED = 62497;
 	public static final int DOGHOUSE = 62498;
 	public static final int SHELTER = 62499;
 	public static final int KENNEL = 62500;
