@@ -18853,6 +18853,11 @@ public final class DBTableID
 		 */
 		public static final int COL_MEMBERSONLY = 3;
 
+		/**
+		 * (boolean, integer)
+		 */
+		public static final int COL_CUSTOM_ORDER = 4;
+
 		public static final class Row
 		{
 			public static final int SKILL_GUIDE_SUBSECTION_AGILITY_OVERVIEW = 9656;
@@ -19107,6 +19112,11 @@ public final class DBTableID
 		 * obj
 		 */
 		public static final int COL_OTHERDATA_CONSTRUCTION = 9;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_CUSTOM_ORDERING = 10;
 
 		public static final class Row
 		{
@@ -22587,6 +22597,12 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_FISHING_HALIBUTSHOAL = 16956;
 			public static final int SKILL_FEATURE_FISHING_BLUEFINSHOAL = 16957;
 			public static final int SKILL_FEATURE_FISHING_MARLINSHOAL = 16958;
+			public static final int SKILL_FEATURE_HITPOINTS_GIANT_KRILL_COOKED = 16973;
+			public static final int SKILL_FEATURE_HITPOINTS_HADDOCK_COOKED = 16974;
+			public static final int SKILL_FEATURE_HITPOINTS_YELLOWFIN_COOKED = 16975;
+			public static final int SKILL_FEATURE_HITPOINTS_HALIBUT_COOKED = 16976;
+			public static final int SKILL_FEATURE_HITPOINTS_BLUEFIN_COOKED = 16977;
+			public static final int SKILL_FEATURE_HITPOINTS_MARLIN_COOKED = 16978;
 		}
 	}
 

@@ -95341,6 +95341,7 @@ public final class ItemID
 		public static final int FIRE_RUBY = 34423;
 		public static final int AMULET_OF_FIRE = 34426;
 		public static final int ELEMENTAL_AMULET = 34429;
+		public static final int BLANKRUNE_DAEYALT = 34603;
 	}
 
 	public static final class Placeholder

@@ -83517,6 +83517,10 @@ class ObjectID1
 	public static final int DOGQ_GOBLIN_STUFFED_DOG = 62494;
 	public static final int DOGQ_DOG_GUARD_HOUSE_MULTI = 62495;
 	public static final int DOGQ_DOG_GUARD_BALL_MULTI = 62496;
+
+	/**
+	 * Dog bed
+	 */
 	public static final int DOGQ_DOG_GUARD_HOUSE = 62497;
 
 	/**

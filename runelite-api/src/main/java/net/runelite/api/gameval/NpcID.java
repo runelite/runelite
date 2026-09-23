@@ -71066,55 +71066,55 @@ public final class NpcID
 	public static final int CHIHUAHUA_SHELTER_MULTI = 16415;
 
 	/**
-	 * Chihuahua
+	 * Leo
 	 */
 	public static final int CHIHUAHUA_SHELTER = 16416;
 	public static final int COLLIE_SHELTER_MULTI = 16417;
 
 	/**
-	 * Border Collie
+	 * Victor
 	 */
 	public static final int COLLIE_SHELTER = 16418;
 	public static final int CORGI_SHELTER_MULTI = 16419;
 
 	/**
-	 * Corgi
+	 * Loot
 	 */
 	public static final int CORGI_SHELTER = 16420;
 	public static final int GREYHOUND_SHELTER_MULTI = 16421;
 
 	/**
-	 * Greyhound
+	 * Wrigley
 	 */
 	public static final int GREYHOUND_SHELTER = 16422;
 	public static final int SAMOYED_SHELTER_MULTI = 16423;
 
 	/**
-	 * Samoyed
+	 * Artsi
 	 */
 	public static final int SAMOYED_SHELTER = 16424;
 	public static final int SHEPARD_SHELTER_MULTI = 16425;
 
 	/**
-	 * Bernese Mountain Dog
+	 * Timber
 	 */
 	public static final int SHEPARD_SHELTER = 16426;
 	public static final int SHIBA_SHELTER_MULTI = 16427;
 
 	/**
-	 * Shiba
+	 * Keanna
 	 */
 	public static final int SHIBA_SHELTER = 16428;
 	public static final int HUSKY_SHELTER_MULTI = 16429;
 
 	/**
-	 * Husky
+	 * Zoey
 	 */
 	public static final int HUSKY_SHELTER = 16430;
 	public static final int YORKIE_SHELTER_MULTI = 16431;
 
 	/**
-	 * Yorkie
+	 * Smoky
 	 */
 	public static final int YORKIE_SHELTER = 16432;
 
@@ -71444,17 +71444,17 @@ public final class NpcID
 	public static final int DOGQ_PUPPY_THREE = 16517;
 
 	/**
-	 * Labrador puppy
+	 * Blaze
 	 */
 	public static final int DOGQ_PUPPY_ONE_NOOP = 16518;
 
 	/**
-	 * Pug puppy
+	 * Vinny
 	 */
 	public static final int DOGQ_PUPPY_TWO_NOOP = 16519;
 
 	/**
-	 * Spaniel puppy
+	 * Rumi
 	 */
 	public static final int DOGQ_PUPPY_THREE_NOOP = 16520;
 	public static final int DOGQ_GOBLIN_PICKLENOSE_MULTI = 16521;
