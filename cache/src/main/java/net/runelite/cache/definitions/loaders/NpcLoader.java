@@ -155,7 +155,10 @@ public class NpcLoader
 				def.retextureToFind[index] = (short) stream.readUnsignedShort();
 				def.retextureToReplace[index] = (short) stream.readUnsignedShort();
 			}
-
+		}
+		else if (opcode == 42)
+		{
+			def.fullRecolor = (short) stream.readUnsignedShort();
 		}
 		else if (opcode == 60)
 		{
