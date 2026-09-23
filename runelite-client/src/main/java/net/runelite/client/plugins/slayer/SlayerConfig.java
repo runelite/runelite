@@ -115,6 +115,39 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 7,
+		keyName = "highlightTrueTile",
+		name = "Highlight true tile",
+		description = "Configures whether or not the NPC true tile should be highlighted."
+	)
+	default boolean highlightTrueTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "highlightSwTile",
+		name = "Highlight south west tile",
+		description = "Configures whether or not the NPC south western tile should be highlighted."
+	)
+	default boolean highlightSwTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "highlightSwTrueTile",
+		name = "Highlight south west true tile",
+		description = "Configures whether or not the NPC south western true tile should be highlighted."
+	)
+	default boolean highlightSwTrueTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 10,
 		keyName = "highlightOutline",
 		name = "Highlight outline",
 		description = "Configures whether or not the NPC outline should be highlighted."
@@ -124,9 +157,20 @@ public interface SlayerConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		position = 11,
+		keyName = "showRespawnTimer",
+		name = "Show respawn timer",
+		description = "Configures whether the NPC respawn timer should be shown."
+	)
+	default boolean showRespawnTimer()
+	{
+		return false;
+	}
+
 	@Alpha
 	@ConfigItem(
-		position = 8,
+		position = 12,
 		keyName = "targetColor",
 		name = "Target color",
 		description = "Color of the highlighted targets."
@@ -137,7 +181,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 13,
 		keyName = "weaknessPrompt",
 		name = "Show monster weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (only lizards, gargoyles, rockslugs & zygomites)."
@@ -148,7 +192,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 14,
 		keyName = "taskCommand",
 		name = "Task command",
 		description = "Configures whether the slayer task command is enabled: !task"
@@ -157,4 +201,5 @@ public interface SlayerConfig extends Config
 	{
 		return true;
 	}
+
 }
