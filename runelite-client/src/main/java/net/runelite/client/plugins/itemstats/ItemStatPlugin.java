@@ -31,6 +31,7 @@ import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.FontMetrics;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -95,6 +96,9 @@ public class ItemStatPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private PoisonStatus poisonStatus;
+
 	private Widget itemInformationTitle;
 
 	@Provides
@@ -119,6 +123,7 @@ public class ItemStatPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		poisonStatus.clear();
 		clientThread.invokeLater(this::resetGEInventory);
 	}
 
@@ -148,6 +153,10 @@ public class ItemStatPlugin extends Plugin
 		if (event.getVarpId() == VarPlayerID.TRADINGPOST_SEARCH && config.geStats())
 		{
 			resetGEInventory();
+		}
+		else if (event.getVarpId() == VarPlayerID.POISON)
+		{
+			poisonStatus.update(event.getValue(), Instant.now());
 		}
 	}
 

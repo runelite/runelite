@@ -33,49 +33,72 @@ import net.runelite.api.gameval.ItemID;
 
 public enum PotionDuration
 {
-	ANTIPOISON(Duration.ofSeconds(90), ItemID._4DOSEANTIPOISON, ItemID._3DOSEANTIPOISON, ItemID._2DOSEANTIPOISON, ItemID._1DOSEANTIPOISON),
-	SUPERANTIPOISON(Duration.ofMinutes(6), ItemID._4DOSE2ANTIPOISON, ItemID._3DOSE2ANTIPOISON, ItemID._2DOSE2ANTIPOISON, ItemID._1DOSE2ANTIPOISON),
-	ANTIDOTE_P(Duration.ofMinutes(9), ItemID.ANTIDOTE_4, ItemID.ANTIDOTE_3, ItemID.ANTIDOTE_2, ItemID.ANTIDOTE_1),
-	ANTIDOTE_PP(Duration.ofMinutes(12), ItemID.ANTIDOTE__4, ItemID.ANTIDOTE__3, ItemID.ANTIDOTE__2, ItemID.ANTIDOTE__1),
-	ANTIVENOM(new PotionDurationRange[]{
+	ANTIPOISON(Duration.ofSeconds(90), true, ItemID._4DOSEANTIPOISON, ItemID._3DOSEANTIPOISON, ItemID._2DOSEANTIPOISON, ItemID._1DOSEANTIPOISON),
+	SUPERANTIPOISON(Duration.ofMinutes(6), true, ItemID._4DOSE2ANTIPOISON, ItemID._3DOSE2ANTIPOISON, ItemID._2DOSE2ANTIPOISON, ItemID._1DOSE2ANTIPOISON),
+	SANFEW_SERUM(Duration.ofMinutes(6), true, ItemID.SANFEW_SALVE_4_DOSE, ItemID.SANFEW_SALVE_3_DOSE, ItemID.SANFEW_SALVE_2_DOSE, ItemID.SANFEW_SALVE_1_DOSE,
+		ItemID.BR_SANFEW_SALVE_4_DOSE, ItemID.BR_SANFEW_SALVE_3_DOSE, ItemID.BR_SANFEW_SALVE_2_DOSE, ItemID.BR_SANFEW_SALVE_1_DOSE),
+	ANTIDOTE_P(Duration.ofMinutes(9), true, ItemID.ANTIDOTE_4, ItemID.ANTIDOTE_3, ItemID.ANTIDOTE_2, ItemID.ANTIDOTE_1),
+	ANTIDOTE_PP(new PotionDurationRange[]{
 		new PotionDurationRange("Anti-venom", Duration.ofSeconds(18), Duration.ofSeconds(36)),
-		new PotionDurationRange("Anti-poison", Duration.ofMinutes(12))},
+		new PotionDurationRange("Anti-poison", Duration.ofMinutes(12))}, true,
+		ItemID.ANTIDOTE__4, ItemID.ANTIDOTE__3, ItemID.ANTIDOTE__2, ItemID.ANTIDOTE__1),
+	ANTIVENOM(new PotionDurationRange[]{
+		new PotionDurationRange("Anti-venom", Duration.ofSeconds(36), Duration.ofSeconds(54)),
+		new PotionDurationRange("Anti-poison", Duration.ofMinutes(12))}, true,
 		ItemID.ANTIVENOM4, ItemID.ANTIVENOM3, ItemID.ANTIVENOM2, ItemID.ANTIVENOM1),
+	ARAXYTE_VENOM_SAC(new PotionDurationRange[]{
+		new PotionDurationRange("Anti-venom", Duration.ZERO, Duration.ofSeconds(18)),
+		new PotionDurationRange("Anti-poison", Duration.ofSeconds(702))}, true,
+		ItemID.ARAXYTE_VENOM_SACK),
 	ANTIVENOM_P(new PotionDurationRange[]{
-		new PotionDurationRange("Anti-venom", Duration.ofMinutes(3)),
-		new PotionDurationRange("Anti-poison", Duration.ofMinutes(15))},
+		new PotionDurationRange("Anti-venom", Duration.ofSeconds(216)),
+		new PotionDurationRange("Anti-poison", Duration.ofMinutes(15))}, true,
 		ItemID.ANTIVENOM_4, ItemID.ANTIVENOM_3, ItemID.ANTIVENOM_2, ItemID.ANTIVENOM_1),
 	EXTENDED_ANTIVENOM_P(new PotionDurationRange[]{
-		new PotionDurationRange("Anti-venom", Duration.ofMinutes(6)),
-		new PotionDurationRange("Anti-poison", Duration.ofMinutes(17))},
+		new PotionDurationRange("Anti-venom", Duration.ofSeconds(378)),
+		new PotionDurationRange("Anti-poison", Duration.ofSeconds(1062))}, true,
 		ItemID.EXTENDED_ANTIVENOM_4, ItemID.EXTENDED_ANTIVENOM_3, ItemID.EXTENDED_ANTIVENOM_2, ItemID.EXTENDED_ANTIVENOM_1),
 	ANTIFIRE(Duration.ofMinutes(6), ItemID._4DOSE1ANTIDRAGON, ItemID._3DOSE1ANTIDRAGON, ItemID._2DOSE1ANTIDRAGON, ItemID._1DOSE1ANTIDRAGON),
 	EXTENDED_ANTIFIRE(Duration.ofMinutes(12), ItemID._4DOSE2ANTIDRAGON, ItemID._3DOSE2ANTIDRAGON, ItemID._2DOSE2ANTIDRAGON, ItemID._1DOSE2ANTIDRAGON),
 	SUPER_ANTIFIRE(Duration.ofMinutes(3), ItemID._4DOSE3ANTIDRAGON, ItemID._3DOSE3ANTIDRAGON, ItemID._2DOSE3ANTIDRAGON, ItemID._1DOSE3ANTIDRAGON),
 	EXTENDED_SUPER_ANTIFIRE(Duration.ofMinutes(6), ItemID._4DOSE4ANTIDRAGON, ItemID._3DOSE4ANTIDRAGON, ItemID._2DOSE4ANTIDRAGON, ItemID._1DOSE4ANTIDRAGON),
-	ANTIPOISON_MIX(Duration.ofSeconds(90), ItemID.BRUTAL_1DOSEANTIPOISON, ItemID.BRUTAL_2DOSEANTIPOISON),
-	ANTIPOISON_SUPERMIX(Duration.ofMinutes(6), ItemID.BRUTAL_1DOSE2ANTIPOISON, ItemID.BRUTAL_2DOSE2ANTIPOISON),
-	ANTIDOTE_PLUS_MIX(Duration.ofMinutes(9), ItemID.BRUTAL_ANTIDOTE_1, ItemID.BRUTAL_ANTIDOTE_2),
+	ANTIPOISON_MIX(Duration.ofSeconds(90), true, ItemID.BRUTAL_1DOSEANTIPOISON, ItemID.BRUTAL_2DOSEANTIPOISON),
+	ANTIPOISON_SUPERMIX(Duration.ofMinutes(6), true, ItemID.BRUTAL_1DOSE2ANTIPOISON, ItemID.BRUTAL_2DOSE2ANTIPOISON),
+	ANTIDOTE_PLUS_MIX(Duration.ofMinutes(9), true, ItemID.BRUTAL_ANTIDOTE_1, ItemID.BRUTAL_ANTIDOTE_2),
 	EXTENDED_ANTIFIRE_MIX(Duration.ofMinutes(12), ItemID.BRUTAL_1DOSE2ANTIDRAGON, ItemID.BRUTAL_2DOSE2ANTIDRAGON),
 	SUPER_ANTIFIRE_MIX(Duration.ofMinutes(3), ItemID.BRUTAL_1DOSE3ANTIDRAGON, ItemID.BRUTAL_2DOSE3ANTIDRAGON),
 	EXTENDED_SUPER_ANTIFIRE_MIX(Duration.ofMinutes(6), ItemID.BRUTAL_1DOSE4ANTIDRAGON, ItemID.BRUTAL_2DOSE4ANTIDRAGON);
 
 	@Getter
 	private final PotionDurationRange[] durationRanges;
+	@Getter
+	private final boolean poisonRemedy;
 	private final int[] itemIds;
 
 	PotionDuration(Duration duration, int... itemIds)
+	{
+		this(duration, false, itemIds);
+	}
+
+	PotionDuration(Duration duration, boolean poisonRemedy, int... itemIds)
 	{
 		PotionDurationRange[] ranges = new PotionDurationRange[1];
 		// Only need the duration, not the potion name or a range
 		ranges[0] = new PotionDurationRange("", duration);
 		this.durationRanges = ranges;
+		this.poisonRemedy = poisonRemedy;
 		this.itemIds = itemIds;
 	}
 
 	PotionDuration(PotionDurationRange[] durationRanges, int... itemIds)
 	{
+		this(durationRanges, false, itemIds);
+	}
+
+	PotionDuration(PotionDurationRange[] durationRanges, boolean poisonRemedy, int... itemIds)
+	{
 		this.durationRanges = durationRanges;
+		this.poisonRemedy = poisonRemedy;
 		this.itemIds = itemIds;
 	}
 
