@@ -469,7 +469,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "chatActivationKey",
 		name = "Chat key",
-		description = "The key used to activate chat while press key to chat is enabled.",
+		description = "The key used to activate chat while press key to chat is enabled. Not set leaves chat unlocked.",
 		position = 48,
 		section = chatSettings
 	)

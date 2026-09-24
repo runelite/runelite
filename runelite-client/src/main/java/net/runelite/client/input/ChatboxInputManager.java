@@ -44,6 +44,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -59,7 +60,6 @@ public class ChatboxInputManager
 	private final ClientThread clientThread;
 	private final RuneLiteConfig config;
 
-	private volatile boolean keyRemappingPluginEnabled;
 	private volatile char blockedChar = KeyEvent.CHAR_UNDEFINED;
 	private volatile char exitChar = KeyEvent.CHAR_UNDEFINED;
 
@@ -75,29 +75,20 @@ public class ChatboxInputManager
 		eventBus.register(this);
 	}
 
-	public void setKeyRemappingPluginEnabled(boolean keyRemappingPluginEnabled)
-	{
-		if (this.keyRemappingPluginEnabled == keyRemappingPluginEnabled)
-		{
-			return;
-		}
-
-		boolean wasEnabled = isEnabled();
-		this.keyRemappingPluginEnabled = keyRemappingPluginEnabled;
-		if (wasEnabled != isEnabled())
-		{
-			clientThread.invoke(this::updateChatLock);
-		}
-	}
-
 	private boolean isEnabled()
 	{
-		return config.pressEnterToChat() || keyRemappingPluginEnabled;
+		return config.pressEnterToChat() && !Keybind.NOT_SET.equals(config.chatActivationKey());
 	}
 
 	public boolean isChatInputActive()
 	{
-		return isEnabled() && (isPublicChatInput() && typing || isPrivateMessageInput());
+		return isEnabled() && isChatInputAvailable();
+	}
+
+	/** Whether vanilla chat accepts input, including when press-to-chat is disabled. */
+	public boolean isChatInputAvailable()
+	{
+		return isPublicChatInput() && (!isEnabled() || typing) || isPrivateMessageInput();
 	}
 
 	public boolean processKeyTyped(KeyEvent e)
@@ -260,7 +251,7 @@ public class ChatboxInputManager
 	private boolean isVisible(int component)
 	{
 		Widget widget = client.getWidget(component);
-		return widget != null && !widget.isHidden();
+		return widget != null && !widget.isSelfHidden();
 	}
 
 	@Subscribe

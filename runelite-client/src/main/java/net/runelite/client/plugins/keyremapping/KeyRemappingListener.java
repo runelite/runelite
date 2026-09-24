@@ -48,7 +48,7 @@ class KeyRemappingListener implements KeyListener
 	public void keyTyped(KeyEvent e)
 	{
 		char keyChar = e.getKeyChar();
-		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar) && plugin.chatboxFocused())
+		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar) && plugin.chatboxFocused() && !plugin.isTyping())
 		{
 			e.consume();
 		}

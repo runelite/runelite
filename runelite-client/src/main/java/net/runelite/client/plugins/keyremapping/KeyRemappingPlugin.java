@@ -38,7 +38,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Key Remapping",
-	description = "Allows use of WASD keys for camera movement with press-to-chat, and remapping number keys to F-keys",
+	description = "Remaps camera and F-keys while chat is locked. Enable Press key to chat in RuneLite settings to lock chat.",
 	tags = {"enter", "chat", "wasd", "camera"},
 	enabledByDefault = false
 )
@@ -60,13 +60,11 @@ public class KeyRemappingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		keyManager.registerKeyListener(inputListener);
-		chatboxInputManager.setKeyRemappingPluginEnabled(true);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		chatboxInputManager.setKeyRemappingPluginEnabled(false);
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
@@ -83,7 +81,7 @@ public class KeyRemappingPlugin extends Plugin
 
 	boolean isTyping()
 	{
-		return chatboxInputManager.isChatInputActive();
+		return chatboxInputManager.isChatInputAvailable();
 	}
 
 	/**
