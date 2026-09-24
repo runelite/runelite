@@ -27,6 +27,9 @@ package net.runelite.client.plugins.keyremapping;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.ChatboxInputManager;
 import net.runelite.client.input.KeyManager;
@@ -41,6 +44,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class KeyRemappingPlugin extends Plugin
 {
+	@Inject
+	private Client client;
+
 	@Inject
 	private KeyManager keyManager;
 
@@ -68,5 +74,43 @@ public class KeyRemappingPlugin extends Plugin
 	KeyRemappingConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(KeyRemappingConfig.class);
+	}
+
+	boolean chatboxFocused()
+	{
+		return chatboxInputManager.chatboxFocused();
+	}
+
+	boolean isTyping()
+	{
+		return chatboxInputManager.isChatInputActive();
+	}
+
+	/**
+	 * Check if a dialog is open that will grab numerical input, to prevent F-key remapping
+	 * from triggering.
+	 *
+	 * @return
+	 */
+	boolean isDialogOpen()
+	{
+		// Most chat dialogs with numerical input are added without the chatbox or its key listener being removed,
+		// so chatboxFocused() is true. The chatbox onkey script uses the following logic to ignore key presses,
+		// so we will use it too to not remap F-keys.
+		return isHidden(InterfaceID.Chatbox.MES_LAYER_HIDE) || isHidden(InterfaceID.Chatbox.CHATDISPLAY)
+			// We want to block F-key remapping in the bank pin interface too, so it does not interfere with the
+			// Keyboard Bankpin feature of the Bank plugin
+			|| !isHidden(InterfaceID.BankpinKeypad.UNIVERSE);
+	}
+
+	boolean isOptionsDialogOpen()
+	{
+		return client.getWidget(InterfaceID.Chatmenu.OPTIONS) != null;
+	}
+
+	private boolean isHidden(int component)
+	{
+		Widget w = client.getWidget(component);
+		return w == null || w.isSelfHidden();
 	}
 }

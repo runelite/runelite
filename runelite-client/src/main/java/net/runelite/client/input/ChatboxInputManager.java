@@ -31,13 +31,17 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
@@ -48,17 +52,19 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
+@Slf4j
 public class ChatboxInputManager
 {
 	private final Client client;
 	private final ClientThread clientThread;
 	private final RuneLiteConfig config;
 
-	private boolean keyRemappingPluginEnabled;
-	private char blockedChar = KeyEvent.CHAR_UNDEFINED;
+	private volatile boolean keyRemappingPluginEnabled;
+	private volatile char blockedChar = KeyEvent.CHAR_UNDEFINED;
+	private volatile char exitChar = KeyEvent.CHAR_UNDEFINED;
 
 	@Getter
-	private boolean typing;
+	private volatile boolean typing;
 
 	@Inject
 	private ChatboxInputManager(Client client, ClientThread clientThread, RuneLiteConfig config, EventBus eventBus)
@@ -91,22 +97,42 @@ public class ChatboxInputManager
 
 	public boolean isChatInputActive()
 	{
-		return isEnabled() && typing && chatboxFocused();
+		return isEnabled() && (isPublicChatInput() && typing || isPrivateMessageInput());
 	}
 
-	public void processKeyTyped(KeyEvent e)
+	public boolean processKeyTyped(KeyEvent e)
 	{
+		if (!isEnabled() || !isPublicChatInput())
+		{
+			blockedChar = KeyEvent.CHAR_UNDEFINED;
+			exitChar = KeyEvent.CHAR_UNDEFINED;
+			return isChatInputActive();
+		}
+
+		// Enter/empty Backspace already relocked chat on KEY_PRESSED, but their
+		// trailing typed event still belongs to the same chat action.
+		boolean suppress = typing || e.getKeyChar() == exitChar;
+		exitChar = KeyEvent.CHAR_UNDEFINED;
 		if (e.getKeyChar() == blockedChar)
 		{
 			blockedChar = KeyEvent.CHAR_UNDEFINED;
 			e.consume();
 		}
+		return suppress;
 	}
 
 	public void processKeyPressed(KeyEvent e)
 	{
-		if (!isEnabled() || !chatboxFocused())
+		if (!isEnabled() || !isPublicChatInput())
 		{
+			blockedChar = KeyEvent.CHAR_UNDEFINED;
+			exitChar = KeyEvent.CHAR_UNDEFINED;
+			// Private messages have their own vanilla editor and exit handling.
+			if (isPrivateMessageInput() && (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE))
+			{
+				typing = false;
+				exitChar = e.getKeyChar();
+			}
 			return;
 		}
 
@@ -139,12 +165,14 @@ public class ChatboxInputManager
 				});
 				break;
 			case KeyEvent.VK_ENTER:
+				exitChar = e.getKeyChar();
 				typing = false;
 				clientThread.invoke(this::lockChat);
 				break;
 			case KeyEvent.VK_BACK_SPACE:
 				if (Strings.isNullOrEmpty(client.getVarcStrValue(VarClientID.CHATINPUT)))
 				{
+					exitChar = e.getKeyChar();
 					typing = false;
 					clientThread.invoke(this::lockChat);
 				}
@@ -154,6 +182,10 @@ public class ChatboxInputManager
 
 	public void processKeyReleased(KeyEvent e)
 	{
+		if (e.getKeyChar() == exitChar)
+		{
+			exitChar = KeyEvent.CHAR_UNDEFINED;
+		}
 		if (e.getKeyChar() == blockedChar)
 		{
 			blockedChar = KeyEvent.CHAR_UNDEFINED;
@@ -182,6 +214,11 @@ public class ChatboxInputManager
 
 	public boolean chatboxFocused()
 	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return false;
+		}
+
 		Widget chatboxParent = client.getWidget(InterfaceID.Chatbox.UNIVERSE);
 		if (chatboxParent == null || chatboxParent.getOnKeyListener() == null)
 		{
@@ -206,27 +243,50 @@ public class ChatboxInputManager
 		return client.getFocusedInputFieldWidget() == null;
 	}
 
-	public boolean isDialogOpen()
+	private boolean isPublicChatInput()
 	{
-		return isHidden(InterfaceID.Chatbox.MES_LAYER_HIDE) || isHidden(InterfaceID.Chatbox.CHATDISPLAY)
-			|| !isHidden(InterfaceID.BankpinKeypad.UNIVERSE);
+		// ChatDefaultOnKey returns before processing input when either layer is hidden.
+		return chatboxFocused() && client.getVarcIntValue(VarClientID.MESLAYERMODE) == InputType.NONE.getType()
+			&& isVisible(InterfaceID.Chatbox.MES_LAYER_HIDE) && isVisible(InterfaceID.Chatbox.CHATDISPLAY)
+			&& client.getWidget(InterfaceID.Chatmenu.OPTIONS) == null && !isVisible(InterfaceID.BankpinKeypad.UNIVERSE);
 	}
 
-	public boolean isOptionsDialogOpen()
+	private boolean isPrivateMessageInput()
 	{
-		return client.getWidget(InterfaceID.Chatmenu.OPTIONS) != null;
+		return chatboxFocused() && client.getVarcIntValue(VarClientID.MESLAYERMODE) == InputType.PRIVATE_MESSAGE.getType()
+			&& client.getWidget(InterfaceID.Chatmenu.OPTIONS) == null && !isVisible(InterfaceID.BankpinKeypad.UNIVERSE);
 	}
 
-	private boolean isHidden(int component)
+	private boolean isVisible(int component)
 	{
-		Widget w = client.getWidget(component);
-		return w == null || w.isSelfHidden();
+		Widget widget = client.getWidget(component);
+		return widget != null && !widget.isHidden();
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			blockedChar = KeyEvent.CHAR_UNDEFINED;
+			exitChar = KeyEvent.CHAR_UNDEFINED;
+		}
+	}
+
+	@Subscribe
+	public void onVarClientIntChanged(VarClientIntChanged event)
+	{
+		if (event.getIndex() == VarClientID.MESLAYERMODE)
+		{
+			blockedChar = KeyEvent.CHAR_UNDEFINED;
+			exitChar = KeyEvent.CHAR_UNDEFINED;
+		}
 	}
 
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
-		if (!isEnabled())
+		if (!isEnabled() || !isPublicChatInput())
 		{
 			return;
 		}
@@ -244,7 +304,14 @@ public class ChatboxInputManager
 				{
 					int[] intStack = client.getIntStack();
 					int intStackSize = client.getIntStackSize();
-					intStack[intStackSize - 1] = 1;
+					if (intStack != null && intStackSize > 0 && intStackSize <= intStack.length)
+					{
+						intStack[intStackSize - 1] = 1;
+					}
+					else
+					{
+						log.warn("Unexpected blockChatInput stack size: {}", intStackSize);
+					}
 				}
 				break;
 		}
@@ -255,12 +322,21 @@ public class ChatboxInputManager
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			updateChatLock();
+			// A normal region load also ends in LOGGED_IN. Keep its draft and typing state.
+			if (isEnabled() && !typing)
+			{
+				lockChat();
+			}
+			else
+			{
+				unlockChat();
+			}
 		}
-		else
+		else if (event.getGameState() != GameState.LOADING)
 		{
 			typing = false;
 			blockedChar = KeyEvent.CHAR_UNDEFINED;
+			exitChar = KeyEvent.CHAR_UNDEFINED;
 		}
 	}
 
@@ -276,13 +352,15 @@ public class ChatboxInputManager
 
 	private void updateChatLock()
 	{
+		typing = false;
+		blockedChar = KeyEvent.CHAR_UNDEFINED;
+		exitChar = KeyEvent.CHAR_UNDEFINED;
+
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		typing = false;
-		blockedChar = KeyEvent.CHAR_UNDEFINED;
 		if (isEnabled())
 		{
 			client.setVarcStrValue(VarClientID.CHATINPUT, "");
@@ -311,6 +389,11 @@ public class ChatboxInputManager
 
 	private void setChatboxInput(String input)
 	{
+		if (!isPublicChatInput())
+		{
+			return;
+		}
+
 		Widget widget = client.getWidget(InterfaceID.Chatbox.INPUT);
 		if (widget == null)
 		{
@@ -318,7 +401,7 @@ public class ChatboxInputManager
 		}
 
 		String text = widget.getText();
-		int idx = text.indexOf(':');
+		int idx = text == null ? -1 : text.indexOf(':');
 		if (idx != -1)
 		{
 			String newText = text.substring(0, idx) + ": " + input;

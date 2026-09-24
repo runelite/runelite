@@ -31,13 +31,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.client.input.ChatboxInputManager;
 import net.runelite.client.input.KeyListener;
 
 class KeyRemappingListener implements KeyListener
 {
 	@Inject
-	private ChatboxInputManager chatboxInputManager;
+	private KeyRemappingPlugin plugin;
 
 	@Inject
 	private KeyRemappingConfig config;
@@ -49,7 +48,7 @@ class KeyRemappingListener implements KeyListener
 	public void keyTyped(KeyEvent e)
 	{
 		char keyChar = e.getKeyChar();
-		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar) && chatboxInputManager.chatboxFocused())
+		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar) && plugin.chatboxFocused())
 		{
 			e.consume();
 		}
@@ -58,118 +57,129 @@ class KeyRemappingListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!chatboxInputManager.chatboxFocused() || chatboxInputManager.isTyping())
+		if (!plugin.chatboxFocused())
 		{
 			return;
 		}
 
-		int mappedKeyCode = KeyEvent.VK_UNDEFINED;
-
-		if (config.cameraRemap())
+		if (!plugin.isTyping())
 		{
-			if (config.up().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_UP;
-			}
-			else if (config.down().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_DOWN;
-			}
-			else if (config.left().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_LEFT;
-			}
-			else if (config.right().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_RIGHT;
-			}
-		}
+			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
 
-		// In addition to the above checks, the F-key remapping shouldn't
-		// activate when dialogs are open which listen for number keys
-		// to select options
-		if (config.fkeyRemap() && !chatboxInputManager.isDialogOpen())
-		{
-			if (config.f1().matches(e))
+			if (config.cameraRemap())
 			{
-				mappedKeyCode = KeyEvent.VK_F1;
+				if (config.up().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_UP;
+				}
+				else if (config.down().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_DOWN;
+				}
+				else if (config.left().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_LEFT;
+				}
+				else if (config.right().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_RIGHT;
+				}
 			}
-			else if (config.f2().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F2;
-			}
-			else if (config.f3().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F3;
-			}
-			else if (config.f4().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F4;
-			}
-			else if (config.f5().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F5;
-			}
-			else if (config.f6().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F6;
-			}
-			else if (config.f7().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F7;
-			}
-			else if (config.f8().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F8;
-			}
-			else if (config.f9().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F9;
-			}
-			else if (config.f10().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F10;
-			}
-			else if (config.f11().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F11;
-			}
-			else if (config.f12().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_F12;
-			}
-			else if (config.esc().matches(e))
-			{
-				mappedKeyCode = KeyEvent.VK_ESCAPE;
-			}
-		}
 
-		// Do not remap to space key when the options dialog is open, since the options dialog never
-		// listens for space, and the remapped key may be one of keys it listens for.
-		if (chatboxInputManager.isDialogOpen() && !chatboxInputManager.isOptionsDialogOpen() && config.space().matches(e))
-		{
-			mappedKeyCode = KeyEvent.VK_SPACE;
-		}
-
-		if (!chatboxInputManager.isOptionsDialogOpen() && config.control().matches(e))
-		{
-			mappedKeyCode = KeyEvent.VK_CONTROL;
-		}
-
-		if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
-		{
-			final char keyChar = e.getKeyChar();
-			modified.put(e.getKeyCode(), mappedKeyCode);
-			e.setKeyCode(mappedKeyCode);
-			// arrow keys and fkeys do not have a character
-			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
-			if (keyChar != KeyEvent.CHAR_UNDEFINED)
+			// In addition to the above checks, the F-key remapping shouldn't
+			// activate when dialogs are open which listen for number keys
+			// to select options
+			if (config.fkeyRemap() && !plugin.isDialogOpen())
 			{
-				// If this key event has a valid key char then a key typed event may be received next,
-				// we must block it
-				blockedChars.add(keyChar);
+				if (config.f1().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F1;
+				}
+				else if (config.f2().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F2;
+				}
+				else if (config.f3().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F3;
+				}
+				else if (config.f4().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F4;
+				}
+				else if (config.f5().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F5;
+				}
+				else if (config.f6().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F6;
+				}
+				else if (config.f7().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F7;
+				}
+				else if (config.f8().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F8;
+				}
+				else if (config.f9().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F9;
+				}
+				else if (config.f10().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F10;
+				}
+				else if (config.f11().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F11;
+				}
+				else if (config.f12().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_F12;
+				}
+				else if (config.esc().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_ESCAPE;
+				}
 			}
+
+			// Do not remap to space key when the options dialog is open, since the options dialog never
+			// listens for space, and the remapped key may be one of keys it listens for.
+			if (plugin.isDialogOpen() && !plugin.isOptionsDialogOpen() && config.space().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_SPACE;
+			}
+
+			if (!plugin.isOptionsDialogOpen() && config.control().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_CONTROL;
+			}
+
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
+			{
+				final char keyChar = e.getKeyChar();
+				modified.put(e.getKeyCode(), mappedKeyCode);
+				e.setKeyCode(mappedKeyCode);
+				// arrow keys and fkeys do not have a character
+				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
+				if (keyChar != KeyEvent.CHAR_UNDEFINED)
+				{
+					// If this key event has a valid key char then a key typed event may be received next,
+					// we must block it
+					blockedChars.add(keyChar);
+				}
+			}
+
 		}
+	}
+
+	@Override
+	public void focusLost()
+	{
+		modified.clear();
+		blockedChars.clear();
 	}
 
 	@Override
