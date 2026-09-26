@@ -325,6 +325,8 @@ public class AlchemyRoom extends MTARoom
 		}
 
 		boolean found = false;
+		boolean arrowUpdated = false;
+		boolean showHintArrow = !getConfig().disableFlashingArrows();
 
 		for (Cupboard cupboard : cupboards)
 		{
@@ -343,9 +345,13 @@ public class AlchemyRoom extends MTARoom
 
 			if (alchemyItem == best)
 			{
-				client.setHintArrow(object.getWorldLocation());
 				found = true;
-				hintSet = true;
+				if (showHintArrow)
+				{
+					client.setHintArrow(object.getWorldLocation());
+					hintSet = true;
+					arrowUpdated = true;
+				}
 			}
 
 			BufferedImage image = itemManager.getImage(alchemyItem.getId());
@@ -357,10 +363,17 @@ public class AlchemyRoom extends MTARoom
 			}
 		}
 
-		if (!found && suggestion != null)
+		if (!found && suggestion != null && showHintArrow)
 		{
 			client.setHintArrow(suggestion.gameObject.getWorldLocation());
 			hintSet = true;
+			arrowUpdated = true;
+		}
+
+		if (!arrowUpdated && hintSet)
+		{
+			client.clearHintArrow();
+			hintSet = false;
 		}
 
 	}
