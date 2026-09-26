@@ -57,6 +57,13 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
+import net.runelite.client.ui.FontManager;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.any;
+
 @Getter
 @Slf4j
 @ToString
@@ -591,6 +598,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(3289, 3022, 0))
 			.objectId(ObjectID.TOURTRAP_QIP_CRATE_SINGLE)
 			.solution("Center of desert Mining Camp. Search the crates. Requires the metal key from Tourist Trap to enter.")
+			.itemRequirement(item(ItemID.METAL_KEY))
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_HARD_RIDDLE_EXP7)
@@ -658,6 +666,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npcRegion(13457)
 			.solution("Enter the crack west of Nardah Rug merchant, and talk to the Genie. You'll need a light source and a rope.")
 			.requiresLight(true)
+			.itemRequirement(item(ItemID.ROPE))
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_HARD_RIDDLE010)
@@ -669,7 +678,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.itemId(ItemID.TRAIL_ELITE_RIDDLE_EXP2)
 			.text("Green is the colour of my death as the winter-guise, I swoop towards the ground.")
 			.location(new WorldPoint(2780, 3783, 0))
-			.solution("Slide down to where Trollweiss grows on Trollweiss Mountain. Bring a sled.")
+			.solution("Slide down to where Trollweiss grows on Trollweiss Mountain.")
+			.itemRequirement(item(ItemID.TROLLROMANCE_TOBOGGON_WAXED))
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_EASY_VAGUE_EXP4)
@@ -1550,6 +1560,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("2 musical birds. Dig in front of the spinning light.")
 			.location(new WorldPoint(2671, 10396, 0))
 			.solution("Dig in front of the spinning light in Ping and Pong's room inside the Iceberg")
+			.itemRequirement(any("Clockwork suit", item(ItemID.PENG_SUIT_UNWOUND), item(ItemID.PENG_SUIT_WOUND)))
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_EASY_SIMPLE_EXP9)
@@ -1681,6 +1692,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(2723, 9891, 0))
 			.objectId(ObjectID.ELEM_CRATE_1)
 			.solution("Search the crate, west of the Air Elementals, inside the Elemental Workshop.")
+			.itemRequirement(item(ItemID.ELEMENTAL_WORKSHOP_KEY))
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_RIDDLE_EXP22)
@@ -2048,6 +2060,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	private static final int DEFAULT_RESOURCE_AREA_COST = 7500;
 
+	private static final String UNICODE_CHECK_MARK = "\u2713";
+	private static final String UNICODE_BALLOT_X = "\u2717";
+
 	private final Set<Integer> itemIds;
 	private final String text;
 	@Nullable
@@ -2066,6 +2081,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Nullable
 	private final String answer;
 	private final List<Integer> npcRegions;
+	private final List<ItemRequirement> itemRequirements;
 
 	@Builder
 	private CrypticClue(
@@ -2082,7 +2098,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		@Nullable String questionText,
 		@Nullable String answer,
 		boolean requiresLight,
-		@Singular List<Integer> npcRegions
+		@Singular List<Integer> npcRegions,
+		@Singular List<ItemRequirement> itemRequirements
 	)
 	{
 		this.itemIds = itemIds != null ? itemIds : (itemId != null ? Set.of(itemId) : Set.of(-1));
@@ -2095,6 +2112,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		this.questionText = questionText;
 		this.answer = answer;
 		this.npcRegions = npcRegions;
+		this.itemRequirements = itemRequirements;
 		setRequiresSpade(this.locationProvider != null && this.npcProvider == null && this.objectId == -1);
 		setRequiresLight(requiresLight);
 	}
@@ -2164,6 +2182,44 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 				.left(getAnswer())
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
+		}
+
+		if (!itemRequirements.isEmpty())
+		{
+			final Client client = plugin.getClient();
+
+			Item[] equipment = plugin.getEquippedItems();
+			Item[] inventory = plugin.getInventoryItems();
+
+			if (equipment == null)
+			{
+				equipment = new Item[0];
+			}
+
+			if (inventory == null)
+			{
+				inventory = new Item[0];
+			}
+
+			final Item[] combined = new Item[equipment.length + inventory.length];
+			System.arraycopy(equipment, 0, combined, 0, equipment.length);
+			System.arraycopy(inventory, 0, combined, equipment.length, inventory.length);
+
+			panelComponent.getChildren().add(LineComponent.builder().left("").build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Bring:").build());
+
+			for (ItemRequirement requirement : itemRequirements)
+			{
+				final boolean fulfilled = requirement.fulfilledBy(combined);
+
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left(requirement.getCollectiveName(client))
+						.leftColor(TITLED_CONTENT_COLOR)
+						.right(fulfilled ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+						.rightFont(FontManager.getDefaultFont())
+						.rightColor(fulfilled ? Color.GREEN : Color.RED)
+						.build());
+			}
 		}
 
 		renderOverlayNote(panelComponent, plugin);
