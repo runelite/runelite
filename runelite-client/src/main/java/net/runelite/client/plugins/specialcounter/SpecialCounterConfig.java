@@ -26,10 +26,8 @@
 package net.runelite.client.plugins.specialcounter;
 
 import java.awt.Color;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Notification;
+
+import net.runelite.client.config.*;
 
 @ConfigGroup("specialcounter")
 public interface SpecialCounterConfig extends Config
@@ -90,6 +88,17 @@ public interface SpecialCounterConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
+		keyName = "hideTooltip",
+		name = "Hide tooltip",
+		description = "Hide tooltip when infobox is hovered"
+	)
+	default boolean hideTooltip()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 3,
 		keyName = "defenceDrainInfobox",
 		name = "Show defence drain infobox",
@@ -100,90 +109,198 @@ public interface SpecialCounterConfig extends Config
 		return true;
 	}
 
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
 		position = 10,
 		keyName = "dragonWarhammerThreshold",
-		name = "Dragon warhammer",
-		description = "Threshold for Dragon warhammer (0 to disable)."
+		name = "Dragon Warhammer",
+		description = "Threshold for Dragon Warhammer (0 to disable notifications, -1 to fully disable tracking)."
 	)
 	default int dragonWarhammerThreshold()
 	{
 		return 0;
 	}
 
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
 		position = 15,
 		keyName = "elderMaulThreshold",
-		name = "Elder maul",
-		description = "Threshold for Elder maul (0 to disable)."
+		name = "Elder Maul",
+		description = "Threshold for Elder Maul (0 to disable notifications, -1 to fully disable tracking)."
 	)
 	default int elderMaulThreshold()
 	{
 		return 0;
 	}
 
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
 		position = 20,
 		keyName = "arclightThreshold",
 		name = "Arclight",
-		description = "Threshold for Arclight (0 to disable)."
+		description = "Threshold for Arclight (0 to disable notifications, -1 to fully disable tracking)."
 	)
 	default int arclightThreshold()
 	{
 		return 0;
 	}
 
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
 		position = 30,
 		keyName = "darklightThreshold",
 		name = "Darklight",
-		description = "Threshold for Darklight (0 to disable)."
+		description = "Threshold for Darklight (0 to disable notifications, -1 to fully disable tracking)."
 	)
 	default int darklightThreshold()
 	{
 		return 0;
 	}
 
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
 		position = 31,
 		keyName = "emberlightThreshold",
 		name = "Emberlight",
-		description = "Threshold for Emberlight (0 to disable)."
+		description = "Threshold for Emberlight (0 to disable notifications, -1 to fully disable tracking)."
 	)
 	default int emberlightThreshold()
 	{
 		return 0;
 	}
 
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
 		position = 40,
 		keyName = "bandosGodswordThreshold",
-		name = "Bandos godsword",
-		description = "Threshold for Bandos godsword (0 to disable)."
+		name = "Bandos Godsword",
+		description = "Threshold for Bandos Godsword (0 to disable notifications, -1 to fully disable tracking)."
 	)
 	default int bandosGodswordThreshold()
 	{
 		return 0;
 	}
 
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
 		position = 50,
 		keyName = "bulwarkThreshold",
-		name = "Dinh's bulwark",
-		description = "Threshold for Dinh's bulwark (0 to disable)."
+		name = "Dinh's Bulwark",
+		description = "Threshold for Dinh's Bulwark (0 to disable notifications, -1 to fully disable tracking)."
 	)
 	default int bulwarkThreshold()
 	{
 		return 0;
 	}
 
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
-			position = 60,
-			keyName = "ayakThreshold",
-			name = "Eye of Ayak",
-			description = "Threshold for Eye of Ayak (0 to disable)."
+		position = 60,
+		keyName = "ayakThreshold",
+		name = "Eye of Ayak",
+		description = "Threshold for Eye of Ayak (0 to disable notifications, -1 to fully disable tracking)."
 	)
 	default int ayakThreshold()
+	{
+		return 0;
+	}
+
+	@Range(
+		min = -1
+	)
+	@ConfigItem(
+		position = 70,
+		keyName = "anchorThreshold",
+		name = "Barrelchest Anchor",
+		description = "Threshold for Barrelchest Anchor (0 to disable notifications, -1 to fully disable tracking)."
+	)
+	default int anchorThreshold()
+	{
+		return 0;
+	}
+
+	@Range(
+		min = -1
+	)
+	@ConfigItem(
+		position = 80,
+		keyName = "boneDaggerThreshold",
+		name = "Bone Dagger",
+		description = "Threshold for Bone Dagger (0 to disable notifications, -1 to fully disable tracking)."
+	)
+	default int boneDaggerThreshold()
+	{
+		return 0;
+	}
+
+	@Range(
+		min = -1
+	)
+	@ConfigItem(
+		position = 90,
+		keyName = "boneCrossbowThreshold",
+		name = "Dorgeshuun Crossbow",
+		description = "Threshold for Dorgeshuun Crossbow(0 to disable notifications, -1 to fully disable tracking)."
+	)
+	default int boneCrossbowThreshold()
+	{
+		return 0;
+	}
+
+	@Range(
+		min = -1
+	)
+	@ConfigItem(
+		position = 100,
+		keyName = "accursedSceptreThreshold",
+		name = "Accursed Sceptre",
+		description = "Threshold for Accursed Sceptre (0 to disable notifications, -1 to fully disable tracking)."
+	)
+	default int accursedSceptreThreshold()
+	{
+		return 0;
+	}
+
+	@Range(
+		min = -1
+	)
+	@ConfigItem(
+		position = 110,
+		keyName = "ralosThreshold",
+		name = "Tonalztics of Ralos",
+		description = "Threshold for Tonalztics of Ralos (0 to disable notifications, -1 to fully disable tracking)."
+	)
+	default int ralosThreshold()
+	{
+		return 0;
+	}
+
+	@Range(
+		min = -1
+	)
+	@ConfigItem(
+		position = 110,
+		keyName = "seercullThreshold",
+		name = "Seercull",
+		description = "Threshold for Seercull (0 to disable notifications, -1 to fully disable tracking)."
+	)
+	default int seercullThreshold()
 	{
 		return 0;
 	}
