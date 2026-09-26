@@ -37,6 +37,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
 
@@ -57,6 +59,7 @@ class DiscordState
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordConfig config;
+	private final Client client;
 	private final String runeliteTitle;
 	private final String runeliteVersion;
 	private DiscordPresence lastPresence;
@@ -66,6 +69,7 @@ class DiscordState
 	private DiscordState(
 		final DiscordService discordService,
 		final DiscordConfig config,
+		final Client client,
 		@Named("runelite.title") final String runeliteTitle,
 		@Named("runelite.version") final String runeliteVersion,
 		@Named("safeMode") boolean safeMode
@@ -73,6 +77,7 @@ class DiscordState
 	{
 		this.discordService = discordService;
 		this.config = config;
+		this.client = client;
 		this.runeliteTitle = runeliteTitle;
 		this.runeliteVersion = runeliteVersion;
 		this.safeMode = safeMode;
@@ -175,6 +180,35 @@ class DiscordState
 		if (safeMode)
 		{
 			largeImageTooltipText.append(" (safe mode)");
+		}
+
+		if (config.showWorld() && client.getGameState() == GameState.LOGGED_IN)
+		{
+			final int world = client.getWorld();
+			if (state == null || state.isEmpty())
+			{
+				state = "World " + world;
+			}
+			else
+			{
+				state = state + " (W" + world + ")";
+			}
+		}
+
+		if (config.showUsername() && client.getLocalPlayer() != null)
+		{
+			final String name = client.getLocalPlayer().getName();
+			if (name != null && !name.isEmpty())
+			{
+				if (details == null || details.isEmpty())
+				{
+					details = name;
+				}
+				else
+				{
+					details = name + " | " + details;
+				}
+			}
 		}
 
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
