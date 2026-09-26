@@ -88,6 +88,7 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		Collections.addAll(keywords, pluginConfig.getName().toLowerCase().split(" "));
 		Collections.addAll(keywords, pluginConfig.getDescription().toLowerCase().split(" "));
 		Collections.addAll(keywords, pluginConfig.getTags());
+		keywords.removeAll(java.util.Arrays.asList("enable", "enabled", "enables", "disable", "disabled", "disables"));
 		String internalName = pluginConfig.getInternalPluginHubName();
 		if (internalName != null)
 		{
@@ -179,6 +180,7 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		else
 		{
 			onOffToggle.setVisible(false);
+			keywords.add("enabled"); // always-on plugins are never disabled
 		}
 	}
 
@@ -202,6 +204,9 @@ class PluginListItem extends JPanel implements SearchablePlugin
 	void setPluginEnabled(boolean enabled)
 	{
 		onOffToggle.setSelected(enabled);
+		keywords.remove("enabled");
+		keywords.remove("disabled");
+		keywords.add(enabled ? "enabled" : "disabled");
 	}
 
 	private void openGroupConfigPanel()
