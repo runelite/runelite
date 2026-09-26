@@ -65,7 +65,7 @@ public class SimplePolygon implements Shape
 		left--;
 		if (left < 0)
 		{
-			expandLeft(GROW);
+			expandLeft(Math.max(GROW, x.length / 2));
 		}
 		x[left] = xCoord;
 		y[left] = yCoord;
@@ -93,7 +93,7 @@ public class SimplePolygon implements Shape
 		right++;
 		if (right >= x.length)
 		{
-			expandRight(GROW);
+			expandRight(Math.max(GROW, x.length / 2));
 		}
 		x[right] = xCoord;
 		y[right] = yCoord;
@@ -152,7 +152,18 @@ public class SimplePolygon implements Shape
 		{
 			return;
 		}
-		other.expandRight(size);
+		// Distinct polygons may be views over the same coordinate arrays. Preserve
+		// the source when appending into an overlapping part of those arrays.
+		boolean shared = other != this && (x == other.x || x == other.y || y == other.x || y == other.y);
+		int required = other.right + 1 + size - other.x.length;
+		if (required > 0)
+		{
+			other.expandRight(Math.max(required, Math.max(GROW, other.x.length / 2)));
+		}
+		else if (shared)
+		{
+			other.expandRight(0);
+		}
 		copyTo(other.x, other.y, other.right + 1);
 		other.right += size;
 	}
