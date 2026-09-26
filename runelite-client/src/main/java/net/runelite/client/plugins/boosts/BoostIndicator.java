@@ -60,7 +60,7 @@ class BoostIndicator extends InfoBox
 			return String.valueOf(client.getBoostedSkillLevel(skill));
 		}
 
-		int boost = client.getBoostedSkillLevel(skill) - client.getRealSkillLevel(skill);
+		int boost = client.getBoostedSkillLevel(skill) - CombatLevelsProvider.getRealSkillLevel(client, skill);
 		String text = String.valueOf(boost);
 		if (boost > 0)
 		{
@@ -74,7 +74,7 @@ class BoostIndicator extends InfoBox
 	public Color getTextColor()
 	{
 		int boosted = client.getBoostedSkillLevel(skill),
-			base = client.getRealSkillLevel(skill);
+			base = CombatLevelsProvider.getRealSkillLevel(client, skill);
 
 		if (boosted < base)
 		{
