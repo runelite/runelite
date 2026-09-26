@@ -106,6 +106,16 @@ public interface StatusBarsConfig extends Config
 		return 0;
 	}
 
+	@ConfigItem(
+		keyName = "replaceHpWithWarmth",
+		name = "Replace HP with Warmth",
+		description = "Automatically replace any HP status bars with Warmth while fighting the Wintertodt"
+	)
+	default boolean replaceHpWithWarmth()
+	{
+		return true;
+	}
+
 	@Range(
 		min = BarRenderer.MIN_WIDTH,
 		max = BarRenderer.MAX_WIDTH
