@@ -45,6 +45,7 @@ public interface TimeTrackingConfig extends Config
 	String BIRDHOUSE_NOTIFY = "birdHouseNotification";
 	String COMPOST = "compost";
 	String PROTECTED = "protected";
+	String PATCH_ORDER = "patchOrder";
 
 	@ConfigItem(
 		keyName = "timeFormatMode",
