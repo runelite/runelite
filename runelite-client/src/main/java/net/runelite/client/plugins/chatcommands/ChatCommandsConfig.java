@@ -231,4 +231,15 @@ public interface ChatCommandsConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
+
+	@ConfigItem(
+			position = 22,
+			keyName = "help",
+			name= "help command",
+			description = "prints out a list of commands available"
+	)
+	default boolean help()
+	{
+		return true;
+	}
 }
