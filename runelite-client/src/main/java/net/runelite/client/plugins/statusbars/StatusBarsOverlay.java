@@ -263,6 +263,17 @@ class StatusBarsOverlay extends Overlay
 			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX() - barWidthOffset);
 			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 		}
+
+        else if (curViewport == Viewport.RESIZED_BOX & config.toggleResizableClassicSideview())
+        {
+            width = config.barWidth();
+            height = HEIGHT;
+            offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - 60 - offsetLeft.getX());
+            offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y + 11 - offsetLeft.getY());
+            offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - 55  - offsetRight.getX());
+            offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y + 11 - offsetRight.getY());
+        }
+
 		else
 		{
 			width = BarRenderer.DEFAULT_WIDTH;
