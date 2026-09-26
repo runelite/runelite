@@ -191,35 +191,33 @@ public class KourendLibraryPlugin extends Plugin
 		}
 		else if (ev.getKey().equals("hideButton"))
 		{
-			SwingUtilities.invokeLater(() ->
+			clientThread.invoke(() ->
 			{
-				if (!config.hideButton())
+				Player lp = client.getLocalPlayer();
+				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
+
+				if (!config.hideButton() || inRegion)
 				{
 					clientToolbar.addNavigation(navButton);
 				}
 				else
 				{
-					Player lp = client.getLocalPlayer();
-					boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
-					if (inRegion)
-					{
-						clientToolbar.addNavigation(navButton);
-					}
-					else
-					{
-						clientToolbar.removeNavigation(navButton);
-					}
+					clientToolbar.removeNavigation(navButton);
 				}
 			});
 		}
 		else if (ev.getKey().equals("showTargetHintArrow"))
 		{
-			if (client.getLocalPlayer() == null || client.getLocalPlayer().getWorldLocation().getRegionID() != REGION)
+			clientThread.invoke(() ->
 			{
-				return;
-			}
+				Player lp = client.getLocalPlayer();
+				if (lp == null || lp.getWorldLocation().getRegionID() != REGION)
+				{
+					return;
+				}
 
-			updateBookcaseHintArrow();
+				updateBookcaseHintArrow();
+			});
 		}
 	}
 
