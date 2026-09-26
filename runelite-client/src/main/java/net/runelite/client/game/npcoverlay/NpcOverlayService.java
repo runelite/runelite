@@ -165,6 +165,27 @@ public class NpcOverlayService
 		rebuild();
 	}
 
+	/**
+	 * Registers a function to the NpcOverLayService
+	 *
+	 * @param p Function to register
+	 * @param priority Priority of the function<br>Lower means higher priority.
+	 */
+	public void registerHighlighter(Function<NPC, HighlightedNpc> p, int priority)
+	{
+		if (priority < 0)
+		{
+			priority = 0;
+		}
+		else if (priority > highlightFunctions.size())
+		{
+			registerHighlighter(p);
+		}
+
+		highlightFunctions.add(priority, p);
+		rebuild();
+	}
+
 	public void unregisterHighlighter(Function<NPC, HighlightedNpc> p)
 	{
 		highlightFunctions.remove(p);
