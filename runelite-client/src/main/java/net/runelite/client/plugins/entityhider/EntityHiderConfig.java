@@ -28,6 +28,7 @@ package net.runelite.client.plugins.entityhider;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup(EntityHiderConfig.GROUP)
 public interface EntityHiderConfig extends Config
@@ -230,5 +231,31 @@ public interface EntityHiderConfig extends Config
 	default boolean hideRandomEvents()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 26,
+		keyName = "pvpAttackerOnlyHiding",
+		name = "PvP attacker-only hiding",
+		description = "In dangerous PvP areas while under attack, hide all non-attacker players."
+	)
+	default boolean pvpAttackerOnlyHiding()
+	{
+		return false;
+	}
+
+	@Range(
+		min = 1,
+		max = 15
+	)
+	@ConfigItem(
+		position = 27,
+		keyName = "pvpAttackerGracePeriodSeconds",
+		name = "PvP attacker grace period",
+		description = "How long to keep attacker-only hiding active after attacks pause (seconds)."
+	)
+	default int pvpAttackerGracePeriodSeconds()
+	{
+		return 7;
 	}
 }
