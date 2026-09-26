@@ -42,12 +42,18 @@ import net.runelite.client.eventbus.Subscribe;
 public class KeyManager
 {
 	private final Client client;
+	private boolean textInputActive;
 
 	@Inject
 	private KeyManager(@Nullable final Client client, final EventBus eventBus)
 	{
 		this.client = client;
 		eventBus.register(this);
+	}
+
+	public void setTextInputActive(boolean textInputActive)
+	{
+		this.textInputActive = textInputActive;
 	}
 
 	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
@@ -157,6 +163,11 @@ public class KeyManager
 		if (gameState == GameState.LOGIN_SCREEN || gameState == GameState.LOGIN_SCREEN_AUTHENTICATOR)
 		{
 			return keyListener.isEnabledOnLoginScreen();
+		}
+
+		if (textInputActive)
+		{
+			return keyListener.isEnabledDuringTextInput();
 		}
 
 		return true;

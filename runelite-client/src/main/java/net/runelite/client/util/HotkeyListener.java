@@ -72,6 +72,12 @@ public abstract class HotkeyListener implements KeyListener
 	}
 
 	@Override
+	public boolean isEnabledDuringTextInput()
+	{
+		return false;
+	}
+
+	@Override
 	public void keyPressed(KeyEvent e)
 	{
 		if (keybind.get().matches(e))
