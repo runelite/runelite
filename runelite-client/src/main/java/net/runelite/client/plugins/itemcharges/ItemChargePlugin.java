@@ -198,6 +198,7 @@ public class ItemChargePlugin extends Plugin
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invokeLater(() -> updateExplorerRingCharges(client.getVarbitValue(VarbitID.LUMBRIDGE_FREE_ALCHS)));
+			clientThread.invokeLater(() -> updateBowStringSpoolCharges(client.getVarbitValue(VarbitID.BOWSTRING_SPOOL_CHARGES)));
 		}
 	}
 
@@ -485,6 +486,10 @@ public class ItemChargePlugin extends Plugin
 		{
 			updateBindingNecklaceCharges(event.getValue());
 		}
+		else if (event.getVarbitId() == VarbitID.BOWSTRING_SPOOL_CHARGES)
+		{
+			updateBowStringSpoolCharges(event.getValue());
+		}
 	}
 
 	@Subscribe
@@ -583,6 +588,12 @@ public class ItemChargePlugin extends Plugin
 	private void updateBraceletOfClayCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
+
+	private void updateBowStringSpoolCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BOW_STRING_SPOOL, value);
 		updateInfoboxes();
 	}
 
