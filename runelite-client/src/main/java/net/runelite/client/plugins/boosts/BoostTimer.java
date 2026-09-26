@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2024, YvesW <https://github.com/YvesW>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,41 +24,24 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import java.awt.Color;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import java.awt.image.BufferedImage;
+import lombok.AllArgsConstructor;
+import net.runelite.client.util.ImageUtil;
 
-class StatChangeIndicator extends InfoBox
+@AllArgsConstructor
+enum BoostTimer
 {
-	private final BoostTimer boostTimer;
-	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
+	COMBAT_BUFFED("Next combat buff change", "Next cb + restore", loadImage("buffed_cb.png"), loadImage("buffed_cb_small.png")),
+	NON_COMBAT_BUFFED("Next non-combat buff change", "Next non-cb + restore", loadImage("buffed_non_cb.png"), loadImage("buffed_non_cb_small.png")),
+	DEBUFFED("Next debuff change", "Next - restore", loadImage("debuffed.png"), loadImage("debuffed_small.png"));
 
-	StatChangeIndicator(BoostTimer boostTimer, BoostsPlugin plugin, BoostsConfig config)
-	{
-		super(boostTimer.indicatorImage, plugin);
-		this.boostTimer = boostTimer;
-		this.plugin = plugin;
-		this.config = config;
-		setPriority(InfoBoxPriority.MED);
-		setTooltip(boostTimer.indicatorTooltipText);
-	}
+	final String indicatorTooltipText;
+	final String overlayText;
+	final BufferedImage indicatorImage;
+	final BufferedImage compactImage;
 
-	@Override
-	public String getText()
+	private static BufferedImage loadImage(String path)
 	{
-		return String.format("%02d", plugin.getChangeTime(plugin.getTicksRemaining(boostTimer)));
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return plugin.getTicksRemaining(boostTimer) < 10 ? Color.RED.brighter() : Color.WHITE;
-	}
-
-	@Override
-	public boolean render()
-	{
-		return plugin.getTicksRemaining(boostTimer) != -1 && config.displayInfoboxes();
+		return ImageUtil.loadImageResource(BoostsPlugin.class, path);
 	}
 }
