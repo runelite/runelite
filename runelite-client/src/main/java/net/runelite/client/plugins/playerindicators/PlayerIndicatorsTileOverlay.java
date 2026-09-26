@@ -29,6 +29,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.party.PartyService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -38,12 +42,16 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
+	private final Client client;
+	private final PartyService partyService;
 
 	@Inject
-	private PlayerIndicatorsTileOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	private PlayerIndicatorsTileOverlay(Client client, PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService, PartyService partyService)
 	{
+		this.client = client;
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
+		this.partyService = partyService;
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
@@ -52,18 +60,38 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.drawTiles())
+		final boolean shouldDrawTiles = config.drawTiles();
+		final boolean shouldDrawTrueTile = config.partyDrawTrueTile();
+
+		if (!shouldDrawTiles && !shouldDrawTrueTile)
 		{
 			return null;
 		}
 
 		playerIndicatorsService.forEachPlayer((player, decorations) ->
 		{
-			final Polygon poly = player.getCanvasTilePoly();
-
-			if (poly != null)
+			if (shouldDrawTiles)
 			{
-				OverlayUtil.renderPolygon(graphics, poly, decorations.getColor());
+				final Polygon poly = player.getCanvasTilePoly();
+
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, decorations.getColor());
+				}
+			}
+
+			// Only consider true tile for party members
+			if (shouldDrawTrueTile && (partyService.isInParty() && partyService.getMemberByDisplayName(player.getName()) != null))
+			{
+				final LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), player.getWorldLocation());
+				if (lp != null)
+				{
+					final Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+					if (poly != null)
+					{
+						OverlayUtil.renderPolygon(graphics, poly, decorations.getColor());
+					}
+				}
 			}
 		});
 
