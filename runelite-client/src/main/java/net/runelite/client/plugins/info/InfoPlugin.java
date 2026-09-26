@@ -26,6 +26,11 @@ package net.runelite.client.plugins.info;
 
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
@@ -41,8 +46,17 @@ public class InfoPlugin extends Plugin
 	@Inject
 	private ClientToolbar clientToolbar;
 
+	@Inject
+	private InfoConfig config;
+
 	private InfoPanel panel;
 	private NavigationButton navButton;
+
+	@Provides
+	InfoConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InfoConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -55,7 +69,7 @@ public class InfoPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.tooltip("Info")
 			.icon(icon)
-			.priority(10)
+			.priority(config.navButtonPriority())
 			.panel(panel)
 			.build();
 
@@ -69,5 +83,33 @@ public class InfoPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 		panel = null;
 		navButton = null;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("info"))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
+
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "info_icon.png");
+
+			navButton = NavigationButton.builder()
+					.tooltip("Info")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(panel)
+					.build();
+
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 }
