@@ -42,6 +42,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -143,6 +144,8 @@ class ConfigPanel extends PluginPanel
 	private final ColorPickerManager colorPickerManager;
 	private final Provider<NotificationPanel> notificationPanelProvider;
 	private final Provider<FontPanel> fontPanelProvider;
+	private final Provider<ConfigPanel> configPanelProvider;
+	private String sectionFilter = null;
 
 	private final TitleCaseListCellRenderer listCellRenderer = new TitleCaseListCellRenderer();
 
@@ -160,7 +163,8 @@ class ConfigPanel extends PluginPanel
 		ExternalPluginManager externalPluginManager,
 		ColorPickerManager colorPickerManager,
 		Provider<NotificationPanel> notificationPanelProvider,
-		Provider<FontPanel> fontPanelProvider
+		Provider<FontPanel> fontPanelProvider,
+		Provider<ConfigPanel> configPanelProvider
 	)
 	{
 		super(false);
@@ -172,6 +176,7 @@ class ConfigPanel extends PluginPanel
 		this.colorPickerManager = colorPickerManager;
 		this.notificationPanelProvider = notificationPanelProvider;
 		this.fontPanelProvider = fontPanelProvider;
+		this.configPanelProvider = configPanelProvider;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -254,6 +259,17 @@ class ConfigPanel extends PluginPanel
 		rebuild();
 	}
 
+	void init(PluginConfigurationDescriptor pluginConfig, String sectionKey, String sectionTitle)
+	{
+		assert this.pluginConfig == null;
+		this.pluginConfig = pluginConfig;
+		sectionFilter = sectionKey;
+		title.setText(sectionTitle);
+		title.setForeground(Color.WHITE);
+		pluginToggle.setVisible(false);
+		rebuild();
+	}
+
 	private void toggleSection(ConfigSectionDescriptor csd, JButton button, JPanel contents)
 	{
 		boolean newState = !contents.isVisible();
@@ -269,6 +285,21 @@ class ConfigPanel extends PluginPanel
 		mainPanel.removeAll();
 
 		ConfigDescriptor cd = pluginConfig.getConfigDescriptor();
+
+		if (sectionFilter != null)
+		{
+			cd.getItems().stream()
+				.filter(cid -> !cid.getItem().hidden() && sectionFilter.equals(cid.getItem().section()))
+				.sorted((a, b) -> ComparisonChain.start()
+					.compare(
+						a.getItem().submenuPosition() >= 0 ? a.getItem().submenuPosition() : a.getItem().position(),
+						b.getItem().submenuPosition() >= 0 ? b.getItem().submenuPosition() : b.getItem().position())
+					.compare(a.getItem().name(), b.getItem().name())
+					.result())
+				.forEach(cid -> mainPanel.add(buildItem(cd, cid)));
+			revalidate();
+			return;
+		}
 
 		final Map<String, JPanel> sectionWidgets = new HashMap<>();
 		final Map<ConfigObject, JPanel> topLevelPanels = new TreeMap<>((a, b) ->
@@ -337,6 +368,21 @@ class ConfigPanel extends PluginPanel
 			topLevelPanels.put(csd, section);
 		}
 
+		// Sections claimed by an opensSubmenu boolean render in a sub-panel, not inline.
+		final Set<String> submenuKeys = new HashSet<>();
+		for (ConfigItemDescriptor cid : cd.getItems())
+		{
+			String os = cid.getItem().opensSubmenu();
+			if (!os.isEmpty())
+			{
+				submenuKeys.add(os);
+			}
+		}
+		// Drop section panels (and their entries in topLevelPanels) for submenu sections
+		topLevelPanels.entrySet().removeIf(e -> e.getKey() instanceof ConfigSectionDescriptor
+			&& submenuKeys.contains(((ConfigSectionDescriptor) e.getKey()).getKey()));
+		submenuKeys.forEach(sectionWidgets::remove);
+
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
 			if (cid.getItem().hidden())
@@ -344,67 +390,39 @@ class ConfigPanel extends PluginPanel
 				continue;
 			}
 
-			JPanel item = new JPanel();
-			item.setLayout(new BorderLayout());
-			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
-			String name = cid.getItem().name();
-			JLabel configEntryName = new JLabel(name);
-			configEntryName.setForeground(Color.WHITE);
-			String description = cid.getItem().description();
-			if (!"".equals(description))
+			// Items belonging to a submenu are rendered in the sub-panel, not here
+			if (submenuKeys.contains(cid.getItem().section()))
 			{
-				configEntryName.setToolTipText("<html>" + name + ":<br>" + description + "</html>");
+				continue;
 			}
-			PluginListItem.addLabelPopupMenu(configEntryName, createResetMenuItem(pluginConfig, cid));
-			item.add(configEntryName, BorderLayout.CENTER);
 
-			if (cid.getType() == boolean.class)
+			JPanel item = buildItem(cd, cid);
+
+			// If this is a boolean opener for a submenu, attach a gear button next to its checkbox.
+			String opensSubmenu = cid.getItem().opensSubmenu();
+			if (!opensSubmenu.isEmpty() && cid.getType() == boolean.class)
 			{
-				item.add(createCheckbox(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() == int.class)
-			{
-				item.add(createIntSpinner(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() == double.class)
-			{
-				item.add(createDoubleSpinner(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() == String.class)
-			{
-				item.add(createTextField(cd, cid), BorderLayout.SOUTH);
-			}
-			else if (cid.getType() == Color.class)
-			{
-				item.add(createColorPicker(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() == Dimension.class)
-			{
-				item.add(createDimension(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() instanceof Class && ((Class<?>) cid.getType()).isEnum())
-			{
-				item.add(createComboBox(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
-			{
-				item.add(createKeybind(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() == Notification.class)
-			{
-				item.add(createNotification(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() == FontType.class)
-			{
-				item.add(createFont(cd, cid), BorderLayout.EAST);
-			}
-			else if (cid.getType() instanceof ParameterizedType)
-			{
-				ParameterizedType parameterizedType = (ParameterizedType) cid.getType();
-				if (parameterizedType.getRawType() == Set.class)
+				JCheckBox checkbox = (JCheckBox) ((BorderLayout) item.getLayout()).getLayoutComponent(BorderLayout.EAST);
+				item.remove(checkbox);
+
+				JButton openButton = new JButton(CONFIG_ICON);
+				SwingUtil.removeButtonDecorations(openButton);
+				openButton.setPreferredSize(new Dimension(25, 0));
+				openButton.setToolTipText("Configure " + cid.getItem().name());
+				openButton.addActionListener(l ->
 				{
-					item.add(createList(cd, cid), BorderLayout.EAST);
-				}
+					ConfigPanel sub = configPanelProvider.get();
+					sub.init(pluginConfig, opensSubmenu, cid.getItem().name());
+					pluginList.getMuxer().pushState(sub);
+				});
+				openButton.setVisible(checkbox.isSelected());
+				checkbox.addActionListener(l -> openButton.setVisible(checkbox.isSelected()));
+
+				JPanel controls = new JPanel(new BorderLayout());
+				controls.setOpaque(false);
+				controls.add(openButton, BorderLayout.WEST);
+				controls.add(checkbox, BorderLayout.EAST);
+				item.add(controls, BorderLayout.EAST);
 			}
 
 			JPanel section = sectionWidgets.get(cid.getItem().section());
@@ -448,6 +466,74 @@ class ConfigPanel extends PluginPanel
 		mainPanel.add(backButton);
 
 		revalidate();
+	}
+
+	private JPanel buildItem(ConfigDescriptor cd, ConfigItemDescriptor cid)
+	{
+		JPanel item = new JPanel();
+		item.setLayout(new BorderLayout());
+		item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+		String name = cid.getItem().name();
+		JLabel configEntryName = new JLabel(name);
+		configEntryName.setForeground(Color.WHITE);
+		String description = cid.getItem().description();
+		if (!"".equals(description))
+		{
+			configEntryName.setToolTipText("<html>" + name + ":<br>" + description + "</html>");
+		}
+		PluginListItem.addLabelPopupMenu(configEntryName, createResetMenuItem(pluginConfig, cid));
+		item.add(configEntryName, BorderLayout.CENTER);
+
+		if (cid.getType() == boolean.class)
+		{
+			item.add(createCheckbox(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() == int.class)
+		{
+			item.add(createIntSpinner(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() == double.class)
+		{
+			item.add(createDoubleSpinner(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() == String.class)
+		{
+			item.add(createTextField(cd, cid), BorderLayout.SOUTH);
+		}
+		else if (cid.getType() == Color.class)
+		{
+			item.add(createColorPicker(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() == Dimension.class)
+		{
+			item.add(createDimension(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() instanceof Class && ((Class<?>) cid.getType()).isEnum())
+		{
+			item.add(createComboBox(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
+		{
+			item.add(createKeybind(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() == Notification.class)
+		{
+			item.add(createNotification(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() == FontType.class)
+		{
+			item.add(createFont(cd, cid), BorderLayout.EAST);
+		}
+		else if (cid.getType() instanceof ParameterizedType)
+		{
+			ParameterizedType parameterizedType = (ParameterizedType) cid.getType();
+			if (parameterizedType.getRawType() == Set.class)
+			{
+				item.add(createList(cd, cid), BorderLayout.EAST);
+			}
+		}
+
+		return item;
 	}
 
 	private JCheckBox createCheckbox(ConfigDescriptor cd, ConfigItemDescriptor cid)
