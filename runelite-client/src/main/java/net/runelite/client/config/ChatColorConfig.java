@@ -443,6 +443,15 @@ public interface ChatColorConfig extends Config
 	Color opaquePlayerUsername();
 
 	@ConfigItem(
+			position = 41,
+			keyName = "opaqueDidYouKnow",
+			name = "Did you know",
+			description = "Color of did you know messages.",
+			section = opaqueSection
+	)
+	Color opaqueDidYouKnow();
+
+	@ConfigItem(
 		position = 51,
 		keyName = "transparentPublicChat",
 		name = "Public chat (transparent)",
@@ -838,4 +847,13 @@ public interface ChatColorConfig extends Config
 		section = transparentSection
 	)
 	Color transparentPlayerUsername();
+
+	@ConfigItem(
+			position = 91,
+			keyName = "transparentDidYouKnow",
+			name = "Did you know (transparent)",
+			description = "Color of did you know messages (transparent).",
+			section = transparentSection
+	)
+	Color transparentDidYouKnow();
 }
