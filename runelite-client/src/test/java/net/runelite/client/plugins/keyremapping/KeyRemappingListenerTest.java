@@ -31,6 +31,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +66,7 @@ public class KeyRemappingListenerTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(keyRemappingConfig.control()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK));
+		when(keyRemappingConfig.ctrlM()).thenReturn(new Keybind(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK));
 	}
 
 	@Test
