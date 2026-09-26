@@ -107,7 +107,7 @@ public class TooltipOverlay extends Overlay
 				entity = tooltip.getComponent();
 				if (entity instanceof PanelComponent)
 				{
-					((PanelComponent) entity).setBackgroundColor(runeLiteConfig.overlayBackgroundColor());
+					((PanelComponent) entity).setBackgroundColor(runeLiteConfig.tooltipBackgroundColor());
 				}
 			}
 			else
@@ -115,7 +115,7 @@ public class TooltipOverlay extends Overlay
 				final TooltipComponent tooltipComponent = new TooltipComponent();
 				tooltipComponent.setModIcons(client.getModIcons());
 				tooltipComponent.setText(tooltip.getText());
-				tooltipComponent.setBackgroundColor(runeLiteConfig.overlayBackgroundColor());
+				tooltipComponent.setBackgroundColor(runeLiteConfig.tooltipBackgroundColor());
 				entity = tooltipComponent;
 			}
 
