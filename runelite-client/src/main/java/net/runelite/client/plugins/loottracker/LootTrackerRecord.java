@@ -30,6 +30,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.http.api.loottracker.LootRecordType;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Getter
 @AllArgsConstructor
@@ -94,5 +95,46 @@ class LootTrackerRecord
 		}
 
 		kills += record.kills;
+	}
+
+	/**
+	 * Removes the items and kills of a record previously {@link #merge(LootTrackerRecord) merged} into this one
+	 *
+	 * @param record the record to remove
+	 */
+	void unmerge(LootTrackerRecord record)
+	{
+		assert title.equals(record.title);
+		assert type == record.type;
+
+		for (LootTrackerItem item : record.items)
+		{
+			for (int idx = 0; idx < items.length; ++idx)
+			{
+				LootTrackerItem r = items[idx];
+				if (r.getId() == item.getId())
+				{
+					int qty = r.getQuantity() - item.getQuantity();
+					if (qty > 0)
+					{
+						items[idx] = new LootTrackerItem(
+							r.getId(),
+							r.getName(),
+							qty,
+							r.getGePrice(),
+							r.getHaPrice(),
+							r.isIgnored()
+						);
+					}
+					else
+					{
+						items = ArrayUtils.remove(items, idx);
+					}
+					break;
+				}
+			}
+		}
+
+		kills -= record.kills;
 	}
 }
