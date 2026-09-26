@@ -993,7 +993,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("The magic of 4 colours, an early experience you could learn. The large beast caged up top, rages, as his demised kin's loot now returns.")
 			.location(new WorldPoint(3103, 3163, 2))
 			.npc("Wizard Mizgog")
-			.solution("Speak to Wizard Mizgog at the top of the Wizards' Tower south of Draynor.")
+			.solution("Speak to Wizard Mizgog at the top of the Wizards' Tower south of Draynor. Fairy ring DIS.")
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_HARD_RIDDLE005)
