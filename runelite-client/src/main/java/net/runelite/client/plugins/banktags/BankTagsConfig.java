@@ -27,6 +27,7 @@ package net.runelite.client.plugins.banktags;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("banktags")
 public interface BankTagsConfig extends Config
@@ -92,6 +93,17 @@ public interface BankTagsConfig extends Config
 		description = ""
 	)
 	void position(int idx);
+
+	@ConfigItem(
+		keyName = "filterTagTabsKeybind",
+		name = "Filter tag tabs shortcut",
+		description = "Keyboard shortcut for filtering the tag tab tab.",
+		position = 5
+	)
+	default Keybind filterTagTabsKeybind()
+	{
+		return Keybind.NOT_SET;
+	}
 
 	@ConfigItem(
 		keyName = "tab",
