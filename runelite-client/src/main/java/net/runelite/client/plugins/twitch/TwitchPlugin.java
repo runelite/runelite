@@ -186,6 +186,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 
 		String displayName = tags.get("display-name");
 		String name = source.equalsIgnoreCase(displayName) ? displayName : source;
+		message = filterMessageQuirks(message);
 		addChatMessage(name, message);
 	}
 
@@ -242,5 +243,24 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 				log.warn("failed to send message", e);
 			}
 		}
+	}
+
+	public String filterMessageQuirks(String message)
+	{
+		// Strip 7TV ChatSpam module prefix
+		{
+			// Represents \U{E0000}
+			// From https://github.com/SevenTV/Extension/blob/7d94d683be8792d96b4cac2d2c08f649d343a451/src/common/Constant.ts#L20
+			// and https://github.com/SevenTV/Extension/blob/7d94d683be8792d96b4cac2d2c08f649d343a451/src/site/twitch.tv/modules/chat-input/ChatSpam.vue#L94
+			String spamSuffix = "\uDB40\uDC00";
+			if (message.endsWith(spamSuffix))
+			{
+				message = message.substring(0, message.length() - spamSuffix.length()).stripTrailing();
+			}
+		}
+
+		return message
+			// Shows up as the triskelion symbol instead of "smart ellipsis" in game
+			.replace("…", "...");
 	}
 }
