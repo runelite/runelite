@@ -397,7 +397,7 @@ class LootTrackerPanel extends PluginPanel
 		{
 			// allocate a separate LootTrackerRecord for aggregate records to avoid later merge() calls
 			// mutating the session record
-			aggRecord = new LootTrackerRecord(eventName, subTitle, type, items, kills);
+			aggRecord = new LootTrackerRecord(eventName, subTitle, type, items.clone(), kills);
 			aggregateRecords.put(aggRecord, aggRecord);
 		}
 
