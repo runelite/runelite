@@ -45,6 +45,12 @@ public class TileIndicatorsPlugin extends Plugin
 	@Inject
 	private TileIndicatorsOverlay overlay;
 
+	@Inject
+	private TileIndicatorsMapOverlay mapOverlay;
+
+	@Inject
+	private TileIndicatorsMinimapOverlay minimapOverlay;
+
 	@Provides
 	TileIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -55,11 +61,15 @@ public class TileIndicatorsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(mapOverlay);
+		overlayManager.add(minimapOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(mapOverlay);
+		overlayManager.remove(minimapOverlay);
 	}
 }
