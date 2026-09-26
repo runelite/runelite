@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.collect.Iterables.concat;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,7 +37,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.Predicate;
@@ -57,8 +55,6 @@ import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -121,12 +117,8 @@ class LootTrackerPanel extends PluginPanel
 	private final JButton collapseBtn = new JButton();
 
 	// Aggregate of all kills
-	@Getter(AccessLevel.PACKAGE)
-	@VisibleForTesting
 	private final LinkedHashMap<LootTrackerRecord, LootTrackerRecord> aggregateRecords = new LinkedHashMap<>(16, 0.75f, true);
 	// Individual records for the individual kills this session
-	@Getter(AccessLevel.PACKAGE)
-	@VisibleForTesting
 	private final Deque<LootTrackerRecord> sessionRecords = new ArrayDeque<>();
 	private final List<LootTrackerBox> boxes = new ArrayList<>();
 
@@ -422,34 +414,6 @@ class LootTrackerPanel extends PluginPanel
 		}
 	}
 
-	/**
-	 * Removes a single kill from the session records, and its loot from the aggregate records
-	 */
-	@VisibleForTesting
-	void removeKill(LootTrackerRecord record)
-	{
-		// records are equal if they have the same title and type, so compare by identity to only remove this kill
-		if (!sessionRecords.removeIf(r -> r == record))
-		{
-			return;
-		}
-
-		// iterate instead of using get() to avoid changing the order of aggregateRecords
-		for (Iterator<LootTrackerRecord> it = aggregateRecords.values().iterator(); it.hasNext(); )
-		{
-			LootTrackerRecord aggRecord = it.next();
-			if (aggRecord.equals(record))
-			{
-				aggRecord.unmerge(record);
-				if (aggRecord.getKills() <= 0)
-				{
-					it.remove();
-				}
-				break;
-			}
-		}
-	}
-
 	boolean hasRecord(LootRecordType type, String name)
 	{
 		LootTrackerRecord r = new LootTrackerRecord(name, null, type, null, 0);
@@ -651,18 +615,14 @@ class LootTrackerPanel extends PluginPanel
 				return;
 			}
 
-			if (groupLoot)
-			{
+			Predicate<LootTrackerRecord> match = groupLoot
 				// With grouped loot, remove any record with this title
-				Predicate<LootTrackerRecord> match = r -> r.matches(record.getTitle(), record.getType());
-				sessionRecords.removeIf(match);
-				aggregateRecords.values().removeIf(match);
-			}
-			else
-			{
-				// Otherwise remove specifically this kill
-				removeKill(record);
-			}
+				? r -> r.matches(record.getTitle(), record.getType())
+				// Otherwise remove specifically this entry. Records are equal if they have the same
+				// title and type, so compare by identity.
+				: r -> r == record;
+			sessionRecords.removeIf(match);
+			aggregateRecords.values().removeIf(match);
 			boxes.remove(box);
 			updateOverall();
 			logsContainer.remove(box);
