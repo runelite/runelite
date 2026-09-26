@@ -499,6 +499,7 @@ public class WoodcuttingPlugin extends Plugin
 				case ObjectID.SPIRIT_TREE_STUMP:
 				case ObjectID.MAGIC_TREE_STUMP:
 				case ObjectID.MAPLE_TREE_STUMP:
+				case ObjectID.PRIF_MAPLETREE_STUMP:
 				case ObjectID.OAK_TREE_STUMP:
 				case ObjectID.WILLOW_TREE_STUMP:
 				case ObjectID.YEW_TREE_STUMP:
