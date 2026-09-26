@@ -619,7 +619,7 @@ class LootTrackerPanel extends PluginPanel
 				// With grouped loot, remove any record with this title
 				? r -> r.matches(record.getTitle(), record.getType())
 				// Otherwise remove specifically this entry
-				: r -> r.equals(record);
+				: r -> r == record;
 			sessionRecords.removeIf(match);
 			aggregateRecords.values().removeIf(match);
 			boxes.remove(box);
