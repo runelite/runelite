@@ -31,7 +31,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum HunterAreaLocation
+public enum HunterAreaLocation
 {
 	ALDARIN_NORTH(new WorldPoint(1357, 2977, 0), HunterCreature.COPPER_LONGTAIL),
 	ALDARIN_WEST(new WorldPoint(1342, 2934, 0), HunterCreature.RUBY_HARVEST),

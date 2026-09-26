@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum FarmingPatchLocation
+public enum FarmingPatchLocation
 {
 	ALLOTMENT("Allotment",
 		new WorldPoint(3793, 2836, 0),
