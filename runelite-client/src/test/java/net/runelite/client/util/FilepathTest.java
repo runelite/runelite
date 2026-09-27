@@ -174,15 +174,14 @@ public class FilepathTest
 		var path = Filepath.Unchecked.getLegacyPluginDirectory(dotRunelite, "my-plugin");
 		path.createDirectory();
 
-		try (var watcher = dotRunelite.getFileSystem().newWatchService())
+		try (var watcher = path.watch(StandardWatchEventKinds.ENTRY_CREATE))
 		{
-			path.register(watcher, StandardWatchEventKinds.ENTRY_CREATE);
 			path.join("test-file").write(new byte[0]);
 
 			var key = watcher.poll(1, TimeUnit.SECONDS);
 			Assert.assertNotNull(key);
 			Assert.assertTrue(key.pollEvents().stream()
-					.anyMatch(event -> event.kind() == StandardWatchEventKinds.ENTRY_CREATE));
+					.anyMatch(event -> event.getKind() == StandardWatchEventKinds.ENTRY_CREATE));
 		}
 	}
 
