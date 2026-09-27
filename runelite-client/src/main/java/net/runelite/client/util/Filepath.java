@@ -48,6 +48,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.ProviderMismatchException;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
@@ -58,13 +59,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.client.plugins.Plugin;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -81,7 +86,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 public class Filepath implements Comparable<Filepath>
 {
 	private static final CharMatcher BAD_CHARS = CharMatcher.inRange('\0', '\u001f')
-		.or(CharMatcher.anyOf("<>:\"/\\|?*~"));
+			.or(CharMatcher.anyOf("<>:\"/\\|?*~"));
 
 	@VisibleForTesting
 	static final Set<String> DOS_DEVICES = ImmutableSet.of(
@@ -253,9 +258,9 @@ public class Filepath implements Comparable<Filepath>
 	/**
 	 * @see Path#register(WatchService, WatchEvent.Kind[])
 	 */
-	public WatchKey register(WatchService watcher, WatchEvent.Kind<?>... events) throws IOException
+	public Watcher watch(WatchEvent.Kind<?>... events) throws IOException
 	{
-		return fullPath.register(watcher, events);
+		return new Watcher(this, events);
 	}
 
 	/**
@@ -523,6 +528,142 @@ public class Filepath implements Comparable<Filepath>
 		}
 
 		return false;
+	}
+
+	public static final class Watcher implements AutoCloseable
+	{
+		private final WatchService watchService;
+		private final Key key;
+
+		private Watcher(Filepath directory, WatchEvent.Kind<?>... events) throws IOException
+		{
+			watchService = directory.fullPath.getFileSystem().newWatchService();
+			try
+			{
+				key = new Key(directory, directory.fullPath.register(watchService, events));
+			}
+			catch (IOException | RuntimeException | Error ex)
+			{
+				try
+				{
+					watchService.close();
+				}
+				catch (IOException closeException)
+				{
+					ex.addSuppressed(closeException);
+				}
+				throw ex;
+			}
+		}
+
+		/**
+		 * @see WatchService#poll()
+		 */
+		@Nullable
+		public Key poll()
+		{
+			return watchService.poll() == null ? null : key;
+		}
+
+		/**
+		 * @see WatchService#poll(long, TimeUnit)
+		 */
+		@Nullable
+		public Key poll(long timeout, TimeUnit unit) throws InterruptedException
+		{
+			return watchService.poll(timeout, unit) == null ? null : key;
+		}
+
+		/**
+		 * @see WatchService#take()
+		 */
+		public Key take() throws InterruptedException
+		{
+			watchService.take();
+			return key;
+		}
+
+		@Override
+		public void close() throws IOException
+		{
+			watchService.close();
+		}
+
+		/**
+		 * A directory registration. Reset the key after processing its events.
+		 */
+		@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+		public static final class Key
+		{
+			private final Filepath directory;
+			private final WatchKey key;
+
+			/**
+			 * @see WatchKey#pollEvents()
+			 */
+			public List<Event> pollEvents()
+			{
+				return key.pollEvents().stream()
+						.map(event -> new Event(directory, event))
+						.collect(Collectors.toList());
+			}
+
+			/**
+			 * @see WatchKey#reset()
+			 */
+			public boolean reset()
+			{
+				return key.reset();
+			}
+
+			/**
+			 * @see WatchKey#isValid()
+			 */
+			public boolean isValid()
+			{
+				return key.isValid();
+			}
+
+			/**
+			 * @see WatchKey#cancel()
+			 */
+			public void cancel()
+			{
+				key.cancel();
+			}
+		}
+
+		/**
+		 * A filesystem event whose path retains the watched directory's root.
+		 */
+		@Getter
+		public static final class Event
+		{
+			/**
+			 * @see WatchEvent#kind()
+			 */
+			private final WatchEvent.Kind<?> kind;
+
+			/**
+			 * @see WatchEvent#count()
+			 */
+			private final int count;
+
+			/**
+			 * Returns the affected entry, or null for an overflow event.
+			 */
+			@Nullable
+			private final Filepath filepath;
+
+			@VisibleForTesting
+			Event(Filepath directory, WatchEvent<?> event)
+			{
+				kind = event.kind();
+				count = event.count();
+				filepath = kind == StandardWatchEventKinds.OVERFLOW ? null :
+						new Filepath(directory.root, directory.fullPath.resolve((Path) event.context()));
+			}
+		}
 	}
 
 	/**
