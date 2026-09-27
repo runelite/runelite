@@ -194,35 +194,9 @@ class PotionStorage
 			return -1;
 		}
 
-		if (potions == null)
+		if (findPotion(itemId) != null)
 		{
-			return -1;
-		}
-
-		for (Potion potion : potions)
-		{
-			if (potion == null)
-			{
-				continue;
-			}
-
-			var potionEnum = potion.potionEnum;
-			int potionItemId1 = potionEnum.getIntValue(1);
-			int potionItemId2 = potionEnum.getIntValue(2);
-			int potionItemId3 = potionEnum.getIntValue(3);
-			int potionItemId4 = potionEnum.getIntValue(4);
-
-			if (potionItemId1 == itemId || potionItemId2 == itemId || potionItemId3 == itemId || potionItemId4 == itemId)
-			{
-				int potionStoreItem = potionEnum.getIntValue(potion.withdrawDoses);
-
-				if (log.isDebugEnabled())
-				{
-					log.debug("Item {} matches a potion from potion store {}", itemId, itemManager.getItemComposition(potionStoreItem).getName());
-				}
-
-				return potionStoreItem;
-			}
+			return itemId;
 		}
 
 		return -1;
@@ -235,22 +209,17 @@ class PotionStorage
 			return getVialsInPotionStorage();
 		}
 
-		if (potions == null)
+		Potion potion = findPotion(itemId);
+		if (potion == null)
 		{
 			return 0;
 		}
 
-		for (Potion potion : potions)
-		{
-			if (potion != null && potion.itemId == itemId)
-			{
-				return potion.doses / potion.withdrawDoses;
-			}
-		}
-		return 0;
+		int doses = dosesOf(potion, itemId);
+		return doses > 0 ? potion.doses / doses : 0;
 	}
 
-	Potion findPotion(int itemId /* must be current dose id */)
+	Potion findPotion(int itemId)
 	{
 		if (potions == null)
 		{
@@ -259,13 +228,32 @@ class PotionStorage
 
 		for (Potion potion : potions)
 		{
-			if (potion != null && potion.itemId == itemId)
+			if (potion != null && dosesOf(potion, itemId) > 0)
 			{
 				return potion;
 			}
 		}
 
 		return null;
+	}
+
+	private int dosesOf(Potion potion, int itemId)
+	{
+		var potionEnum = potion.potionEnum;
+		for (int dose = 1; dose <= 4; ++dose)
+		{
+			if (potionEnum.getIntValue(dose) == itemId)
+			{
+				return dose;
+			}
+		}
+		return -1;
+	}
+
+	int dosesOf(int itemId)
+	{
+		Potion potion = findPotion(itemId);
+		return potion != null ? dosesOf(potion, itemId) : -1;
 	}
 
 	boolean hasVialsInPotionStorage()
