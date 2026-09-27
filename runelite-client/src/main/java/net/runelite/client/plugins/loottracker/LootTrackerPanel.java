@@ -52,13 +52,17 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
@@ -101,6 +105,10 @@ class LootTrackerPanel extends PluginPanel
 	// Handle loot boxes
 	private final JPanel logsContainer = new JPanel();
 
+	// Filter loot boxes by source or item name
+	private final JPanel searchPanel;
+	private final IconTextField searchBar = new IconTextField();
+
 	// Handle overall session data
 	private final JPanel overallPanel;
 	private final JLabel overallKillsLabel = new JLabel();
@@ -130,6 +138,7 @@ class LootTrackerPanel extends PluginPanel
 	private boolean hideIgnoredItems;
 	private String currentView;
 	private LootRecordType currentType;
+	private String searchText = "";
 
 	static
 	{
@@ -178,11 +187,13 @@ class LootTrackerPanel extends PluginPanel
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
 
+		searchPanel = buildSearchPanel();
 		actionsPanel = buildActionsPanel();
 		overallPanel = buildOverallPanel();
 
 		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
+		layoutPanel.add(searchPanel);
 		layoutPanel.add(actionsPanel);
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
@@ -190,6 +201,46 @@ class LootTrackerPanel extends PluginPanel
 		// Add error pane
 		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
 		add(errorPanel);
+	}
+
+	/**
+	 * The search panel includes the search bar, which filters the loot boxes to
+	 * those with a source name or item name containing the search text.
+	 */
+	private JPanel buildSearchPanel()
+	{
+		final JPanel searchContainer = new JPanel(new BorderLayout());
+		searchContainer.setBorder(new EmptyBorder(0, 0, 5, 0));
+		searchContainer.setVisible(false);
+
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(0, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+		});
+
+		searchContainer.add(searchBar, BorderLayout.CENTER);
+
+		return searchContainer;
 	}
 
 	/**
@@ -463,6 +514,27 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
+	 * Filters the loot boxes by the text in the search bar
+	 */
+	private void onSearchBarChanged()
+	{
+		// This is called during the document's change notification, when the document can't be mutated.
+		// rebuild() pumps pending events, which can include further key presses in the search bar,
+		// so defer it until the notification has finished.
+		SwingUtilities.invokeLater(() ->
+		{
+			final String text = searchBar.getText().trim();
+			if (text.equals(searchText))
+			{
+				return;
+			}
+
+			searchText = text;
+			rebuild();
+		});
+	}
+
+	/**
 	 * Changes the collapse status of loot entries
 	 */
 	private void changeCollapse()
@@ -542,6 +614,12 @@ class LootTrackerPanel extends PluginPanel
 			return null;
 		}
 
+		// If this record does not match the search text, return
+		if (!record.matchesSearch(searchText, hideIgnoredItems))
+		{
+			return null;
+		}
+
 		final boolean isIgnored = plugin.isEventIgnored(record.getTitle());
 		if (hideIgnoredItems && isIgnored)
 		{
@@ -564,6 +642,7 @@ class LootTrackerPanel extends PluginPanel
 
 		// Show main view
 		remove(errorPanel);
+		searchPanel.setVisible(true);
 		actionsPanel.setVisible(true);
 		overallPanel.setVisible(true);
 
@@ -671,7 +750,7 @@ class LootTrackerPanel extends PluginPanel
 
 		for (LootTrackerRecord record : records)
 		{
-			if (!record.matches(currentView, currentType))
+			if (!record.matches(currentView, currentType) || !record.matchesSearch(searchText, hideIgnoredItems))
 			{
 				continue;
 			}
