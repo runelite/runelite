@@ -52,7 +52,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -74,6 +74,7 @@ class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
 	private static final int MAX_SESSION_RECORDS = 1024;
+	private static final int SEARCH_DEBOUNCE_MS = 250;
 
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
@@ -108,6 +109,7 @@ class LootTrackerPanel extends PluginPanel
 	// Filter loot boxes by source or item name
 	private final JPanel searchPanel;
 	private final IconTextField searchBar = new IconTextField();
+	private final Timer searchTimer = new Timer(SEARCH_DEBOUNCE_MS, e -> updateSearch());
 
 	// Handle overall session data
 	private final JPanel overallPanel;
@@ -217,24 +219,25 @@ class LootTrackerPanel extends PluginPanel
 		searchBar.setPreferredSize(new Dimension(0, 30));
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchTimer.setRepeats(false);
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
-				onSearchBarChanged();
+				searchTimer.restart();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e)
 			{
-				onSearchBarChanged();
+				searchTimer.restart();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
 			{
-				onSearchBarChanged();
+				searchTimer.restart();
 			}
 		});
 
@@ -516,22 +519,16 @@ class LootTrackerPanel extends PluginPanel
 	/**
 	 * Filters the loot boxes by the text in the search bar
 	 */
-	private void onSearchBarChanged()
+	private void updateSearch()
 	{
-		// This is called during the document's change notification, when the document can't be mutated.
-		// rebuild() pumps pending events, which can include further key presses in the search bar,
-		// so defer it until the notification has finished.
-		SwingUtilities.invokeLater(() ->
+		final String text = searchBar.getText().trim();
+		if (text.equals(searchText))
 		{
-			final String text = searchBar.getText().trim();
-			if (text.equals(searchText))
-			{
-				return;
-			}
+			return;
+		}
 
-			searchText = text;
-			rebuild();
-		});
+		searchText = text;
+		rebuild();
 	}
 
 	/**
