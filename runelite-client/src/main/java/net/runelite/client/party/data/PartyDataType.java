@@ -24,7 +24,8 @@
  */
 package net.runelite.client.party.data;
 
-public enum PartyDataType {
+public enum PartyDataType
+{
 	INVENTORY,
 	EQUIPMENT,
 }

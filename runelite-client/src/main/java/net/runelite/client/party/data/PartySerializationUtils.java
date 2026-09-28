@@ -27,7 +27,8 @@ package net.runelite.client.party.data;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 
-public class PartySerializationUtils {
+public class PartySerializationUtils
+{
 	public static int[] convertItemsToIntArray(Item[] items)
 	{
 		int[] itemInts = new int[items.length * 2];

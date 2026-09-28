@@ -45,18 +45,22 @@ import net.runelite.client.plugins.Plugin;
 
 @Slf4j
 @Singleton
-public class PartyDataService {
+public class PartyDataService
+{
 	private final Multimap<PartyDataType, String> DATA_MAP = HashMultimap.create();
 
-	public void register(Plugin plugin, PartyDataType partyDataType) {
+	public void register(Plugin plugin, PartyDataType partyDataType)
+	{
 		DATA_MAP.put(partyDataType, plugin.getName());
 	}
 
-	public void unregister(Plugin plugin, PartyDataType partyDataType) {
+	public void unregister(Plugin plugin, PartyDataType partyDataType)
+	{
 		DATA_MAP.remove(partyDataType, plugin.getName());
 	}
 
-	public void unregisterAll(Plugin plugin) {
+	public void unregisterAll(Plugin plugin)
+	{
 		DATA_MAP.values().removeIf(p -> p.equals(plugin.getName()));
 	}
 
@@ -72,7 +76,8 @@ public class PartyDataService {
 			EventBus eventBus,
 			WSClient wsClient,
 			PartyService partyService
-	) {
+	)
+	{
 		this.client = client;
 		this.partyService = partyService;
 		this.eventBus = eventBus;
