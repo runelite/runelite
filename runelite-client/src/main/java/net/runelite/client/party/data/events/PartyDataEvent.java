@@ -34,4 +34,5 @@ public class PartyDataEvent
 {
 	final PartyDataType type;
 	final Object data;
+	final long memberId;
 }

@@ -56,13 +56,13 @@ public class PartyDataChange extends PartyMemberMessage
 		if (inventory != null)
 		{
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(inventory);
-			new PartyDataEvent(PartyDataType.INVENTORY, items);
+			new PartyDataEvent(PartyDataType.INVENTORY, items, this.getMemberId());
 		}
 
 		if (equipment != null)
 		{
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(equipment);
-			new PartyDataEvent(PartyDataType.EQUIPMENT, items);
+			new PartyDataEvent(PartyDataType.EQUIPMENT, items, this.getMemberId());
 		}
 
 		return events;
