@@ -57,6 +57,14 @@ public class PlayerPartyData
 		prayerBookID = client.getVarbitValue(VarbitID.PRAYERBOOK);
 	}
 
+	public void resetPrayers()
+	{
+		this.availablePrayers.clear();
+		this.enabledPrayers.clear();
+		this.unlockedPrayers.clear();
+		this.prayerBookID = 0;
+	}
+
 	public PrayerState prayerSnapshot()
 	{
 		return new PrayerState(

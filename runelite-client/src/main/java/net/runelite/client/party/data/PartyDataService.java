@@ -25,19 +25,21 @@
 package net.runelite.client.party.data;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.SetMultimap;
 import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
@@ -52,28 +54,40 @@ import net.runelite.client.plugins.Plugin;
 @Singleton
 public class PartyDataService
 {
-	private final Multimap<PartyDataType, String> DATA_MAP = HashMultimap.create();
+	private final SetMultimap<PartyDataType, String> DATA_MAP = HashMultimap.create();
 
-	public void register(Plugin plugin, PartyDataType partyDataType)
+	public synchronized void register(Plugin plugin, PartyDataType partyDataType)
 	{
-		DATA_MAP.put(partyDataType, plugin.getName());
+		boolean wasEmpty = DATA_MAP.get(partyDataType).isEmpty();
+
+		if (DATA_MAP.put(partyDataType, plugin.getName()) && wasEmpty)
+		{
+			clientThread.invoke(() -> handleDataTypeFirstEnabled(partyDataType));
+		}
 	}
 
-	public void unregister(Plugin plugin, PartyDataType partyDataType)
+	public synchronized void unregister(Plugin plugin, PartyDataType partyDataType)
 	{
-		DATA_MAP.remove(partyDataType, plugin.getName());
+		if (DATA_MAP.remove(partyDataType, plugin.getName()) && DATA_MAP.get(partyDataType).isEmpty())
+		{
+			handleDataTypeFullyDisabled(partyDataType);
+		}
 	}
 
 	public void unregisterAll(Plugin plugin)
 	{
-		DATA_MAP.values().removeIf(p -> p.equals(plugin.getName()));
+		for (PartyDataType dataType : PartyDataType.values())
+		{
+			this.unregister(plugin, dataType);
+		}
 	}
 
 	private final Client client;
 	private final PartyService partyService;
 	private final EventBus eventBus;
-	private final PrayerService prayerService;
+	private final ClientThread clientThread;
 
+	private final PrayerService prayerService;
 	private PlayerPartyData playerData;
 	private PartyDataChange currentChange = new PartyDataChange();
 
@@ -84,12 +98,14 @@ public class PartyDataService
 			Client client,
 			EventBus eventBus,
 			WSClient wsClient,
-			PartyService partyService
+			PartyService partyService,
+			ClientThread clientThread
 	)
 	{
 		this.client = client;
 		this.partyService = partyService;
 		this.eventBus = eventBus;
+		this.clientThread = clientThread;
 		this.prayerService = new PrayerService(client);
 
 		eventBus.register(this);
@@ -217,5 +233,49 @@ public class PartyDataService
 	{
 		// introduce a tick delay for each member >6
 		return Math.max(1, partySize - 6);
+	}
+
+	private void handleDataTypeFullyDisabled(PartyDataType partyDataType)
+	{
+		if (partyDataType == PartyDataType.PRAYERS)
+		{
+			playerData.resetPrayers();
+		}
+
+		// Inventory and Equipment are not persisted so nothing to do
+	}
+
+	private void handleDataTypeFirstEnabled(PartyDataType partyDataType)
+	{
+		if (partyDataType == PartyDataType.PRAYERS)
+		{
+			playerData.resetPrayers();
+		}
+
+		// Thr rest of the events only matter if they enabled this while the user is actively logged in
+		if (client.getLocalPlayer() == null)
+		{
+			return;
+		}
+
+		if (partyDataType == PartyDataType.INVENTORY)
+		{
+			ItemContainer c = client.getItemContainer(InventoryID.INV);
+			if (c != null)
+			{
+				int[] items = PartySerializationUtils.convertItemContainerToIntArray(c);
+				currentChange.setInventory(items);
+			}
+		}
+
+		if (partyDataType == PartyDataType.EQUIPMENT)
+		{
+			ItemContainer c = client.getItemContainer(InventoryID.WORN);
+			if (c != null)
+			{
+				int[] items = PartySerializationUtils.convertItemContainerToIntArray(c);
+				currentChange.setEquipment(items);
+			}
+		}
 	}
 }
