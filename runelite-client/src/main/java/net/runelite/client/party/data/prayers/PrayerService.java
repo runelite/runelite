@@ -83,7 +83,7 @@ public class PrayerService
 		enabled = Prayers.isPrayerEnabled(p, client);
 		unlocked = Prayers.isPrayerUnlocked(p, client);
 
-		boolean[] changes = new boolean[]{
+		boolean[] changes = {
 				playerData.getAvailablePrayers().contains(p) != available,
 				playerData.getEnabledPrayers().contains(p) != enabled,
 				playerData.getUnlockedPrayers().contains(p) != unlocked,
