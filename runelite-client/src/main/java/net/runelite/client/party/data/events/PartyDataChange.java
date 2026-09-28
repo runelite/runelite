@@ -27,12 +27,16 @@ package net.runelite.client.party.data.events;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.runelite.api.Item;
+import net.runelite.api.Prayer;
 import net.runelite.client.party.data.PartyDataType;
 import net.runelite.client.party.data.PartySerializationUtils;
+import static net.runelite.client.party.data.PartySerializationUtils.unpack;
+import net.runelite.client.party.data.PlayerPartyData;
 import net.runelite.client.party.messages.PartyMemberMessage;
 
 @Data
@@ -44,13 +48,27 @@ public class PartyDataChange extends PartyMemberMessage
 	int[] inventory;
 	@SerializedName("e")
 	int[] equipment;
+	@SerializedName("ap")
+	byte[] availablePrayers; // contains all available prayers on every change to any available prayer
+	@SerializedName("ep")
+	byte[] enabledPrayers;  // contains all enabled prayers on every change to any enabled prayer
+	@SerializedName("up")
+	byte[] unlockedPrayers; // contains all unlocked prayers on every change to any unlocked prayer
+	@SerializedName("pb")
+	Integer prayerBookID;
 
 	public boolean isValid()
 	{
-		return inventory != null || equipment != null;
+		return inventory != null
+				|| equipment != null
+				|| availablePrayers != null
+				|| enabledPrayers != null
+				|| unlockedPrayers != null
+				|| prayerBookID != null;
 	}
 
-	public Collection<PartyDataEvent> processEvent()
+
+	public Collection<PartyDataEvent> processEvent(PlayerPartyData playerData)
 	{
 		Collection<PartyDataEvent> events = new ArrayList<>();
 		if (inventory != null)
@@ -63,6 +81,43 @@ public class PartyDataChange extends PartyMemberMessage
 		{
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(equipment);
 			new PartyDataEvent(PartyDataType.EQUIPMENT, items, this.getMemberId());
+		}
+
+		boolean prayersChanged = false;
+		if (availablePrayers != null)
+		{
+			EnumSet<Prayer> prayers = unpack(availablePrayers, Prayer.class);
+			playerData.getAvailablePrayers().clear();
+			playerData.getAvailablePrayers().addAll(prayers);
+			prayersChanged = true;
+		}
+
+		if (enabledPrayers != null)
+		{
+			EnumSet<Prayer> prayers = unpack(enabledPrayers, Prayer.class);
+			playerData.getEnabledPrayers().clear();
+			playerData.getEnabledPrayers().addAll(prayers);
+			prayersChanged = true;
+		}
+
+		if (unlockedPrayers != null)
+		{
+			EnumSet<Prayer> prayers = unpack(unlockedPrayers, Prayer.class);
+			playerData.getUnlockedPrayers().clear();
+			playerData.getUnlockedPrayers().addAll(prayers);
+			prayersChanged = true;
+		}
+
+		if (prayerBookID != null)
+		{
+			playerData.setPrayerBookID(prayerBookID);
+			// This should only change if prayers also changed but set this just to be safe
+			prayersChanged = true;
+		}
+
+		if (prayersChanged)
+		{
+			events.add(new PartyDataEvent(PartyDataType.PRAYERS, playerData.prayerSnapshot(), this.getMemberId()));
 		}
 
 		return events;

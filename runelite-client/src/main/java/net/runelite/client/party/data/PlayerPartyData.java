@@ -24,9 +24,46 @@
  */
 package net.runelite.client.party.data;
 
-public enum PartyDataType
+import com.google.common.collect.Sets;
+import java.util.EnumSet;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.Client;
+import net.runelite.api.Prayer;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.party.data.prayers.PrayerState;
+import net.runelite.client.party.data.prayers.Prayers;
+
+@Getter
+public class PlayerPartyData
 {
-	INVENTORY,
-	EQUIPMENT,
-	PRAYERS,
+	private final EnumSet<Prayer> availablePrayers = EnumSet.noneOf(Prayer.class);
+	private final EnumSet<Prayer> enabledPrayers = EnumSet.noneOf(Prayer.class);
+	private final EnumSet<Prayer> unlockedPrayers = EnumSet.noneOf(Prayer.class);
+
+	@Setter
+	private int prayerBookID;
+
+	public PlayerPartyData(Client client)
+	{
+		for (final Prayer p : Prayer.values())
+		{
+			if (Prayers.isUnlockedByDefault(p))
+			{
+				unlockedPrayers.add(p);
+			}
+		}
+
+		prayerBookID = client.getVarbitValue(VarbitID.PRAYERBOOK);
+	}
+
+	public PrayerState prayerSnapshot()
+	{
+		return new PrayerState(
+			Sets.immutableEnumSet(availablePrayers),
+			Sets.immutableEnumSet(enabledPrayers),
+			Sets.immutableEnumSet(unlockedPrayers),
+			this.prayerBookID
+		);
+	}
 }

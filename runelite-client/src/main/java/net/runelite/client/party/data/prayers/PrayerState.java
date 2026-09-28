@@ -22,11 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.party.data;
+package net.runelite.client.party.data.prayers;
 
-public enum PartyDataType
+import com.google.common.collect.ImmutableSet;
+import lombok.Value;
+import net.runelite.api.Prayer;
+
+@Value
+public class PrayerState
 {
-	INVENTORY,
-	EQUIPMENT,
-	PRAYERS,
+	ImmutableSet<Prayer> available;
+	ImmutableSet<Prayer> enabled;
+	ImmutableSet<Prayer> unlocked;
+	int prayerBookID;
 }

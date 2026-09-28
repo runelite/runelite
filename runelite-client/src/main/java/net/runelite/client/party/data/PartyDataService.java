@@ -31,9 +31,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
@@ -41,6 +45,7 @@ import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.party.data.events.PartyDataChange;
 import net.runelite.client.party.data.events.PartyDataEvent;
+import net.runelite.client.party.data.prayers.PrayerService;
 import net.runelite.client.plugins.Plugin;
 
 @Slf4j
@@ -67,8 +72,12 @@ public class PartyDataService
 	private final Client client;
 	private final PartyService partyService;
 	private final EventBus eventBus;
+	private final PrayerService prayerService;
 
+	private PlayerPartyData playerData;
 	private PartyDataChange currentChange = new PartyDataChange();
+
+	private long lastSeenAccountHash = -1;
 
 	@Inject
 	private PartyDataService(
@@ -81,6 +90,7 @@ public class PartyDataService
 		this.client = client;
 		this.partyService = partyService;
 		this.eventBus = eventBus;
+		this.prayerService = new PrayerService(client);
 
 		eventBus.register(this);
 		wsClient.registerMessage(PartyDataChange.class);
@@ -89,16 +99,54 @@ public class PartyDataService
 	@Subscribe
 	public void onPartyDataChange(PartyDataChange event)
 	{
-		Collection<PartyDataEvent> events = event.processEvent();
+		Collection<PartyDataEvent> events = event.processEvent(playerData);
 		events.forEach(eventBus::post);
 	}
 
 	@Subscribe
-	public void onPartyChanged(final PartyChanged e)
+	public void onPartyChanged(final PartyChanged ignored)
 	{
+		playerData = null;
+
 		if (inParty())
 		{
 			currentChange = new PartyDataChange();
+			playerData = new PlayerPartyData(client);
+		}
+	}
+
+	@Subscribe(priority = 1)
+	public void onGameStateChanged(final GameStateChanged e)
+	{
+		if (!inParty())
+		{
+			return;
+		}
+
+		if (e.getGameState() == GameState.LOGGED_IN)
+		{
+			long accountHash = client.getAccountHash();
+			if (accountHash != lastSeenAccountHash)
+			{
+				// Reset for new accounts
+				currentChange = new PartyDataChange();
+				prayerService.updatePrayerBook();
+				playerData = new PlayerPartyData(client);
+				playerData.setPrayerBookID(prayerService.getPrayerBookID());
+
+				lastSeenAccountHash = accountHash;
+			}
+		}
+	}
+
+	@Subscribe(priority = 1)
+	public void onVarbitChanged(final VarbitChanged e)
+	{
+		if (e.getVarbitId() == VarbitID.PRAYERBOOK)
+		{
+			prayerService.updatePrayerBook();
+			playerData.setPrayerBookID(prayerService.getPrayerBookID());
+			// Next game tick will check the player's prayers and send the update including a prayer book ID update
 		}
 	}
 
@@ -125,13 +173,12 @@ public class PartyDataService
 			currentChange.setInventory(items);
 
 			// TODO: Add RunePouch logic since that data is from getVarpValues
-			return;
 		}
 	}
 
 	// Run before plugins so
 	@Subscribe(priority = 1)
-	public void onGameTick(final GameTick t)
+	public void onGameTick(final GameTick ignored)
 	{
 		if (!inParty())
 		{
@@ -142,6 +189,14 @@ public class PartyDataService
 		if (client.getTickCount() % messageFreq(partyService.getMembers().size()) != 0)
 		{
 			return;
+		}
+
+		if (!DATA_MAP.get(PartyDataType.PRAYERS).isEmpty())
+		{
+			byte[][] prayerDeltas = prayerService.handlePrayerCheck(playerData);
+			currentChange.setAvailablePrayers(prayerDeltas[0]);
+			currentChange.setEnabledPrayers(prayerDeltas[1]);
+			currentChange.setUnlockedPrayers(prayerDeltas[2]);
 		}
 
 		if (currentChange.isValid())

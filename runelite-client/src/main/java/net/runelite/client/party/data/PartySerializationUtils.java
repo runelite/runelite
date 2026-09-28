@@ -24,6 +24,9 @@
  */
 package net.runelite.client.party.data;
 
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.EnumSet;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 
@@ -69,5 +72,45 @@ public class PartySerializationUtils
 	public static int[] convertItemContainerToIntArray(ItemContainer itemContainer)
 	{
 		return convertItemsToIntArray(itemContainer.getItems());
+	}
+
+	public static <E extends Enum<E>> byte[] pack(Collection<E> items)
+	{
+		if (items.isEmpty())
+		{
+			return null;
+		}
+
+		final BitSet bits = new BitSet();
+		for (E e : items)
+		{
+			bits.set(e.ordinal());
+		}
+
+		return bits.toByteArray();
+	}
+
+	public static <E extends Enum<E>> EnumSet<E> unpack(byte[] packed, Class<E> clazz)
+	{
+		if (packed == null)
+		{
+			return null;
+		}
+		EnumSet<E> out = EnumSet.noneOf(clazz);
+
+		E[] constants = clazz.getEnumConstants();
+		BitSet bits = BitSet.valueOf(packed);
+
+		for (int i = bits.nextSetBit(0); i >= 0; i = bits.nextSetBit(i + 1))
+		{
+			if (i >= constants.length)
+			{
+				break;
+			}
+
+			out.add(constants[i]);
+		}
+
+		return out;
 	}
 }
