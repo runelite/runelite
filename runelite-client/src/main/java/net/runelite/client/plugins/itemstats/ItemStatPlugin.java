@@ -98,6 +98,9 @@ public class ItemStatPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
+	private KeyManager keyManager;
+	
+	@Inject
 	private ItemStatChangesServiceImpl itemStatChangesService;
 
 	private Widget itemInformationTitle;
