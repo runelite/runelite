@@ -24,12 +24,15 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
-import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
-import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.ANGLERS_OUTFIT;
+import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.DIABOLIC_WORMS;
+import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.SHARK_LURE_1;
+import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.SHARK_LURE_3;
+import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.SHARK_LURE_5;
 
 @AllArgsConstructor
 @Getter
@@ -89,16 +92,19 @@ public enum FishingAction implements ItemSkillAction
 	{
 		switch (this)
 		{
+			case RAW_SHARK:
+				return EnumSet.of(DIABOLIC_WORMS);
+			case RAW_ANGLERFISH:
+				return EnumSet.of(SHARK_LURE_1, SHARK_LURE_3, SHARK_LURE_5);
 			case RAW_GIANT_KRILL:
 			case RAW_HADDOCK:
 			case RAW_YELLOWFIN:
 			case RAW_HALIBUT:
 			case RAW_BLUEFIN:
 			case RAW_MARLIN:
-				return Set.of(ANGLERS_OUTFIT);
+				return EnumSet.allOf(FishingBonus.class);
 			default:
-				return Collections.emptySet();
+				return EnumSet.of(DIABOLIC_WORMS, SHARK_LURE_1, SHARK_LURE_3, SHARK_LURE_5);
 		}
 	}
-
 }

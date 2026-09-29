@@ -72,6 +72,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
@@ -156,6 +157,10 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.WILDY_LOOT_KEY3,
 		ItemID.WILDY_LOOT_KEY4
 	);
+
+	// Port/Courier tasks and bags
+	private static final String COURIER_TASK_REWARD_EVENT = "Courier tasks";
+	private static final String COURIER_TASK_COMPLETE_MESSAGE = "and complete your courier task!";
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -927,7 +932,7 @@ public class LootTrackerPlugin extends Plugin
 			long totalValue = items.stream()
 				.filter(item -> item.getId() > -1)
 				.mapToLong(item -> config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE ?
-					(long) itemManager.getItemPrice(item.getId()) * item.getQuantity() :
+					itemManager.getItemPrice(item.getId()) * item.getQuantity() :
 					(long) itemManager.getItemComposition(item.getId()).getHaPrice() * item.getQuantity())
 				.sum();
 
@@ -1075,6 +1080,21 @@ public class LootTrackerPlugin extends Plugin
 				addLoot(GOLEM_CRAFTING_EVENT, -1, LootRecordType.EVENT, null, List.of(new ItemStack(itemId, 1)));
 			}
 			return;
+		}
+
+		if (message.endsWith(COURIER_TASK_COMPLETE_MESSAGE))
+		{
+			onInvChange((invItems, groundItems, removedItems) ->
+			{
+				int cnt = invItems.stream().
+					filter(item -> item.getId() != ItemID.SAILING_PAINT_SHARK).
+					mapToInt(ItemStack::getQuantity).
+					sum();
+				if (cnt > 0)
+				{
+					addLoot(COURIER_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, null, invItems, cnt);
+				}
+			});
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
@@ -1274,12 +1294,19 @@ public class LootTrackerPlugin extends Plugin
 
 	private void countChangedItems(int itemId, Object metadata)
 	{
+		countChangedItems(itemId, metadata, null);
+	}
+
+	private void countChangedItems(int itemId, Object metadata, @Nullable String nameOverride)
+	{
 		onInvChange((invItems, groundItems, removedItems) ->
 		{
 			int cnt = removedItems.count(itemId);
 			if (cnt > 0)
 			{
-				String name = itemManager.getItemComposition(itemId).getMembersName();
+				String name = nameOverride != null ?
+					nameOverride :
+					itemManager.getItemComposition(itemId).getMembersName();
 				List<ItemStack> combined = new ArrayList<>();
 				combined.addAll(invItems);
 				combined.addAll(groundItems);
@@ -1434,6 +1461,20 @@ public class LootTrackerPlugin extends Plugin
 							}
 						});
 						break;
+					default:
+						int eventItemId = event.getItemId();
+						ItemComposition itemComposition = client.getItemDefinition(eventItemId);
+
+						if (itemComposition.getIntValue(ParamID.COURIER_BAG_TIER) >= 0)
+						{
+							String itemName = itemComposition.getMembersName();
+							// reward bag with location, else coin bag
+							if (itemName.indexOf(" (") > 0)
+							{
+								itemName = itemName.substring(0, itemName.indexOf(" ("));
+							}
+							countChangedItems(eventItemId, eventItemId, itemName);
+						}
 				}
 			}
 			else if (event.getMenuOption().equals("Pop"))
@@ -1694,7 +1735,7 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int gePrice = itemManager.getItemPrice(itemId);
+		final long gePrice = itemManager.getItemPrice(itemId);
 		final int haPrice = itemComposition.getHaPrice();
 		final boolean ignored = ignoredItems.contains(itemComposition.getMembersName());
 
@@ -1755,7 +1796,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		long totalPrice = items.stream()
 			.mapToLong(item -> config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE ?
-				(long) itemManager.getItemPrice(item.getId()) * item.getQuantity() :
+				itemManager.getItemPrice(item.getId()) * item.getQuantity() :
 				(long) itemManager.getItemComposition(item.getId()).getHaPrice() * item.getQuantity())
 			.sum();
 

@@ -732,20 +732,27 @@ public interface Client extends OAuthApi, GameEngine
 	int[] getServerVarps();
 
 	/**
+	 * Gets an array of all client varplayers.
+	 *
+	 * @return local player variables
+	 */
+	@VisibleForDevtools
+	long[] getVarpsLong();
+
+	/**
+	 * Get an array of all server varplayers. These vars are only
+	 * modified by the server, and so represent the server's idea of
+	 * the varp values.
+	 * @return the server varps
+	 */
+	@VisibleForDevtools
+	long[] getServerVarpsLong();
+
+	/**
 	 * Gets an array of all client variables.
 	 */
 	@VisibleForDevtools
 	Map<Integer, Object> getVarcMap();
-
-	/**
-	 * Gets a value corresponding to the passed varbit.
-	 *
-	 * @param varbit the varbit id
-	 * @return the value
-	 * @see Client#getVarbitValue(int)
-	 */
-	@Deprecated
-	int getVar(@Varbit int varbit);
 
 	/**
 	 * Gets the value of the given varbit.
@@ -783,6 +790,39 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the value
 	 */
 	int getServerVarpValue(@Varp int varpId);
+
+	/**
+	 * Sets the value of a VarPlayer
+	 * @param varpId the VarPlayer id
+	 * @param value the value
+	 */
+	void setVarpValue(@Varp int varpId, int value);
+
+	/**
+	 * Gets the value of a given VarPlayer.
+	 *
+	 * @param varpId the VarPlayer id
+	 * @return the value
+	 */
+	long getVarpLongValue(@Varp int varpId);
+
+	/**
+	 * Gets the value of a given VarPlayer.
+	 * This returns the server's idea of the value, not the client's. This is
+	 * specifically the last value set by the server regardless of changes to
+	 * the var by the client.
+	 *
+	 * @param varpId the VarPlayer id
+	 * @return the value
+	 */
+	long getServerVarpLongValue(@Varp int varpId);
+
+	/**
+	 * Sets the value of a VarPlayer
+	 * @param varpId the VarPlayer id
+	 * @param value the value
+	 */
+	void setVarpLongValue(@Varp int varpId, long value);
 
 	/**
 	 * Gets the value of a given VarClientInt
@@ -1118,9 +1158,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	ModelData mergeModels(ModelData[] models, int length);
 	ModelData mergeModels(ModelData ...models);
-
-	Model mergeModels(Model[] models, int length);
-	Model mergeModels(Model... models);
 
 	/**
 	 * Loads and lights a model from the cache

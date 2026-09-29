@@ -231,6 +231,7 @@ public final class InterfaceID
 	public static final int MISC_SHIPJOURNEY = 224;
 	public static final int MM_MESSAGE = 225;
 	public static final int DEADMANPROTECT = 226;
+	public static final int DOG_SELECTION = 227;
 	public static final int DEADMAN_DELAY = 228;
 	public static final int MESSAGEBOX = 229;
 	public static final int DEADMAN_SAFEBOX = 230;
@@ -8973,6 +8974,35 @@ public final class InterfaceID
 		public static final int ITEMLOSS_CONTAINER_TEXT1 = 0x00e2_000a;
 		public static final int ITEMLOSS_CONTAINER_LINE2 = 0x00e2_000b;
 		public static final int ITEMLOSS_LIST = 0x00e2_000c;
+	}
+
+	public static final class DogSelection
+	{
+		public static final int INFINITY = 0x00e3_0000;
+		public static final int UNIVERSE = 0x00e3_0001;
+		public static final int BORDER = 0x00e3_0002;
+		public static final int CONTENT = 0x00e3_0003;
+		public static final int EXPANDABLE_CONTENT = 0x00e3_0004;
+		public static final int SCROLL_BAR = 0x00e3_0005;
+		public static final int THINBOX = 0x00e3_0006;
+		public static final int ITEM_AREA = 0x00e3_0007;
+		public static final int ITEM_AREA_RECT0 = 0x00e3_0008;
+		public static final int ITEM_AREA_RECT1 = 0x00e3_0009;
+		public static final int ITEM_AREA_RECT2 = 0x00e3_000a;
+		public static final int ITEM_AREA_RECT3 = 0x00e3_000b;
+		public static final int ITEM_AREA_RECT4 = 0x00e3_000c;
+		public static final int ITEM_AREA_MODEL5 = 0x00e3_000d;
+		public static final int ITEM_AREA_TEXT6 = 0x00e3_000e;
+		public static final int MODEL_VIEW = 0x00e3_000f;
+		public static final int PAUSE_ICON_RECT0 = 0x00e3_0010;
+		public static final int PAUSE_ICON_RECT1 = 0x00e3_0011;
+		public static final int PAUSE_ICON_RECT2 = 0x00e3_0012;
+		public static final int PAUSE_ICON_RECT3 = 0x00e3_0013;
+		public static final int PAUSE_ICON = 0x00e3_0014;
+		public static final int COLOURS = 0x00e3_0015;
+		public static final int COLOURS_RECT0 = 0x00e3_0016;
+		public static final int SELECT_CONTAINER = 0x00e3_0017;
+		public static final int SELECT_AND_CLOSE = 0x00e3_0018;
 	}
 
 	public static final class DeadmanDelay
@@ -22227,7 +22257,8 @@ public final class InterfaceID
 	public static final class SeedVaultDeposit
 	{
 		public static final int UNIVERSE = 0x0276_0000;
-		public static final int INV = 0x0276_0001;
+		public static final int LOCKED_SLOT = 0x0276_0001;
+		public static final int INV = 0x0276_0002;
 	}
 
 	public static final class SeedVault

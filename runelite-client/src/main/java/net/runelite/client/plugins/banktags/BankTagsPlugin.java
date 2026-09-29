@@ -29,7 +29,9 @@ package net.runelite.client.plugins.banktags;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import com.google.inject.Binder;
+import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.util.Providers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -165,7 +167,19 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(BankTagsService.class).toInstance(this);
+		// do not leak this to the global injector
+		binder.bind(TagManager.class);
+	}
+
+	@Override
+	protected Module getPublicModule()
+	{
+		return b ->
+		{
+			b.bind(BankTagsService.class).toProvider(Providers.of(this));
+			b.bind(LayoutManager.class).toProvider(Providers.of(layoutManager));
+			b.bind(TagManager.class).toProvider(Providers.of(tagManager));
+		};
 	}
 
 	@Provides

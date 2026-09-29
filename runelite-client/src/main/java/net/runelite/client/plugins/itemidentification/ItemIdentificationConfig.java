@@ -206,6 +206,17 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSapTreatedLogs",
+		name = "Logs (sap-treated)",
+		description = "Show identification on sap-treated logs.",
+		section = identificationSection
+	)
+	default boolean showSapTreatedLogs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showPlanks",
 		name = "Planks",
 		description = "Show identification on planks.",

@@ -156,8 +156,8 @@ public class GrandExchangePluginTest
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(1 + 2);
 		when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
 		when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-		when(grandExchangeOffer.getPrice()).thenReturn(1000);
-		when(grandExchangeOffer.getSpent()).thenReturn(25 + 10 * 2);
+		when(grandExchangeOffer.getPrice()).thenReturn(1000L);
+		when(grandExchangeOffer.getSpent()).thenReturn(25 + 10 * 2L);
 		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.BUYING);
 		grandExchangePlugin.submitTrade(0, grandExchangeOffer);
 
@@ -189,8 +189,8 @@ public class GrandExchangePluginTest
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
 		when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
 		when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-		when(grandExchangeOffer.getPrice()).thenReturn(1000);
-		lenient().when(grandExchangeOffer.getSpent()).thenReturn(25);
+		when(grandExchangeOffer.getPrice()).thenReturn(1000L);
+		lenient().when(grandExchangeOffer.getSpent()).thenReturn(25L);
 		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.BUYING);
 		grandExchangePlugin.submitTrade(0, grandExchangeOffer);
 
@@ -213,8 +213,8 @@ public class GrandExchangePluginTest
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
 		when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
 		when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-		when(grandExchangeOffer.getPrice()).thenReturn(1000);
-		when(grandExchangeOffer.getSpent()).thenReturn(25);
+		when(grandExchangeOffer.getPrice()).thenReturn(1000L);
+		when(grandExchangeOffer.getSpent()).thenReturn(25L);
 		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED_BUY);
 		grandExchangePlugin.submitTrade(0, grandExchangeOffer);
 
@@ -283,8 +283,8 @@ public class GrandExchangePluginTest
 			when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
 			when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
 			when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-			when(grandExchangeOffer.getPrice()).thenReturn(1000);
-			when(grandExchangeOffer.getSpent()).thenReturn(1000);
+			when(grandExchangeOffer.getPrice()).thenReturn(1000L);
+			when(grandExchangeOffer.getSpent()).thenReturn(1000L);
 			when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.SELLING);
 
 			GrandExchangeOfferChanged grandExchangeOfferChanged = new GrandExchangeOfferChanged();
@@ -298,8 +298,8 @@ public class GrandExchangePluginTest
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(2);
 		when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
 		when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-		when(grandExchangeOffer.getPrice()).thenReturn(1000);
-		when(grandExchangeOffer.getSpent()).thenReturn(2000);
+		when(grandExchangeOffer.getPrice()).thenReturn(1000L);
+		when(grandExchangeOffer.getSpent()).thenReturn(2000L);
 		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.SELLING);
 
 		GrandExchangeOfferChanged grandExchangeOfferChanged = new GrandExchangeOfferChanged();

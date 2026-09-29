@@ -99,6 +99,8 @@ public interface ScriptEvent
 	 */
 	int getTypedKeyChar();
 
+	ScriptEvent setCanSendPackets(boolean canSendPackets);
+
 	/**
 	 * Executes a cs2 script specified by this event
 	 *

@@ -207,7 +207,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 48;
+		public static final int COL_RESTRICTED_CONTENT = 48;
 
 		public static final class Row
 		{
@@ -425,6 +425,8 @@ public final class DBTableID
 			public static final int QUEST_LEARNINGTHEROPES = 9643;
 			public static final int QUEST_IDESOFMILK = 9645;
 			public static final int QUEST_BLOODMOONRISES = 16414;
+			public static final int QUEST_RUFFSITUATION = 16971;
+			public static final int QUEST_CRABQUEST = 16972;
 		}
 	}
 
@@ -586,7 +588,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -734,7 +736,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 6;
+		public static final int COL_RESTRICTED_CONTENT = 6;
 
 		public static final class Row
 		{
@@ -829,7 +831,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -901,7 +903,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -1144,7 +1146,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 12;
+		public static final int COL_RESTRICTED_CONTENT = 12;
 
 		/**
 		 * string
@@ -1522,7 +1524,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 13;
+		public static final int COL_RESTRICTED_CONTENT = 13;
 
 		public static final class Row
 		{
@@ -1707,7 +1709,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 9;
+		public static final int COL_RESTRICTED_CONTENT = 9;
 
 		public static final class Row
 		{
@@ -1767,7 +1769,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 7;
+		public static final int COL_RESTRICTED_CONTENT = 7;
 
 		public static final class Row
 		{
@@ -1836,7 +1838,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 7;
+		public static final int COL_RESTRICTED_CONTENT = 7;
 
 		public static final class Row
 		{
@@ -2032,7 +2034,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -2106,7 +2108,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 7;
+		public static final int COL_RESTRICTED_CONTENT = 7;
 
 		public static final class Row
 		{
@@ -5092,7 +5094,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 14;
+		public static final int COL_RESTRICTED_CONTENT = 14;
 
 		public static final class Row
 		{
@@ -9699,7 +9701,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 19;
+		public static final int COL_RESTRICTED_CONTENT = 19;
 
 		public static final class Row
 		{
@@ -10312,7 +10314,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -14051,6 +14053,72 @@ public final class DBTableID
 			public static final int SLAYER_MODIFIER_CLUES = 7205;
 			public static final int SLAYER_MODIFIER_SUPERIOR_CHANCE = 7206;
 			public static final int SLAYER_MODIFIER_XP_BOOST = 7207;
+		}
+	}
+
+	public static final class PuppyColours
+	{
+		public static final int ID = 132;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 0;
+
+		/**
+		 * model
+		 */
+		public static final int COL_PUPPY_SELECTION = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_COLOUR_NAMES = 3;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_COLOUR_OPTION = 4;
+
+		/**
+		 * model
+		 */
+		public static final int COL_DOG_MODEL = 5;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_LARGE = 6;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_FREE_UNLOCK = 7;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_UNLOCK_BIT = 8;
+
+		/**
+		 * string
+		 */
+		public static final int COL_LOCATION_HINT = 9;
+
+		public static final class Row
+		{
+			public static final int LABRADOR = 16959;
+			public static final int SPANIEL = 16960;
+			public static final int PUG = 16961;
+			public static final int COLLIE = 16962;
+			public static final int CORGI = 16963;
+			public static final int GREYHOUND = 16964;
+			public static final int CHIHUAHUA = 16965;
+			public static final int SAMOYED = 16966;
+			public static final int SHEPARD = 16967;
+			public static final int SHIBA = 16968;
+			public static final int HUSKY = 16969;
+			public static final int YORKIE = 16970;
 		}
 	}
 
@@ -18493,7 +18561,7 @@ public final class DBTableID
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 8;
+		public static final int COL_RESTRICTED_CONTENT = 8;
 
 		public static final class Row
 		{
@@ -18785,6 +18853,11 @@ public final class DBTableID
 		 */
 		public static final int COL_MEMBERSONLY = 3;
 
+		/**
+		 * (boolean, integer)
+		 */
+		public static final int COL_CUSTOM_ORDER = 4;
+
 		public static final class Row
 		{
 			public static final int SKILL_GUIDE_SUBSECTION_AGILITY_OVERVIEW = 9656;
@@ -19039,6 +19112,11 @@ public final class DBTableID
 		 * obj
 		 */
 		public static final int COL_OTHERDATA_CONSTRUCTION = 9;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_CUSTOM_ORDERING = 10;
 
 		public static final class Row
 		{
@@ -22519,6 +22597,12 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_FISHING_HALIBUTSHOAL = 16956;
 			public static final int SKILL_FEATURE_FISHING_BLUEFINSHOAL = 16957;
 			public static final int SKILL_FEATURE_FISHING_MARLINSHOAL = 16958;
+			public static final int SKILL_FEATURE_HITPOINTS_GIANT_KRILL_COOKED = 16973;
+			public static final int SKILL_FEATURE_HITPOINTS_HADDOCK_COOKED = 16974;
+			public static final int SKILL_FEATURE_HITPOINTS_YELLOWFIN_COOKED = 16975;
+			public static final int SKILL_FEATURE_HITPOINTS_HALIBUT_COOKED = 16976;
+			public static final int SKILL_FEATURE_HITPOINTS_BLUEFIN_COOKED = 16977;
+			public static final int SKILL_FEATURE_HITPOINTS_MARLIN_COOKED = 16978;
 		}
 	}
 

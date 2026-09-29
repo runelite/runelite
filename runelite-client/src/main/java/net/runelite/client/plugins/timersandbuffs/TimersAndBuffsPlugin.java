@@ -99,7 +99,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
-	private static final String FROZEN_MESSAGE = "@mes_hl_red@You have been frozen!</col>";
+	private static final String FROZEN_MESSAGE = "You have been frozen!</col>";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
@@ -1010,7 +1010,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (message.equals(FROZEN_MESSAGE) && config.showFreezes())
+		if (message.endsWith(FROZEN_MESSAGE) && config.showFreezes())
 		{
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
