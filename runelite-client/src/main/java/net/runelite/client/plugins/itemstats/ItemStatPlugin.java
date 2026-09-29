@@ -99,7 +99,7 @@ public class ItemStatPlugin extends Plugin
 
 	@Inject
 	private KeyManager keyManager;
-	
+
 	@Inject
 	private ItemStatChangesServiceImpl itemStatChangesService;
 
