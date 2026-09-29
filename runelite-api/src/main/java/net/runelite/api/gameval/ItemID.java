@@ -90623,6 +90623,13 @@ public final class ItemID
 	 */
 	public static final int DOGQ_STUFFED_DOG = 34602;
 
+	/**
+	 * Coins and platinum
+	 */
+	public static final int COINS_AND_PLATINUM = 34604;
+	public static final int COINS_AND_PLATINUM_MID = 34605;
+	public static final int COINS_AND_PLATINUM_HIGH = 34606;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;

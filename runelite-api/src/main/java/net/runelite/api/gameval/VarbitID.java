@@ -3206,7 +3206,6 @@ public final class VarbitID
 	public static final int CHAT_STFU = 4394;
 	public static final int GE_NEWOFFER_QUANTITY = 4396;
 	public static final int GE_NEWOFFER_TYPE = 4397;
-	public static final int GE_NEWOFFER_PRICE = 4398;
 	public static final int PET_INSURANCE_VENENATISPET = 4429;
 	public static final int DEPOSITBOX_MODE = 4430;
 	public static final int GE_SELECTEDSLOT = 4439;
