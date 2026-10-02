@@ -106,6 +106,7 @@ public class HiscorePlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("hiscore")
 			.tooltip("Hiscore")
 			.icon(icon)
 			.priority(5)

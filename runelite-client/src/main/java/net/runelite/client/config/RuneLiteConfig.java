@@ -37,6 +37,7 @@ import net.runelite.client.util.OSType;
 public interface RuneLiteConfig extends Config
 {
 	String GROUP_NAME = "runelite";
+	String SIDEBAR_FOLDERS_ENABLED = "sidebarFoldersEnabled";
 
 	@ConfigSection(
 		name = "Window settings",
@@ -445,6 +446,18 @@ public interface RuneLiteConfig extends Config
 	default Keybind panelToggleKey()
 	{
 		return new Keybind(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		keyName = SIDEBAR_FOLDERS_ENABLED,
+		name = "Sidebar folders",
+		description = "Group sidebar plugin icons into folders. Right-click a plugin icon to create a folder. Has no effect in safe mode.",
+		position = 47,
+		section = windowSettings
+	)
+	default boolean sidebarFoldersEnabled()
+	{
+		return false;
 	}
 
 	@ConfigItem(

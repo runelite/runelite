@@ -620,6 +620,7 @@ public class LootTrackerPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("loot-tracker")
 			.tooltip("Loot Tracker")
 			.icon(icon)
 			.priority(5)

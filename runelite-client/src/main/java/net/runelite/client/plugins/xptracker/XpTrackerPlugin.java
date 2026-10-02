@@ -148,6 +148,7 @@ public class XpTrackerPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/skill_icons/overall.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("xp-tracker")
 			.tooltip("XP Tracker")
 			.icon(icon)
 			.priority(2)

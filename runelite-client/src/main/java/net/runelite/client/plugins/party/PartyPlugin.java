@@ -199,6 +199,7 @@ public class PartyPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(PartyPlugin.class, "panel_icon.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("party")
 			.tooltip("Party")
 			.icon(icon)
 			.priority(9)
