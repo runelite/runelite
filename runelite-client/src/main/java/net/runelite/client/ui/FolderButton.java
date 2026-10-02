@@ -84,7 +84,7 @@ final class FolderButton extends JPanel
 	}
 
 
-	 // Grey border for plugin icon as folder
+	// Grey border for plugin icon as folder
 
 	static BufferedImage pluginIcon(BufferedImage icon, boolean expanded)
 	{

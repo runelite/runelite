@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
 
 
- // Loads and saves sidebar folders under {@code runelite.sidebarFolders}.
+// Loads and saves sidebar folders under {@code runelite.sidebarFolders}.
 
 @Slf4j
 @Singleton
@@ -58,7 +58,7 @@ class SidebarFolderManager
 		this.gson = gson;
 	}
 
-	 // Config is not available while this manager is constructed. Call this after {@code ConfigManager.load()}.
+	// Config is not available while this manager is constructed. Call this after {@code ConfigManager.load()}.
 
 	void load()
 	{
