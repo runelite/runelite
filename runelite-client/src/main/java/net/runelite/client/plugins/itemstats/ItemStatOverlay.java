@@ -253,21 +253,21 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	}
 
 	private String buildStatRow(
-		final String label, 
-		final double value, 
-		final double diffValue, 
-		final boolean inverse, 
+		final String label,
+		final double value,
+		final double diffValue,
+		final boolean inverse,
 		final boolean showPercent)
 	{
 		return buildStatRow(label, value, diffValue, inverse, showPercent, true);
 	}
 
 	private String buildStatRow(
-		final String label, 
-		final double value, 
-		final double diffValue, 
-		final boolean inverse, 
-		final boolean showPercent, 
+		final String label,
+		final double value,
+		final double diffValue,
+		final boolean inverse,
+		final boolean showPercent,
 		final boolean showBase)
 	{
 		final StringBuilder b = new StringBuilder();
