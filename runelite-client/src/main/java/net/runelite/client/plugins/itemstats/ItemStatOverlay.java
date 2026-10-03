@@ -222,7 +222,10 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 		return null;
 	}
 
-	private String getChangeString(final double value, final boolean inverse, final boolean showPercent)
+	private String getChangeString(
+		final double value, 
+		final boolean inverse, 
+		final boolean showPercent)
 	{
 		final Color plus = Positivity.getColor(config, Positivity.BETTER_UNCAPPED);
 		final Color minus = Positivity.getColor(config, Positivity.WORSE);
@@ -249,12 +252,23 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 		return ColorUtil.wrapWithColorTag(prefix + valueString + suffix, color);
 	}
 
-	private String buildStatRow(final String label, final double value, final double diffValue, final boolean inverse, final boolean showPercent)
+	private String buildStatRow(
+		final String label, 
+		final double value, 
+		final double diffValue, 
+		final boolean inverse, 
+		final boolean showPercent)
 	{
 		return buildStatRow(label, value, diffValue, inverse, showPercent, true);
 	}
 
-	private String buildStatRow(final String label, final double value, final double diffValue, final boolean inverse, final boolean showPercent, final boolean showBase)
+	private String buildStatRow(
+		final String label, 
+		final double value, 
+		final double diffValue, 
+		final boolean inverse, 
+		final boolean showPercent, 
+		final boolean showBase)
 	{
 		final StringBuilder b = new StringBuilder();
 
