@@ -223,8 +223,8 @@ public class ItemStatOverlay extends Overlay implements KeyListener
 	}
 
 	private String getChangeString(
-		final double value, 
-		final boolean inverse, 
+		final double value,
+		final boolean inverse,
 		final boolean showPercent)
 	{
 		final Color plus = Positivity.getColor(config, Positivity.BETTER_UNCAPPED);
