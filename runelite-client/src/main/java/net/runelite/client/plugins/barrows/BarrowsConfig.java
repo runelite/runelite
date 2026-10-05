@@ -28,10 +28,35 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("barrows")
 public interface BarrowsConfig extends Config
 {
+	@ConfigSection(
+		name = "Reward Potential",
+		description = "Reward potential display settings.",
+		position = 7
+	)
+	String rewardPotentialSection = "rewardPotential";
+
+	@Range(
+		min = 1,
+		max = 100
+	)
+	@ConfigItem(
+		keyName = "potentialGoal",
+		name = "Potential goal",
+		description = "Sets the reward potential goal. Defaults to 87 for best rune rewards.",
+		position = 1,
+		section = rewardPotentialSection
+	)
+	default int potentialGoal()
+	{
+		return 87;
+	}
+
 	@ConfigItem(
 		keyName = "showBrotherLoc",
 		name = "Show brothers location",
@@ -96,5 +121,81 @@ public interface BarrowsConfig extends Config
 	default boolean showPrayerDrainTimer()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPotentialProgressBar",
+		name = "Show potential as a bar",
+		description = "Displays reward potential as a progress bar up to the potential goal.",
+		position = 2,
+		section = rewardPotentialSection
+	)
+	default boolean showPotentialProgressBar()
+	{
+		return true;
+	}
+
+	@Range(
+		min = -100,
+		max = 100
+	)
+	@ConfigItem(
+		keyName = "enemyPotentialOffset",
+		name = "Enemy potential offset",
+		description = "Adjusts potential text height relative to the center of the enemy model. 0 places it at the center.",
+		position = 3,
+		section = rewardPotentialSection
+	)
+	default int enemyPotentialOffset()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "showBrothersPotential",
+		name = "Show brothers potential",
+		description = "Shows reward potential above the Barrows Brothers.",
+		position = 4,
+		section = rewardPotentialSection
+	)
+	default boolean showBrothersPotential()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showNewPotential",
+		name = "Show new potential",
+		description = "Shows the reward potential you would have after killing the NPC, without showing your current potential.",
+		position = 5,
+		section = rewardPotentialSection
+	)
+	default boolean showNewPotential()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPotentialKillRecommendations",
+		name = "Show potential kills",
+		description = "Shows the closest kill combinations in the Barrows crypts after five brothers have been killed.",
+		position = 6,
+		section = rewardPotentialSection
+	)
+	default boolean showPotentialKillRecommendations()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "preventExceedingGoal",
+		name = "Prevent exceeding goal",
+		description = "Prevents manual attacks on NPCs that would take you over your reward potential goal (except the Barrows Brothers). Does not prevent attacks initiated by Auto Retaliate.",
+		position = 7,
+		section = rewardPotentialSection
+	)
+	default boolean preventExceedingGoal()
+	{
+		return false;
 	}
 }
