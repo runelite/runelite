@@ -16,18 +16,6 @@ If you have any questions, please join our IRC channel on [irc.rizon.net #runeli
 Open the project in your IDE as a Gradle project, and then run the RuneLite class in runelite-client.  
 For more information visit the [RuneLite Wiki](https://github.com/runelite/runelite/wiki).
 
-### Windows audio interfaces
-
-If the game logs a `LineUnavailableException` at sound-engine startup, an audio interface may be rejecting the Java DirectSound backend. A build containing `WindowsWaveOutProvider` supports opt-in WinMM streaming to the Windows default playback device. Add this JVM argument in the RuneLite launcher configuration:
-
-```text
--Djavax.sound.sampled.SourceDataLine=net.runelite.client.audio.WindowsWaveOutProvider
-```
-
-Remove the argument to restore normal Java Sound output. The provider supports signed 16-bit little-endian mono/stereo game audio and does not change the Windows device or driver settings. Notification clips continue to use their existing backend.
-
-Developers can run the optional hardware check with `-Drunelite.audio.testWaveOut=true` when invoking `org.junit.runner.JUnitCore net.runelite.client.audio.WindowsWaveOutIntegrationTest`. Normal automated tests skip hardware playback.
-
 ### License
 
 RuneLite is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.

@@ -31,73 +31,134 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.win32.StdCallLibrary;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Control;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.spi.MixerProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Opt-in WinMM output for endpoints which reject Java Sound's DirectSound buffers. Select with
- * -Djavax.sound.sampled.SourceDataLine=net.runelite.client.audio.WindowsWaveOutProvider The Windows
- * default playback device is used; no system settings are modified.
+ * Windows output fallback for devices which reject Java Sound's DirectSound buffers.
+ * The provider is selected at startup only after the normal game audio line fails to open
+ * and the same stream can be opened through WinMM. The Windows default output is used.
  */
 public final class WindowsWaveOutProvider extends MixerProvider
 {
+	private static final Logger log = LoggerFactory.getLogger(WindowsWaveOutProvider.class);
+	static final String PROPERTY = "javax.sound.sampled.SourceDataLine";
+	private static final AudioFormat GAME_FORMAT = new AudioFormat(22050, 16, 2, true, false);
+	private static final int GAME_BUFFER_SIZE = 8192;
 	private static final Mixer.Info INFO =
-			new Mixer.Info(
-					"Windows WaveOut",
-					"RuneLite",
-					"Windows default playback device through WinMM",
-					"1")
-					{
-					};
+		new Mixer.Info("Windows WaveOut", "RuneLite", "Windows default playback device through WinMM", "1")
+		{
+		};
 	private static final Line.Info LINE = new Line.Info(SourceDataLine.class);
+
+	/** Check before the injected client initializes its game audio. Neither probe starts playback. */
+	public static void initialize()
+	{
+		initialize(Platform.isWindows(),
+			() -> (SourceDataLine) AudioSystem.getLine(
+				new DataLine.Info(SourceDataLine.class, GAME_FORMAT, GAME_BUFFER_SIZE)),
+			OutputLine::new);
+	}
+
+	@FunctionalInterface
+	interface LineFactory
+	{
+		SourceDataLine create() throws LineUnavailableException;
+	}
+
+	static boolean initialize(boolean windows, LineFactory primary, LineFactory fallback)
+	{
+		if (!windows)
+		{
+			return false;
+		}
+		try (SourceDataLine line = primary.create())
+		{
+			line.open();
+			return false;
+		}
+		catch (LineUnavailableException | IllegalArgumentException primaryFailure)
+		{
+			try (SourceDataLine line = fallback.create())
+			{
+				line.open();
+			}
+			catch (LineUnavailableException | RuntimeException | LinkageError fallbackFailure)
+			{
+				fallbackFailure.addSuppressed(primaryFailure);
+				log.warn("Unable to initialize Windows audio fallback", fallbackFailure);
+				return false;
+			}
+			System.setProperty(PROPERTY, WindowsWaveOutProvider.class.getName());
+			log.info("Default game audio line unavailable; using Windows WaveOut", primaryFailure);
+			return true;
+		}
+	}
 
 	@Override
 	public Mixer.Info[] getMixerInfo()
 	{
-		String selected = System.getProperty("javax.sound.sampled.SourceDataLine", "");
-		return Platform.isWindows() && selected.split("#", 2)[0].equals(getClass().getName())
-				? new Mixer.Info[] {INFO}
-				: new Mixer.Info[0];
+		String selected = System.getProperty(PROPERTY, "");
+		if (!Platform.isWindows() || !selected.split("#", 2)[0].equals(getClass().getName()))
+		{
+			return new Mixer.Info[0];
+		}
+		return new Mixer.Info[] {INFO};
 	}
 
 	@Override
 	public Mixer getMixer(Mixer.Info info)
 	{
 		if (getMixerInfo().length == 0 || (info != null && info != INFO))
+		{
 			throw new IllegalArgumentException("Unknown WaveOut mixer: " + info);
+		}
 		return new OutputMixer();
 	}
 
 	static boolean supports(AudioFormat f)
-
 	{
-		return AudioFormat.Encoding.PCM_SIGNED.equals(f.getEncoding())
-				&& !f.isBigEndian()
-				&& f.getSampleSizeInBits() == 16
-				&& (f.getChannels() == 1 || f.getChannels() == 2)
-				&& f.getFrameSize() == f.getChannels() * 2
-				&& f.getSampleRate() > 0
-				&& f.getSampleRate() <= 192000
-				&& f.getSampleRate() == (int) f.getSampleRate()
-				&& f.getFrameRate() == f.getSampleRate();
+		return AudioFormat.Encoding.PCM_SIGNED.equals(f.getEncoding()) && !f.isBigEndian()
+			&& f.getSampleSizeInBits() == 16 && (f.getChannels() == 1 || f.getChannels() == 2)
+			&& f.getFrameSize() == f.getChannels() * 2 && f.getSampleRate() > 0 && f.getSampleRate() <= 192000
+			&& f.getSampleRate() == (int) f.getSampleRate() && f.getFrameRate() == f.getSampleRate();
 	}
 
 	private static boolean supports(Line.Info info)
-
 	{
-		if (info.getLineClass() != SourceDataLine.class) return false;
-		if (!(info instanceof DataLine.Info)) return true;
+		if (info.getLineClass() != SourceDataLine.class)
+		{
+			return false;
+		}
+		if (!(info instanceof DataLine.Info))
+		{
+			return true;
+		}
 		AudioFormat[] formats = ((DataLine.Info) info).getFormats();
-		for (AudioFormat format : formats) if (!supports(format)) return false;
+		for (AudioFormat format : formats)
+		{
+			if (!supports(format))
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 
 	private abstract static class BaseLine implements Line
-
 	{
 		final List<LineListener> listeners = new ArrayList<>();
 		volatile boolean open;
@@ -139,7 +200,6 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		}
 
 		void event(LineEvent.Type type, long frame)
-
 		{
 			LineListener[] copy;
 			synchronized (this)
@@ -147,12 +207,14 @@ public final class WindowsWaveOutProvider extends MixerProvider
 				copy = listeners.toArray(new LineListener[0]);
 			}
 			LineEvent event = new LineEvent(this, type, frame);
-			for (LineListener listener : copy) listener.update(event);
+			for (LineListener listener : copy)
+			{
+				listener.update(event);
+			}
 		}
 	}
 
 	private static final class OutputMixer extends BaseLine implements Mixer
-
 	{
 		@Override
 		public Mixer.Info getMixerInfo()
@@ -200,8 +262,15 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		public Line getLine(Line.Info info)
 		{
 			if (!supports(info))
+			{
 				throw new IllegalArgumentException("Unsupported WaveOut line: " + info);
-			return new OutputLine();
+			}
+			DataLine.Info requested = info instanceof DataLine.Info ? (DataLine.Info) info : null;
+			AudioFormat format =
+				requested != null && requested.getFormats().length > 0 ? requested.getFormats()[0] : GAME_FORMAT;
+			int size =
+				requested != null && requested.getMaxBufferSize() > 0 ? requested.getMaxBufferSize() : GAME_BUFFER_SIZE;
+			return new OutputLine(Native.load("winmm", WinMM.class), format, size);
 		}
 
 		@Override
@@ -254,15 +323,9 @@ public final class WindowsWaveOutProvider extends MixerProvider
 	}
 
 	interface WinMM extends StdCallLibrary
-
 	{
 		int waveOutOpen(
-				PointerByReference handle,
-				int device,
-				WaveFormat format,
-				Pointer callback,
-				Pointer instance,
-				int flags);
+			PointerByReference handle, int device, WaveFormat format, Pointer callback, Pointer instance, int flags);
 
 		int waveOutPrepareHeader(Pointer handle, WaveHeader header, int size);
 
@@ -281,15 +344,7 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		int waveOutGetPosition(Pointer handle, Pointer time, int size);
 	}
 
-	@Structure.FieldOrder({
-		"tag",
-		"channels",
-		"rate",
-		"bytesPerSecond",
-		"blockAlign",
-		"bits",
-		"extra"
-	})
+	@Structure.FieldOrder({"tag", "channels", "rate", "bytesPerSecond", "blockAlign", "bits", "extra"})
 	public static class WaveFormat extends Structure
 	{
 		public short tag = 1, channels;
@@ -297,7 +352,6 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		public short blockAlign, bits = 16, extra;
 
 		WaveFormat(AudioFormat format)
-
 		{
 			super(ALIGN_NONE);
 			channels = (short) format.getChannels();
@@ -307,16 +361,7 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		}
 	}
 
-	@Structure.FieldOrder({
-		"data",
-		"length",
-		"recorded",
-		"user",
-		"flags",
-		"loops",
-		"next",
-		"reserved"
-	})
+	@Structure.FieldOrder({"data", "length", "recorded", "user", "flags", "loops", "next", "reserved"})
 	public static class WaveHeader extends Structure
 	{
 		public Pointer data;
@@ -327,7 +372,6 @@ public final class WindowsWaveOutProvider extends MixerProvider
 	}
 
 	private static final class OwnedMemory extends Memory implements AutoCloseable
-
 	{
 		OwnedMemory(long size)
 		{
@@ -342,9 +386,10 @@ public final class WindowsWaveOutProvider extends MixerProvider
 	}
 
 	static final class OutputLine extends BaseLine implements SourceDataLine
-
 	{
 		private final WinMM api;
+		private final AudioFormat defaultFormat;
+		private final int defaultBufferSize;
 		private Pointer handle;
 		private AudioFormat format;
 		private final WaveHeader[] headers = new WaveHeader[8];
@@ -357,27 +402,32 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		private long generation;
 
 		OutputLine()
-
 		{
 			this(Native.load("winmm", WinMM.class));
 		}
 
 		OutputLine(WinMM api)
+		{
+			this(api, GAME_FORMAT, GAME_BUFFER_SIZE);
+		}
 
+		OutputLine(WinMM api, AudioFormat defaultFormat, int defaultBufferSize)
 		{
 			this.api = api;
+			this.defaultFormat = defaultFormat;
+			this.defaultBufferSize = defaultBufferSize;
 		}
 
 		@Override
 		public Line.Info getLineInfo()
 		{
-			return format == null ? LINE : new DataLine.Info(SourceDataLine.class, format);
+			return new DataLine.Info(SourceDataLine.class, format == null ? defaultFormat : format);
 		}
 
 		@Override
 		public void open() throws LineUnavailableException
 		{
-			open(new AudioFormat(22050, 16, 2, true, false));
+			open(defaultFormat, defaultBufferSize);
 		}
 
 		@Override
@@ -389,9 +439,14 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		@Override
 		public synchronized void open(AudioFormat f, int size) throws LineUnavailableException
 		{
-			if (open) throw new IllegalStateException("Line already open");
+			if (open)
+			{
+				throw new IllegalStateException("Line already open");
+			}
 			if (!supports(f) || size <= 0)
+			{
 				throw new IllegalArgumentException("Unsupported WaveOut format or buffer size");
+			}
 			PointerByReference ref = new PointerByReference();
 			checkOpen(api.waveOutOpen(ref, -1, new WaveFormat(f), null, null, 0), "waveOutOpen");
 			handle = ref.getValue();
@@ -399,10 +454,7 @@ public final class WindowsWaveOutProvider extends MixerProvider
 			completedBytes = 0;
 			previousPosition = 0;
 			generation++;
-			blockSize =
-					Math.max(
-							f.getFrameSize(),
-							size / headers.length / f.getFrameSize() * f.getFrameSize());
+			blockSize = Math.max(f.getFrameSize(), size / headers.length / f.getFrameSize() * f.getFrameSize());
 			int prepared = 0;
 			try
 			{
@@ -414,18 +466,18 @@ public final class WindowsWaveOutProvider extends MixerProvider
 					header.data = buffers[i];
 					header.length = blockSize;
 					headers[i] = header;
-					checkOpen(
-							api.waveOutPrepareHeader(handle, header, header.size()),
-							"waveOutPrepareHeader");
+					checkOpen(api.waveOutPrepareHeader(handle, header, header.size()), "waveOutPrepareHeader");
 					prepared++;
 					queued[i] = false;
 				}
 			}
-				catch (LineUnavailableException | RuntimeException e)
-				{
+			catch (LineUnavailableException | RuntimeException e)
+			{
 				api.waveOutReset(handle);
 				for (int i = 0; i < prepared; i++)
+				{
 					api.waveOutUnprepareHeader(handle, headers[i], headers[i].size());
+				}
 				api.waveOutClose(handle);
 				handle = null;
 				releaseBuffers();
@@ -435,40 +487,48 @@ public final class WindowsWaveOutProvider extends MixerProvider
 			event(LineEvent.Type.OPEN, 0);
 		}
 
-		private static void checkOpen(int result, String operation)
-				throws LineUnavailableException
-				{
+		private static void checkOpen(int result, String operation) throws LineUnavailableException
+		{
 			if (result != 0)
+			{
 				throw new LineUnavailableException(operation + " failed with MMRESULT " + result);
+			}
 		}
 
 		private static void check(int result, String operation)
-
 		{
 			if (result != 0)
+			{
 				throw new IllegalStateException(operation + " failed with MMRESULT " + result);
+			}
 		}
 
 		private void requireOpen()
-
 		{
-			if (!open) throw new IllegalStateException("Line is closed");
+			if (!open)
+			{
+				throw new IllegalStateException("Line is closed");
+			}
 		}
 
 		private boolean free(int i)
-
 		{
-			if (!queued[i]) return true;
+			if (!queued[i])
+			{
+				return true;
+			}
 			headers[i].read();
 			return (headers[i].flags & 1) != 0; // WHDR_DONE, set by WinMM after playback.
 		}
 
 		private boolean waitForPlayback()
-
 		{
 			synchronized (this)
 			{
-				if (!open) return false;
+				if (!open)
+				{
+					return false;
+				}
 				try
 				{
 					wait(2);
@@ -486,13 +546,17 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		public int write(byte[] data, int offset, int length)
 		{
 			if (offset < 0 || length < 0 || offset > data.length - length)
+			{
 				throw new IndexOutOfBoundsException();
+			}
 			long writeGeneration;
 			synchronized (this)
 			{
 				requireOpen();
 				if (length % format.getFrameSize() != 0)
+				{
 					throw new IllegalArgumentException("Incomplete PCM frame");
+				}
 				writeGeneration = generation;
 			}
 			int written = 0;
@@ -500,21 +564,28 @@ public final class WindowsWaveOutProvider extends MixerProvider
 			{
 				synchronized (this)
 				{
-					if (!open || writeGeneration != generation) return written;
+					if (!open || writeGeneration != generation)
+					{
+						return written;
+					}
 					for (int i = 0; i < headers.length && written < length; i++)
 					{
-						if (!free(i)) continue;
+						if (!free(i))
+						{
+							continue;
+						}
 						int count = Math.min(blockSize, length - written);
 						buffers[i].write(0, data, offset + written, count);
 						headers[i].length = count;
-						check(
-								api.waveOutWrite(handle, headers[i], headers[i].size()),
-								"waveOutWrite");
+						check(api.waveOutWrite(handle, headers[i], headers[i].size()), "waveOutWrite");
 						queued[i] = true;
 						written += count;
 					}
 				}
-				if (written < length && !waitForPlayback()) break;
+				if (written < length && !waitForPlayback())
+				{
+					break;
+				}
 			}
 			return written;
 		}
@@ -523,7 +594,10 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		public synchronized void start()
 		{
 			requireOpen();
-			if (running) return;
+			if (running)
+			{
+				return;
+			}
 			check(api.waveOutRestart(handle), "waveOutRestart");
 			running = true;
 			notifyAll();
@@ -533,7 +607,10 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		@Override
 		public synchronized void stop()
 		{
-			if (!open || !running) return;
+			if (!open || !running)
+			{
+				return;
+			}
 			check(api.waveOutPause(handle), "waveOutPause");
 			running = false;
 			generation++;
@@ -553,40 +630,64 @@ public final class WindowsWaveOutProvider extends MixerProvider
 			{
 				synchronized (this)
 				{
-					if (!open || drainGeneration != generation) return;
+					if (!open || drainGeneration != generation)
+					{
+						return;
+					}
 					boolean pending = false;
-					for (int i = 0; i < headers.length; i++) pending |= !free(i);
-					if (!pending) return;
+					for (int i = 0; i < headers.length; i++)
+					{
+						pending |= !free(i);
+					}
+					if (!pending)
+					{
+						return;
+					}
 				}
-				if (!waitForPlayback()) return;
+				if (!waitForPlayback())
+				{
+					return;
+				}
 			}
 		}
 
 		@Override
 		public synchronized void flush()
 		{
-			if (!open) return;
+			if (!open)
+			{
+				return;
+			}
 			long position = positionBytes();
 			check(api.waveOutReset(handle), "waveOutReset");
 			completedBytes = position;
 			previousPosition = 0;
 			generation++;
-			for (int i = 0; i < queued.length; i++) queued[i] = false;
-			if (!running) check(api.waveOutPause(handle), "waveOutPause");
+			for (int i = 0; i < queued.length; i++)
+			{
+				queued[i] = false;
+			}
+			if (!running)
+			{
+				check(api.waveOutPause(handle), "waveOutPause");
+			}
 			notifyAll();
 		}
 
 		@Override
 		public synchronized void close()
 		{
-			if (!open) return;
+			if (!open)
+			{
+				return;
+			}
 			long frame = getLongFramePosition();
 			// Reset returns queued buffers before releasing their native storage.
 			check(api.waveOutReset(handle), "waveOutReset");
 			for (WaveHeader header : headers)
-				check(
-						api.waveOutUnprepareHeader(handle, header, header.size()),
-						"waveOutUnprepareHeader");
+			{
+				check(api.waveOutUnprepareHeader(handle, header, header.size()), "waveOutUnprepareHeader");
+			}
 			check(api.waveOutClose(handle), "waveOutClose");
 			completedBytes = frame * format.getFrameSize();
 			previousPosition = 0;
@@ -600,11 +701,13 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		}
 
 		private void releaseBuffers()
-
 		{
 			for (int i = 0; i < buffers.length; i++)
 			{
-				if (buffers[i] != null) buffers[i].close();
+				if (buffers[i] != null)
+				{
+					buffers[i].close();
+				}
 				buffers[i] = null;
 				headers[i] = null;
 				queued[i] = false;
@@ -614,9 +717,18 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		@Override
 		public synchronized int available()
 		{
-			if (!open) return 0;
+			if (!open)
+			{
+				return 0;
+			}
 			int bytes = 0;
-			for (int i = 0; i < headers.length; i++) if (free(i)) bytes += blockSize;
+			for (int i = 0; i < headers.length; i++)
+			{
+				if (free(i))
+				{
+					bytes += blockSize;
+				}
+			}
 			return bytes;
 		}
 
@@ -645,16 +757,20 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		}
 
 		private long positionBytes()
-
 		{
-			if (!open) return completedBytes;
+			if (!open)
+			{
+				return completedBytes;
+			}
 			try (OwnedMemory time = new OwnedMemory(12))
 			{
 				time.clear();
 				time.setInt(0, 4); // TIME_BYTES
 				check(api.waveOutGetPosition(handle, time, 12), "waveOutGetPosition");
 				if (time.getInt(0) != 4)
+				{
 					throw new IllegalStateException("WinMM did not return a byte position");
+				}
 				long current = Integer.toUnsignedLong(time.getInt(4));
 				completedBytes += (current - previousPosition) & 0xffffffffL;
 				previousPosition = current;
@@ -677,9 +793,7 @@ public final class WindowsWaveOutProvider extends MixerProvider
 		@Override
 		public long getMicrosecondPosition()
 		{
-			return format == null
-					? 0
-					: (long) (getLongFramePosition() * 1000000.0 / format.getSampleRate());
+			return format == null ? 0 : (long) (getLongFramePosition() * 1000000.0 / format.getSampleRate());
 		}
 
 		@Override

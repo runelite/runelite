@@ -24,27 +24,150 @@
  */
 package net.runelite.client.audio;
 
-import static org.junit.Assert.*;
-
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
-
-import org.junit.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
-
-import javax.sound.sampled.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import org.junit.After;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 public class WindowsWaveOutProviderTest
-
 {
 	private static final AudioFormat FORMAT = new AudioFormat(22050, 16, 2, true, false);
 
+	private String previousSelection;
+
+	@Before
+	public void saveAudioSelection()
+	{
+		previousSelection = System.getProperty(WindowsWaveOutProvider.PROPERTY);
+		System.setProperty(WindowsWaveOutProvider.PROPERTY, "#Configured output");
+	}
+
+	@After
+	public void restoreAudioSelection()
+	{
+		if (previousSelection == null)
+		{
+			System.clearProperty(WindowsWaveOutProvider.PROPERTY);
+		}
+		else
+		{
+			System.setProperty(WindowsWaveOutProvider.PROPERTY, previousSelection);
+		}
+	}
+
 	@Test
-	public void staysDisabledUnlessExplicitlySelected()
+	public void successfulDefaultDoesNotCreateFallback()
+	{
+		FakeWinMM primary = new FakeWinMM();
+		assertFalse(
+			WindowsWaveOutProvider.initialize(true, () -> new WindowsWaveOutProvider.OutputLine(primary), () ->
+			{
+				throw new AssertionError("Fallback must stay unloaded");
+			}));
+		assertEquals(1, primary.openAttempts);
+		assertEquals(0, primary.handles);
+		assertEquals("#Configured output", System.getProperty(WindowsWaveOutProvider.PROPERTY));
+	}
+
+	@Test
+	public void failedDefaultAutomaticallySelectsVerifiedFallback()
+	{
+		FakeWinMM primary = new FakeWinMM();
+		primary.openError = 32;
+		FakeWinMM fallback = new FakeWinMM();
+		assertTrue(WindowsWaveOutProvider.initialize(true,
+			()
+				-> new WindowsWaveOutProvider.OutputLine(primary),
+			() -> new WindowsWaveOutProvider.OutputLine(fallback)));
+		assertEquals(1, primary.openAttempts);
+		assertEquals(1, fallback.openAttempts);
+		assertEquals(0, fallback.handles);
+		assertEquals(0, fallback.prepared);
+		assertEquals(WindowsWaveOutProvider.class.getName(), System.getProperty(WindowsWaveOutProvider.PROPERTY));
+	}
+
+	@Test
+	public void failedFallbackLeavesDefaultSelectionIntact()
+	{
+		FakeWinMM primary = new FakeWinMM();
+		primary.openError = 32;
+		FakeWinMM fallback = new FakeWinMM();
+		fallback.failPreparation = 3;
+		assertFalse(WindowsWaveOutProvider.initialize(true,
+			()
+				-> new WindowsWaveOutProvider.OutputLine(primary),
+			() -> new WindowsWaveOutProvider.OutputLine(fallback)));
+		assertEquals(0, fallback.handles);
+		assertEquals(0, fallback.prepared);
+		assertEquals("#Configured output", System.getProperty(WindowsWaveOutProvider.PROPERTY));
+	}
+
+	@Test
+	public void missingNativeLibraryDoesNotBreakStartup()
+	{
+		assertFalse(WindowsWaveOutProvider.initialize(true,
+			()
+				->
+				{ throw new LineUnavailableException("Unavailable default"); },
+			() ->
+			{ throw new UnsatisfiedLinkError("Unavailable native library"); }));
+		assertEquals("#Configured output", System.getProperty(WindowsWaveOutProvider.PROPERTY));
+	}
+
+	@Test
+	public void missingDefaultLineDoesNotBreakStartup()
+	{
+		assertFalse(WindowsWaveOutProvider.initialize(true,
+			()
+				->
+				{ throw new IllegalArgumentException("No supported output"); },
+			() ->
+			{ throw new LineUnavailableException("No native output"); }));
+		assertEquals("#Configured output", System.getProperty(WindowsWaveOutProvider.PROPERTY));
+	}
+
+	@Test
+	public void otherPlatformsDoNotProbeOrLoadNativeAudio()
+	{
+		WindowsWaveOutProvider.LineFactory unexpected = () ->
+		{
+			throw new AssertionError("Windows-only probe");
+		};
+		assertFalse(WindowsWaveOutProvider.initialize(false, unexpected, unexpected));
+		assertEquals("#Configured output", System.getProperty(WindowsWaveOutProvider.PROPERTY));
+	}
+
+	@Test
+	public void noArgumentOpenHonorsRequestedFormatAndBuffer() throws Exception
+	{
+		FakeWinMM nativeAudio = new FakeWinMM();
+		AudioFormat mono = new AudioFormat(44100, 16, 1, true, false);
+		try (WindowsWaveOutProvider.OutputLine line = new WindowsWaveOutProvider.OutputLine(nativeAudio, mono, 2048))
+		{
+			assertEquals(mono, ((DataLine.Info) line.getLineInfo()).getFormats()[0]);
+			line.open();
+			assertEquals(mono, line.getFormat());
+			assertEquals(2048, line.getBufferSize());
+			assertEquals(44100, nativeAudio.openedRate);
+			assertEquals(1, nativeAudio.openedChannels);
+		}
+	}
+
+	@Test
+	public void doesNotAdvertiseMixerBeforeRecovery()
 	{
 		String key = "javax.sound.sampled.SourceDataLine";
 		String previous = System.getProperty(key);
@@ -52,13 +175,19 @@ public class WindowsWaveOutProviderTest
 		{
 			System.clearProperty(key);
 			assertEquals(0, new WindowsWaveOutProvider().getMixerInfo().length);
-			System.setProperty(key, "#Speakers (Komplete Audio 6)");
+			System.setProperty(key, "#Configured output");
 			assertEquals(0, new WindowsWaveOutProvider().getMixerInfo().length);
 		}
-			finally
+		finally
+		{
+			if (previous == null)
 			{
-			if (previous == null) System.clearProperty(key);
-			else System.setProperty(key, previous);
+				System.clearProperty(key);
+			}
+			else
+			{
+				System.setProperty(key, previous);
+			}
 		}
 	}
 
@@ -69,19 +198,12 @@ public class WindowsWaveOutProviderTest
 		WindowsWaveOutProvider.OutputLine line = new WindowsWaveOutProvider.OutputLine(nativeAudio);
 		line.open(FORMAT, 32);
 		line.start();
-		byte[] pcm =
-		{
-			1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
-			25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40
-		};
+		byte[] pcm = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+			28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40};
 		assertEquals(32, line.write(pcm, 4, 32));
-		assertArrayEquals(
-				new byte[]
-				{
-					5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-					26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36
-				},
-				nativeAudio.pcm.toByteArray());
+		assertArrayEquals(new byte[] {5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+								27, 28, 29, 30, 31, 32, 33, 34, 35, 36},
+			nativeAudio.pcm.toByteArray());
 		line.drain();
 		assertEquals(8, line.getLongFramePosition());
 		assertEquals(32, line.available());
@@ -112,16 +234,16 @@ public class WindowsWaveOutProviderTest
 				write.get(50, TimeUnit.MILLISECONDS);
 				fail("Full line must apply backpressure");
 			}
-				catch (TimeoutException expected)
-				{
+			catch (TimeoutException expected)
+			{
 			}
 			line.close();
 			assertEquals(Integer.valueOf(0), write.get(1, TimeUnit.SECONDS));
 			assertEquals(0, nativeAudio.prepared);
 			assertEquals(0, nativeAudio.handles);
 		}
-			finally
-			{
+		finally
+		{
 			line.close();
 			worker.shutdownNow();
 		}
@@ -163,8 +285,8 @@ public class WindowsWaveOutProviderTest
 			line.open(FORMAT, 32);
 			fail("Preparation failure must propagate");
 		}
-			catch (LineUnavailableException expected)
-			{
+		catch (LineUnavailableException expected)
+		{
 			assertTrue(expected.getMessage().contains("MMRESULT 7"));
 		}
 		assertFalse(line.isOpen());
@@ -186,8 +308,8 @@ public class WindowsWaveOutProviderTest
 			line.write(new byte[3], 0, 3);
 			fail("Partial stereo frame accepted");
 		}
-			catch (IllegalArgumentException expected)
-			{
+		catch (IllegalArgumentException expected)
+		{
 		}
 		assertEquals(0, nativeAudio.pcm.size());
 		line.close();
@@ -211,53 +333,52 @@ public class WindowsWaveOutProviderTest
 	{
 		FakeWinMM nativeAudio = new FakeWinMM();
 		WindowsWaveOutProvider.OutputLine line = new WindowsWaveOutProvider.OutputLine(nativeAudio);
-		for (AudioFormat format :
-				new AudioFormat[]
-				{
-					new AudioFormat(22050, 24, 2, true, false),
-					new AudioFormat(22050, 16, 2, true, true),
-					new AudioFormat(22050, 16, 6, true, false)
-				})
-				{
+		for (AudioFormat format : new AudioFormat[] {new AudioFormat(22050, 24, 2, true, false),
+					new AudioFormat(22050, 16, 2, true, true), new AudioFormat(22050, 16, 6, true, false)})
+		{
 			try
 			{
 				line.open(format, 32);
 				fail("Unsupported PCM accepted");
 			}
-				catch (IllegalArgumentException expected)
-				{
+			catch (IllegalArgumentException expected)
+			{
 			}
 		}
 		assertEquals(0, nativeAudio.handles);
 	}
 
 	private static final class FakeWinMM implements WindowsWaveOutProvider.WinMM
-
 	{
 		final ByteArrayOutputStream pcm = new ByteArrayOutputStream();
 		final List<WindowsWaveOutProvider.WaveHeader> headers = new ArrayList<>();
 		boolean completeImmediately = true;
 		int handles, prepared, failPreparation = -1;
+		int openAttempts, openError, openedRate, openedChannels;
 		long position;
 
-		public int waveOutOpen(
-				PointerByReference out,
-				int device,
-				WindowsWaveOutProvider.WaveFormat format,
-				Pointer callback,
-				Pointer instance,
-				int flags)
-				{
+		public int waveOutOpen(PointerByReference out, int device, WindowsWaveOutProvider.WaveFormat format,
+			Pointer callback, Pointer instance, int flags)
+		{
+			openAttempts++;
+			if (openError != 0)
+			{
+				return openError;
+			}
+			openedRate = format.rate;
+			openedChannels = format.channels;
 			handles++;
 			position = 0;
 			out.setValue(new Pointer(1));
 			return 0;
 		}
 
-		public int waveOutPrepareHeader(
-				Pointer handle, WindowsWaveOutProvider.WaveHeader header, int size)
-				{
-			if (prepared == failPreparation) return 7;
+		public int waveOutPrepareHeader(Pointer handle, WindowsWaveOutProvider.WaveHeader header, int size)
+		{
+			if (prepared == failPreparation)
+			{
+				return 7;
+			}
 			prepared++;
 			headers.add(header);
 			header.flags = 2;
@@ -265,38 +386,36 @@ public class WindowsWaveOutProviderTest
 			return 0;
 		}
 
-		public int waveOutUnprepareHeader(
-				Pointer handle, WindowsWaveOutProvider.WaveHeader header, int size)
-				{
+		public int waveOutUnprepareHeader(Pointer handle, WindowsWaveOutProvider.WaveHeader header, int size)
+		{
 			prepared--;
 			return 0;
 		}
 
-		public int waveOutWrite(
-				Pointer handle, WindowsWaveOutProvider.WaveHeader header, int size)
-				{
+		public int waveOutWrite(Pointer handle, WindowsWaveOutProvider.WaveHeader header, int size)
+		{
 			byte[] data = header.data.getByteArray(0, header.length);
 			pcm.write(data, 0, data.length);
 			header.flags = completeImmediately ? 3 : 2;
 			header.write();
-			if (completeImmediately) position += header.length;
+			if (completeImmediately)
+			{
+				position += header.length;
+			}
 			return 0;
 		}
 
 		public int waveOutPause(Pointer handle)
-
 		{
 			return 0;
 		}
 
 		public int waveOutRestart(Pointer handle)
-
 		{
 			return 0;
 		}
 
 		public int waveOutReset(Pointer handle)
-
 		{
 			position = 0;
 			for (WindowsWaveOutProvider.WaveHeader header : headers)
@@ -308,7 +427,6 @@ public class WindowsWaveOutProviderTest
 		}
 
 		public int waveOutClose(Pointer handle)
-
 		{
 			handles--;
 			headers.clear();
@@ -316,7 +434,6 @@ public class WindowsWaveOutProviderTest
 		}
 
 		public int waveOutGetPosition(Pointer handle, Pointer time, int size)
-
 		{
 			time.setInt(4, (int) position);
 			return 0;

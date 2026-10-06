@@ -24,16 +24,15 @@
  */
 package net.runelite.client.audio;
 
-import static org.junit.Assert.*;
-
 import com.sun.jna.Platform;
-
-import org.junit.Assume;
-import org.junit.Test;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import static org.junit.Assert.*;
+import org.junit.Assume;
+import org.junit.Test;
 
 /** Run explicitly with -Drunelite.audio.testWaveOut=true on a Windows playback device. */
 public class WindowsWaveOutIntegrationTest
@@ -44,14 +43,17 @@ public class WindowsWaveOutIntegrationTest
 		Assume.assumeTrue(Platform.isWindows() && Boolean.getBoolean("runelite.audio.testWaveOut"));
 		String key = "javax.sound.sampled.SourceDataLine";
 		String previous = System.getProperty(key);
-		System.setProperty(key, WindowsWaveOutProvider.class.getName());
+		assertTrue(WindowsWaveOutProvider.initialize(true, () ->
+		{
+			throw new LineUnavailableException("Default backend failed");
+		}, () -> new WindowsWaveOutProvider.OutputLine()));
 		AudioFormat format = new AudioFormat(22050, 16, 2, true, false);
 		SourceDataLine line = null;
 		try
 		{
-			line = AudioSystem.getSourceDataLine(format);
+			line = (SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, format, 4096));
 			assertTrue(line instanceof WindowsWaveOutProvider.OutputLine);
-			line.open(format, 4096);
+			line.open();
 			line.start();
 			byte[] silence = new byte[88200];
 			assertEquals(88200, line.write(silence, 0, silence.length));
@@ -65,14 +67,102 @@ public class WindowsWaveOutIntegrationTest
 			line.drain();
 			assertEquals(23074, line.getLongFramePosition());
 			line.close();
-			line.open(format, 4096);
+			line.open();
 			line.close();
 		}
-			finally
+		finally
+		{
+			if (line != null)
 			{
-			if (line != null) line.close();
-			if (previous == null) System.clearProperty(key);
-			else System.setProperty(key, previous);
+				line.close();
+			}
+			if (previous == null)
+			{
+				System.clearProperty(key);
+			}
+			else
+			{
+				System.setProperty(key, previous);
+			}
+		}
+	}
+	@Test(timeout = 10000)
+	public void gameCallPatternHonorsMonoFormatAndBuffer() throws Exception
+	{
+		Assume.assumeTrue(Platform.isWindows() && Boolean.getBoolean("runelite.audio.testWaveOut"));
+		String previous = System.getProperty(WindowsWaveOutProvider.PROPERTY);
+		try
+		{
+			assertTrue(WindowsWaveOutProvider.initialize(true, () ->
+			{
+				throw new LineUnavailableException("Default backend failed");
+			}, () -> new WindowsWaveOutProvider.OutputLine()));
+			AudioFormat mono = new AudioFormat(44100, 16, 1, true, false);
+			try (SourceDataLine line =
+						(SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, mono, 2048)))
+			{
+				line.open();
+				assertTrue(line.getFormat().matches(mono));
+				assertEquals(2048, line.getBufferSize());
+				line.start();
+				assertEquals(22050, line.write(new byte[22050], 0, 22050));
+				line.drain();
+				assertEquals(11025, line.getLongFramePosition());
+			}
+		}
+		finally
+		{
+			restoreSelection(previous);
+		}
+	}
+
+	@Test(timeout = 10000)
+	public void recoversWhenActualDefaultCannotOpenGameLine() throws Exception
+	{
+		Assume.assumeTrue(Platform.isWindows() && Boolean.getBoolean("runelite.audio.testWaveOut"));
+		String previous = System.getProperty(WindowsWaveOutProvider.PROPERTY);
+		AudioFormat format = new AudioFormat(22050, 16, 2, true, false);
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, format, 8192);
+		boolean unavailable = false;
+		try (SourceDataLine primary = (SourceDataLine) AudioSystem.getLine(info))
+		{
+			primary.open();
+		}
+		catch (LineUnavailableException | IllegalArgumentException expected)
+		{
+			unavailable = true;
+		}
+		Assume.assumeTrue("The default backend works on this device", unavailable);
+		try
+		{
+			WindowsWaveOutProvider.initialize();
+			assertEquals(WindowsWaveOutProvider.class.getName(), System.getProperty(WindowsWaveOutProvider.PROPERTY));
+			try (SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info))
+			{
+				assertTrue(line instanceof WindowsWaveOutProvider.OutputLine);
+				line.open();
+				assertEquals(8192, line.getBufferSize());
+				line.start();
+				assertEquals(8192, line.write(new byte[8192], 0, 8192));
+				line.drain();
+				assertEquals(2048, line.getLongFramePosition());
+			}
+		}
+		finally
+		{
+			restoreSelection(previous);
+		}
+	}
+
+	private static void restoreSelection(String previous)
+	{
+		if (previous == null)
+		{
+			System.clearProperty(WindowsWaveOutProvider.PROPERTY);
+		}
+		else
+		{
+			System.setProperty(WindowsWaveOutProvider.PROPERTY, previous);
 		}
 	}
 }
