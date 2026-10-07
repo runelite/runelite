@@ -62,22 +62,15 @@ class BoostsOverlay extends OverlayPanel
 			return null;
 		}
 
-		int nextChange = plugin.getChangeDownTicks();
-		if (nextChange != -1)
+		for (BoostTimer boostTimer : BoostTimer.values())
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Next + restore in")
-				.right(String.valueOf(plugin.getChangeTime(nextChange)))
-				.build());
-		}
-
-		nextChange = plugin.getChangeUpTicks();
-		if (nextChange != -1)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Next - restore in")
-				.right(String.valueOf(plugin.getChangeTime(nextChange)))
-				.build());
+			if (plugin.getTicksRemaining(boostTimer) != -1)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(boostTimer.overlayText)
+					.right(String.valueOf(plugin.getChangeTime(plugin.getTicksRemaining(boostTimer))))
+					.build());
+			}
 		}
 
 		for (Skill skill : boostedSkills)
