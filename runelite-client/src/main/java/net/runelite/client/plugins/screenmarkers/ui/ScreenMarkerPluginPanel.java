@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -201,5 +202,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			plugin.setMouseListenerEnabled(true);
 			plugin.setCreatingScreenMarker(true);
 		}
+
+		scrollRectToVisible(new Rectangle(getX(), getHeight(), getWidth(), getHeight()));
 	}
 }
