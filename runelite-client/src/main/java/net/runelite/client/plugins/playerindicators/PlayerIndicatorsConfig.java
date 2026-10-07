@@ -230,6 +230,17 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 11,
+		keyName = "tileBorderWidth",
+		name = "Tile border width",
+		description = "Width of tile border surrounding players, if drawPlayerTiles is checked"
+	)
+	default double tileBorderWidth()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		position = 12,
 		keyName = "playerNamePosition",
 		name = "Name position",
 		description = "Configures the position of drawn player names, or if they should be disabled."
@@ -240,7 +251,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn."
@@ -251,7 +262,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 14,
 		keyName = "colorPlayerMenu",
 		name = "Colorize player menu",
 		description = "Color right-click menu for players."
@@ -262,7 +273,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 15,
 		keyName = "clanMenuIcons",
 		name = "Show friends chat ranks",
 		description = "Add friends chat rank to right-click menu and next to player names."
@@ -273,7 +284,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 16,
 		keyName = "clanchatMenuIcons",
 		name = "Show clan chat ranks",
 		description = "Add clan chat rank to right-click menu and next to player names."
