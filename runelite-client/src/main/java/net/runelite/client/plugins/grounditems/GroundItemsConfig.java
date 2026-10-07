@@ -82,7 +82,7 @@ public interface GroundItemsConfig extends Config
 	)
 	default String getHiddenItems()
 	{
-		return "Vial, Ashes, Coins, Bones, Bucket, Jug, Seaweed";
+		return "Vial, Ashes, Coins<10, Bones, Bucket, Jug, Seaweed";
 	}
 
 	@ConfigItem(
