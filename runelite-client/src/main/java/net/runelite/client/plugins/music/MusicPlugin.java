@@ -74,7 +74,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class MusicPlugin extends Plugin
 {
 	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
-		SoundEffectID.TELEPORT_VWOOP
+		SoundEffectID.TELEPORT_VWOOP,
+		SoundEffectID.GEM_FOUND
 	);
 
 	private static final Set<Integer> PRAYER_SOUNDS = ImmutableSet.of(
