@@ -89,6 +89,8 @@ import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.system.Callback;
 import org.lwjgl.system.Configuration;
+import java.util.HashSet;
+import net.runelite.api.gameval.VarbitID;
 
 @PluginDescriptor(
 	name = "GPU",
@@ -847,6 +849,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			return;
 		}
 
+		if (hideRoofIds.isEmpty()
+				&& scene.getRoofRemovalMode() != 0
+				&& client.getVarbitValue(VarbitID.OPTION_HIDE_ROOFTOPS) != 0)
+		{
+			hideRoofIds = collectAllRoofIds(ctx, level, maxLevel);
+		}
+
 		ctx.cameraX = (int) cameraX;
 		ctx.cameraY = (int) cameraY;
 		ctx.cameraZ = (int) cameraZ;
@@ -875,6 +884,27 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
+	private static Set<Integer> collectAllRoofIds(SceneContext ctx, int currentLevel, int maxLevel)
+	{
+		Set<Integer> ids = new HashSet<>();
+		for (Zone[] col : ctx.zones)
+		{
+			for (Zone zone : col)
+			{
+				for (int lvl = currentLevel + 1; lvl <= maxLevel; ++lvl)
+				{
+					for (int rid : zone.rids[lvl])
+					{
+						if (rid > 0)
+						{
+							ids.add(rid);
+						}
+					}
+				}
+			}
+		}
+		return ids;
+	}
 	private void preSceneDrawToplevel(Scene scene,
 		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw)
 	{
