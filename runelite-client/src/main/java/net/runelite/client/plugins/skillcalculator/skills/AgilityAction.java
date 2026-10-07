@@ -66,10 +66,10 @@ public enum AgilityAction implements NamedSkillAction
 	DORGESH_KAAN_AGILITY_COURSE("Dorgesh-Kaan Agility Course", 70, 2750, ItemID.DORGESH_POWERSTATION_POWERBOX),
 	HALLOWED_SEPULCHRE_FLOOR_3("Hallowed Sepulchre Floor 3", 72, 1600, ItemID.RING_OF_ENDURANCE),
 	PRIFDDINAS_AGILITY_COURSE("Prifddinas Agility Course", 75, 1337, ItemID.PRIF_CRYSTAL_SHARD),
+	HALLOWED_SEPULCHRE_FLOOR_4("Hallowed Sepulchre Floor 4", 77, 2875, ItemID.RING_OF_ENDURANCE),
 	RELLEKKA_ROOFTOP("Rellekka Rooftop", 80, 780, ItemID.GRACE),
-	HALLOWED_SEPULCHRE_FLOOR_4("Hallowed Sepulchre Floor 4", 82, 2875, ItemID.RING_OF_ENDURANCE),
+	HALLOWED_SEPULCHRE_FLOOR_5("Hallowed Sepulchre Floor 5", 87, 5725, ItemID.RING_OF_ENDURANCE),
 	ARDOUGNE_ROOFTOP("Ardougne Rooftop", 90, 889, ItemID.GRACE),
-	HALLOWED_SEPULCHRE_FLOOR_5("Hallowed Sepulchre Floor 5", 92, 5725, ItemID.RING_OF_ENDURANCE),
 	;
 
 	private final String name;

@@ -708,7 +708,10 @@ public class ChatChannelPlugin extends Plugin
 				clientThread.invoke(() ->
 				{
 					kickConfirmed = true;
-					client.runScript(ScriptID.FRIENDS_CHAT_SEND_KICK, kickPlayerName);
+					client.createScriptEventBuilder(ScriptID.FRIENDS_CHAT_SEND_KICK, kickPlayerName)
+						.build()
+						.setCanSendPackets(true)
+						.run();
 					kickConfirmed = false;
 				})
 			)

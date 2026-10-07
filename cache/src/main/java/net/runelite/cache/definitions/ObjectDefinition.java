@@ -39,6 +39,7 @@ public class ObjectDefinition
 	private String name = "null";
 	private int[] objectModels;
 	private int[] objectTypes;
+	private short fullRecolor = -1;
 	private short[] recolorToFind;
 	private int mapAreaId = -1;
 	private short[] textureToReplace;

@@ -1,0 +1,104 @@
+package net.runelite.api.widgets;
+
+import java.lang.Deprecated;
+
+/**
+ * @deprecated Use {@link net.runelite.api.gameval.InterfaceID} instead
+ */
+@Deprecated
+public final class InterfaceID
+{
+	public static final int ACHIEVEMENT_DIARY_SCROLL = net.runelite.api.gameval.InterfaceID.JOURNALSCROLL;
+	public static final int ACHIEVEMENT_DIARY = net.runelite.api.gameval.InterfaceID.AREA_TASK;
+	public static final int ADVENTURE_LOG = net.runelite.api.gameval.InterfaceID.MENU;
+	public static final int BA_ATTACKER = net.runelite.api.gameval.InterfaceID.BARBASSAULT_OVER_ATT;
+	public static final int BA_COLLECTOR = net.runelite.api.gameval.InterfaceID.BARBASSAULT_OVER_COL;
+	public static final int BA_DEFENDER = net.runelite.api.gameval.InterfaceID.BARBASSAULT_OVER_DEF;
+	public static final int BA_HEALER = net.runelite.api.gameval.InterfaceID.BARBASSAULT_OVER_HEAL;
+	public static final int BA_REWARD = net.runelite.api.gameval.InterfaceID.BARBASSAULT_WAVECOMPLETE;
+	public static final int BA_TEAM = net.runelite.api.gameval.InterfaceID.BARBASSAULT_OVER_RECRUIT_PLAYER_NAMES;
+	public static final int BANK_INVENTORY = net.runelite.api.gameval.InterfaceID.BANKSIDE;
+	public static final int BANK_PIN = net.runelite.api.gameval.InterfaceID.BANKPIN_KEYPAD;
+	public static final int BANK = net.runelite.api.gameval.InterfaceID.BANKMAIN;
+	public static final int BARROWS_PUZZLE = net.runelite.api.gameval.InterfaceID.BARROWS_PUZZLE;
+	public static final int BARROWS_REWARD = net.runelite.api.gameval.InterfaceID.BARROWS_REWARD;
+	public static final int CHAMBERS_OF_XERIC_INVENTORY = net.runelite.api.gameval.InterfaceID.RAIDS_STORAGE_SIDE;
+	public static final int CHAMBERS_OF_XERIC_REWARD = net.runelite.api.gameval.InterfaceID.RAIDS_REWARDS;
+	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE = net.runelite.api.gameval.InterfaceID.RAIDS_STORAGE_PRIVATE;
+	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED = net.runelite.api.gameval.InterfaceID.RAIDS_STORAGE_SHARED;
+	public static final int CHATBOX = net.runelite.api.gameval.InterfaceID.CHATBOX;
+	public static final int CLUE_BEGINNER_MAP_CHAMPIONS_GUILD = net.runelite.api.gameval.InterfaceID.TRAIL_MAP01;
+	public static final int CLUE_BEGINNER_MAP_DYANOR = net.runelite.api.gameval.InterfaceID.TRAIL_MAP03;
+	public static final int CLUE_BEGINNER_MAP_NORTH_OF_FALADOR = net.runelite.api.gameval.InterfaceID.TRAIL_MAP06;
+	public static final int CLUE_BEGINNER_MAP_VARROCK_EAST_MINE = net.runelite.api.gameval.InterfaceID.TRAIL_MAP02;
+	public static final int CLUE_BEGINNER_MAP_WIZARDS_TOWER = net.runelite.api.gameval.InterfaceID.TRAIL_MAP11;
+	public static final int CLUESCROLL_REWARD = net.runelite.api.gameval.InterfaceID.TRAIL_REWARDSCREEN;
+	public static final int CLUESCROLL = net.runelite.api.gameval.InterfaceID.TRAIL_CLUETEXT;
+	public static final int COLLECTION_LOG = net.runelite.api.gameval.InterfaceID.COLLECTION;
+	public static final int DEPOSIT_BOX = net.runelite.api.gameval.InterfaceID.BANK_DEPOSITBOX;
+	public static final int DESTROY_ITEM = net.runelite.api.gameval.InterfaceID.CONFIRMDESTROY;
+	public static final int DIALOG_NPC = net.runelite.api.gameval.InterfaceID.CHAT_LEFT;
+	public static final int DIALOG_OPTION = net.runelite.api.gameval.InterfaceID.CHATMENU;
+	public static final int DIALOG_PLAYER = net.runelite.api.gameval.InterfaceID.CHAT_RIGHT;
+	public static final int DIALOG_SPRITE = net.runelite.api.gameval.InterfaceID.OBJECTBOX;
+	public static final int DIARY = net.runelite.api.gameval.InterfaceID.QUESTJOURNAL;
+	public static final int DUEL_INVENTORY = net.runelite.api.gameval.InterfaceID.PVP_ARENA_STAGINGAREA_SHARELOADOUT;
+	public static final int EMOTES = net.runelite.api.gameval.InterfaceID.EMOTE;
+	public static final int EQUIPMENT_INVENTORY = net.runelite.api.gameval.InterfaceID.EQUIPMENT_SIDE;
+	public static final int EQUIPMENT = net.runelite.api.gameval.InterfaceID.WORNITEMS;
+	public static final int EXPLORERS_RING = net.runelite.api.gameval.InterfaceID.LUMBRIDGE_ALCHEMY;
+	public static final int FAIRY_RING_PANEL = net.runelite.api.gameval.InterfaceID.FAIRYRINGS_LOG;
+	public static final int FAIRY_RING = net.runelite.api.gameval.InterfaceID.FAIRYRINGS;
+	public static final int FIXED_VIEWPORT = net.runelite.api.gameval.InterfaceID.TOPLEVEL;
+	public static final int FRIEND_LIST = net.runelite.api.gameval.InterfaceID.FRIENDS;
+	public static final int FRIENDS_CHAT = net.runelite.api.gameval.InterfaceID.CHATCHANNEL_CURRENT;
+	public static final int FULLSCREEN_CONTAINER_TLI = net.runelite.api.gameval.InterfaceID.TOPLEVEL_DISPLAY;
+	public static final int GAUNTLET_TIMER = net.runelite.api.gameval.InterfaceID.GAUNTLET_OVERLAY;
+	public static final int GENERIC_SCROLL = net.runelite.api.gameval.InterfaceID.LONGSCROLL;
+	public static final int GOTR = net.runelite.api.gameval.InterfaceID.GOTR_HUD;
+	public static final int GRAND_EXCHANGE_INVENTORY = net.runelite.api.gameval.InterfaceID.GE_OFFERS_SIDE;
+	public static final int GRAND_EXCHANGE = net.runelite.api.gameval.InterfaceID.GE_OFFERS;
+	public static final int GRAVESTONE = net.runelite.api.gameval.InterfaceID.GRAVESTONE_GENERIC;
+	public static final int GROUP_IRON = net.runelite.api.gameval.InterfaceID.GIM_SIDEPANEL;
+	public static final int GROUP_STORAGE_INVENTORY = net.runelite.api.gameval.InterfaceID.SHARED_BANK_SIDE;
+	public static final int GROUP_STORAGE = net.runelite.api.gameval.InterfaceID.SHARED_BANK;
+	public static final int GUIDE_PRICES_INVENTORY = net.runelite.api.gameval.InterfaceID.GE_PRICECHECKER_SIDE;
+	public static final int GUIDE_PRICES = net.runelite.api.gameval.InterfaceID.GE_PRICECHECKER;
+	public static final int IGNORE_LIST = net.runelite.api.gameval.InterfaceID.IGNORE;
+	public static final int INVENTORY = net.runelite.api.gameval.InterfaceID.INVENTORY;
+	public static final int KEPT_ON_DEATH = net.runelite.api.gameval.InterfaceID.DEATHKEEP;
+	public static final int KILL_LOG = net.runelite.api.gameval.InterfaceID.KILL_LOG;
+	public static final int KINGDOM = net.runelite.api.gameval.InterfaceID.MISC_COLLECTION;
+	public static final int LEVEL_UP = net.runelite.api.gameval.InterfaceID.LEVELUP_DISPLAY;
+	public static final int LMS_INGAME = net.runelite.api.gameval.InterfaceID.BR_OVERLAY;
+	public static final int LOOTING_BAG = net.runelite.api.gameval.InterfaceID.WILDERNESS_LOOTINGBAG;
+	public static final int LUNAR_CHEST = net.runelite.api.gameval.InterfaceID.PMOON_REWARD;
+	public static final int MINIMAP = net.runelite.api.gameval.InterfaceID.ORBS;
+	public static final int POH_TREASURE_CHEST_INV = net.runelite.api.gameval.InterfaceID.POH_COSTUMES_SIDE;
+	public static final int PRIVATE_CHAT = net.runelite.api.gameval.InterfaceID.PM_CHAT;
+	public static final int QUEST_COMPLETED = net.runelite.api.gameval.InterfaceID.QUESTSCROLL;
+	public static final int QUEST_LIST = net.runelite.api.gameval.InterfaceID.QUESTLIST;
+	public static final int RAIDING_PARTY = net.runelite.api.gameval.InterfaceID.RAIDS_SIDEPANEL;
+	public static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = net.runelite.api.gameval.InterfaceID.TOPLEVEL_PRE_EOC;
+	public static final int RESIZABLE_VIEWPORT = net.runelite.api.gameval.InterfaceID.TOPLEVEL_OSRS_STRETCH;
+	public static final int RUNE_POUCH = net.runelite.api.gameval.InterfaceID.RUNE_POUCH;
+	public static final int SEED_BOX = net.runelite.api.gameval.InterfaceID.HOSIDIUS_SEEDBOX;
+	public static final int SEED_VAULT_INVENTORY = net.runelite.api.gameval.InterfaceID.SEED_VAULT_DEPOSIT;
+	public static final int SEED_VAULT = net.runelite.api.gameval.InterfaceID.SEED_VAULT;
+	public static final int SETTINGS_SIDE = net.runelite.api.gameval.InterfaceID.SETTINGS_SIDE;
+	public static final int SHOP_INVENTORY = net.runelite.api.gameval.InterfaceID.SHOPSIDE;
+	public static final int SHOP = net.runelite.api.gameval.InterfaceID.SHOPMAIN;
+	public static final int SLAYER_REWARDS = net.runelite.api.gameval.InterfaceID.SLAYER_REWARDS;
+	public static final int SMITHING = net.runelite.api.gameval.InterfaceID.SMITHING;
+	public static final int SPELLBOOK = net.runelite.api.gameval.InterfaceID.MAGIC_SPELLBOOK;
+	public static final int TOA_PARTY = net.runelite.api.gameval.InterfaceID.TOA_LOBBY;
+	public static final int TOA_RAID = net.runelite.api.gameval.InterfaceID.TOA_HUD;
+	public static final int TOA_REWARD = net.runelite.api.gameval.InterfaceID.TOA_CHESTS;
+	public static final int TOB_REWARD = net.runelite.api.gameval.InterfaceID.TOB_CHESTS;
+	public static final int TOB = net.runelite.api.gameval.InterfaceID.TOB_HUD;
+	public static final int TRADE_INVENTORY = net.runelite.api.gameval.InterfaceID.TRADESIDE;
+	public static final int TRAWLER_REWARD = net.runelite.api.gameval.InterfaceID.TRAWLER_REWARD;
+	public static final int VOLCANIC_MINE = net.runelite.api.gameval.InterfaceID.FOSSIL_VOLCANIC_MINE;
+	public static final int WORLD_MAP = net.runelite.api.gameval.InterfaceID.WORLDMAP;
+	public static final int WORLD_SWITCHER = net.runelite.api.gameval.InterfaceID.WORLDSWITCHER;
+}

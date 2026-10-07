@@ -38,6 +38,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
+import net.runelite.api.NPC;
 import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
@@ -52,7 +53,9 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
@@ -81,6 +84,8 @@ public class InteractHighlightPlugin extends Plugin
 	private TileObject interactedObject;
 	@Getter(AccessLevel.PACKAGE)
 	private TileItem interactedItem;
+	@Getter(AccessLevel.PACKAGE)
+	@Nullable
 	private Actor interactedActor;
 	@Getter(AccessLevel.PACKAGE)
 	boolean attacked;
@@ -116,11 +121,33 @@ public class InteractHighlightPlugin extends Plugin
 	}
 
 	@Subscribe
+	private void onNpcSpawned(NpcSpawned event)
+	{
+		final Player localPlayer = client.getLocalPlayer();
+		final NPC npc = event.getNpc();
+		if (localPlayer != null && npc == localPlayer.getInteracting())
+		{
+			interactedActor = npc;
+		}
+	}
+
+	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		if (npcDespawned.getNpc() == interactedActor)
 		{
 			interactedActor = null;
+		}
+	}
+
+	@Subscribe
+	private void onPlayerSpawned(PlayerSpawned event)
+	{
+		final Player localPlayer = client.getLocalPlayer();
+		final Player otherPlayer = event.getPlayer();
+		if (localPlayer != null && otherPlayer == localPlayer.getInteracting())
+		{
+			interactedActor = otherPlayer;
 		}
 	}
 
@@ -146,12 +173,11 @@ public class InteractHighlightPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (client.getTickCount() > clickTick && client.getLocalDestinationLocation() == null)
+		if (client.getTickCount() > clickTick && client.getLocalDestinationLocation() == null && interactedActor == null)
 		{
 			// when the destination is reached, clear the interacting object
 			interactedObject = null;
 			interactedItem = null;
-			interactedActor = null;
 		}
 	}
 
@@ -159,10 +185,14 @@ public class InteractHighlightPlugin extends Plugin
 	public void onInteractingChanged(InteractingChanged interactingChanged)
 	{
 		if (interactingChanged.getSource() == client.getLocalPlayer()
-				&& client.getTickCount() > clickTick && interactingChanged.getTarget() != interactedActor)
+			&& client.getTickCount() > clickTick)
 		{
-			interactedActor = null;
-			attacked = interactingChanged.getTarget() != null && interactingChanged.getTarget().getCombatLevel() > 0;
+			final Actor target = interactingChanged.getTarget();
+
+			interactedObject = null;
+			interactedItem = null;
+			interactedActor = target;
+			attacked = target != null && target.getCombatLevel() > 0;
 		}
 	}
 
@@ -344,23 +374,6 @@ public class InteractHighlightPlugin extends Plugin
 				return item;
 			}
 		}
-		return null;
-	}
-
-	@Nullable
-	Actor getInteractedTarget()
-	{
-		if (interactedActor != null)
-		{
-			return interactedActor;
-		}
-
-		Player local = client.getLocalPlayer();
-		if (local != null)
-		{
-			return local.getInteracting();
-		}
-
 		return null;
 	}
 }

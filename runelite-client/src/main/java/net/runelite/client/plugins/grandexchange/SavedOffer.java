@@ -33,7 +33,7 @@ class SavedOffer
 	private int itemId;
 	private int quantitySold;
 	private int totalQuantity;
-	private int price;
-	private int spent;
+	private long price;
+	private long spent;
 	private GrandExchangeOfferState state;
 }

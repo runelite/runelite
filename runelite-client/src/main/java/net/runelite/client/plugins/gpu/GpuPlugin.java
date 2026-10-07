@@ -1050,7 +1050,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		int size = skybox.getFaceCount() * 3 * VAO.VERT_SIZE;
 		RenderThread rt = rts[0];
 		VAO o = rt.vaoO.get(size);
-		rt.modelUploader.uploadTempModel(skybox, 0, 0, 0, 0, o.vbo.vb);
+		rt.modelUploader.uploadTempModel(skybox, 0, 0, 0, 0,
+			(int) cameraX, (int) cameraY, (int) cameraZ, o.vbo.vb);
 
 		float[] skyboxProjection = Mat4.translate(cameraX, cameraY, cameraZ);
 		o.addRange(skyboxProjection, scene, Renderable.RENDERMODE_UNSORTED_NO_DEPTH);
@@ -1234,7 +1235,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				return;
 			}
 
-			rt.modelUploader.uploadTempModel(m, orient, x, y, z, o.vbo.vb);
+			rt.modelUploader.uploadTempModel(m, orient, x, y, z,
+				ctx.cameraX, ctx.cameraY, ctx.cameraZ, o.vbo.vb);
 			o.addRange(ctx.projection, scene, 0);
 		}
 		else
@@ -1254,7 +1256,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			int start = a.vbo.vb.position();
 			try
 			{
-				sorter.uploadSortedModel(rt, worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb, false);
+				sorter.uploadSortedModel(rt, worldProjection, m, orient, x, y, z,
+					ctx.cameraX, ctx.cameraY, ctx.cameraZ, o.vbo.vb, a.vbo.vb, false);
 			}
 			catch (Exception ex)
 			{
@@ -1308,7 +1311,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			m.calculateBoundsCylinder();
 			try
 			{
-				uploader.uploadSortedModel(rt, worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb, renderMode == Renderable.RENDERMODE_SORTED_NO_DEPTH);
+				uploader.uploadSortedModel(rt, worldProjection, m, orient, x, y, z,
+					ctx.cameraX, ctx.cameraY, ctx.cameraZ, o.vbo.vb, a.vbo.vb,
+					renderMode == Renderable.RENDERMODE_SORTED_NO_DEPTH);
 			}
 			catch (Exception ex)
 			{
@@ -1333,7 +1338,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			RenderThread rt = rts[0];
 			VAO o = rt.vaoO.get(size);
 			ModelUploader uploader = rt.modelUploader;
-			uploader.uploadTempModel(m, orient, x, y, z, o.vbo.vb);
+			uploader.uploadTempModel(m, orient, x, y, z,
+				ctx.cameraX, ctx.cameraY, ctx.cameraZ, o.vbo.vb);
 			o.addRange(ctx.projection, scene, 0);
 		}
 	}

@@ -83,7 +83,8 @@ class ModelUploader
 		v = new float[3];
 	}
 
-	int uploadSortedModel(GpuPlugin.RenderThread rt, Projection proj, Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer, IntBuffer alphaBuffer, boolean prioritySort)
+	int uploadSortedModel(GpuPlugin.RenderThread rt, Projection proj, Model model, int orientation, int x, int y, int z,
+		int cameraX, int cameraY, int cameraZ, IntBuffer opaqueBuffer, IntBuffer alphaBuffer, boolean prioritySort)
 	{
 		final int vertexCount = model.getVerticesCount();
 		final float[] verticesX = model.getVerticesX();
@@ -108,10 +109,20 @@ class ModelUploader
 
 		float orientSine = 0;
 		float orientCosine = 0;
+		int modelCameraX = cameraX - x;
+		int modelCameraY = cameraY - y;
+		int modelCameraZ = cameraZ - z;
 		if (orientation != 0)
 		{
-			orientSine = Perspective.SINE[orientation] / 65536f;
-			orientCosine = Perspective.COSINE[orientation] / 65536f;
+			orientSine = Perspective.SINEF[orientation];
+			orientCosine = Perspective.COSINEF[orientation];
+
+			int inverseOrientation = (2048 - orientation) & 2047;
+			int inverseSine = Perspective.SINE[inverseOrientation];
+			int inverseCosine = Perspective.COSINE[inverseOrientation];
+			int cameraX0 = modelCameraX;
+			modelCameraX = modelCameraZ * inverseSine + cameraX0 * inverseCosine >> 16;
+			modelCameraZ = modelCameraZ * inverseCosine - cameraX0 * inverseSine >> 16;
 		}
 
 		float[] p = proj.project(x, y, z, rt.tmp);
@@ -197,8 +208,7 @@ class ModelUploader
 
 					minFz = Math.min(minFz, distance);
 					maxFz = Math.max(maxFz, distance);
-
-					computeFaceUvs(model, faceIdx, u, v);
+					computeFaceUvs(model, faceIdx, modelCameraX, modelCameraY, modelCameraZ, true, u, v);
 
 					int su0 = (int) (u[0] * 256f);
 					int sv0 = (int) (v[0] * 256f);
@@ -475,7 +485,8 @@ class ModelUploader
 	}
 
 	// temp draw
-	int uploadTempModel(Model model, int orientation, int x, int y, int z, IntBuffer buffer)
+	int uploadTempModel(Model model, int orientation, int x, int y, int z,
+		int cameraX, int cameraY, int cameraZ, IntBuffer buffer)
 	{
 		final int triangleCount = model.getFaceCount();
 		final int vertexCount = model.getVerticesCount();
@@ -505,10 +516,20 @@ class ModelUploader
 
 		float orientSine = 0;
 		float orientCosine = 0;
+		int modelCameraX = cameraX - x;
+		int modelCameraY = cameraY - y;
+		int modelCameraZ = cameraZ - z;
 		if (orientation != 0)
 		{
-			orientSine = Perspective.SINE[orientation] / 65536f;
-			orientCosine = Perspective.COSINE[orientation] / 65536f;
+			orientSine = Perspective.SINEF[orientation];
+			orientCosine = Perspective.COSINEF[orientation];
+
+			int inverseOrientation = (2048 - orientation) & 2047;
+			int inverseSine = Perspective.SINE[inverseOrientation];
+			int inverseCosine = Perspective.COSINE[inverseOrientation];
+			int cameraX0 = modelCameraX;
+			modelCameraX = modelCameraZ * inverseSine + cameraX0 * inverseCosine >> 16;
+			modelCameraZ = modelCameraZ * inverseCosine - cameraX0 * inverseSine >> 16;
 		}
 
 		for (int v = 0; v < vertexCount; ++v)
@@ -576,7 +597,7 @@ class ModelUploader
 			float vy3 = modelLocalY[triangleC];
 			float vz3 = modelLocalZ[triangleC];
 
-			computeFaceUvs(model, face, u, v);
+			computeFaceUvs(model, face, modelCameraX, modelCameraY, modelCameraZ, true, u, v);
 
 			int su0 = (int) (u[0] * 256f);
 			int sv0 = (int) (v[0] * 256f);
@@ -645,7 +666,8 @@ class ModelUploader
 		return (hue << 10 | sat << 7 | lum) & 65535;
 	}
 
-	static void computeFaceUvs(Model model, int face, float[] u, float[] v)
+	static void computeFaceUvs(Model model, int face,
+		float cameraX, float cameraY, float cameraZ, boolean project, float[] u, float[] v)
 	{
 		final float[] vertexX = model.getVerticesX();
 		final float[] vertexY = model.getVerticesY();
@@ -671,91 +693,128 @@ class ModelUploader
 			int texB = texIndices2[tfaceIdx];
 			int texC = texIndices3[tfaceIdx];
 
-			// v1 = vertex[texA]
-			float v1x = vertexX[texA];
-			float v1y = vertexY[texA];
-			float v1z = vertexZ[texA];
-			// v2 = vertex[texB] - v1
-			float v2x = vertexX[texB] - v1x;
-			float v2y = vertexY[texB] - v1y;
-			float v2z = vertexZ[texB] - v1z;
-			// v3 = vertex[texC] - v1
-			float v3x = vertexX[texC] - v1x;
-			float v3y = vertexY[texC] - v1y;
-			float v3z = vertexZ[texC] - v1z;
+			// t1 = vertex[texA]
+			float t1x = vertexX[texA];
+			float t1y = vertexY[texA];
+			float t1z = vertexZ[texA];
+			// tangent = vertex[texB] - t1
+			float tangentX = vertexX[texB] - t1x;
+			float tangentY = vertexY[texB] - t1y;
+			float tangentZ = vertexZ[texB] - t1z;
+			// bitangent = vertex[texC] - t1
+			float bitangentX = vertexX[texC] - t1x;
+			float bitangentY = vertexY[texC] - t1y;
+			float bitangentZ = vertexZ[texC] - t1z;
 
-			// v4 = vertex[triangleA] - v1
-			float v4x = vertexX[triangleA] - v1x;
-			float v4y = vertexY[triangleA] - v1y;
-			float v4z = vertexZ[triangleA] - v1z;
-			// v5 = vertex[triangleB] - v1
-			float v5x = vertexX[triangleB] - v1x;
-			float v5y = vertexY[triangleB] - v1y;
-			float v5z = vertexZ[triangleB] - v1z;
-			// v6 = vertex[triangleC] - v1
-			float v6x = vertexX[triangleC] - v1x;
-			float v6y = vertexY[triangleC] - v1y;
-			float v6z = vertexZ[triangleC] - v1z;
+			// normal = tangent x bitangent
+			float normalX = tangentY * bitangentZ - tangentZ * bitangentY;
+			float normalY = tangentZ * bitangentX - tangentX * bitangentZ;
+			float normalZ = tangentX * bitangentY - tangentY * bitangentX;
 
-			// v7 = v2 x v3
-			float v7x = v2y * v3z - v2z * v3y;
-			float v7y = v2z * v3x - v2x * v3z;
-			float v7z = v2x * v3y - v2y * v3x;
+			float faceAx = vertexX[triangleA];
+			float faceAy = vertexY[triangleA];
+			float faceAz = vertexZ[triangleA];
+			float faceBx = vertexX[triangleB];
+			float faceBy = vertexY[triangleB];
+			float faceBz = vertexZ[triangleB];
+			float faceCx = vertexX[triangleC];
+			float faceCy = vertexY[triangleC];
+			float faceCz = vertexZ[triangleC];
 
-			// v8 = v3 x v7
-			float v8x = v3y * v7z - v3z * v7y;
-			float v8y = v3z * v7x - v3x * v7z;
-			float v8z = v3x * v7y - v3y * v7x;
+			if (project)
+			{
+				// ray = camera - faceA
+				float rayX = cameraX - faceAx;
+				float rayY = cameraY - faceAy;
+				float rayZ = cameraZ - faceAz;
+				// faceA += ray * ((t1 - faceA) ⋅ normal) / (ray ⋅ normal)
+				float scale = ((t1x - faceAx) * normalX + (t1y - faceAy) * normalY + (t1z - faceAz) * normalZ) /
+					(rayX * normalX + rayY * normalY + rayZ * normalZ);
+				faceAx += rayX * scale;
+				faceAy += rayY * scale;
+				faceAz += rayZ * scale;
 
-			// f = 1 / (v8 ⋅ v2)
-			float f = 1.0F / (v8x * v2x + v8y * v2y + v8z * v2z);
+				// ray = camera - faceB
+				rayX = cameraX - faceBx;
+				rayY = cameraY - faceBy;
+				rayZ = cameraZ - faceBz;
+				// faceB += ray * ((t2 - faceB) ⋅ normal) / (ray ⋅ normal)
+				scale = ((vertexX[texB] - faceBx) * normalX + (vertexY[texB] - faceBy) * normalY +
+					(vertexZ[texB] - faceBz) * normalZ) /
+					(rayX * normalX + rayY * normalY + rayZ * normalZ);
+				faceBx += rayX * scale;
+				faceBy += rayY * scale;
+				faceBz += rayZ * scale;
 
-			// u0 = (v8 ⋅ v4) * f
-			u[0] = (v8x * v4x + v8y * v4y + v8z * v4z) * f;
-			// u1 = (v8 ⋅ v5) * f
-			u[1] = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
-			// u2 = (v8 ⋅ v6) * f
-			u[2] = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
+				// ray = camera - faceC
+				rayX = cameraX - faceCx;
+				rayY = cameraY - faceCy;
+				rayZ = cameraZ - faceCz;
+				// faceC += ray * ((t3 - faceC) ⋅ normal) / (ray ⋅ normal)
+				scale = ((vertexX[texC] - faceCx) * normalX + (vertexY[texC] - faceCy) * normalY +
+					(vertexZ[texC] - faceCz) * normalZ) /
+					(rayX * normalX + rayY * normalY + rayZ * normalZ);
+				faceCx += rayX * scale;
+				faceCy += rayY * scale;
+				faceCz += rayZ * scale;
+			}
 
-			// v8 = v2 x v7
-			v8x = v2y * v7z - v2z * v7y;
-			v8y = v2z * v7x - v2x * v7z;
-			v8z = v2x * v7y - v2y * v7x;
+			float relativeAx = faceAx - t1x;
+			float relativeAy = faceAy - t1y;
+			float relativeAz = faceAz - t1z;
+			float relativeBx = faceBx - t1x;
+			float relativeBy = faceBy - t1y;
+			float relativeBz = faceBz - t1z;
+			float relativeCx = faceCx - t1x;
+			float relativeCy = faceCy - t1y;
+			float relativeCz = faceCz - t1z;
 
-			// f = 1 / (v8 ⋅ v3)
-			f = 1.0F / (v8x * v3x + v8y * v3y + v8z * v3z);
+			// uAxis = bitangent x normal
+			float uAxisX = bitangentY * normalZ - bitangentZ * normalY;
+			float uAxisY = bitangentZ * normalX - bitangentX * normalZ;
+			float uAxisZ = bitangentX * normalY - bitangentY * normalX;
 
-			// v0 = (v8 ⋅ v4) * f
-			v[0] = (v8x * v4x + v8y * v4y + v8z * v4z) * f;
-			// v1 = (v8 ⋅ v5) * f
-			v[1] = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
-			// v2 = (v8 ⋅ v6) * f
-			v[2] = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
+			float inverseUDenominator = 1.0F / (uAxisX * tangentX + uAxisY * tangentY + uAxisZ * tangentZ);
+
+			u[0] = (uAxisX * relativeAx + uAxisY * relativeAy + uAxisZ * relativeAz) * inverseUDenominator;
+			u[1] = (uAxisX * relativeBx + uAxisY * relativeBy + uAxisZ * relativeBz) * inverseUDenominator;
+			u[2] = (uAxisX * relativeCx + uAxisY * relativeCy + uAxisZ * relativeCz) * inverseUDenominator;
+
+			// vAxis = tangent x normal
+			float vAxisX = tangentY * normalZ - tangentZ * normalY;
+			float vAxisY = tangentZ * normalX - tangentX * normalZ;
+			float vAxisZ = tangentX * normalY - tangentY * normalX;
+
+			float inverseVDenominator = 1.0F / (vAxisX * bitangentX + vAxisY * bitangentY + vAxisZ * bitangentZ);
+
+			v[0] = (vAxisX * relativeAx + vAxisY * relativeAy + vAxisZ * relativeAz) * inverseVDenominator;
+			v[1] = (vAxisX * relativeBx + vAxisY * relativeBy + vAxisZ * relativeBz) * inverseVDenominator;
+			v[2] = (vAxisX * relativeCx + vAxisY * relativeCy + vAxisZ * relativeCz) * inverseVDenominator;
 		}
 		else
 		{
 			// Without a texture face, the client assigns tex = triangle, but the resulting
 			// calculations can be reduced:
 			//
-			// v1 = vertex[texA]
-			// v2 = vertex[texB] - v1
-			// v3 = vertex[texC] - v1
+			// t1 = vertex[texA]
+			// tangent = vertex[texB] - t1
+			// bitangent = vertex[texC] - t1
 			//
-			// v4 = 0
-			// v5 = v2
-			// v6 = v3
+			// relativeA = 0
+			// relativeB = tangent
+			// relativeC = bitangent
 			//
-			// v7 = v2 x v3
+			// normal = tangent x bitangent
 			//
-			// v8 = v3 x v7
-			// u0 = (v8 . v4) / (v8 . v2) // 0 because v4 is 0
-			// u1 = (v8 . v5) / (v8 . v2) // 1 because v5=v2
-			// u2 = (v8 . v6) / (v8 . v2) // 0 because v8 is perpendicular to v3/v6
+			// uAxis = bitangent x normal
+			// u0 = (uAxis . relativeA) / (uAxis . tangent) // 0 because relativeA is 0
+			// u1 = (uAxis . relativeB) / (uAxis . tangent) // 1 because relativeB=tangent
+			// u2 = (uAxis . relativeC) / (uAxis . tangent) // 0 because uAxis is perpendicular to bitangent/relativeC
 			//
-			// v8 = v2 x v7
-			// v0 = (v8 . v4) / (v8 ⋅ v3) // 0 because v4 is 0
-			// v1 = (v8 . v5) / (v8 ⋅ v3) // 0 because v8 is perpendicular to v5/v2
-			// v2 = (v8 . v6) / (v8 ⋅ v3) // 1 because v6=v3
+			// vAxis = tangent x normal
+			// v0 = (vAxis . relativeA) / (vAxis ⋅ bitangent) // 0 because relativeA is 0
+			// v1 = (vAxis . relativeB) / (vAxis ⋅ bitangent) // 0 because vAxis is perpendicular to tangent/relativeB
+			// v2 = (vAxis . relativeC) / (vAxis ⋅ bitangent) // 1 because relativeC=bitangent
 
 			u[0] = 0f;
 			v[0] = 0f;

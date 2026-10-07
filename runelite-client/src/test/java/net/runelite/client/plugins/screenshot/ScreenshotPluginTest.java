@@ -386,12 +386,12 @@ public class ScreenshotPluginTest
 	@Test
 	public void testCombatAchievementsParsing()
 	{
-		assertEquals("Combat task (Into the Den of Giants)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an easy combat task: <col=06600c>Into the Den of Giants</col>."));
-		assertEquals("Combat task (I'd Rather Not Learn)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a medium combat task: <col=06600c>I'd Rather Not Learn</col>."));
-		assertEquals("Combat task (Why Cook)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a hard combat task: <col=0cc919>Why Cook?</col>."));
-		assertEquals("Combat task (From Dusk...)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an elite combat task: <col=06600c>From Dusk...</col>."));
-		assertEquals("Combat task (Perfect Olm (Trio))", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a master combat task: <col=0cc919>Perfect Olm (Trio)</col>."));
-		assertEquals("Combat task (Chambers of Xeric CM (5-Scale) Speed-Runner)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a grandmaster combat task: <col=0cc919>Chambers of Xeric: CM (5-Scale) Speed-Runner</col>."));
+		assertEquals("Combat task (Into the Den of Giants)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an easy combat task: @ach_comp@Into the Den of Giants</col>."));
+		assertEquals("Combat task (I'd Rather Not Learn)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a medium combat task: @ach_comp@I'd Rather Not Learn</col>."));
+		assertEquals("Combat task (Why Cook)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a hard combat task: @ach_comp@Why Cook?</col>."));
+		assertEquals("Combat task (From Dusk...)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an elite combat task: @ach_comp@From Dusk...</col>."));
+		assertEquals("Combat task (Perfect Olm (Trio))", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a master combat task: @ach_comp@Perfect Olm (Trio)</col>."));
+		assertEquals("Combat task (Chambers of Xeric CM (5-Scale) Speed-Runner)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a grandmaster combat task: @ach_comp@Chambers of Xeric: CM (5-Scale) Speed-Runner</col>."));
 	}
 
 	@Test
@@ -524,7 +524,7 @@ public class ScreenshotPluginTest
 		when(client.getVarbitValue(VarbitID.CA_TASK_POPUP)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
-			"Congratulations, you've completed a grandmaster combat task: <col=06600c>Egniol Diet II</col> (6 points).", null, 0);
+			"Congratulations, you've completed a grandmaster combat task: @ach_comp@Egniol Diet II</col> (6 points).", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Combat task (Egniol Diet II)", "Combat Achievements");

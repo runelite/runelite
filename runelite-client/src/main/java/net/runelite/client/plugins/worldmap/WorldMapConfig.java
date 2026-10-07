@@ -317,4 +317,26 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_SALVAGING_SPOT_TOOLTIPS,
+		name = "Salvaging spot tooltips",
+		description = "Display the type of salvage and required level in the icon tooltip.",
+		position = 27
+	)
+	default boolean salvagingSpotTooltips()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_SALVAGING_SPOT_LEVEL_ICON,
+		name = "Indicate inacessible salvaging spots",
+		description = "Indicate salvaging spots you do not have the level to use on the icon.",
+		position = 28
+	)
+	default boolean salvagingSpotLevelIcon()
+	{
+		return true;
+	}
 }

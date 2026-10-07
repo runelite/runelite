@@ -47,7 +47,7 @@ class GroundItem
 	private int quantity;
 	private ItemLayer itemLayer;
 	private int haPrice;
-	private int gePrice;
+	private long gePrice;
 	private int offset;
 	private boolean tradeable;
 	@MagicConstant(intValues = {OWNERSHIP_NONE, OWNERSHIP_SELF, OWNERSHIP_OTHER, OWNERSHIP_GROUP})
@@ -69,7 +69,7 @@ class GroundItem
 		return haPrice * quantity;
 	}
 
-	int getGePrice()
+	long getGePrice()
 	{
 		return gePrice * quantity;
 	}
