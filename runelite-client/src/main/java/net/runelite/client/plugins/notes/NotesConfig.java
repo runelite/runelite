@@ -32,6 +32,17 @@ import net.runelite.client.config.ConfigItem;
 public interface NotesConfig extends Config
 {
 	@ConfigItem(
+			keyName = "navButtonPriority",
+			name = "Navigation Button Priority",
+			description = "The priority of the plugin navigation button",
+			position = 1
+	)
+	default int navButtonPriority()
+	{
+		return 7;
+	}
+
+	@ConfigItem(
 		keyName = "notesData",
 		name = "",
 		description = "",
