@@ -33,6 +33,8 @@ import net.runelite.api.NPC;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.NpcUtil;
@@ -64,6 +66,25 @@ public class BossTimersPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned npcSpawned)
+	{
+		NPC npc = npcSpawned.getNpc();
+		var npcId = npc.getId();
+		if (npcId == NpcID.GARGBOSS_DUSK_PHASE1_DEFENSIVE)
+		{
+			clearTimer(Boss.find(NpcID.GARGBOSS_DUSK_DEATH));
+		}
+		else
+		{
+			Boss boss = Boss.find(npcId);
+			if (boss != null)
+			{
+				clearTimer(boss);
+			}
+		}
 	}
 
 	@Subscribe
