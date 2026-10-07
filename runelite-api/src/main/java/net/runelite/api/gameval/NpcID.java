@@ -71724,5 +71724,280 @@ public final class NpcID
 	 * Yorkie
 	 */
 	public static final int POH_YORKIE_YELLOW = 16575;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_TUTOR = 16576;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_TUTOR_INSTANCE = 16577;
+
+	/**
+	 * Bowman67
+	 */
+	public static final int PVPTUT_NPC_TO_KILL_1 = 16578;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MAGIC = 16579;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MELEE_VOIDWAKER = 16580;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MELEE_HALBERD = 16581;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_RANGED = 16582;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_TANK = 16583;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MELEE_MISTAKE = 16584;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_RANGED_MISTAKE = 16585;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MAGIC_MISTAKE = 16586;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_BOSS_TUTOR = 16587;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MAGIC = 16588;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_RANGED = 16589;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MELEE = 16590;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MELEE_SPECIAL = 16591;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_MAGIC_THAN_MELEE = 16592;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_MELEE_THAN_MAGIC = 16593;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_RANGED_THAN_MELEE = 16594;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_MELEE_THAN_RANGED = 16595;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_RANGED_THAN_MAGIC = 16596;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_MAGIC_THAN_RANGED = 16597;
+
+	/**
+	 * Blink
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_AGSMAUL_SPEC = 16598;
+
+	/**
+	 * Dave
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_ELDER_MAUL_SPEC = 16599;
+
+	/**
+	 * Double Decimation Daryl
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_DRAGON_DAGGER_SPEC = 16600;
+
+	/**
+	 * Walter Blue
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_WIZARD = 16601;
+
+	/**
+	 * Kinetic Katara
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_HARM_ORB_SPEC = 16602;
+
+	/**
+	 * Xx I DB0W I xX
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_RANGED_DBOW_SPEC_1 = 16603;
+
+	/**
+	 * Xx I DBOW I xX
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_RANGED_DBOW_SPEC_2 = 16604;
+
+	/**
+	 * I D CLAW U
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_DCLAWS_SPEC = 16605;
+
+	/**
+	 * IM 1 HP GL
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_DHAROKS_SPEC = 16606;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_FREEZE_NPC = 16607;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_GEAR_SWITCH_NPC_MELEE = 16608;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_GEAR_SWITCH_NPC_RANGED = 16609;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_GEAR_SWITCH_NPC_MAGIC = 16610;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_AGS_SPEC = 16611;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_VOIDWAKER = 16612;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_GMAUL_SPEC = 16613;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_DCLAWS_SPEC = 16614;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_CROSSBOW = 16615;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_RANGED_DBOW_SPEC = 16616;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_SPELL = 16617;
+
+	/**
+	 * Kevin
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_7 = 16618;
+
+	/**
+	 * Daniel
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_1 = 16619;
+
+	/**
+	 * Rowenna
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_2 = 16620;
+
+	/**
+	 * Adam
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_3 = 16621;
+
+	/**
+	 * Kimmie
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_4 = 16622;
+
+	/**
+	 * Jack
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_5 = 16623;
+
+	/**
+	 * Kate
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_6 = 16624;
+
+	/**
+	 * Blink
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_1 = 16625;
+
+	/**
+	 * Dave
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_2 = 16626;
+
+	/**
+	 * Double Decimation Daryl
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_3 = 16627;
+
+	/**
+	 * Xx I DBOW I xX
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_4 = 16628;
+
+	/**
+	 * Kinetic Katara
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_5 = 16629;
+
+	/**
+	 * I D CLAW U
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_6 = 16630;
 /* This file is automatically generated. Do not edit. */
 }

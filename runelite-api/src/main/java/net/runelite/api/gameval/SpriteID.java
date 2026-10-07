@@ -12372,4 +12372,18 @@ public final class SpriteID
 		public static final int _3 = 8554;
 		public static final int _4 = 8555;
 	}
+
+	public static final class IconPvpTutorial01_35x35
+	{
+		public static final int _0 = 8561;
+		public static final int _1 = 8562;
+		public static final int _2 = 8563;
+		public static final int _3 = 8564;
+		public static final int _4 = 8565;
+		public static final int _5 = 8566;
+		public static final int _6 = 8567;
+		public static final int _7 = 8568;
+		public static final int _8 = 8569;
+		public static final int _9 = 8570;
+	}
 }

@@ -974,6 +974,9 @@ public final class InterfaceID
 	public static final int CASTLE_DRAKAN_WORLD_MAP = 967;
 	public static final int MYQ6_INTEGRITY_BAR = 968;
 	public static final int MOURNING_DEATHALTAR_LIST = 969;
+	public static final int PVPTUT_UI = 970;
+	public static final int PVP_TUT_2026_SETUP_INTERFACE = 971;
+	public static final int PVPTUT_SCOREBOARD_UI = 972;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -31285,6 +31288,145 @@ public final class InterfaceID
 		public static final int CONTAINER = 0x03c9_0004;
 		public static final int TEXT = 0x03c9_0005;
 		public static final int SCROLLBAR = 0x03c9_0006;
+	}
+
+	public static final class PvptutUi
+	{
+		public static final int UNIVERSE = 0x03ca_0000;
+		public static final int WINDOW = 0x03ca_0001;
+		public static final int FRAME = 0x03ca_0002;
+		public static final int BTN_CLOSE = 0x03ca_0003;
+		public static final int BTN_BACK = 0x03ca_0004;
+		public static final int CONTENT = 0x03ca_0005;
+		public static final int MAINMENU = 0x03ca_0006;
+		public static final int MAINMENU_CONTENT = 0x03ca_0007;
+		public static final int MAINMENU_CONTENT_ENTRIES = 0x03ca_0008;
+		public static final int MAINMENU_CONTENT_CLICKBOXES = 0x03ca_0009;
+		public static final int MAINMENU_CONTENT_SCROLLBAR = 0x03ca_000a;
+		public static final int TUTORIAL = 0x03ca_000b;
+		public static final int TUTORIAL_BTN_START = 0x03ca_000c;
+		public static final int TUTORIAL_BTN_START_FILL = 0x03ca_000d;
+		public static final int TUTORIAL_BTN_START_COMPLETE_ICON = 0x03ca_000e;
+		public static final int TUTORIAL_CONTENT_CONTAINER = 0x03ca_000f;
+		public static final int TUTORIAL_BTN_LOADOUT = 0x03ca_0010;
+		public static final int TUTORIAL_CONTENT_BORDER = 0x03ca_0011;
+		public static final int TUTORIAL_CONTENT = 0x03ca_0012;
+		public static final int TUTORIAL_CONTENT_INNER = 0x03ca_0013;
+		public static final int TUTORIAL_CONTENT_SCROLLBAR = 0x03ca_0014;
+		public static final int TUTORIAL_CONTENT_1 = 0x03ca_0015;
+		public static final int TUTORIAL_BTN_LOADOUT_FILL = 0x03ca_0016;
+	}
+
+	public static final class PvpTut2026SetupInterface
+	{
+		public static final int UNIVERSE = 0x03cb_0000;
+		public static final int FRAME = 0x03cb_0001;
+		public static final int TABS = 0x03cb_0002;
+		public static final int ATAB = 0x03cb_0003;
+		public static final int BTAB = 0x03cb_0004;
+		public static final int CTAB = 0x03cb_0005;
+		public static final int DISPLAYS = 0x03cb_0006;
+		public static final int ADISPLAY = 0x03cb_0007;
+		public static final int ASPELLBOOK_DISPLAY = 0x03cb_0008;
+		public static final int ATRASH = 0x03cb_0009;
+		public static final int AWORN = 0x03cb_000a;
+		public static final int AWORN_GRAPHIC0 = 0x03cb_000b;
+		public static final int AWORN_GRAPHIC1 = 0x03cb_000c;
+		public static final int AWORN_GRAPHIC2 = 0x03cb_000d;
+		public static final int AWORN_GRAPHIC3 = 0x03cb_000e;
+		public static final int AWORN_GRAPHIC4 = 0x03cb_000f;
+		public static final int ASLOT0 = 0x03cb_0010;
+		public static final int ASLOT1 = 0x03cb_0011;
+		public static final int ASLOT2 = 0x03cb_0012;
+		public static final int ASLOT3 = 0x03cb_0013;
+		public static final int ASLOT4 = 0x03cb_0014;
+		public static final int ASLOT5 = 0x03cb_0015;
+		public static final int ASLOT7 = 0x03cb_0016;
+		public static final int ASLOT9 = 0x03cb_0017;
+		public static final int ASLOT10 = 0x03cb_0018;
+		public static final int ASLOT12 = 0x03cb_0019;
+		public static final int ASLOT13 = 0x03cb_001a;
+		public static final int AINVENTORY = 0x03cb_001b;
+		public static final int AMENU_CONTAINER = 0x03cb_001c;
+		public static final int AMENU_CONTAINER_GRAPHIC0 = 0x03cb_001d;
+		public static final int AMENU = 0x03cb_001e;
+		public static final int ASCROLLBAR = 0x03cb_001f;
+		public static final int ASPELLBOOK_CONTAINER = 0x03cb_0020;
+		public static final int ASPELLBOOK_CONTAINER_RECT0 = 0x03cb_0021;
+		public static final int ASPELLBOOK_MENU = 0x03cb_0022;
+		public static final int ASPELLBOOK_MENU_GRAPHIC0 = 0x03cb_0023;
+		public static final int ASTATUS = 0x03cb_0024;
+		public static final int BDISPLAY = 0x03cb_0025;
+		public static final int BSPELLBOOK_DISPLAY = 0x03cb_0026;
+		public static final int BTRASH = 0x03cb_0027;
+		public static final int BWORN = 0x03cb_0028;
+		public static final int BWORN_GRAPHIC0 = 0x03cb_0029;
+		public static final int BWORN_GRAPHIC1 = 0x03cb_002a;
+		public static final int BWORN_GRAPHIC2 = 0x03cb_002b;
+		public static final int BWORN_GRAPHIC3 = 0x03cb_002c;
+		public static final int BWORN_GRAPHIC4 = 0x03cb_002d;
+		public static final int BSLOT0 = 0x03cb_002e;
+		public static final int BSLOT1 = 0x03cb_002f;
+		public static final int BSLOT2 = 0x03cb_0030;
+		public static final int BSLOT3 = 0x03cb_0031;
+		public static final int BSLOT4 = 0x03cb_0032;
+		public static final int BSLOT5 = 0x03cb_0033;
+		public static final int BSLOT7 = 0x03cb_0034;
+		public static final int BSLOT9 = 0x03cb_0035;
+		public static final int BSLOT10 = 0x03cb_0036;
+		public static final int BSLOT12 = 0x03cb_0037;
+		public static final int BSLOT13 = 0x03cb_0038;
+		public static final int BINVENTORY = 0x03cb_0039;
+		public static final int BMENU_CONTAINER = 0x03cb_003a;
+		public static final int BMENU_CONTAINER_GRAPHIC0 = 0x03cb_003b;
+		public static final int BMENU = 0x03cb_003c;
+		public static final int BSCROLLBAR = 0x03cb_003d;
+		public static final int BSPELLBOOK_CONTAINER = 0x03cb_003e;
+		public static final int BSPELLBOOK_CONTAINER_RECT0 = 0x03cb_003f;
+		public static final int BSPELLBOOK_MENU = 0x03cb_0040;
+		public static final int BSPELLBOOK_MENU_GRAPHIC0 = 0x03cb_0041;
+		public static final int BSTATUS = 0x03cb_0042;
+		public static final int CDISPLAY = 0x03cb_0043;
+		public static final int CSPELLBOOK_DISPLAY = 0x03cb_0044;
+		public static final int CTRASH = 0x03cb_0045;
+		public static final int CWORN = 0x03cb_0046;
+		public static final int CWORN_GRAPHIC0 = 0x03cb_0047;
+		public static final int CWORN_GRAPHIC1 = 0x03cb_0048;
+		public static final int CWORN_GRAPHIC2 = 0x03cb_0049;
+		public static final int CWORN_GRAPHIC3 = 0x03cb_004a;
+		public static final int CWORN_GRAPHIC4 = 0x03cb_004b;
+		public static final int CSLOT0 = 0x03cb_004c;
+		public static final int CSLOT1 = 0x03cb_004d;
+		public static final int CSLOT2 = 0x03cb_004e;
+		public static final int CSLOT3 = 0x03cb_004f;
+		public static final int CSLOT4 = 0x03cb_0050;
+		public static final int CSLOT5 = 0x03cb_0051;
+		public static final int CSLOT7 = 0x03cb_0052;
+		public static final int CSLOT9 = 0x03cb_0053;
+		public static final int CSLOT10 = 0x03cb_0054;
+		public static final int CSLOT12 = 0x03cb_0055;
+		public static final int CSLOT13 = 0x03cb_0056;
+		public static final int CINVENTORY = 0x03cb_0057;
+		public static final int CMENU_CONTAINER = 0x03cb_0058;
+		public static final int CMENU_CONTAINER_GRAPHIC0 = 0x03cb_0059;
+		public static final int CMENU = 0x03cb_005a;
+		public static final int CSCROLLBAR = 0x03cb_005b;
+		public static final int CSPELLBOOK_CONTAINER = 0x03cb_005c;
+		public static final int CSPELLBOOK_CONTAINER_RECT0 = 0x03cb_005d;
+		public static final int CSPELLBOOK_MENU = 0x03cb_005e;
+		public static final int CSPELLBOOK_MENU_GRAPHIC0 = 0x03cb_005f;
+		public static final int CSTATUS = 0x03cb_0060;
+	}
+
+	public static final class PvptutScoreboardUi
+	{
+		public static final int UNIVERSE = 0x03cc_0000;
+		public static final int DODGER = 0x03cc_0001;
+		public static final int CONTENTS = 0x03cc_0002;
+		public static final int TOOLTIP = 0x03cc_0003;
+		public static final int CONTENTS_RECT0 = 0x03cc_0004;
+		public static final int TEXT = 0x03cc_0005;
+		public static final int OUTPUT = 0x03cc_0006;
 	}
 /* This file is automatically generated. Do not edit. */
 }
