@@ -568,6 +568,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "bankEquipCtrlClick",
+			name = "Bank Equip ctrl-click",
+			description = "Swaps the behavior of ctrl-click when in a bank.",
+			section = uiSection
+	)
+	default CtrlEquipMode bankEquipCtrlClick()
+	{
+		return CtrlEquipMode.OFF;
+	}
+
+	@ConfigItem(
 		keyName = "shopBuy",
 		name = "Shop buy shift-click",
 		description = "Swaps the Buy options with Value on items in shops when shift is held.",
