@@ -47,6 +47,12 @@ public class ChatKeyboardListener implements KeyListener
 	private ClientThread clientThread;
 
 	@Override
+	public boolean isEnabledOnChatInput()
+	{
+		return true;
+	}
+
+	@Override
 	public void keyTyped(KeyEvent e)
 	{
 

@@ -607,6 +607,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	}
 
 	@Override
+	public boolean isEnabledOnChatInput()
+	{
+		return true;
+	}
+
+	@Override
 	public void keyTyped(KeyEvent e)
 	{
 		if (!chatboxPanelManager.shouldTakeInput())

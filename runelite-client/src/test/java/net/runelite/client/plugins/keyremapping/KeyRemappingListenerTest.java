@@ -31,6 +31,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.ModifierlessKeybind;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,6 +60,10 @@ public class KeyRemappingListenerTest
 	@Mock
 	@Bind
 	private KeyRemappingConfig keyRemappingConfig;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeLiteConfig;
 
 	@Before
 	public void setUp()

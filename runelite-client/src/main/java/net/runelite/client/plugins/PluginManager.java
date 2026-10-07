@@ -208,6 +208,13 @@ public class PluginManager
 	{
 		try
 		{
+			// Migrate each profile before defaults fill in the new core setting. Preserve explicit choices.
+			if (plugins == null && configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, "pressEnterToChat") == null)
+			{
+				configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, "pressEnterToChat",
+					Boolean.parseBoolean(configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, "keyremappingplugin")));
+			}
+
 			for (Config config : getPluginConfigProxies(plugins))
 			{
 				configManager.setDefaultConfiguration(config, false);
