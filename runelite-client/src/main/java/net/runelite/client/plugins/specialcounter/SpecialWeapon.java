@@ -68,14 +68,14 @@ public enum SpecialWeapon
 				return super.computeHit(hit, target);
 			}
 		},
-	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BRAIN_ANCHOR}, true, (c) -> 0),
-	BONE_DAGGER("Bone Dagger", new int[]{ItemID.DTTD_BONE_DAGGER, ItemID.DTTD_BONE_DAGGER_P, ItemID.DTTD_BONE_DAGGER_P_, ItemID.DTTD_BONE_DAGGER_P__}, true, (c) -> 0),
+	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BRAIN_ANCHOR}, true, SpecialCounterConfig::anchorThreshold),
+	BONE_DAGGER("Bone Dagger", new int[]{ItemID.DTTD_BONE_DAGGER, ItemID.DTTD_BONE_DAGGER_P, ItemID.DTTD_BONE_DAGGER_P_, ItemID.DTTD_BONE_DAGGER_P__}, true, SpecialCounterConfig::boneDaggerThreshold),
 	DORGESHUUN_CROSSBOW(
 		"Dorgeshuun Crossbow",
 		new int[]{ItemID.DTTD_BONE_CROSSBOW},
 		true,
 		(distance) -> 60 + distance * 3,
-		(c) -> 0
+		SpecialCounterConfig::boneCrossbowThreshold
 	),
 	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, SpecialCounterConfig::bulwarkThreshold),
 	ACCURSED_SCEPTRE(
@@ -83,14 +83,14 @@ public enum SpecialWeapon
 		new int[]{ItemID.WILD_CAVE_ACCURSED_CHARGED, ItemID.WILD_CAVE_ACCURSED_CHARGED_RECOL},
 		false,
 		(distance) -> 46 + distance * 10,
-		(c) -> 0
+		SpecialCounterConfig::accursedSceptreThreshold
 	),
 	TONALZTICS_OF_RALOS(
 		"Tonalztics of Ralos",
 		new int[]{ItemID.TONALZTICS_OF_RALOS_CHARGED},
 		true, // Not really, but we convert the number of hits into a single hit
 		(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
-		(c) -> 0
+		SpecialCounterConfig::ralosThreshold
 	),
 	ELDER_MAUL("Elder Maul",
 		new int[]{ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_ORNAMENT},
@@ -112,7 +112,7 @@ public enum SpecialWeapon
 				return 0;
 			}
 		},
-	SEERCULL("Seercull", new int[]{ItemID.DAGANOTH_CAVE_MAGIC_SHORTBOW}, true, (d) -> 46 + (d * 5), (c) -> 0),
+	SEERCULL("Seercull", new int[]{ItemID.DAGANOTH_CAVE_MAGIC_SHORTBOW}, true, (d) -> 46 + (d * 5), SpecialCounterConfig::seercullThreshold),
 	EMBERLIGHT("Emberlight", new int[]{ItemID.EMBERLIGHT}, false, SpecialCounterConfig::emberlightThreshold),
 	EYE_OF_AYAK("Eye of Ayak", new int[]{ItemID.EYE_OF_AYAK}, true, (d) ->  120, SpecialCounterConfig::ayakThreshold);
 
