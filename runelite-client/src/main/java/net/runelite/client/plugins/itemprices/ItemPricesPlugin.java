@@ -124,6 +124,7 @@ public class ItemPricesPlugin extends Plugin
 				}
 				// FALLTHROUGH
 			case CC_OP:
+			case CC_OP_LOW_PRIORITY:
 			case ITEM_USE:
 			case ITEM_FIRST_OPTION:
 			case ITEM_SECOND_OPTION:
@@ -199,7 +200,7 @@ public class ItemPricesPlugin extends Plugin
 				return null;
 			}
 
-			return getItemStackValueText(w.getItemId(), w.getItemQuantity());
+			return getItemStackValueText(w.getItemId(), Math.max(w.getItemQuantity(), 1));
 		}
 
 		return null;
