@@ -55,6 +55,7 @@ class CompactBoostsOverlay extends Overlay
 
 	private int curY;
 	private int maxX;
+	private int maxIconWidth;
 
 	@Inject
 	private CompactBoostsOverlay(Client client, BoostsConfig config, BoostsPlugin plugin, SkillIconManager skillIconManager)
@@ -78,6 +79,13 @@ class CompactBoostsOverlay extends Overlay
 		}
 
 		curY = maxX = 0;
+		maxIconWidth = Math.max(BUFFED.getWidth(), DEBUFFED.getWidth());
+
+		for (Skill skill : boostedSkills)
+		{
+			BufferedImage img = skillIconManager.getSkillImage(skill, true);
+			maxIconWidth = Math.max(maxIconWidth, img.getWidth());
+		}
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 		final int fontHeight = fontMetrics.getHeight();
@@ -129,7 +137,7 @@ class CompactBoostsOverlay extends Overlay
 		textComponent.setText(text);
 		textComponent.setOutline(true);
 		textComponent.setPosition(new Point(
-			image.getWidth()
+			maxIconWidth
 				+ H_PADDING // add a little bit of padding to get the text off the side of the image
 				+ (TEXT_WIDTH - stringWidth), // right justify to TEXT_WIDTH
 			// this really should be y + (image.getHeight() / 2) + (fontHeight / 2), but in practice
