@@ -27,6 +27,8 @@ package net.runelite.client.plugins.spellbook;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -107,6 +109,7 @@ public class SpellbookPlugin extends Plugin
 	private ConfigManager configManager;
 
 	private boolean reordering;
+	private final Map<Integer, Map<Integer, Integer>> spellIdsByWidgetAndSpellbook = new HashMap<>();
 
 	@Provides
 	SpellbookConfig getConfig(ConfigManager configManager)
@@ -389,6 +392,9 @@ public class SpellbookPlugin extends Plugin
 			int spellObjId = spellbook.getIntValue(i);
 			ItemComposition spellObj = client.getItemDefinition(spellObjId);
 			int spellComponent = spellObj.getIntValue(ParamID.SPELL_BUTTON);
+
+			spellIdsByWidgetAndSpellbook.computeIfAbsent(spellComponent, k -> new HashMap<>()).put(spellbookEnum, spellObjId);
+
 			Widget w = client.getWidget(spellComponent);
 			if (w == null)
 			{
@@ -409,11 +415,13 @@ public class SpellbookPlugin extends Plugin
 					int subSpellbookId = client.getEnum(EnumID.SPELLBOOKS_SUB).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK));
 					int spellbookId = client.getEnum(subSpellbookId).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK_SUBLIST));
 
-					boolean hidden = isHidden(spellbookId, spellObjId);
+					int spellIdFromCurrentSpellbook = spellIdsByWidgetAndSpellbook.get(s.getId()).get(spellbookId);
+
+					boolean hidden = isHidden(spellbookId, spellIdFromCurrentSpellbook);
 					hidden = !hidden;
 
 					log.debug("Changing {} to hidden: {}", s.getName(), hidden);
-					setHidden(spellbookId, spellObjId, hidden);
+					setHidden(spellbookId, spellIdFromCurrentSpellbook, hidden);
 
 					s.setOpacity(hidden ? 100 : 0);
 					s.setAction(HIDE_UNHIDE_OP, hidden ? "Unhide" : "Hide");
