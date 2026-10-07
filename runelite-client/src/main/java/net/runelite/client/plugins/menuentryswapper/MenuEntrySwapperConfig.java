@@ -227,14 +227,14 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapBirdhouseEmpty",
+		keyName = "swapBirdhouse",
 		name = "Birdhouse",
-		description = "Swap Interact with Empty for birdhouses on Fossil Island.",
+		description = "Swap Interact with Empty or Reset for birdhouses on Fossil Island.",
 		section = objectSection
 	)
-	default boolean swapBirdhouseEmpty()
+	default BirdhouseMode swapBirdhouse()
 	{
-		return true;
+		return BirdhouseMode.EMPTY;
 	}
 
 	@ConfigItem(
