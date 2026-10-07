@@ -28,10 +28,12 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_FOG_DEPTH;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.ColorBlindMode;
+import net.runelite.client.plugins.gpu.config.GameScalingMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 
 @ConfigGroup(GpuPluginConfig.GROUP)
@@ -101,10 +103,37 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "gameResolutionScale",
+		name = "Game Resolution",
+		description = "Change the resolution the game is rendered in relative to the actual window resolution.",
+		position = 4
+	)
+	@Units(Units.PERCENT)
+	@Range(
+		min = 1,
+		max = 200
+	)
+	default int gameResolutionScale()
+	{
+		return 100;
+	}
+
+	@ConfigItem(
+		keyName = "gameScalingMode",
+		name = "Game Scaling Mode",
+		description = "Sampling function to use for the game resolution setting.",
+		position = 5
+	)
+	default GameScalingMode gameScalingMode()
+	{
+		return GameScalingMode.NEAREST;
+	}
+
+	@ConfigItem(
 		keyName = "uiScalingMode",
 		name = "UI scaling mode",
 		description = "Sampling function to use for the UI in stretched mode.",
-		position = 4
+		position = 6
 	)
 	default UIScalingMode uiScalingMode()
 	{
@@ -118,7 +147,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "fogDepth",
 		name = "Fog depth",
 		description = "Distance from the scene edge the fog starts.",
-		position = 5
+		position = 7
 	)
 	default int fogDepth()
 	{
@@ -133,7 +162,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "anisotropicFilteringLevel",
 		name = "Anisotropic filtering",
 		description = "Configures the anisotropic filtering level.",
-		position = 7
+		position = 8
 	)
 	default int anisotropicFilteringLevel()
 	{
@@ -144,7 +173,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "colorBlindMode",
 		name = "Colorblindness correction",
 		description = "Adjusts colors to account for colorblindness.",
-		position = 8
+		position = 9
 	)
 	default ColorBlindMode colorBlindMode()
 	{
@@ -159,7 +188,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "colorBlindIntensity",
 		name = "Colorblindness intensity",
 		description = "Strength of the colorblindness correction effect.",
-		position = 9
+		position = 10
 	)
 	default int colorBlindIntensity()
 	{
@@ -170,7 +199,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "brightTextures",
 		name = "Bright textures",
 		description = "Use old texture lighting method which results in brighter game textures.",
-		position = 10
+		position = 11
 	)
 	default boolean brightTextures()
 	{
@@ -181,7 +210,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "unlockFps",
 		name = "Unlock FPS",
 		description = "Removes the 50 FPS cap for camera movement.",
-		position = 11
+		position = 12
 	)
 	default boolean unlockFps()
 	{
@@ -199,7 +228,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "vsyncMode",
 		name = "Vsync mode",
 		description = "Method to synchronize frame rate with refresh rate.",
-		position = 12
+		position = 13
 	)
 	default SyncMode syncMode()
 	{
@@ -210,7 +239,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "fpsTarget",
 		name = "FPS target",
 		description = "Target FPS when 'Unlock FPS' is enabled and 'Vsync mode' is off.",
-		position = 13
+		position = 14
 	)
 	@Range(
 		min = 1,
@@ -225,7 +254,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "removeVertexSnapping",
 		name = "Remove vertex snapping",
 		description = "Removes vertex snapping from most animations.",
-		position = 14
+		position = 15
 	)
 	default boolean removeVertexSnapping()
 	{
