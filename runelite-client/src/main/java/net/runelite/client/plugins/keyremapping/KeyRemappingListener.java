@@ -27,6 +27,7 @@ package net.runelite.client.plugins.keyremapping;
 
 import com.google.common.base.Strings;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,8 +37,9 @@ import net.runelite.api.Client;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.MouseAdapter;
 
-class KeyRemappingListener implements KeyListener
+class KeyRemappingListener extends MouseAdapter implements KeyListener
 {
 	@Inject
 	private KeyRemappingPlugin plugin;
@@ -242,5 +244,153 @@ class KeyRemappingListener implements KeyListener
 			e.setKeyCode(mappedKeyCode);
 			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 		}
+	}
+
+	@Override
+	public MouseEvent mousePressed(MouseEvent me)
+	{
+		if (!plugin.chatboxFocused())
+		{
+			return me;
+		}
+
+		// Early return if mouse event is left/right click and can't be bound
+		if (me.getButton() == MouseEvent.BUTTON1 || me.getButton() == MouseEvent.BUTTON3)
+		{
+			return me;
+		}
+
+		// Consumes mouse events from extra buttons to prevent game from defaulting to primary click
+		if (me.getButton() > 3)
+		{
+			me.consume();
+		}
+
+		if (!plugin.isTyping())
+		{
+			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
+
+			// In addition to the above checks, the F-key remapping shouldn't
+			// activate when dialogs are open which listen for number keys
+			// to select options
+			if (config.fkeyRemap() && !plugin.isDialogOpen())
+			{
+				if (config.f1().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F1;
+				}
+				else if (config.f2().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F2;
+				}
+				else if (config.f3().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F3;
+				}
+				else if (config.f4().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F4;
+				}
+				else if (config.f5().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F5;
+				}
+				else if (config.f6().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F6;
+				}
+				else if (config.f7().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F7;
+				}
+				else if (config.f8().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F8;
+				}
+				else if (config.f9().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F9;
+				}
+				else if (config.f10().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F10;
+				}
+				else if (config.f11().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F11;
+				}
+				else if (config.f12().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_F12;
+				}
+				else if (config.esc().matches(me))
+				{
+					mappedKeyCode = KeyEvent.VK_ESCAPE;
+				}
+			}
+
+			// Do not remap to space key when the options dialog is open, since the options dialog never
+			// listens for space, and the remapped key may be one of keys it listens for.
+			if (plugin.isDialogOpen() && !plugin.isOptionsDialogOpen() && config.space().matches(me))
+			{
+				mappedKeyCode = KeyEvent.VK_SPACE;
+			}
+
+			if (!plugin.isOptionsDialogOpen() && config.control().matches(me))
+			{
+				mappedKeyCode = KeyEvent.VK_CONTROL;
+			}
+
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != me.getButton())
+			{
+				modified.put(me.getButton(), mappedKeyCode);
+
+				int modifiers = me.getModifiersEx();
+				long now = System.currentTimeMillis();
+
+				KeyEvent syntheticKeyPress = new KeyEvent(
+						me.getComponent(),
+						KeyEvent.KEY_PRESSED,
+						now,
+						modifiers,
+						mappedKeyCode,
+						KeyEvent.CHAR_UNDEFINED
+				);
+
+
+				clientThread.invokeLater(() ->
+				{
+					client.getCanvas().dispatchEvent(syntheticKeyPress);
+				});
+			}
+		}
+		return me;
+	}
+
+	@Override
+	public MouseEvent mouseReleased(MouseEvent me)
+	{
+		final int mouseButton = me.getButton();
+
+		final Integer mappedKeyCode = modified.remove(mouseButton);
+
+		// Creates a KeyEvent for mapped key code and dispatches it to the client
+		if (mappedKeyCode != null)
+		{
+			int modifiers = me.getModifiersEx();
+
+			KeyEvent syntheticKeyRelease = new KeyEvent(
+					me.getComponent(),
+					KeyEvent.KEY_RELEASED,
+					System.currentTimeMillis(),
+					modifiers,
+					mappedKeyCode,
+					KeyEvent.CHAR_UNDEFINED
+			);
+
+			clientThread.invokeLater(() -> client.getCanvas().dispatchEvent(syntheticKeyRelease));
+		}
+
+		return me;
 	}
 }

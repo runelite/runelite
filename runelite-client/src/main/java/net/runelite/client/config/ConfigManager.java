@@ -1221,6 +1221,18 @@ public class ConfigManager
 			}
 			return new Keybind(code, mods);
 		}
+		if (type == Unifiedbind.class || type == ModifierlessUnifiedbind.class)
+		{
+			String[] splitStr = str.split(":");
+			Unifiedbind.Type bindType = Unifiedbind.Type.valueOf(splitStr[0]);
+			int code = Integer.parseInt(splitStr[1]);
+			int mods = Integer.parseInt(splitStr[2]);
+			if (type == ModifierlessUnifiedbind.class)
+			{
+				return new ModifierlessUnifiedbind(bindType, code);
+			}
+			return new Unifiedbind(bindType, code, mods);
+		}
 		if (type == WorldPoint.class)
 		{
 			String[] splitStr = str.split(":");
@@ -1303,6 +1315,11 @@ public class ConfigManager
 		{
 			Keybind k = (Keybind) object;
 			return k.getKeyCode() + ":" + k.getModifiers();
+		}
+		if (object instanceof Unifiedbind)
+		{
+			Unifiedbind u = (Unifiedbind) object;
+			return u.getType() + ":" + u.getCode() + ":" + u.getModifiers();
 		}
 		if (object instanceof WorldPoint)
 		{
