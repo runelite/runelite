@@ -32,7 +32,7 @@ import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum MiningSiteLocation
+public enum MiningSiteLocation
 {
 	AGILITY_PYRAMID(new WorldPoint(3322, 2875, 0), new Rock(5, Ore.GOLD)),
 	// ABANDONED_MINE -- NOT AVAILABLE ON WORLDMAP

@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum DungeonLocation
+public enum DungeonLocation
 {
 	ABANDONED_MINE("Abandoned Mine", new WorldPoint(3439, 3232, 0)),
 	ABANDONED_MINE_SECRET("Abandoned Mine (secret entrance)", new WorldPoint(3452, 3244, 0)),
