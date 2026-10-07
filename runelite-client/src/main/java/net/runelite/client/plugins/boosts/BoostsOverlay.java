@@ -83,7 +83,7 @@ class BoostsOverlay extends OverlayPanel
 		for (Skill skill : boostedSkills)
 		{
 			final int boosted = client.getBoostedSkillLevel(skill);
-			final int base = client.getRealSkillLevel(skill);
+			final int base = CombatLevelsProvider.getRealSkillLevel(client, skill);
 			final int boost = boosted - base;
 			final Color strColor = getTextColor(boost);
 			String str;
