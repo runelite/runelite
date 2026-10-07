@@ -80,10 +80,21 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "farmingContractInfoBoxStateText",
+		name = "Show state on farming contract infobox",
+		description = "Show the state of your current farming contract on the infobox.",
+		position = 5
+	)
+	default ContractStateText farmingContractInfoBoxStateText()
+	{
+		return ContractStateText.NEVER;
+	}
+
+	@ConfigItem(
 		keyName = "defaultTimerMinutes",
 		name = "Default time",
 		description = "The default time for the timer in minutes.",
-		position = 5
+		position = 6
 	)
 	@Units(Units.MINUTES)
 	default int defaultTimerMinutes()
@@ -95,7 +106,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "sortOrder",
 		name = "Sort order",
 		description = "The order in which to sort the timers.",
-		position = 6
+		position = 7
 	)
 	default SortOrder sortOrder()
 	{
@@ -106,7 +117,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "timerWarningThreshold",
 		name = "Warning threshold",
 		description = "The time at which to change the timer color to the warning color.",
-		position = 6
+		position = 8
 	)
 	@Units(Units.SECONDS)
 	default int timerWarningThreshold()
@@ -118,7 +129,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = PREFER_SOONEST,
 		name = "Prefer soonest completion",
 		description = "When displaying completion times on the overview, prefer showing the soonest any patch will complete.",
-		position = 7
+		position = 9
 	)
 	default boolean preferSoonest()
 	{
