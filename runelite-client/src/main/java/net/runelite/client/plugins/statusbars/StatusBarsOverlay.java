@@ -33,6 +33,8 @@ import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
 import javax.inject.Inject;
+
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.MenuEntry;
@@ -54,7 +56,9 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.util.ImageUtil;
+import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
+@Slf4j
 class StatusBarsOverlay extends Overlay
 {
 	private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
@@ -70,6 +74,10 @@ class StatusBarsOverlay extends Overlay
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
 	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
 	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
+	private static final Color WARMTH_COLOR = new Color(244, 97, 0, 181);
+	private static final Color BOAT_HEALTH_COLOR = new Color(114, 69, 0, 181);
+	private static final Color BOAT_HEAL_COLOR = new Color(211, 167, 98, 181);
+	private static final int BOAT_HEALTH_ICON = SpriteID.IconSailingFacilities16x16._20;
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
@@ -215,9 +223,17 @@ class StatusBarsOverlay extends Overlay
 			() -> 100,
 			() -> client.getVarbitValue(VarbitID.WINT_WARMTH) / 10,
 			() -> 0,
-			() -> new Color(244, 97, 0),
+			() -> WARMTH_COLOR,
 			() -> null,
 			() -> skillIconManager.getSkillImage(Skill.FIREMAKING, true)
+		));
+		barRenderers.put(StatusBarsConfig.BarMode.BOAT_HEALTH, new BarRenderer(
+				() -> BOAT_HEALTH.getMaximum(client),
+				() -> BOAT_HEALTH.getValue(client),
+				() -> getRestoreValue(BOAT_HEALTH.getName()),
+				() -> BOAT_HEALTH_COLOR,
+				() -> BOAT_HEAL_COLOR,
+				() -> loadSprite(BOAT_HEALTH_ICON)
 		));
 	}
 
@@ -273,8 +289,11 @@ class StatusBarsOverlay extends Overlay
 			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 
-		BarRenderer left = barRenderers.get(config.leftBarMode());
-		BarRenderer right = barRenderers.get(config.rightBarMode());
+		StatusBarsConfig.BarMode leftBarMode = config.leftBarMode();
+		StatusBarsConfig.BarMode rightBarMode = config.rightBarMode();
+
+		BarRenderer left = getBarRenderer(leftBarMode, rightBarMode);
+		BarRenderer right = getBarRenderer(rightBarMode, leftBarMode);
 
 		if (left != null)
 		{
@@ -331,5 +350,30 @@ class StatusBarsOverlay extends Overlay
 	private boolean inLms()
 	{
 		return client.getWidget(InterfaceID.BrOverlay.CONTENT) != null;
+	}
+
+	public boolean isSailing()
+	{
+		return client.getVarbitValue(VarbitID.SAILING_PLAYER_IS_ON_PLAYER_BOAT) > 0;
+	}
+
+	private boolean validForContextSwapBoatHealth(StatusBarsConfig.BarMode barMode)
+	{
+		return barMode == StatusBarsConfig.BarMode.HITPOINTS && config.contextualBoatHealth() && isSailing();
+	}
+
+	private BarRenderer getBarRenderer(StatusBarsConfig.BarMode barMode, StatusBarsConfig.BarMode otherBarMode)
+	{
+		if (validForContextSwapBoatHealth(barMode) && otherBarMode != StatusBarsConfig.BarMode.BOAT_HEALTH)
+		{
+			return barRenderers.get(StatusBarsConfig.BarMode.BOAT_HEALTH);
+		}
+
+		if (barMode == StatusBarsConfig.BarMode.BOAT_HEALTH && BOAT_HEALTH.getMaximum(client) < 1)
+		{
+			return barRenderers.get(StatusBarsConfig.BarMode.DISABLED);
+		}
+
+		return barRenderers.get(barMode);
 	}
 }

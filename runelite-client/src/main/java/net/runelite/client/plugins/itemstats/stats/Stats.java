@@ -53,4 +53,5 @@ public class Stats
 	public static final Stat CONSTRUCTION = new SkillStat(Skill.CONSTRUCTION);
 	public static final Stat SAILING = new SkillStat(Skill.SAILING);
 	public static final Stat RUN_ENERGY = new EnergyStat();
+	public static final Stat BOAT_HEALTH = new BoatHealthStat();
 }
