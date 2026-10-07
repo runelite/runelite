@@ -97,8 +97,8 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final boolean dontShowOverlay = (config.itemHighlightMode() == MENU || config.itemHighlightMode() == NONE
-			|| plugin.isHideAll()) && !plugin.isHotKeyPressed();
+		final boolean dontShowOverlay = (config.itemHighlightMode() == MENU || config.itemHighlightMode() == NONE)
+			&& !plugin.isHotKeyPressed();
 
 		if (dontShowOverlay && !config.highlightTiles())
 		{
@@ -200,7 +200,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				// Do not display non-highlighted items
-				if (config.showHighlightedOnly())
+				if (config.showHighlightedOnly() || plugin.isHideAll())
 				{
 					continue;
 				}
