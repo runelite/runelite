@@ -42,6 +42,13 @@ public interface MinimapConfig extends Config
 	)
 	String minimapDotSection = "minimapDotSection";
 
+	@ConfigSection(
+		name = "Hide minimap dots",
+		description = "Dots that are hidden on the minimap.",
+		position = 1
+	)
+	String minimapHideDotSection = "minimapHideDotSection";
+
 	@ConfigItem(
 		keyName = "zoom",
 		name = "Zoom",
@@ -117,4 +124,81 @@ public interface MinimapConfig extends Config
 		section = minimapDotSection
 	)
 	Color clanChatColor();
+
+	@ConfigItem(
+		keyName = "hideItem",
+		name = "Hide item",
+		description = "Do not show items on the minimap",
+		section = minimapHideDotSection
+	)
+	default boolean hideItem()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideNpc",
+		name = "Hide NPC",
+		description = "Do not show NPCs on the minimap",
+		section = minimapHideDotSection
+	)
+	default boolean hideNpc()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hidePlayer",
+		name = "Hide player",
+		description = "Do not show players on the minimap",
+		section = minimapHideDotSection
+	)
+	default boolean hidePlayer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideFriend",
+		name = "Hide friends",
+		description = "Do not show friends on the minimap",
+		section = minimapHideDotSection
+	)
+	default boolean hideFriend()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideTeam",
+		name = "Hide team",
+		description = "Do not show team members on the minimap",
+		section = minimapHideDotSection
+	)
+	default boolean hideTeam()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideFriendsChat",
+		name = "Hide friends chat",
+		description = "Do not show friends chat members on the minimap",
+		section = minimapHideDotSection
+	)
+	default boolean hideFriendsChat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideClanChat",
+		name = "Hide clan chat",
+		description = "Do not show clan chat members on the minimap",
+		section = minimapHideDotSection
+	)
+	default boolean hideClanChat()
+	{
+		return false;
+	}
 }
