@@ -51,4 +51,5 @@ class LootTrackerItem
 	{
 		return (long) haPrice * quantity;
 	}
+
 }
