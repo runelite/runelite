@@ -89,8 +89,8 @@ public class ArchiveFiles
 		int chunks = stream.readUnsignedByte();
 
 		// -1 for chunks count + one int per file slot per chunk
-		stream.setOffset(stream.getLength() - 1 - chunks * filesCount * 4);
-		int[][] chunkSizes = new int[filesCount][chunks];
+		int chunkTableOffset = stream.getLength() - 1 - chunks * filesCount * 4;
+		stream.setOffset(chunkTableOffset);
 		int[] filesSize = new int[filesCount];
 
 		for (int chunk = 0; chunk < chunks; ++chunk)
@@ -101,8 +101,6 @@ public class ArchiveFiles
 			{
 				int delta = stream.readInt();
 				chunkSize += delta; // size of this chunk
-
-				chunkSizes[id][chunk] = chunkSize; // store size of chunk
 
 				filesSize[id] += chunkSize; // add chunk size to file size
 			}
@@ -116,17 +114,20 @@ public class ArchiveFiles
 			fileContents[i] = new byte[filesSize[i]];
 		}
 
-		// the file data is at the beginning of the stream
-		stream.setOffset(0);
+		// Read the chunk table again instead of allocating a size array for every file.
+		stream.setOffset(chunkTableOffset);
+		int dataOffset = 0;
 
 		for (int chunk = 0; chunk < chunks; ++chunk)
 		{
+			int chunkSize = 0;
 			for (int id = 0; id < filesCount; ++id)
 			{
-				int chunkSize = chunkSizes[id][chunk];
+				chunkSize += stream.readInt();
 
-				stream.readBytes(fileContents[id], fileOffsets[id], chunkSize);
+				System.arraycopy(data, dataOffset, fileContents[id], fileOffsets[id], chunkSize);
 
+				dataOffset += chunkSize;
 				fileOffsets[id] += chunkSize;
 			}
 		}
@@ -141,9 +142,13 @@ public class ArchiveFiles
 
 	public byte[] saveContents()
 	{
-		OutputStream stream = new OutputStream();
-
 		int filesCount = this.getFiles().size();
+		int size = filesCount == 1 ? 0 : filesCount * Integer.BYTES + 1;
+		for (FSFile file : files.values())
+		{
+			size = Math.addExact(size, file.getSize());
+		}
+		OutputStream stream = new OutputStream(size);
 
 		if (filesCount == 1)
 		{
@@ -172,7 +177,8 @@ public class ArchiveFiles
 			stream.writeByte(1); // chunks
 		}
 
-		byte[] fileData = stream.flip();
+		// The exact-size buffer belongs to this result; no final copy is necessary.
+		byte[] fileData = stream.getArray();
 
 		logger.trace("Saved contents of archive ({} files), {} bytes", files.size(), fileData.length);
 		return fileData;

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.gpu;
 import java.nio.IntBuffer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -310,15 +309,14 @@ class Zone
 		byte flags;
 
 		// only set for static geometry as they require sorting
-		int radius;
-		int[] packedFaces;
+		AlphaFaceSorter faceSorter;
 
 		static final int SKIP = 1; // temporary model is in a closer zone
 		static final int TEMP = 2; // temporary model added to a closer zone
 
 		boolean isTemp()
 		{
-			return packedFaces == null;
+			return faceSorter == null;
 		}
 	}
 
@@ -396,7 +394,7 @@ class Zone
 			shift++;
 		}
 
-		int[] packedFaces = m.packedFaces = new int[(endpos - startpos) / ((3 * VERT_SIZE) >> 2)];
+		int[] packedFaces = new int[(endpos - startpos) / ((3 * VERT_SIZE) >> 2)];
 		int radius = 0;
 		char bufferIdx = 0;
 		for (int f = 0; f < faceCount; ++f)
@@ -420,7 +418,7 @@ class Zone
 
 		assert radius >= 0;
 
-		m.radius = 2 + (int) Math.sqrt(radius);
+		m.faceSorter = new AlphaFaceSorter(2 + (int) Math.sqrt(radius), packedFaces);
 
 		assert packedFaces.length > 0;
 		assert bufferIdx == packedFaces.length;
@@ -462,7 +460,7 @@ class Zone
 			if (m.isTemp() || (m.flags & AlphaModel.TEMP) != 0)
 			{
 				alphaModels.remove(i);
-				m.packedFaces = null;
+				m.faceSorter = null;
 				modelCache.add(m);
 			}
 			m.flags &= ~AlphaModel.SKIP;
@@ -590,50 +588,18 @@ class Zone
 
 			lastDrawMode = STATIC;
 
-			final int radius = m.radius;
-			int diameter = 1 + radius * 2;
-			final int[] packedFaces = m.packedFaces;
-			if (diameter >= MAX_DIAMETER)
+			AlphaFaceSorter faceSorter = m.faceSorter;
+			if (1 + faceSorter.radius * 2 >= MAX_DIAMETER)
 			{
 				continue;
 			}
 
-			Arrays.fill(mu.zsortHead, 0, diameter, (char) -1);
-			Arrays.fill(mu.zsortTail, 0, diameter, (char) -1);
-
-			for (char i = 0; i < packedFaces.length; ++i)
+			int faceCount = faceSorter.faceCount();
+			if (faceCount * 3 > alphaElements.remaining())
 			{
-				int pack = packedFaces[i];
-
-				int x = pack >> 21;
-				int y = (pack << 11) >> 22;
-				int z = (pack << 21) >> 21;
-
-				int t = z * yawcos - x * yawsin >> 16;
-				int fz = y * pitchsin + t * pitchcos >> 16;
-				fz += radius;
-
-				assert fz >= 0 && fz < diameter : fz;
-
-				if (mu.zsortTail[fz] == (char) -1)
+				if (faceCount * 3 > alphaElements.capacity())
 				{
-					mu.zsortHead[fz] = mu.zsortTail[fz] = i;
-					mu.zsortNext[i] = (char) -1;
-				}
-				else
-				{
-					char lastFace = mu.zsortTail[fz];
-					mu.zsortNext[lastFace] = i;
-					mu.zsortNext[i] = (char) -1;
-					mu.zsortTail[fz] = i;
-				}
-			}
-
-			if (packedFaces.length * 3 > alphaElements.remaining())
-			{
-				if (packedFaces.length * 3 > alphaElements.capacity())
-				{
-					log.debug("Alpha model too large: {}", packedFaces.length);
+					log.debug("Alpha model too large: {}", faceCount);
 					continue;
 				}
 
@@ -641,17 +607,7 @@ class Zone
 			}
 
 			final int start = m.startpos / (VERT_SIZE >> 2); // ints to verts
-			for (int i = diameter - 1; i >= 0; --i)
-			{
-				for (char face = mu.zsortHead[i]; face != (char) -1; face = mu.zsortNext[face])
-				{
-					int faceIdx = face * 3;
-					faceIdx += start;
-					alphaElements.put(faceIdx++);
-					alphaElements.put(faceIdx++);
-					alphaElements.put(faceIdx++);
-				}
-			}
+			faceSorter.writeIndices(yawsin, yawcos, pitchsin, pitchcos, mu.zsortHead, mu.zsortTail, mu.zsortNext, alphaElements, start);
 		}
 
 		flush();
@@ -764,8 +720,7 @@ class Zone
 				m2.zofx = (byte) (closestZoneX - zx);
 				m2.zofz = (byte) (closestZoneZ - zz);
 
-				m2.packedFaces = m.packedFaces;
-				m2.radius = m.radius;
+				m2.faceSorter = m.faceSorter;
 
 				m2.flags = AlphaModel.TEMP;
 				m.flags |= AlphaModel.SKIP;

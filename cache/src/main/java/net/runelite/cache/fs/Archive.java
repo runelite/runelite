@@ -43,7 +43,6 @@ public class Archive
 	@Getter
 	private final int archiveId;
 	@Getter
-	@Setter
 	private int nameHash;
 	@Getter
 	@Setter
@@ -68,6 +67,18 @@ public class Archive
 	{
 		this.index = index;
 		this.archiveId = id;
+	}
+
+	public void setNameHash(int nameHash)
+	{
+		if (this.nameHash != nameHash)
+		{
+			this.nameHash = nameHash;
+			if (index != null)
+			{
+				index.invalidateNameCache();
+			}
+		}
 	}
 
 	public byte[] decompress(byte[] data) throws IOException

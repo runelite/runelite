@@ -24,6 +24,8 @@
  */
 package net.runelite.client.util;
 
+import java.util.Random;
+import java.util.regex.Pattern;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -41,6 +43,36 @@ public class TextTest
 		assertEquals("a < b", Text.removeTags("a < b"));
 		assertEquals("a  b", Text.removeTags("a <lt> b"));
 		assertEquals("Remove no tags", Text.removeTags("Remove no tags"));
+	}
+
+	@Test
+	public void removeTagsMalformedInput()
+	{
+		assertEquals("", Text.removeTags(""));
+		assertEquals("ab", Text.removeTags("a<>b"));
+		assertEquals("a>b", Text.removeTags("a<<nested>><tag>b"));
+		assertEquals("a>b<unfinished", Text.removeTags("a><tag>b<unfinished"));
+		assertEquals("ab", Text.removeTags("a<line\nbreak>b"));
+		assertEquals("<".repeat(4096), Text.removeTags("<".repeat(4096)));
+	}
+
+	@Test
+	public void removeTagsMatchesRegex()
+	{
+		Pattern reference = Pattern.compile("<([^>]*)>");
+		Random random = new Random(0x7A65);
+		String alphabet = "ab<>\n\r\u0085\u2028\u2029\uD83D\uDE00";
+		for (int sample = 0; sample < 10_000; sample++)
+		{
+			StringBuilder input = new StringBuilder();
+			int length = random.nextInt(100);
+			for (int i = 0; i < length; i++)
+			{
+				input.append(alphabet.charAt(random.nextInt(alphabet.length())));
+			}
+			String text = input.toString();
+			assertEquals(reference.matcher(text).replaceAll(""), Text.removeTags(text));
+		}
 	}
 
 	@Test
