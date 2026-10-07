@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.con>
+ * Copyright (c) 2026
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,56 +24,25 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.image.BufferedImage;
-import java.util.Comparator;
-import java.util.Map;
-import lombok.Builder;
-import lombok.Value;
+import java.awt.Graphics;
+import java.util.List;
+import javax.swing.JTabbedPane;
 
-/**
- * UI navigation button.
- */
-@Value
-@Builder
-public class NavigationButton
+final class SidebarPane extends JTabbedPane
 {
-	static final Comparator<NavigationButton> COMPARATOR = Comparator.comparing(NavigationButton::getPriority)
-		.thenComparing(NavigationButton::getTooltip);
+	private final List<SidebarSlot> slots;
 
-	/**
-	 * Icon of button.
-	 */
-	private final BufferedImage icon;
+	SidebarPane(List<SidebarSlot> slots)
+	{
+		super(JTabbedPane.RIGHT);
+		this.slots = slots;
+	}
 
-	/**
-	 * Tooltip to show when hovered.
-	 */
-	@Builder.Default
-	private final String tooltip = "";
-
-	/**
-	 * On click action of the button.
-	 */
-	private final Runnable onClick;
-
-	/**
-	 * Plugin panel, used when expanding and contracting sidebar.
-	 */
-	private final PluginPanel panel;
-
-	/**
-	 * The order in which the button should be displayed in the side bar. (from lower to higher)
-	 */
-	private final int priority;
-
-	/**
-	 * Map of key-value pairs for setting the popup menu
-	 */
-	private final Map<String, Runnable> popup;
-
-	/**
-	 * Stable id used to remember sidebar folder membership across restarts.
-	 * When unset, the panel class name is used instead.
-	 */
-	private final String sidebarId;
+	@Override
+	protected void paintChildren(Graphics g)
+	{
+		super.paintChildren(g);
+		// After the tab backgrounds, so FlatLaf does not cover the stroke, and outside the icons.
+		SidebarGroupOutline.paint(g, slots, getTabCount(), this::getBoundsAt);
+	}
 }

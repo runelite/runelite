@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.con>
+ * Copyright (c) 2026
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,56 +24,40 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.image.BufferedImage;
-import java.util.Comparator;
-import java.util.Map;
-import lombok.Builder;
-import lombok.Value;
+import javax.annotation.Nullable;
+import lombok.Getter;
 
-/**
- * UI navigation button.
- */
-@Value
-@Builder
-public class NavigationButton
+@Getter
+final class SidebarSlot
 {
-	static final Comparator<NavigationButton> COMPARATOR = Comparator.comparing(NavigationButton::getPriority)
-		.thenComparing(NavigationButton::getTooltip);
+	@Nullable
+	private final NavigationButton button;
+	@Nullable
+	private final PluginGroup folder;
 
-	/**
-	 * Icon of button.
-	 */
-	private final BufferedImage icon;
+	private SidebarSlot(NavigationButton button, PluginGroup folder)
+	{
+		this.button = button;
+		this.folder = folder;
+	}
 
-	/**
-	 * Tooltip to show when hovered.
-	 */
-	@Builder.Default
-	private final String tooltip = "";
+	static SidebarSlot folder(PluginGroup folder)
+	{
+		return new SidebarSlot(null, folder);
+	}
 
-	/**
-	 * On click action of the button.
-	 */
-	private final Runnable onClick;
+	static SidebarSlot plugin(NavigationButton button, PluginGroup folder)
+	{
+		return new SidebarSlot(button, folder);
+	}
 
-	/**
-	 * Plugin panel, used when expanding and contracting sidebar.
-	 */
-	private final PluginPanel panel;
+	boolean isFolder()
+	{
+		return button == null;
+	}
 
-	/**
-	 * The order in which the button should be displayed in the side bar. (from lower to higher)
-	 */
-	private final int priority;
-
-	/**
-	 * Map of key-value pairs for setting the popup menu
-	 */
-	private final Map<String, Runnable> popup;
-
-	/**
-	 * Stable id used to remember sidebar folder membership across restarts.
-	 * When unset, the panel class name is used instead.
-	 */
-	private final String sidebarId;
+	boolean isChild()
+	{
+		return button != null && folder != null;
+	}
 }

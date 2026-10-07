@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.con>
+ * Copyright (c) 2026
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,56 +24,73 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.image.BufferedImage;
-import java.util.Comparator;
-import java.util.Map;
-import lombok.Builder;
-import lombok.Value;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * UI navigation button.
+ * Children are stored as {@link NavigationButton#getSidebarId()} when the plugin sets one,
+ * otherwise the panel class name, so the layout can be saved without holding live buttons.
  */
-@Value
-@Builder
-public class NavigationButton
+
+@Getter
+@Setter
+final class PluginGroup
 {
-	static final Comparator<NavigationButton> COMPARATOR = Comparator.comparing(NavigationButton::getPriority)
-		.thenComparing(NavigationButton::getTooltip);
+	private String id;
+	private String name;
+	private boolean expanded;
+	private boolean childOrderCustom;
+	private String iconKey;
+	private List<String> children = new ArrayList<>();
 
-	/**
-	 * Icon of button.
-	 */
-	private final BufferedImage icon;
+	void addPlugin(String key)
+	{
+		if (key != null && !children.contains(key))
+		{
+			children.add(key);
+		}
+	}
 
-	/**
-	 * Tooltip to show when hovered.
-	 */
-	@Builder.Default
-	private final String tooltip = "";
+	void removePlugin(String key)
+	{
+		children.remove(key);
+		if (Objects.equals(iconKey, key))
+		{
+			iconKey = null;
+		}
+	}
 
-	/**
-	 * On click action of the button.
-	 */
-	private final Runnable onClick;
+	void toggleExpanded()
+	{
+		expanded = !expanded;
+	}
 
-	/**
-	 * Plugin panel, used when expanding and contracting sidebar.
-	 */
-	private final PluginPanel panel;
-
-	/**
-	 * The order in which the button should be displayed in the side bar. (from lower to higher)
-	 */
-	private final int priority;
-
-	/**
-	 * Map of key-value pairs for setting the popup menu
-	 */
-	private final Map<String, Runnable> popup;
-
-	/**
-	 * Stable id used to remember sidebar folder membership across restarts.
-	 * When unset, the panel class name is used instead.
-	 */
-	private final String sidebarId;
+	void normalize()
+	{
+		if (id == null || id.isEmpty())
+		{
+			id = UUID.randomUUID().toString();
+		}
+		if (name == null || name.trim().isEmpty())
+		{
+			name = "Folder";
+		}
+		else
+		{
+			name = name.trim();
+		}
+		if (children == null)
+		{
+			children = new ArrayList<>();
+		}
+		children.removeIf(Objects::isNull);
+		if (iconKey != null && !children.contains(iconKey))
+		{
+			iconKey = null;
+		}
+	}
 }
