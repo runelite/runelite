@@ -34,6 +34,11 @@ class JagexPrintableCharMatcher extends CharMatcher
 		// Characters which are printable
 		return (c >= 32 && c <= 126)
 			|| c == 128
-			|| (c >= 160 && c <= 255);
+			|| (c >= 160 && c <= 255)
+			|| c == 338   // Œ
+			|| c == 339   // œ
+			|| c == 376   // Ÿ
+			|| c == 8212  // —
+			|| c == 8364; // €
 	}
 }
