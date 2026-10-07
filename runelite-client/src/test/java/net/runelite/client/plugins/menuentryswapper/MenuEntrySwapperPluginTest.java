@@ -29,6 +29,8 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
@@ -384,5 +386,32 @@ public class MenuEntrySwapperPluginTest
 			menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
 			menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
 		}, argumentCaptor.getValue());
+	}
+
+
+	@Test
+	public void testResetConfigurationClearsCustomSwaps()
+	{
+		// Simulate the user having previously set one custom swap of each kind
+		when(configManager.getConfigurationKeys("menuentryswapper.item_"))
+				.thenReturn(List.of("menuentryswapper.item_995"));
+		when(configManager.getConfigurationKeys("shiftclick.item_"))
+				.thenReturn(List.of("shiftclick.item_995"));
+		when(configManager.getConfigurationKeys("menuentryswapper.object_"))
+				.thenReturn(List.of("menuentryswapper.object_100"));
+		when(configManager.getConfigurationKeys("menuentryswapper.npc_"))
+				.thenReturn(List.of("menuentryswapper.npc_43", "menuentryswapper.npc_shift_43"));
+		when(configManager.getConfigurationKeys("menuentryswapper.wornitem_"))
+				.thenReturn(Collections.emptyList());
+		when(configManager.getConfigurationKeys("menuentryswapper.ui_"))
+				.thenReturn(Collections.emptyList());
+
+		menuEntrySwapperPlugin.resetConfiguration();
+
+		verify(configManager).unsetConfiguration("menuentryswapper", "item_995");
+		verify(configManager).unsetConfiguration("shiftclick", "item_995");
+		verify(configManager).unsetConfiguration("menuentryswapper", "object_100");
+		verify(configManager).unsetConfiguration("menuentryswapper", "npc_43");
+		verify(configManager).unsetConfiguration("menuentryswapper", "npc_shift_43");
 	}
 }
