@@ -43,11 +43,15 @@ LABEL30:
    iconst                 0
    istore                 5
    sconst                 "<col=004f00>"
-   ostore                 1
    sconst                 "<col=0000ff>"
-   ostore                 2
    sconst                 "<col=0000ff>"
+   sconst                 "<col=0000ff>"                ; Custom color added to guest clan name
+   sconst                 "chatClanNameColorDefault"    ; Callback set clan name colors opaque chat
+   runelite_callback
+   ostore                 26                            ; Store custom guest clan name color
    ostore                 3
+   ostore                 2
+   ostore                 1
    sconst                 ""
    ostore                 4
    sconst                 ""
@@ -90,6 +94,10 @@ LABEL74:
    sconst                 "<col=30ff30>"
    sconst                 "<col=9070ff>"
    sconst                 "<col=9070ff>"
+   sconst                 "<col=9070ff>"       ; Custom color added to guest clan name
+   sconst                 "chatClanNameColor"  ; Callback set clan name colors transparent chat
+   runelite_callback
+   ostore                 26                   ; Store custom guest clan name color
    ostore                 3
    ostore                 2
    ostore                 1
@@ -1081,7 +1089,7 @@ LABEL956:
 LABEL965:
    oload                  24
    sconst                 "["
-   oload                  2
+   oload                  26
    oload                  20
    sconst                 "</col>]"
    join_string            4
@@ -1114,7 +1122,7 @@ LABEL965:
 LABEL997:
    oload                  24
    sconst                 "["
-   oload                  2
+   oload                  26
    oload                  20
    sconst                 "</col>]"
    join_string            4
@@ -1123,7 +1131,7 @@ LABEL997:
    iconst                 -1
    iconst                 0
    iconst                 0
-   oload                  2
+   oload                  26
    oload                  23
    sconst                 "</col> "
    oload                  19
@@ -1155,7 +1163,7 @@ LABEL1032:
    ostore                 23
    oload                  24
    sconst                 "["
-   oload                  2
+   oload                  26
    oload                  20
    sconst                 "</col>]"
    join_string            4
@@ -1189,7 +1197,7 @@ LABEL1067:
 LABEL1068:
    oload                  24
    sconst                 "["
-   oload                  2
+   oload                  26
    oload                  20
    sconst                 "</col>]"
    join_string            4
@@ -1472,7 +1480,7 @@ LABEL1324:
 LABEL1328:
    oload                  24
    sconst                 "["
-   oload                  2
+   oload                  26
    activeclanchannel_getclanname
    sconst                 "</col>]"
    join_string            4
