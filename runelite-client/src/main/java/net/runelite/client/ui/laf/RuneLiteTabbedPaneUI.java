@@ -36,6 +36,7 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
+import net.runelite.client.ui.components.DragAndDropTabbedPane;
 
 public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 {
@@ -61,6 +62,23 @@ public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 	 */
 	@FlatStylingSupport.Styleable
 	protected boolean deselectable = false;
+
+	/**
+	 * Suppress rollover (hover) updates while a {@link DragAndDropTabbedPane}
+	 * is actively dragging. This prevents adjacent tabs from showing a hover
+	 * tint as the mouse passes over them during a drag.
+	 */
+	@Override
+	protected void setRolloverTab(int index)
+	{
+		if (tabPane instanceof DragAndDropTabbedPane
+			&& ((DragAndDropTabbedPane) tabPane).isDragging())
+		{
+			super.setRolloverTab(-1);
+			return;
+		}
+		super.setRolloverTab(index);
+	}
 
 	@Override
 	protected LayoutManager createLayoutManager()
