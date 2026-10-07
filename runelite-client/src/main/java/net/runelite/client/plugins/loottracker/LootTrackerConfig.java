@@ -138,4 +138,14 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "enableFarmingLootTracking",
+		name = "Enable Farming Loot Tracking",
+		description = "Track herbs obtained from Farming runs in loot tracker"
+	)
+	default boolean enableFarmingLootTracking()
+	{
+		return true;
+	}
 }
