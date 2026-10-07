@@ -34,8 +34,8 @@ public interface ItemStatConfig extends Config
 {
 	@ConfigItem(
 		keyName = "consumableStats",
-		name = "Enable consumable stats",
-		description = "Enables tooltips for consumable items (food, boosts)."
+		name = "Show consumable stats",
+		description = "Show tooltips for consumable items including food healing, potion effects, and stat boosts."
 	)
 	default boolean consumableStats()
 	{
@@ -44,8 +44,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "equipmentStats",
-		name = "Enable equipment stats",
-		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses)."
+		name = "Show equipment stats",
+		description = "Show tooltips for equipment items including combat bonuses, weight, and prayer bonuses."
 	)
 	default boolean equipmentStats()
 	{
@@ -53,9 +53,19 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "statsHotkey",
+		name = "Stats hotkey",
+		description = "Hold this key to show item stats. Leave unset to always show stats (based on individual settings above)."
+	)
+	default net.runelite.client.config.Keybind statsHotkey()
+	{
+		return null;
+	}
+
+	@ConfigItem(
 		keyName = "geStats",
-		name = "Enable GE item information",
-		description = "Shows an item information panel when buying items in the GE."
+		name = "Grand Exchange item information",
+		description = "Show an item information panel when buying items in the Grand Exchange."
 	)
 	default boolean geStats()
 	{
