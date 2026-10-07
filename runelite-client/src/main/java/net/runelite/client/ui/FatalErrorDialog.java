@@ -35,8 +35,14 @@ import java.awt.image.BufferedImage;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -109,6 +115,23 @@ public class FatalErrorDialog extends JDialog
 		title.setFont(font.deriveFont(16.f));
 		title.setBorder(new EmptyBorder(10, 10, 10, 10));
 		leftPane.add(title, BorderLayout.NORTH);
+
+		// Add local time to message if a BST time is available
+		Pattern bstPattern = Pattern.compile("\\b\\d{2}:\\d{2} BST\\b");
+		Matcher bstMatcher = bstPattern.matcher(message);
+		if (bstMatcher.find())
+		{
+			DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+			ZonedDateTime localTime = ZonedDateTime.of(
+				LocalTime
+					.parse(bstMatcher.group().substring(0, 5), timeFormatter)
+					.atDate(ZonedDateTime.now().toLocalDate()),
+				ZoneId.of("Europe/London"))
+					.withZoneSameInstant(ZoneId.systemDefault()
+			);
+			message += "\n\n" + localTime.format(timeFormatter) + " local time";
+		}
 
 		leftPane.setPreferredSize(new Dimension(400, 200));
 		JTextArea textArea = new JTextArea(message);
