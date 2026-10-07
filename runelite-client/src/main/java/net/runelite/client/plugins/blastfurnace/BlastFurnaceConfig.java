@@ -63,4 +63,15 @@ public interface BlastFurnaceConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showCofferAmount",
+			name = "Show coffer amount remaining",
+			description = "Configures whether or not the coffer amount is displayed",
+			position = 4
+	)
+	default boolean showCofferAmount()
+	{
+		return true;
+	}
 }
