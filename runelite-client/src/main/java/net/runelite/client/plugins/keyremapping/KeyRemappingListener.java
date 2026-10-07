@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.keyremapping;
 
 import com.google.common.base.Strings;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +54,20 @@ class KeyRemappingListener implements KeyListener
 
 	private final Map<Integer, Integer> modified = new HashMap<>();
 	private final Set<Character> blockedChars = new HashSet<>();
+	private int heldModifier = KeyEvent.VK_UNDEFINED;
+
+	private void updateModifier(KeyEvent e, int modifier)
+	{
+		// The client only reacts to key codes (and key chars), never to AWT modifier masks - so simply
+		// setting the ctrl modifier on the M event would do nothing. Instead we dispatch an actual
+		// VK_CONTROL key event so the client registers ctrl as held. Dispatching the VK_CONTROL key code
+		// directly - rather than a bare modifier with an undefined key code - means this does not depend
+		// on the separate "Control" remap to translate it, so it works even if that keybind is changed.
+		e.getComponent().dispatchEvent(
+			new KeyEvent(e.getComponent(), e.getID(), e.getWhen(), modifier, KeyEvent.VK_CONTROL, KeyEvent.CHAR_UNDEFINED)
+		);
+		heldModifier = modifier;
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -167,7 +182,15 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_CONTROL;
 			}
 
-			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
+			if (!plugin.isOptionsDialogOpen() && config.ctrlM().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_M;
+				// Synthesize a ctrl key press so the client sees Ctrl+M and opens the world map. The
+				// matching release is undone in keyReleased via heldModifier.
+				updateModifier(e, InputEvent.CTRL_DOWN_MASK);
+			}
+
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && (mappedKeyCode != e.getKeyCode() || heldModifier != KeyEvent.VK_UNDEFINED))
 			{
 				final char keyChar = e.getKeyChar();
 				modified.put(e.getKeyCode(), mappedKeyCode);
@@ -241,6 +264,12 @@ class KeyRemappingListener implements KeyListener
 		{
 			e.setKeyCode(mappedKeyCode);
 			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
+
+			if (heldModifier != KeyEvent.VK_UNDEFINED)
+			{
+				// Release modifier if held
+				updateModifier(e, KeyEvent.VK_UNDEFINED);
+			}
 		}
 	}
 }
