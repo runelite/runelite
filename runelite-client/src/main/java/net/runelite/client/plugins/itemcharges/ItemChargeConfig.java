@@ -49,6 +49,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
 	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
+	String KEY_RING_OF_PURSUIT = "ringOfPursuit";
 
 	@ConfigSection(
 		name = "Charge settings",
@@ -463,6 +464,30 @@ public interface ItemChargeConfig extends Config
 		section = notificationSection
 	)
 	default Notification amuletOfChemistryNotification()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		keyName = "showRingOfPursuitCharges",
+		name = "Ring of pursuit charges",
+		description = "Show ring of pursuit item charges.",
+		position = 34,
+		section = chargesSection
+	)
+	default boolean showRingOfPursuitCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ringOfPursuitNotification",
+		name = "Ring of pursuit notification",
+		description = "Send a notification when a ring of pursuit breaks.",
+		position = 35,
+		section = notificationSection
+	)
+	default Notification ringOfPursuitNotification()
 	{
 		return Notification.ON;
 	}
