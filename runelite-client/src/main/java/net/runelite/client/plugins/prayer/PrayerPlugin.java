@@ -251,6 +251,7 @@ public class PrayerPlugin extends Plugin
 		boolean hasPrayerPotion = false;
 		boolean hasSuperRestore = false;
 		boolean hasSanfew = false;
+		boolean hasEgniol = false;
 		boolean hasWrench = false;
 
 		for (Item item : inventory.getItems())
@@ -269,6 +270,9 @@ public class PrayerPlugin extends Plugin
 						break;
 					case SANFEWPOT:
 						hasSanfew = true;
+						break;
+					case EGNIOLPOT:
+						hasEgniol = true;
 						break;
 					case HOLYWRENCH:
 						hasWrench = true;
@@ -294,6 +298,7 @@ public class PrayerPlugin extends Plugin
 		// Prayer potion: floor(7 + 25% of base level) - 27% with holy wrench
 		// Super restore: floor(8 + 25% of base level) - 27% with holy wrench
 		// Sanfew serum: floor(4 + 30% of base level) - 32% with holy wrench
+		// Egniol potion: floor(7 + 25% of base level) - can't get holy wrench inside of Gauntlet
 		final int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
 		int restored = 0;
 		if (hasSanfew)
@@ -307,6 +312,10 @@ public class PrayerPlugin extends Plugin
 		if (hasPrayerPotion)
 		{
 			restored = Math.max(restored, 7 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
+		}
+		if (hasEgniol)
+		{
+			restored = 7 + (int) Math.floor(prayerLevel * .25); // Wrench and other prayer restore is unobtainable in Gauntlet
 		}
 
 		doseOverlay.setRestoreAmount(restored);
