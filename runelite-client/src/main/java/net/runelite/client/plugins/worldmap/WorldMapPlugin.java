@@ -27,6 +27,7 @@ package net.runelite.client.plugins.worldmap;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -44,16 +45,23 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.WidgetClosed;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.DBTableID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.worldmap.MapElementConfig;
 import net.runelite.api.worldmap.WorldMap;
 import net.runelite.api.worldmap.WorldMapIcon;
 import net.runelite.api.worldmap.WorldMapRegion;
 import net.runelite.api.worldmap.WorldMapRenderer;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
@@ -163,9 +171,19 @@ public class WorldMapPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	ClientThread clientThread;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private WorldMapSearch worldMapSearch;
+
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
 	private int sailingLevel = 0;
+	private boolean worldMapOpen;
 
 	private final Map<Quest, WorldPoint> questStartLocations = new EnumMap<>(Quest.class);
 
@@ -182,6 +200,8 @@ public class WorldMapPlugin extends Plugin
 		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
 		sailingLevel = client.getRealSkillLevel(Skill.SAILING);
 		updateShownIcons();
+		worldMapOpen = false;
+		keyManager.registerKeyListener(searchHotkeyListener);
 	}
 
 	@Override
@@ -192,6 +212,8 @@ public class WorldMapPlugin extends Plugin
 		agilityLevel = 0;
 		woodcuttingLevel = 0;
 		sailingLevel = 0;
+		worldMapOpen = false;
+		keyManager.unregisterKeyListener(searchHotkeyListener);
 	}
 
 	@Subscribe
@@ -252,6 +274,24 @@ public class WorldMapPlugin extends Plugin
 		{
 			// this is called whenever the map is opened or the map is changed
 			updateQuestStartPointIcons();
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() == InterfaceID.WORLDMAP)
+		{
+			worldMapOpen = true;
+		}
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed event)
+	{
+		if (event.getGroupId() == InterfaceID.WORLDMAP)
+		{
+			worldMapOpen = false;
 		}
 	}
 
@@ -649,4 +689,32 @@ public class WorldMapPlugin extends Plugin
 	{
 		return w -> w instanceof MapPoint && ((MapPoint) w).getType() == type;
 	}
+
+	private final KeyListener searchHotkeyListener = new KeyListener()
+	{
+		@Override
+		public void keyTyped(KeyEvent e)
+		{
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			Keybind keybind = config.searchKeybind();
+			if (keybind.matches(e))
+			{
+				if (worldMapOpen)
+				{
+					log.debug("Search hotkey pressed");
+					worldMapSearch.initSearch();
+					e.consume();
+				}
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+		}
+	};
 }
