@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2025, Skretzo <https://github.com/skretzo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,24 +43,23 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-class NpcAggroAreaOverlay extends Overlay
+class NpcAggroAreaMinimapOverlay extends Overlay
 {
-	private static final int MAX_LOCAL_DRAW_LENGTH = 20 * Perspective.LOCAL_TILE_SIZE;
+	private static final int MAX_LOCAL_DRAW_LENGTH = 40 * Perspective.LOCAL_TILE_SIZE;
 
 	private final Client client;
 	private final NpcAggroAreaConfig config;
 	private final NpcAggroAreaPlugin plugin;
 
 	@Inject
-	private NpcAggroAreaOverlay(Client client, NpcAggroAreaConfig config, NpcAggroAreaPlugin plugin)
+	private NpcAggroAreaMinimapOverlay(Client client, NpcAggroAreaConfig config, NpcAggroAreaPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
 
-		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(PRIORITY_LOW);
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ class NpcAggroAreaOverlay extends Overlay
 		}
 
 		GeneralPath lines = plugin.getLinesToDisplay()[client.getPlane()];
-		if (lines == null || !config.showAreaLines())
+		if (lines == null || !config.showMinimapAreaLines())
 		{
 			return null;
 		}
@@ -106,11 +106,11 @@ class NpcAggroAreaOverlay extends Overlay
 
 		path = Geometry.clipPath(path, viewArea);
 		path = Geometry.filterPath(path, (p1, p2) ->
-			Perspective.localToCanvas(client, new LocalPoint((int)p1[0], (int)p1[1]), client.getPlane()) != null &&
-			Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getPlane()) != null);
+			Perspective.localToMinimap(client, new LocalPoint((int)p1[0], (int)p1[1])) != null &&
+			Perspective.localToMinimap(client, new LocalPoint((int)p2[0], (int)p2[1])) != null);
 		path = Geometry.transformPath(path, coords ->
 		{
-			Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getPlane());
+			Point point = Perspective.localToMinimap(client, new LocalPoint((int)coords[0], (int)coords[1]));
 			coords[0] = point.getX();
 			coords[1] = point.getY();
 		});
