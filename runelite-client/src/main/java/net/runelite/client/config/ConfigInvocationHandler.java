@@ -97,6 +97,21 @@ class ConfigInvocationHandler implements InvocationHandler
 		{
 			log.trace("cache miss (size: {}, group: {}, key: {})", cache.size(), group.value(), item.keyName());
 
+			// If this item lives in a section gated by an opensSubmenu boolean, short-circuit to the
+			// type's zero value when the gating boolean is false. This makes feature flagging
+			// transparent: callers never have to AND against the toggle.
+			String gatingKey = findGatingKey(iface, item.section());
+			if (gatingKey != null && !gatingKey.equals(item.keyName()))
+			{
+				String gateValue = manager.getConfiguration(group.value(), gatingKey);
+				if (gateValue != null && !Boolean.parseBoolean(gateValue))
+				{
+					Object zero = zeroValue(method.getReturnType());
+					cache.put(method, zero == null ? NULL : zero);
+					return zero;
+				}
+			}
+
 			// Getting configuration item
 			String value = manager.getConfiguration(group.value(), item.keyName());
 
@@ -182,6 +197,49 @@ class ConfigInvocationHandler implements InvocationHandler
 			.unreflectSpecial(method, declaringClass)
 			.bindTo(proxy)
 			.invokeWithArguments(args);
+	}
+
+	/**
+	 * Returns the {@code keyName} of the boolean {@link ConfigItem} on {@code iface} whose
+	 * {@code opensSubmenu} equals {@code sectionName}, or {@code null} if the section isn't
+	 * gated by such an opener.
+	 */
+	private static String findGatingKey(Class<?> iface, String sectionName)
+	{
+		if (sectionName == null || sectionName.isEmpty())
+		{
+			return null;
+		}
+		for (Method m : iface.getMethods())
+		{
+			ConfigItem ann = m.getAnnotation(ConfigItem.class);
+			if (ann == null || ann.opensSubmenu().isEmpty())
+			{
+				continue;
+			}
+			if (sectionName.equals(ann.opensSubmenu()))
+			{
+				return ann.keyName();
+			}
+		}
+		return null;
+	}
+
+	private static Object zeroValue(Class<?> type)
+	{
+		if (!type.isPrimitive())
+		{
+			return null;
+		}
+		if (type == boolean.class) return Boolean.FALSE;
+		if (type == int.class) return 0;
+		if (type == long.class) return 0L;
+		if (type == double.class) return 0d;
+		if (type == float.class) return 0f;
+		if (type == short.class) return (short) 0;
+		if (type == byte.class) return (byte) 0;
+		if (type == char.class) return (char) 0;
+		return null;
 	}
 
 	void invalidate()
