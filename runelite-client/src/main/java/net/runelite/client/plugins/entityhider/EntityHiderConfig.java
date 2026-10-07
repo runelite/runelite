@@ -35,6 +35,17 @@ public interface EntityHiderConfig extends Config
 	String GROUP = "entityhider";
 
 	@ConfigItem(
+		position = 0,
+		keyName = "hideDynamicPanel",
+		name = "Hide NPC panel",
+		description = "Hide the per-NPC hiding panel in the sidebar."
+	)
+	default boolean hideDynamicPanel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 1,
 		keyName = "hidePlayers",
 		name = "Hide others",
@@ -231,4 +242,23 @@ public interface EntityHiderConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "manuallyHiddenNpcIds",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String manuallyHiddenNpcIds()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "manuallyHiddenNpcIds",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setManuallyHiddenNpcIds(String ids);
 }
