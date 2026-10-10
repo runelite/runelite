@@ -535,35 +535,57 @@ public class PartyDataService
 		return items.toArray(new Item[0]);
 	}
 
+	// This will send all key value pairs, even when normally there would be empty or blank data.
+	// This is to ensure that if a user has switched accounts their inventory/equipment/etc is reset properly
 	private void handleUserSyncRequest()
 	{
 		final PartyDataChange fullSync = new PartyDataChange();
 
-		fullSync.setInventory(PartySerializationUtils.convertItemsToIntArray(playerData.getInventory()));
-		fullSync.setEquipment(PartySerializationUtils.convertItemsToIntArray(playerData.getEquipment()));
-
-		final byte[][] prayerDeltas = prayerService.getPrayerDeltas(playerData, true, true, true);
-		fullSync.setAvailablePrayers(prayerDeltas[0]);
-		fullSync.setEnabledPrayers(prayerDeltas[1]);
-		fullSync.setUnlockedPrayers(prayerDeltas[2]);
-		fullSync.setPrayerBookID(prayerService.getPrayerBookID());
-
-		final Item[] runePouchContents = playerData.getRunePouchContents();
-		if (runePouchContents.length > 0)
+		if (isTypeEnabled(PartyDataType.INVENTORY))
 		{
+			fullSync.setInventory(PartySerializationUtils.convertItemsToIntArray(playerData.getInventory()));
+		}
+
+		if (isTypeEnabled(PartyDataType.EQUIPMENT))
+		{
+			fullSync.setEquipment(PartySerializationUtils.convertItemsToIntArray(playerData.getEquipment()));
+		}
+
+		if (isTypeEnabled(PartyDataType.PRAYERS))
+		{
+			final byte[][] prayerDeltas = prayerService.getPrayerDeltas(playerData, true, true, true);
+			fullSync.setAvailablePrayers(prayerDeltas[0]);
+			fullSync.setEnabledPrayers(prayerDeltas[1]);
+			fullSync.setUnlockedPrayers(prayerDeltas[2]);
+			fullSync.setPrayerBookID(prayerService.getPrayerBookID());
+		}
+
+		if (isTypeEnabled(PartyDataType.RUNE_POUCH))
+		{
+			final Item[] runePouchContents = playerData.getRunePouchContents();
 			fullSync.setRunesInPouch(PartySerializationUtils.convertItemsToIntArray(runePouchContents));
 		}
 
-		if (playerData.getQuiverAmmo() != null)
+		if (isTypeEnabled(PartyDataType.QUIVER))
 		{
-			fullSync.setQuiverAmmo(new int[] {  playerData.getQuiverAmmo().getId(), playerData.getQuiverAmmo().getQuantity() });
+			if (playerData.getQuiverAmmo() != null)
+			{
+				fullSync.setQuiverAmmo(new int[]{playerData.getQuiverAmmo().getId(), playerData.getQuiverAmmo().getQuantity()});
+			}
+			else
+			{
+				fullSync.setQuiverAmmo(new int[0]);
+			}
 		}
 
-		fullSync.setPendingStatUpdates(playerData.getSkillDataMap().values());
+		if (isTypeEnabled(PartyDataType.STATS))
+		{
+			fullSync.setPendingStatUpdates(playerData.getSkillDataMap().values());
+		}
 
 		partyService.send(fullSync);
 
-		// Pending changes would be sent on next game tick, these can be ignored now
+		// Pending changes would be sent on next game tick, these can be discarded now
 		currentChange = new PartyDataChange();
 	}
 }
