@@ -29,6 +29,7 @@ import java.util.EnumSet;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.api.Prayer;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.party.data.prayers.PrayerState;
@@ -43,6 +44,10 @@ public class PlayerPartyData
 
 	@Setter
 	private int prayerBookID;
+	@Setter
+	private Item[] runePouchContents = new Item[0];
+	@Setter
+	private Item quiverAmmo = null;
 
 	public PlayerPartyData(Client client)
 	{

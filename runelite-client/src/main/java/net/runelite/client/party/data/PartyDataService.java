@@ -29,8 +29,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.SetMultimap;
 import com.google.common.primitives.Ints;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -359,6 +361,13 @@ public class PartyDataService
 	private void handleRunePouchChange()
 	{
 		final Item[] runesInPouch = getRunePouchContents(client);
+		if (Arrays.equals(playerData.getRunePouchContents(), runesInPouch))
+		{
+			return;
+		}
+
+		playerData.setRunePouchContents(runesInPouch);
+
 		final int[] rp = PartySerializationUtils.convertItemsToIntArray(runesInPouch);
 		currentChange.setRunesInPouch(rp);
 	}
@@ -366,6 +375,13 @@ public class PartyDataService
 	private void handleQuiverChange()
 	{
 		final Item quiverAmmo = getQuiverAmmo();
+		if (Objects.equals(playerData.getQuiverAmmo(), quiverAmmo))
+		{
+			return;
+		}
+
+		playerData.setQuiverAmmo(quiverAmmo);
+
 		if (quiverAmmo == null)
 		{
 			// We need to transmit that their quiver is empty
