@@ -56,6 +56,8 @@ public class PartyDataChange extends PartyMemberMessage
 	byte[] unlockedPrayers; // contains all unlocked prayers on every change to any unlocked prayer
 	@SerializedName("pb")
 	Integer prayerBookID;
+	@SerializedName("rp")
+	int[] runesInPouch;
 
 	public boolean isValid()
 	{
@@ -64,7 +66,8 @@ public class PartyDataChange extends PartyMemberMessage
 				|| availablePrayers != null
 				|| enabledPrayers != null
 				|| unlockedPrayers != null
-				|| prayerBookID != null;
+				|| prayerBookID != null
+				|| runesInPouch != null;
 	}
 
 
@@ -75,6 +78,12 @@ public class PartyDataChange extends PartyMemberMessage
 		{
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(inventory);
 			new PartyDataEvent(PartyDataType.INVENTORY, items, this.getMemberId());
+		}
+
+		if (runesInPouch != null)
+		{
+			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(runesInPouch);
+			new PartyDataEvent(PartyDataType.RUNE_POUCH, items, this.getMemberId());
 		}
 
 		if (equipment != null)

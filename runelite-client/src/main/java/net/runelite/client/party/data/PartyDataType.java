@@ -29,4 +29,5 @@ public enum PartyDataType
 	INVENTORY,
 	EQUIPMENT,
 	PRAYERS,
+	RUNE_POUCH,
 }

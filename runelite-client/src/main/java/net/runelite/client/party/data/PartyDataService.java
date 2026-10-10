@@ -25,19 +25,27 @@
 package net.runelite.client.party.data;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.SetMultimap;
+import com.google.common.primitives.Ints;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
 import net.runelite.api.GameState;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
@@ -54,6 +62,25 @@ import net.runelite.client.plugins.Plugin;
 @Singleton
 public class PartyDataService
 {
+	private static final int[] RUNEPOUCH_AMOUNT_VARBITS = {
+			VarbitID.RUNE_POUCH_QUANTITY_1, VarbitID.RUNE_POUCH_QUANTITY_2, VarbitID.RUNE_POUCH_QUANTITY_3,
+			VarbitID.RUNE_POUCH_QUANTITY_4, VarbitID.RUNE_POUCH_QUANTITY_5, VarbitID.RUNE_POUCH_QUANTITY_6,
+	};
+	private static final int[] RUNEPOUCH_RUNE_VARBITS = {
+
+			VarbitID.RUNE_POUCH_TYPE_1, VarbitID.RUNE_POUCH_TYPE_2, VarbitID.RUNE_POUCH_TYPE_3,
+			VarbitID.RUNE_POUCH_TYPE_4, VarbitID.RUNE_POUCH_TYPE_5, VarbitID.RUNE_POUCH_TYPE_6,
+	};
+	public static final int[] RUNEPOUCH_ITEM_IDS = {
+			ItemID.BH_RUNE_POUCH, ItemID.BH_RUNE_POUCH_TROUVER, ItemID.DIVINE_RUNE_POUCH, ItemID.DIVINE_RUNE_POUCH_TROUVER,
+	};
+
+	private static final ImmutableSet<Integer> RUNEPOUCH_VARBITS = ImmutableSet.<Integer>builder()
+			.addAll(Ints.asList(RUNEPOUCH_AMOUNT_VARBITS))
+			.addAll(Ints.asList(RUNEPOUCH_RUNE_VARBITS))
+			.build();
+
+
 	private final SetMultimap<PartyDataType, String> DATA_MAP = HashMultimap.create();
 
 	public synchronized void register(Plugin plugin, PartyDataType partyDataType)
@@ -158,11 +185,16 @@ public class PartyDataService
 	@Subscribe(priority = 1)
 	public void onVarbitChanged(final VarbitChanged e)
 	{
-		if (e.getVarbitId() == VarbitID.PRAYERBOOK)
+		if (e.getVarbitId() == VarbitID.PRAYERBOOK && !DATA_MAP.get(PartyDataType.PRAYERS).isEmpty())
 		{
 			prayerService.updatePrayerBook();
 			playerData.setPrayerBookID(prayerService.getPrayerBookID());
 			// Next game tick will check the player's prayers and send the update including a prayer book ID update
+		}
+
+		if (RUNEPOUCH_VARBITS.contains(e.getVarbitId()) && !DATA_MAP.get(PartyDataType.RUNE_POUCH).isEmpty())
+		{
+			handleRunePouchChange();
 		}
 	}
 
@@ -176,8 +208,7 @@ public class PartyDataService
 
 		if (c.getContainerId() == InventoryID.WORN && !DATA_MAP.get(PartyDataType.EQUIPMENT).isEmpty())
 		{
-			int[] items = PartySerializationUtils.convertItemContainerToIntArray(c.getItemContainer());
-			currentChange.setEquipment(items);
+			handleEquipmentChange(c.getItemContainer());
 
 			// TODO: Add Quiver logic since that data is from getVarpValues
 			return;
@@ -185,10 +216,12 @@ public class PartyDataService
 
 		if (c.getContainerId() == InventoryID.INV && !DATA_MAP.get(PartyDataType.INVENTORY).isEmpty())
 		{
-			int[] items = PartySerializationUtils.convertItemContainerToIntArray(c.getItemContainer());
-			currentChange.setInventory(items);
+			handleInventoryChange(c.getItemContainer());
+		}
 
-			// TODO: Add RunePouch logic since that data is from getVarpValues
+		if (c.getContainerId() == InventoryID.INV && !DATA_MAP.get(PartyDataType.RUNE_POUCH).isEmpty() && itemContainerHasRunePouch(c.getItemContainer()))
+		{
+			handleRunePouchChange();
 		}
 	}
 
@@ -263,8 +296,7 @@ public class PartyDataService
 			ItemContainer c = client.getItemContainer(InventoryID.INV);
 			if (c != null)
 			{
-				int[] items = PartySerializationUtils.convertItemContainerToIntArray(c);
-				currentChange.setInventory(items);
+				handleInventoryChange(c);
 			}
 		}
 
@@ -273,9 +305,64 @@ public class PartyDataService
 			ItemContainer c = client.getItemContainer(InventoryID.WORN);
 			if (c != null)
 			{
-				int[] items = PartySerializationUtils.convertItemContainerToIntArray(c);
-				currentChange.setEquipment(items);
+				handleEquipmentChange(c);
 			}
 		}
+	}
+
+	private void handleEquipmentChange(ItemContainer container)
+	{
+		int[] items = PartySerializationUtils.convertItemContainerToIntArray(container);
+		currentChange.setEquipment(items);
+	}
+
+	private void handleInventoryChange(ItemContainer container)
+	{
+		int[] items = PartySerializationUtils.convertItemContainerToIntArray(container);
+		currentChange.setInventory(items);
+	}
+
+	private void handleRunePouchChange()
+	{
+		final Item[] runesInPouch = getRunePouchContents(client);
+		final int[] rp = PartySerializationUtils.convertItemsToIntArray(runesInPouch);
+		currentChange.setRunesInPouch(rp);
+	}
+
+	private static boolean itemContainerHasRunePouch(ItemContainer inventory)
+	{
+		for (final int id : RUNEPOUCH_ITEM_IDS)
+		{
+			if (inventory.contains(id))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static Item[] getRunePouchContents(Client client)
+	{
+		final EnumComposition runePouchEnum = client.getEnum(EnumID.RUNEPOUCH_RUNE);
+		final List<Item> items = new ArrayList<>();
+		for (int i = 0; i < RUNEPOUCH_AMOUNT_VARBITS.length; i++)
+		{
+			int amount = client.getVarbitValue(RUNEPOUCH_AMOUNT_VARBITS[i]);
+			if (amount <= 0)
+			{
+				continue;
+			}
+
+			int runeId = client.getVarbitValue(RUNEPOUCH_RUNE_VARBITS[i]);
+			if (runeId == 0)
+			{
+				continue;
+			}
+
+			final int itemId = runePouchEnum.getIntValue(runeId);
+			items.add(new Item(itemId, amount));
+		}
+
+		return items.toArray(new Item[0]);
 	}
 }
