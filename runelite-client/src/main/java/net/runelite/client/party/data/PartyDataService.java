@@ -134,7 +134,7 @@ public class PartyDataService
 	private final ClientThread clientThread;
 
 	private final PrayerService prayerService;
-	private PlayerPartyData playerData;
+	private PlayerPartyData playerData = new PlayerPartyData();
 	private PartyDataChange currentChange = new PartyDataChange();
 
 	private long lastSeenAccountHash = -1;
@@ -173,7 +173,7 @@ public class PartyDataService
 		if (inParty())
 		{
 			currentChange = new PartyDataChange();
-			playerData = new PlayerPartyData(client);
+			playerData = new PlayerPartyData();
 		}
 	}
 
@@ -201,13 +201,10 @@ public class PartyDataService
 			long accountHash = client.getAccountHash();
 			if (accountHash != lastSeenAccountHash)
 			{
-				// Reset for new accounts
-				currentChange = new PartyDataChange();
-				prayerService.updatePrayerBook();
-				playerData = new PlayerPartyData(client);
-				playerData.setPrayerBookID(prayerService.getPrayerBookID());
-
 				lastSeenAccountHash = accountHash;
+
+				currentChange = new PartyDataChange();
+				playerData = new PlayerPartyData();
 
 				handleUserSyncRequest();
 			}
@@ -224,6 +221,7 @@ public class PartyDataService
 			// Next game tick will check the player's prayers and send the update including a prayer book ID update
 		}
 
+		// These update on login even if the player doesn't have the pouch in their inventory.
 		if (RUNEPOUCH_VARBITS.contains(e.getVarbitId()) && !DATA_MAP.get(PartyDataType.RUNE_POUCH).isEmpty())
 		{
 			handleRunePouchChange();
@@ -377,8 +375,6 @@ public class PartyDataService
 		{
 			playerData.getSkillDataMap().clear();
 		}
-
-		// Inventory and Equipment are not persisted so nothing to do
 	}
 
 	private void handleDataTypeFirstEnabled(PartyDataType partyDataType)
@@ -386,10 +382,11 @@ public class PartyDataService
 		if (partyDataType == PartyDataType.PRAYERS)
 		{
 			playerData.resetPrayers();
+			prayerService.updatePrayerBook();
+			playerData.setPrayerBookID(prayerService.getPrayerBookID());
 		}
 
-		// The rest of the events only matter if they enabled this while the user is actively logged in
-		if (client.getLocalPlayer() == null)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

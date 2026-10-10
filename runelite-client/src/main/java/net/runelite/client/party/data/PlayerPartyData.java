@@ -36,9 +36,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.party.data.prayers.PrayerState;
-import net.runelite.client.party.data.prayers.Prayers;
 
 @Getter
 public class PlayerPartyData
@@ -50,7 +48,7 @@ public class PlayerPartyData
 	private final Map<Skill, SkillData> skillDataMap = new HashMap<>();
 
 	@Setter
-	private int prayerBookID;
+	private int prayerBookID = -1;
 	@Setter
 	private Item[] runePouchContents = new Item[0];
 	@Setter
@@ -60,27 +58,6 @@ public class PlayerPartyData
 	private Item[] inventory = new Item[0];
 	@Setter
 	private Item[] equipment = new Item[0];
-
-	public PlayerPartyData(Client client)
-	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
-		// Player is logged in, seed with necessary data.
-		for (final Prayer p : Prayer.values())
-		{
-			if (Prayers.isUnlockedByDefault(p))
-			{
-				unlockedPrayers.add(p);
-			}
-		}
-
-		prayerBookID = client.getVarbitValue(VarbitID.PRAYERBOOK);
-
-		seedSkillData(client);
-	}
 
 	public void resetPrayers()
 	{
@@ -102,6 +79,11 @@ public class PlayerPartyData
 
 	public void seedSkillData(Client client)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
 		for (final Skill s : Skill.values())
 		{
 			if (s == Skill.OVERALL)

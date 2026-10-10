@@ -44,7 +44,6 @@ public class PrayerService
 	public PrayerService(Client client)
 	{
 		this.client = client;
-		updatePrayerBook();
 	}
 
 	public void updatePrayerBook()
