@@ -40,12 +40,15 @@ import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
@@ -289,6 +292,35 @@ public class PartyDataService
 		}
 	}
 
+	@Subscribe(priority = 1)
+	public void onStatChanged(final StatChanged event)
+	{
+		if (!inParty() || !isTypeEnabled(PartyDataType.STATS))
+		{
+			return;
+		}
+
+		final Skill s = event.getSkill();
+		if (s == Skill.OVERALL)
+		{
+			return;
+		}
+
+		// Always use virtual level so the plugin can decide if it wants to cap the levels at 99
+		final int virtualLevel = Experience.getLevelForXp(event.getXp());
+		final int boostedLevel = event.getBoostedLevel();
+
+		final SkillData updatedSkillData = new SkillData(s, virtualLevel, boostedLevel);
+		final SkillData currentSkillData = playerData.getSkillDataMap().get(s);
+		if (updatedSkillData.equals(currentSkillData))
+		{
+			return;
+		}
+
+		playerData.getSkillDataMap().put(s, updatedSkillData);
+		currentChange.addSkillChange(updatedSkillData);
+	}
+
 	private boolean inParty()
 	{
 		return partyService.isInParty();
@@ -315,6 +347,11 @@ public class PartyDataService
 		if (partyDataType == PartyDataType.QUIVER)
 		{
 			playerData.setQuiverAmmo(null);
+		}
+
+		if (partyDataType == PartyDataType.STATS)
+		{
+			playerData.getSkillDataMap().clear();
 		}
 
 		// Inventory and Equipment are not persisted so nothing to do
@@ -357,6 +394,13 @@ public class PartyDataService
 			{
 				handleQuiverChange();
 			}
+		}
+
+		if (partyDataType == PartyDataType.STATS)
+		{
+			final Collection<SkillData> updates = playerData.seedSkillData(client);
+
+			currentChange.setPendingStatUpdates(updates);
 		}
 	}
 

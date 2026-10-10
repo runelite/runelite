@@ -37,6 +37,7 @@ import net.runelite.client.party.data.PartyDataType;
 import net.runelite.client.party.data.PartySerializationUtils;
 import static net.runelite.client.party.data.PartySerializationUtils.unpack;
 import net.runelite.client.party.data.PlayerPartyData;
+import net.runelite.client.party.data.SkillData;
 import net.runelite.client.party.messages.PartyMemberMessage;
 
 @Data
@@ -60,6 +61,10 @@ public class PartyDataChange extends PartyMemberMessage
 	int[] runesInPouch;
 	@SerializedName("q")
 	int[] quiverAmmo;
+	@SerializedName("s")
+	int[] stats;
+
+	private transient Collection<SkillData> pendingStatUpdates = new ArrayList<>();
 
 	public boolean isValid()
 	{
@@ -70,7 +75,8 @@ public class PartyDataChange extends PartyMemberMessage
 				|| unlockedPrayers != null
 				|| prayerBookID != null
 				|| runesInPouch != null
-				|| quiverAmmo != null;
+				|| quiverAmmo != null
+				|| stats != null;
 	}
 
 
@@ -145,6 +151,43 @@ public class PartyDataChange extends PartyMemberMessage
 			events.add(new PartyDataEvent(PartyDataType.PRAYERS, playerData.prayerSnapshot(), this.getMemberId()));
 		}
 
+		if (stats != null)
+		{
+			final Collection<SkillData> skillData = new ArrayList<>();
+			for (final int packed : stats)
+			{
+				skillData.add(PartySerializationUtils.unpackSkillData(packed));
+			}
+
+			events.add(new PartyDataEvent(PartyDataType.STATS, skillData, this.getMemberId()));
+		}
+
 		return events;
+	}
+
+	public void applyPendingStatUpdates()
+	{
+		stats = pendingStatUpdates.stream().mapToInt(PartySerializationUtils::packSkillData).toArray();
+
+		if (stats.length == 0)
+		{
+			stats = null;
+		}
+	}
+
+	public void addSkillChange(SkillData skillData)
+	{
+		// In case we try to update the same skill in multiple places
+		pendingStatUpdates.removeIf(s -> s.getSkill() == skillData.getSkill());
+		pendingStatUpdates.add(skillData);
+
+		applyPendingStatUpdates();
+	}
+
+	public void setPendingStatUpdates(Collection<SkillData> pendingStatUpdates)
+	{
+		this.pendingStatUpdates = pendingStatUpdates;
+
+		applyPendingStatUpdates();
 	}
 }

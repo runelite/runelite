@@ -25,12 +25,20 @@
 package net.runelite.client.party.data;
 
 import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.Prayer;
+import net.runelite.api.Skill;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.party.data.prayers.PrayerState;
 import net.runelite.client.party.data.prayers.Prayers;
@@ -42,6 +50,8 @@ public class PlayerPartyData
 	private final EnumSet<Prayer> enabledPrayers = EnumSet.noneOf(Prayer.class);
 	private final EnumSet<Prayer> unlockedPrayers = EnumSet.noneOf(Prayer.class);
 
+	private final Map<Skill, SkillData> skillDataMap = new HashMap<>();
+
 	@Setter
 	private int prayerBookID;
 	@Setter
@@ -51,6 +61,12 @@ public class PlayerPartyData
 
 	public PlayerPartyData(Client client)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		// Player is logged in, seed with necessary data.
 		for (final Prayer p : Prayer.values())
 		{
 			if (Prayers.isUnlockedByDefault(p))
@@ -60,6 +76,8 @@ public class PlayerPartyData
 		}
 
 		prayerBookID = client.getVarbitValue(VarbitID.PRAYERBOOK);
+
+		seedSkillData(client);
 	}
 
 	public void resetPrayers()
@@ -78,5 +96,31 @@ public class PlayerPartyData
 			Sets.immutableEnumSet(unlockedPrayers),
 			this.prayerBookID
 		);
+	}
+
+	public Collection<SkillData> seedSkillData(Client client)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return Collections.emptyList();
+		}
+
+		final Collection<SkillData> updates = new ArrayList<>();
+		for (final Skill s : Skill.values())
+		{
+			if (s == Skill.OVERALL)
+			{
+				continue;
+			}
+
+			final int virtualLevel = Experience.getLevelForXp(client.getSkillExperience(s));
+			final int boostedLevel = client.getBoostedSkillLevel(s);
+
+			final SkillData updatedSkillData = new SkillData(s, virtualLevel, boostedLevel);
+			skillDataMap.put(s, updatedSkillData);
+			updates.add(updatedSkillData);
+		}
+
+		return updates;
 	}
 }

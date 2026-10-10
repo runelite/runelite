@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.Skill;
 
 public class PartySerializationUtils
 {
@@ -112,5 +113,20 @@ public class PartySerializationUtils
 		}
 
 		return out;
+	}
+
+	public static int packSkillData(SkillData skillData)
+	{
+		final int idx = skillData.getSkill().ordinal();
+		return (idx << 15) | (skillData.getLevel() << 8) | skillData.getBoosted();
+	}
+
+	public static SkillData unpackSkillData(int packed)
+	{
+		final Skill skill = Skill.values()[(packed >>> 15) & 0x1F];
+		final int level = (packed >>> 8) & 0x7F;
+		final int boosted = packed & 0xFF;
+
+		return new SkillData(skill, level, boosted);
 	}
 }

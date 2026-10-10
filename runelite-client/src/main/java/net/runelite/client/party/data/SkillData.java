@@ -24,12 +24,15 @@
  */
 package net.runelite.client.party.data;
 
-public enum PartyDataType
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import net.runelite.api.Skill;
+
+@Data
+@AllArgsConstructor
+public class SkillData
 {
-	INVENTORY,
-	EQUIPMENT,
-	PRAYERS,
-	STATS,
-	RUNE_POUCH,
-	QUIVER,
+	private final Skill skill;
+	private int level;
+	private int boosted;
 }
