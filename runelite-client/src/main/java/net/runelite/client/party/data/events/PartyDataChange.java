@@ -79,19 +79,19 @@ public class PartyDataChange extends PartyMemberMessage
 		if (inventory != null)
 		{
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(inventory);
-			new PartyDataEvent(PartyDataType.INVENTORY, items, this.getMemberId());
+			events.add(new PartyDataEvent(PartyDataType.INVENTORY, items, this.getMemberId()));
 		}
 
 		if (runesInPouch != null)
 		{
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(runesInPouch);
-			new PartyDataEvent(PartyDataType.RUNE_POUCH, items, this.getMemberId());
+			events.add(new PartyDataEvent(PartyDataType.RUNE_POUCH, items, this.getMemberId()));
 		}
 
 		if (equipment != null)
 		{
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(equipment);
-			new PartyDataEvent(PartyDataType.EQUIPMENT, items, this.getMemberId());
+			events.add(new PartyDataEvent(PartyDataType.EQUIPMENT, items, this.getMemberId()));
 		}
 
 		if (quiverAmmo != null)
@@ -99,11 +99,11 @@ public class PartyDataChange extends PartyMemberMessage
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(quiverAmmo);
 			if (items.length == 0)
 			{
-				new PartyDataEvent(PartyDataType.QUIVER, null, this.getMemberId());
+				events.add(new PartyDataEvent(PartyDataType.QUIVER, null, this.getMemberId()));
 			}
 			else
 			{
-				new PartyDataEvent(PartyDataType.QUIVER, items[0], this.getMemberId());
+				events.add(new PartyDataEvent(PartyDataType.QUIVER, items[0], this.getMemberId()));
 			}
 		}
 
