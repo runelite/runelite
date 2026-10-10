@@ -583,6 +583,7 @@ public class PartyDataService
 			fullSync.setPendingStatUpdates(playerData.getSkillDataMap().values());
 		}
 
+		fullSync.setMemberId(partyService.getLocalMember().getMemberId());
 		partyService.send(fullSync);
 
 		// Pending changes would be sent on next game tick, these can be discarded now
