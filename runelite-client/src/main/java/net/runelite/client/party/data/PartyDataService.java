@@ -170,6 +170,10 @@ public class PartyDataService
 	public void onPartyChanged(final PartyChanged ignored)
 	{
 		currentChange = new PartyDataChange();
+		if (!inParty())
+		{
+			sendFullSync = false;
+		}
 	}
 
 	@Subscribe(priority = 1)
@@ -407,10 +411,18 @@ public class PartyDataService
 			handleEquipmentChange(equipment);
 		}
 
-		if (partyDataType == PartyDataType.RUNE_POUCH && itemContainerHasRunePouch(inventory))
+		if (partyDataType == PartyDataType.RUNE_POUCH)
 		{
-			handleRunePouchChange();
+			if (itemContainerHasRunePouch(inventory))
+			{
+				handleRunePouchChange();
+			}
+			else
+			{
+				playerData.setRunePouchContents(new Item[0]);
+			}
 		}
+
 
 		if (partyDataType == PartyDataType.QUIVER)
 		{
@@ -418,6 +430,10 @@ public class PartyDataService
 					|| (inventory != null && DIZANAS_QUIVER_IDS.stream().anyMatch(inventory::contains)))
 			{
 				handleQuiverChange();
+			}
+			else
+			{
+				playerData.setQuiverAmmo(null);
 			}
 		}
 
