@@ -69,7 +69,8 @@ public class PartyDataChange extends PartyMemberMessage
 				|| enabledPrayers != null
 				|| unlockedPrayers != null
 				|| prayerBookID != null
-				|| runesInPouch != null;
+				|| runesInPouch != null
+				|| quiverAmmo != null;
 	}
 
 
