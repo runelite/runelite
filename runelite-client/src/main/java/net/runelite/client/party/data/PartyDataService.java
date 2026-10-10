@@ -229,13 +229,9 @@ public class PartyDataService
 				handleEquipmentChange(container);
 			}
 
-			if (isTypeEnabled(PartyDataType.QUIVER))
+			if (isTypeEnabled(PartyDataType.QUIVER) && isWearingQuiver(container))
 			{
-				final Item wornCape = container.getItem(EquipmentInventorySlot.CAPE.getSlotIdx());
-				if (wornCape != null && DIZANAS_QUIVER_IDS.contains(wornCape.getId()))
-				{
-					handleQuiverChange();
-				}
+				handleQuiverChange();
 			}
 
 			return;
@@ -311,6 +307,16 @@ public class PartyDataService
 			playerData.resetPrayers();
 		}
 
+		if (partyDataType == PartyDataType.RUNE_POUCH)
+		{
+			playerData.setRunePouchContents(new Item[0]);
+		}
+
+		if (partyDataType == PartyDataType.QUIVER)
+		{
+			playerData.setQuiverAmmo(null);
+		}
+
 		// Inventory and Equipment are not persisted so nothing to do
 	}
 
@@ -321,27 +327,35 @@ public class PartyDataService
 			playerData.resetPrayers();
 		}
 
-		// Thr rest of the events only matter if they enabled this while the user is actively logged in
+		// The rest of the events only matter if they enabled this while the user is actively logged in
 		if (client.getLocalPlayer() == null)
 		{
 			return;
 		}
 
-		if (partyDataType == PartyDataType.INVENTORY)
+		ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+		ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+		if (partyDataType == PartyDataType.INVENTORY && inventory != null)
 		{
-			ItemContainer c = client.getItemContainer(InventoryID.INV);
-			if (c != null)
-			{
-				handleInventoryChange(c);
-			}
+			handleInventoryChange(inventory);
 		}
 
-		if (partyDataType == PartyDataType.EQUIPMENT)
+		if (partyDataType == PartyDataType.EQUIPMENT && equipment != null)
 		{
-			ItemContainer c = client.getItemContainer(InventoryID.WORN);
-			if (c != null)
+			handleEquipmentChange(equipment);
+		}
+
+		if (partyDataType == PartyDataType.RUNE_POUCH && itemContainerHasRunePouch(inventory))
+		{
+			handleRunePouchChange();
+		}
+
+		if (partyDataType == PartyDataType.QUIVER)
+		{
+			if ((equipment != null && isWearingQuiver(equipment))
+					|| (inventory != null && DIZANAS_QUIVER_IDS.stream().anyMatch(inventory::contains)))
 			{
-				handleEquipmentChange(c);
+				handleQuiverChange();
 			}
 		}
 	}
@@ -407,6 +421,11 @@ public class PartyDataService
 
 	private static boolean itemContainerHasRunePouch(ItemContainer inventory)
 	{
+		if (inventory == null)
+		{
+			return false;
+		}
+
 		for (final int id : RUNEPOUCH_ITEM_IDS)
 		{
 			if (inventory.contains(id))
@@ -415,6 +434,12 @@ public class PartyDataService
 			}
 		}
 		return false;
+	}
+
+	private boolean isWearingQuiver(ItemContainer equipment)
+	{
+		final Item wornCape = equipment.getItem(EquipmentInventorySlot.CAPE.getSlotIdx());
+		return wornCape != null && DIZANAS_QUIVER_IDS.contains(wornCape.getId());
 	}
 
 	public static Item[] getRunePouchContents(Client client)
