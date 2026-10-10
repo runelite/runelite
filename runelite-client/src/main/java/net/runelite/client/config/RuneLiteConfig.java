@@ -120,11 +120,23 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "rememberCharacterBounds",
+		name = "Remember character position",
+		description = "Save the position and size of the client separately for each character.<br>Requires 'Remember client position'.",
+		position = 15,
+		section = windowSettings
+	)
+	default boolean rememberCharacterBounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",
 		description = "Use RuneLite's custom window title and borders.",
 		warning = "Please restart your client after changing this setting",
-		position = 15,
+		position = 16,
 		section = windowSettings
 	)
 	default boolean enableCustomChrome()
@@ -140,7 +152,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "uiWindowOpacity",
 		name = "Window opacity",
 		description = "Set the windows opacity.",
-		position = 16,
+		position = 17,
 		section = windowSettings
 	)
 	default int windowOpacity()
@@ -152,7 +164,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "gameAlwaysOnTop",
 		name = "Always on top",
 		description = "The game will always be on the top of the screen.",
-		position = 17,
+		position = 18,
 		section = windowSettings
 	)
 	default boolean gameAlwaysOnTop()
@@ -164,7 +176,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "warningOnExit",
 		name = "Exit warning",
 		description = "Shows a warning popup when trying to exit the client.",
-		position = 18,
+		position = 19,
 		section = windowSettings
 	)
 	default WarningOnExit warningOnExit()
@@ -176,7 +188,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "usernameInTitle",
 		name = "Show display name in title",
 		description = "Toggles displaying of local player's display name in client title.",
-		position = 19,
+		position = 20,
 		section = windowSettings
 	)
 	default boolean usernameInTitle()

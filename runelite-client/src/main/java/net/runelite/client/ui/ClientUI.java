@@ -109,11 +109,14 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.RuneScapeProfile;
+import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
@@ -125,6 +128,7 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.Text;
 import net.runelite.client.util.WinUtil;
 
 @Slf4j
@@ -171,6 +175,9 @@ public class ClientUI
 
 	private String lastNormalBounds;
 	private final Timer normalBoundsTimer;
+
+	// rsprofile of the character whose bounds are saved on exit, if known
+	private String characterProfileKey;
 
 	@Inject(optional = true)
 	@Named("minMemoryLimit")
@@ -227,6 +234,34 @@ public class ClientUI
 		}
 
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+	}
+
+	@Subscribe
+	private void onRuneScapeProfileChanged(RuneScapeProfileChanged event)
+	{
+		final String profile = event.getNewProfile();
+		if (profile == null)
+		{
+			// logging out keeps the last character, so its bounds are still saved on exit
+			return;
+		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+			if (frame == null || profile.equals(characterProfileKey))
+			{
+				return;
+			}
+
+			if (characterProfileKey != null && config.rememberCharacterBounds())
+			{
+				// switching characters mid session, keep the bounds of the previous one
+				setLastNormalBounds();
+				saveClientBoundsConfig(characterProfileKey);
+			}
+
+			characterProfileKey = profile;
+		});
 	}
 
 	void addNavigation(NavigationButton navBtn)
@@ -646,43 +681,21 @@ public class ClientUI
 				trayIcon = createTrayIcon(ICON_16, title, frame);
 			}
 
+			// The jagex launcher tells us which character is being played before login
+			characterProfileKey = findLauncherRSProfile();
+
 			// Move frame around (needs to be done after frame is packed)
 			boolean appliedSize = false;
 			if (config.rememberScreenBounds() && !safeMode)
 			{
-				appliedSize = restoreClientBoundsConfig();
-				if (appliedSize)
+				String profile = null;
+				if (config.rememberCharacterBounds() && characterProfileKey != null
+					&& configManager.getConfiguration(CONFIG_GROUP, characterProfileKey, CONFIG_CLIENT_BOUNDS) != null)
 				{
-					// Adjust for insets before performing display test
-					Insets insets = frame.getInsets();
-					Rectangle clientBounds = frame.getBounds();
-
-					clientBounds = new Rectangle(
-						clientBounds.x + insets.left,
-						clientBounds.y + insets.top,
-						clientBounds.width - (insets.left + insets.right),
-						clientBounds.height - (insets.top + insets.bottom)
-					);
-
-					// Check that the bounds are contained inside a valid display
-					GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
-					if (gc == null)
-					{
-						log.info("Reset client position. Client bounds: {}x{}x{}x{}",
-							clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
-						// Reset the position, but not the size
-						frame.setLocationRelativeTo(frame.getOwner());
-					}
+					profile = characterProfileKey;
 				}
 
-				if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
-				{
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					// According to the documentation of JFrame#setExtendedState, if the frame isn't visible, a window
-					// state change event isn't guaranteed to be fired. Since RuneLite's custom chrome borders rely on a
-					// state change listener, borders need to be applied manually when maximizing prior to setVisible
-					applyCustomChromeBorder();
-				}
+				appliedSize = applyClientBoundsConfig(profile);
 			}
 
 			if (!appliedSize)
@@ -1301,26 +1314,108 @@ public class ClientUI
 
 	private void saveClientBoundsConfig()
 	{
+		saveClientBoundsConfig(null);
+
+		if (config.rememberCharacterBounds() && characterProfileKey != null)
+		{
+			saveClientBoundsConfig(characterProfileKey);
+		}
+	}
+
+	/**
+	 * @param profile the rsprofile to save the bounds of a character to, or null for the client bounds
+	 */
+	private void saveClientBoundsConfig(@Nullable String profile)
+	{
 		if (lastNormalBounds != null)
 		{
-			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, lastNormalBounds);
+			configManager.setConfiguration(CONFIG_GROUP, profile, CONFIG_CLIENT_BOUNDS, lastNormalBounds);
 		}
 
 		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0)
 		{
 			// leave the previous bounds there, so when the client starts maximized it
 			// can restore to the restored size from the previous run
-			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED, true);
+			configManager.setConfiguration(CONFIG_GROUP, profile, CONFIG_CLIENT_MAXIMIZED, true);
 		}
 		else
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
+			configManager.unsetConfiguration(CONFIG_GROUP, profile, CONFIG_CLIENT_MAXIMIZED);
 		}
 	}
 
-	private boolean restoreClientBoundsConfig()
+	/**
+	 * Find the rsprofile of the character selected in the jagex launcher
+	 */
+	@Nullable
+	private String findLauncherRSProfile()
 	{
-		String str = configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS);
+		final String launcherDisplayName = ((Client) client).getLauncherDisplayName();
+		if (launcherDisplayName == null)
+		{
+			return null;
+		}
+
+		final String name = Text.standardize(launcherDisplayName);
+		for (RuneScapeProfile profile : configManager.getRSProfiles())
+		{
+			if (profile.getType() == RuneScapeProfileType.STANDARD
+				&& profile.getDisplayName() != null
+				&& name.equals(Text.standardize(profile.getDisplayName())))
+			{
+				return profile.getKey();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param profile the rsprofile to restore the bounds of a character from, or null for the client bounds
+	 * @return whether a saved size was applied
+	 */
+	private boolean applyClientBoundsConfig(@Nullable String profile)
+	{
+		boolean appliedSize = restoreClientBoundsConfig(profile);
+		if (appliedSize)
+		{
+			// Adjust for insets before performing display test
+			Insets insets = frame.getInsets();
+			Rectangle clientBounds = frame.getBounds();
+
+			clientBounds = new Rectangle(
+				clientBounds.x + insets.left,
+				clientBounds.y + insets.top,
+				clientBounds.width - (insets.left + insets.right),
+				clientBounds.height - (insets.top + insets.bottom)
+			);
+
+			// Check that the bounds are contained inside a valid display
+			GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
+			if (gc == null)
+			{
+				log.info("Reset client position. Client bounds: {}x{}x{}x{}",
+					clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
+				// Reset the position, but not the size
+				frame.setLocationRelativeTo(frame.getOwner());
+			}
+		}
+
+		if (configManager.getConfiguration(CONFIG_GROUP, profile, CONFIG_CLIENT_MAXIMIZED) != null)
+		{
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			// According to the documentation of JFrame#setExtendedState, if the frame isn't visible, a window
+			// state change event isn't guaranteed to be fired. Since RuneLite's custom chrome borders rely on a
+			// state change listener, borders need to be applied manually when maximizing prior to setVisible
+			applyCustomChromeBorder();
+		}
+
+		return appliedSize;
+	}
+
+	private boolean restoreClientBoundsConfig(@Nullable String profile)
+	{
+		String str = configManager.getConfiguration(CONFIG_GROUP, profile, CONFIG_CLIENT_BOUNDS);
 		if (str == null)
 		{
 			return false;
