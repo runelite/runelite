@@ -25,9 +25,6 @@
 package net.runelite.client.party.data;
 
 import com.google.common.collect.Sets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +55,11 @@ public class PlayerPartyData
 	private Item[] runePouchContents = new Item[0];
 	@Setter
 	private Item quiverAmmo = null;
+
+	@Setter
+	private Item[] inventory = new Item[0];
+	@Setter
+	private Item[] equipment = new Item[0];
 
 	public PlayerPartyData(Client client)
 	{
@@ -98,14 +100,8 @@ public class PlayerPartyData
 		);
 	}
 
-	public Collection<SkillData> seedSkillData(Client client)
+	public void seedSkillData(Client client)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return Collections.emptyList();
-		}
-
-		final Collection<SkillData> updates = new ArrayList<>();
 		for (final Skill s : Skill.values())
 		{
 			if (s == Skill.OVERALL)
@@ -118,9 +114,6 @@ public class PlayerPartyData
 
 			final SkillData updatedSkillData = new SkillData(s, virtualLevel, boostedLevel);
 			skillDataMap.put(s, updatedSkillData);
-			updates.add(updatedSkillData);
 		}
-
-		return updates;
 	}
 }

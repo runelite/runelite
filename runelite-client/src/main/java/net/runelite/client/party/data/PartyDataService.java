@@ -64,6 +64,7 @@ import net.runelite.client.party.WSClient;
 import net.runelite.client.party.data.events.PartyDataChange;
 import net.runelite.client.party.data.events.PartyDataEvent;
 import net.runelite.client.party.data.prayers.PrayerService;
+import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.plugins.Plugin;
 
 @Slf4j
@@ -177,6 +178,17 @@ public class PartyDataService
 	}
 
 	@Subscribe(priority = 1)
+	public void onUserSync(final UserSync ignored)
+	{
+		if (!inParty())
+		{
+			return;
+		}
+
+		handleUserSyncRequest();
+	}
+
+	@Subscribe(priority = 1)
 	public void onGameStateChanged(final GameStateChanged e)
 	{
 		if (!inParty())
@@ -196,6 +208,8 @@ public class PartyDataService
 				playerData.setPrayerBookID(prayerService.getPrayerBookID());
 
 				lastSeenAccountHash = accountHash;
+
+				handleUserSyncRequest();
 			}
 		}
 	}
@@ -398,8 +412,9 @@ public class PartyDataService
 
 		if (partyDataType == PartyDataType.STATS)
 		{
-			final Collection<SkillData> updates = playerData.seedSkillData(client);
+			playerData.seedSkillData(client);
 
+			final Collection<SkillData> updates = playerData.getSkillDataMap().values();
 			currentChange.setPendingStatUpdates(updates);
 		}
 	}
@@ -408,12 +423,14 @@ public class PartyDataService
 	{
 		int[] items = PartySerializationUtils.convertItemContainerToIntArray(container);
 		currentChange.setEquipment(items);
+		playerData.setEquipment(container.getItems());
 	}
 
 	private void handleInventoryChange(ItemContainer container)
 	{
 		int[] items = PartySerializationUtils.convertItemContainerToIntArray(container);
 		currentChange.setInventory(items);
+		playerData.setInventory(container.getItems());
 	}
 
 	private void handleRunePouchChange()
@@ -509,5 +526,37 @@ public class PartyDataService
 		}
 
 		return items.toArray(new Item[0]);
+	}
+
+	private void handleUserSyncRequest()
+	{
+		final PartyDataChange fullSync = new PartyDataChange();
+
+		fullSync.setInventory(PartySerializationUtils.convertItemsToIntArray(playerData.getInventory()));
+		fullSync.setEquipment(PartySerializationUtils.convertItemsToIntArray(playerData.getEquipment()));
+
+		final byte[][] prayerDeltas = prayerService.getPrayerDeltas(playerData, true, true, true);
+		fullSync.setAvailablePrayers(prayerDeltas[0]);
+		fullSync.setEnabledPrayers(prayerDeltas[1]);
+		fullSync.setUnlockedPrayers(prayerDeltas[2]);
+		fullSync.setPrayerBookID(prayerService.getPrayerBookID());
+
+		final Item[] runePouchContents = playerData.getRunePouchContents();
+		if (runePouchContents.length > 0)
+		{
+			fullSync.setRunesInPouch(PartySerializationUtils.convertItemsToIntArray(runePouchContents));
+		}
+
+		if (playerData.getQuiverAmmo() != null)
+		{
+			fullSync.setQuiverAmmo(new int[] {  playerData.getQuiverAmmo().getId(), playerData.getQuiverAmmo().getQuantity() });
+		}
+
+		fullSync.setPendingStatUpdates(playerData.getSkillDataMap().values());
+
+		partyService.send(fullSync);
+
+		// Pending changes would be sent on next game tick, these can be ignored now
+		currentChange = new PartyDataChange();
 	}
 }
