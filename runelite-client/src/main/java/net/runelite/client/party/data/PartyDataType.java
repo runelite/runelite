@@ -30,4 +30,5 @@ public enum PartyDataType
 	EQUIPMENT,
 	PRAYERS,
 	RUNE_POUCH,
+	QUIVER,
 }

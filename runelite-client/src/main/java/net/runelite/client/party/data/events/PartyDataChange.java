@@ -58,6 +58,8 @@ public class PartyDataChange extends PartyMemberMessage
 	Integer prayerBookID;
 	@SerializedName("rp")
 	int[] runesInPouch;
+	@SerializedName("q")
+	int[] quiverAmmo;
 
 	public boolean isValid()
 	{
@@ -90,6 +92,19 @@ public class PartyDataChange extends PartyMemberMessage
 		{
 			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(equipment);
 			new PartyDataEvent(PartyDataType.EQUIPMENT, items, this.getMemberId());
+		}
+
+		if (quiverAmmo != null)
+		{
+			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(quiverAmmo);
+			if (items.length == 0)
+			{
+				new PartyDataEvent(PartyDataType.QUIVER, null, this.getMemberId());
+			}
+			else
+			{
+				new PartyDataEvent(PartyDataType.QUIVER, items[0], this.getMemberId());
+			}
 		}
 
 		boolean prayersChanged = false;

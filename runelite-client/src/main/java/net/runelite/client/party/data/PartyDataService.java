@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -46,11 +47,13 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.party.data.events.PartyDataChange;
@@ -80,14 +83,24 @@ public class PartyDataService
 			.addAll(Ints.asList(RUNEPOUCH_RUNE_VARBITS))
 			.build();
 
+	public static final ImmutableSet<Integer> DIZANAS_QUIVER_IDS = ImmutableSet.<Integer>builder()
+			.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.DIZANAS_QUIVER_CHARGED)))
+			.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.DIZANAS_QUIVER_INFINITE)))
+			.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.SKILLCAPE_MAX_DIZANAS)))
+			.build();
 
 	private final SetMultimap<PartyDataType, String> DATA_MAP = HashMultimap.create();
 
+	private boolean isTypeEnabled(PartyDataType partyDataType)
+	{
+		return !DATA_MAP.get(partyDataType).isEmpty();
+	}
+
 	public synchronized void register(Plugin plugin, PartyDataType partyDataType)
 	{
-		boolean wasEmpty = DATA_MAP.get(partyDataType).isEmpty();
+		boolean wasDisabled = !isTypeEnabled(partyDataType);
 
-		if (DATA_MAP.put(partyDataType, plugin.getName()) && wasEmpty)
+		if (DATA_MAP.put(partyDataType, plugin.getName()) && wasDisabled)
 		{
 			clientThread.invoke(() -> handleDataTypeFirstEnabled(partyDataType));
 		}
@@ -95,7 +108,7 @@ public class PartyDataService
 
 	public synchronized void unregister(Plugin plugin, PartyDataType partyDataType)
 	{
-		if (DATA_MAP.remove(partyDataType, plugin.getName()) && DATA_MAP.get(partyDataType).isEmpty())
+		if (DATA_MAP.remove(partyDataType, plugin.getName()) && !isTypeEnabled(partyDataType))
 		{
 			handleDataTypeFullyDisabled(partyDataType);
 		}
@@ -206,22 +219,43 @@ public class PartyDataService
 			return;
 		}
 
-		if (c.getContainerId() == InventoryID.WORN && !DATA_MAP.get(PartyDataType.EQUIPMENT).isEmpty())
+		final ItemContainer container = c.getItemContainer();
+		if (c.getContainerId() == InventoryID.WORN)
 		{
-			handleEquipmentChange(c.getItemContainer());
+			if (isTypeEnabled(PartyDataType.EQUIPMENT))
+			{
+				handleEquipmentChange(container);
+			}
 
-			// TODO: Add Quiver logic since that data is from getVarpValues
+			if (isTypeEnabled(PartyDataType.QUIVER))
+			{
+				final Item wornCape = container.getItem(EquipmentInventorySlot.CAPE.getSlotIdx());
+				if (wornCape != null && DIZANAS_QUIVER_IDS.contains(wornCape.getId()))
+				{
+					handleQuiverChange();
+				}
+			}
+
 			return;
 		}
 
-		if (c.getContainerId() == InventoryID.INV && !DATA_MAP.get(PartyDataType.INVENTORY).isEmpty())
+		if (c.getContainerId() == InventoryID.INV)
 		{
-			handleInventoryChange(c.getItemContainer());
-		}
+			if (isTypeEnabled(PartyDataType.INVENTORY))
+			{
+				handleInventoryChange(container);
+			}
 
-		if (c.getContainerId() == InventoryID.INV && !DATA_MAP.get(PartyDataType.RUNE_POUCH).isEmpty() && itemContainerHasRunePouch(c.getItemContainer()))
-		{
-			handleRunePouchChange();
+			if (isTypeEnabled(PartyDataType.RUNE_POUCH) && itemContainerHasRunePouch(container))
+			{
+				handleRunePouchChange();
+			}
+
+			// A quiver in the inventory causes the quiver's worn equipment slot to start displaying
+			if (isTypeEnabled(PartyDataType.QUIVER) && DIZANAS_QUIVER_IDS.stream().anyMatch(container::contains))
+			{
+				handleQuiverChange();
+			}
 		}
 	}
 
@@ -240,7 +274,7 @@ public class PartyDataService
 			return;
 		}
 
-		if (!DATA_MAP.get(PartyDataType.PRAYERS).isEmpty())
+		if (isTypeEnabled(PartyDataType.PRAYERS))
 		{
 			byte[][] prayerDeltas = prayerService.handlePrayerCheck(playerData);
 			currentChange.setAvailablePrayers(prayerDeltas[0]);
@@ -327,6 +361,32 @@ public class PartyDataService
 		final Item[] runesInPouch = getRunePouchContents(client);
 		final int[] rp = PartySerializationUtils.convertItemsToIntArray(runesInPouch);
 		currentChange.setRunesInPouch(rp);
+	}
+
+	private void handleQuiverChange()
+	{
+		final Item quiverAmmo = getQuiverAmmo();
+		if (quiverAmmo == null)
+		{
+			// We need to transmit that their quiver is empty
+			currentChange.setQuiverAmmo(new int[0]);
+		}
+		else
+		{
+			currentChange.setQuiverAmmo(new int[]{ quiverAmmo.getId(), quiverAmmo.getQuantity() });
+		}
+	}
+
+	private Item getQuiverAmmo()
+	{
+		final int quiverAmmoId = client.getVarpValue(VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO);
+		final int quiverAmmoCount = client.getVarpValue(VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO_AMOUNT);
+		if (quiverAmmoId == -1 || quiverAmmoCount == 0)
+		{
+			return null;
+		}
+
+		return new Item(quiverAmmoId, quiverAmmoCount);
 	}
 
 	private static boolean itemContainerHasRunePouch(ItemContainer inventory)
