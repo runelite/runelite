@@ -348,6 +348,16 @@ public class PartyDataService
 
 	private void handleDataTypeFullyDisabled(PartyDataType partyDataType)
 	{
+		if (partyDataType == PartyDataType.INVENTORY)
+		{
+			playerData.setInventory(new Item[0]);
+		}
+
+		if (partyDataType == PartyDataType.EQUIPMENT)
+		{
+			playerData.setEquipment(new Item[0]);
+		}
+
 		if (partyDataType == PartyDataType.PRAYERS)
 		{
 			playerData.resetPrayers();
