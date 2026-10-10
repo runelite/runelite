@@ -138,6 +138,7 @@ public class PartyDataService
 	private PartyDataChange currentChange = new PartyDataChange();
 
 	private long lastSeenAccountHash = -1;
+	private boolean sendFullSync = false;
 
 	@Inject
 	private PartyDataService(
@@ -168,34 +169,24 @@ public class PartyDataService
 	@Subscribe
 	public void onPartyChanged(final PartyChanged ignored)
 	{
-		playerData = null;
-
-		if (inParty())
-		{
-			currentChange = new PartyDataChange();
-			playerData = new PlayerPartyData();
-		}
+		currentChange = new PartyDataChange();
 	}
 
 	@Subscribe(priority = 1)
 	public void onUserSync(final UserSync ignored)
 	{
+		// This shouldn't happen but there has been cases in the past of hub plugins pushing this event on bus for some reason
 		if (!inParty())
 		{
 			return;
 		}
 
-		handleUserSyncRequest();
+		sendFullSync = true;
 	}
 
 	@Subscribe(priority = 1)
 	public void onGameStateChanged(final GameStateChanged e)
 	{
-		if (!inParty())
-		{
-			return;
-		}
-
 		if (e.getGameState() == GameState.LOGGED_IN)
 		{
 			long accountHash = client.getAccountHash();
@@ -206,7 +197,10 @@ public class PartyDataService
 				currentChange = new PartyDataChange();
 				playerData = new PlayerPartyData();
 
-				handleUserSyncRequest();
+				if (inParty())
+				{
+					sendFullSync = true;
+				}
 			}
 		}
 	}
@@ -276,8 +270,20 @@ public class PartyDataService
 	@Subscribe(priority = 1)
 	public void onGameTick(final GameTick ignored)
 	{
-		if (!inParty())
+		if (!inParty() || partyService.getLocalMember() == null)
 		{
+			return;
+		}
+
+		// Syncs are a priority and should bypass the normal message frequency logic
+		if (sendFullSync)
+		{
+			sendFullSync = false;
+
+			// Reseed all data when a full sync is requested to ensure we are sending up-to-date data
+			// Since we send all data in a sync and discard currentChange in handleUserSyncRequest this is fine to reuse
+			DATA_MAP.keySet().forEach(this::handleDataTypeFirstEnabled);
+			handleUserSyncRequest();
 			return;
 		}
 
@@ -289,10 +295,7 @@ public class PartyDataService
 
 		if (isTypeEnabled(PartyDataType.PRAYERS))
 		{
-			byte[][] prayerDeltas = prayerService.handlePrayerCheck(playerData);
-			currentChange.setAvailablePrayers(prayerDeltas[0]);
-			currentChange.setEnabledPrayers(prayerDeltas[1]);
-			currentChange.setUnlockedPrayers(prayerDeltas[2]);
+			handlePrayerChange();
 		}
 
 		if (currentChange.isValid())
@@ -379,16 +382,17 @@ public class PartyDataService
 
 	private void handleDataTypeFirstEnabled(PartyDataType partyDataType)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
 		if (partyDataType == PartyDataType.PRAYERS)
 		{
 			playerData.resetPrayers();
 			prayerService.updatePrayerBook();
 			playerData.setPrayerBookID(prayerService.getPrayerBookID());
-		}
-
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
+			handlePrayerChange();
 		}
 
 		ItemContainer inventory = client.getItemContainer(InventoryID.INV);
@@ -438,6 +442,14 @@ public class PartyDataService
 		int[] items = PartySerializationUtils.convertItemContainerToIntArray(container);
 		currentChange.setInventory(items);
 		playerData.setInventory(container.getItems());
+	}
+
+	private void handlePrayerChange()
+	{
+		byte[][] prayerDeltas = prayerService.handlePrayerCheck(playerData);
+		currentChange.setAvailablePrayers(prayerDeltas[0]);
+		currentChange.setEnabledPrayers(prayerDeltas[1]);
+		currentChange.setUnlockedPrayers(prayerDeltas[2]);
 	}
 
 	private void handleRunePouchChange()
