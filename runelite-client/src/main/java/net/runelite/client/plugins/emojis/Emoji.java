@@ -97,6 +97,7 @@ enum Emoji
 	COW(0x1f42e, "3:O"),
 	HANDSHAKE(0x1f91d, "(=)"),
 	RABBIT(0x1f430, "=:3"),
+	CRICKET(0x1f997, "<lt>:-^^"), // <:-^^
 	;
 
 	private static final Map<String, Emoji> emojiMap;
