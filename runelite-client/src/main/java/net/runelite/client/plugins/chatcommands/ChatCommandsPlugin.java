@@ -112,6 +112,11 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>[0-9:.]+</col> Personal best: </col><col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col>");
 	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in|(?<!total )completion time:|The Fractured Archive: Total completion time:) (?:<col=[0-9a-f]{6}>|@.+?@)[0-9:.]+</col>\\. Personal best: (?:<col=ff0000>|@.+?@)?(?<pb>[0-9:]+(?:\\.[0-9]+)?)");
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in|(?<!total )completion time:|The Fractured Archive: Total completion time:) (?:<col=[0-9a-f]{6}>|@.+?@)(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
+	// How many ticks a kill count message waits for its pb message
+	private static final int KILL_PB_MAX_TICKS = 2;
+	// How many ticks a pb message waits for its kill count message; Grotesque Guardians' death animation puts
+	// its kill count message several seconds behind the pb
+	private static final int PB_KILL_MAX_TICKS = 10;
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won ([\\d,]+|one) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost ([\\d,]+|one) duels?");
 	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
@@ -159,6 +164,7 @@ public class ChatCommandsPlugin extends Plugin
 	private String lastBossKill;
 	private int lastBossTime = -1;
 	private double lastPb = -1;
+	private int lastPbTime = -1;
 	private String lastTeamSize;
 	private int petsIconIdx = -1;
 	private int[] pets;
@@ -242,8 +248,7 @@ public class ChatCommandsPlugin extends Plugin
 	public void shutDown()
 	{
 		pets = null;
-		lastBossKill = null;
-		lastBossTime = -1;
+		clearPendingPb();
 
 		keyManager.unregisterKeyListener(chatKeyboardListener);
 
@@ -422,6 +427,21 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		String message = chatMessage.getMessage();
+
+		// A kill with no pb message after it, or a pb with no kill count message after it, must not pair
+		// with a later message from another kill
+		final int tick = client.getTickCount();
+		if (lastBossKill != null && tick - lastBossTime > KILL_PB_MAX_TICKS)
+		{
+			lastBossKill = null;
+			lastBossTime = -1;
+		}
+		if (lastPb > -1 && tick - lastPbTime > PB_KILL_MAX_TICKS)
+		{
+			lastPb = -1;
+			lastTeamSize = null;
+		}
+
 		Matcher matcher = KILLCOUNT_PATTERN.matcher(message);
 		if (matcher.find())
 		{
@@ -600,12 +620,6 @@ public class ChatCommandsPlugin extends Plugin
 			setKc("Hunter Rumours", kc);
 		}
 
-		if (lastBossKill != null && lastBossTime != client.getTickCount())
-		{
-			lastBossKill = null;
-			lastBossTime = -1;
-		}
-
 		matcher = COLLECTION_LOG_ITEM_PATTERN.matcher(message);
 		if (matcher.find())
 		{
@@ -768,11 +782,14 @@ public class ChatCommandsPlugin extends Plugin
 			setPb(lastBossKill, seconds);
 			lastPb = -1;
 			lastTeamSize = null;
+			// The kill has its pb: it keeps it for the rest of this tick, but a pb on a later tick belongs to another kill
+			lastBossTime = client.getTickCount() - KILL_PB_MAX_TICKS;
 		}
 		else
 		{
 			// Some bosses send the pb message, and then the kill message!
 			lastPb = seconds;
+			lastPbTime = client.getTickCount();
 			try
 			{
 				lastTeamSize = matcher.group("teamsize");
@@ -953,20 +970,36 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
+	// Forget a kill count or pb still waiting for its other half
+	private void clearPendingPb()
+	{
+		lastBossKill = null;
+		lastBossTime = -1;
+		lastPb = -1;
+		lastTeamSize = null;
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
 			case LOADING:
+				pohOwner = null;
+				break;
 			case HOPPING:
 				pohOwner = null;
+				clearPendingPb();
+				break;
+			case CONNECTION_LOST:
+				clearPendingPb();
 				break;
 			case STARTING:
 				petsIconIdx = -1;
 				pets = null;
 				break;
 			case LOGIN_SCREEN:
+				clearPendingPb();
 				if (petsIconIdx == -1)
 				{
 					loadPets();
