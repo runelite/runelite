@@ -49,6 +49,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
@@ -545,6 +546,22 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testGgKillCountAfterDeathAnimation()
+	{
+		// The kill count message comes several seconds after the pb, once the death animation ends
+		when(client.getTickCount()).thenReturn(100);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>1:36.40</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		when(client.getTickCount()).thenReturn(106);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Grotesque Guardians kill count is: <col=ff0000>179</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "grotesque guardians", 179);
+		verify(configManager).setRSProfileConfiguration("personalbest", "grotesque guardians", 96.4);
+	}
+
+	@Test
 	public void testGgKill()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>2:41</col>. Personal best: 2:14", null, 0);
@@ -905,6 +922,112 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 5 * 60 + 42.6);
+	}
+
+	@Test
+	public void testStaleKillAndPbDoNotPair()
+	{
+		// A pb whose kill count message never comes
+		when(client.getTickCount()).thenReturn(100);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Subdued in <col=ef1020>6:35</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		// An unrelated kill much later must not take it
+		when(client.getTickCount()).thenReturn(600);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Zulrah kill count is: <col=ff0000>12</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "zulrah", 12);
+
+		// A pb much later must not go to that kill; a kill count message a tick behind it still gets it
+		when(client.getTickCount()).thenReturn(700);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Subdued in <col=ef1020>5:20.60</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		when(client.getTickCount()).thenReturn(701);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Tempoross kill count is: <col=ff0000>60</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 5 * 60 + 20.6);
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("zulrah"), any());
+	}
+
+	@Test
+	public void testKillWaitsForPbPastOtherMessages()
+	{
+		when(client.getTickCount()).thenReturn(100);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Zulrah kill count is: <col=ff0000>12</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		// An unrelated message in between must not drop the kill
+		when(client.getTickCount()).thenReturn(101);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Welcome to Old School RuneScape.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		when(client.getTickCount()).thenReturn(102);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>1:12</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "zulrah", 72.0);
+	}
+
+	@Test
+	public void testPendingClearsOnHopLogoutAndConnectionLoss()
+	{
+		int tick = 100;
+		for (GameState state : new GameState[]{GameState.HOPPING, GameState.LOGIN_SCREEN, GameState.CONNECTION_LOST})
+		{
+			// Ticks don't count time away, so a pb from before a hop, logout or dropped connection must not reach a kill after it
+			tick += 1000;
+			when(client.getTickCount()).thenReturn(tick);
+			ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Subdued in <col=ef1020>6:35</col> (new personal best).", null, 0);
+			chatCommandsPlugin.onChatMessage(chatMessage);
+			changeGameState(state);
+			when(client.getTickCount()).thenReturn(tick + 5);
+			chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Zulrah kill count is: <col=ff0000>12</col>.", null, 0);
+			chatCommandsPlugin.onChatMessage(chatMessage);
+
+			// Nor a kill from before it reach a pb after it
+			when(client.getTickCount()).thenReturn(tick + 20);
+			chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Vorkath kill count is: <col=ff0000>40</col>.", null, 0);
+			chatCommandsPlugin.onChatMessage(chatMessage);
+			changeGameState(state);
+			when(client.getTickCount()).thenReturn(tick + 21);
+			chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>1:12</col> (new personal best)", null, 0);
+			chatCommandsPlugin.onChatMessage(chatMessage);
+		}
+
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("zulrah"), any());
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("vorkath"), any());
+	}
+
+	@Test
+	public void testPairedKillTakesNoSecondPb()
+	{
+		when(client.getTickCount()).thenReturn(100);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Zulrah kill count is: <col=ff0000>12</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>1:12</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		// The next kill's pb, on the very next tick, goes to its own kill count
+		when(client.getTickCount()).thenReturn(101);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Subdued in <col=ef1020>6:35</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		when(client.getTickCount()).thenReturn(102);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Tempoross kill count is: <col=ff0000>55</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "zulrah", 72.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 395.0);
+		verify(configManager, never()).setRSProfileConfiguration("personalbest", "zulrah", 395.0);
+	}
+
+	private void changeGameState(GameState state)
+	{
+		GameStateChanged gameStateChanged = new GameStateChanged();
+		gameStateChanged.setGameState(state);
+		chatCommandsPlugin.onGameStateChanged(gameStateChanged);
 	}
 
 	@Test
@@ -1410,6 +1533,46 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
 		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode", 8 * 60 + 31.);
 		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode 2 players", 8 * 60 + 31.);
+	}
+
+	@Test
+	public void testToaPbSpreadOverTicks()
+	{
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P1)).thenReturn(24);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P2)).thenReturn(15);
+
+		// The pb, the total time and the kill count each a tick apart still pair
+		when(client.getTickCount()).thenReturn(100);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Expert Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 8:31", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		when(client.getTickCount()).thenReturn(101);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		when(client.getTickCount()).thenReturn(102);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Expert Mode count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode", 8 * 60 + 31.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode 2 players", 8 * 60 + 31.);
+	}
+
+	@Test
+	public void testToaPbTooFarFromKillCount()
+	{
+		when(client.getTickCount()).thenReturn(100);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Expert Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 8:31", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		// Eleven ticks behind the pb, the kill count is counted but gets no pb
+		when(client.getTickCount()).thenReturn(111);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Expert Mode count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("tombs of amascut expert mode"), any());
 	}
 
 	@Test
