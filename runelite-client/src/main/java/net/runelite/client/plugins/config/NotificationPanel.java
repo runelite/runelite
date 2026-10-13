@@ -353,7 +353,7 @@ class NotificationPanel extends PluginPanel
 			item("Notification volume", "Configures the volume of custom notifications (does not control native volume).", spinnerVolume);
 
 			var spinnerTimeout = createIntSpinner(0, Integer.MAX_VALUE, notif.getTimeout(), "ms");
-			spinnerVolume.addChangeListener(ce ->
+			spinnerTimeout.addChangeListener(ce ->
 			{
 				var n = loadNotification();
 				saveNotification(n.withTimeout((int) spinnerTimeout.getValue()));
