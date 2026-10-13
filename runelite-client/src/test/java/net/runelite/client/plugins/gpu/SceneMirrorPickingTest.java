@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.gpu;
 
 import net.runelite.api.Client;
+import net.runelite.client.game.SceneMirrorPicking;
+import net.runelite.client.game.SceneMirrorViewport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,16 +36,18 @@ import static org.mockito.Mockito.when;
 
 public class SceneMirrorPickingTest
 {
+	private final SceneMirrorPicking sceneMirrorPicking = new SceneMirrorPicking();
+
 	@Before
 	public void resetBefore()
 	{
-		SceneMirrorPicking.clear();
+		sceneMirrorPicking.clear();
 	}
 
 	@After
 	public void resetAfter()
 	{
-		SceneMirrorPicking.clear();
+		sceneMirrorPicking.clear();
 	}
 
 	@Test
@@ -171,25 +175,25 @@ public class SceneMirrorPickingTest
 	@Test
 	public void unpublishedAndClearedBridgeRemainIdentity()
 	{
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
-		SceneMirrorPicking.publish(clientWithViewport(10, 20, 100, 80), standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
-		SceneMirrorPicking.clear();
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.publish(clientWithViewport(10, 20, 100, 80), standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.clear();
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	@Test
 	public void bridgeRejectsEveryChangedLogicalViewportField()
 	{
 		Client client = clientWithViewport(10, 20, 100, 80);
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 		int[][] staleViewports = {{11, 20, 100, 80}, {10, 21, 100, 80},
 			{10, 20, 101, 80}, {10, 20, 100, 81}};
 		for (int[] stale : staleViewports)
 		{
 			setViewport(client, stale[0], stale[1], stale[2], stale[3]);
-			assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+			assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 		}
 	}
 
@@ -200,49 +204,49 @@ public class SceneMirrorPickingTest
 		when(client.getCanvasWidth()).thenReturn(765);
 		when(client.getCanvasHeight()).thenReturn(400);
 		SceneMirrorViewport viewport = SceneMirrorViewport.capture(8, 250, 638, 250, 956, 500);
-		SceneMirrorPicking.publish(client, SceneMirrorPicking.Frame.capture(client, 8, 638, viewport));
+		sceneMirrorPicking.publish(client, SceneMirrorPicking.Frame.capture(client, 8, 638, viewport));
 		// DPI1.25 yields physical width956 rather than956.25; UI texture scales765->956.
-		assertEquals(445, SceneMirrorPicking.mapWorldCanvasX(client, 79, 50));
+		assertEquals(445, sceneMirrorPicking.mapWorldCanvasX(client, 79, 50));
 	}
 
 	@Test
 	public void projectedAnchorsFollowTheWorldWithoutReflectingGlyphs()
 	{
 		Client client = clientWithViewport(10, 20, 100, 80);
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertTrue(SceneMirrorPicking.isMirrored(client));
-		assertEquals(80, SceneMirrorPicking.mapWorldAnchorX(20));
-		assertEquals(90, SceneMirrorPicking.mapWorldCanvasX(client, 30, 50));
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertTrue(sceneMirrorPicking.isMirrored(client));
+		assertEquals(80, sceneMirrorPicking.mapWorldAnchorX(20));
+		assertEquals(90, sceneMirrorPicking.mapWorldCanvasX(client, 30, 50));
 		// Offscreen world vertices still need reflection to preserve crossing polygons.
-		assertEquals(120, SceneMirrorPicking.mapWorldAnchorX(-20));
-		assertEquals(130, SceneMirrorPicking.mapWorldCanvasX(client, -10, 50));
-		assertEquals(Integer.MIN_VALUE, SceneMirrorPicking.mapWorldCanvasX(client, Integer.MIN_VALUE, Integer.MIN_VALUE));
-		SceneMirrorPicking.clear();
-		assertFalse(SceneMirrorPicking.isMirrored(client));
-		assertEquals(30, SceneMirrorPicking.mapWorldCanvasX(client, 30, 50));
+		assertEquals(120, sceneMirrorPicking.mapWorldAnchorX(-20));
+		assertEquals(130, sceneMirrorPicking.mapWorldCanvasX(client, -10, 50));
+		assertEquals(Integer.MIN_VALUE, sceneMirrorPicking.mapWorldCanvasX(client, Integer.MIN_VALUE, Integer.MIN_VALUE));
+		sceneMirrorPicking.clear();
+		assertFalse(sceneMirrorPicking.isMirrored(client));
+		assertEquals(30, sceneMirrorPicking.mapWorldCanvasX(client, 30, 50));
 	}
 
 	@Test
 	public void fractionalGeometryAndRasterPixelsUseTheirOwnCenters()
 	{
 		Client client = clientWithViewport(10, 20, 100, 80);
-		SceneMirrorPicking.publish(client, fractionalFrame());
-		assertEquals(80, SceneMirrorPicking.mapWorldAnchorX(20));
-		assertEquals(90, SceneMirrorPicking.mapWorldCanvasX(client, 30, 50));
+		sceneMirrorPicking.publish(client, fractionalFrame());
+		assertEquals(80, sceneMirrorPicking.mapWorldAnchorX(20));
+		assertEquals(90, sceneMirrorPicking.mapWorldCanvasX(client, 30, 50));
 		// Geometric vertices are continuous; picking maps displayed raster pixel centers.
-		assertEquals(20, SceneMirrorPicking.mapSceneX(79, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(79, 30));
 	}
 
 	@Test
 	public void newlyPublishedFrameReplacesPreviousViewport()
 	{
 		Client client = clientWithViewport(10, 20, 100, 80);
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 		setViewport(client, 2, 1, 5, 5);
-		SceneMirrorPicking.publish(client, new SceneMirrorPicking.Frame(2, 1, 5, 5,
+		sceneMirrorPicking.publish(client, new SceneMirrorPicking.Frame(2, 1, 5, 5,
 			2, 5, 1, 1, SceneMirrorViewport.capture(2, 2, 5, 5, 12, 8)));
-		assertEquals(4, SceneMirrorPicking.mapSceneX(0, 0));
+		assertEquals(4, sceneMirrorPicking.mapSceneX(0, 0));
 	}
 
 	private static SceneMirrorPicking.Frame standardFrame()

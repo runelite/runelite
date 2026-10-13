@@ -41,6 +41,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.geometry.RectangleUnion;
 import net.runelite.api.geometry.Shapes;
 import net.runelite.api.geometry.SimplePolygon;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -52,14 +53,11 @@ import org.jetbrains.annotations.ApiStatus;
  */
 public class Perspective
 {
-	private static volatile CanvasTransform canvasTransform;
-
-	/**
-	 * Sets the display mapping for projected world coordinates, or clears it with null.
-	 */
-	public static void setCanvasTransform(@Nullable CanvasTransform transform)
+	@Nullable
+	private static CanvasTransform canvasTransform(Client client)
 	{
-		canvasTransform = transform;
+		DrawCallbacks renderer = client.getDrawCallbacks();
+		return renderer == null ? null : renderer.getCanvasTransform();
 	}
 
 	/**
@@ -67,13 +65,13 @@ public class Perspective
 	 */
 	public static boolean isCanvasMirrored(Client client)
 	{
-		CanvasTransform transform = canvasTransform;
+		CanvasTransform transform = canvasTransform(client);
 		return transform != null && transform.isMirrored(client);
 	}
 
 	private static Point canvasPoint(Client client, int x, int y)
 	{
-		CanvasTransform transform = canvasTransform;
+		CanvasTransform transform = canvasTransform(client);
 		return new Point(transform == null ? x : transform.mapX(client, x, y), y);
 	}
 
@@ -339,7 +337,7 @@ public class Perspective
 			modelToCanvasCpu(client, end, x3dCenter, y3dCenter, z3dCenter, rotate, x3d, y3d, z3d, x2d, y2d);
 		}
 
-		CanvasTransform transform = canvasTransform;
+		CanvasTransform transform = canvasTransform(client);
 		if (transform != null)
 		{
 			for (int i = 0; i < end; ++i)

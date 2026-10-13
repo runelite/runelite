@@ -32,6 +32,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.game.SceneMirrorPicking;
+import net.runelite.client.game.SceneMirrorViewport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,12 +48,31 @@ import static org.mockito.ArgumentMatchers.any;
 
 public class SceneMirrorPickingLifecycleTest
 {
+	private final SceneMirrorPicking sceneMirrorPicking = new SceneMirrorPicking();
+
+	@Test
+	public void separateClientsDoNotShareFrameOrCameraState()
+	{
+		Client first = fixture();
+		Client second = fixture();
+		SceneMirrorPicking other = new SceneMirrorPicking();
+		sceneMirrorPicking.setCameraYawPreference(first, true);
+		sceneMirrorPicking.publish(first, standardFrame());
+		assertEquals(20, other.mapSceneX(20, 30));
+		assertFalse(other.isMirrored(first));
+		other.publish(second, standardFrame());
+		verify(second).setInvertYaw(true);
+		other.clear();
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
+		assertTrue(sceneMirrorPicking.isMirrored(first));
+	}
+
 	@Before
 	@After
 	public void resetState()
 	{
-		SceneMirrorPicking.clear();
-		SceneMirrorPicking.setDisplayTransformSupplier(AffineTransform::new);
+		sceneMirrorPicking.clear();
+		sceneMirrorPicking.setDisplayTransformSupplier(AffineTransform::new);
 	}
 
 	@Test
@@ -66,20 +87,23 @@ public class SceneMirrorPickingLifecycleTest
 			return null;
 		}).when(thread).invoke(any(Runnable.class));
 		GpuPlugin plugin = new GpuPlugin();
+		Field mirrorField = GpuPlugin.class.getDeclaredField("sceneMirrorPicking");
+		mirrorField.setAccessible(true);
+		mirrorField.set(plugin, sceneMirrorPicking);
 		Field clientField = GpuPlugin.class.getDeclaredField("client");
 		clientField.setAccessible(true);
 		clientField.set(plugin, client);
 		Field threadField = GpuPlugin.class.getDeclaredField("clientThread");
 		threadField.setAccessible(true);
 		threadField.set(plugin, thread);
-		SceneMirrorPicking.publish(client, standardFrame());
+		sceneMirrorPicking.publish(client, standardFrame());
 		plugin.shutDown();
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 		// A frame already running when the EDT requested shutdown can still finish.
-		SceneMirrorPicking.presentFrame(client, standardFrame());
+		sceneMirrorPicking.presentFrame(client, standardFrame());
 		queued.get().run();
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
-		assertFalse(SceneMirrorPicking.isMirrored(client));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
+		assertFalse(sceneMirrorPicking.isMirrored(client));
 		verify(client).setInvertYaw(false);
 	}
 
@@ -87,19 +111,19 @@ public class SceneMirrorPickingLifecycleTest
 	public void userYawPreferenceSurvivesMirrorToggleAndShutdown()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.setCameraYawPreference(client, true);
+		sceneMirrorPicking.setCameraYawPreference(client, true);
 		verify(client).setInvertYaw(true);
 		clearInvocations(client);
-		SceneMirrorPicking.publish(client, standardFrame());
+		sceneMirrorPicking.publish(client, standardFrame());
 		verify(client).setInvertYaw(false);
 		clearInvocations(client);
-		SceneMirrorPicking.beginFrame(client, null);
+		sceneMirrorPicking.beginFrame(client, null);
 		verify(client, never()).setInvertYaw(true);
-		SceneMirrorPicking.presentFrame(client, null);
+		sceneMirrorPicking.presentFrame(client, null);
 		verify(client).setInvertYaw(true);
 		clearInvocations(client);
-		SceneMirrorPicking.publish(client, standardFrame());
-		SceneMirrorPicking.clear();
+		sceneMirrorPicking.publish(client, standardFrame());
+		sceneMirrorPicking.clear();
 		verify(client).setInvertYaw(true);
 	}
 
@@ -107,23 +131,23 @@ public class SceneMirrorPickingLifecycleTest
 	public void changingCameraConfigDuringMirrorKeepsCompensation()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
+		sceneMirrorPicking.publish(client, standardFrame());
 		clearInvocations(client);
-		SceneMirrorPicking.setCameraYawPreference(client, true);
+		sceneMirrorPicking.setCameraYawPreference(client, true);
 		verify(client).setInvertYaw(false);
-		SceneMirrorPicking.setCameraYawPreference(client, false);
+		sceneMirrorPicking.setCameraYawPreference(client, false);
 		verify(client).setInvertYaw(true);
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
-		assertEquals(90, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(90, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
 	}
 
 	@Test
 	public void mouseCameraYawChangesOnlyAfterTheMirroredFrameIsDisplayed()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.beginFrame(client, standardFrame());
+		sceneMirrorPicking.beginFrame(client, standardFrame());
 		verify(client, never()).setInvertYaw(true);
-		SceneMirrorPicking.presentFrame(client, standardFrame());
+		sceneMirrorPicking.presentFrame(client, standardFrame());
 		verify(client).setInvertYaw(true);
 		verify(client, never()).setInvertPitch(true);
 		verify(client, never()).setInvertPitch(false);
@@ -133,8 +157,8 @@ public class SceneMirrorPickingLifecycleTest
 	public void disablingTheMirrorRestoresNativeCameraYaw()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
-		SceneMirrorPicking.presentFrame(client, null);
+		sceneMirrorPicking.publish(client, standardFrame());
+		sceneMirrorPicking.presentFrame(client, null);
 		verify(client).setInvertYaw(false);
 	}
 
@@ -142,8 +166,8 @@ public class SceneMirrorPickingLifecycleTest
 	public void shutdownRestoresNativeCameraYaw()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
-		SceneMirrorPicking.clear();
+		sceneMirrorPicking.publish(client, standardFrame());
+		sceneMirrorPicking.clear();
 		verify(client).setInvertYaw(false);
 	}
 
@@ -151,76 +175,79 @@ public class SceneMirrorPickingLifecycleTest
 	public void beginningFirstRenderChangesOnlyOutgoingCoordinates()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.beginFrame(client, standardFrame());
-		assertEquals(90, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
-		assertTrue(SceneMirrorPicking.isMirrored(client));
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.beginFrame(client, standardFrame());
+		assertEquals(90, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		assertTrue(sceneMirrorPicking.isMirrored(client));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	@Test
 	public void presentingFirstFrameChangesOnlyIncomingCoordinates()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.presentFrame(client, standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
-		assertEquals(30, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
-		assertFalse(SceneMirrorPicking.isMirrored(client));
+		sceneMirrorPicking.presentFrame(client, standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(30, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		assertFalse(sceneMirrorPicking.isMirrored(client));
 	}
 
 	@Test
 	public void newRenderKeepsInputFromPreviouslyPresentedFrame()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
-		SceneMirrorPicking.beginFrame(client, fractionalFrame());
-		assertEquals(39, SceneMirrorPicking.mapWorldCanvasX(client, 80, 60));
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.publish(client, standardFrame());
+		sceneMirrorPicking.beginFrame(client, fractionalFrame());
+		assertEquals(39, sceneMirrorPicking.mapWorldCanvasX(client, 80, 60));
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	@Test
 	public void presentationDoesNotReplaceTheActiveOutgoingTransform()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.beginFrame(client, standardFrame());
-		SceneMirrorPicking.presentFrame(client, fractionalFrame());
-		assertEquals(78, SceneMirrorPicking.mapSceneX(20, 30));
-		assertEquals(40, SceneMirrorPicking.mapWorldCanvasX(client, 80, 60));
+		sceneMirrorPicking.beginFrame(client, standardFrame());
+		sceneMirrorPicking.presentFrame(client, fractionalFrame());
+		assertEquals(78, sceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(40, sceneMirrorPicking.mapWorldCanvasX(client, 80, 60));
 	}
 
 	@Test
 	public void togglingOffRendersNativeBeforeReplacingDisplayedInput()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
-		SceneMirrorPicking.beginFrame(client, null);
-		assertEquals(30, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
-		assertFalse(SceneMirrorPicking.isMirrored(client));
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
-		SceneMirrorPicking.presentFrame(client, null);
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.publish(client, standardFrame());
+		sceneMirrorPicking.beginFrame(client, null);
+		assertEquals(30, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		assertFalse(sceneMirrorPicking.isMirrored(client));
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.presentFrame(client, null);
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	@Test
 	public void clearingDropsBothRenderAndPresentedSnapshots()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertEquals(90, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
-		SceneMirrorPicking.clear();
-		assertEquals(30, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
-		assertFalse(SceneMirrorPicking.isMirrored(client));
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertEquals(90, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.clear();
+		assertEquals(30, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
+		assertFalse(sceneMirrorPicking.isMirrored(client));
 	}
 
 	@Test
 	public void loginTransitionClearsBothMappingsBeforeUiOnlyFrames() throws Exception
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
-		assertEquals(90, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(90, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
 		GpuPlugin plugin = new GpuPlugin();
+		Field mirrorField = GpuPlugin.class.getDeclaredField("sceneMirrorPicking");
+		mirrorField.setAccessible(true);
+		mirrorField.set(plugin, sceneMirrorPicking);
 		Field enabled = GpuPlugin.class.getDeclaredField("sceneMirrorEnabled");
 		enabled.setAccessible(true);
 		enabled.setBoolean(plugin, true);
@@ -231,9 +258,9 @@ public class SceneMirrorPickingLifecycleTest
 		event.setGameState(GameState.LOGIN_SCREEN);
 		// This real event handler uses no GL operations for LOGIN_SCREEN.
 		plugin.onGameStateChanged(event);
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
-		assertEquals(30, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
-		assertFalse(SceneMirrorPicking.isMirrored(client));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(30, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		assertFalse(sceneMirrorPicking.isMirrored(client));
 		assertFalse("UI-only frames must not remain behind the stale-scene guard", enabled.getBoolean(plugin));
 		assertFalse("A login frame cannot reuse the previous scene framebuffer", valid.getBoolean(plugin));
 	}
@@ -242,23 +269,23 @@ public class SceneMirrorPickingLifecycleTest
 	public void canvasResizeRejectsIncomingWithUnchangedLogicalViewport()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 		when(client.getCanvasWidth()).thenReturn(301);
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 		when(client.getCanvasWidth()).thenReturn(300);
 		when(client.getCanvasHeight()).thenReturn(201);
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	@Test
 	public void changingStretchModeRejectsPresentedSnapshot()
 	{
 		Client client = fixture();
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 		when(client.isStretchedEnabled()).thenReturn(true);
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	@Test
@@ -268,13 +295,13 @@ public class SceneMirrorPickingLifecycleTest
 		Dimension dimensions = new Dimension(300, 200);
 		when(client.isStretchedEnabled()).thenReturn(true);
 		when(client.getStretchedDimensions()).thenReturn(dimensions);
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 		dimensions.width = 301;
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 		dimensions.width = 300;
 		dimensions.height = 201;
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	@Test
@@ -282,14 +309,14 @@ public class SceneMirrorPickingLifecycleTest
 	{
 		Client client = fixture();
 		AffineTransform display = new AffineTransform();
-		SceneMirrorPicking.setDisplayTransformSupplier(() -> display);
-		SceneMirrorPicking.publish(client, standardFrame());
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		sceneMirrorPicking.setDisplayTransformSupplier(() -> display);
+		sceneMirrorPicking.publish(client, standardFrame());
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 		// Mutate the same transform to catch retaining a live object instead of its scale values.
 		display.setToScale(1.25, 1);
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 		display.setToScale(1, 1.25);
-		assertEquals(20, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(20, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	private static SceneMirrorPicking.Frame standardFrame()

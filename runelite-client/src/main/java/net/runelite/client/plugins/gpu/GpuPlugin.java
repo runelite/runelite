@@ -68,6 +68,8 @@ import net.runelite.client.callback.RenderCallbackManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.SceneMirrorPicking;
+import net.runelite.client.game.SceneMirrorViewport;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -80,6 +82,10 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.SceneMirror;
 import net.runelite.rlawt.AWTContext;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLCapabilities;
+import org.lwjgl.opengl.GLUtil;
+import org.lwjgl.system.Callback;
+import org.lwjgl.system.Configuration;
 import static org.lwjgl.opengl.GL33C.*;
 import static org.lwjgl.opengl.GL43C.GL_DEBUG_SOURCE_API;
 import static org.lwjgl.opengl.GL43C.GL_DEBUG_TYPE_OTHER;
@@ -87,10 +93,6 @@ import static org.lwjgl.opengl.GL43C.GL_DEBUG_TYPE_PERFORMANCE;
 import static org.lwjgl.opengl.GL43C.glDebugMessageControl;
 import static org.lwjgl.opengl.GL45C.GL_ZERO_TO_ONE;
 import static org.lwjgl.opengl.GL45C.glClipControl;
-import org.lwjgl.opengl.GLCapabilities;
-import org.lwjgl.opengl.GLUtil;
-import org.lwjgl.system.Callback;
-import org.lwjgl.system.Configuration;
 
 @PluginDescriptor(
 	name = "GPU",
@@ -99,8 +101,29 @@ import org.lwjgl.system.Configuration;
 	loadInSafeMode = false
 )
 @Slf4j
-public class GpuPlugin extends Plugin implements DrawCallbacks
+public class GpuPlugin extends Plugin implements DrawCallbacks, CanvasTransform
 {
+	@Inject
+	private SceneMirrorPicking sceneMirrorPicking;
+
+	@Override
+	public CanvasTransform getCanvasTransform()
+	{
+		return this;
+	}
+
+	@Override
+	public int mapX(Client client, int x, int y)
+	{
+		return sceneMirrorPicking.mapWorldCanvasX(client, x, y);
+	}
+
+	@Override
+	public boolean isMirrored(Client client)
+	{
+		return sceneMirrorPicking.isMirrored(client);
+	}
+
 	static final int MAX_DISTANCE = 184;
 	static final int MAX_FOG_DEPTH = 100;
 	static final int SCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2; // offset for sxy -> msxy
@@ -314,24 +337,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			try
 			{
-				SceneMirrorPicking.clear();
+				sceneMirrorPicking.clear();
 				if (client.isSceneMirroringSupported())
 				{
-					SceneMirrorPicking.setDisplayTransformSupplier(() -> clientUI.getGraphicsConfiguration().getDefaultTransform());
-					Perspective.setCanvasTransform(new CanvasTransform()
-					{
-						@Override
-						public int mapX(Client client, int x, int y)
-						{
-							return SceneMirrorPicking.mapWorldCanvasX(client, x, y);
-						}
-
-						@Override
-						public boolean isMirrored(Client client)
-						{
-							return SceneMirrorPicking.isMirrored(client);
-						}
-					});
+					sceneMirrorPicking.setDisplayTransformSupplier(() -> clientUI.getGraphicsConfiguration().getDefaultTransform());
 				}
 				fboScene = -1;
 				lastAnisotropicFilteringLevel = -1;
@@ -484,9 +493,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		clientThread.invoke(() ->
 		{
-			SceneMirrorPicking.clear();
-			SceneMirrorPicking.setDisplayTransformSupplier(null);
-			Perspective.setCanvasTransform(null);
+			sceneMirrorPicking.clear();
+			sceneMirrorPicking.setDisplayTransformSupplier(null);
 			client.setGpuFlags(0);
 			client.setDrawCallbacks(null);
 			client.setUnlockedFps(false);
@@ -880,7 +888,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		sceneMirrorPickingFrame = null;
 		pendingSceneMirrorPickingFrame = null;
 		sceneMirrorEnabled = false;
-		SceneMirrorPicking.clear();
+		sceneMirrorPicking.clear();
 		sceneFboValid = false;
 		sceneFramebufferWidth = 0;
 		sceneFramebufferHeight = 0;
@@ -1584,7 +1592,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int canvasWidth = client.getCanvasWidth();
 
 		// Do not present a partly reprojected frame if layout/DPI changed during drawing.
-		if (sceneFboValid && sceneMirrorEnabled && !SceneMirrorPicking.isMirrored(client))
+		if (sceneFboValid && sceneMirrorEnabled && !sceneMirrorPicking.isMirrored(client))
 		{
 			return;
 		}
@@ -1605,11 +1613,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		try
 		{
 			awtContext.swapBuffers();
-			SceneMirrorPicking.presentFrame(client, pendingSceneMirrorPickingFrame);
+			sceneMirrorPicking.presentFrame(client, pendingSceneMirrorPickingFrame);
 		}
 		catch (RuntimeException ex)
 		{
-			SceneMirrorPicking.clear();
+			sceneMirrorPicking.clear();
 			// this is always fatal
 			if (!canvas.isValid())
 			{
@@ -1748,7 +1756,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			sceneMirrorViewport = null;
 			sceneMirrorPickingFrame = null;
 			pendingSceneMirrorPickingFrame = null;
-			SceneMirrorPicking.clear();
+			sceneMirrorPicking.clear();
 		}
 		if (state == GameState.STARTING)
 		{
@@ -2267,7 +2275,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				? SceneMirrorPicking.Frame.capture(client, physicalX, physicalWidth, sceneMirrorViewport)
 				: null;
 			sceneMirrorEnabled = sceneMirrorViewport != null;
-			SceneMirrorPicking.beginFrame(client, sceneMirrorEnabled ? sceneMirrorPickingFrame : null);
+			sceneMirrorPicking.beginFrame(client, sceneMirrorEnabled ? sceneMirrorPickingFrame : null);
 		}
 	}
 

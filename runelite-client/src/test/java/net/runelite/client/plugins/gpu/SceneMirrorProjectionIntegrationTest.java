@@ -34,6 +34,9 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.hooks.DrawCallbacks;
+import net.runelite.client.game.SceneMirrorPicking;
+import net.runelite.client.game.SceneMirrorViewport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,12 +46,13 @@ import static org.mockito.Mockito.when;
 
 public class SceneMirrorProjectionIntegrationTest
 {
+	private final SceneMirrorPicking sceneMirrorPicking = new SceneMirrorPicking();
+
 	@Before
 	@After
 	public void clearTransforms()
 	{
-		SceneMirrorPicking.clear();
-		Perspective.setCanvasTransform(null);
+		sceneMirrorPicking.clear();
 	}
 
 	@Test
@@ -56,9 +60,9 @@ public class SceneMirrorProjectionIntegrationTest
 	{
 		Client client = fixture(true);
 		install(client, standardFrame());
-		assertEquals(80, SceneMirrorPicking.mapWorldAnchorX(20));
-		assertEquals(90, SceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
-		assertEquals(79, SceneMirrorPicking.mapSceneX(20, 30));
+		assertEquals(80, sceneMirrorPicking.mapWorldAnchorX(20));
+		assertEquals(90, sceneMirrorPicking.mapWorldCanvasX(client, 30, 60));
+		assertEquals(79, sceneMirrorPicking.mapSceneX(20, 30));
 	}
 
 	@Test
@@ -114,11 +118,11 @@ public class SceneMirrorProjectionIntegrationTest
 			11, 127, 1.25, 1.5, SceneMirrorViewport.capture(11, 150, 127, 120, 400, 300)));
 		// Native vertex x=20 projects to physical 36.4, reflects to 112.6,
 		// then occupies canvas x=floor(112.6/1.25)=90 (relative x=80).
-		assertEquals(80, SceneMirrorPicking.mapWorldAnchorX(20));
+		assertEquals(80, sceneMirrorPicking.mapWorldAnchorX(20));
 		assertEquals(new Point(90, 60), Perspective.localToCanvas(client, 128, 256, 0));
 		// The center of canvas pixel 90 is a different physical point (113.125).
 		// Its inverse native coordinate is 19.5876, which belongs to pixel 19.
-		assertEquals(19, SceneMirrorPicking.mapSceneX(80, 30));
+		assertEquals(19, sceneMirrorPicking.mapSceneX(80, 30));
 	}
 
 	@Test
@@ -149,9 +153,25 @@ public class SceneMirrorProjectionIntegrationTest
 		Client client = fixture(true);
 		install(client, standardFrame());
 		assertEquals(new Point(90, 60), Perspective.localToCanvas(client, 128, 256, 0));
-		SceneMirrorPicking.clear();
+		sceneMirrorPicking.clear();
 		assertEquals(new Point(30, 60), Perspective.localToCanvas(client, 128, 256, 0));
 		assertFalse(Perspective.isCanvasMirrored(client));
+	}
+
+	@Test
+	public void anotherRenderersShutdownDoesNotClearThisClientsProjection()
+	{
+		Client first = fixture(true);
+		Client second = fixture(true);
+		install(first, standardFrame());
+		SceneMirrorProjectionIntegrationTest other = new SceneMirrorProjectionIntegrationTest();
+		other.install(second, standardFrame());
+		assertEquals(new Point(90, 60), Perspective.localToCanvas(first, 128, 256, 0));
+		assertEquals(new Point(90, 60), Perspective.localToCanvas(second, 128, 256, 0));
+		other.sceneMirrorPicking.clear();
+		when(second.getDrawCallbacks()).thenReturn(null);
+		assertEquals(new Point(90, 60), Perspective.localToCanvas(first, 128, 256, 0));
+		assertEquals(new Point(30, 60), Perspective.localToCanvas(second, 128, 256, 0));
 	}
 
 	private static SceneMirrorPicking.Frame standardFrame()
@@ -160,21 +180,23 @@ public class SceneMirrorProjectionIntegrationTest
 			10, 100, 1, 1, SceneMirrorViewport.capture(10, 100, 100, 80, 300, 200));
 	}
 
-	private static void install(Client client, SceneMirrorPicking.Frame frame)
+	private void install(Client client, SceneMirrorPicking.Frame frame)
 	{
-		SceneMirrorPicking.publish(client, frame);
-		Perspective.setCanvasTransform(new CanvasTransform()
+		sceneMirrorPicking.publish(client, frame);
+		DrawCallbacks renderer = mock(DrawCallbacks.class);
+		when(client.getDrawCallbacks()).thenReturn(renderer);
+		when(renderer.getCanvasTransform()).thenReturn(new CanvasTransform()
 		{
 			@Override
 			public int mapX(Client mappedClient, int x, int y)
 			{
-				return SceneMirrorPicking.mapWorldCanvasX(mappedClient, x, y);
+				return sceneMirrorPicking.mapWorldCanvasX(mappedClient, x, y);
 			}
 
 			@Override
 			public boolean isMirrored(Client mappedClient)
 			{
-				return SceneMirrorPicking.isMirrored(mappedClient);
+				return sceneMirrorPicking.isMirrored(mappedClient);
 			}
 		});
 	}

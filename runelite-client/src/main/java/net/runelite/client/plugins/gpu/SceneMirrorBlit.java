@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.gpu;
 
+import net.runelite.client.game.SceneMirrorViewport;
 import static org.lwjgl.opengl.GL33C.*;
 
 /** GPU scene composition pass, shared by GpuPlugin and the opt-in native GL test. */

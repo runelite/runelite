@@ -32,6 +32,5 @@ public interface CanvasTransform
 {
 	int mapX(Client client, int x, int y);
 
-
 	boolean isMirrored(Client client);
 }

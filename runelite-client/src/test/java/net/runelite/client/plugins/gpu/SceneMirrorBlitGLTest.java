@@ -28,6 +28,7 @@ import java.awt.Canvas;
 import java.awt.Frame;
 import java.nio.ByteBuffer;
 import javax.swing.SwingUtilities;
+import net.runelite.client.game.SceneMirrorViewport;
 import net.runelite.rlawt.AWTContext;
 import org.junit.AfterClass;
 import org.junit.Assume;

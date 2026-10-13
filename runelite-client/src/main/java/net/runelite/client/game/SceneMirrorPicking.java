@@ -22,39 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.gpu;
+package net.runelite.client.game;
 
 import java.awt.Dimension;
 import java.awt.geom.AffineTransform;
 import java.util.function.Supplier;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 
-/** Scene-only bridge for the exact-version native picking patch. */
+/** Client-owned scene coordinates shared by rendering, picking and camera controls. */
+@Singleton
 public final class SceneMirrorPicking
 {
-	private static volatile State inputState;
-	private static volatile State projectionState;
-	private static volatile CameraPreference cameraPreference;
-	private static volatile Supplier<AffineTransform> displayTransformSupplier;
+	private volatile State inputState;
+	private volatile State projectionState;
+	private volatile CameraPreference cameraPreference;
+	private volatile Supplier<AffineTransform> displayTransformSupplier;
 
-	private SceneMirrorPicking()
+	@Inject
+	public SceneMirrorPicking()
 	{
 	}
 
-	public static int mapSceneX(int x, int y)
+	public int mapSceneX(int x, int y)
 	{
 		State current = inputState;
 		return current != null && current.matches() ? current.frame.mapX(x, y) : x;
 	}
 
 	/** Only successful native world projections call this; invalid branches stay native. */
-	public static int mapWorldAnchorX(int x)
+	public int mapWorldAnchorX(int x)
 	{
 		State current = projectionState;
 		return current != null && current.matches() ? current.frame.projectX(x) : x;
 	}
 
-	public static int mapWorldCanvasX(Client client, int x, int y)
+	public int mapWorldCanvasX(Client client, int x, int y)
 	{
 		State current = projectionState;
 		if (x == Integer.MIN_VALUE || y == Integer.MIN_VALUE || current == null
@@ -65,20 +69,20 @@ public final class SceneMirrorPicking
 		return current.frame.projectX(x - current.frame.logicalX) + current.frame.logicalX;
 	}
 
-	public static boolean isMirrored(Client client)
+	public boolean isMirrored(Client client)
 	{
 		State current = projectionState;
 		return current != null && current.client == client && current.matches();
 	}
 
 	/** Preserve the Camera plugin preference while compensating displayed horizontal reflection. */
-	public static void setCameraYawPreference(Client client, boolean invertYaw)
+	public void setCameraYawPreference(Client client, boolean invertYaw)
 	{
 		cameraPreference = new CameraPreference(client, invertYaw);
 		applyCameraYaw(client);
 	}
 
-	private static void applyCameraYaw(Client client)
+	private void applyCameraYaw(Client client)
 	{
 		CameraPreference preference = cameraPreference;
 		State displayed = inputState;
@@ -86,7 +90,7 @@ public final class SceneMirrorPicking
 		client.setInvertYaw(baseline ^ (displayed != null && displayed.client == client));
 	}
 
-	static void publish(Client client, Frame frame)
+	public void publish(Client client, Frame frame)
 	{
 		State current = snapshot(client, frame);
 		inputState = current;
@@ -94,12 +98,12 @@ public final class SceneMirrorPicking
 		applyCameraYaw(client);
 	}
 
-	static void beginFrame(Client client, Frame frame)
+	public void beginFrame(Client client, Frame frame)
 	{
 		projectionState = snapshot(client, frame);
 	}
 
-	static void presentFrame(Client client, Frame frame)
+	public void presentFrame(Client client, Frame frame)
 	{
 		State rendered = projectionState;
 		inputState = rendered != null && rendered.client == client && rendered.frame == frame
@@ -107,12 +111,12 @@ public final class SceneMirrorPicking
 		applyCameraYaw(client);
 	}
 
-	static void setDisplayTransformSupplier(Supplier<AffineTransform> supplier)
+	public void setDisplayTransformSupplier(Supplier<AffineTransform> supplier)
 	{
 		displayTransformSupplier = supplier;
 	}
 
-	static void clear()
+	public void clear()
 	{
 		State previous = inputState;
 		inputState = null;
@@ -135,12 +139,12 @@ public final class SceneMirrorPicking
 		}
 	}
 
-	private static State snapshot(Client client, Frame frame)
+	private State snapshot(Client client, Frame frame)
 	{
 		return client != null && frame != null && frame.valid ? new State(client, frame) : null;
 	}
 
-	private static final class State
+	private final class State
 	{
 		private final Client client;
 		private final Frame frame;
@@ -179,16 +183,16 @@ public final class SceneMirrorPicking
 		}
 	}
 
-	private static AffineTransform displayTransform()
+	private AffineTransform displayTransform()
 	{
 		Supplier<AffineTransform> supplier = displayTransformSupplier;
 		return supplier == null ? new AffineTransform() : supplier.get();
 	}
 
 	/** Uses the actual rendered physical viewport, including its padding and rounding. */
-	static final class Frame
+	public static final class Frame
 	{
-		static Frame capture(Client client, int physicalX, int physicalWidth, SceneMirrorViewport viewport)
+		public static Frame capture(Client client, int physicalX, int physicalWidth, SceneMirrorViewport viewport)
 		{
 			if (viewport == null || client.getCanvasWidth() <= 0 || client.getCanvasHeight() <= 0)
 			{
@@ -206,7 +210,7 @@ public final class SceneMirrorPicking
 		private final SceneMirrorViewport viewport;
 		private final boolean valid;
 
-		Frame(int logicalX, int logicalY, int logicalWidth, int logicalHeight,
+		public Frame(int logicalX, int logicalY, int logicalWidth, int logicalHeight,
 			int physicalX, int physicalWidth, double scaleX, double scaleY, SceneMirrorViewport viewport)
 		{
 			this.logicalX = logicalX;
@@ -223,7 +227,7 @@ public final class SceneMirrorPicking
 				&& Double.isFinite(scaleX) && Double.isFinite(scaleY) && scaleX > 0 && scaleY > 0;
 		}
 
-		int mapX(int x, int y)
+		public int mapX(int x, int y)
 		{
 			if (!valid || x < 0 || x >= logicalWidth || y < 0 || y >= logicalHeight)
 			{

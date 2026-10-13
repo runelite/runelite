@@ -22,13 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.gpu;
+package net.runelite.client.game;
 
 /** Immutable framebuffer blit bounds; does not modify client input. */
-final class SceneMirrorViewport
+public final class SceneMirrorViewport
 {
-	final int sourceX0, sourceX1, y0, y1, destinationX0, destinationX1;
-	final int framebufferWidth, framebufferHeight;
+	public final int sourceX0, sourceX1, y0, y1, destinationX0, destinationX1;
+	public final int framebufferWidth, framebufferHeight;
 
 	private SceneMirrorViewport(int sourceX0, int sourceX1, int x0, int x1, int y0, int y1, int framebufferWidth, int framebufferHeight)
 	{
@@ -42,7 +42,7 @@ final class SceneMirrorViewport
 		this.framebufferHeight = framebufferHeight;
 	}
 
-	static SceneMirrorViewport capture(int x, int y, int width, int height, int framebufferWidth, int framebufferHeight)
+	public static SceneMirrorViewport capture(int x, int y, int width, int height, int framebufferWidth, int framebufferHeight)
 	{
 		if (width <= 0 || height <= 0 || framebufferWidth <= 0 || framebufferHeight <= 0)
 		{

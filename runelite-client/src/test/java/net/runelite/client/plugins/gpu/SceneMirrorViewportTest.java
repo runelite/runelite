@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.gpu;
 
+import net.runelite.client.game.SceneMirrorViewport;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

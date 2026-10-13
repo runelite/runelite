@@ -25,6 +25,8 @@
 package net.runelite.api.hooks;
 
 import java.util.Set;
+import javax.annotation.Nullable;
+import net.runelite.api.CanvasTransform;
 import net.runelite.api.GameObject;
 import net.runelite.api.Model;
 import net.runelite.api.Projection;
@@ -38,6 +40,13 @@ import net.runelite.api.WorldView;
 
 public interface DrawCallbacks
 {
+	/** World projection mapping owned by this renderer, or null for normal projection. */
+	@Nullable
+	default CanvasTransform getCanvasTransform()
+	{
+		return null;
+	}
+
 	/**
 	 * GPU mode on.
 	 */

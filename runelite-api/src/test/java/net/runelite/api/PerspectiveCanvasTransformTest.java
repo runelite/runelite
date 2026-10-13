@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.widgets.Widget;
 import org.junit.After;
 import org.junit.Before;
@@ -41,11 +42,18 @@ import static org.junit.Assert.*;
 
 public class PerspectiveCanvasTransformTest
 {
+	private CanvasTransform transform;
+
+	private void setCanvasTransform(CanvasTransform value)
+	{
+		transform = value;
+	}
+
 	@Before
 	@After
 	public void clearTransform()
 	{
-		Perspective.setCanvasTransform(null);
+		setCanvasTransform(null);
 	}
 
 	@Test
@@ -58,21 +66,21 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void rootGpuProjectionTransformsOnce()
 	{
-		Perspective.setCanvasTransform(translation());
+		setCanvasTransform(translation());
 		assertEquals(new Point(167, 70), Perspective.localToCanvas(client(true), WorldView.TOPLEVEL, 128, 256, 0));
 	}
 
 	@Test
 	public void rootCpuProjectionTransformsOnce()
 	{
-		Perspective.setCanvasTransform(translation());
+		setCanvasTransform(translation());
 		assertEquals(new Point(167, 70), Perspective.localToCanvas(client(false), 128, 256, 0));
 	}
 
 	@Test
 	public void subworldPointOverloadsTransformOnce()
 	{
-		Perspective.setCanvasTransform(translation());
+		setCanvasTransform(translation());
 		Client client = subworldClient();
 		assertEquals(new Point(167, 70), Perspective.localToCanvas(client, 1, 128, 256, 0));
 		assertEquals(new Point(167, 70), Perspective.localToCanvas(client, new LocalPoint(128, 256, 1), 0, 0));
@@ -81,7 +89,7 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void readableTextCentersAfterItsWorldAnchorIsReflected()
 	{
-		Perspective.setCanvasTransform(reflection());
+		setCanvasTransform(reflection());
 		Graphics2D graphics = new BufferedImage(240, 120, BufferedImage.TYPE_INT_ARGB).createGraphics();
 		try
 		{
@@ -100,7 +108,7 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void imageCentersAfterItsWorldAnchorIsReflected()
 	{
-		Perspective.setCanvasTransform(reflection());
+		setCanvasTransform(reflection());
 		BufferedImage image = new BufferedImage(20, 10, BufferedImage.TYPE_INT_ARGB);
 		assertEquals(new Point(50, 65), Perspective.getCanvasImageLocation(client(true), new LocalPoint(128, 256), image, 0));
 	}
@@ -108,7 +116,7 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void modelVerticesTransformOnceIncludingOffscreenCoordinates()
 	{
-		Perspective.setCanvasTransform(translation());
+		setCanvasTransform(translation());
 		for (boolean gpu : new boolean[]{false, true})
 		{
 			int[] x = new int[]{0, 0, 0, 0, 999};
@@ -123,7 +131,7 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void subworldModelVerticesTransformOnce()
 	{
-		Perspective.setCanvasTransform(translation());
+		setCanvasTransform(translation());
 		WorldView subworld = world(1, values("getCanvasProjection", identityProjection()));
 		int[] x = new int[1];
 		int[] y = new int[1];
@@ -136,7 +144,7 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void nearPlaneNullDoesNotReachTransform()
 	{
-		Perspective.setCanvasTransform(new CanvasTransform()
+		setCanvasTransform(new CanvasTransform()
 		{
 			public int mapX(Client client, int x, int y)
 			{
@@ -154,7 +162,7 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void minimapDoesNotUseTheWorldTransform()
 	{
-		Perspective.setCanvasTransform(new CanvasTransform()
+		setCanvasTransform(new CanvasTransform()
 		{
 			public int mapX(Client client, int x, int y)
 			{
@@ -177,7 +185,7 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void minimapProjectionRemainsIndependent()
 	{
-		Perspective.setCanvasTransform(reflection());
+		setCanvasTransform(reflection());
 		Widget minimap = fake(Widget.class, values("isHidden", false, "getCanvasLocation", new Point(300, 20), "getWidth", 100, "getHeight", 80));
 		CameraFocusableEntity focus = fake(CameraFocusableEntity.class, values("getCameraFocus", new LocalPoint(128, 256)));
 		Map<String, Object> v = clientValues(true);
@@ -189,9 +197,9 @@ public class PerspectiveCanvasTransformTest
 	@Test
 	public void clearingTransformRestoresOriginalProjection()
 	{
-		Perspective.setCanvasTransform(reflection());
+		setCanvasTransform(reflection());
 		assertTrue(Perspective.isCanvasMirrored(client(true)));
-		Perspective.setCanvasTransform(null);
+		setCanvasTransform(null);
 		assertEquals(new Point(160, 70), Perspective.localToCanvas(client(true), 128, 256, 0));
 		assertFalse(Perspective.isCanvasMirrored(client(true)));
 	}
@@ -228,21 +236,21 @@ public class PerspectiveCanvasTransformTest
 		};
 	}
 
-	private static Client client(boolean gpu)
+	private Client client(boolean gpu)
 	{
 		return fake(Client.class, clientValues(gpu));
 	}
 
-	private static Map<String, Object> clientValues(boolean gpu)
+	private Map<String, Object> clientValues(boolean gpu)
 	{
 		WorldView root = world(WorldView.TOPLEVEL, Collections.emptyMap());
-		return values("isGpu", gpu, "getScale", 100, "getViewportWidth", 200, "getViewportHeight", 100,
+		return values("getDrawCallbacks", fake(DrawCallbacks.class, values("getCanvasTransform", transform)), "isGpu", gpu, "getScale", 100, "getViewportWidth", 200, "getViewportHeight", 100,
 			"getViewportXOffset", 10, "getViewportYOffset", 20, "getCameraX", 0, "getCameraY", 0, "getCameraZ", 0,
 			"getCameraPitch", 0, "getCameraYaw", 0, "getCameraFpX", 0f, "getCameraFpY", 0f, "getCameraFpZ", 0f,
 			"getCameraFpPitch", 0f, "getCameraFpYaw", 0f, "getWorldView", root, "getTopLevelWorldView", root);
 	}
 
-	private static Client subworldClient()
+	private Client subworldClient()
 	{
 		WorldView subworld = world(1, values("getCanvasProjection", identityProjection()));
 		WorldEntity entity = fake(WorldEntity.class, values("getWorldView", subworld, "getLocalLocation", new LocalPoint(0, 0)));

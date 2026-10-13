@@ -1,0 +1,55 @@
+Scene mirroring: integration contract
+
+Purpose
+Allow a cosmetic plugin to mirror the world without reversing interface text
+or changing which visible entity/tile a real pointer selects. Scene-only pixel
+reflection leaves native picking on the opposite side; global pointer remapping
+also moves widget/menu hit areas. The client must keep these paths separate.
+
+Ownership
+SceneMirror is the plugin's enable/disable request. SceneMirrorPicking is an
+injected client service shared by Hooks, Camera and the active renderer. GPU
+owns composition; its DrawCallbacks supplies the world projection transform.
+No mutable projection or picking state is shared across client instances.
+Camera preferences are combined with the displayed frame's mirror state.
+
+Required injected-client changes
+The public repository consumes injected-client as a dependency. These native
+call sites must be integrated alongside this change; API declarations alone
+do not implement them. Until then isSceneMirroringSupported() remains false.
+
+1. Scene entity picking: after native UI routing chooses the scene, transform
+   the decoded, viewport-relative X before storing scene hover coordinates:
+       sceneX = callbacks.mapSceneMouseX(sceneX, sceneY);
+   Leave Y and all global raw pointer fields unchanged.
+
+2. Terrain selection: apply the same callback to the saved press coordinates
+   when they enter scene tile selection. Do not alter the original saved press,
+   native widget routing, menu position/selection, or minimap input. Each scene
+   consumer must receive one mapping, including secondary WorldViews.
+
+3. Overhead projection: on successful native world-to-screen projection only,
+   before storing the viewport-relative X used to anchor upright labels:
+       projectedX = callbacks.mapSceneCanvasX(projectedX);
+   Preserve invalid projection branches/sentinels and Y. Do not apply again to
+   a result already returned by public Perspective, or to interface geometry.
+
+4. Advertise Client.isSceneMirroringSupported() only when all these sites are
+   wired. The renderer must independently advertise supportsSceneMirroring().
+
+Frame ordering
+GPU captures viewport, clipping, stretch and DPI with the rendered frame.
+beginFrame supplies projection for that frame; presentFrame publishes picking
+after presentation. A plugin request does not change mid-frame input mapping.
+Teardown, invalid viewport and unsupported renderers return normal coordinates.
+Pointer mapping uses pixel centers; geometry uses continuous projection.
+
+Review implementation
+A separate branch contains the exact-build native companion, source-only
+example plugin and build/run instructions, excluded from the proposed PR:
+https://github.com/parasaureyes/runelite/tree/scene-mirror-review-support/review-support
+
+That branch identifies the concrete native call sites and verifies the input
+artifact before building the companion. It is a development reproducer, not
+the proposed upstream integration mechanism. Upstream uses its native source
+hooks implementing the four requirements above.

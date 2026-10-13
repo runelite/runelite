@@ -28,20 +28,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import net.runelite.api.CanvasTransform;
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import org.junit.After;
+import net.runelite.api.hooks.DrawCallbacks;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ModelOutlineCanvasTransformTest
 {
-	@After
-	public void clearTransform()
-	{
-		Perspective.setCanvasTransform(null);
-	}
-
 	@Test
 	public void originalFrontFaceIsVisibleAndBackFaceIsCulled() throws Exception
 	{
@@ -65,7 +59,10 @@ public class ModelOutlineCanvasTransformTest
 
 	private static boolean culled(boolean mirrored, int... points) throws Exception
 	{
-		Perspective.setCanvasTransform(new CanvasTransform()
+		Client client = mock(Client.class);
+		DrawCallbacks renderer = mock(DrawCallbacks.class);
+		when(client.getDrawCallbacks()).thenReturn(renderer);
+		when(renderer.getCanvasTransform()).thenReturn(new CanvasTransform()
 		{
 			public int mapX(Client client, int x, int y)
 			{
@@ -79,9 +76,9 @@ public class ModelOutlineCanvasTransformTest
 		});
 		Constructor<ModelOutlineRenderer> constructor = ModelOutlineRenderer.class.getDeclaredConstructor(Client.class);
 		constructor.setAccessible(true);
-		ModelOutlineRenderer renderer = constructor.newInstance(mock(Client.class));
+		ModelOutlineRenderer outline = constructor.newInstance(client);
 		Method method = ModelOutlineRenderer.class.getDeclaredMethod("cullFace", int.class, int.class, int.class, int.class, int.class, int.class);
 		method.setAccessible(true);
-		return (boolean) method.invoke(renderer, points[0], points[1], points[2], points[3], points[4], points[5]);
+		return (boolean) method.invoke(outline, points[0], points[1], points[2], points[3], points[4], points[5]);
 	}
 }
