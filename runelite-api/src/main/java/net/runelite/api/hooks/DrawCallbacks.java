@@ -100,6 +100,14 @@ public interface DrawCallbacks
 	void draw(int overlayColor);
 
 	/**
+	 * Whether this renderer supports the client scene-mirror service.
+	 */
+	default boolean supportsSceneMirroring()
+	{
+		return false;
+	}
+
+	/**
 	 * Called before the scene is drawn
 	 */
 	default void drawScene(double cameraX, double cameraY, double cameraZ, double cameraPitch, double cameraYaw, int plane)

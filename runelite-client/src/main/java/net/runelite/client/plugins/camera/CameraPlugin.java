@@ -61,6 +61,7 @@ import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.gpu.SceneMirrorPicking;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
@@ -154,7 +155,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		client.setCameraMouseButtonMask(0);
 		client.setCameraSpeed(1f);
 		client.setCameraPitchRelaxerEnabled(false);
-		client.setInvertYaw(false);
+		clientThread.invoke(() -> SceneMirrorPicking.setCameraYawPreference(client, false));
 		client.setInvertPitch(false);
 		client.setCameraShakeDisabled(false);
 		keyManager.unregisterKeyListener(this);
@@ -195,7 +196,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		client.setCameraMouseButtonMask((config.rightClickMovesCamera() && !config.rightClickMenuBlocksCamera()) ? ((1 << MouseEvent.BUTTON2) | (1 << 4 /* button 4 */)) : 0);
 		client.setCameraSpeed((float) config.cameraSpeed());
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
-		client.setInvertYaw(config.invertYaw());
+		clientThread.invoke(() -> SceneMirrorPicking.setCameraYawPreference(client, config.invertYaw()));
 		client.setInvertPitch(config.invertPitch());
 		client.setCameraShakeDisabled(config.disableCameraShake());
 	}

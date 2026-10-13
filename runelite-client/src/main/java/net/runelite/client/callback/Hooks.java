@@ -78,6 +78,7 @@ import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.gpu.SceneMirrorPicking;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
@@ -97,6 +98,18 @@ import net.runelite.client.util.RSTimeUnit;
 @Slf4j
 public class Hooks implements Callbacks
 {
+	@Override
+	public int mapSceneMouseX(int x, int y)
+	{
+		return SceneMirrorPicking.mapSceneX(x, y);
+	}
+
+	@Override
+	public int mapSceneCanvasX(int x)
+	{
+		return SceneMirrorPicking.mapWorldAnchorX(x);
+	}
+
 	private static final long CHECK = RSTimeUnit.GAME_TICKS.getDuration().toNanos(); // ns - how often to run checks
 
 	private static final GameTick GAME_TICK = new GameTick();
