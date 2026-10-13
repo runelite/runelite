@@ -97,10 +97,10 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.TOA_SOT_CAST_B:
 
 			case AnimationID.BASILISK_KNIGHT_MELEE:
-
+			
 			case AnimationID.FETID_WATER_VFX:
-				
-            case AnimationID.FETID_WATER_VFX_LONG:
+
+			case AnimationID.FETID_WATER_VFX_LONG:
 				
 			case AnimationID.WGS_HEROIC_CLIMB_SUCCESS_TWO:
 				return false;
