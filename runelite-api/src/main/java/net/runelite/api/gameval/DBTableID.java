@@ -22650,6 +22650,9 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_HITPOINTS_HALIBUT_COOKED = 16976;
 			public static final int SKILL_FEATURE_HITPOINTS_BLUEFIN_COOKED = 16977;
 			public static final int SKILL_FEATURE_HITPOINTS_MARLIN_COOKED = 16978;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_COLOSSAL_LEVEL_50 = 16987;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_COLOSSAL_LEVEL_75 = 16988;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_COLOSSAL_LEVEL_85 = 16989;
 		}
 	}
 
