@@ -14122,6 +14122,53 @@ public final class DBTableID
 		}
 	}
 
+	public static final class PvpTutorial
+	{
+		public static final int ID = 133;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_TYPE = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_TITLE = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_SHORT_DESCRIPTION = 2;
+
+		/**
+		 * (stat, integer, integer)
+		 */
+		public static final int COL_MODIFIED_STATS = 3;
+
+		/**
+		 * (inv, integer, namedobj, integer)
+		 */
+		public static final int COL_MODIFIED_ITEMS = 4;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_WIPEITEM_ONEXIT = 5;
+
+		public static final class Row
+		{
+			public static final int PVPTUT_PRAYER = 16979;
+			public static final int PVPTUT_COMBO_EATING = 16980;
+			public static final int PVPTUT_FREEZE = 16981;
+			public static final int PVPTUT_SPECIAL_ATTACK = 16982;
+			public static final int PVPTUT_GEAR_SWITCH = 16983;
+			public static final int PVPTUT_TESTBED = 16984;
+			public static final int PVPTUT_BOSS_MEDIUM = 16985;
+			public static final int PVPTUT_BOSS_EXPERT = 16986;
+		}
+	}
+
 	public static final class FletchingBlowpipeCrafting
 	{
 		public static final int ID = 142;
@@ -22603,6 +22650,9 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_HITPOINTS_HALIBUT_COOKED = 16976;
 			public static final int SKILL_FEATURE_HITPOINTS_BLUEFIN_COOKED = 16977;
 			public static final int SKILL_FEATURE_HITPOINTS_MARLIN_COOKED = 16978;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_COLOSSAL_LEVEL_50 = 16987;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_COLOSSAL_LEVEL_75 = 16988;
+			public static final int SKILL_FEATURE_RUNECRAFT_POUCH_COLOSSAL_LEVEL_85 = 16989;
 		}
 	}
 
