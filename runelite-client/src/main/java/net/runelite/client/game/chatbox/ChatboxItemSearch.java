@@ -64,8 +64,10 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	private final Client client;
 
 	private final Map<Integer, ItemComposition> results = new LinkedHashMap<>();
+	private final java.util.List<ItemComposition> allMatches = new java.util.ArrayList<>();
 	private String tooltipText;
 	private int index = -1;
+	private int currentPage = 0;
 
 	@Getter
 	private Consumer<Integer> onItemSelected;
@@ -273,6 +275,22 @@ public class ChatboxItemSearch extends ChatboxTextInput
 					clientThread.invokeLater(this::update);
 				}
 				break;
+			case KeyEvent.VK_PAGE_UP:
+				ev.consume();
+				if (currentPage > 0)
+				{
+					currentPage--;
+					refreshResults();
+				}
+				break;
+			case KeyEvent.VK_PAGE_DOWN:
+				ev.consume();
+				if ((currentPage + 1) * MAX_RESULTS < allMatches.size())
+				{
+					currentPage++;
+					refreshResults();
+				}
+				break;
 			default:
 				super.keyPressed(ev);
 		}
@@ -297,8 +315,10 @@ public class ChatboxItemSearch extends ChatboxTextInput
 
 	private void filterResults()
 	{
+		allMatches.clear();
 		results.clear();
 		index = -1;
+		currentPage = 0;
 
 		String search = getValue().toLowerCase();
 		if (search.isEmpty())
@@ -307,28 +327,41 @@ public class ChatboxItemSearch extends ChatboxTextInput
 		}
 
 		Set<ItemIcon> itemIcons = new HashSet<>();
-		for (int i = 0; i < client.getItemCount() && results.size() < MAX_RESULTS; i++)
+		for (int i = 0; i < client.getItemCount(); i++)
 		{
 			ItemComposition itemComposition = itemManager.getItemComposition(itemManager.canonicalize(i));
 			String name = itemComposition.getName().toLowerCase();
 
-			// The client assigns "null" to item names of items it doesn't know about
-			// and the item might already be in the results from canonicalize
-			if (!name.equals("null") && name.contains(search) && !results.containsKey(itemComposition.getId()))
+			if (!name.equals("null") && name.contains(search) && !allMatches.contains(itemComposition))
 			{
-				// Check if the results already contain the same item image
 				ItemIcon itemIcon = new ItemIcon(itemComposition.getInventoryModel(),
-					itemComposition.getAmbient(), itemComposition.getContrast(),
-					itemComposition.getColorToReplaceWith(), itemComposition.getTextureToReplaceWith());
+						itemComposition.getAmbient(), itemComposition.getContrast(),
+						itemComposition.getColorToReplaceWith(), itemComposition.getTextureToReplaceWith());
 				if (itemIcons.contains(itemIcon))
 				{
 					continue;
 				}
 
 				itemIcons.add(itemIcon);
-				results.put(itemComposition.getId(), itemComposition);
+				allMatches.add(itemComposition);
 			}
 		}
+
+		refreshResults();
+	}
+
+	private void refreshResults()
+	{
+		results.clear();
+		int start = currentPage * MAX_RESULTS;
+		int end = Math.min(start + MAX_RESULTS, allMatches.size());
+		for (int i = start; i < end; i++)
+		{
+			ItemComposition item = allMatches.get(i);
+			results.put(item.getId(), item);
+		}
+		index = results.isEmpty() ? -1 : 0;
+		clientThread.invokeLater(this::update);
 	}
 
 	public ChatboxItemSearch onItemSelected(Consumer<Integer> onItemSelected)
