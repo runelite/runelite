@@ -75,6 +75,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.audio.WindowsWaveOutProvider;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
@@ -295,6 +296,8 @@ public class RuneLite
 
 		System.setProperty("jagex.disableBouncyCastle", "true");
 		System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
+
+		WindowsWaveOutProvider.initialize();
 
 		client.initialize();
 
