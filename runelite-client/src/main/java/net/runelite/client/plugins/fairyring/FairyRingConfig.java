@@ -26,10 +26,21 @@ package net.runelite.client.plugins.fairyring;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(FairyRingConfig.CONFIG_GROUP)
 public interface FairyRingConfig extends Config
 {
 	String CONFIG_GROUP = "fairyrings";
 	String CONFIG_GROUP_TAGS = "fairyringtags";
+
+	@ConfigItem(
+		keyName = "replaceFavoriteCodesWithDestinationNames",
+		name = "Show destination names in favorites menu",
+		description = "Replaces fairy ring favorite right-click codes like CIP with the destination name"
+	)
+	default boolean replaceFavoriteCodesWithDestinationNames()
+	{
+		return true;
+	}
 }
