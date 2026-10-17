@@ -64,6 +64,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
@@ -75,6 +76,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.audio.SdlAudio;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
@@ -295,6 +297,17 @@ public class RuneLite
 
 		System.setProperty("jagex.disableBouncyCastle", "true");
 		System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
+
+		SdlAudio audio = SdlAudio.getDefault();
+		try
+		{
+			audio.initialize(scheduledExecutorService);
+		}
+		catch (LineUnavailableException e)
+		{
+			log.warn("Unable to initialize audio", e);
+		}
+		eventBus.register(audio);
 
 		client.initialize();
 
