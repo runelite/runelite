@@ -28,18 +28,25 @@ package net.runelite.client.plugins.entityhider;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
+import net.runelite.api.Varbits;
 import net.runelite.api.WorldEntity;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.SpotanimID;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -57,6 +64,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class EntityHiderPlugin extends Plugin
 {
+	private static final int MILLIS_PER_SECOND = 1000;
+
 	private static final Set<Integer> THRALL_IDS = ImmutableSet.of(
 		NpcID.ARCEUUS_THRALL_GHOST_LESSER, NpcID.ARCEUUS_THRALL_SKELETON_LESSER, NpcID.ARCEUUS_THRALL_ZOMBIE_LESSER,  // Lesser Thrall (ghost, skeleton, zombie)
 		NpcID.ARCEUUS_THRALL_GHOST_SUPERIOR, NpcID.ARCEUUS_THRALL_SKELETON_SUPERIOR, NpcID.ARCEUUS_THRALL_ZOMBIE_SUPERIOR,  // Superior Thrall (ghost, skeleton, zombie)
@@ -124,6 +133,12 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideRandomEvents;
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
+	private boolean pvpAttackerOnlyHiding;
+	private int pvpAttackerGracePeriodTicks;
+	private int lastAttackedAtTick = -1;
+	private boolean dangerousPvpArea;
+	private boolean underAttackOrGracePeriod;
+	private final Map<String, Integer> attackerLastSeenTick = new HashMap<>();
 
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
@@ -137,6 +152,7 @@ public class EntityHiderPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+		resetAttackState();
 
 		hooks.registerRenderableDrawListener(drawListener);
 	}
@@ -145,6 +161,7 @@ public class EntityHiderPlugin extends Plugin
 	protected void shutDown()
 	{
 		hooks.unregisterRenderableDrawListener(drawListener);
+		resetAttackState();
 	}
 
 	@Subscribe
@@ -153,6 +170,39 @@ public class EntityHiderPlugin extends Plugin
 		if (e.getGroup().equals(EntityHiderConfig.GROUP))
 		{
 			updateConfig();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		Player localPlayer = client.getLocalPlayer();
+		if (!pvpAttackerOnlyHiding || localPlayer == null)
+		{
+			resetAttackState();
+			return;
+		}
+
+		dangerousPvpArea = isInDangerousPvpArea();
+		if (!dangerousPvpArea)
+		{
+			resetAttackState();
+			return;
+		}
+
+		int tick = client.getTickCount();
+		boolean hasActiveAttacker = updateAttackers(localPlayer, tick);
+		if (hasActiveAttacker)
+		{
+			lastAttackedAtTick = tick;
+		}
+
+		underAttackOrGracePeriod = hasActiveAttacker
+			|| (lastAttackedAtTick >= 0 && tick - lastAttackedAtTick <= pvpAttackerGracePeriodTicks);
+
+		if (!underAttackOrGracePeriod)
+		{
+			resetAttackState();
 		}
 	}
 
@@ -184,6 +234,14 @@ public class EntityHiderPlugin extends Plugin
 		hideAttackers = config.hideAttackers();
 
 		hideProjectiles = config.hideProjectiles();
+		pvpAttackerOnlyHiding = config.pvpAttackerOnlyHiding();
+		pvpAttackerGracePeriodTicks = (int) Math.ceil(config.pvpAttackerGracePeriodSeconds()
+			* (double) MILLIS_PER_SECOND / Constants.GAME_TICK_LENGTH);
+
+		if (!pvpAttackerOnlyHiding)
+		{
+			resetAttackState();
+		}
 	}
 
 	@VisibleForTesting
@@ -205,6 +263,11 @@ public class EntityHiderPlugin extends Plugin
 			if (player == local)
 			{
 				return !(drawingUI ? hideLocalPlayer2D : hideLocalPlayer);
+			}
+
+			if (isPvpAttackerOnlyHidingActive())
+			{
+				return isActivelyAttackingLocalPlayer(player, local) || isRecentAttacker(player, client.getTickCount());
 			}
 
 			if (hideAttackers && player.getInteracting() == local)
@@ -316,5 +379,92 @@ public class EntityHiderPlugin extends Plugin
 		}
 
 		return true;
+	}
+
+	private boolean isPvpAttackerOnlyHidingActive()
+	{
+		return pvpAttackerOnlyHiding && dangerousPvpArea && underAttackOrGracePeriod;
+	}
+
+	private boolean isInDangerousPvpArea()
+	{
+		boolean inWilderness = client.getVarbitValue(Varbits.IN_WILDERNESS) == 1;
+		boolean hasPvpSpecOrb = client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1;
+		return inWilderness || hasPvpSpecOrb;
+	}
+
+	private boolean updateAttackers(Player localPlayer, int tick)
+	{
+		boolean hasActiveAttacker = false;
+		List<Player> players = client.getPlayers();
+		if (players == null)
+		{
+			pruneExpiredAttackers(tick);
+			return false;
+		}
+
+		for (Player player : players)
+		{
+			if (player == null || player == localPlayer)
+			{
+				continue;
+			}
+
+			if (isActivelyAttackingLocalPlayer(player, localPlayer))
+			{
+				String attackerName = player.getName();
+				if (attackerName != null)
+				{
+					attackerLastSeenTick.put(attackerName, tick);
+				}
+				hasActiveAttacker = true;
+			}
+		}
+
+		pruneExpiredAttackers(tick);
+		return hasActiveAttacker;
+	}
+
+	private boolean isRecentAttacker(Player player, int tick)
+	{
+		String name = player.getName();
+		if (name == null)
+		{
+			return false;
+		}
+
+		Integer lastSeenAt = attackerLastSeenTick.get(name);
+		if (lastSeenAt == null)
+		{
+			return false;
+		}
+
+		return tick - lastSeenAt <= pvpAttackerGracePeriodTicks;
+	}
+
+	private void pruneExpiredAttackers(int tick)
+	{
+		Iterator<Map.Entry<String, Integer>> iterator = attackerLastSeenTick.entrySet().iterator();
+		while (iterator.hasNext())
+		{
+			Map.Entry<String, Integer> entry = iterator.next();
+			if (tick - entry.getValue() > pvpAttackerGracePeriodTicks)
+			{
+				iterator.remove();
+			}
+		}
+	}
+
+	private boolean isActivelyAttackingLocalPlayer(Player player, Player localPlayer)
+	{
+		return player.getInteracting() == localPlayer && player.getAnimation() != -1;
+	}
+
+	private void resetAttackState()
+	{
+		lastAttackedAtTick = -1;
+		dangerousPvpArea = false;
+		underAttackOrGracePeriod = false;
+		attackerLastSeenTick.clear();
 	}
 }
