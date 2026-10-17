@@ -351,8 +351,14 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
-		final MenuEntry[] menuEntries = client.getMenuEntries();
+		client.setMenuEntries(collapseEntries(client.getMenuEntries()));
+	}
+
+	static MenuEntry[] collapseEntries(MenuEntry[] menuEntries)
+	{
 		final List<MenuEntryWithCount> newEntries = new ArrayList<>(menuEntries.length);
+		// Small menus are cheaper to scan than to hash and allocate a map for.
+		final Map<MenuEntry, MenuEntryWithCount> groundEntries = menuEntries.length > 32 ? new HashMap<>() : null;
 
 		outer:
 		for (int i = menuEntries.length - 1; i >= 0; i--)
@@ -360,27 +366,46 @@ public class GroundItemsPlugin extends Plugin
 			MenuEntry menuEntry = menuEntries[i];
 
 			MenuAction menuType = menuEntry.getType();
-			if (menuType == MenuAction.GROUND_ITEM_FIRST_OPTION || menuType == MenuAction.GROUND_ITEM_SECOND_OPTION
+			boolean groundItem = menuType == MenuAction.GROUND_ITEM_FIRST_OPTION || menuType == MenuAction.GROUND_ITEM_SECOND_OPTION
 				|| menuType == MenuAction.GROUND_ITEM_THIRD_OPTION || menuType == MenuAction.GROUND_ITEM_FOURTH_OPTION
-				|| menuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || menuType == MenuAction.EXAMINE_ITEM_GROUND)
+				|| menuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || menuType == MenuAction.EXAMINE_ITEM_GROUND;
+			if (groundItem)
 			{
-				for (MenuEntryWithCount entryWCount : newEntries)
+				if (groundEntries != null)
 				{
-					if (entryWCount.getEntry().equals(menuEntry))
+					MenuEntryWithCount entryWithCount = groundEntries.get(menuEntry);
+					if (entryWithCount != null)
 					{
-						entryWCount.increment();
-						continue outer;
+						entryWithCount.increment();
+						continue;
+					}
+				}
+				else
+				{
+					for (MenuEntryWithCount entryWithCount : newEntries)
+					{
+						if (entryWithCount.getEntry().equals(menuEntry))
+						{
+							entryWithCount.increment();
+							continue outer;
+						}
 					}
 				}
 			}
 
-			newEntries.add(new MenuEntryWithCount(menuEntry));
+			MenuEntryWithCount entryWithCount = new MenuEntryWithCount(menuEntry);
+			newEntries.add(entryWithCount);
+			if (groundEntries != null && groundItem)
+			{
+				groundEntries.put(menuEntry, entryWithCount);
+			}
 		}
 
-		Collections.reverse(newEntries);
-
-		client.setMenuEntries(newEntries.stream().map(e ->
+		// Finish all lookups before changing targets: MenuEntry equality includes the target.
+		final MenuEntry[] collapsedEntries = new MenuEntry[newEntries.size()];
+		for (int i = 0; i < collapsedEntries.length; i++)
 		{
+			MenuEntryWithCount e = newEntries.get(collapsedEntries.length - 1 - i);
 			final MenuEntry entry = e.getEntry();
 			final int count = e.getCount();
 			if (count > 1)
@@ -388,8 +413,9 @@ public class GroundItemsPlugin extends Plugin
 				entry.setTarget(entry.getTarget() + " x " + count);
 			}
 
-			return entry;
-		}).toArray(MenuEntry[]::new));
+			collapsedEntries[i] = entry;
+		}
+		return collapsedEntries;
 	}
 
 	private GroundItem buildGroundItem(final ItemLayer layer, final TileItem item)
