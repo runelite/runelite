@@ -141,6 +141,7 @@ public class KourendLibraryPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("kourend-library")
 			.tooltip("Kourend Library")
 			.priority(6)
 			.icon(icon)

@@ -205,6 +205,7 @@ public class WorldHopperPlugin extends Plugin
 
 		BufferedImage icon = ImageUtil.loadImageResource(WorldHopperPlugin.class, "icon.png");
 		navButton = NavigationButton.builder()
+			.sidebarId("world-switcher")
 			.tooltip("World Switcher")
 			.icon(icon)
 			.priority(3)
