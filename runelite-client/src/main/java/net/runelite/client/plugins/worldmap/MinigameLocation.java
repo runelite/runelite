@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum MinigameLocation
+public enum MinigameLocation
 {
 	ANIMATION_ROOM("Animation Room", new WorldPoint(2853, 3537, 0)),
 	BARBARIAN_ASSAULT("Barbarian Assault", new WorldPoint(2531, 3569, 0)),

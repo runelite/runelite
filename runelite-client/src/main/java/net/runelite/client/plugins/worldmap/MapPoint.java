@@ -30,9 +30,9 @@ import lombok.experimental.SuperBuilder;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 @SuperBuilder
-class MapPoint extends WorldMapPoint
+public class MapPoint extends WorldMapPoint
 {
-	enum Type
+	public enum Type
 	{
 		TELEPORT,
 		RUNECRAFT_ALTAR,
