@@ -81,6 +81,15 @@ public interface Client extends OAuthApi, GameEngine
 
 	void setDrawCallbacks(DrawCallbacks drawCallbacks);
 
+	/**
+	 * Whether the injected client implements the scene-only mirror callbacks.
+	 * Renderers must not mirror the scene unless these picking hooks are present.
+	 */
+	default boolean isSceneMirroringSupported()
+	{
+		return false;
+	}
+
 	String getBuildID();
 
 	int getEnvironment();
