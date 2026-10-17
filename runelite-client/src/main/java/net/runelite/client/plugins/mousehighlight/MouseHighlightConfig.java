@@ -63,4 +63,15 @@ public interface MouseHighlightConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 3,
+			keyName = "disablePrayertooltip",
+			name = "Disable prayer tooltips",
+			description = "Disable prayer tooltips so they don't cover descriptions."
+	)
+	default boolean disablePrayertooltip()
+	{
+		return false;
+	}
 }
