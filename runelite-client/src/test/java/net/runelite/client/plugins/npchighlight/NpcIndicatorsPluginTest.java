@@ -169,14 +169,14 @@ public class NpcIndicatorsPluginTest
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
 		TestMenuEntry entry = new TestMenuEntry();
-		entry.setTarget("<col=ffff00>Ram<col=ff00>  (level-2)");
+		entry.setTarget("<col=ffff00>Ram<col=ff00>  (lev<col=00ff00>el-2)");
 		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
 		entry.setActor(npc);
 
 		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
 		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
 
-		assertEquals("<col=0000ff>Ram<col=ff00>  (level-2)", entry.getTarget()); // blue name
+		assertEquals("<col=0000ff>Ram<col=ff00>  (lev<col=00ff00>el-2)", entry.getTarget()); // blue name
 	}
 
 	@Test
