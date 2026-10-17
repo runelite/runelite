@@ -28,9 +28,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.util.Prioritized;
 
 @Singleton
 public class MouseManager
@@ -38,8 +40,8 @@ public class MouseManager
 	// Button numbers greater than BUTTON3 have no constant identifier
 	private static final int MOUSE_BUTTON_4 = 4;
 
-	private final List<MouseListener> mouseListeners = new CopyOnWriteArrayList<>();
-	private final List<MouseWheelListener> mouseWheelListeners = new CopyOnWriteArrayList<>();
+	private final List<Prioritized<MouseListener>> mouseListeners = new CopyOnWriteArrayList<>();
+	private final List<Prioritized<MouseWheelListener>> mouseWheelListeners = new CopyOnWriteArrayList<>();
 
 	private final RuneLiteConfig runeLiteConfig;
 
@@ -49,40 +51,126 @@ public class MouseManager
 		this.runeLiteConfig = runeLiteConfig;
 	}
 
+	/**
+	 * Registers a mouse listener with default priority (0).
+	 * First in first served at priority 0.
+	 *
+	 * @param mouseListener the mouse listener
+	 */
 	public void registerMouseListener(MouseListener mouseListener)
 	{
-		if (!mouseListeners.contains(mouseListener))
-		{
-			mouseListeners.add(mouseListener);
-		}
+		registerMouseListener(mouseListener, 0);
 	}
 
+	/**
+	 * Registers a mouse listener with the given priority. Lower values indicate higher priority
+	 * and will be processed first. Listeners with the same priority are processed in registration order.
+	 *
+	 * @param mouseListener the mouse listener
+	 * @param priority the priority, lower value = higher priority = processed first
+	 */
+	public void registerMouseListener(MouseListener mouseListener, int priority)
+	{
+		registerMouseListener(mouseListener, priority, false);
+	}
+
+	/**
+	 * Registers a mouse listener with the given priority. Lower values indicate higher priority
+	 * and will be processed first. Listeners with the same priority are processed in registration order.
+	 *
+	 * @param mouseListener the mouse listener
+	 * @param priority the priority, lower value = higher priority = processed first
+	 * @param insertBefore if true, insert before existing listeners with the same priority;
+	 */
+	public void registerMouseListener(MouseListener mouseListener, int priority, boolean insertBefore)
+	{
+		if (findMouseEntry(mouseListener) != null)
+		{
+			return;
+		}
+
+		Prioritized<MouseListener> entry = new Prioritized<>(mouseListener, priority);
+		int index = findMouseInsertionIndex(priority, insertBefore);
+		mouseListeners.add(index, entry);
+	}
+
+	/**
+	 * @deprecated Use {@link #registerMouseListener(MouseListener, int, boolean)} instead.
+	 */
+	@Deprecated
 	public void registerMouseListener(int position, MouseListener mouseListener)
 	{
-		mouseListeners.add(position, mouseListener);
+		// To preserve backwards compatibility, always insert before existing listeners with the same priority
+		registerMouseListener(mouseListener, position, true);
 	}
 
 	public void unregisterMouseListener(MouseListener mouseListener)
 	{
-		mouseListeners.remove(mouseListener);
-	}
-
-	public void registerMouseWheelListener(MouseWheelListener mouseWheelListener)
-	{
-		if (!mouseWheelListeners.contains(mouseWheelListener))
+		Prioritized<MouseListener> entry = findMouseEntry(mouseListener);
+		if (entry != null)
 		{
-			mouseWheelListeners.add(mouseWheelListener);
+			mouseListeners.remove(entry);
 		}
 	}
 
+	/**
+	 * Registers a mouse wheel listener with default priority (0).
+	 * @param mouseWheelListener the mouse wheel listener
+	 */
+	public void registerMouseWheelListener(MouseWheelListener mouseWheelListener)
+	{
+		registerMouseWheelListener(mouseWheelListener, 0);
+	}
+
+	/**
+	 * Registers a mouse wheel listener with the given priority. Lower values indicate higher priority
+	 * and will be processed first. Listeners with the same priority are processed in registration order.
+	 *
+	 * @param mouseWheelListener the mouse wheel listener
+	 * @param priority the priority, lower value = higher priority = processed first
+	 */
+	public void registerMouseWheelListener(MouseWheelListener mouseWheelListener, int priority)
+	{
+		registerMouseWheelListener(mouseWheelListener, priority, false);
+	}
+
+	/**
+	 * Registers a mouse wheel listener with the given priority. Lower values indicate higher priority
+	 * and will be processed first.
+	 *
+	 * @param mouseWheelListener the mouse wheel listener
+	 * @param priority the priority, lower value = higher priority = processed first
+	 * @param insertBefore if true, insert before existing listeners with the same priority;
+	 */
+	public void registerMouseWheelListener(MouseWheelListener mouseWheelListener, int priority, boolean insertBefore)
+	{
+		if (findMouseWheelEntry(mouseWheelListener) != null)
+		{
+			return;
+		}
+
+		Prioritized<MouseWheelListener> entry = new Prioritized<>(mouseWheelListener, priority);
+		int index = findMouseWheelInsertionIndex(priority, insertBefore);
+		mouseWheelListeners.add(index, entry);
+	}
+
+	/**
+	 * @deprecated Use {@link #registerMouseWheelListener(MouseWheelListener, int, boolean)} instead.
+	 */
+	@Deprecated
 	public void registerMouseWheelListener(int position, MouseWheelListener mouseWheelListener)
 	{
-		mouseWheelListeners.add(position, mouseWheelListener);
+		// To preserve backwards compatibility, always insert before existing listeners with the same priority
+		registerMouseWheelListener(mouseWheelListener, position, true);
 	}
 
 	public void unregisterMouseWheelListener(MouseWheelListener mouseWheelListener)
 	{
-		mouseWheelListeners.remove(mouseWheelListener);
+		Prioritized<MouseWheelListener> entry = findMouseWheelEntry(mouseWheelListener);
+		if (entry != null)
+		{
+			mouseWheelListeners.remove(entry);
+		}
 	}
 
 	public MouseEvent processMousePressed(MouseEvent mouseEvent)
@@ -93,9 +181,9 @@ public class MouseManager
 		}
 
 		checkExtraMouseButtons(mouseEvent);
-		for (MouseListener mouseListener : mouseListeners)
+		for (Prioritized<MouseListener> entry : mouseListeners)
 		{
-			mouseEvent = mouseListener.mousePressed(mouseEvent);
+			mouseEvent = entry.getObject().mousePressed(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
 				break;
@@ -112,9 +200,9 @@ public class MouseManager
 		}
 
 		checkExtraMouseButtons(mouseEvent);
-		for (MouseListener mouseListener : mouseListeners)
+		for (Prioritized<MouseListener> entry : mouseListeners)
 		{
-			mouseEvent = mouseListener.mouseReleased(mouseEvent);
+			mouseEvent = entry.getObject().mouseReleased(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
 				break;
@@ -131,9 +219,9 @@ public class MouseManager
 		}
 
 		checkExtraMouseButtons(mouseEvent);
-		for (MouseListener mouseListener : mouseListeners)
+		for (Prioritized<MouseListener> entry : mouseListeners)
 		{
-			mouseEvent = mouseListener.mouseClicked(mouseEvent);
+			mouseEvent = entry.getObject().mouseClicked(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
 				break;
@@ -160,9 +248,9 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		for (MouseListener mouseListener : mouseListeners)
+		for (Prioritized<MouseListener> entry : mouseListeners)
 		{
-			mouseEvent = mouseListener.mouseEntered(mouseEvent);
+			mouseEvent = entry.getObject().mouseEntered(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
 				break;
@@ -178,9 +266,9 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		for (MouseListener mouseListener : mouseListeners)
+		for (Prioritized<MouseListener> entry : mouseListeners)
 		{
-			mouseEvent = mouseListener.mouseExited(mouseEvent);
+			mouseEvent = entry.getObject().mouseExited(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
 				break;
@@ -196,9 +284,9 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		for (MouseListener mouseListener : mouseListeners)
+		for (Prioritized<MouseListener> entry : mouseListeners)
 		{
-			mouseEvent = mouseListener.mouseDragged(mouseEvent);
+			mouseEvent = entry.getObject().mouseDragged(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
 				break;
@@ -214,9 +302,9 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		for (MouseListener mouseListener : mouseListeners)
+		for (Prioritized<MouseListener> entry : mouseListeners)
 		{
-			mouseEvent = mouseListener.mouseMoved(mouseEvent);
+			mouseEvent = entry.getObject().mouseMoved(mouseEvent);
 			if (mouseEvent.isConsumed())
 			{
 				break;
@@ -232,14 +320,68 @@ public class MouseManager
 			return mouseWheelEvent;
 		}
 
-		for (MouseWheelListener mouseWheelListener : mouseWheelListeners)
+		for (Prioritized<MouseWheelListener> entry : mouseWheelListeners)
 		{
-			mouseWheelEvent = mouseWheelListener.mouseWheelMoved(mouseWheelEvent);
+			mouseWheelEvent = entry.getObject().mouseWheelMoved(mouseWheelEvent);
 			if (mouseWheelEvent.isConsumed())
 			{
 				break;
 			}
 		}
 		return mouseWheelEvent;
+	}
+
+	private Prioritized<MouseListener> findMouseEntry(MouseListener mouseListener)
+	{
+		for (Prioritized<MouseListener> entry : mouseListeners)
+		{
+			if (entry.getObject() == mouseListener)
+			{
+				return entry;
+			}
+		}
+		return null;
+	}
+
+	private Prioritized<MouseWheelListener> findMouseWheelEntry(MouseWheelListener mouseWheelListener)
+	{
+		for (Prioritized<MouseWheelListener> entry : mouseWheelListeners)
+		{
+			if (entry.getObject() == mouseWheelListener)
+			{
+				return entry;
+			}
+		}
+		return null;
+	}
+
+	private int findMouseInsertionIndex(int priority, boolean insertBefore)
+	{
+		return findInsertionIndex(mouseListeners, priority, Prioritized::getPriority, insertBefore);
+	}
+
+	private int findMouseWheelInsertionIndex(int priority, boolean insertBefore)
+	{
+		return findInsertionIndex(mouseWheelListeners, priority, Prioritized::getPriority, insertBefore);
+	}
+
+	private <T> int findInsertionIndex(List<T> list, int priority, Function<T, Integer> priorityProvider, boolean insertBefore)
+	{
+		int lo = 0, hi = list.size();
+		while (lo < hi)
+		{
+			int mid = (lo + hi) >>> 1;
+			if (insertBefore
+				? priorityProvider.apply(list.get(mid)) < priority
+				: priorityProvider.apply(list.get(mid)) <= priority)
+			{
+				lo = mid + 1;
+			}
+			else
+			{
+				hi = mid;
+			}
+		}
+		return lo;
 	}
 }
