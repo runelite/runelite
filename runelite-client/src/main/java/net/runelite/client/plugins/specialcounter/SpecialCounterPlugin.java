@@ -44,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
@@ -77,6 +78,7 @@ import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.EYE_OF_AYAK;
 import static net.runelite.client.plugins.specialcounter.SpecialWeapon.TONALZTICS_OF_RALOS;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -252,6 +254,28 @@ public class SpecialCounterPlugin extends Plugin
 				int hit = Math.min(last.getAmount(), 1) + Math.min(secondToLast.getAmount(), 1);
 
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
+			}
+			else if (specialWeapon == EYE_OF_AYAK && hitsplats.size() > 1)
+			{
+				Hitsplat secondHit = hitsplats.get(hitsplats.size() - 1);
+				Hitsplat firstHit = hitsplats.get(hitsplats.size() - 2);
+				boolean firstIsDmg = firstHit.getHitsplatType() == HitsplatID.DAMAGE_ME;
+				boolean secondIsDmg = secondHit.getHitsplatType() == HitsplatID.DAMAGE_ME;
+
+				if (!firstIsDmg && !secondIsDmg)
+				{
+					return;
+				}
+
+				Hitsplat hit = secondHit.getAmount() >= firstHit.getAmount() ? secondHit : firstHit;
+
+				// ignore hits in thrall range when only one hitsplat is damage
+				if (!(firstIsDmg && secondIsDmg) && hit.getAmount() <= 3)
+				{
+					return;
+				}
+
+				specialAttackHit(specialWeapon, hit.getAmount(), lastSpecTarget);
 			}
 			else
 			{
