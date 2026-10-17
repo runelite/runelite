@@ -28,6 +28,7 @@ package net.runelite.client.plugins.screenmarkers;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.client.ui.overlay.Overlay;
@@ -73,6 +74,11 @@ public class ScreenMarkerOverlay extends Overlay
 			// overlay has no preferred size in the renderer configuration!
 			return null;
 		}
+
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+			RenderingHints.VALUE_ANTIALIAS_OFF);
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+			RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
 		screenMarkerRenderable.setBorderThickness(marker.getBorderThickness());
 		screenMarkerRenderable.setColor(marker.getColor());
