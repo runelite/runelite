@@ -102,6 +102,8 @@ public class AnimationSmoothingPlugin extends Plugin
 
 			case AnimationID.FETID_WATER_VFX_LONG:
 
+			case AnimationID.HUMNAN_HARPOON_INFERNAL:
+
 			case AnimationID.WGS_HEROIC_CLIMB_SUCCESS_TWO:
 				return false;
 
