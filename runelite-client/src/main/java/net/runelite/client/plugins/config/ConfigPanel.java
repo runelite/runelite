@@ -28,6 +28,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Sets;
+import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -88,6 +89,7 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Step;
 import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
@@ -463,7 +465,7 @@ class ConfigPanel extends PluginPanel
 		int value = MoreObjects.firstNonNull(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), int.class), 0);
 
 		Range range = cid.getRange();
-		int min = 0, max = Integer.MAX_VALUE;
+		int min = 0, max = Integer.MAX_VALUE, stepSize = 1;
 		if (range != null)
 		{
 			min = range.min();
@@ -473,7 +475,13 @@ class ConfigPanel extends PluginPanel
 		// Config may previously have been out of range
 		value = Ints.constrainToRange(value, min, max);
 
-		SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
+		Step step = cid.getStep();
+		if (step != null)
+		{
+			stepSize = step.step();
+		}
+
+		SpinnerModel model = new SpinnerNumberModel(value, min, max, stepSize);
 		JSpinner spinner = new JSpinner(model);
 		Component editor = spinner.getEditor();
 		JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
@@ -495,7 +503,24 @@ class ConfigPanel extends PluginPanel
 	{
 		double value = MoreObjects.firstNonNull(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), double.class), 0d);
 
-		SpinnerModel model = new SpinnerNumberModel(value, 0, Double.MAX_VALUE, 0.1);
+		Range range = cid.getRange();
+		double min = 0, max = Double.MAX_VALUE, stepSize = 0.1;
+		if (range != null)
+		{
+			min = range.minDouble();
+			max = range.maxDouble();
+		}
+
+		// Config may previously have been out of range
+		value = Doubles.constrainToRange(value, min, max);
+
+		Step step = cid.getStep();
+		if (step != null)
+		{
+			stepSize = step.stepDouble();
+		}
+
+		SpinnerModel model = new SpinnerNumberModel(value, min, max, stepSize);
 		JSpinner spinner = new JSpinner(model);
 		Component editor = spinner.getEditor();
 		JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
@@ -596,13 +621,34 @@ class ConfigPanel extends PluginPanel
 		int width = dimension.width;
 		int height = dimension.height;
 
-		SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
+		Range range = cid.getRange();
+		int minX = 0, maxX = Integer.MAX_VALUE, minY = 0, maxY = Integer.MAX_VALUE, stepSizeX = 1, stepSizeY = 1;
+		if (range != null)
+		{
+			minX = range.min();
+			maxX = range.max();
+			minY = range.minHeight();
+			maxY = range.maxHeight();
+		}
+
+		// Config may previously have been out of range
+		width = Ints.constrainToRange(width, minX, maxX);
+		height = Ints.constrainToRange(height, minY, maxY);
+
+		Step step = cid.getStep();
+		if (step != null)
+		{
+			stepSizeX = step.step();
+			stepSizeY = step.stepHeight();
+		}
+
+		SpinnerModel widthModel = new SpinnerNumberModel(width, minX, maxX, stepSizeX);
 		JSpinner widthSpinner = new JSpinner(widthModel);
 		Component widthEditor = widthSpinner.getEditor();
 		JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
 		widthSpinnerTextField.setColumns(4);
 
-		SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
+		SpinnerModel heightModel = new SpinnerNumberModel(height, minY, maxY, stepSizeY);
 		JSpinner heightSpinner = new JSpinner(heightModel);
 		Component heightEditor = heightSpinner.getEditor();
 		JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
