@@ -174,6 +174,11 @@ public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 		}
 	}
 
+	@Override
+	public boolean isEnabledOnChatInput()
+	{
+		return true;
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e)

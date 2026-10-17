@@ -25,16 +25,12 @@
  */
 package net.runelite.client.plugins.keyremapping;
 
-import com.google.common.base.Strings;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.gameval.VarClientID;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
 class KeyRemappingListener implements KeyListener
@@ -45,12 +41,6 @@ class KeyRemappingListener implements KeyListener
 	@Inject
 	private KeyRemappingConfig config;
 
-	@Inject
-	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
-
 	private final Map<Integer, Integer> modified = new HashMap<>();
 	private final Set<Character> blockedChars = new HashSet<>();
 
@@ -58,7 +48,7 @@ class KeyRemappingListener implements KeyListener
 	public void keyTyped(KeyEvent e)
 	{
 		char keyChar = e.getKeyChar();
-		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar) && plugin.chatboxFocused())
+		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar) && plugin.chatboxFocused() && !plugin.isTyping())
 		{
 			e.consume();
 		}
@@ -182,47 +172,14 @@ class KeyRemappingListener implements KeyListener
 				}
 			}
 
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_ENTER:
-				case KeyEvent.VK_SLASH:
-				case KeyEvent.VK_COLON:
-					// refocus chatbox
-					plugin.setTyping(true);
-					clientThread.invoke(plugin::unlockChat);
-					break;
-			}
+		}
+	}
 
-		}
-		else
-		{
-			switch (e.getKeyCode())
-			{
-				case KeyEvent.VK_ESCAPE:
-					// When exiting typing mode, block the escape key
-					// so that it doesn't trigger the in-game hotkeys
-					e.consume();
-					plugin.setTyping(false);
-					clientThread.invoke(() ->
-					{
-						client.setVarcStrValue(VarClientID.CHATINPUT, "");
-						plugin.lockChat();
-					});
-					break;
-				case KeyEvent.VK_ENTER:
-					plugin.setTyping(false);
-					clientThread.invoke(plugin::lockChat);
-					break;
-				case KeyEvent.VK_BACK_SPACE:
-					// Only lock chat on backspace when the typed text is now empty
-					if (Strings.isNullOrEmpty(client.getVarcStrValue(VarClientID.CHATINPUT)))
-					{
-						plugin.setTyping(false);
-						clientThread.invoke(plugin::lockChat);
-					}
-					break;
-			}
-		}
+	@Override
+	public void focusLost()
+	{
+		modified.clear();
+		blockedChars.clear();
 	}
 
 	@Override
