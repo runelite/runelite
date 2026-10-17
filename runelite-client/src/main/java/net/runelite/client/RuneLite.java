@@ -272,16 +272,20 @@ public class RuneLite
 		}
 		catch (Exception e)
 		{
+			SdlAudio.getDefault().close();
 			log.error("Failure during startup", e);
 			SwingUtilities.invokeLater(() ->
 				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
 					.addHelpButtons()
 					.open());
+			return;
 		}
 		finally
 		{
 			SplashScreen.stop();
 		}
+
+		SdlAudio.getDefault().runEventLoop();
 	}
 
 	public void start() throws Exception
@@ -301,7 +305,7 @@ public class RuneLite
 		SdlAudio audio = SdlAudio.getDefault();
 		try
 		{
-			audio.initialize(scheduledExecutorService);
+			audio.initialize();
 		}
 		catch (LineUnavailableException e)
 		{

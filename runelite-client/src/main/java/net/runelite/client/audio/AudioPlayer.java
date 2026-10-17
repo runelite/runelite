@@ -40,6 +40,7 @@ import net.runelite.client.util.Filepath;
 /**
  * General audio playback manager.
  * RuneLite initializes the shared SDL output on its main thread during startup.
+ * That thread then runs the SDL event loop for output maintenance and sound cleanup.
  * Java Sound is used only for file decoding; SDL handles output and format conversion.
  * Not all audio formats are supported. Refer to {@link javax.sound.sampled.AudioFileFormat.Type} for a list of
  * formats supported by the sound system.

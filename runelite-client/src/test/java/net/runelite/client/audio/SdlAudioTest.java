@@ -25,37 +25,42 @@
 package net.runelite.client.audio;
 
 import com.sun.jna.Pointer;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.sound.sampled.LineUnavailableException;
 import net.runelite.client.events.ClientShutdown;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockingDetails;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 public class SdlAudioTest
 {
 	private final Sdl sdl = mock(Sdl.class);
-	private final ScheduledExecutorService executor = mock(ScheduledExecutorService.class);
-	private final ScheduledFuture<?> future = mock(ScheduledFuture.class);
 	private final SdlAudio audio = new SdlAudio(() -> sdl);
 	private final Pointer stream = new Pointer(10);
 	private final byte[] pcm = new byte[2048];
@@ -70,24 +75,50 @@ public class SdlAudioTest
 		when(sdl.SDL_SetAudioStreamGain(eq(stream), anyFloat())).thenReturn((byte) 1);
 		when(sdl.SDL_PutAudioStreamData(eq(stream), any(), anyInt())).thenReturn((byte) 1);
 		when(sdl.SDL_FlushAudioStream(stream)).thenReturn((byte) 1);
-		doReturn(future).when(executor).scheduleWithFixedDelay(any(), anyLong(), anyLong(), any());
+	}
+
+	@After
+	public void teardown()
+	{
+		audio.close();
 	}
 
 	private void play() throws LineUnavailableException
 	{
-		audio.initialize(executor);
+		audio.initialize();
 		audio.play(pcm, 22050, 2, 0.5f);
 	}
 
-	private Runnable reaper()
+	private void runUntilDestroyed() throws Exception
 	{
-		ArgumentCaptor<Runnable> runnable = ArgumentCaptor.forClass(Runnable.class);
-		verify(executor).scheduleWithFixedDelay(runnable.capture(), eq(100L), eq(100L), eq(TimeUnit.MILLISECONDS));
-		return runnable.getValue();
+		FutureTask<Void> stop = new FutureTask<>(() ->
+		{
+			try
+			{
+				verify(sdl, timeout(2000)).SDL_DestroyAudioStream(stream);
+			}
+			finally
+			{
+				audio.close();
+			}
+			return null;
+		});
+		Thread closer = new Thread(stop);
+		closer.start();
+		try
+		{
+			audio.runEventLoop();
+			stop.get(3, TimeUnit.SECONDS);
+		}
+		finally
+		{
+			audio.close();
+			closer.join(3000);
+		}
 	}
 
 	@Test
-	public void sharesOneDeviceAndOneCleanupTask() throws Exception
+	public void sharesOneDeviceForDifferentSourceFormats() throws Exception
 	{
 		play();
 		Pointer second = new Pointer(11);
@@ -96,10 +127,9 @@ public class SdlAudioTest
 		when(sdl.SDL_BindAudioStream(7, second)).thenReturn((byte) 1);
 		when(sdl.SDL_PutAudioStreamData(eq(second), any(), anyInt())).thenReturn((byte) 1);
 		when(sdl.SDL_FlushAudioStream(second)).thenReturn((byte) 1);
-		audio.initialize(executor);
+		audio.initialize();
 		audio.play(pcm, 48000, 1, 1);
 		verify(sdl).SDL_OpenAudioDevice(Sdl.DEFAULT_PLAYBACK, null);
-		reaper();
 		ArgumentCaptor<Sdl.Spec> format = ArgumentCaptor.forClass(Sdl.Spec.class);
 		verify(sdl, times(2)).SDL_CreateAudioStream(format.capture(), isNull());
 		assertEquals(Sdl.S16LE, format.getAllValues().get(0).format);
@@ -111,45 +141,43 @@ public class SdlAudioTest
 		verify(sdl).SDL_FlushAudioStream(stream);
 	}
 
-	@Test
+	@Test(timeout = 5000)
 	public void waitsForBothInputAndOutputToDrain() throws Exception
 	{
 		play();
-		Runnable reap = reaper();
 		when(sdl.SDL_GetAudioStreamQueued(stream)).thenReturn(28, 0, 0);
 		when(sdl.SDL_GetAudioStreamAvailable(stream)).thenReturn(0, 64, 0);
-		reap.run();
-		reap.run();
-		verify(sdl, never()).SDL_DestroyAudioStream(any());
-		reap.run();
+		runUntilDestroyed();
+		InOrder order = inOrder(sdl);
+		for (int i = 0; i < 3; ++i)
+		{
+			order.verify(sdl).SDL_GetAudioStreamQueued(stream);
+			order.verify(sdl).SDL_GetAudioStreamAvailable(stream);
+		}
+		order.verify(sdl).SDL_DestroyAudioStream(stream);
 		verify(sdl).SDL_DestroyAudioStream(stream);
-		verify(future).cancel(false);
-		verify(sdl, never()).SDL_CloseAudioDevice(anyInt());
 	}
 
-	@Test
+	@Test(timeout = 5000)
 	public void closesFailedStreamQuery() throws Exception
 	{
 		play();
 		when(sdl.SDL_GetAudioStreamQueued(stream)).thenReturn(-1);
-		reaper().run();
+		runUntilDestroyed();
 		verify(sdl).SDL_DestroyAudioStream(stream);
-		verify(future).cancel(false);
 	}
 
 	@Test
 	public void shutdownReleasesStreamsAndDeviceExactlyOnce() throws Exception
 	{
 		play();
-		Runnable reap = reaper();
 		audio.onClientShutdown(new ClientShutdown());
 		audio.onClientShutdown(new ClientShutdown());
-		reap.run(); // A task already waiting for the monitor must not touch freed pointers.
+		audio.runEventLoop();
 		verify(sdl).SDL_DestroyAudioStream(stream);
 		verify(sdl).SDL_CloseAudioDevice(7);
 		verify(sdl).SDL_QuitSubSystem(Sdl.INIT_AUDIO);
-		verify(future).cancel(false);
-		verify(executor, never()).shutdown();
+		verify(sdl, never()).SDL_PumpEvents();
 	}
 
 	@Test(expected = LineUnavailableException.class)
@@ -166,7 +194,7 @@ public class SdlAudioTest
 		when(sdl.SDL_InitSubSystem(Sdl.INIT_AUDIO)).thenReturn((byte) 0);
 		try
 		{
-			audio.initialize(executor);
+			audio.initialize();
 		}
 		finally
 		{
@@ -181,7 +209,7 @@ public class SdlAudioTest
 		when(sdl.SDL_OpenAudioDevice(Sdl.DEFAULT_PLAYBACK, null)).thenReturn(0, 7);
 		try
 		{
-			audio.initialize(executor);
+			audio.initialize();
 			fail("First device open should fail");
 		}
 		catch (LineUnavailableException e)
@@ -204,7 +232,7 @@ public class SdlAudioTest
 		});
 		try
 		{
-			unavailable.initialize(executor);
+			unavailable.initialize();
 			fail("Native load should fail");
 		}
 		catch (LineUnavailableException e)
@@ -214,7 +242,7 @@ public class SdlAudioTest
 	}
 
 	@Test(expected = LineUnavailableException.class)
-	public void streamCreationFailureDoesNotScheduleCleanup() throws Exception
+	public void streamCreationFailureAllocatesNothing() throws Exception
 	{
 		when(sdl.SDL_CreateAudioStream(any(), isNull())).thenReturn(null);
 		try
@@ -223,7 +251,6 @@ public class SdlAudioTest
 		}
 		finally
 		{
-			verifyNoInteractions(executor);
 			verify(sdl, never()).SDL_DestroyAudioStream(any());
 		}
 	}
@@ -239,7 +266,6 @@ public class SdlAudioTest
 		finally
 		{
 			verify(sdl).SDL_DestroyAudioStream(stream);
-			verifyNoInteractions(executor);
 		}
 	}
 
@@ -254,7 +280,6 @@ public class SdlAudioTest
 		finally
 		{
 			verify(sdl).SDL_DestroyAudioStream(stream);
-			verifyNoInteractions(executor);
 		}
 	}
 
@@ -269,30 +294,151 @@ public class SdlAudioTest
 		finally
 		{
 			verify(sdl).SDL_DestroyAudioStream(stream);
-			verifyNoInteractions(executor);
-		}
-	}
-
-	@Test(expected = RejectedExecutionException.class)
-	public void schedulerFailureDestroysStream() throws Exception
-	{
-		when(executor.scheduleWithFixedDelay(any(), anyLong(), anyLong(), any())).thenThrow(new RejectedExecutionException());
-		try
-		{
-			play();
-		}
-		finally
-		{
-			verify(sdl).SDL_DestroyAudioStream(stream);
 		}
 	}
 
 	@Test
 	public void emptyAudioAllocatesNothing() throws Exception
 	{
-		audio.initialize(executor);
+		audio.initialize();
 		audio.play(new byte[0], 22050, 2, 1);
 		verify(sdl, never()).SDL_CreateAudioStream(any(), any());
-		verifyNoInteractions(executor);
+	}
+
+	private void runUntilPumpedTwice() throws Exception
+	{
+		Thread initializer = Thread.currentThread();
+		CountDownLatch pumps = new CountDownLatch(2);
+		AtomicReference<Thread> pumpingThread = new AtomicReference<>();
+		doAnswer(invocation ->
+		{
+			pumpingThread.set(Thread.currentThread());
+			pumps.countDown();
+			return null;
+		}).when(sdl).SDL_PumpEvents();
+		FutureTask<Void> stop = new FutureTask<>(() ->
+		{
+			try
+			{
+				assertTrue("Event loop did not run while idle", pumps.await(2, TimeUnit.SECONDS));
+				// Proves the loop releases its monitor between pumps, even without existing clips.
+				audio.play(pcm, 22050, 2, 1);
+			}
+			finally
+			{
+				audio.onClientShutdown(new ClientShutdown());
+			}
+			return null;
+		});
+		Thread closer = new Thread(stop);
+		closer.start();
+		try
+		{
+			audio.runEventLoop();
+			stop.get(3, TimeUnit.SECONDS);
+		}
+		finally
+		{
+			audio.close();
+			closer.join(3000);
+		}
+		assertSame(initializer, pumpingThread.get());
+		verify(sdl, atLeast(2)).SDL_FlushEvents(Sdl.EVENT_FIRST, Sdl.EVENT_LAST);
+		verify(sdl).SDL_DestroyAudioStream(stream);
+		verify(sdl).SDL_QuitSubSystem(Sdl.INIT_AUDIO);
+		int calls = mockingDetails(sdl).getInvocations().size();
+		audio.runEventLoop();
+		assertEquals(calls, mockingDetails(sdl).getInvocations().size());
+	}
+
+	@Test(timeout = 5000)
+	public void servicesIdleEventsAndAllowsPlaybackAndShutdown() throws Exception
+	{
+		audio.initialize();
+		runUntilPumpedTwice();
+	}
+
+	@Test(timeout = 5000)
+	public void servicesEventsAfterInitialDeviceOpenFails() throws Exception
+	{
+		when(sdl.SDL_OpenAudioDevice(Sdl.DEFAULT_PLAYBACK, null)).thenReturn(0, 7);
+		try
+		{
+			audio.initialize();
+			fail("First device open should fail");
+		}
+		catch (LineUnavailableException e)
+		{
+			verify(sdl, never()).SDL_QuitSubSystem(anyInt());
+		}
+		runUntilPumpedTwice();
+		verify(sdl, times(2)).SDL_OpenAudioDevice(Sdl.DEFAULT_PLAYBACK, null);
+	}
+
+	@Test
+	public void failedInitializationDoesNotEnterEventLoop() throws Exception
+	{
+		when(sdl.SDL_InitSubSystem(Sdl.INIT_AUDIO)).thenReturn((byte) 0);
+		try
+		{
+			audio.initialize();
+			fail("Initialization should fail");
+		}
+		catch (LineUnavailableException e)
+		{
+			audio.runEventLoop();
+			verify(sdl, never()).SDL_PumpEvents();
+			verify(sdl, never()).SDL_QuitSubSystem(anyInt());
+		}
+	}
+
+	@Test
+	public void rejectsEventLoopOnAnotherThread() throws Exception
+	{
+		audio.initialize();
+		FutureTask<Void> loop = new FutureTask<>(() ->
+		{
+			audio.runEventLoop();
+			return null;
+		});
+		Thread other = new Thread(loop);
+		other.start();
+		try
+		{
+			loop.get(2, TimeUnit.SECONDS);
+			fail("Event loop should reject another thread");
+		}
+		catch (ExecutionException e)
+		{
+			assertTrue(e.getCause() instanceof IllegalStateException);
+		}
+		finally
+		{
+			other.join(3000);
+		}
+		verify(sdl, never()).SDL_PumpEvents();
+	}
+
+	@Test
+	public void interruptedEventLoopClosesAudio() throws Exception
+	{
+		play();
+		doAnswer(invocation ->
+		{
+			Thread.currentThread().interrupt();
+			return null;
+		}).when(sdl).SDL_PumpEvents();
+		try
+		{
+			audio.runEventLoop();
+			fail("Event loop should propagate interruption");
+		}
+		catch (InterruptedException e)
+		{
+			verify(sdl).SDL_DestroyAudioStream(stream);
+			verify(sdl).SDL_CloseAudioDevice(7);
+			verify(sdl).SDL_QuitSubSystem(Sdl.INIT_AUDIO);
+			assertFalse(Thread.currentThread().isInterrupted());
+		}
 	}
 }

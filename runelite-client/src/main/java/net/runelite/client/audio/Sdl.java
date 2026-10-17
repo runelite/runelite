@@ -38,6 +38,8 @@ import java.util.Map;
 interface Sdl extends Library
 {
 	int INIT_AUDIO = 0x10;
+	int EVENT_FIRST = 0;
+	int EVENT_LAST = 0xffff;
 	int DEFAULT_PLAYBACK = -1;
 	int S16LE = 0x8010;
 
@@ -77,6 +79,8 @@ interface Sdl extends Library
 	byte SDL_SetAppMetadata(String name, String version, String identifier);
 	byte SDL_InitSubSystem(int flags);
 	void SDL_QuitSubSystem(int flags);
+	void SDL_PumpEvents();
+	void SDL_FlushEvents(int minType, int maxType);
 	String SDL_GetError();
 	int SDL_OpenAudioDevice(int device, Spec spec);
 	void SDL_CloseAudioDevice(int device);

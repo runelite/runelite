@@ -28,9 +28,6 @@ import com.sun.jna.Pointer;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import javax.sound.sampled.LineUnavailableException;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +36,7 @@ import net.runelite.client.events.ClientShutdown;
 
 /** One default SDL playback device. SDL owns format conversion, mixing and device routing. */
 @Slf4j
-public final class SdlAudio
+public final class SdlAudio implements AutoCloseable
 {
 	private final Supplier<Sdl> loader;
 	private final Set<Pointer> clips = new HashSet<>();
@@ -47,8 +44,7 @@ public final class SdlAudio
 	private int device;
 	private boolean initialized;
 	private boolean closed;
-	private ScheduledExecutorService executor;
-	private ScheduledFuture<?> cleanup;
+	private Thread mainThread;
 
 	private static class Holder
 	{
@@ -66,13 +62,12 @@ public final class SdlAudio
 	}
 
 	/** Must be called on the main thread before client startup, as required by SDL_InitSubSystem. */
-	public synchronized void initialize(ScheduledExecutorService executor) throws LineUnavailableException
+	public synchronized void initialize() throws LineUnavailableException
 	{
 		if (initialized || closed)
 		{
 			return;
 		}
-		this.executor = executor;
 		try
 		{
 			sdl = loader.get();
@@ -89,7 +84,36 @@ public final class SdlAudio
 			throw unavailable();
 		}
 		initialized = true;
+		mainThread = Thread.currentThread();
 		openDevice();
+	}
+
+	/** Services SDL's main-thread callbacks until closed. Run on the initialization thread after startup. */
+	public synchronized void runEventLoop() throws InterruptedException
+	{
+		if (!initialized || closed)
+		{
+			return;
+		}
+		if (Thread.currentThread() != mainThread)
+		{
+			throw new IllegalStateException("SDL events must run on the audio initialization thread");
+		}
+		try
+		{
+			while (!closed)
+			{
+				sdl.SDL_PumpEvents();
+				// Pumping services queued main-thread work; no consumers need the queued SDL events.
+				sdl.SDL_FlushEvents(Sdl.EVENT_FIRST, Sdl.EVENT_LAST);
+				reap();
+				wait(100); // Release the owner monitor so playback and shutdown can proceed.
+			}
+		}
+		finally
+		{
+			close();
+		}
 	}
 
 	private void openDevice() throws LineUnavailableException
@@ -133,10 +157,6 @@ public final class SdlAudio
 			{
 				throw unavailable();
 			}
-			if (cleanup == null)
-			{
-				cleanup = executor.scheduleWithFixedDelay(this::reap, 100, 100, TimeUnit.MILLISECONDS);
-			}
 			clips.add(stream);
 		}
 		catch (RuntimeException | LineUnavailableException e)
@@ -151,7 +171,7 @@ public final class SdlAudio
 		return new LineUnavailableException("SDL audio: " + sdl.SDL_GetError());
 	}
 
-	private synchronized void reap()
+	private void reap()
 	{
 		for (Iterator<Pointer> it = clips.iterator(); it.hasNext(); )
 		{
@@ -169,22 +189,19 @@ public final class SdlAudio
 			sdl.SDL_DestroyAudioStream(stream);
 			it.remove();
 		}
-		if (clips.isEmpty() && cleanup != null)
-		{
-			cleanup.cancel(false);
-			cleanup = null;
-		}
 	}
 
 	@Subscribe
-	public synchronized void onClientShutdown(ClientShutdown event)
+	public void onClientShutdown(ClientShutdown event)
+	{
+		close();
+	}
+
+	@Override
+	public synchronized void close()
 	{
 		closed = true;
-		if (cleanup != null)
-		{
-			cleanup.cancel(false);
-			cleanup = null;
-		}
+		notifyAll();
 		for (Pointer stream : clips)
 		{
 			sdl.SDL_DestroyAudioStream(stream);
