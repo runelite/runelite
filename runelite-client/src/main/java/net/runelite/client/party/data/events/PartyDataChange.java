@@ -1,0 +1,193 @@
+/*
+ * Copyright (c) 2026, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package net.runelite.client.party.data.events;
+
+import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import net.runelite.api.Item;
+import net.runelite.api.Prayer;
+import net.runelite.client.party.data.PartyDataType;
+import net.runelite.client.party.data.PartySerializationUtils;
+import static net.runelite.client.party.data.PartySerializationUtils.unpack;
+import net.runelite.client.party.data.PlayerPartyData;
+import net.runelite.client.party.data.SkillData;
+import net.runelite.client.party.messages.PartyMemberMessage;
+
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class PartyDataChange extends PartyMemberMessage
+{
+	@SerializedName("i")
+	int[] inventory;
+	@SerializedName("e")
+	int[] equipment;
+	@SerializedName("ap")
+	byte[] availablePrayers; // contains all available prayers on every change to any available prayer
+	@SerializedName("ep")
+	byte[] enabledPrayers;  // contains all enabled prayers on every change to any enabled prayer
+	@SerializedName("up")
+	byte[] unlockedPrayers; // contains all unlocked prayers on every change to any unlocked prayer
+	@SerializedName("pb")
+	Integer prayerBookID;
+	@SerializedName("rp")
+	int[] runesInPouch;
+	@SerializedName("q")
+	int[] quiverAmmo;
+	@SerializedName("s")
+	int[] stats;
+
+	private transient Collection<SkillData> pendingStatUpdates = new ArrayList<>();
+
+	public boolean isValid()
+	{
+		return inventory != null
+				|| equipment != null
+				|| availablePrayers != null
+				|| enabledPrayers != null
+				|| unlockedPrayers != null
+				|| prayerBookID != null
+				|| runesInPouch != null
+				|| quiverAmmo != null
+				|| stats != null;
+	}
+
+
+	public Collection<PartyDataEvent> processEvent(PlayerPartyData playerData)
+	{
+		Collection<PartyDataEvent> events = new ArrayList<>();
+		if (inventory != null)
+		{
+			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(inventory);
+			events.add(new PartyDataEvent(PartyDataType.INVENTORY, items, this.getMemberId()));
+		}
+
+		if (runesInPouch != null)
+		{
+			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(runesInPouch);
+			events.add(new PartyDataEvent(PartyDataType.RUNE_POUCH, items, this.getMemberId()));
+		}
+
+		if (equipment != null)
+		{
+			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(equipment);
+			events.add(new PartyDataEvent(PartyDataType.EQUIPMENT, items, this.getMemberId()));
+		}
+
+		if (quiverAmmo != null)
+		{
+			final Item[] items = PartySerializationUtils.convertIntArrayToItemArray(quiverAmmo);
+			if (items.length == 0)
+			{
+				events.add(new PartyDataEvent(PartyDataType.QUIVER, null, this.getMemberId()));
+			}
+			else
+			{
+				events.add(new PartyDataEvent(PartyDataType.QUIVER, items[0], this.getMemberId()));
+			}
+		}
+
+		boolean prayersChanged = false;
+		if (availablePrayers != null)
+		{
+			EnumSet<Prayer> prayers = unpack(availablePrayers, Prayer.class);
+			playerData.getAvailablePrayers().clear();
+			playerData.getAvailablePrayers().addAll(prayers);
+			prayersChanged = true;
+		}
+
+		if (enabledPrayers != null)
+		{
+			EnumSet<Prayer> prayers = unpack(enabledPrayers, Prayer.class);
+			playerData.getEnabledPrayers().clear();
+			playerData.getEnabledPrayers().addAll(prayers);
+			prayersChanged = true;
+		}
+
+		if (unlockedPrayers != null)
+		{
+			EnumSet<Prayer> prayers = unpack(unlockedPrayers, Prayer.class);
+			playerData.getUnlockedPrayers().clear();
+			playerData.getUnlockedPrayers().addAll(prayers);
+			prayersChanged = true;
+		}
+
+		if (prayerBookID != null)
+		{
+			playerData.setPrayerBookID(prayerBookID);
+			// This should only change if prayers also changed but set this just to be safe
+			prayersChanged = true;
+		}
+
+		if (prayersChanged)
+		{
+			events.add(new PartyDataEvent(PartyDataType.PRAYERS, playerData.prayerSnapshot(), this.getMemberId()));
+		}
+
+		if (stats != null)
+		{
+			final Collection<SkillData> skillData = new ArrayList<>();
+			for (final int packed : stats)
+			{
+				skillData.add(PartySerializationUtils.unpackSkillData(packed));
+			}
+
+			events.add(new PartyDataEvent(PartyDataType.STATS, skillData, this.getMemberId()));
+		}
+
+		return events;
+	}
+
+	public void applyPendingStatUpdates()
+	{
+		stats = pendingStatUpdates.stream().mapToInt(PartySerializationUtils::packSkillData).toArray();
+
+		if (stats.length == 0)
+		{
+			stats = null;
+		}
+	}
+
+	public void addSkillChange(SkillData skillData)
+	{
+		// In case we try to update the same skill in multiple places
+		pendingStatUpdates.removeIf(s -> s.getSkill() == skillData.getSkill());
+		pendingStatUpdates.add(skillData);
+
+		applyPendingStatUpdates();
+	}
+
+	public void setPendingStatUpdates(Collection<SkillData> pendingStatUpdates)
+	{
+		this.pendingStatUpdates = pendingStatUpdates;
+
+		applyPendingStatUpdates();
+	}
+}
