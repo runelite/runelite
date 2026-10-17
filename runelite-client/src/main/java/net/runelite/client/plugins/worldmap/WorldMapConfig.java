@@ -25,9 +25,12 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup(WorldMapPlugin.CONFIG_KEY)
 public interface WorldMapConfig extends Config
@@ -338,5 +341,16 @@ public interface WorldMapConfig extends Config
 	default boolean salvagingSpotLevelIcon()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "searchKeybind",
+		name = "Search shortcut",
+		description = "Keyboard shortcut for initiating a world map search.",
+		position = 29
+	)
+	default Keybind searchKeybind()
+	{
+		return new Keybind(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
 	}
 }
