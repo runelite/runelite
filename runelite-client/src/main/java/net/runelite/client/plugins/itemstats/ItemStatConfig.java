@@ -134,6 +134,16 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showItemName",
+		name = "Show item name",
+		description = "Show item name in tooltip."
+	)
+	default boolean showName()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "colorBetterSomecapped",
 		name = "Better (some capped)",
 		description = "Color to show when some stat changes are capped, but some are not.",
