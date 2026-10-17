@@ -30,29 +30,35 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.inject.Singleton;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.Line;
-import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.Filepath;
 
 /**
  * General audio playback manager.
+ * RuneLite initializes the shared SDL output on its main thread during startup.
+ * That thread then runs the SDL event loop for output maintenance and sound cleanup.
+ * Java Sound is used only for file decoding; SDL handles output and format conversion.
  * Not all audio formats are supported. Refer to {@link javax.sound.sampled.AudioFileFormat.Type} for a list of
  * formats supported by the sound system.
  */
 @Singleton
-@Slf4j
 public class AudioPlayer
 {
-	// We RETAIN one line in the "open" state at all times so a gain control persists in output mixing tools.
-	private Line prevLine;
+	private final SdlAudio output;
+
+	public AudioPlayer()
+	{
+		this(SdlAudio.getDefault());
+	}
+
+	AudioPlayer(SdlAudio output)
+	{
+		this.output = output;
+	}
 
 	/**
 	 * Plays an audio stream loaded from a file object.
@@ -111,64 +117,18 @@ public class AudioPlayer
 	{
 		try (AudioInputStream audio = AudioSystem.getAudioInputStream(stream))
 		{
-			DataLine line = getSelfClosingLine(audio);
-
-			if (gain != 0)
+			AudioFormat source = audio.getFormat();
+			AudioFormat pcm = new AudioFormat(source.getSampleRate(), 16, source.getChannels(), true, false);
+			if (!AudioSystem.isConversionSupported(pcm, source))
 			{
-				trySetGain(line, gain);
+				throw new UnsupportedAudioFileException("Cannot decode audio as signed 16-bit PCM: " + source);
 			}
-
-			line.start();
-		}
-	}
-
-	private DataLine getSelfClosingLine(AudioInputStream stream) throws IOException, LineUnavailableException
-	{
-		// Clip is convenient because it will just buffer the entire stream with open(audio) rather than us having to
-		// write() to it.
-		Clip clip = AudioSystem.getClip();
-
-		try
-		{
-			clip.open(stream);
-		}
-		catch (IOException e)
-		{
-			clip.close();
-			throw e;
-		}
-
-		clip.addLineListener(event ->
-		{
-			if (event.getType() != LineEvent.Type.STOP)
+			try (AudioInputStream decoded = AudioSystem.getAudioInputStream(pcm, audio))
 			{
-				return;
+				// Clip.open also buffered the entire decoded file. SDL copies it and handles resampling.
+				output.play(decoded.readAllBytes(), (int) pcm.getSampleRate(), pcm.getChannels(),
+					(float) Math.pow(10, gain / 20));
 			}
-
-			synchronized (this) // We cut off the old line, and this one becomes the new "retainer".
-			{
-				if (prevLine != null)
-				{
-					prevLine.close();
-				}
-
-				prevLine = clip;
-			}
-		});
-
-		return clip;
-	}
-
-	private void trySetGain(DataLine line, float gain)
-	{
-		try
-		{
-			FloatControl control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-			control.setValue(gain);
-		}
-		catch (Exception e)
-		{
-			log.warn("Failed to set gain: {}", e.getMessage());
 		}
 	}
 }

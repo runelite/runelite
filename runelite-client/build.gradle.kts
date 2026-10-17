@@ -92,6 +92,10 @@ dependencies {
     )) {
         runtimeOnly(variantOf(libs.lwjgl.core) { classifier("natives-$platform") })
         runtimeOnly(variantOf(libs.lwjgl.opengl) { classifier("natives-$platform") })
+        // SDL C libraries only; keep the existing LWJGL Java/JNI versions for GPU plugins.
+        runtimeOnly(variantOf(libs.sdl.natives) { classifier("natives-$platform") }) {
+            isTransitive = false
+        }
     }
 
     testImplementation(libs.junit)
