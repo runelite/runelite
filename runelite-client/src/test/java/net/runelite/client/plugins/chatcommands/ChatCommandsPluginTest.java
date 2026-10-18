@@ -1445,4 +1445,40 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", key, kc);
 	}
+
+	@Test
+	public void testTheFracturedArchive()
+	{
+		String[] msgs = {
+			"Challenge complete: Ocellus. Duration: <col=ef1020>2:25.80</col>. Total: <col=ef1020>2:25.80</col> (new personal best)",
+			"The Fractured Archive: Total completion time: <col=ef1020>2:25.80</col> (new personal best)",
+			"Your completed Fractured Archive count is: <col=ff0000>1</col>."
+		};
+		for (String msg : msgs)
+		{
+			ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", msg, null, 0);
+			chatCommandsPlugin.onChatMessage(chatMessage);
+		}
+
+		verify(configManager).setRSProfileConfiguration("killcount", "fractured archive", 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "fractured archive", 2 * 60 + 25.8);
+	}
+
+	@Test
+	public void testTheFracturedArchiveNoPb()
+	{
+		String[] msgs = {
+			"Challenge complete: Ocellus. Duration: <col=ef1020>2:54.60</col>. Total: <col=ef1020>2:54.60</col>. Personal best: 2:25.80",
+			"The Fractured Archive: Total completion time: <col=ef1020>2:54.60</col>. Personal best: 0:00.60",
+			"Your completed Fractured Archive count is: <col=ff0000>3</col>."
+		};
+		for (String msg : msgs)
+		{
+			ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", msg, null, 0);
+			chatCommandsPlugin.onChatMessage(chatMessage);
+		}
+
+		verify(configManager).setRSProfileConfiguration("killcount", "fractured archive", 3);
+		verify(configManager).setRSProfileConfiguration("personalbest", "fractured archive", 0.6);
+	}
 }
