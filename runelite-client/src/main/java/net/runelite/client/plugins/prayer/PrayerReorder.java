@@ -250,33 +250,13 @@ class PrayerReorder
 		}
 	}
 
-	// from script7823
 	private EnumComposition getPrayerBookEnum(int prayerbook)
 	{
 		if (prayerbook == 1)
 		{
 			return client.getEnum(EnumID.PRAYERS_RUINOUS);
 		}
-
-		boolean deadeye = client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED) != 0;
-		boolean vigour = client.getVarbitValue(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED) != 0;
-
-		if (deadeye && vigour)
-		{
-			return client.getEnum(EnumID.PRAYERS_NORMAL_DEADEYE_MYSTIC_VIGOUR);
-		}
-		else if (deadeye)
-		{
-			return client.getEnum(EnumID.PRAYERS_NORMAL_DEADEYE);
-		}
-		else if (vigour)
-		{
-			return client.getEnum(EnumID.PRAYERS_NORMAL_MYSTIC_VIGOUR);
-		}
-		else
-		{
-			return client.getEnum(EnumID.PRAYERS_NORMAL);
-		}
+		return client.getEnum(EnumID.PRAYERS_NORMAL);
 	}
 
 	private int[] defaultPrayerOrder(EnumComposition prayerEnum)
