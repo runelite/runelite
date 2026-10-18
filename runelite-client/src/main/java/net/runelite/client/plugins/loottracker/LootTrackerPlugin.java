@@ -338,6 +338,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final String CHAMBERS_OF_XERIC = "Chambers of Xeric";
 	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
 	private static final String TOMBS_OF_AMASCUT = "Tombs of Amascut";
+	private static final String THE_FRACTURED_ARCHIVE = "Fractured Archive";
 
 	private static final int FONT_OF_CONSUMPTION_REGION = 12106;
 	private static final String FONT_OF_CONSUMPTION_USE_MESSAGE = "You place the Unsired into the Font of Consumption...";
@@ -880,6 +881,16 @@ public class LootTrackerPlugin extends Plugin
 				event = TOMBS_OF_AMASCUT;
 				container = client.getItemContainer(InventoryID.TOA_CHESTS);
 				metadata = new int[]{ raidLevel, teamSize, raidDamage };
+				chestLooted = true;
+				break;
+			case InterfaceID.TFA_CHESTS:
+				if (chestLooted)
+				{
+					return;
+				}
+
+				event = THE_FRACTURED_ARCHIVE;
+				container = client.getItemContainer(InventoryID.TFA_CHESTS);
 				chestLooted = true;
 				break;
 			case InterfaceID.MISC_COLLECTION:
