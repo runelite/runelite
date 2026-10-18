@@ -34,12 +34,15 @@ import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.PlayerComposition;
 import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.WorldEntity;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.SpotanimID;
+import net.runelite.api.kit.KitType;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -57,6 +60,20 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class EntityHiderPlugin extends Plugin
 {
+	private static final Set<Integer> NOOB_CAPE_IDS = ImmutableSet.of(
+		ItemID.TZHAAR_CAPE_FIRE + PlayerComposition.ITEM_OFFSET,
+		ItemID.TZHAAR_CAPE_FIRE_TROUVER + PlayerComposition.ITEM_OFFSET,
+		ItemID.SKILLCAPE_MAX_FIRECAPE + PlayerComposition.ITEM_OFFSET,
+		ItemID.SKILLCAPE_MAX_FIRECAPE_TROUVER + PlayerComposition.ITEM_OFFSET,
+		ItemID.AVAS_ASSEMBLER + PlayerComposition.ITEM_OFFSET,
+		ItemID.AVAS_ASSEMBLER_TROUVER + PlayerComposition.ITEM_OFFSET,
+		ItemID.AVAS_ASSEMBLER_MASORI + PlayerComposition.ITEM_OFFSET,
+		ItemID.AVAS_ASSEMBLER_MASORI_TROUVER + PlayerComposition.ITEM_OFFSET,
+		ItemID.SKILLCAPE_MAX_ASSEMBLER + PlayerComposition.ITEM_OFFSET,
+		ItemID.SKILLCAPE_MAX_ASSEMBLER_TROUVER + PlayerComposition.ITEM_OFFSET,
+		ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI + PlayerComposition.ITEM_OFFSET,
+		ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI_TROUVER + PlayerComposition.ITEM_OFFSET
+	);
 	private static final Set<Integer> THRALL_IDS = ImmutableSet.of(
 		NpcID.ARCEUUS_THRALL_GHOST_LESSER, NpcID.ARCEUUS_THRALL_SKELETON_LESSER, NpcID.ARCEUUS_THRALL_ZOMBIE_LESSER,  // Lesser Thrall (ghost, skeleton, zombie)
 		NpcID.ARCEUUS_THRALL_GHOST_SUPERIOR, NpcID.ARCEUUS_THRALL_SKELETON_SUPERIOR, NpcID.ARCEUUS_THRALL_ZOMBIE_SUPERIOR,  // Superior Thrall (ghost, skeleton, zombie)
@@ -124,6 +141,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideRandomEvents;
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
+	private boolean hideNoobs;
 
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
@@ -184,6 +202,8 @@ public class EntityHiderPlugin extends Plugin
 		hideAttackers = config.hideAttackers();
 
 		hideProjectiles = config.hideProjectiles();
+
+		hideNoobs = config.hideNoobs();
 	}
 
 	@VisibleForTesting
@@ -231,6 +251,11 @@ public class EntityHiderPlugin extends Plugin
 			if (client.getIgnoreContainer().findByName(player.getName()) != null)
 			{
 				return !hideIgnoredPlayers;
+			}
+
+			if (hideNoobs && NOOB_CAPE_IDS.contains(player.getPlayerComposition().getEquipmentId(KitType.CAPE)))
+			{
+				return false;
 			}
 
 			return !(drawingUI ? hideOthers2D : hideOthers);

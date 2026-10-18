@@ -231,4 +231,15 @@ public interface EntityHiderConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 26,
+		keyName = "hideNoobs",
+		name = "Hide noobs",
+		description = "Hides players wearing a fire cape, Ava's assembler, Masori assembler, or associated max cape."
+	)
+	default boolean hideNoobs()
+	{
+		return false;
+	}
 }
