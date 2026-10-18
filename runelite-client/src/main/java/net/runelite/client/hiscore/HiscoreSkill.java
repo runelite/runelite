@@ -100,6 +100,7 @@ public enum HiscoreSkill
 	DERANGED_ARCHAEOLOGIST("Deranged Archaeologist", BOSS, SpriteID.IconBoss25x25.DERANGED_ARCHAEOLOGIST),
 	DOOM_OF_MOKHAIOTL("Doom of Mokhaiotl", BOSS, SpriteID.IconBoss25x25.DOOM_OF_MOKHAIOTL),
 	DUKE_SUCELLUS("Duke Sucellus", BOSS, SpriteID.IconBoss25x25.DUKE_SUCELLUS),
+	FRACTURED_ARCHIVE("The Fractured Archive", BOSS, SpriteID.IconBoss25x25.THE_FRACTURED_ARCHIVE),
 	GENERAL_GRAARDOR("General Graardor", BOSS, SpriteID.IconBoss25x25.GENERAL_GRAARDOR),
 	GIANT_MOLE("Giant Mole", BOSS, SpriteID.IconBoss25x25.GIANT_MOLE),
 	GROTESQUE_GUARDIANS("Grotesque Guardians", BOSS, SpriteID.IconBoss25x25.GROTESQUE_GUARDIANS),
