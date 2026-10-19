@@ -49974,7 +49974,6 @@ class ObjectID1
 	 * Rewards Chest
 	 */
 	public static final int COLOSSEUM_REWARD = 50741;
-	public static final int COLOSSEUM_WAVE_EGG_SHELL = 50742;
 	public static final int COLOSSEUM_MOLTEN_POOL_1 = 50743;
 	public static final int COLOSSEUM_MOLTEN_POOL_2 = 50744;
 	public static final int COLOSSEUM_MOLTEN_POOL_3 = 50745;
@@ -50030,56 +50029,6 @@ class ObjectID1
 	public static final int WALLKIT_COLOSSEUM10_ARCH02_M = 50767;
 	public static final int WALLKIT_COLOSSEUM10_WALLTOP01 = 50768;
 	public static final int WALLKIT_COLOSSEUM10_WALLTOP02 = 50769;
-	public static final int WAVES_FLOOR_SAND_STRAIGHT_01 = 50770;
-	public static final int WAVES_FLOOR_SAND_CORNER_01 = 50771;
-	public static final int WAVES_FLOOR_SMALL_PLANE_01 = 50772;
-	public static final int WAVES_FLOOR_SMALL_PLANE_02 = 50773;
-	public static final int WAVES_FLOOR_LARGE_PLANE_01 = 50774;
-	public static final int WAVES_ROOF_SMALL_PLANE_01 = 50775;
-	public static final int WAVES_FLOOR_ROCKS_LAVA = 50776;
-	public static final int WAVES_FLOOR_ROCKS_01 = 50777;
-	public static final int WAVES_FLOOR_ROCKS_02 = 50778;
-	public static final int WAVES_FLOOR_ROCKS_03 = 50779;
-	public static final int WAVES_FLOOR_ROCKS_04 = 50780;
-	public static final int WAVES_FLOOR_ROCKS_05 = 50781;
-	public static final int WAVES_FLOOR_LARGE_CORNER_01 = 50782;
-	public static final int WAVES_FLOOR_LARGE_CORNER_02 = 50783;
-	public static final int WAVES_FLOOR_LARGE_CORNER_03 = 50784;
-	public static final int WAVES_FLOOR_LARGE_CORNER_04 = 50785;
-	public static final int WAVES_FLOOR_LARGE_EDGE_01 = 50786;
-	public static final int WAVES_FLOOR_LARGE_EDGE_02 = 50787;
-	public static final int WAVES_FLOOR_LARGE_EDGE_03 = 50788;
-	public static final int WAVES_PILLAR_EDGE_01 = 50789;
-	public static final int WAVES_PILLAR_EDGE_02 = 50790;
-	public static final int WAVES_PILLAR_EDGE_03 = 50791;
-	public static final int WAVES_PILLAR_EDGE_04 = 50792;
-	public static final int WAVES_PILLAR_EDGE_05 = 50793;
-	public static final int WAVES_PILLAR_EDGE_06 = 50794;
-	public static final int WAVES_FLOOR_WALL_LARGE_EDGE_01 = 50795;
-	public static final int WAVES_FLOOR_WALL_LARGE_EDGE_02 = 50796;
-	public static final int WAVES_FLOOR_WALL_LARGE_EDGE_03 = 50797;
-	public static final int WAVES_FLOOR_WALL_LARGE_CORNER_01 = 50798;
-	public static final int WAVES_FLOOR_WALL_LARGE_CORNER_02 = 50799;
-	public static final int WAVES_FLOOR_WALL_LARGE_CORNER_03 = 50800;
-	public static final int WAVES_FLOOR_WALL_LARGE_CORNER_04 = 50801;
-	public static final int WAVES_WALL_EDGE_LARGE_01 = 50802;
-	public static final int WAVES_WALL_EDGE_LARGE_02 = 50803;
-	public static final int WAVES_WALL_EDGE_LARGE_03 = 50804;
-	public static final int WAVES_WALL_EDGE_LARGE_04 = 50805;
-	public static final int WAVES_WALL_EDGE_LARGE_05 = 50806;
-	public static final int WAVES_WALL_EDGE_LARGE_06 = 50807;
-	public static final int WAVES_WALL_CORNER_LARGE_01 = 50808;
-	public static final int WAVES_WALL_CORNER_LARGE_02 = 50809;
-	public static final int WAVES_FLOOR_LOWERED_01 = 50810;
-	public static final int WAVES_FLOOR_LOWERED_02A = 50811;
-	public static final int WAVES_FLOOR_LOWERED_02B = 50812;
-	public static final int WAVES_FLOOR_LOWERED_03A = 50813;
-	public static final int WAVES_FLOOR_LOWERED_03B = 50814;
-	public static final int WAVES_FLOOR_FIXED_01 = 50815;
-	public static final int WAVES_FLOOR_FIXED_02A = 50816;
-	public static final int WAVES_FLOOR_FIXED_02B = 50817;
-	public static final int WAVES_FLOOR_FIXED_03A = 50818;
-	public static final int WAVES_FLOOR_FIXED_03B = 50819;
 	public static final int WAVES_ROCKS_FLOOR_HARD_01 = 50820;
 	public static final int WAVES_ROCKS_FLOOR_HARD_02 = 50821;
 	public static final int WAVES_ROCKS_FLOOR_HARD_03 = 50822;
@@ -57805,6 +57754,10 @@ class ObjectID1
 	public static final int LUC2_MOVARIO_BASE_JAILBARS_WIRE_MULTI_1 = 54110;
 	public static final int LUC2_MOVARIO_BASE_JAILBARS_WIRE_MULTI_2 = 54111;
 	public static final int DS2_LITHKREN_VAULT_TUBE = 54112;
+
+	/**
+	 * Opening
+	 */
 	public static final int LUC2_RAID_ENTRY2 = 54113;
 
 	/**
@@ -83642,5 +83595,2042 @@ class ObjectID1
 	 * Pete's crate
 	 */
 	public static final int PVPTUT_REWARD_CRATE = 62533;
+	public static final int AVIUM_GRASS_7 = 62534;
+
+	/**
+	 * Candles
+	 */
+	public static final int DECO_CANDLES04_RED = 62535;
+
+	/**
+	 * Candles
+	 */
+	public static final int DECO_CANDLES05_RED = 62536;
+
+	/**
+	 * Candles
+	 */
+	public static final int DECO_CANDLES06_RED = 62537;
+
+	/**
+	 * Table
+	 */
+	public static final int KR_CAMELOT_TABLE_AFTER_ZEAL = 62538;
+
+	/**
+	 * Table
+	 */
+	public static final int KR_CAMELOT_TABLE_BASE = 62539;
+
+	/**
+	 * Puddle
+	 */
+	public static final int DT2_LASSAR_SHADOW_PUDDLE_ACTIVE_NOBLOCK = 62540;
+
+	/**
+	 * Paladin
+	 */
+	public static final int DS2_PALADIN_DEAD_2_BLOCKRANGENO = 62541;
+	public static final int LUC2_RAID_ENTRY_MULTI = 62542;
+
+	/**
+	 * Opening
+	 */
+	public static final int LUC2_RAID_ENTRY_OPEN = 62543;
+	public static final int TFA_BORK_RAGGED_TILE = 62544;
+	public static final int TFA_BORK_GRASS_1 = 62545;
+	public static final int TFA_BORK_GRASS_2 = 62546;
+	public static final int TFA_BORK_GRASS_3 = 62547;
+	public static final int TFA_BORK_GRASS_4 = 62548;
+	public static final int TFA_BORK_GRASS_5 = 62549;
+	public static final int TFA_BORK_GRASS_6 = 62550;
+	public static final int TFA_BORK_GRASS_7 = 62551;
+
+	/**
+	 * Book of Life and Death
+	 */
+	public static final int TFA_DAGONHAI_BOOK01_DEFAULT01 = 62552;
+
+	/**
+	 * Book of Life and Death
+	 */
+	public static final int TFA_DAGONHAI_BOOK01_CLOSED01 = 62553;
+
+	/**
+	 * Bookshelf
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_BOOKS01 = 62554;
+
+	/**
+	 * Bookshelf
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_BOOKS02 = 62555;
+
+	/**
+	 * Bookshelf
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_BOOKS03 = 62556;
+
+	/**
+	 * Bookshelf
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_BOOKS04 = 62557;
+
+	/**
+	 * Table
+	 */
+	public static final int TFA_TABLE_ARCHIVE01_BOOKS01 = 62558;
+
+	/**
+	 * Table
+	 */
+	public static final int TFA_TABLE_ARCHIVE01_BOOKS02 = 62559;
+
+	/**
+	 * Table
+	 */
+	public static final int TFA_TABLE_ARCHIVE01_BOOKS03 = 62560;
+
+	/**
+	 * Table
+	 */
+	public static final int TFA_TABLE_ARCHIVE01_BOOKS04 = 62561;
+
+	/**
+	 * Table
+	 */
+	public static final int TFA_TABLE_ARCHIVE01_BOOKS05 = 62562;
+
+	/**
+	 * Table
+	 */
+	public static final int TFA_TABLE_ARCHIVE01_BOOKS06 = 62563;
+
+	/**
+	 * Table
+	 */
+	public static final int TFA_TABLE_ARCHIVE01_BOOKS07 = 62564;
+
+	/**
+	 * Book
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN01 = 62565;
+
+	/**
+	 * Book
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN01B = 62566;
+
+	/**
+	 * Books
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN02 = 62567;
+
+	/**
+	 * Books
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN02B = 62568;
+
+	/**
+	 * Book
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN03 = 62569;
+
+	/**
+	 * Book
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN03B = 62570;
+
+	/**
+	 * Book
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN04 = 62571;
+
+	/**
+	 * Book
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN05 = 62572;
+
+	/**
+	 * Book
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_FALLEN05B = 62573;
+
+	/**
+	 * Paper
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_PAPER01 = 62574;
+
+	/**
+	 * Paper
+	 */
+	public static final int TFA_BOOK_ARCHIVE01_PAPER02 = 62575;
+	public static final int TFA_DECOKIT_DAGONHAI01_SCORCH01 = 62576;
+	public static final int _3X3_BLOCKING = 62577;
+
+	/**
+	 * Mushroom
+	 */
+	public static final int TFA_GUARDIAN_MUSHROOM_SPAWN = 62578;
+
+	/**
+	 * Mushroom
+	 */
+	public static final int TFA_GUARDIAN_MUSHROOM_ACTIVE = 62579;
+
+	/**
+	 * Mushroom
+	 */
+	public static final int TFA_GUARDIAN_MUSHROOM_DESPAWN = 62580;
+	public static final int TFA_DUNGEONKIT_GUTHIXIAN01_BATTERY01_BASE = 62581;
+	public static final int TFA_DUNGEONKIT_GUTHIXIAN01_FENCE01 = 62582;
+	public static final int TFA_DUNGEONKIT_GUTHIXIAN01_FENCE02 = 62583;
+	public static final int TFA_DUNGEONKIT_GUTHIXIAN01_FENCE02_M = 62584;
+	public static final int TFA_DUNGEONKIT_GUTHIXIAN01_FENCE03 = 62585;
+	public static final int TFA_DUNGEONKIT_GUTHIXIAN01_FENCE03_2X2 = 62586;
+	public static final int TFA_FLOWER_GUARDIAN01_CLUSTER01 = 62587;
+	public static final int TFA_FLOWER_GUARDIAN01_CLUSTER02 = 62588;
+	public static final int TFA_FLOWER_GUARDIAN01_CORNER01 = 62589;
+	public static final int TFA_FLOWER_GUARDIAN01_CORNER02 = 62590;
+	public static final int TFA_FLOWER_GUARDIAN01_MEDIUM01 = 62591;
+	public static final int TFA_FLOWER_GUARDIAN01_MEDIUM02 = 62592;
+	public static final int TFA_FLOWER_GUARDIAN01_SMALL01 = 62593;
+	public static final int TFA_FLOWER_GUARDIAN01_SMALL02 = 62594;
+	public static final int TFA_DUNGEONKIT_GUTHIXIAN01_BASE01 = 62595;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int TFA_BONES01_SKELETON01_DARK01 = 62596;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int TFA_BONES01_SKELETON02_DARK01 = 62597;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int TFA_BONES01_SKELETON03_DARK01 = 62598;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_GOBLIN01_DARK01 = 62599;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_GOBLIN02_DARK02 = 62600;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_ZAMORAK01_DARK01 = 62601;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_ZAMORAK02_DARK01 = 62602;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_SARADOMIN01_DARK01 = 62603;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_SARADOMIN02_DARK01 = 62604;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_GOBLIN01_BURNT01_DARK01 = 62605;
+	public static final int TFA_CORPSE_HUMAN01_BURNT01_DARK01 = 62606;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_SOULPRISON_CORPSE01_DARK01 = 62607;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_SOULPRISON_CORPSE02_DARK01 = 62608;
+	public static final int TFA_JELLY_BOSS_DAMAGE_TILE = 62609;
+
+	/**
+	 * Archive transporter
+	 */
+	public static final int TFA_TELEPORTER_MOIA = 62610;
+	public static final int TFA_MOIA01_FENCE01 = 62611;
+	public static final int TFA_MOIA01_FENCE02 = 62612;
+	public static final int TFA_MOIA01_FENCE02_M = 62613;
+	public static final int TFA_MOIA01_FENCE02_CORNER = 62614;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int TFA_MOIA_SKELETON01 = 62615;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int TFA_MOIA_SKELETON02 = 62616;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int TFA_MOIA_SKELETON03 = 62617;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int TFA_MOIA_SKELETON04 = 62618;
+	public static final int TFA_MOIA_BONES01 = 62619;
+
+	/**
+	 * Bones
+	 */
+	public static final int TFA_MOIA_BONES02 = 62620;
+
+	/**
+	 * Bones
+	 */
+	public static final int TFA_MOIA_BONES03 = 62621;
+
+	/**
+	 * Bones
+	 */
+	public static final int TFA_MOIA_BONES04 = 62622;
+
+	/**
+	 * Bones
+	 */
+	public static final int TFA_MOIA_BONES05 = 62623;
+
+	/**
+	 * Bones
+	 */
+	public static final int TFA_MOIA_BONES06 = 62624;
+	public static final int TFA_MOIA_BONES01_NOBLOCKRANGE = 62625;
+	public static final int TFA_MOIA_BONES02_NOBLOCKRANGE = 62626;
+	public static final int TFA_MOIA_BONES03_NOBLOCKRANGE = 62627;
+	public static final int TFA_MOIA_BONES04_NOBLOCKRANGE = 62628;
+	public static final int TFA_MOIA_BONES05_NOBLOCKRANGE = 62629;
+	public static final int TFA_MOIA_BONES06_NOBLOCKRANGE = 62630;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_ARCHIVE01_MOIA01_PILLAR01 = 62631;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_ARCHIVE01_MOIA01_PILLAR02 = 62632;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_ARCHIVE01_MOIA01_PILLAR03 = 62633;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_ARCHIVE01_MOIA01_PILLAR04 = 62634;
+	public static final int TFA_WALLKIT_MOIA01_DEFAULT01 = 62635;
+	public static final int TFA_WALLKIT_MOIA01_DEFAULT02 = 62636;
+	public static final int TFA_WALLKIT_ARCHIVE01_MOIA01_PILLAR01 = 62637;
+	public static final int TFA_WALLKIT_MOIA01_PILLAR01_M = 62638;
+	public static final int TFA_WALLKIT_ARCHIVE01_MOIA01_ROOTS01 = 62639;
+	public static final int TFA_WALLKIT_ARCHIVE01_MOIA01_ROOTS02 = 62640;
+	public static final int TFA_WALLKIT_ARCHIVE01_MOIA01_TRANSITION01 = 62641;
+	public static final int TFA_WALLKIT_ARCHIVE01_MOIA01_TRANSITION02 = 62642;
+	public static final int TFA_WALLKIT_MOIA01_TRUNKS01 = 62643;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_MOIA01 = 62644;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_MOIA01_CORNER01 = 62645;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_MOIA01_CORNER02 = 62646;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_MOIA01_TRANSITION01 = 62647;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_MOIA01_TRANSITION02 = 62648;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_MOIA01_TRANSITION03 = 62649;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_MOIA01_TRANSITION03_M = 62650;
+	public static final int TFA_WALLKIT_ARCHIVE01_MOIA01_BRANCH01 = 62651;
+	public static final int TFA_WALLKIT_ARCHIVE01_MOIA01_BRANCH02 = 62652;
+	public static final int TFA_WALLKIT_ARCHIVE01_SKELETON01 = 62653;
+	public static final int TFA_WALLKIT_ARCHIVE01_SKELETON02 = 62654;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_EDGE01_PURPLE01 = 62655;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_CORNER01_PURPLE01 = 62656;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_CORNER03_PURPLE01 = 62657;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_EDGE01_GREY01 = 62658;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_CORNER01_GREY01 = 62659;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_CORNER03_GREY01 = 62660;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_GREY03 = 62661;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG01_GREY03 = 62662;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG01_GREY03_OFFSET = 62663;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER01_GREY03 = 62664;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_GREY02 = 62665;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_PURPLE01 = 62666;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER02_PURPLE01 = 62667;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_PURPLE02 = 62668;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER02_PURPLE02 = 62669;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_TILE01_PURPLE01 = 62670;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_TILE01_PURPLE02 = 62671;
+	public static final int TFA_FLOORKIT_MOIA01_GRAVE01 = 62672;
+	public static final int RAISE_CHAR_16 = 62673;
+	public static final int TFA_FLOORKIT_MOIA01_GRAVE02 = 62674;
+	public static final int TFA_FLOORKIT_MOIA01_GRAVE03 = 62675;
+	public static final int TFA_FLOORKIT_MOIA01_GRAVE04 = 62676;
+	public static final int TFA_FLOORKIT_MOIA01_GRAVE05 = 62677;
+	public static final int TFA_DUGUPSOIL_MOIA01 = 62678;
+
+	/**
+	 * Bush
+	 */
+	public static final int TFA_MOIA01_BUSH01_LEAFLESS = 62679;
+
+	/**
+	 * Bush
+	 */
+	public static final int TFA_MOIA01_BUSH02_LEAFLESS = 62680;
+
+	/**
+	 * Bush
+	 */
+	public static final int TFA_MOIA01_BUSH03_LEAFLESS = 62681;
+	public static final int TFA_MOIA01_BROKEN_TWIG01 = 62682;
+	public static final int TFA_MOIA01_FULL_TWIG01 = 62683;
+
+	/**
+	 * Portal
+	 */
+	public static final int TFA_OCELLUS_QUADRANT_WALL_INACTIVE = 62684;
+
+	/**
+	 * Portal
+	 */
+	public static final int TFA_OCELLUS_QUADRANT_WALL_ACTIVE = 62685;
+
+	/**
+	 * Gap
+	 */
+	public static final int TFA_OCELLUS_PLATFORM_JUMP_MIDDLE = 62686;
+
+	/**
+	 * Gap
+	 */
+	public static final int TFA_OCELLUS_PLATFORM_JUMP_OUTER_NORTH = 62687;
+
+	/**
+	 * Gap
+	 */
+	public static final int TFA_OCELLUS_PLATFORM_JUMP_OUTER_EAST = 62688;
+
+	/**
+	 * Gap
+	 */
+	public static final int TFA_OCELLUS_PLATFORM_JUMP_OUTER_SOUTH = 62689;
+
+	/**
+	 * Gap
+	 */
+	public static final int TFA_OCELLUS_PLATFORM_JUMP_OUTER_WEST = 62690;
+	public static final int TFA_OCELLUS_PLATFORM_VOID_NOBLOCKRANGE_LIGHT = 62691;
+	public static final int TFA_OCELLUS_PLATFORM_VOID_NOBLOCKRANGE = 62692;
+
+	/**
+	 * Bandosian Censer
+	 */
+	public static final int TFA_OCELLUS_ARTIFACT_DAMAGE_MELEE = 62693;
+
+	/**
+	 * Bandosian Censer
+	 */
+	public static final int TFA_OCELLUS_ARTIFACT_DAMAGE_MELEE_INACTIVE = 62694;
+
+	/**
+	 * Armadylean Censer
+	 */
+	public static final int TFA_OCELLUS_ARTIFACT_DAMAGE_RANGED = 62695;
+
+	/**
+	 * Armadylean Censer
+	 */
+	public static final int TFA_OCELLUS_ARTIFACT_DAMAGE_RANGED_INACTIVE = 62696;
+
+	/**
+	 * Zarosian Censer
+	 */
+	public static final int TFA_OCELLUS_ARTIFACT_SPEC = 62697;
+
+	/**
+	 * Zarosian Censer
+	 */
+	public static final int TFA_OCELLUS_ARTIFACT_SPEC_INACTIVE = 62698;
+
+	/**
+	 * Saradomin Censer
+	 */
+	public static final int TFA_OCELLUS_ARTIFACT_HEAL = 62699;
+
+	/**
+	 * Saradomin Censer
+	 */
+	public static final int TFA_OCELLUS_ARTIFACT_HEAL_INACTIVE = 62700;
+
+	/**
+	 * Void
+	 */
+	public static final int TFA_OCELLUS_VOID_DEGEN_BOMB = 62701;
+
+	/**
+	 * Debris
+	 */
+	public static final int TFA_OCELLUS_VOID_DEGEN_AOE = 62702;
+
+	/**
+	 * Cracks
+	 */
+	public static final int TFA_OCELLUS_VOID_DEGEN_AOE_INSOLENCE_1 = 62703;
+
+	/**
+	 * Cracks
+	 */
+	public static final int TFA_OCELLUS_VOID_DEGEN_AOE_INSOLENCE_4 = 62704;
+
+	/**
+	 * Cracks
+	 */
+	public static final int TFA_OCELLUS_VOID_DEGEN_AOE_INSOLENCE_7 = 62705;
+
+	/**
+	 * The Blade
+	 */
+	public static final int TFA_THE_BLADE1 = 62706;
+	public static final int TFA_THE_BLADE1_IDLE0 = 62707;
+	public static final int TFA_THE_BLADE1_IDLE1 = 62708;
+	public static final int TFA_THE_BLADE1_IDLE2 = 62709;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_XARTH_RUBBLE_3 = 62710;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_XARTH_RUBBLE_2 = 62711;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_XARTH_RUBBLE_1 = 62712;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_XARTH_ARENAFIRE = 62713;
+	public static final int TFA_WALLKIT_XARTH01_DEFAULT01 = 62714;
+	public static final int TFA_WALLKIT_XARTH01_PILLAR01_M = 62715;
+	public static final int TFA_WALLKIT_XARTH01_PILLAR01 = 62716;
+	public static final int TFA_WALLKIT_XARTH01_TRANSITION01 = 62717;
+	public static final int TFA_WALLKIT_XARTH01_TRANSITION02 = 62718;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM01 = 62719;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM02 = 62720;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM03 = 62721;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM04 = 62722;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM05 = 62723;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM01_FISH = 62724;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM02_FISH = 62725;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM03_FISH = 62726;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM04_FISH = 62727;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM05_FISH = 62728;
+	public static final int TFA_WALLKIT_XARTH01_VIVARIUM01_ENTRANCE01 = 62729;
+	public static final int TFA_WALLKIT_XARTH01_TRUNKS01_BURNT01 = 62730;
+	public static final int TFA_WALLKIT_XARTH01_DEFAULT01_BURNT01 = 62731;
+	public static final int TFA_WALLKIT_XARTH01_DEFAULT01_BURNT02 = 62732;
+	public static final int TFA_WALLKIT_XARTH01_TRANSITION01_BURNT01 = 62733;
+	public static final int TFA_WALLKIT_XARTH01_TRANSITION02_BURNT01 = 62734;
+	public static final int TFA_WALLKIT_XARTH01_PILLAR01_BURNT01 = 62735;
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR01_BURNT01_M = 62736;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR02_BURNT01 = 62737;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR02_GREY01 = 62738;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_FILLER01_BURNT01 = 62739;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG01_BURNT01 = 62740;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_BURNT01 = 62741;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_FILLER01_GREY01 = 62742;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG01_GREY01 = 62743;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_GREY01 = 62744;
+
+	/**
+	 * Portal
+	 */
+	public static final int TFA_PORTAL_XARTH01 = 62745;
+	public static final int TFA_DECOKIT_XARTH01_SCORCH01 = 62746;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE01 = 62747;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE_FIRE01 = 62748;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE02 = 62749;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE_FIRE02 = 62750;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE03 = 62751;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE_FIRE03 = 62752;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE04 = 62753;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE_FIRE04 = 62754;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE05 = 62755;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE_FIRE05 = 62756;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE06 = 62757;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE_FIRE06 = 62758;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE07 = 62759;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE_FIRE07 = 62760;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE08 = 62761;
+
+	/**
+	 * Corpses
+	 */
+	public static final int TFA_XARTH01_CORPSE_PILE_FIRE08 = 62762;
+	public static final int TFA_XARTH01_CORPSE_PILE09 = 62763;
+	public static final int TFA_XARTH01_CORPSE_PILE010 = 62764;
+
+	/**
+	 * Passageway
+	 */
+	public static final int TFA_EXIT = 62765;
+
+	/**
+	 * Passageway
+	 */
+	public static final int TFA_EXIT_LARGE = 62766;
+
+	/**
+	 * Grouping Board
+	 */
+	public static final int TFA_GROUPING_BOARD = 62767;
+
+	/**
+	 * Archive Door
+	 */
+	public static final int TFA_LOBBY_RAID_ENTRY = 62768;
+
+	/**
+	 * Root
+	 */
+	public static final int TFA_ROOT_GUTHIXIAN01_LARGE01 = 62769;
+
+	/**
+	 * Root
+	 */
+	public static final int TFA_ROOT_GUTHIXIAN01_LARGE02 = 62770;
+
+	/**
+	 * Root
+	 */
+	public static final int TFA_ROOT_GUTHIXIAN01_LARGE02_OFFSET01 = 62771;
+
+	/**
+	 * Root
+	 */
+	public static final int TFA_ROOT_GUTHIXIAN01_LARGE03 = 62772;
+
+	/**
+	 * Alliance records
+	 */
+	public static final int TFA_OUT_OF_RAID_SCOREBOARD = 62773;
+
+	/**
+	 * Merit scroll
+	 */
+	public static final int TFA_IN_RAID_SCOREBOARD = 62774;
+
+	/**
+	 * Merit scroll
+	 */
+	public static final int TFA_VAULT_SCOREBOARD = 62775;
+
+	/**
+	 * Fractured archive table
+	 */
+	public static final int TFA_IN_RAID_SCOREBOARD_BROKEN = 62776;
+
+	/**
+	 * Shelves
+	 */
+	public static final int TFA_SHELF_ARCHIVE01_DEFAULT01 = 62777;
+
+	/**
+	 * Shelves
+	 */
+	public static final int TFA_SHELF_ARCHIVE01_DEFAULT02 = 62778;
+
+	/**
+	 * Shelves
+	 */
+	public static final int TFA_SHELF_ARCHIVE01_DEFAULT03 = 62779;
+
+	/**
+	 * Shelves
+	 */
+	public static final int TFA_SHELF_ARCHIVE01_EMPTY01 = 62780;
+
+	/**
+	 * Fallen shelves
+	 */
+	public static final int TFA_SHELF_ARCHIVE01_FALLEN01 = 62781;
+
+	/**
+	 * Hammer
+	 */
+	public static final int TFA_TOOLS_ARCHIVE01_HAMMER01 = 62782;
+
+	/**
+	 * Hammer
+	 */
+	public static final int TFA_TOOLS_ARCHIVE01_HAMMER02 = 62783;
+
+	/**
+	 * Hammer
+	 */
+	public static final int TFA_TOOLS_ARCHIVE01_HAMMER03 = 62784;
+
+	/**
+	 * Hammer
+	 */
+	public static final int TFA_TOOLS_ARCHIVE01_HAMMER03_2X2 = 62785;
+
+	/**
+	 * Broom
+	 */
+	public static final int TFA_TOOLS_ARCHIVE01_BROOM01 = 62786;
+
+	/**
+	 * Wheelbarrow
+	 */
+	public static final int TFA_WHEELBARROW_NEXUS01_SUPPLY01 = 62787;
+
+	/**
+	 * Chest
+	 */
+	public static final int TFA_CHEST_NEXUS01_SUPPLY01 = 62788;
+
+	/**
+	 * Crate
+	 */
+	public static final int TFA_CRATE_NEXUS01_SINGLE01 = 62789;
+
+	/**
+	 * Crate
+	 */
+	public static final int TFA_CRATE_NEXUS01_STACKED01 = 62790;
+
+	/**
+	 * Sacks
+	 */
+	public static final int TFA_SACK_NEXUS01_PILE01 = 62791;
+
+	/**
+	 * Sacks
+	 */
+	public static final int TFA_SACK_NEXUS01_COUPLE01 = 62792;
+
+	/**
+	 * Workbench
+	 */
+	public static final int TFA_TABLE_NEXUS01_RUNES01 = 62793;
+
+	/**
+	 * Barrel
+	 */
+	public static final int TFA_BARREL_NEXUS01_RUNES01 = 62794;
+
+	/**
+	 * Barrel
+	 */
+	public static final int TFA_BARREL_NEXUS01_EMPTY01 = 62795;
+
+	/**
+	 * Barrel
+	 */
+	public static final int TFA_BUCKET_NEXUS01_ARROWS01 = 62796;
+	public static final int TFA_FLOWERS_NEXUS01_PETALS01 = 62797;
+
+	/**
+	 * Chair
+	 */
+	public static final int TFA_CHAIR_NEXUS01 = 62798;
+
+	/**
+	 * Whetstone
+	 */
+	public static final int TFA_WHETSTONE_NEXUS01_NOOP01 = 62799;
+
+	/**
+	 * Archive Guardian
+	 */
+	public static final int TFA_CORPSE_GUARDIAN01 = 62800;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_NEXUS01_WEAPON01 = 62801;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_NEXUS01_WEAPON02 = 62802;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_NEXUS01_WEAPON03 = 62803;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_WEAPONISED01 = 62804;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_WEAPONISED02 = 62805;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_WEAPONISED03 = 62806;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_WEAPONISED04 = 62807;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_WEAPONISED05 = 62808;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_PLANKS01 = 62809;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_PLANKS02A = 62810;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_PLANKS02B = 62811;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_PLANKS03A = 62812;
+
+	/**
+	 * Barricade
+	 */
+	public static final int TFA_BARRICADE_NEXUS01_PLANKS03B = 62813;
+
+	/**
+	 * Cannonball
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE01_CANNONBALL01 = 62814;
+
+	/**
+	 * Cannonball
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE01_CANNONBALL01_OFFSET01 = 62815;
+
+	/**
+	 * Cannonball
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE01_CANNONBALL01_OFFSET02 = 62816;
+
+	/**
+	 * Cannonball
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE01_CANNONBALL02 = 62817;
+
+	/**
+	 * Cannonball
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE01_CANNONBALL03 = 62818;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE01_HOLE01 = 62819;
+	public static final int TFA_DUGUPSOIL01_ARCHIVE01 = 62820;
+	public static final int TFA_DUGUPSOIL02_ARCHIVE01 = 62821;
+	public static final int TFA_DUGUPSOIL03_ARCHIVE01 = 62822;
+
+	/**
+	 * Ladder
+	 */
+	public static final int TFA_LADDER_ARCHIVE01_DEFAULT01 = 62823;
+
+	/**
+	 * Crate
+	 */
+	public static final int TFA_CRATE_ARCHIVE01_SINGLE01 = 62824;
+
+	/**
+	 * Crates
+	 */
+	public static final int TFA_CRATE_ARCHIVE01_STACK01 = 62825;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_MEDIUM01 = 62826;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_MEDIUM01_OFFSET01 = 62827;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_MEDIUM02 = 62828;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_MEDIUM03 = 62829;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_LARGE1 = 62830;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_SMALL01 = 62831;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_SMALL02 = 62832;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_SMALL02A = 62833;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_SMALL03 = 62834;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_SMALL04 = 62835;
+
+	/**
+	 * Rubble
+	 */
+	public static final int TFA_RUBBLE_ARCHIVE02_SMALL05 = 62836;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER01 = 62837;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER01A = 62838;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER01B = 62839;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER01C = 62840;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER02 = 62841;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER02A = 62842;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER02B = 62843;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER02C = 62844;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER03 = 62845;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER03A = 62846;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER03B = 62847;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER03C = 62848;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER04 = 62849;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER04A = 62850;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER04B = 62851;
+
+	/**
+	 * Fire
+	 */
+	public static final int TFA_FIRE_ARCHIVE01_SCATTER04C = 62852;
+
+	/**
+	 * Brazier
+	 */
+	public static final int TFA_BRAZIER_ARCHIVE01_DEFAULT01 = 62853;
+
+	/**
+	 * Brazier
+	 */
+	public static final int TFA_BRAZIER_ARCHIVE01_DEFAULT02 = 62854;
+	public static final int TFA_BRAZIER_ARCHIVE01_FIRE01 = 62855;
+	public static final int TFA_BRAZIER_ARCHIVE01_FIRE01_2X1 = 62856;
+	public static final int TFA_FLOORKIT_EZEKIEL01_TILE01 = 62857;
+	public static final int TFA_FLOORKIT_EZEKIEL01_TILE01_RAISEOBJ = 62858;
+	public static final int TFA_FLOORKIT_EZEKIEL01_DIAG01 = 62859;
+	public static final int TFA_FLOORKIT_EZEKIEL01_DIAG01_RAISEOBJ = 62860;
+	public static final int TFA_FLOORKIT_EZEKIEL01_GUTHIX01 = 62861;
+
+	/**
+	 * Flames
+	 */
+	public static final int TFA_WALLKIT_EZEKIEL01_LIGHTS01 = 62862;
+	public static final int TFA_WALL_ARCHIVE01_SHIELD01_GUTHIX01 = 62863;
+	public static final int TFA_WALL_ARCHIVE01_SHIELD01_SARODOMIN01 = 62864;
+	public static final int TFA_WALL_ARCHIVE01_SHIELD01_ZAMORAK01 = 62865;
+
+	/**
+	 * Weapons
+	 */
+	public static final int TFA_WEAPONS_ARCHIVE01_LEANING01 = 62866;
+
+	/**
+	 * Weapons
+	 */
+	public static final int TFA_WEAPON_ARCHIVE01_SHIELD01_ZAMORAK01 = 62867;
+
+	/**
+	 * Weapons
+	 */
+	public static final int TFA_WEAPON_ARCHIVE01_SHIELD01_FORINTHRY01 = 62868;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR01_SHIELD01 = 62869;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_GOBLIN01 = 62870;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_GOBLIN02 = 62871;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_ZAROS01 = 62872;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_ZAROS02 = 62873;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_ZAMORAK01 = 62874;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_ZAMORAK02 = 62875;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_SARADOMIN01 = 62876;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_SARADOMIN02 = 62877;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_FORTNITHY01 = 62878;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_FORTNITHY02 = 62879;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_BANDOS01 = 62880;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_BANDOS02 = 62881;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_KNIGHT01 = 62882;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_CORPSE_EZEKIEL01_KNIGHT02 = 62883;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL01_WEAPON01 = 62884;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL02_WEAPON01 = 62885;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL03_WEAPON01 = 62886;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL04_WEAPON01 = 62887;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL05_WEAPON01 = 62888;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL06_WEAPON01 = 62889;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL07_WEAPON01 = 62890;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL08_WEAPON01 = 62891;
+
+	/**
+	 * Weapons rack
+	 */
+	public static final int TFA_RACK_EZEKIEL09_WEAPON01 = 62892;
+
+	/**
+	 * Dummy
+	 */
+	public static final int TFA_TRAINING_DUMMY01 = 62893;
+	public static final int TFA_BRAZIER_GUTHIXIAN01_FINAL01 = 62894;
+	public static final int TFA_BRAZIER_GUTHIXIAN_FLAME01 = 62895;
+	public static final int TFA_BRAZIER_GUTHIXIAN_FLAME02 = 62896;
+	public static final int TFA_WALLKIT_ARCHIVE02_FILLER00 = 62897;
+	public static final int TFA_WALLKIT_ARCHIVE02_FILLER00_M = 62898;
+	public static final int TFA_WALLKIT_ARCHIVE02_FILLER01 = 62899;
+	public static final int TFA_WALLKIT_ARCHIVE02_FILLER01_M = 62900;
+	public static final int TFA_WALLKIT_ARCHIVE02_SKULL01 = 62901;
+	public static final int TFA_WALLKIT_ARCHIVE02_STRAIGHT00 = 62902;
+	public static final int TFA_WALLKIT_ARCHIVE02_TRANSITION01 = 62903;
+	public static final int TFA_WALLKIT_ARCHIVE02_TRANSITION01_M = 62904;
+	public static final int TFA_WALLKIT_ARCHIVE02_SKULL02 = 62905;
+	public static final int TFA_WALLKIT_ARCHIVE02_CORNER00 = 62906;
+	public static final int TFA_WALLKIT_ARCHIVE02_PILLAR00 = 62907;
+	public static final int TFA_WALLKIT_ARCHIVE02_PILLAR03 = 62908;
+	public static final int TFA_WALLKIT_ARCHIVE02_PILLAR04 = 62909;
+	public static final int TFA_WALLKIT_ARCHIVE02_PILLAR01 = 62910;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES00 = 62911;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES00_SMALL = 62912;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES00_SMALL_M = 62913;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES01 = 62914;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES01_SMALL = 62915;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES02 = 62916;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES02_SMALL = 62917;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES03 = 62918;
+	public static final int TFA_WALLKIT_ARCHIVE02_VINES03_SMALL = 62919;
+	public static final int TFA_WALLKIT_ARCHIVE02_WALKWAY00 = 62920;
+	public static final int TFA_WALLKIT_ARCHIVE02_WALKWAY01 = 62921;
+	public static final int TFA_WALLKIT_ARCHIVE02_WALKWAY02 = 62922;
+	public static final int TFA_WALLKIT_ARCHIVE02_TOP01 = 62923;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE01 = 62924;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE01_M = 62925;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE01_OFFSET = 62926;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT01 = 62927;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT02 = 62928;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT_COLLAPSE_01 = 62929;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT_COLLAPSE_02 = 62930;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT_COLLAPSE_03 = 62931;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT_COLLAPSE_04 = 62932;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT_COLLAPSE_01_EMPTY = 62933;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT_COLLAPSE_02_EMPTY = 62934;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT_COLLAPSE_03_EMPTY = 62935;
+	public static final int TFA_WALLKIT_ARCHIVE03_STRAIGHT_COLLAPSE_04_EMPTY = 62936;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_SW_01 = 62937;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_SW_02 = 62938;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_SW_03 = 62939;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_NW_01 = 62940;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_NW_02 = 62941;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_NW_03 = 62942;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_NE_01 = 62943;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_NE_02 = 62944;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_NE_03 = 62945;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_SE_01 = 62946;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_SE_02 = 62947;
+	public static final int TFA_WALLKIT_ARCHIVE03_SLICE_COLLAPSE_SE_03 = 62948;
+
+	/**
+	 * Vines
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE03_ENTRANCE_GATE = 62949;
+	public static final int TFA_WALLKIT_ARCHIVE03_ENTRANCE01 = 62950;
+	public static final int TFA_WALLKIT_ARCHIVE03_ENTRANCE02_OPEN = 62951;
+
+	/**
+	 * Vines
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE03_ENTRANCE02_CLOSED = 62952;
+
+	/**
+	 * Vines
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE03_ENTRANCE02_CLOSING = 62953;
+	public static final int TFA_DUNGEONKIT_GUTHIXIAN03_BRIDGE01 = 62954;
+	public static final int TFA_WALLKIT_ARCHIVE03_CENTER01 = 62955;
+	public static final int TFA_WALLKIT_ARCHIVE03_CENTER01_BLOCKWALK = 62956;
+	public static final int TFA_WALLKIT_ARCHIVE03_WALKWAY01 = 62957;
+	public static final int TFA_WALLKIT_ARCHIVE03_WALKWAY02 = 62958;
+	public static final int TFA_WALLKIT_ARCHIVE03_WALKWAY03 = 62959;
+	public static final int TFA_WALLKIT_ARCHIVE03_WALKWAY04 = 62960;
+	public static final int TFA_WALLKIT_ARCHIVE03_WALKWAY05 = 62961;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE02_PILLAR02 = 62962;
+
+	/**
+	 * Plinth
+	 */
+	public static final int TFA_DISPLAY_PLINTH02_GUTHIXIAN01 = 62963;
+
+	/**
+	 * Fresnel casing
+	 */
+	public static final int TFA_ARTEFACT_GUTHIXIAN01 = 62964;
+
+	/**
+	 * Chainlinks
+	 */
+	public static final int TFA_ARTEFACT_GUTHIXIAN02 = 62965;
+
+	/**
+	 * Fragment
+	 */
+	public static final int TFA_ARTEFACT_GUTHIXIAN03 = 62966;
+
+	/**
+	 * Mask
+	 */
+	public static final int TFA_ARTEFACT_GUTHIXIAN04 = 62967;
+
+	/**
+	 * Anchor
+	 */
+	public static final int TFA_ARTEFACT_GUTHIXIAN05 = 62968;
+
+	/**
+	 * Lantern
+	 */
+	public static final int TFA_ARTEFACT_GUTHIXIAN06 = 62969;
+
+	/**
+	 * Brazier
+	 */
+	public static final int TFA_BRAZIER_GUTHIXLOOT01_BASE01 = 62970;
+
+	/**
+	 * Brazier
+	 */
+	public static final int TFA_BRAZIER_GUTHIXLOOT01_BASE01_MIRROR = 62971;
+	public static final int TFA_BRAZIER_GUTHIXLOOT01_FIRE01 = 62972;
+	public static final int TFA_BRAZIER_GUTHIXLOOT01_FIRE02 = 62973;
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_WALKWAY01 = 62974;
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_WALKWAY02 = 62975;
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_WALKWAY03 = 62976;
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_RAMP01 = 62977;
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_PLATFORM01 = 62978;
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_PLATFORM02 = 62979;
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_PLATFORM03 = 62980;
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_PLATFORM04 = 62981;
+
+	/**
+	 * Branches
+	 */
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_TREES01 = 62982;
+
+	/**
+	 * Branches
+	 */
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_TREES02 = 62983;
+
+	/**
+	 * Branches
+	 */
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_TREES03 = 62984;
+
+	/**
+	 * Branches
+	 */
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_TREES04 = 62985;
+
+	/**
+	 * Branches
+	 */
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_TREES05 = 62986;
+
+	/**
+	 * Branches
+	 */
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_TREES06 = 62987;
+
+	/**
+	 * Branches
+	 */
+	public static final int TFA_WALLKIT_GUTHIXLOOT01_TREES07 = 62988;
+	public static final int TFA_RUBBLE_GUTHIXLOOT01_STEPS01 = 62989;
+	public static final int TFA_ENTRANCE_GUTHIXLOOT01_PORTAL01 = 62990;
+
+	/**
+	 * Star
+	 */
+	public static final int TFA_STAR_SINGLE01 = 62991;
+
+	/**
+	 * Star
+	 */
+	public static final int TFA_STAR_SINGLE01_OFFSET1 = 62992;
+
+	/**
+	 * Star
+	 */
+	public static final int TFA_STAR_SINGLE01_OFFSET2 = 62993;
+
+	/**
+	 * Star
+	 */
+	public static final int TFA_STAR_SINGLE01_RESIZE01 = 62994;
+
+	/**
+	 * Star
+	 */
+	public static final int TFA_STAR_SINGLE01_RESIZE_OFFSET01 = 62995;
+	public static final int TFA_STAR_DUO01 = 62996;
+	public static final int TFA_STAR_DUO01_OFFSET01 = 62997;
+	public static final int TFA_STAR_TRIO01 = 62998;
+	public static final int TFA_STAR_TRIO01_OFFSET01 = 62999;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_01 = 63000;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_02 = 63001;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_03 = 63002;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_01_SPAWN = 63003;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_02_SPAWN = 63004;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_03_SPAWN = 63005;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_01_DESPAWN = 63006;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_02_DESPAWN = 63007;
+	public static final int TFA_OCELLUS_QUADRANT_BARRIER_03_DESPAWN = 63008;
+
+	/**
+	 * Opening
+	 */
+	public static final int TFA_LOBBY_RAID_EXIT = 63009;
+	public static final int TFA_LOBBY_RAID_EXIT_FLOOR2 = 63010;
+	public static final int TFA_PILLAR_GUTHIXIAN00_LOBBY01 = 63011;
+	public static final int TFA_PILLAR_GUTHIXIAN00_LOBBY02 = 63012;
+	public static final int TFA_ENTRANCE_GUTHIXIAN00_MANTEL01 = 63013;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_GROUP01 = 63014;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_GROUP01_DARK01 = 63015;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_GROUP02 = 63016;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_GROUP02_DARK01 = 63017;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_GROUP01_2X2 = 63018;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_GROUP01_2X2_DARK01 = 63019;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_GROUP02_2X2 = 63020;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_GROUP02_2X2_DARK01 = 63021;
+	public static final int TFA_STALAGMITE_GUTHIXIAN00_FALLOFF = 63022;
+	public static final int TFA_WALLKIT_LOBBY01_CHASM01 = 63023;
+	public static final int TFA_RAISE_CHAR_NULL = 63024;
+	public static final int TFA_RAISE_CHAR_NULL_BRIDGE = 63025;
+	public static final int TFA_RAISE_CHAR_NULL_BRIDGE_MORE01 = 63026;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM01 = 63027;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM01_DARKER01 = 63028;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM01_DARKER02 = 63029;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM01_DARKER03 = 63030;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM01_RAISEOBJ = 63031;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM02 = 63032;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM02_DARKER01 = 63033;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM02_DARKER02 = 63034;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM02_DARKER03 = 63035;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM02_RAISEOBJ = 63036;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM02_SUPPORT01 = 63037;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM02_SUPPORT02 = 63038;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM02_SUPPORT02_RAISEOBJ = 63039;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM01_BLEND = 63040;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM01_BLEND_MIRROR = 63041;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM03 = 63042;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM03_DARKER01 = 63043;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM03_DARKER02 = 63044;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM03_DARKER03 = 63045;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM03_RAISEOBJ = 63046;
+	public static final int TFA_FLOORKIT_LOBBY01_CHASM03_RAISEOBJ02 = 63047;
+	public static final int TFA_FLOORKIT_LOBBY02_CHASM01 = 63048;
+	public static final int TFA_FLOORKIT_LOBBY02_CHASM01_TILE01 = 63049;
+	public static final int TFA_FLOORKIT_LOBBY02_CHASM02 = 63050;
+	public static final int TFA_FLOORKIT_LOBBY02_CHASM03 = 63051;
+	public static final int TFA_WALLKIT_LOBBY01_DEFAULT01 = 63052;
+	public static final int TFA_WALLKIT_LOBBY01_DEFAULT02 = 63053;
+	public static final int TFA_WALLKIT_LOBBY01_DEFAULT02_BLEND = 63054;
+	public static final int TFA_WALLKIT_LOBBY01_DEFAULT02_BLEND_MIRROR = 63055;
+	public static final int TFA_WALLKIT_LOBBY02_LOW01 = 63056;
+	public static final int TFA_WALLKIT_LOBBY02_LOW01_TOP01 = 63057;
+	public static final int TFA_WALLKIT_LOBBY02_DEFAULT01 = 63058;
+	public static final int TFA_WALLKIT_LOBBY02_DEFAULT02 = 63059;
+	public static final int TFA_WALLKIT_LOBBY01_TOP01 = 63060;
+	public static final int TFA_WALLKIT_LOBBY01_TOP02 = 63061;
+	public static final int TFA_WALLKIT_LOBBY01_TOP03 = 63062;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_SIDE01 = 63063;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_SIDE02_M = 63064;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_SIDE02 = 63065;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_SIDE02_OFFSET01 = 63066;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_QUARTER01 = 63067;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_QUARTER01_M = 63068;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_QUARTER02_M = 63069;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_QUARTER03 = 63070;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_CORNER01 = 63071;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_TILE01 = 63072;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_TILE01_RAISEOBJ = 63073;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_TILE02 = 63074;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_TILE03 = 63075;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_DIAG01 = 63076;
+
+	/**
+	 * Planks
+	 */
+	public static final int TFA_BUNDLE_LUMBER02_PLANKS01 = 63077;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_PLANKS01 = 63078;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_PLANKS01_RAISED = 63079;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_PLANKS02 = 63080;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_PLANKS03 = 63081;
+	public static final int TFA_FLOORKIT_GUTHIXIAN00_PLANKS04 = 63082;
+
+	/**
+	 * Strategy board
+	 */
+	public static final int TFA_BOARD_GUTHIXIAN01_PLANNING01 = 63083;
+	public static final int TFA_LOBBY_DUGUPSOIL_1 = 63084;
+	public static final int TFA_LOBBY_DUGUPSOIL_2 = 63085;
+	public static final int TFA_LOBBY_DUGUPSOIL_3 = 63086;
+
+	/**
+	 * Archive transporter
+	 */
+	public static final int TFA_BOSS_TELEPORTER = 63087;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION1_DOOR_WEST = 63088;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION1_DOOR_WEST_SLIGHTLY = 63089;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION1_DOOR_WEST_SLIGHTLY_OPENED = 63090;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION1_DOOR_EAST = 63091;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION1_DOOR_EAST_SLIGHTLY = 63092;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION1_DOOR_EAST_SLIGHTLY_OPENED = 63093;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION_DOOR_CLOSED = 63094;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION_DOOR_CLOSED_ANIM = 63095;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION2_DOOR_WEST = 63096;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION2_DOOR_WEST_SLIGHTLY = 63097;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION2_DOOR_WEST_SLIGHTLY_OPENED = 63098;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION2_DOOR_EAST = 63099;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION2_DOOR_EAST_SLIGHTLY = 63100;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION2_DOOR_EAST_SLIGHTLY_OPENED = 63101;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION3_DOOR_WEST = 63102;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION3_DOOR_WEST_SLIGHTLY = 63103;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION3_DOOR_WEST_SLIGHTLY_OPENED = 63104;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION3_DOOR_EAST = 63105;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION3_DOOR_EAST_SLIGHTLY = 63106;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION3_DOOR_EAST_SLIGHTLY_OPENED = 63107;
+
+	/**
+	 * Door
+	 */
+	public static final int TFA_NEXUS_SECTION3_DOOR_CLOSED_DARK = 63108;
+
+	/**
+	 * Archive Door
+	 */
+	public static final int TFA_NEXUS_OCELLUS_DOOR_CLOSED_ANIM = 63109;
+
+	/**
+	 * Archive Door
+	 */
+	public static final int TFA_NEXUS_OCELLUS_DOOR_CLOSED = 63110;
+
+	/**
+	 * Archive Door
+	 */
+	public static final int TFA_NEXUS_OCELLUS_DOOR_OPEN = 63111;
+	public static final int TFA_SOULPRISON_OCTAGRAM01 = 63112;
+	public static final int TFA_FALLOFF_SOULPRISON01_EDGE01 = 63113;
+	public static final int TFA_FALLOFF_SOULPRISON01_EDGE02 = 63114;
+	public static final int TFA_FALLOFF_SOULPRISON01_EDGE03 = 63115;
+	public static final int TFA_FALLOFF_SOULPRISON01_DIAG01 = 63116;
+	public static final int TFA_FALLOFF_SOULPRISON01_DIAG02 = 63117;
+	public static final int TFA_FALLOFF_SOULPRISON01_FILLER01 = 63118;
+	public static final int TFA_FALLOFF_SOULPRISON01_EDGE01_TWISTED = 63119;
+	public static final int TFA_FALLOFF_SOULPRISON01_EDGE02_TWISTED = 63120;
+	public static final int TFA_FALLOFF_SOULPRISON01_DIAG03_TWISTED = 63121;
+	public static final int TFA_SOULPRISON_SLIME01 = 63122;
+	public static final int TFA_SOULPRISON_SLIME02 = 63123;
+	public static final int TFA_SOULPRISON_SLIME03 = 63124;
+	public static final int TFA_SOULPRISON_SLIME04 = 63125;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_SOULPRISON_CORPSE01 = 63126;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_SOULPRISON_CORPSE02 = 63127;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_SOULPRISON_CORPSE03 = 63128;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_SOULPRISON_CORPSE04 = 63129;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_SOULPRISON_CORPSE05 = 63130;
+	public static final int TFA_FALLOFF_SOULPRISON01_FILLER01_SLIME = 63131;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_SOULPRISON01_PILLAR01 = 63132;
+	public static final int TFA_WALLKIT_SOULPRISON01_PORTAL01 = 63133;
+
+	/**
+	 * Archive transporter
+	 */
+	public static final int TFA_TELEPORTER_JELLY = 63134;
+	public static final int TFA_WALLKIT_ARCHIVE01_DEFAULT01 = 63135;
+	public static final int TFA_WALLKIT_ARCHIVE01_DEFAULT01_DARKER01 = 63136;
+	public static final int TFA_WALLKIT_ARCHIVE01_DEFAULT01_DARKER02 = 63137;
+	public static final int TFA_WALLKIT_ARCHIVE01_DEFAULT01_DARKER03 = 63138;
+	public static final int TFA_WALLKIT_ARCHIVE01_DEFAULT01_DARKER04 = 63139;
+	public static final int TFA_WALLKIT_ARCHIVE01_DEFAULT01_DARKER05 = 63140;
+	public static final int TFA_WALLKIT_ARCHIVE01_DEFAULT01_BLACKOUT01 = 63141;
+	public static final int TFA_WALLKIT_ARCHIVE01_ROOTS01 = 63142;
+	public static final int TFA_WALLKIT_ARCHIVE01_ROOTS01_DARKER02 = 63143;
+	public static final int TFA_WALLKIT_ARCHIVE01_ROOTS01_DARKER03 = 63144;
+	public static final int TFA_WALLKIT_ARCHIVE01_ROOTS02 = 63145;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION01 = 63146;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION01_DARKER01 = 63147;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION01_DARKER02 = 63148;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION01_DARKER03 = 63149;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION01_DARKER04 = 63150;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION02 = 63151;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION02_DARKER01 = 63152;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION02_DARKER02 = 63153;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION02_DARKER03 = 63154;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRANSITION02_DARKER04 = 63155;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01 = 63156;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_DARK01 = 63157;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_DARK02 = 63158;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_DARK03 = 63159;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_DARK04 = 63160;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_DARK05 = 63161;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER01 = 63162;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER01_DARKER01 = 63163;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER01_DARKER02 = 63164;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER01_DARKER03 = 63165;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER01_DARKER04 = 63166;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER02 = 63167;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER02_DARKER02 = 63168;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER02_DARKER03 = 63169;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_CORNER02_DARKER04 = 63170;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION01 = 63171;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION01_DARKER01 = 63172;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION01_DARKER02 = 63173;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION01_DARKER03 = 63174;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION01_DARKER04 = 63175;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION02 = 63176;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION02_DARKER03 = 63177;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION02_DARKER04 = 63178;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION03 = 63179;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION03_DARKER01 = 63180;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION03_DARKER02 = 63181;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION03_DARKER03 = 63182;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION03_DARKER04 = 63183;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP_ROOTS01_TRANSITION03_M = 63184;
+	public static final int TFA_WALLKIT_ARCHIVE01_WALLTOP01 = 63185;
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR01 = 63186;
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR01_3 = 63187;
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR01_DARKER01 = 63188;
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR01_M = 63189;
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR01_DARKER01_M = 63190;
+	public static final int TFA_WALLKIT_ARCHIVE01_BRANCH01 = 63191;
+	public static final int TFA_WALLKIT_ARCHIVE01_BRANCH01_DARKER01 = 63192;
+	public static final int TFA_WALLKIT_ARCHIVE01_BRANCH01_M = 63193;
+	public static final int TFA_WALLKIT_ARCHIVE01_BRANCH01_DARKER01_M = 63194;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRUNKS01 = 63195;
+	public static final int TFA_WALLKIT_ARCHIVE01_TRUNKS01_DARKER01 = 63196;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR02 = 63197;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR02_1X1 = 63198;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR03 = 63199;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR02_FALLOFF01 = 63200;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR02_FALLOFF02 = 63201;
+
+	/**
+	 * Pillar
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_PILLAR02_FALLOFF03 = 63202;
+	public static final int TFA_WALLKIT_ARCHIVE01_DAMAGED01 = 63203;
+	public static final int TFA_WALLKIT_ARCHIVE01_DAMAGED02 = 63204;
+	public static final int TFA_WALLKIT_ARCHIVE01_DAMAGED03 = 63205;
+	public static final int TFA_WALLKIT_ARCHIVE01_DAMAGED04 = 63206;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01 = 63207;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_RAISE01 = 63208;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_DARK01 = 63209;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_DARK02 = 63210;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_DARK03 = 63211;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_DARK04 = 63212;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE01_DARK05 = 63213;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE02 = 63214;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE02_DARK01 = 63215;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE02_DARK02 = 63216;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE02_DARK03 = 63217;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE02_DARK04 = 63218;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE02_DARK05 = 63219;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_TILE03 = 63220;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER01 = 63221;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER01_DARK01 = 63222;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER01_DARK02 = 63223;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER02 = 63224;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER02_DARK01 = 63225;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_CORNER02_DARK02 = 63226;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG01 = 63227;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG01_OFFSET = 63228;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG01_DARK01 = 63229;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG01_DARK02 = 63230;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG02 = 63231;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG02_DARK01 = 63232;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_DIAG02_DARK02 = 63233;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_FILLER01 = 63234;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_FILLER01_DARK01 = 63235;
+	public static final int TFA_FLOORKIT_GUTHIXIAN01_FILLER01_DARK02 = 63236;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_EDGE01 = 63237;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_EDGE01_DARKER01 = 63238;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_EDGE01_DARKER02 = 63239;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_EDGE01_DARKER03 = 63240;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_EDGE02 = 63241;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_EDGE03 = 63242;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_DIAG01 = 63243;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_DIAG01_DARKER01 = 63244;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_DIAG01_DARKER02 = 63245;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_DIAG01_DARKER03 = 63246;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_DIAG02 = 63247;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_FILLER01 = 63248;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_FILLER01_DARKER01 = 63249;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_FILLER01_DARKER02 = 63250;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_FILLER01_DARKER03 = 63251;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_CORNER01 = 63252;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_END01 = 63253;
+	public static final int TFA_FALLOFF_GUTHIXIAN01_END01_M = 63254;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_EDGE01 = 63255;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_CORNER01 = 63256;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_CORNER02 = 63257;
+	public static final int TFA_SKEWSTEPS_GUTHIXIAN01_CORNER03 = 63258;
+	public static final int TFA_DUGUPSOIL_1 = 63259;
+	public static final int TFA_DUGUPSOIL_2 = 63260;
+	public static final int TFA_DUGUPSOIL_3 = 63261;
+
+	/**
+	 * Makeshift entrance
+	 */
+	public static final int TFA_WALLKIT_ARCHIVE01_ENTRY01 = 63262;
+	public static final int TFA_WALLKIT_ARCHIVE01_ENTRY02 = 63263;
+	public static final int TFA_WALLKIT_ARCHIVE01_ENTRY03 = 63264;
+	public static final int TFA_WALLKIT_ARCHIVE01_ENTRY01_6X6 = 63265;
+
+	/**
+	 * Ascension rocks
+	 */
+	public static final int TFA_GATHERING_ROCK_ACTIVE01 = 63266;
+
+	/**
+	 * Ascension rocks
+	 */
+	public static final int TFA_GATHERING_ROCK_ACTIVE02 = 63267;
+
+	/**
+	 * Ascension rocks
+	 */
+	public static final int TFA_GATHERING_ROCK_ACTIVE03 = 63268;
+
+	/**
+	 * Ascension rocks
+	 */
+	public static final int TFA_GATHERING_ROCK_INACTIVE01 = 63269;
+
+	/**
+	 * Ascension rocks
+	 */
+	public static final int TFA_GATHERING_ROCK_INACTIVE02 = 63270;
+
+	/**
+	 * Ascension rocks
+	 */
+	public static final int TFA_GATHERING_ROCK_INACTIVE03 = 63271;
+	public static final int TFA_CRYSTAL_ASCENSION01_ROOTS01 = 63272;
+	public static final int TFA_CRYSTAL_ASCENSION01_ROOTS02 = 63273;
+
+	/**
+	 * Bank Chest
+	 */
+	public static final int TFA_LOBBY_BANKCHEST_CLOSED = 63274;
+
+	/**
+	 * Bank Chest
+	 */
+	public static final int TFA_LOBBY_BANKCHEST_OPEN = 63275;
+
+	/**
+	 * Stool
+	 */
+	public static final int TFA_LOBBY_CHAIR_STUMP01_DEFAULT01 = 63276;
+
+	/**
+	 * Table
+	 */
+	public static final int TFA_LOBBY_TABLE_GUTHIXIAN01_PLANNING01 = 63277;
+
+	/**
+	 * Crate
+	 */
+	public static final int ARMACUS_CRATE = 63278;
+	public static final int TFA_RECORDS_ROOM_DOOR = 63279;
+
+	/**
+	 * Strange door
+	 */
+	public static final int TFA_RECORDS_ROOM_DOOR_LOCKED = 63280;
+
+	/**
+	 * Records room
+	 */
+	public static final int TFA_RECORDS_ROOM_DOOR_UNLOCKED = 63281;
+
+	/**
+	 * Exit
+	 */
+	public static final int TFA_RECORDS_ROOM_EXIT = 63282;
+	public static final int TFA_RECORDS_ROOM_POND = 63283;
+	public static final int TFA_POOLROCK_01 = 63284;
+	public static final int TFA_POOLROCK_02 = 63285;
+
+	/**
+	 * Empty Record
+	 */
+	public static final int TFA_CAPE_CLAIM_INVISIBLE = 63286;
+	public static final int TFA_CAPE_CLAIM_T1 = 63287;
+
+	/**
+	 * Living Record (tier 1)
+	 */
+	public static final int TFA_CAPE_CLAIM_T1_VISIBLE = 63288;
+	public static final int TFA_CAPE_CLAIM_T2 = 63289;
+
+	/**
+	 * Living Record (tier 2)
+	 */
+	public static final int TFA_CAPE_CLAIM_T2_VISIBLE = 63290;
+	public static final int TFA_CAPE_CLAIM_T3 = 63291;
+
+	/**
+	 * Living Record (tier 3)
+	 */
+	public static final int TFA_CAPE_CLAIM_T3_VISIBLE = 63292;
+	public static final int TFA_CAPE_CLAIM_T4 = 63293;
+
+	/**
+	 * Living Record (tier 4)
+	 */
+	public static final int TFA_CAPE_CLAIM_T4_VISIBLE = 63294;
+	public static final int TFA_CAPE_CLAIM_T5 = 63295;
+
+	/**
+	 * Living Record (tier 5)
+	 */
+	public static final int TFA_CAPE_CLAIM_T5_VISIBLE = 63296;
+
+	/**
+	 * Rift
+	 */
+	public static final int TFA_VAULT_EXIT = 63297;
+
+	/**
+	 * The Fractured Archive
+	 */
+	public static final int TFA_LOOTTRACKER_SOURCE = 63298;
+	public static final int TFA_REWARDS_CHEST_LOBBY = 63299;
+
+	/**
+	 * Loot Wheelbarrow
+	 */
+	public static final int TFA_REWARDS_CHEST_LOBBY_CLOSED = 63300;
+
+	/**
+	 * Loot Wheelbarrow
+	 */
+	public static final int TFA_REWARDS_CHEST_LOBBY_OPEN = 63301;
+
+	/**
+	 * Supplies Wheelbarrow
+	 */
+	public static final int TFA_LOOT_WHEELBARROW = 63302;
+
+	/**
+	 * Thorns
+	 */
+	public static final int FAI_THORNSKIT_02_NOBLOCKRANGE = 63303;
+	public static final int INVISIBLE_RAISE_PLAYER_8 = 63304;
+	public static final int INVISIBLE_RAISE_PLAYER_16 = 63305;
+	public static final int INVISIBLE_RAISE_PLAYER_20 = 63306;
 /* This file is automatically generated. Do not edit. */
 }

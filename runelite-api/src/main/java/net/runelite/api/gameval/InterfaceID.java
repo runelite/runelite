@@ -977,6 +977,13 @@ public final class InterfaceID
 	public static final int PVPTUT_UI = 970;
 	public static final int PVP_TUT_2026_SETUP_INTERFACE = 971;
 	public static final int PVPTUT_SCOREBOARD_UI = 972;
+	public static final int TFA_CHESTS = 973;
+	public static final int TFA_HUD = 974;
+	public static final int TFA_LOBBY = 975;
+	public static final int TFA_PARTYDETAILS = 976;
+	public static final int TFA_PARTYLIST = 977;
+	public static final int TFA_SPECTATE_HUD_INV = 978;
+	public static final int TFA_STATS = 979;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -3812,17 +3819,17 @@ public final class InterfaceID
 		public static final int TYPEMULTIPLIER = 0x0054_0029;
 		public static final int SLAYERMULTIPLIER = 0x0054_002a;
 		public static final int STAT_GROUP_TEXT20 = 0x0054_002b;
-		public static final int NEXT_PAGE = 0x0054_002c;
-		public static final int SET_BONUS = 0x0054_002d;
-		public static final int SET_BONUS_TEXT0 = 0x0054_002e;
-		public static final int SET_EFFECT = 0x0054_002f;
-		public static final int SCROLLBAR = 0x0054_0030;
-		public static final int PREVIOUS_PAGE = 0x0054_0031;
-		public static final int CONTENTS_GRAPHIC23 = 0x0054_0032;
-		public static final int CONTENTS_TEXT24 = 0x0054_0033;
-		public static final int TOOLTIP = 0x0054_0034;
-		public static final int ATTACKSPEEDBASE = 0x0054_0035;
-		public static final int ATTACKSPEEDACTUAL = 0x0054_0036;
+		public static final int SET_BONUS = 0x0054_002c;
+		public static final int SET_BONUS_TEXT0 = 0x0054_002d;
+		public static final int SET_EFFECT = 0x0054_002e;
+		public static final int SCROLLBAR = 0x0054_002f;
+		public static final int PREVIOUS_PAGE = 0x0054_0030;
+		public static final int CONTENTS_GRAPHIC22 = 0x0054_0031;
+		public static final int CONTENTS_TEXT23 = 0x0054_0032;
+		public static final int TOOLTIP = 0x0054_0033;
+		public static final int ATTACKSPEEDBASE = 0x0054_0034;
+		public static final int ATTACKSPEEDACTUAL = 0x0054_0035;
+		public static final int NEXT_PAGE = 0x0054_0036;
 		public static final int EXTRA_QUIVER_AMMO_GRAPHIC = 0x0054_0037;
 		public static final int EXTRA_QUIVER_AMMO = 0x0054_0038;
 	}
@@ -10842,16 +10849,23 @@ public final class InterfaceID
 		public static final int NAME_AREA = 0x012f_0008;
 		public static final int CREATURE_NAME = 0x012f_0009;
 		public static final int HP_BAR = 0x012f_000a;
-		public static final int INNER_BORDER = 0x012f_000b;
-		public static final int INNER = 0x012f_000c;
-		public static final int HEALTH_BAR_BACK = 0x012f_000d;
-		public static final int HEALTH_BAR_SLIDING = 0x012f_000e;
-		public static final int HEALTH_BAR_REMAINING = 0x012f_000f;
-		public static final int HP_BAR_1 = 0x012f_0010;
-		public static final int HP_BAR_2 = 0x012f_0011;
-		public static final int HEALTH_BAR_LOWER_THRESHOLD = 0x012f_0012;
-		public static final int HEALTH_BAR_UPPER_THRESHOLD = 0x012f_0013;
-		public static final int HP_BAR_TEXT = 0x012f_0014;
+		public static final int HP_BAR_EXTRA = 0x012f_000b;
+		public static final int INNER_BORDER = 0x012f_000c;
+		public static final int INNER = 0x012f_000d;
+		public static final int HEALTH_BAR_BACK = 0x012f_000e;
+		public static final int HEALTH_BAR_SLIDING = 0x012f_000f;
+		public static final int HEALTH_BAR_REMAINING = 0x012f_0010;
+		public static final int HP_BAR_1 = 0x012f_0011;
+		public static final int HP_BAR_2 = 0x012f_0012;
+		public static final int HEALTH_BAR_LOWER_THRESHOLD = 0x012f_0013;
+		public static final int HEALTH_BAR_UPPER_THRESHOLD = 0x012f_0014;
+		public static final int HP_BAR_TEXT = 0x012f_0015;
+		public static final int INNER_BORDER_EXTRA = 0x012f_0016;
+		public static final int INNER_EXTRA = 0x012f_0017;
+		public static final int HEALTH_BAR_BACK_EXTRA = 0x012f_0018;
+		public static final int HEALTH_BAR_SLIDING_EXTRA = 0x012f_0019;
+		public static final int HEALTH_BAR_REMAINING_EXTRA = 0x012f_001a;
+		public static final int HP_BAR_TEXT_EXTRA = 0x012f_001b;
 	}
 
 	public static final class Ds2BoatDefend
@@ -21052,22 +21066,45 @@ public final class InterfaceID
 		public static final int RETALIATE_ICON = 0x0251_0023;
 		public static final int RETALIATE_TEXT = 0x0251_0024;
 		public static final int SET_EFFECT = 0x0251_0025;
-		public static final int SP_ATTACKBAR = 0x0251_0026;
-		public static final int SPECIAL_ATTACK = 0x0251_0027;
-		public static final int SP_EMPTY = 0x0251_0028;
-		public static final int CURRENTENERGY = 0x0251_0029;
-		public static final int CURRENTENERGY_COLOUR = 0x0251_002a;
-		public static final int SP_INDICATOR = 0x0251_002b;
-		public static final int SP_BORDER = 0x0251_002c;
-		public static final int TOOLTIP = 0x0251_002d;
-		public static final int SWITCH_BUTTON = 0x0251_002e;
-		public static final int INFOBUTTON = 0x0251_002f;
-		public static final int INFO_LAYER = 0x0251_0030;
-		public static final int BUTTONS_CLICK_OVERLAY = 0x0251_0031;
-		public static final int SET_EFFECT_TEXT0 = 0x0251_0032;
-		public static final int SET_EFFECT_BACK = 0x0251_0033;
-		public static final int SET_EFFECT_ICON = 0x0251_0034;
-		public static final int SET_EFFECT_TEXT = 0x0251_0035;
+		public static final int SP_ATTACKBARS_CONTAINER = 0x0251_0026;
+		public static final int SP_ATTACKBAR_MAINHAND = 0x0251_0027;
+		public static final int SP_ATTACKBAR_OFFHAND = 0x0251_0028;
+		public static final int SPECIAL_ATTACK = 0x0251_0029;
+		public static final int SP_EMPTY = 0x0251_002a;
+		public static final int CURRENTENERGY = 0x0251_002b;
+		public static final int CURRENTENERGY_COLOUR = 0x0251_002c;
+		public static final int SP_INDICATOR = 0x0251_002d;
+		public static final int SP_BORDER = 0x0251_002e;
+		public static final int TOOLTIP = 0x0251_002f;
+		public static final int SWITCH_BUTTON = 0x0251_0030;
+		public static final int INFOBUTTON = 0x0251_0031;
+		public static final int INFO_LAYER = 0x0251_0032;
+		public static final int BUTTONS_CLICK_OVERLAY = 0x0251_0033;
+		public static final int SET_EFFECT_TEXT0 = 0x0251_0034;
+		public static final int SET_EFFECT_BACK = 0x0251_0035;
+		public static final int SET_EFFECT_ICON = 0x0251_0036;
+		public static final int SET_EFFECT_TEXT = 0x0251_0037;
+		public static final int SP_ATTACKBAR = 0x0251_0038;
+		public static final int SPECIAL_ATTACK_MAINHAND = 0x0251_0039;
+		public static final int SPECIAL_ATTACK_BG_MAINHAND = 0x0251_003a;
+		public static final int SP_EMPTY_MAINHAND = 0x0251_003b;
+		public static final int CURRENTENERGY_MAINHAND = 0x0251_003c;
+		public static final int CURRENTENERGY_COLOUR_MAINHAND = 0x0251_003d;
+		public static final int SP_INDICATOR_MAINHAND = 0x0251_003e;
+		public static final int SP_BORDER_MAINHAND = 0x0251_003f;
+		public static final int SP_ORB_BORDER_MAINHAND = 0x0251_0040;
+		public static final int SP_ORB_MAINHAND = 0x0251_0041;
+		public static final int SP_ICON_MAINHAND = 0x0251_0042;
+		public static final int SPECIAL_ATTACK_OFFHAND = 0x0251_0043;
+		public static final int SPECIAL_ATTACK_BG_OFFHAND = 0x0251_0044;
+		public static final int SP_EMPTY_OFFHAND = 0x0251_0045;
+		public static final int CURRENTENERGY_OFFHAND = 0x0251_0046;
+		public static final int CURRENTENERGY_COLOUR_OFFHAND = 0x0251_0047;
+		public static final int SP_INDICATOR_OFFHAND = 0x0251_0048;
+		public static final int SP_BORDER_OFFHAND = 0x0251_0049;
+		public static final int SP_ORB_BORDER_OFFHAND = 0x0251_004a;
+		public static final int SP_ORB_OFFHAND = 0x0251_004b;
+		public static final int SP_ICON_OFFHAND = 0x0251_004c;
 	}
 
 	public static final class FloaterBlankmodal
@@ -31427,6 +31464,279 @@ public final class InterfaceID
 		public static final int CONTENTS_RECT0 = 0x03cc_0004;
 		public static final int TEXT = 0x03cc_0005;
 		public static final int OUTPUT = 0x03cc_0006;
+	}
+
+	public static final class TfaChests
+	{
+		public static final int UNIVERSE = 0x03cd_0000;
+		public static final int FRAME = 0x03cd_0001;
+		public static final int CONTENT = 0x03cd_0002;
+		public static final int CONTENT_MODEL0 = 0x03cd_0003;
+		public static final int CONTENT_MODEL1 = 0x03cd_0004;
+		public static final int BANK = 0x03cd_0005;
+		public static final int BANK_ICON = 0x03cd_0006;
+		public static final int INVENTORY = 0x03cd_0007;
+		public static final int INVENTORY_ICON = 0x03cd_0008;
+		public static final int DISCARD = 0x03cd_0009;
+		public static final int DISCARD_ICON = 0x03cd_000a;
+		public static final int ITEMS = 0x03cd_000b;
+	}
+
+	public static final class TfaHud
+	{
+		public static final int UNIVERSE = 0x03ce_0000;
+		public static final int TRIGGER_GENERIC = 0x03ce_0001;
+		public static final int ATMOSPHERIC = 0x03ce_0002;
+		public static final int DODGER = 0x03ce_0003;
+		public static final int CONTENT = 0x03ce_0004;
+		public static final int CONTENT_NAMES = 0x03ce_0005;
+		public static final int CONTENT_DETAILS = 0x03ce_0006;
+		public static final int CONTENT_SPECTATORS = 0x03ce_0007;
+		public static final int _0_CONTAINER = 0x03ce_0008;
+		public static final int _0_RING = 0x03ce_0009;
+		public static final int _0_CONTAINER_GRAPHIC1 = 0x03ce_000a;
+		public static final int _0_FILLER = 0x03ce_000b;
+		public static final int _0_CONTAINER_GRAPHIC3 = 0x03ce_000c;
+		public static final int _1_CONTAINER = 0x03ce_000d;
+		public static final int _1_RING = 0x03ce_000e;
+		public static final int _1_CONTAINER_GRAPHIC1 = 0x03ce_000f;
+		public static final int _1_FILLER = 0x03ce_0010;
+		public static final int _2_CONTAINER = 0x03ce_0011;
+		public static final int _2_RING = 0x03ce_0012;
+		public static final int _2_CONTAINER_GRAPHIC1 = 0x03ce_0013;
+		public static final int _2_FILLER = 0x03ce_0014;
+		public static final int _3_CONTAINER = 0x03ce_0015;
+		public static final int _3_RING = 0x03ce_0016;
+		public static final int _3_CONTAINER_GRAPHIC1 = 0x03ce_0017;
+		public static final int _3_FILLER = 0x03ce_0018;
+		public static final int _4_CONTAINER = 0x03ce_0019;
+		public static final int _4_RING = 0x03ce_001a;
+		public static final int _4_CONTAINER_GRAPHIC1 = 0x03ce_001b;
+		public static final int _4_FILLER = 0x03ce_001c;
+		public static final int _5_CONTAINER = 0x03ce_001d;
+		public static final int _5_RING = 0x03ce_001e;
+		public static final int _5_CONTAINER_GRAPHIC1 = 0x03ce_001f;
+		public static final int _5_FILLER = 0x03ce_0020;
+		public static final int _6_CONTAINER = 0x03ce_0021;
+		public static final int _6_RING = 0x03ce_0022;
+		public static final int _6_CONTAINER_GRAPHIC1 = 0x03ce_0023;
+		public static final int _6_FILLER = 0x03ce_0024;
+		public static final int _7_CONTAINER = 0x03ce_0025;
+		public static final int _7_RING = 0x03ce_0026;
+		public static final int _7_CONTAINER_GRAPHIC1 = 0x03ce_0027;
+		public static final int _7_FILLER = 0x03ce_0028;
+		public static final int TOOLTIP = 0x03ce_0029;
+		public static final int STATUS = 0x03ce_002a;
+		public static final int RAID_STATE = 0x03ce_002b;
+		public static final int RAID_TIMER = 0x03ce_002c;
+	}
+
+	public static final class TfaLobby
+	{
+		public static final int UNIVERSE = 0x03cf_0000;
+		public static final int DODGER = 0x03cf_0001;
+		public static final int CONTENT = 0x03cf_0002;
+		public static final int CONTENT_BACKGROUND = 0x03cf_0003;
+		public static final int NAMES_HEADER = 0x03cf_0004;
+		public static final int NAMES = 0x03cf_0005;
+	}
+
+	public static final class TfaPartydetails
+	{
+		public static final int UNIVERSE = 0x03d0_0000;
+		public static final int PAUSEBUTTONS = 0x03d0_0001;
+		public static final int CONTENTS = 0x03d0_0002;
+		public static final int FRAME = 0x03d0_0003;
+		public static final int BACK = 0x03d0_0004;
+		public static final int CONTENTS_LINE2 = 0x03d0_0005;
+		public static final int CONTENTS_LINE3 = 0x03d0_0006;
+		public static final int EXTERNAL_SPECTATE_TOGGLE = 0x03d0_0007;
+		public static final int PREFERRED_MODE = 0x03d0_0008;
+		public static final int PREFERRED_MODE_GRAPHIC0 = 0x03d0_0009;
+		public static final int PREFERRED_MODE_GRAPHIC1 = 0x03d0_000a;
+		public static final int PREFERRED_MODE_GRAPHIC2 = 0x03d0_000b;
+		public static final int RAID_MODE = 0x03d0_000c;
+		public static final int TABS = 0x03d0_000d;
+		public static final int MEMBERS_TAB = 0x03d0_000e;
+		public static final int APPLICANTS_TAB = 0x03d0_000f;
+		public static final int LINE_FOOTER_TOP = 0x03d0_0010;
+		public static final int LINE_FOOTER_BOTTOM = 0x03d0_0011;
+		public static final int MAIN = 0x03d0_0012;
+		public static final int MEMBERS = 0x03d0_0013;
+		public static final int MEMBERS_RECT0 = 0x03d0_0014;
+		public static final int MEMBERS_HEADER = 0x03d0_0015;
+		public static final int MEMBERS_HEADER_RECT0 = 0x03d0_0016;
+		public static final int MEMBERS_NAME = 0x03d0_0017;
+		public static final int MEMBERS_COMLEVEL = 0x03d0_0018;
+		public static final int MEMBERS_ATTACK = 0x03d0_0019;
+		public static final int MEMBERS_STRENGTH = 0x03d0_001a;
+		public static final int MEMBERS_RANGED = 0x03d0_001b;
+		public static final int MEMBERS_MAGIC = 0x03d0_001c;
+		public static final int MEMBERS_DEFENCE = 0x03d0_001d;
+		public static final int MEMBERS_HITPOINTS = 0x03d0_001e;
+		public static final int MEMBERS_PRAYER = 0x03d0_001f;
+		public static final int MEMBERS_COMPLETIONS = 0x03d0_0020;
+		public static final int MEMBERS_COMPLETIONS_PRACTICE = 0x03d0_0021;
+		public static final int MEMBERS_LIST_CONTAINER = 0x03d0_0022;
+		public static final int MEMBERS_LIST = 0x03d0_0023;
+		public static final int APPLICANTS = 0x03d0_0024;
+		public static final int APPLICANTS_RECT0 = 0x03d0_0025;
+		public static final int APPLICANTS_HEADER = 0x03d0_0026;
+		public static final int APPLICANTS_HEADER_RECT0 = 0x03d0_0027;
+		public static final int APPLICANTS_NAME = 0x03d0_0028;
+		public static final int APPLICANTS_COMLEVEL = 0x03d0_0029;
+		public static final int APPLICANTS_ATTACK = 0x03d0_002a;
+		public static final int APPLICANTS_STRENGTH = 0x03d0_002b;
+		public static final int APPLICANTS_RANGED = 0x03d0_002c;
+		public static final int APPLICANTS_MAGIC = 0x03d0_002d;
+		public static final int APPLICANTS_DEFENCE = 0x03d0_002e;
+		public static final int APPLICANTS_HITPOINTS = 0x03d0_002f;
+		public static final int APPLICANTS_PRAYER = 0x03d0_0030;
+		public static final int APPLICANTS_COMPLETIONS_PRACTICE = 0x03d0_0031;
+		public static final int APPLICANTS_COMPLETIONS = 0x03d0_0032;
+		public static final int APPLICANTS_LIST_CONTAINER = 0x03d0_0033;
+		public static final int APPLICANTS_LIST = 0x03d0_0034;
+		public static final int BOTTOM = 0x03d0_0035;
+		public static final int POPUP = 0x03d0_0036;
+		public static final int REFRESH = 0x03d0_0037;
+		public static final int ACTION = 0x03d0_0038;
+		public static final int PREFERRED_SIZE = 0x03d0_0039;
+		public static final int UNBLOCK = 0x03d0_003a;
+		public static final int TOOLTIP = 0x03d0_003b;
+		public static final int PREFERRED_COMPLETIONS = 0x03d0_003c;
+		public static final int PREFERRED_COMPLETIONS_GRAPHIC0 = 0x03d0_003d;
+		public static final int PREFERRED_COMPLETIONS_GRAPHIC1 = 0x03d0_003e;
+		public static final int PREFERRED_COMPLETIONS_GRAPHIC2 = 0x03d0_003f;
+		public static final int PREFERRED_COMPLETIONS_TEXT = 0x03d0_0040;
+		public static final int PREFERRED_SIZE_GRAPHIC0 = 0x03d0_0041;
+		public static final int PREFERRED_SIZE_GRAPHIC1 = 0x03d0_0042;
+		public static final int PREFERRED_SIZE_GRAPHIC2 = 0x03d0_0043;
+		public static final int PREFERRED_SIZE_TEXT = 0x03d0_0044;
+	}
+
+	public static final class TfaPartylist
+	{
+		public static final int UNIVERSE = 0x03d1_0000;
+		public static final int CONTENTS = 0x03d1_0001;
+		public static final int FRAME = 0x03d1_0002;
+		public static final int MAIN = 0x03d1_0003;
+		public static final int LISTLAYER = 0x03d1_0004;
+		public static final int LISTLAYER_RECT0 = 0x03d1_0005;
+		public static final int SORTAREA = 0x03d1_0006;
+		public static final int SORTAREA_RECT0 = 0x03d1_0007;
+		public static final int SORT_MEMBERS = 0x03d1_0008;
+		public static final int SORT_NAME = 0x03d1_0009;
+		public static final int SORT_COMPLETIONS = 0x03d1_000a;
+		public static final int SORT_RAIDDIFFICULTY = 0x03d1_000b;
+		public static final int SORT_AGE = 0x03d1_000c;
+		public static final int LISTAREA = 0x03d1_000d;
+		public static final int LIST = 0x03d1_000e;
+		public static final int _00 = 0x03d1_000f;
+		public static final int _01 = 0x03d1_0010;
+		public static final int _02 = 0x03d1_0011;
+		public static final int _03 = 0x03d1_0012;
+		public static final int _04 = 0x03d1_0013;
+		public static final int _05 = 0x03d1_0014;
+		public static final int _06 = 0x03d1_0015;
+		public static final int _07 = 0x03d1_0016;
+		public static final int _08 = 0x03d1_0017;
+		public static final int _09 = 0x03d1_0018;
+		public static final int _10 = 0x03d1_0019;
+		public static final int _11 = 0x03d1_001a;
+		public static final int _12 = 0x03d1_001b;
+		public static final int _13 = 0x03d1_001c;
+		public static final int _14 = 0x03d1_001d;
+		public static final int _15 = 0x03d1_001e;
+		public static final int _16 = 0x03d1_001f;
+		public static final int _17 = 0x03d1_0020;
+		public static final int _18 = 0x03d1_0021;
+		public static final int _19 = 0x03d1_0022;
+		public static final int _20 = 0x03d1_0023;
+		public static final int _21 = 0x03d1_0024;
+		public static final int _22 = 0x03d1_0025;
+		public static final int _23 = 0x03d1_0026;
+		public static final int _24 = 0x03d1_0027;
+		public static final int _25 = 0x03d1_0028;
+		public static final int _26 = 0x03d1_0029;
+		public static final int _27 = 0x03d1_002a;
+		public static final int _28 = 0x03d1_002b;
+		public static final int _29 = 0x03d1_002c;
+		public static final int _30 = 0x03d1_002d;
+		public static final int _31 = 0x03d1_002e;
+		public static final int _32 = 0x03d1_002f;
+		public static final int _33 = 0x03d1_0030;
+		public static final int _34 = 0x03d1_0031;
+		public static final int _35 = 0x03d1_0032;
+		public static final int _36 = 0x03d1_0033;
+		public static final int _37 = 0x03d1_0034;
+		public static final int _38 = 0x03d1_0035;
+		public static final int _39 = 0x03d1_0036;
+		public static final int _40 = 0x03d1_0037;
+		public static final int _41 = 0x03d1_0038;
+		public static final int _42 = 0x03d1_0039;
+		public static final int _43 = 0x03d1_003a;
+		public static final int _44 = 0x03d1_003b;
+		public static final int SCROLLBAR = 0x03d1_003c;
+		public static final int REFRESH = 0x03d1_003d;
+		public static final int MYPARTY = 0x03d1_003e;
+		public static final int FILTER = 0x03d1_003f;
+		public static final int TOOLTIP = 0x03d1_0040;
+	}
+
+	public static final class TfaSpectateHudInv
+	{
+		public static final int ITEMS = 0x03d2_0000;
+	}
+
+	public static final class TfaStats
+	{
+		public static final int INFINITY = 0x03d3_0000;
+		public static final int UNIVERSE = 0x03d3_0001;
+		public static final int TOOLTIP = 0x03d3_0002;
+		public static final int FRAME = 0x03d3_0003;
+		public static final int CONTENT_CONTAINER = 0x03d3_0004;
+		public static final int BOOK_BACKGROUND_LAYER = 0x03d3_0005;
+		public static final int BOOK_BACKING = 0x03d3_0006;
+		public static final int BOOK_TOPRIGHTSIDE = 0x03d3_0007;
+		public static final int BOOK_TOPLEFTSIDE = 0x03d3_0008;
+		public static final int BOOK_BOTTOMRIGHTSIDE = 0x03d3_0009;
+		public static final int BOOK_BOTTOMLEFTSIDE = 0x03d3_000a;
+		public static final int BOOK_RIGHTSIDE = 0x03d3_000b;
+		public static final int BOOK_LEFTSIDE = 0x03d3_000c;
+		public static final int BOOK_MIDDLE = 0x03d3_000d;
+		public static final int BOOK_TOPLEFT = 0x03d3_000e;
+		public static final int BOOK_TOPRIGHT = 0x03d3_000f;
+		public static final int BOOK_BOTTOMLEFT = 0x03d3_0010;
+		public static final int BOOK_BOTTOMRIGHT = 0x03d3_0011;
+		public static final int BOOK_TOPMIDDLE = 0x03d3_0012;
+		public static final int BOOK_BOTTOMMIDDLE = 0x03d3_0013;
+		public static final int TITLE_BACKGROUND = 0x03d3_0014;
+		public static final int TITLE_TEXT1 = 0x03d3_0015;
+		public static final int ALL_STATS_CONTAINER_BORDER = 0x03d3_0016;
+		public static final int STATS_CONTENT_CONTAINER = 0x03d3_0017;
+		public static final int ALL_STATS = 0x03d3_0018;
+		public static final int ALL_STATS_GRAPHIC0 = 0x03d3_0019;
+		public static final int PARTY_STATS = 0x03d3_001a;
+		public static final int HEADER_CONTAINER = 0x03d3_001b;
+		public static final int TITLE = 0x03d3_001c;
+		public static final int CLOSE_BUTTON = 0x03d3_001d;
+		public static final int SIDE_TABS_CONTAINER = 0x03d3_001e;
+		public static final int TOP_TABS_CONTAINER = 0x03d3_001f;
+		public static final int ALL_STATS_TABLE_CONTAINER = 0x03d3_0020;
+		public static final int ALL_STATS_LOADING_SPINNER = 0x03d3_0021;
+		public static final int ALL_STATS_TABLES = 0x03d3_0022;
+		public static final int PARTY_PANEL_MVP = 0x03d3_0023;
+		public static final int PARTY_PANEL_MVP_BACKGROUND = 0x03d3_0024;
+		public static final int PARTY_PANEL_MVP_NAME = 0x03d3_0025;
+		public static final int PARTY_PANEL_MVP_NAME_COMMENT = 0x03d3_0026;
+		public static final int PARTY_PANEL_MVP_RECT3 = 0x03d3_0027;
+		public static final int PARTY_PANEL_MVP_RECT4 = 0x03d3_0028;
+		public static final int PARTY_PANEL_MVP_ICON_LEFT = 0x03d3_0029;
+		public static final int PARTY_PANEL_MVP_ICON_RIGHT = 0x03d3_002a;
+		public static final int PARTY_PANELS_CONTAINER = 0x03d3_002b;
+		public static final int PARTY_PANEL_STATS_BACKGROUND = 0x03d3_002c;
+		public static final int PARTY_PANEL_STATS = 0x03d3_002d;
+		public static final int PARTY_PANEL_TIMES = 0x03d3_002e;
 	}
 /* This file is automatically generated. Do not edit. */
 }

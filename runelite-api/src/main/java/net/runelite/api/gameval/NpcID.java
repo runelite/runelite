@@ -71999,5 +71999,594 @@ public final class NpcID
 	 * I D CLAW U
 	 */
 	public static final int PVPTUT_SA_NPC_PARTNER_6 = 16630;
+
+	/**
+	 * Orion
+	 */
+	public static final int OCELLUS_PET = 16631;
+
+	/**
+	 * Orion
+	 */
+	public static final int OCELLUS_PET_VARIANT_1 = 16632;
+
+	/**
+	 * Xari
+	 */
+	public static final int XARTH_PET = 16633;
+
+	/**
+	 * Archie
+	 */
+	public static final int GUARDIAN_PET = 16634;
+
+	/**
+	 * Chubbles
+	 */
+	public static final int JELLY_PET = 16635;
+
+	/**
+	 * Cole
+	 */
+	public static final int DAGONHAI_PET = 16636;
+
+	/**
+	 * Zeke
+	 */
+	public static final int EZEKIEL_PET = 16637;
+
+	/**
+	 * Mimi
+	 */
+	public static final int MOIA_PET = 16638;
+
+	/**
+	 * Dork
+	 */
+	public static final int BORK_PET = 16639;
+
+	/**
+	 * Bork
+	 */
+	public static final int TFA_BORK = 16640;
+
+	/**
+	 * The Smorks
+	 */
+	public static final int TFA_SMORK = 16641;
+	public static final int TFA_BORK_SMORK_HP_UI_HANDLER = 16642;
+
+	/**
+	 * Dagon'hai Elder
+	 */
+	public static final int TFA_DAGONHAI_LEADER = 16643;
+
+	/**
+	 * Dagon'hai Elder
+	 */
+	public static final int TFA_DAGONHAI_LEADER_UNSHIELDED = 16644;
+
+	/**
+	 * Dagon'hai Monk
+	 */
+	public static final int TFA_DAGONHAI_MINION_1 = 16645;
+
+	/**
+	 * Dagon'hai Monk
+	 */
+	public static final int TFA_DAGONHAI_MINION_1_UNSHIELDED = 16646;
+
+	/**
+	 * Dagon'hai Monk
+	 */
+	public static final int TFA_DAGONHAI_MINION_2 = 16647;
+
+	/**
+	 * Dagon'hai Monk
+	 */
+	public static final int TFA_DAGONHAI_MINION_2_UNSHIELDED = 16648;
+
+	/**
+	 * &#60;col=00ffff&#62;Cauldron&#60;/col&#62;
+	 */
+	public static final int TFA_DAGONHAI_FOCUS = 16649;
+
+	/**
+	 * Imp
+	 */
+	public static final int TFA_DAGONHAI_DEMON = 16650;
+
+	/**
+	 * &#60;col=00ffff&#62;Demonic rift&#60;/col&#62;
+	 */
+	public static final int TFA_DAGONHAI_RIFT = 16651;
+
+	/**
+	 * Ezekiel
+	 */
+	public static final int TFA_EZEKIEL = 16652;
+
+	/**
+	 * &#60;col=00ffff&#62;Animated Sword&#60;/col&#62;
+	 */
+	public static final int TFA_EZEKIEL_SWORD = 16653;
+	public static final int TFA_EZEKIEL_SWORD_NOOP = 16654;
+	public static final int TFA_EZEKIEL_FINALE_VFX = 16655;
+
+	/**
+	 * &#60;col=00ffff&#62;Sword&#60;/col&#62;
+	 */
+	public static final int TFA_EZEKIEL_DEATH_SWORD = 16656;
+
+	/**
+	 * &#60;col=00ffff&#62;Inert Guardian&#60;/col&#62;
+	 */
+	public static final int TFA_GUARDIAN_START = 16657;
+
+	/**
+	 * Archive Guardian
+	 */
+	public static final int TFA_GUARDIAN_DEAD = 16658;
+
+	/**
+	 * Archive Guardian
+	 */
+	public static final int TFA_GUARDIAN = 16659;
+
+	/**
+	 * Archive Guardian
+	 */
+	public static final int TFA_GUARDIAN_UNSHIELDED = 16660;
+
+	/**
+	 * &#60;col=00ffff&#62;Inert Guardian&#60;/col&#62;
+	 */
+	public static final int TFA_GUARDIAN_BATTERY_INACTIVE = 16661;
+
+	/**
+	 * &#60;col=00ffff&#62;Inert Guardian&#60;/col&#62;
+	 */
+	public static final int TFA_GUARDIAN_BATTERY_ACTIVE = 16662;
+
+	/**
+	 * &#60;col=00ffff&#62;Inert Guardian&#60;/col&#62;
+	 */
+	public static final int TFA_GUARDIAN_BATTERY_DESTROYED = 16663;
+
+	/**
+	 * &#60;col=00ffff&#62;Vine&#60;/col&#62;
+	 */
+	public static final int ARCHIVE_GUARDIAN_TENTACLE = 16664;
+
+	/**
+	 * Dreadnoth the Jellied
+	 */
+	public static final int TFA_JELLY_BOSS = 16665;
+
+	/**
+	 * Jelly
+	 */
+	public static final int TFA_JELLY_MINION = 16666;
+
+	/**
+	 * Moia
+	 */
+	public static final int TFA_MOIA = 16667;
+	public static final int TFA_INVISIBLE_NPC = 16668;
+	public static final int TFA_INVISIBLE_NPC_2X2 = 16669;
+
+	/**
+	 * Undead binder
+	 */
+	public static final int TFA_MOIA_MINION = 16670;
+	public static final int TFA_OCELLUS_INTRO = 16671;
+
+	/**
+	 * Hooded Figure
+	 */
+	public static final int TFA_OCELLUS_INTRO_NOT_MET = 16672;
+
+	/**
+	 * Ocellus
+	 */
+	public static final int TFA_OCELLUS_INTRO_MET = 16673;
+
+	/**
+	 * Ocellus
+	 */
+	public static final int TFA_OCELLUS_P1 = 16674;
+	public static final int TFA_OCELLUS_P2 = 16675;
+
+	/**
+	 * &#60;col=00ffff&#62;The Blade&#60;/col&#62;
+	 */
+	public static final int TFA_OCELLUS_P2_SWORD_HITBOX = 16676;
+
+	/**
+	 * Ocellus
+	 */
+	public static final int TFA_OCELLUS_P3 = 16677;
+
+	/**
+	 * Void Rift
+	 */
+	public static final int TFA_OCELLUS_P3_BOMBPORTAL_BASIC = 16678;
+
+	/**
+	 * Void Siphon
+	 */
+	public static final int TFA_OCELLUS_P3_BOMBPORTAL_HEAL = 16679;
+
+	/**
+	 * Void Augmenter
+	 */
+	public static final int TFA_OCELLUS_P3_BOMBPORTAL_BUFF = 16680;
+
+	/**
+	 * &#60;col=00ffff&#62;Void Vine&#60;/col&#62;
+	 */
+	public static final int TFA_OCELLUS_P3_VOID_VINE = 16681;
+
+	/**
+	 * Ocellus
+	 */
+	public static final int TFA_OCELLUS_P3_ANIM_DEBUG = 16682;
+
+	/**
+	 * &#60;col=00ffff&#62;The Blade&#60;/col&#62;
+	 */
+	public static final int TFA_BLADE_NPC_VAULT_ENTRY = 16683;
+
+	/**
+	 * Xarth
+	 */
+	public static final int TFA_XARTH = 16684;
+	public static final int TFA_XARTH_RUBBLE_NPC = 16685;
+	public static final int TFA_XARTH_RUBBLE_NPC_DESTROYED = 16686;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_XARTH_CORPSE = 16687;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_XARTH_CORPSE_DOUSED = 16688;
+	public static final int TFA_BUTTERFLY01 = 16689;
+
+	/**
+	 * &#60;col=00ffff&#62;Rift&#60;/col&#62;
+	 */
+	public static final int TFA_VAULT_EXIT_SMALL = 16690;
+
+	/**
+	 * &#60;col=00ffff&#62;Sprite&#60;/col&#62;
+	 */
+	public static final int TFA_GATHERING_SPRITE = 16691;
+
+	/**
+	 * Record Keeper
+	 */
+	public static final int TFA_RECORD_KEEPER = 16692;
+
+	/**
+	 * Wizard apprentice
+	 */
+	public static final int TFA_WIZARD_APPRENTICE = 16693;
+
+	/**
+	 * Druid
+	 */
+	public static final int LOBBY_ALLIANCE_DRUID_1 = 16694;
+
+	/**
+	 * Druid
+	 */
+	public static final int LOBBY_ALLIANCE_DRUID_2 = 16695;
+
+	/**
+	 * Armacus Selles
+	 */
+	public static final int ARMACUS_SELLES = 16696;
+
+	/**
+	 * Eva Cashien
+	 */
+	public static final int EVA_CASHIEN = 16697;
+
+	/**
+	 * Ivy Sophista
+	 */
+	public static final int TFA_IVY_SOPHISTA = 16698;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int TFA_MESSENGER = 16699;
+
+	/**
+	 * Alliance Navigator
+	 */
+	public static final int TFA_ROOM_NAVIGATOR = 16700;
+	public static final int TFA_ARMACUS_SELLES_ENDING = 16701;
+	public static final int TFA_IVY_SOPHISTA_ENDING = 16702;
+	public static final int TFA_EVA_CASHIEN_ENDING = 16703;
+
+	/**
+	 * Banker
+	 */
+	public static final int TFA_LOBBY_BANKER = 16704;
+
+	/**
+	 * General Montoya
+	 */
+	public static final int GENERAL_MONTOYA = 16705;
+
+	/**
+	 * Alliance builder
+	 */
+	public static final int ALLIANCE_BUILDER_1 = 16706;
+
+	/**
+	 * Alliance builder
+	 */
+	public static final int ALLIANCE_BUILDER_2 = 16707;
+
+	/**
+	 * Alliance builder
+	 */
+	public static final int ALLIANCE_BUILDER_3 = 16708;
+
+	/**
+	 * Alliance builder
+	 */
+	public static final int ALLIANCE_BUILDER_4 = 16709;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_GUARD_1 = 16710;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_GUARD_2 = 16711;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_GUARD_3 = 16712;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_GUARD_4 = 16713;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_1 = 16714;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_2 = 16715;
+
+	/**
+	 * Druid
+	 */
+	public static final int ALLIANCE_DRUID_1 = 16716;
+
+	/**
+	 * Druid
+	 */
+	public static final int ALLIANCE_DRUID_2 = 16717;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_1 = 16718;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_2 = 16719;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_3 = 16720;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_4 = 16721;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_5 = 16722;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_6 = 16723;
+
+	/**
+	 * Armacus Selles
+	 */
+	public static final int ARMACUS_SELLES_POSTGUARDIAN = 16724;
+
+	/**
+	 * Eva Cashien
+	 */
+	public static final int EVA_CASHIEN_SWORD = 16725;
+
+	/**
+	 * Ivy Sophista
+	 */
+	public static final int TFA_IVY_SOPHISTA_NOOP = 16726;
+
+	/**
+	 * Armacus Selles
+	 */
+	public static final int ARMACUS_SELLES_CUTSCENE = 16727;
+
+	/**
+	 * Eva Cashien
+	 */
+	public static final int EVA_CASHIEN_CUTSCENE = 16728;
+
+	/**
+	 * Ivy Sophista
+	 */
+	public static final int TFA_IVY_SOPHISTA_CUTSCENE = 16729;
+
+	/**
+	 * &#60;col=00ffff&#62;Chest&#60;/col&#62;
+	 */
+	public static final int TFA_UNIQUE_CHEST_VAULT_CLOSED = 16730;
+
+	/**
+	 * &#60;col=00ffff&#62;Chest&#60;/col&#62;
+	 */
+	public static final int TFA_UNIQUE_CHEST_VAULT_OPEN = 16731;
+
+	/**
+	 * &#60;col=00ffff&#62;Chest&#60;/col&#62;
+	 */
+	public static final int TFA_REWARDS_CHEST_VAULT_CLOSED_NOTMINE = 16732;
+
+	/**
+	 * &#60;col=00ffff&#62;Chest&#60;/col&#62;
+	 */
+	public static final int TFA_REWARDS_CHEST_VAULT_CLOSED_MINE = 16733;
+
+	/**
+	 * &#60;col=00ffff&#62;Rift&#60;/col&#62;
+	 */
+	public static final int TFA_REWARDS_CHEST_VAULT_OPEN_NOTMINE = 16734;
+
+	/**
+	 * &#60;col=00ffff&#62;Rift&#60;/col&#62;
+	 */
+	public static final int TFA_REWARDS_CHEST_VAULT_OPEN_MINE = 16735;
+	public static final int TFA_REWARDS_CHEST_VAULT_1_CLOSED = 16736;
+	public static final int TFA_REWARDS_CHEST_VAULT_1_OPEN = 16737;
+	public static final int TFA_REWARDS_CHEST_VAULT_2_CLOSED = 16738;
+	public static final int TFA_REWARDS_CHEST_VAULT_2_OPEN = 16739;
+	public static final int TFA_REWARDS_CHEST_VAULT_3_CLOSED = 16740;
+	public static final int TFA_REWARDS_CHEST_VAULT_3_OPEN = 16741;
+	public static final int TFA_REWARDS_CHEST_VAULT_4_CLOSED = 16742;
+	public static final int TFA_REWARDS_CHEST_VAULT_4_OPEN = 16743;
+	public static final int TFA_REWARDS_CHEST_VAULT_5_CLOSED = 16744;
+	public static final int TFA_REWARDS_CHEST_VAULT_5_OPEN = 16745;
+	public static final int TFA_REWARDS_CHEST_VAULT_6_CLOSED = 16746;
+	public static final int TFA_REWARDS_CHEST_VAULT_6_OPEN = 16747;
+	public static final int TFA_REWARDS_CHEST_VAULT_7_CLOSED = 16748;
+	public static final int TFA_REWARDS_CHEST_VAULT_7_OPEN = 16749;
+	public static final int TFA_REWARDS_CHEST_VAULT_8_CLOSED = 16750;
+	public static final int TFA_REWARDS_CHEST_VAULT_8_OPEN = 16751;
+
+	/**
+	 * Sir Lancelot
+	 */
+	public static final int SIR_LANCELOT_CUTSCENE = 16752;
+
+	/**
+	 * Sir Gawain
+	 */
+	public static final int SIR_GAWAIN_CUTSCENE = 16753;
+
+	/**
+	 * Sir Kay
+	 */
+	public static final int SIR_KAY_CUTSCENE = 16754;
+
+	/**
+	 * Sir Bedivere
+	 */
+	public static final int SIR_BEDIVERE_CUTSCENE = 16755;
+
+	/**
+	 * Sir Tristram
+	 */
+	public static final int SIR_TRISTRAM_CUTSCENE = 16756;
+
+	/**
+	 * Sir Pelleas
+	 */
+	public static final int SIR_PELLEAS_CUTSCENE = 16757;
+
+	/**
+	 * Sir Lucan
+	 */
+	public static final int SIR_LUCAN_CUTSCENE = 16758;
+
+	/**
+	 * Sir Palomedes
+	 */
+	public static final int SIR_PALOMEDES_CUTSCENE = 16759;
+
+	/**
+	 * King Arthur
+	 */
+	public static final int KING_ARTHUR_CUTSCENE = 16760;
+
+	/**
+	 * Quartermaster
+	 */
+	public static final int TFA_MIDRAID_SUPPLIES_NPC = 16761;
+
+	/**
+	 * Quartermaster
+	 */
+	public static final int TFA_MIDRAID_SUPPLIES_NPC_INACTIVE = 16762;
+
+	/**
+	 * Orion
+	 */
+	public static final int POH_OCELLUS_PET = 16763;
+
+	/**
+	 * Orion
+	 */
+	public static final int POH_OCELLUS_PET_VARIANT_1 = 16764;
+
+	/**
+	 * Xari
+	 */
+	public static final int POH_XARTH_PET = 16765;
+
+	/**
+	 * Archie
+	 */
+	public static final int POH_GUARDIAN_PET = 16766;
+
+	/**
+	 * Chubbles
+	 */
+	public static final int POH_JELLY_PET = 16767;
+
+	/**
+	 * Cole
+	 */
+	public static final int POH_DAGONHAI_PET = 16768;
+
+	/**
+	 * Zeke
+	 */
+	public static final int POH_EZEKIEL_PET = 16769;
+
+	/**
+	 * Mimi
+	 */
+	public static final int POH_MOIA_PET = 16770;
+
+	/**
+	 * Dork
+	 */
+	public static final int POH_BORK_PET = 16771;
 /* This file is automatically generated. Do not edit. */
 }
