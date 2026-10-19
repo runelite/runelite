@@ -34,7 +34,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.PlayerComposition;
 import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
@@ -61,18 +60,18 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class EntityHiderPlugin extends Plugin
 {
 	private static final Set<Integer> NOOB_CAPE_IDS = ImmutableSet.of(
-		ItemID.TZHAAR_CAPE_FIRE + PlayerComposition.ITEM_OFFSET,
-		ItemID.TZHAAR_CAPE_FIRE_TROUVER + PlayerComposition.ITEM_OFFSET,
-		ItemID.SKILLCAPE_MAX_FIRECAPE + PlayerComposition.ITEM_OFFSET,
-		ItemID.SKILLCAPE_MAX_FIRECAPE_TROUVER + PlayerComposition.ITEM_OFFSET,
-		ItemID.AVAS_ASSEMBLER + PlayerComposition.ITEM_OFFSET,
-		ItemID.AVAS_ASSEMBLER_TROUVER + PlayerComposition.ITEM_OFFSET,
-		ItemID.AVAS_ASSEMBLER_MASORI + PlayerComposition.ITEM_OFFSET,
-		ItemID.AVAS_ASSEMBLER_MASORI_TROUVER + PlayerComposition.ITEM_OFFSET,
-		ItemID.SKILLCAPE_MAX_ASSEMBLER + PlayerComposition.ITEM_OFFSET,
-		ItemID.SKILLCAPE_MAX_ASSEMBLER_TROUVER + PlayerComposition.ITEM_OFFSET,
-		ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI + PlayerComposition.ITEM_OFFSET,
-		ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI_TROUVER + PlayerComposition.ITEM_OFFSET
+		ItemID.TZHAAR_CAPE_FIRE,
+		ItemID.TZHAAR_CAPE_FIRE_TROUVER,
+		ItemID.SKILLCAPE_MAX_FIRECAPE,
+		ItemID.SKILLCAPE_MAX_FIRECAPE_TROUVER,
+		ItemID.AVAS_ASSEMBLER,
+		ItemID.AVAS_ASSEMBLER_TROUVER,
+		ItemID.AVAS_ASSEMBLER_MASORI,
+		ItemID.AVAS_ASSEMBLER_MASORI_TROUVER,
+		ItemID.SKILLCAPE_MAX_ASSEMBLER,
+		ItemID.SKILLCAPE_MAX_ASSEMBLER_TROUVER,
+		ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI,
+		ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI_TROUVER
 	);
 	private static final Set<Integer> THRALL_IDS = ImmutableSet.of(
 		NpcID.ARCEUUS_THRALL_GHOST_LESSER, NpcID.ARCEUUS_THRALL_SKELETON_LESSER, NpcID.ARCEUUS_THRALL_ZOMBIE_LESSER,  // Lesser Thrall (ghost, skeleton, zombie)
