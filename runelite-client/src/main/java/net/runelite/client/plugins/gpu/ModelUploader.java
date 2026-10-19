@@ -151,14 +151,16 @@ class ModelUploader
 			modelLocalZ[v] = vertexZ;
 
 			p = proj.project(vertexX, vertexY, vertexZ, rt.tmp);
-			if (p[2] < 50)
-			{
-				return 0;
-			}
-
-			modelProjectedX[v] = p[0] / p[2];
-			modelProjectedY[v] = p[1] / p[2];
 			distances[v] = (int) p[2] - zero;
+			if (p[2] >= 50)
+			{
+				modelProjectedX[v] = p[0] / p[2];
+				modelProjectedY[v] = p[1] / p[2];
+			}
+			else
+			{
+				modelProjectedX[v] = -5000;
+			}
 		}
 
 		final int diameter = model.getDiameter();
@@ -188,7 +190,7 @@ class ModelUploader
 					cX = modelProjectedX[v3],
 					cY = modelProjectedY[v3];
 
-				if ((aX - bX) * (cY - bY) - (cX - bX) * (aY - bY) > 0)
+				if (aX == -5000 || bX == -5000 || cX == -5000 || (aX - bX) * (cY - bY) - (cX - bX) * (aY - bY) > 0)
 				{
 					int distance = radius + (distances[v1] + distances[v2] + distances[v3]) / 3;
 					assert distance >= 0 && distance < diameter;
