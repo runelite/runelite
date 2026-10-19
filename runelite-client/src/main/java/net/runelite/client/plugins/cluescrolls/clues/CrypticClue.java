@@ -1401,7 +1401,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("The far north eastern corner where 1 of 4 was defeated, the shadows still linger.")
 			.location(new WorldPoint(2744, 5116, 0))
-			.solution("Dig on the northeastern-most corner of the Shadow Dungeon. Bring a ring of visibility.")
+			.solution("Dig on the northeastern-most corner of the Shadow Dungeon. Bring a ring of visibility or ring of shadows.")
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_EASY_VAGUE027)
