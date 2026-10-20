@@ -1282,6 +1282,7 @@ public final class SpriteID
 		public static final int AUGURY = _29;
 		public static final int DEADEYE = _30;
 		public static final int MYSTIC_VIGOUR = _31;
+		public static final int ZEAL = _32;
 	}
 
 	public static final class Prayeroff
@@ -1355,6 +1356,7 @@ public final class SpriteID
 		public static final int AUGURY_DISABLED = _29;
 		public static final int DEADEYE_DISABLED = _30;
 		public static final int MYSTIC_VIGOUR_DISABLED = _31;
+		public static final int ZEAL_DISABLED = _32;
 	}
 
 	public static final class GeItembackdrop

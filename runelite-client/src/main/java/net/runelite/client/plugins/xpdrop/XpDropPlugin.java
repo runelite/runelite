@@ -87,6 +87,7 @@ public class XpDropPlugin extends Plugin
 		.put(Prayer.MYSTIC_VIGOUR, PrayerType.MAGIC)
 		.put(Prayer.CHIVALRY, PrayerType.MELEE)
 		.put(Prayer.PIETY, PrayerType.MELEE)
+		.put(Prayer.ZEAL, PrayerType.MELEE)
 		.put(Prayer.RIGOUR, PrayerType.RANGE)
 		.put(Prayer.AUGURY, PrayerType.MAGIC)
 		// RP
