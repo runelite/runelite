@@ -176,13 +176,13 @@ public final class ScriptID
 	 */
 	@ScriptArguments()
 	@Deprecated
-	public static final int NULL = 10003;
+	public static final int NULL = 100003;
 
 	/**
 	 * Send a private message.
 	 */
 	@ScriptArguments(string = 2)
-	public static final int PRIVMSG = 10004;
+	public static final int PRIVMSG = 100004;
 
 	/**
 	 * Creates a disabled experience drop
