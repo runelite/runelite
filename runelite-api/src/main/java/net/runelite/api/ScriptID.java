@@ -508,5 +508,5 @@ public final class ScriptID
 	public static final int BANKMAIN_POPUP_TAB_DRAW = 9221;
 
 	@ScriptArguments(integer = 1)
-	public static final int PRAYER_ISAVAILABLE = 464;
+	public static final int PRAYER_ISAVAILABLE = 10154;
 }
