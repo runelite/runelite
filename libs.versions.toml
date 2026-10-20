@@ -43,7 +43,7 @@ rl-http-api = "net.runelite.arn:http-api:1.2.26"
 rl-awt = "net.runelite:rlawt:1.8"
 rl-discord = "net.runelite:discord:1.4"
 rl-orange = "net.runelite:orange-extensions:1.1"
-rl-jagexauth = "net.runelite:jagexauth:0.2"
+rl-jagexauth = "net.runelite:jagexauth:0.3"
 
 antlr-core = { module = "org.antlr:antlr4", version.ref="antlr" }
 antlr-runtime = { module = "org.antlr:antlr4-runtime", version.ref="antlr" }
