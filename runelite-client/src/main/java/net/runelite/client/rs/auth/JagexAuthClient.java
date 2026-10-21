@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,81 +22,75 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.rs.auth;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.UUID;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
-import javax.inject.Named;
-import lombok.Setter;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import static net.runelite.http.api.RuneLiteAPI.JSON;
-import net.runelite.http.api.ge.GrandExchangeTrade;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Slf4j
-public class GrandExchangeClient
+@Singleton
+public class JagexAuthClient
 {
 	private final OkHttpClient client;
-	private final HttpUrl apiBase;
 	private final Gson gson;
 
-	@Setter
-	private UUID uuid;
-	@Setter
-	private String machineId;
-
 	@Inject
-	private GrandExchangeClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
+	public JagexAuthClient(OkHttpClient client, Gson gson)
 	{
 		this.client = client;
-		this.apiBase = apiBase;
 		this.gson = gson;
 	}
 
-	public void submit(GrandExchangeTrade grandExchangeTrade)
+	public String getSessionId(String idToken) throws IOException
 	{
-		final HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("ge")
-			.build();
+		Map<String, String> bodym = new HashMap<>();
+		bodym.put("idToken", idToken);
 
-		Request.Builder builder = new Request.Builder();
-		if (uuid != null)
+		try (Response res = client.newCall(new Request.Builder()
+				.url("https://auth.jagex.com/game-session/v1/sessions")
+				.post(RequestBody.create(MediaType.get("application/json"), gson.toJson(bodym)))
+				.build())
+			.execute())
 		{
-			builder.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString());
-		}
-		if (machineId != null)
-		{
-			builder.header(RuneLiteAPI.RUNELITE_MACHINEID, machineId);
-		}
-
-		Request request = builder
-			.post(RequestBody.create(JSON, gson.toJson(grandExchangeTrade)))
-			.url(url)
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
+			if (!res.isSuccessful())
 			{
-				log.debug("unable to submit trade", e);
+				throw new IOException("unable to get session: " + res.message());
 			}
+			InputStream in = res.body().byteStream();
+			Map resm = gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Map.class);
+			return (String) resm.get("sessionId");
+		}
+	}
 
-			@Override
-			public void onResponse(Call call, Response response)
+	public Account[] getAccounts(String sessionId) throws IOException
+	{
+		try (Response res = client.newCall(new Request.Builder()
+				.url("https://auth.jagex.com/game-session/v1/accounts")
+				.header("Authorization", "Bearer " + sessionId)
+				.header("Accept", "application/json")
+				.get()
+				.build())
+			.execute())
+		{
+			if (!res.isSuccessful())
 			{
-				log.debug("Submitted trade");
-				response.close();
+				throw new IOException("unable to get accounts: " + res.message());
 			}
-		});
+			InputStream in = res.body().byteStream();
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Account[].class);
+		}
 	}
 }

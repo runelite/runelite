@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, LlemonDuck <napkinorton@gmail.com>
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.gradle.component;
+package net.runelite.client.plugins;
 
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-import org.gradle.api.tasks.SourceSet;
-import org.gradle.api.tasks.SourceSetContainer;
-import org.gradle.api.tasks.TaskProvider;
+import com.google.inject.AbstractModule;
+import javax.inject.Singleton;
+import lombok.RequiredArgsConstructor;
 
-public class ComponentPlugin implements Plugin<Project>
+@Singleton
+class PluginModuleFactory
 {
-
-	@Override
-	public void apply(Project project)
+	@RequiredArgsConstructor
+	class PluginModule extends AbstractModule
 	{
-		TaskProvider<ComponentTask> packComponents = project.getTasks()
-			.register("packComponents", ComponentTask.class, (task) -> task.setGroup("build"));
+		private final Plugin plugin;
 
-		project.getTasks()
-			.getByName("compileJava")
-			.dependsOn(packComponents);
-
-		project.getExtensions()
-			.getByType(SourceSetContainer.class)
-			.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-			.getJava()
-			.srcDir(packComponents.map(ComponentTask::getOutputDirectory));
+		@Override
+		protected void configure()
+		{
+			// Since the plugin itself is a module, it won't bind itself, so we'll bind it here
+			binder().bind((Class<Plugin>) plugin.getClass()).toInstance(plugin);
+			binder().install(plugin);
+		}
 	}
-
 }

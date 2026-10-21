@@ -241,6 +241,9 @@ public enum Quest
 	LEARNING_THE_ROPES(9643, "Learning the Ropes"),
 	THE_IDES_OF_MILK(9645, "The Ides of Milk"),
 	THE_BLOOD_MOON_RISES(16414, "The Blood Moon Rises"),
+	A_RUFF_SITUATION(16971, "A Ruff Situation"),
+	CRAB_QUEST(16972, "Crab Quest"),
+	THE_FRACTURED_ARCHIVE(17027, "The Fractured Archive"),
 	;
 
 	@Getter

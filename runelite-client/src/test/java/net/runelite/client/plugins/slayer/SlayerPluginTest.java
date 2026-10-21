@@ -79,8 +79,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
 {
-	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
-
 	@Mock
 	@Bind
 	Client client;
@@ -179,11 +177,11 @@ public class SlayerPluginTest
 	@Test
 	public void testSuperiorNotification()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Superior", SUPERIOR_MESSAGE, null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Superior", "@mes_hl_red@A superior foe has appeared...</col>", null, 0);
 
 		when(slayerConfig.showSuperiorNotification()).thenReturn(Notification.ON);
 		slayerPlugin.onChatMessage(chatMessageEvent);
-		verify(notifier).notify(Notification.ON, SUPERIOR_MESSAGE);
+		verify(notifier).notify(Notification.ON, "A superior foe has appeared...");
 	}
 
 	@Test
