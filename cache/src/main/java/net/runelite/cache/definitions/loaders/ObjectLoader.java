@@ -196,13 +196,13 @@ public class ObjectLoader
 		{
 			def.setAmbient(is.readByte());
 		}
-		else if (opcode == 39)
-		{
-			def.setContrast(is.readByte() * 25);
-		}
 		else if (opcode >= 30 && opcode < 35)
 		{
 			entityOpsLoader.decodeOp(def.getOps(), is, opcode - 30);
+		}
+		else if (opcode == 39)
+		{
+			def.setContrast(is.readByte() * 25);
 		}
 		else if (opcode == 40)
 		{
@@ -233,6 +233,10 @@ public class ObjectLoader
 
 			def.setRetextureToFind(retextureToFind);
 			def.setTextureToReplace(textureToReplace);
+		}
+		else if (opcode == 42)
+		{
+			def.setFullRecolor((short) is.readUnsignedShort());
 		}
 		else if (opcode == 61)
 		{

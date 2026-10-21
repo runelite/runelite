@@ -658,7 +658,7 @@ class SceneUploader
 			int vy3 = modelLocalYI[triangleC];
 			int vz3 = modelLocalZI[triangleC];
 
-			ModelUploader.computeFaceUvs(model, face, u, v);
+			ModelUploader.computeFaceUvs(model, face, 0f, 0f, 0f, false, u, v);
 
 			int su0 = (int) (u[0] * 256f);
 			int sv0 = (int) (v[0] * 256f);

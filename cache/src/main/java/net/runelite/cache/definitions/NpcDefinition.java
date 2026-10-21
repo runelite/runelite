@@ -55,6 +55,7 @@ public class NpcDefinition
 	public boolean idleAnimRestart;
 	public short[] recolorToFind;
 	public short[] recolorToReplace;
+	public short fullRecolor = -1;
 	public short[] retextureToFind;
 	public short[] retextureToReplace;
 	public EntityOpsDefinition ops = new EntityOpsDefinition();

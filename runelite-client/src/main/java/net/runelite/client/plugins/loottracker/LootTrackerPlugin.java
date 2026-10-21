@@ -72,6 +72,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
@@ -157,6 +158,10 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.WILDY_LOOT_KEY4
 	);
 
+	// Port/Courier tasks and bags
+	private static final String COURIER_TASK_REWARD_EVENT = "Courier tasks";
+	private static final String COURIER_TASK_COMPLETE_MESSAGE = "and complete your courier task!";
+
 	// Herbiboar loot handling
 	@VisibleForTesting
 	static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes.";
@@ -169,6 +174,21 @@ public class LootTrackerPlugin extends Plugin
 
 	// Shipwreck salvaging
 	private static final Pattern SALVAGE_PATTERN = Pattern.compile("You sort through the\\s+(?<tier>\\S+)\\s+salvage.*");
+
+	// Wyrmscraig golem crafting
+	private static final Pattern GOLEM_CRAFTING_PATTERN = Pattern.compile(
+		"As you complete the golem it leaves a gift " +
+		"(?:on the ground|in your gem (?:bag|sack)) for you: 1 x " +
+		"(?<item>Uncut diamond|Uncut emerald|Uncut ruby|Uncut sapphire|Jeweller's chisel)\\.?$");
+
+	static final String GOLEM_CRAFTING_EVENT = "Golem Crafting";
+	private static final Map<String, Integer> GOLEM_CRAFTING_REWARDS = Map.of(
+		"Uncut diamond", ItemID.UNCUT_DIAMOND,
+		"Uncut emerald", ItemID.UNCUT_EMERALD,
+		"Uncut ruby", ItemID.UNCUT_RUBY,
+		"Uncut sapphire", ItemID.UNCUT_SAPPHIRE,
+		"Jeweller's chisel", ItemID.JEWELLERS_CHISEL
+	);
 
 	// Seed Pack loot handling
 	private static final String SEEDPACK_EVENT = "Seed pack";
@@ -262,14 +282,14 @@ public class LootTrackerPlugin extends Plugin
 	// Birdhouses
 	private static final Pattern BIRDHOUSE_PATTERN = Pattern.compile("You dismantle and discard the trap, retrieving (?:(?:a|\\d{1,2}) nests?, )?10 dead birds, \\d{1,3} feathers and (\\d,?\\d{1,3}) Hunter XP\\.");
 	private static final Map<Integer, String> BIRDHOUSE_XP_TO_TYPE = new ImmutableMap.Builder<Integer, String>().
-		put(280, "Regular Bird House").
-		put(420, "Oak Bird House").
-		put(560, "Willow Bird House").
-		put(700, "Teak Bird House").
-		put(820, "Maple Bird House").
-		put(960, "Mahogany Bird House").
-		put(1020, "Yew Bird House").
-		put(1140, "Magic Bird House").
+		put(112, "Regular Bird House").
+		put(168, "Oak Bird House").
+		put(224, "Willow Bird House").
+		put(280, "Teak Bird House").
+		put(369, "Maple Bird House").
+		put(480, "Mahogany Bird House").
+		put(612, "Yew Bird House").
+		put(969, "Magic Bird House").
 		put(1200, "Redwood Bird House").
 		build();
 
@@ -318,6 +338,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final String CHAMBERS_OF_XERIC = "Chambers of Xeric";
 	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
 	private static final String TOMBS_OF_AMASCUT = "Tombs of Amascut";
+	private static final String THE_FRACTURED_ARCHIVE = "Fractured Archive";
 
 	private static final int FONT_OF_CONSUMPTION_REGION = 12106;
 	private static final String FONT_OF_CONSUMPTION_USE_MESSAGE = "You place the Unsired into the Font of Consumption...";
@@ -862,6 +883,16 @@ public class LootTrackerPlugin extends Plugin
 				metadata = new int[]{ raidLevel, teamSize, raidDamage };
 				chestLooted = true;
 				break;
+			case InterfaceID.TFA_CHESTS:
+				if (chestLooted)
+				{
+					return;
+				}
+
+				event = THE_FRACTURED_ARCHIVE;
+				container = client.getItemContainer(InventoryID.TFA_CHESTS);
+				chestLooted = true;
+				break;
 			case InterfaceID.MISC_COLLECTION:
 				event = "Kingdom of Miscellania";
 				container = client.getItemContainer(InventoryID.MISC_RESOURCES_COLLECTED);
@@ -912,7 +943,7 @@ public class LootTrackerPlugin extends Plugin
 			long totalValue = items.stream()
 				.filter(item -> item.getId() > -1)
 				.mapToLong(item -> config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE ?
-					(long) itemManager.getItemPrice(item.getId()) * item.getQuantity() :
+					itemManager.getItemPrice(item.getId()) * item.getQuantity() :
 					(long) itemManager.getItemComposition(item.getId()).getHaPrice() * item.getQuantity())
 				.sum();
 
@@ -1048,6 +1079,33 @@ public class LootTrackerPlugin extends Plugin
 			String eventName = WordUtils.capitalizeFully(tier) + " salvage";
 			onInvChange(collectInvItems(LootRecordType.EVENT, eventName));
 			return;
+		}
+
+		final Matcher golemCraftingMatcher = GOLEM_CRAFTING_PATTERN.matcher(Text.removeTags(message));
+		if (golemCraftingMatcher.find())
+		{
+			final String itemName = golemCraftingMatcher.group("item");
+			final Integer itemId = GOLEM_CRAFTING_REWARDS.get(itemName);
+			if (itemId != null)
+			{
+				addLoot(GOLEM_CRAFTING_EVENT, -1, LootRecordType.EVENT, null, List.of(new ItemStack(itemId, 1)));
+			}
+			return;
+		}
+
+		if (message.endsWith(COURIER_TASK_COMPLETE_MESSAGE))
+		{
+			onInvChange((invItems, groundItems, removedItems) ->
+			{
+				int cnt = invItems.stream().
+					filter(item -> item.getId() != ItemID.SAILING_PAINT_SHARK).
+					mapToInt(ItemStack::getQuantity).
+					sum();
+				if (cnt > 0)
+				{
+					addLoot(COURIER_TASK_REWARD_EVENT, -1, LootRecordType.EVENT, null, invItems, cnt);
+				}
+			});
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
@@ -1247,18 +1305,25 @@ public class LootTrackerPlugin extends Plugin
 
 	private void countChangedItems(int itemId, Object metadata)
 	{
-		onInvChange((((invItems, groundItems, removedItems) ->
+		countChangedItems(itemId, metadata, null);
+	}
+
+	private void countChangedItems(int itemId, Object metadata, @Nullable String nameOverride)
+	{
+		onInvChange((invItems, groundItems, removedItems) ->
 		{
 			int cnt = removedItems.count(itemId);
 			if (cnt > 0)
 			{
-				String name = itemManager.getItemComposition(itemId).getMembersName();
+				String name = nameOverride != null ?
+					nameOverride :
+					itemManager.getItemComposition(itemId).getMembersName();
 				List<ItemStack> combined = new ArrayList<>();
 				combined.addAll(invItems);
 				combined.addAll(groundItems);
 				addLoot(name, -1, LootRecordType.EVENT, metadata, combined, cnt);
 			}
-		})));
+		});
 	}
 
 	@Subscribe
@@ -1397,7 +1462,7 @@ public class LootTrackerPlugin extends Plugin
 							put("HERBLORE", client.getBoostedSkillLevel(Skill.HERBLORE)).
 							put("HUNTER", client.getBoostedSkillLevel(Skill.HUNTER)).
 							build();
-						onInvChange((((invItems, groundItems, removedItems) ->
+						onInvChange((invItems, groundItems, removedItems) ->
 						{
 							int cnt = removedItems.count(itemId);
 							if (cnt > 0)
@@ -1405,8 +1470,22 @@ public class LootTrackerPlugin extends Plugin
 								String name = itemManager.getItemComposition(itemId).getMembersName();
 								addLoot(name, -1, LootRecordType.EVENT, levels, invItems, cnt);
 							}
-						})));
+						});
 						break;
+					default:
+						int eventItemId = event.getItemId();
+						ItemComposition itemComposition = client.getItemDefinition(eventItemId);
+
+						if (itemComposition.getIntValue(ParamID.COURIER_BAG_TIER) >= 0)
+						{
+							String itemName = itemComposition.getMembersName();
+							// reward bag with location, else coin bag
+							if (itemName.indexOf(" (") > 0)
+							{
+								itemName = itemName.substring(0, itemName.indexOf(" ("));
+							}
+							countChangedItems(eventItemId, eventItemId, itemName);
+						}
 				}
 			}
 			else if (event.getMenuOption().equals("Pop"))
@@ -1667,7 +1746,7 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int gePrice = itemManager.getItemPrice(itemId);
+		final long gePrice = itemManager.getItemPrice(itemId);
 		final int haPrice = itemComposition.getHaPrice();
 		final boolean ignored = ignoredItems.contains(itemComposition.getMembersName());
 
@@ -1728,7 +1807,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		long totalPrice = items.stream()
 			.mapToLong(item -> config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE ?
-				(long) itemManager.getItemPrice(item.getId()) * item.getQuantity() :
+				itemManager.getItemPrice(item.getId()) * item.getQuantity() :
 				(long) itemManager.getItemComposition(item.getId()).getHaPrice() * item.getQuantity())
 			.sum();
 
