@@ -397,7 +397,7 @@ class LootTrackerPanel extends PluginPanel
 		{
 			// allocate a separate LootTrackerRecord for aggregate records to avoid later merge() calls
 			// mutating the session record
-			aggRecord = new LootTrackerRecord(eventName, subTitle, type, items, kills);
+			aggRecord = new LootTrackerRecord(eventName, subTitle, type, items.clone(), kills);
 			aggregateRecords.put(aggRecord, aggRecord);
 		}
 
@@ -619,7 +619,7 @@ class LootTrackerPanel extends PluginPanel
 				// With grouped loot, remove any record with this title
 				? r -> r.matches(record.getTitle(), record.getType())
 				// Otherwise remove specifically this entry
-				: r -> r.equals(record);
+				: r -> r == record;
 			sessionRecords.removeIf(match);
 			aggregateRecords.values().removeIf(match);
 			boxes.remove(box);

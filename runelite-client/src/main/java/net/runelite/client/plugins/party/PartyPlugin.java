@@ -27,7 +27,9 @@ package net.runelite.client.plugins.party;
 
 import com.google.common.base.Strings;
 import com.google.inject.Binder;
+import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.util.Providers;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
@@ -139,6 +141,9 @@ public class PartyPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
+	private PartyPluginService partyPluginService;
+
+	@Inject
 	@Named("developerMode")
 	boolean developerMode;
 
@@ -172,6 +177,12 @@ public class PartyPlugin extends Plugin
 	};
 
 	private boolean hotkeyPressed = false;
+
+	@Override
+	public Module getPublicModule()
+	{
+		return b -> b.bind(PartyPluginService.class).toProvider(Providers.of(partyPluginService));
+	}
 
 	@Override
 	public void configure(Binder binder)
