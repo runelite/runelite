@@ -53,11 +53,11 @@ LABEL37:
    if_settrans           
    iconst                 -1
    istore                 9
-   iconst                 0
-   istore                 10
+   lconst                 0
+   lstore                 0
    iload                  7
    invoke                 5733
-   istore                 10
+   lstore                 0
    istore                 9
    iload                  7
    stockmarket_isofferempty

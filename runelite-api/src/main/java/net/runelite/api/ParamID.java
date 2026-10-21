@@ -234,4 +234,8 @@ public final class ParamID
 	public static final int BANK_AUTOCHARGE = 2257;
 
 	public static final int CLUE_SCROLL = 623;
+
+	public static final int QUIVER_AMMO_AVAILABLE = 1910;
+
+	public static final int COURIER_BAG_TIER = 2645;
 }

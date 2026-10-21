@@ -25,12 +25,12 @@
 package net.runelite.client.plugins.grandexchange;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -38,14 +38,10 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.Notifier;
-import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Notification;
 import net.runelite.client.config.RuneLiteConfig;
@@ -53,21 +49,18 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.http.api.ge.GrandExchangeTrade;
+import net.runelite.http.api.RuneLiteAPI;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -90,10 +83,6 @@ public class GrandExchangePluginTest
 
 	@Mock
 	@Bind
-	private SessionManager sessionManager;
-
-	@Mock
-	@Bind
 	private ConfigManager configManager;
 
 	@Mock
@@ -107,10 +96,6 @@ public class GrandExchangePluginTest
 	@Mock
 	@Bind
 	private MouseManager mouseManager;
-
-	@Mock
-	@Bind
-	private GrandExchangeClient grandExchangeClient;
 
 	@Mock
 	@Bind
@@ -128,73 +113,13 @@ public class GrandExchangePluginTest
 	@Bind
 	private ClientToolbar clientToolbar;
 
-	@Inject
-	private Gson gson;
+	@Bind
+	private final Gson gson = RuneLiteAPI.GSON;
 
 	@Before
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-		when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
-	}
-
-	@Test
-	public void testSubmitTrade()
-	{
-		// 1 @ 25
-		SavedOffer savedOffer = new SavedOffer();
-		savedOffer.setItemId(ItemID.ABYSSAL_WHIP);
-		savedOffer.setQuantitySold(1);
-		savedOffer.setTotalQuantity(10);
-		savedOffer.setPrice(1000);
-		savedOffer.setSpent(25);
-		savedOffer.setState(GrandExchangeOfferState.BUYING);
-		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(gson.toJson(savedOffer));
-
-		// buy 2 @ 10/ea
-		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
-		when(grandExchangeOffer.getQuantitySold()).thenReturn(1 + 2);
-		when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
-		when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-		when(grandExchangeOffer.getPrice()).thenReturn(1000);
-		when(grandExchangeOffer.getSpent()).thenReturn(25 + 10 * 2);
-		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.BUYING);
-		grandExchangePlugin.submitTrade(0, grandExchangeOffer);
-
-		ArgumentCaptor<GrandExchangeTrade> captor = ArgumentCaptor.forClass(GrandExchangeTrade.class);
-		verify(grandExchangeClient).submit(captor.capture());
-
-		GrandExchangeTrade trade = captor.getValue();
-		assertTrue(trade.isBuy());
-		assertEquals(ItemID.ABYSSAL_WHIP, trade.getItemId());
-		assertEquals(2, trade.getDqty());
-		assertEquals(10, trade.getTotal());
-		assertEquals(45, trade.getSpent());
-		assertEquals(20, trade.getDspent());
-	}
-
-	@Test
-	public void testDuplicateTrade()
-	{
-		SavedOffer savedOffer = new SavedOffer();
-		savedOffer.setItemId(ItemID.ABYSSAL_WHIP);
-		savedOffer.setQuantitySold(1);
-		savedOffer.setTotalQuantity(10);
-		savedOffer.setPrice(1000);
-		savedOffer.setSpent(25);
-		savedOffer.setState(GrandExchangeOfferState.BUYING);
-		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(gson.toJson(savedOffer));
-
-		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
-		when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
-		when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
-		when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-		when(grandExchangeOffer.getPrice()).thenReturn(1000);
-		lenient().when(grandExchangeOffer.getSpent()).thenReturn(25);
-		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.BUYING);
-		grandExchangePlugin.submitTrade(0, grandExchangeOffer);
-
-		verify(grandExchangeClient, never()).submit(any(GrandExchangeTrade.class));
 	}
 
 	@Test
@@ -213,21 +138,35 @@ public class GrandExchangePluginTest
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
 		when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
 		when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-		when(grandExchangeOffer.getPrice()).thenReturn(1000);
-		when(grandExchangeOffer.getSpent()).thenReturn(25);
+		when(grandExchangeOffer.getPrice()).thenReturn(1000L);
+		when(grandExchangeOffer.getSpent()).thenReturn(25L);
 		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED_BUY);
-		grandExchangePlugin.submitTrade(0, grandExchangeOffer);
+		grandExchangePlugin.updateTradeHistory(0, grandExchangeOffer);
 
-		ArgumentCaptor<GrandExchangeTrade> captor = ArgumentCaptor.forClass(GrandExchangeTrade.class);
-		verify(grandExchangeClient).submit(captor.capture());
-
-		GrandExchangeTrade trade = captor.getValue();
+		Trade trade = runSaveTrade();
 		assertTrue(trade.isBuy());
-		assertTrue(trade.isCancel());
 		assertEquals(ItemID.ABYSSAL_WHIP, trade.getItemId());
-		assertEquals(1, trade.getQty());
-		assertEquals(10, trade.getTotal());
-		assertEquals(25, trade.getSpent());
+		assertEquals(1, trade.getQuantity());
+		assertEquals(25, trade.getPrice());
+		assertNotNull(trade.getTime());
+	}
+
+	private Trade runSaveTrade()
+	{
+		ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
+		verify(scheduledExecutorService).execute(taskCaptor.capture());
+		taskCaptor.getValue().run();
+
+		ArgumentCaptor<String> historyCaptor = ArgumentCaptor.forClass(String.class);
+		verify(configManager).setRSProfileConfiguration(
+			eq(GrandExchangeConfig.CONFIG_GROUP), eq("tradeHistory"), historyCaptor.capture());
+
+		//CHECKSTYLE:OFF
+		Type type = new TypeToken<List<Trade>>() {}.getType();
+		//CHECKSTYLE:ON
+		List<Trade> trades = gson.fromJson(historyCaptor.getValue(), type);
+		assertEquals(1, trades.size());
+		return trades.get(0);
 	}
 
 	@Test
@@ -244,84 +183,6 @@ public class GrandExchangePluginTest
 		grandExchangePlugin.onGrandExchangeOfferChanged(grandExchangeOfferChanged);
 
 		verify(configManager, never()).unsetRSProfileConfiguration(anyString(), anyString());
-	}
-
-	@Test
-	public void testLogin()
-	{
-		GrandExchangePanel panel = mock(GrandExchangePanel.class);
-		when(panel.getOffersPanel()).thenReturn(mock(GrandExchangeOffersPanel.class));
-		grandExchangePlugin.setPanel(panel);
-
-		when(itemManager.getItemComposition(anyInt())).thenReturn(mock(ItemComposition.class));
-
-		// provide config support so getOffer and setOffer work
-		final Map<String, Object> config = new HashMap<>();
-		doAnswer(a ->
-		{
-			Object[] arguments = a.getArguments();
-			config.put((String) arguments[1], arguments[2]);
-			return null;
-		}).when(configManager).setRSProfileConfiguration(eq("geoffer"), anyString(), anyString());
-
-		when(configManager.getRSProfileConfiguration(eq("geoffer"), anyString())).thenAnswer(a ->
-		{
-			Object[] arguments = a.getArguments();
-			return config.get((String) arguments[1]);
-		});
-
-		// set loginBurstGeUpdates
-		GameStateChanged gameStateChanged = new GameStateChanged();
-		gameStateChanged.setGameState(GameState.LOGIN_SCREEN);
-
-		grandExchangePlugin.onGameStateChanged(gameStateChanged);
-
-		// 8x buy 10 whip @ 1k ea, bought 1 sofar.
-		for (int i = 0; i < GrandExchangePlugin.GE_SLOTS; ++i)
-		{
-			GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
-			when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
-			when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
-			when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-			when(grandExchangeOffer.getPrice()).thenReturn(1000);
-			when(grandExchangeOffer.getSpent()).thenReturn(1000);
-			when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.SELLING);
-
-			GrandExchangeOfferChanged grandExchangeOfferChanged = new GrandExchangeOfferChanged();
-			grandExchangeOfferChanged.setSlot(i);
-			grandExchangeOfferChanged.setOffer(grandExchangeOffer);
-			grandExchangePlugin.onGrandExchangeOfferChanged(grandExchangeOfferChanged);
-		}
-
-		// Now send update for one of the slots
-		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
-		when(grandExchangeOffer.getQuantitySold()).thenReturn(2);
-		when(grandExchangeOffer.getItemId()).thenReturn(ItemID.ABYSSAL_WHIP);
-		when(grandExchangeOffer.getTotalQuantity()).thenReturn(10);
-		when(grandExchangeOffer.getPrice()).thenReturn(1000);
-		when(grandExchangeOffer.getSpent()).thenReturn(2000);
-		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.SELLING);
-
-		GrandExchangeOfferChanged grandExchangeOfferChanged = new GrandExchangeOfferChanged();
-		grandExchangeOfferChanged.setSlot(2);
-		grandExchangeOfferChanged.setOffer(grandExchangeOffer);
-		grandExchangePlugin.onGrandExchangeOfferChanged(grandExchangeOfferChanged);
-
-		// verify trade update
-		ArgumentCaptor<GrandExchangeTrade> captor = ArgumentCaptor.forClass(GrandExchangeTrade.class);
-		verify(grandExchangeClient).submit(captor.capture());
-
-		GrandExchangeTrade trade = captor.getValue();
-		assertFalse(trade.isBuy());
-		assertEquals(ItemID.ABYSSAL_WHIP, trade.getItemId());
-		assertEquals(2, trade.getQty());
-		assertEquals(1, trade.getDqty());
-		assertEquals(10, trade.getTotal());
-		assertEquals(1000, trade.getDspent());
-		assertEquals(2000, trade.getSpent());
-		assertEquals(1000, trade.getOffer());
-		assertEquals(2, trade.getSlot());
-		assertTrue(trade.isLogin());
 	}
 
 	@Test

@@ -308,6 +308,10 @@ public class ItemLoader
 		{
 			def.notedTemplate = stream.readUnsignedShort();
 		}
+		else if (opcode == 99)
+		{
+			def.fullRecolor = (short) stream.readUnsignedShort();
+		}
 		else if (opcode >= 100 && opcode < 110)
 		{
 			if (def.countObj == null)
@@ -363,6 +367,15 @@ public class ItemLoader
 		{
 			def.stackable = 2;
 		}
+		else if (opcode == 161)
+		{
+			int len = stream.readUnsignedShort();
+			def.holdingWhitelist = new int[len];
+			for (int i = 0; i < len; i++)
+			{
+				def.holdingWhitelist[i] = stream.readUnsignedShort();
+			}
+		}
 		else if (opcode == 200)
 		{
 			entityOpsLoader.decodeSubOp(def.groundOps, stream);
@@ -378,6 +391,10 @@ public class ItemLoader
 		else if (opcode == 249)
 		{
 			def.params = stream.readParams();
+		}
+		else if (opcode == 251)
+		{
+			def.bronzeman = true;
 		}
 		else
 		{
