@@ -156,6 +156,10 @@ public enum Prayer
 	 * Augury (Level 77, Magic/Magic Def./Defence).
 	 */
 	AUGURY(VarbitID.PRAYER_AUGURY),
+	/**
+	 * Zeal
+	 */
+	ZEAL(VarbitID.PRAYER_ZEAL),
 
 	/**
 	 * Ruinous Powers Rejuvenation (Level 60).

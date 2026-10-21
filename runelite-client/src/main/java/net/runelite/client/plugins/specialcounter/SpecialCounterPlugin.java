@@ -246,10 +246,10 @@ public class SpecialCounterPlugin extends Plugin
 					return;
 				}
 
-				Hitsplat last = hitsplats.get(hitsplats.size() - 1);
-				Hitsplat secondToLast = hitsplats.get(hitsplats.size() - 2);
+				Hitsplat first = hitsplats.get(0);
+				Hitsplat second = hitsplats.get(1);
 
-				int hit = Math.min(last.getAmount(), 1) + Math.min(secondToLast.getAmount(), 1);
+				int hit = Math.min(first.getAmount(), 1) + Math.min(second.getAmount(), 1);
 
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
 			}
@@ -260,9 +260,10 @@ public class SpecialCounterPlugin extends Plugin
 					return;
 				}
 
-				// The weapon hitsplat is always last, after other hitsplats which occur on the same tick such as from
-				// venge or thralls.
-				Hitsplat hitsplat = hitsplats.get(hitsplats.size() - 1);
+				// Hitsplat arrival order on the same tick: [delayed hits, thrall hit, veng, instant hits]
+				// All range and magic specs are delayed, all melee specs other than elder maul are instant
+				boolean delayedHit = specialWeapon.getHitDelay(1) > 1;
+				Hitsplat hitsplat = hitsplats.get(delayedHit ? 0 : hitsplats.size() - 1);
 				specialAttackHit(specialWeapon, hitsplat.getAmount(), lastSpecTarget);
 			}
 
