@@ -70753,5 +70753,1840 @@ public final class NpcID
 	 * Vampyre Snail
 	 */
 	public static final int VAMPYRE_SNAIL = 16344;
+
+	/**
+	 * Combat Test
+	 */
+	public static final int TEST_COMBAT_DUMMY_2 = 16345;
+
+	/**
+	 * Frenzied fishing spot
+	 */
+	public static final int FISHING_SPOT_AERIAL_LARGE = 16346;
+
+	/**
+	 * Lowerniel Drakan
+	 */
+	public static final int LOWERNIEL_DRAKAN_ANIMATION_TEST = 16347;
+
+	/**
+	 * Durial321
+	 */
+	public static final int LANSCAPE_DURIAL321_MUDPIE = 16348;
+
+	/**
+	 * Wise Old Man
+	 */
+	public static final int LANSCAPE_WISE_OLD_MAN_MUDPIE = 16349;
+
+	/**
+	 * Aggressive black dragon
+	 */
+	public static final int LANSCAPE_BLACK_DRAGON1 = 16350;
+
+	/**
+	 * Aggressive black dragon
+	 */
+	public static final int LANSCAPE_BLACK_DRAGON2 = 16351;
+
+	/**
+	 * Aggressive black dragon
+	 */
+	public static final int LANSCAPE_BLACK_DRAGON3 = 16352;
+
+	/**
+	 * Gary Gilbert
+	 */
+	public static final int LANSCAPE_FINALE_SHOP_NPC = 16353;
+
+	/**
+	 * Giant Mole (Zamorak)
+	 */
+	public static final int MOLE_GIANT_ZAMORAK = 16354;
+
+	/**
+	 * Giant Mole (Saradomin)
+	 */
+	public static final int MOLE_GIANT_SARADOMIN = 16355;
+
+	/**
+	 * Giant Mole (Guthix)
+	 */
+	public static final int MOLE_GIANT_GUTHIX = 16356;
+
+	/**
+	 * Giant Mole (Bandos)
+	 */
+	public static final int MOLE_GIANT_BANDOS = 16357;
+
+	/**
+	 * &#60;col=00ffff&#62;Mud&#60;/col&#62;
+	 */
+	public static final int LANSCAPE_MOLE_STICKY_MUD_NPC = 16358;
+	public static final int TOB_DOG_STRANGER_MULTI = 16359;
+
+	/**
+	 * Mysterious Stranger
+	 */
+	public static final int TOB_DOG_STRANGER = 16360;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_YELLOW = 16361;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_BROWN = 16362;
+
+	/**
+	 * Labrador
+	 */
+	public static final int LABRADOR_BLACK = 16363;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_TAN = 16364;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_WHITE = 16365;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_TOASTED = 16366;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_CHOCO = 16367;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_MERLE = 16368;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_BW = 16369;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_TAN = 16370;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_YELLOW = 16371;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_TOASTED = 16372;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_TAN = 16373;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_GREY = 16374;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_CREAM = 16375;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_BW = 16376;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_GREY = 16377;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_CHOCO = 16378;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_FAWN = 16379;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_BROWN = 16380;
+
+	/**
+	 * Pug
+	 */
+	public static final int PUG_BLACK = 16381;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_WHITE = 16382;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_YELLOW = 16383;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_BLACK = 16384;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_CHOCO = 16385;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_MERLE = 16386;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_TOASTED = 16387;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_TAN = 16388;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_WHITE = 16389;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_TOASTED = 16390;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_RED = 16391;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_WHITE = 16392;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int SPANIEL_BLACK = 16393;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_BROWN = 16394;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_WHITE = 16395;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_YELLOW = 16396;
+	public static final int CHIHUAHUA_WANDER_MULTI = 16397;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int CHIHUAHUA_WANDER = 16398;
+	public static final int COLLIE_WANDER_MULTI = 16399;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int COLLIE_WANDER = 16400;
+	public static final int CORGI_WANDER_MULTI = 16401;
+
+	/**
+	 * Corgi
+	 */
+	public static final int CORGI_WANDER = 16402;
+	public static final int GREYHOUND_WANDER_MULTI = 16403;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int GREYHOUND_WANDER = 16404;
+	public static final int SAMOYED_WANDER_MULTI = 16405;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int SAMOYED_WANDER = 16406;
+	public static final int SHEPARD_WANDER_MULTI = 16407;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int SHEPARD_WANDER = 16408;
+	public static final int SHIBA_WANDER_MULTI = 16409;
+
+	/**
+	 * Shiba
+	 */
+	public static final int SHIBA_WANDER = 16410;
+	public static final int HUSKY_WANDER_MULTI = 16411;
+
+	/**
+	 * Husky
+	 */
+	public static final int HUSKY_WANDER = 16412;
+	public static final int YORKIE_WANDER_MULTI = 16413;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int YORKIE_WANDER = 16414;
+	public static final int CHIHUAHUA_SHELTER_MULTI = 16415;
+
+	/**
+	 * Leo
+	 */
+	public static final int CHIHUAHUA_SHELTER = 16416;
+	public static final int COLLIE_SHELTER_MULTI = 16417;
+
+	/**
+	 * Victor
+	 */
+	public static final int COLLIE_SHELTER = 16418;
+	public static final int CORGI_SHELTER_MULTI = 16419;
+
+	/**
+	 * Loot
+	 */
+	public static final int CORGI_SHELTER = 16420;
+	public static final int GREYHOUND_SHELTER_MULTI = 16421;
+
+	/**
+	 * Wrigley
+	 */
+	public static final int GREYHOUND_SHELTER = 16422;
+	public static final int SAMOYED_SHELTER_MULTI = 16423;
+
+	/**
+	 * Artsi
+	 */
+	public static final int SAMOYED_SHELTER = 16424;
+	public static final int SHEPARD_SHELTER_MULTI = 16425;
+
+	/**
+	 * Timber
+	 */
+	public static final int SHEPARD_SHELTER = 16426;
+	public static final int SHIBA_SHELTER_MULTI = 16427;
+
+	/**
+	 * Keanna
+	 */
+	public static final int SHIBA_SHELTER = 16428;
+	public static final int HUSKY_SHELTER_MULTI = 16429;
+
+	/**
+	 * Zoey
+	 */
+	public static final int HUSKY_SHELTER = 16430;
+	public static final int YORKIE_SHELTER_MULTI = 16431;
+
+	/**
+	 * Smoky
+	 */
+	public static final int YORKIE_SHELTER = 16432;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_YELLOW_PUPPY = 16433;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_CHOCO_PUPPY = 16434;
+
+	/**
+	 * Labrador puppy
+	 */
+	public static final int LABRADOR_BLACK_PUPPY = 16435;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_BW_PUPPY = 16436;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_GREY_PUPPY = 16437;
+
+	/**
+	 * Husky puppy
+	 */
+	public static final int HUSKY_CHOCO_PUPPY = 16438;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_TAN_PUPPY = 16439;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_WHITE_PUPPY = 16440;
+
+	/**
+	 * Chihuahua puppy
+	 */
+	public static final int CHIHUAHUA_TOASTED_PUPPY = 16441;
+
+	/**
+	 * Border Collie puppy
+	 */
+	public static final int COLLIE_CHOCO_PUPPY = 16442;
+
+	/**
+	 * Border Collie puppy
+	 */
+	public static final int COLLIE_MERLE_PUPPY = 16443;
+
+	/**
+	 * Border Collie puppy
+	 */
+	public static final int COLLIE_BW_PUPPY = 16444;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_TAN_PUPPY = 16445;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_YELLOW_PUPPY = 16446;
+
+	/**
+	 * Corgi puppy
+	 */
+	public static final int CORGI_TOASTED_PUPPY = 16447;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_TAN_PUPPY = 16448;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_GREY_PUPPY = 16449;
+
+	/**
+	 * Greyhound puppy
+	 */
+	public static final int GREYHOUND_CREAM_PUPPY = 16450;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_FAWN_PUPPY = 16451;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_BROWN_PUPPY = 16452;
+
+	/**
+	 * Pug puppy
+	 */
+	public static final int PUG_BLACK_PUPPY = 16453;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_WHITE_PUPPY = 16454;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_YELLOW_PUPPY = 16455;
+
+	/**
+	 * Samoyed puppy
+	 */
+	public static final int SAMOYED_BLACK_PUPPY = 16456;
+
+	/**
+	 * Bernese Mountain Dog puppy
+	 */
+	public static final int SHEPARD_CHOCO_PUPPY = 16457;
+
+	/**
+	 * Bernese Mountain Dog puppy
+	 */
+	public static final int SHEPARD_MERLE_PUPPY = 16458;
+
+	/**
+	 * Bernese Mountain Dog puppy
+	 */
+	public static final int SHEPARD_TOASTED_PUPPY = 16459;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_TAN_PUPPY = 16460;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_WHITE_PUPPY = 16461;
+
+	/**
+	 * Shiba puppy
+	 */
+	public static final int SHIBA_TOASTED_PUPPY = 16462;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_RED_PUPPY = 16463;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_WHITE_PUPPY = 16464;
+
+	/**
+	 * Spaniel puppy
+	 */
+	public static final int SPANIEL_BLACK_PUPPY = 16465;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_BROWN_PUPPY = 16466;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_WHITE_PUPPY = 16467;
+
+	/**
+	 * Yorkie puppy
+	 */
+	public static final int YORKIE_YELLOW_PUPPY = 16468;
+	public static final int CRAB_MAINCRAB = 16469;
+	public static final int CRAB_MAINCRAB_PRACTISING = 16470;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_START = 16471;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_BLUSHING = 16472;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_START_NOMOVE = 16473;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_END = 16474;
+
+	/**
+	 * Floatsam
+	 */
+	public static final int CRAB_FLOATSAM_1 = 16475;
+
+	/**
+	 * Floatsam
+	 */
+	public static final int CRAB_FLOATSAM_2 = 16476;
+
+	/**
+	 * Floatsam
+	 */
+	public static final int CRAB_FLOATSAM_3 = 16477;
+	public static final int CRAB_FLOATSAM_MULTI = 16478;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_MAINCRAB_CUTSCENE = 16479;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_CRAB_CUTSCENE = 16480;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_CRAB_CUTSCENE_ENDCRAB = 16481;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_CRAB_CUTSCENE_DANCING = 16482;
+
+	/**
+	 * Crab
+	 */
+	public static final int CRAB_BANDCRAB = 16483;
+	public static final int CRAB_SHYCRAB = 16484;
+
+	/**
+	 * 'Crab'
+	 */
+	public static final int CRAB_PENGUIN = 16485;
+
+	/**
+	 * Talia
+	 */
+	public static final int DOGQ_TALIA = 16486;
+	public static final int DOGQ_CHASE_MULTI = 16487;
+
+	/**
+	 * Chase
+	 */
+	public static final int DOGQ_CHASE = 16488;
+
+	/**
+	 * Chase
+	 */
+	public static final int DOGQ_CHASE_POST = 16489;
+
+	/**
+	 * Sky
+	 */
+	public static final int DOGQ_BLACK_LAB = 16490;
+	public static final int DOGQ_VARROCK_GUARD_MULTI = 16491;
+	public static final int DOGQ_VARROCK_GUARD_MULTI_POST = 16492;
+
+	/**
+	 * Guard
+	 */
+	public static final int DOGQ_VARROCK_GUARD = 16493;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_PREQUEST = 16494;
+
+	/**
+	 * Guard dog
+	 */
+	public static final int DOG_STRAY_CLEAN = 16495;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST = 16496;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_DEN = 16497;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_GOBLIN = 16498;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_GOBLIN_DURING = 16499;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_GOBLIN_POST = 16500;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_OUTLAW = 16501;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_OUTLAW_POST = 16502;
+	public static final int DOGQ_VARROCK_STRAY_DOG_MULTI_QUEST_FOLLOWER = 16503;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_DOG_STRAY = 16504;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_STRAY_DOG_FOLLOWER = 16505;
+	public static final int DOGQ_PUPPY_ONE_MULTI = 16506;
+	public static final int DOGQ_PUPPY_TWO_MULTI = 16507;
+	public static final int DOGQ_PUPPY_THREE_MULTI = 16508;
+	public static final int DOGQ_PUPPY_ONE_MULTI_DEN = 16509;
+	public static final int DOGQ_PUPPY_TWO_MULTI_DEN = 16510;
+	public static final int DOGQ_PUPPY_THREE_MULTI_DEN = 16511;
+	public static final int DOGQ_PUPPY_ONE_MULTI_SHELTER = 16512;
+	public static final int DOGQ_PUPPY_TWO_MULTI_SHELTER = 16513;
+	public static final int DOGQ_PUPPY_THREE_MULTI_SHELTER = 16514;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_ONE = 16515;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_TWO = 16516;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_THREE = 16517;
+
+	/**
+	 * Blaze
+	 */
+	public static final int DOGQ_PUPPY_ONE_NOOP = 16518;
+
+	/**
+	 * Vinny
+	 */
+	public static final int DOGQ_PUPPY_TWO_NOOP = 16519;
+
+	/**
+	 * Rumi
+	 */
+	public static final int DOGQ_PUPPY_THREE_NOOP = 16520;
+	public static final int DOGQ_GOBLIN_PICKLENOSE_MULTI = 16521;
+	public static final int DOGQ_GOBLIN_TOETALLER_MULTI = 16522;
+
+	/**
+	 * Picklenose
+	 */
+	public static final int DOGQ_GOBLIN_PICKLENOSE = 16523;
+
+	/**
+	 * Toetaller
+	 */
+	public static final int DOGQ_GOBLIN_TOETALLER = 16524;
+
+	/**
+	 * Banker
+	 */
+	public static final int DOGQ_BANKER = 16525;
+
+	/**
+	 * Guard
+	 */
+	public static final int DOGQ_GE_GUARD = 16526;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int DOGQ_OUTLAW1 = 16527;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int DOGQ_OUTLAW2 = 16528;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_DOG_STRAY_COMBAT = 16529;
+
+	/**
+	 * Stray dog
+	 */
+	public static final int DOGQ_DOG_STRAY_CUTSCENE = 16530;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_ONE_CUTSCENE = 16531;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_TWO_CUTSCENE = 16532;
+
+	/**
+	 * Stray puppy
+	 */
+	public static final int DOGQ_PUPPY_THREE_CUTSCENE = 16533;
+
+	/**
+	 * Picklenose
+	 */
+	public static final int DOGQ_GOBLIN_CUTSCENE = 16534;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int DOGQ_OUTLAW1_CUTSCENE = 16535;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int DOGQ_OUTLAW2_CUTSCENE = 16536;
+
+	/**
+	 * Talia
+	 */
+	public static final int DOGQ_TALIA_CUTSCENE = 16537;
+
+	/**
+	 * Chase
+	 */
+	public static final int DOGQ_CHASE_CUTSCENE = 16538;
+
+	/**
+	 * Guard
+	 */
+	public static final int DOGQ_VARROCK_GUARD_CUTSCENE = 16539;
+
+	/**
+	 * Labrador
+	 */
+	public static final int POH_LABRADOR_YELLOW = 16540;
+
+	/**
+	 * Labrador
+	 */
+	public static final int POH_LABRADOR_BROWN = 16541;
+
+	/**
+	 * Labrador
+	 */
+	public static final int POH_LABRADOR_BLACK = 16542;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int POH_CHIHUAHUA_TAN = 16543;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int POH_CHIHUAHUA_WHITE = 16544;
+
+	/**
+	 * Chihuahua
+	 */
+	public static final int POH_CHIHUAHUA_TOASTED = 16545;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int POH_COLLIE_CHOCO = 16546;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int POH_COLLIE_MERLE = 16547;
+
+	/**
+	 * Border Collie
+	 */
+	public static final int POH_COLLIE_BW = 16548;
+
+	/**
+	 * Corgi
+	 */
+	public static final int POH_CORGI_TAN = 16549;
+
+	/**
+	 * Corgi
+	 */
+	public static final int POH_CORGI_YELLOW = 16550;
+
+	/**
+	 * Corgi
+	 */
+	public static final int POH_CORGI_TOASTED = 16551;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int POH_GREYHOUND_TAN = 16552;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int POH_GREYHOUND_GREY = 16553;
+
+	/**
+	 * Greyhound
+	 */
+	public static final int POH_GREYHOUND_CREAM = 16554;
+
+	/**
+	 * Husky
+	 */
+	public static final int POH_HUSKY_BW = 16555;
+
+	/**
+	 * Husky
+	 */
+	public static final int POH_HUSKY_GREY = 16556;
+
+	/**
+	 * Husky
+	 */
+	public static final int POH_HUSKY_CHOCO = 16557;
+
+	/**
+	 * Pug
+	 */
+	public static final int POH_PUG_FAWN = 16558;
+
+	/**
+	 * Pug
+	 */
+	public static final int POH_PUG_BROWN = 16559;
+
+	/**
+	 * Pug
+	 */
+	public static final int POH_PUG_BLACK = 16560;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int POH_SAMOYED_WHITE = 16561;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int POH_SAMOYED_YELLOW = 16562;
+
+	/**
+	 * Samoyed
+	 */
+	public static final int POH_SAMOYED_BLACK = 16563;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int POH_SHEPARD_CHOCO = 16564;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int POH_SHEPARD_MERLE = 16565;
+
+	/**
+	 * Bernese Mountain Dog
+	 */
+	public static final int POH_SHEPARD_TOASTED = 16566;
+
+	/**
+	 * Shiba
+	 */
+	public static final int POH_SHIBA_TAN = 16567;
+
+	/**
+	 * Shiba
+	 */
+	public static final int POH_SHIBA_WHITE = 16568;
+
+	/**
+	 * Shiba
+	 */
+	public static final int POH_SHIBA_TOASTED = 16569;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int POH_SPANIEL_RED = 16570;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int POH_SPANIEL_WHITE = 16571;
+
+	/**
+	 * Spaniel
+	 */
+	public static final int POH_SPANIEL_BLACK = 16572;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int POH_YORKIE_BROWN = 16573;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int POH_YORKIE_WHITE = 16574;
+
+	/**
+	 * Yorkie
+	 */
+	public static final int POH_YORKIE_YELLOW = 16575;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_TUTOR = 16576;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_TUTOR_INSTANCE = 16577;
+
+	/**
+	 * Bowman67
+	 */
+	public static final int PVPTUT_NPC_TO_KILL_1 = 16578;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MAGIC = 16579;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MELEE_VOIDWAKER = 16580;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MELEE_HALBERD = 16581;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_RANGED = 16582;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_TANK = 16583;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MELEE_MISTAKE = 16584;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_RANGED_MISTAKE = 16585;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_EXPERT_BOSS_MAGIC_MISTAKE = 16586;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_BOSS_TUTOR = 16587;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MAGIC = 16588;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_RANGED = 16589;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MELEE = 16590;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MELEE_SPECIAL = 16591;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_MAGIC_THAN_MELEE = 16592;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_MELEE_THAN_MAGIC = 16593;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_RANGED_THAN_MELEE = 16594;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_MELEE_THAN_RANGED = 16595;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_RANGED_THAN_MAGIC = 16596;
+
+	/**
+	 * Pete Kayer
+	 */
+	public static final int PVPTUT_MEDIUM_BOSS_MORE_MAGIC_THAN_RANGED = 16597;
+
+	/**
+	 * Blink
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_AGSMAUL_SPEC = 16598;
+
+	/**
+	 * Dave
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_ELDER_MAUL_SPEC = 16599;
+
+	/**
+	 * Double Decimation Daryl
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_DRAGON_DAGGER_SPEC = 16600;
+
+	/**
+	 * Walter Blue
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_WIZARD = 16601;
+
+	/**
+	 * Kinetic Katara
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_HARM_ORB_SPEC = 16602;
+
+	/**
+	 * Xx I DB0W I xX
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_RANGED_DBOW_SPEC_1 = 16603;
+
+	/**
+	 * Xx I DBOW I xX
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_RANGED_DBOW_SPEC_2 = 16604;
+
+	/**
+	 * I D CLAW U
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_DCLAWS_SPEC = 16605;
+
+	/**
+	 * IM 1 HP GL
+	 */
+	public static final int PVPTUT_COMBO_EATING_NPC_DHAROKS_SPEC = 16606;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_FREEZE_NPC = 16607;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_GEAR_SWITCH_NPC_MELEE = 16608;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_GEAR_SWITCH_NPC_RANGED = 16609;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_GEAR_SWITCH_NPC_MAGIC = 16610;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_AGS_SPEC = 16611;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_VOIDWAKER = 16612;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_GMAUL_SPEC = 16613;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_DCLAWS_SPEC = 16614;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_CROSSBOW = 16615;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_RANGED_DBOW_SPEC = 16616;
+
+	/**
+	 * Sparring partner
+	 */
+	public static final int PVPTUT_PRAYER_NPC_SPELL = 16617;
+
+	/**
+	 * Kevin
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_7 = 16618;
+
+	/**
+	 * Daniel
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_1 = 16619;
+
+	/**
+	 * Rowenna
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_2 = 16620;
+
+	/**
+	 * Adam
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_3 = 16621;
+
+	/**
+	 * Kimmie
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_4 = 16622;
+
+	/**
+	 * Jack
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_5 = 16623;
+
+	/**
+	 * Kate
+	 */
+	public static final int PVPTUT_SA_NPC_SHOWCASE_6 = 16624;
+
+	/**
+	 * Blink
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_1 = 16625;
+
+	/**
+	 * Dave
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_2 = 16626;
+
+	/**
+	 * Double Decimation Daryl
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_3 = 16627;
+
+	/**
+	 * Xx I DBOW I xX
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_4 = 16628;
+
+	/**
+	 * Kinetic Katara
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_5 = 16629;
+
+	/**
+	 * I D CLAW U
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_6 = 16630;
+
+	/**
+	 * Orion
+	 */
+	public static final int OCELLUS_PET = 16631;
+
+	/**
+	 * Orion
+	 */
+	public static final int OCELLUS_PET_VARIANT_1 = 16632;
+
+	/**
+	 * Xari
+	 */
+	public static final int XARTH_PET = 16633;
+
+	/**
+	 * Archie
+	 */
+	public static final int GUARDIAN_PET = 16634;
+
+	/**
+	 * Chubbles
+	 */
+	public static final int JELLY_PET = 16635;
+
+	/**
+	 * Cole
+	 */
+	public static final int DAGONHAI_PET = 16636;
+
+	/**
+	 * Zeke
+	 */
+	public static final int EZEKIEL_PET = 16637;
+
+	/**
+	 * Mimi
+	 */
+	public static final int MOIA_PET = 16638;
+
+	/**
+	 * Dork
+	 */
+	public static final int BORK_PET = 16639;
+
+	/**
+	 * Bork
+	 */
+	public static final int TFA_BORK = 16640;
+
+	/**
+	 * The Smorks
+	 */
+	public static final int TFA_SMORK = 16641;
+	public static final int TFA_BORK_SMORK_HP_UI_HANDLER = 16642;
+
+	/**
+	 * Dagon'hai Elder
+	 */
+	public static final int TFA_DAGONHAI_LEADER = 16643;
+
+	/**
+	 * Dagon'hai Elder
+	 */
+	public static final int TFA_DAGONHAI_LEADER_UNSHIELDED = 16644;
+
+	/**
+	 * Dagon'hai Monk
+	 */
+	public static final int TFA_DAGONHAI_MINION_1 = 16645;
+
+	/**
+	 * Dagon'hai Monk
+	 */
+	public static final int TFA_DAGONHAI_MINION_1_UNSHIELDED = 16646;
+
+	/**
+	 * Dagon'hai Monk
+	 */
+	public static final int TFA_DAGONHAI_MINION_2 = 16647;
+
+	/**
+	 * Dagon'hai Monk
+	 */
+	public static final int TFA_DAGONHAI_MINION_2_UNSHIELDED = 16648;
+
+	/**
+	 * &#60;col=00ffff&#62;Cauldron&#60;/col&#62;
+	 */
+	public static final int TFA_DAGONHAI_FOCUS = 16649;
+
+	/**
+	 * Imp
+	 */
+	public static final int TFA_DAGONHAI_DEMON = 16650;
+
+	/**
+	 * &#60;col=00ffff&#62;Demonic rift&#60;/col&#62;
+	 */
+	public static final int TFA_DAGONHAI_RIFT = 16651;
+
+	/**
+	 * Ezekiel
+	 */
+	public static final int TFA_EZEKIEL = 16652;
+
+	/**
+	 * &#60;col=00ffff&#62;Animated Sword&#60;/col&#62;
+	 */
+	public static final int TFA_EZEKIEL_SWORD = 16653;
+	public static final int TFA_EZEKIEL_SWORD_NOOP = 16654;
+	public static final int TFA_EZEKIEL_FINALE_VFX = 16655;
+
+	/**
+	 * &#60;col=00ffff&#62;Sword&#60;/col&#62;
+	 */
+	public static final int TFA_EZEKIEL_DEATH_SWORD = 16656;
+
+	/**
+	 * &#60;col=00ffff&#62;Inert Guardian&#60;/col&#62;
+	 */
+	public static final int TFA_GUARDIAN_START = 16657;
+
+	/**
+	 * Archive Guardian
+	 */
+	public static final int TFA_GUARDIAN_DEAD = 16658;
+
+	/**
+	 * Archive Guardian
+	 */
+	public static final int TFA_GUARDIAN = 16659;
+
+	/**
+	 * Archive Guardian
+	 */
+	public static final int TFA_GUARDIAN_UNSHIELDED = 16660;
+
+	/**
+	 * &#60;col=00ffff&#62;Inert Guardian&#60;/col&#62;
+	 */
+	public static final int TFA_GUARDIAN_BATTERY_INACTIVE = 16661;
+
+	/**
+	 * &#60;col=00ffff&#62;Inert Guardian&#60;/col&#62;
+	 */
+	public static final int TFA_GUARDIAN_BATTERY_ACTIVE = 16662;
+
+	/**
+	 * &#60;col=00ffff&#62;Inert Guardian&#60;/col&#62;
+	 */
+	public static final int TFA_GUARDIAN_BATTERY_DESTROYED = 16663;
+
+	/**
+	 * &#60;col=00ffff&#62;Vine&#60;/col&#62;
+	 */
+	public static final int ARCHIVE_GUARDIAN_TENTACLE = 16664;
+
+	/**
+	 * Dreadnoth the Jellied
+	 */
+	public static final int TFA_JELLY_BOSS = 16665;
+
+	/**
+	 * Jelly
+	 */
+	public static final int TFA_JELLY_MINION = 16666;
+
+	/**
+	 * Moia
+	 */
+	public static final int TFA_MOIA = 16667;
+	public static final int TFA_INVISIBLE_NPC = 16668;
+	public static final int TFA_INVISIBLE_NPC_2X2 = 16669;
+
+	/**
+	 * Undead binder
+	 */
+	public static final int TFA_MOIA_MINION = 16670;
+	public static final int TFA_OCELLUS_INTRO = 16671;
+
+	/**
+	 * Hooded Figure
+	 */
+	public static final int TFA_OCELLUS_INTRO_NOT_MET = 16672;
+
+	/**
+	 * Ocellus
+	 */
+	public static final int TFA_OCELLUS_INTRO_MET = 16673;
+
+	/**
+	 * Ocellus
+	 */
+	public static final int TFA_OCELLUS_P1 = 16674;
+	public static final int TFA_OCELLUS_P2 = 16675;
+
+	/**
+	 * &#60;col=00ffff&#62;The Blade&#60;/col&#62;
+	 */
+	public static final int TFA_OCELLUS_P2_SWORD_HITBOX = 16676;
+
+	/**
+	 * Ocellus
+	 */
+	public static final int TFA_OCELLUS_P3 = 16677;
+
+	/**
+	 * Void Rift
+	 */
+	public static final int TFA_OCELLUS_P3_BOMBPORTAL_BASIC = 16678;
+
+	/**
+	 * Void Siphon
+	 */
+	public static final int TFA_OCELLUS_P3_BOMBPORTAL_HEAL = 16679;
+
+	/**
+	 * Void Augmenter
+	 */
+	public static final int TFA_OCELLUS_P3_BOMBPORTAL_BUFF = 16680;
+
+	/**
+	 * &#60;col=00ffff&#62;Void Vine&#60;/col&#62;
+	 */
+	public static final int TFA_OCELLUS_P3_VOID_VINE = 16681;
+
+	/**
+	 * Ocellus
+	 */
+	public static final int TFA_OCELLUS_P3_ANIM_DEBUG = 16682;
+
+	/**
+	 * &#60;col=00ffff&#62;The Blade&#60;/col&#62;
+	 */
+	public static final int TFA_BLADE_NPC_VAULT_ENTRY = 16683;
+
+	/**
+	 * Xarth
+	 */
+	public static final int TFA_XARTH = 16684;
+	public static final int TFA_XARTH_RUBBLE_NPC = 16685;
+	public static final int TFA_XARTH_RUBBLE_NPC_DESTROYED = 16686;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_XARTH_CORPSE = 16687;
+
+	/**
+	 * Corpse
+	 */
+	public static final int TFA_XARTH_CORPSE_DOUSED = 16688;
+	public static final int TFA_BUTTERFLY01 = 16689;
+
+	/**
+	 * &#60;col=00ffff&#62;Rift&#60;/col&#62;
+	 */
+	public static final int TFA_VAULT_EXIT_SMALL = 16690;
+
+	/**
+	 * &#60;col=00ffff&#62;Sprite&#60;/col&#62;
+	 */
+	public static final int TFA_GATHERING_SPRITE = 16691;
+
+	/**
+	 * Record Keeper
+	 */
+	public static final int TFA_RECORD_KEEPER = 16692;
+
+	/**
+	 * Wizard apprentice
+	 */
+	public static final int TFA_WIZARD_APPRENTICE = 16693;
+
+	/**
+	 * Druid
+	 */
+	public static final int LOBBY_ALLIANCE_DRUID_1 = 16694;
+
+	/**
+	 * Druid
+	 */
+	public static final int LOBBY_ALLIANCE_DRUID_2 = 16695;
+
+	/**
+	 * Armacus Selles
+	 */
+	public static final int ARMACUS_SELLES = 16696;
+
+	/**
+	 * Eva Cashien
+	 */
+	public static final int EVA_CASHIEN = 16697;
+
+	/**
+	 * Ivy Sophista
+	 */
+	public static final int TFA_IVY_SOPHISTA = 16698;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int TFA_MESSENGER = 16699;
+
+	/**
+	 * Alliance Navigator
+	 */
+	public static final int TFA_ROOM_NAVIGATOR = 16700;
+	public static final int TFA_ARMACUS_SELLES_ENDING = 16701;
+	public static final int TFA_IVY_SOPHISTA_ENDING = 16702;
+	public static final int TFA_EVA_CASHIEN_ENDING = 16703;
+
+	/**
+	 * Banker
+	 */
+	public static final int TFA_LOBBY_BANKER = 16704;
+
+	/**
+	 * General Montoya
+	 */
+	public static final int GENERAL_MONTOYA = 16705;
+
+	/**
+	 * Alliance builder
+	 */
+	public static final int ALLIANCE_BUILDER_1 = 16706;
+
+	/**
+	 * Alliance builder
+	 */
+	public static final int ALLIANCE_BUILDER_2 = 16707;
+
+	/**
+	 * Alliance builder
+	 */
+	public static final int ALLIANCE_BUILDER_3 = 16708;
+
+	/**
+	 * Alliance builder
+	 */
+	public static final int ALLIANCE_BUILDER_4 = 16709;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_GUARD_1 = 16710;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_GUARD_2 = 16711;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_GUARD_3 = 16712;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_GUARD_4 = 16713;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_1 = 16714;
+
+	/**
+	 * Temple Knight
+	 */
+	public static final int ALLIANCE_TEMPLE_KNIGHT_2 = 16715;
+
+	/**
+	 * Druid
+	 */
+	public static final int ALLIANCE_DRUID_1 = 16716;
+
+	/**
+	 * Druid
+	 */
+	public static final int ALLIANCE_DRUID_2 = 16717;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_1 = 16718;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_2 = 16719;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_3 = 16720;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_4 = 16721;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_5 = 16722;
+
+	/**
+	 * Guardian of Armadyl
+	 */
+	public static final int ALLIANCE_GUARDIAN_OF_ARMADYL_6 = 16723;
+
+	/**
+	 * Armacus Selles
+	 */
+	public static final int ARMACUS_SELLES_POSTGUARDIAN = 16724;
+
+	/**
+	 * Eva Cashien
+	 */
+	public static final int EVA_CASHIEN_SWORD = 16725;
+
+	/**
+	 * Ivy Sophista
+	 */
+	public static final int TFA_IVY_SOPHISTA_NOOP = 16726;
+
+	/**
+	 * Armacus Selles
+	 */
+	public static final int ARMACUS_SELLES_CUTSCENE = 16727;
+
+	/**
+	 * Eva Cashien
+	 */
+	public static final int EVA_CASHIEN_CUTSCENE = 16728;
+
+	/**
+	 * Ivy Sophista
+	 */
+	public static final int TFA_IVY_SOPHISTA_CUTSCENE = 16729;
+
+	/**
+	 * &#60;col=00ffff&#62;Chest&#60;/col&#62;
+	 */
+	public static final int TFA_UNIQUE_CHEST_VAULT_CLOSED = 16730;
+
+	/**
+	 * &#60;col=00ffff&#62;Chest&#60;/col&#62;
+	 */
+	public static final int TFA_UNIQUE_CHEST_VAULT_OPEN = 16731;
+
+	/**
+	 * &#60;col=00ffff&#62;Chest&#60;/col&#62;
+	 */
+	public static final int TFA_REWARDS_CHEST_VAULT_CLOSED_NOTMINE = 16732;
+
+	/**
+	 * &#60;col=00ffff&#62;Chest&#60;/col&#62;
+	 */
+	public static final int TFA_REWARDS_CHEST_VAULT_CLOSED_MINE = 16733;
+
+	/**
+	 * &#60;col=00ffff&#62;Rift&#60;/col&#62;
+	 */
+	public static final int TFA_REWARDS_CHEST_VAULT_OPEN_NOTMINE = 16734;
+
+	/**
+	 * &#60;col=00ffff&#62;Rift&#60;/col&#62;
+	 */
+	public static final int TFA_REWARDS_CHEST_VAULT_OPEN_MINE = 16735;
+	public static final int TFA_REWARDS_CHEST_VAULT_1_CLOSED = 16736;
+	public static final int TFA_REWARDS_CHEST_VAULT_1_OPEN = 16737;
+	public static final int TFA_REWARDS_CHEST_VAULT_2_CLOSED = 16738;
+	public static final int TFA_REWARDS_CHEST_VAULT_2_OPEN = 16739;
+	public static final int TFA_REWARDS_CHEST_VAULT_3_CLOSED = 16740;
+	public static final int TFA_REWARDS_CHEST_VAULT_3_OPEN = 16741;
+	public static final int TFA_REWARDS_CHEST_VAULT_4_CLOSED = 16742;
+	public static final int TFA_REWARDS_CHEST_VAULT_4_OPEN = 16743;
+	public static final int TFA_REWARDS_CHEST_VAULT_5_CLOSED = 16744;
+	public static final int TFA_REWARDS_CHEST_VAULT_5_OPEN = 16745;
+	public static final int TFA_REWARDS_CHEST_VAULT_6_CLOSED = 16746;
+	public static final int TFA_REWARDS_CHEST_VAULT_6_OPEN = 16747;
+	public static final int TFA_REWARDS_CHEST_VAULT_7_CLOSED = 16748;
+	public static final int TFA_REWARDS_CHEST_VAULT_7_OPEN = 16749;
+	public static final int TFA_REWARDS_CHEST_VAULT_8_CLOSED = 16750;
+	public static final int TFA_REWARDS_CHEST_VAULT_8_OPEN = 16751;
+
+	/**
+	 * Sir Lancelot
+	 */
+	public static final int SIR_LANCELOT_CUTSCENE = 16752;
+
+	/**
+	 * Sir Gawain
+	 */
+	public static final int SIR_GAWAIN_CUTSCENE = 16753;
+
+	/**
+	 * Sir Kay
+	 */
+	public static final int SIR_KAY_CUTSCENE = 16754;
+
+	/**
+	 * Sir Bedivere
+	 */
+	public static final int SIR_BEDIVERE_CUTSCENE = 16755;
+
+	/**
+	 * Sir Tristram
+	 */
+	public static final int SIR_TRISTRAM_CUTSCENE = 16756;
+
+	/**
+	 * Sir Pelleas
+	 */
+	public static final int SIR_PELLEAS_CUTSCENE = 16757;
+
+	/**
+	 * Sir Lucan
+	 */
+	public static final int SIR_LUCAN_CUTSCENE = 16758;
+
+	/**
+	 * Sir Palomedes
+	 */
+	public static final int SIR_PALOMEDES_CUTSCENE = 16759;
+
+	/**
+	 * King Arthur
+	 */
+	public static final int KING_ARTHUR_CUTSCENE = 16760;
+
+	/**
+	 * Quartermaster
+	 */
+	public static final int TFA_MIDRAID_SUPPLIES_NPC = 16761;
+
+	/**
+	 * Quartermaster
+	 */
+	public static final int TFA_MIDRAID_SUPPLIES_NPC_INACTIVE = 16762;
+
+	/**
+	 * Orion
+	 */
+	public static final int POH_OCELLUS_PET = 16763;
+
+	/**
+	 * Orion
+	 */
+	public static final int POH_OCELLUS_PET_VARIANT_1 = 16764;
+
+	/**
+	 * Xari
+	 */
+	public static final int POH_XARTH_PET = 16765;
+
+	/**
+	 * Archie
+	 */
+	public static final int POH_GUARDIAN_PET = 16766;
+
+	/**
+	 * Chubbles
+	 */
+	public static final int POH_JELLY_PET = 16767;
+
+	/**
+	 * Cole
+	 */
+	public static final int POH_DAGONHAI_PET = 16768;
+
+	/**
+	 * Zeke
+	 */
+	public static final int POH_EZEKIEL_PET = 16769;
+
+	/**
+	 * Mimi
+	 */
+	public static final int POH_MOIA_PET = 16770;
+
+	/**
+	 * Dork
+	 */
+	public static final int POH_BORK_PET = 16771;
 /* This file is automatically generated. Do not edit. */
 }

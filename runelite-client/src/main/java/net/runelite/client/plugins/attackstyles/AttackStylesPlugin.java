@@ -42,6 +42,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.StructComposition;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarPlayerID;
@@ -127,6 +128,7 @@ public class AttackStylesPlugin extends Plugin
 					castingModeVarbit);
 				updateWarning();
 				processWidgets();
+				fixListeners();
 			}
 		});
 	}
@@ -153,6 +155,25 @@ public class AttackStylesPlugin extends Plugin
 	boolean isWarnedSkillSelected()
 	{
 		return warnedSkillSelected;
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired ev)
+	{
+		if (ev.getScriptId() == ScriptID.COMBAT_INTERFACE_SP)
+		{
+			ev.getScriptEvent().getArguments()[1] = InterfaceID.CombatInterface.TITLE;
+		}
+	}
+
+	private void fixListeners()
+	{
+		// the listeners get attached to retaliate_text by default, but we hide it
+		// so the listeners stop listening to spec chagnges
+		if (client.getWidget(InterfaceID.CombatInterface.TITLE) != null)
+		{
+			client.runScript(ScriptID.COMBAT_INTERFACE_SP, InterfaceID.CombatInterface.TITLE);
+		}
 	}
 
 	@Subscribe

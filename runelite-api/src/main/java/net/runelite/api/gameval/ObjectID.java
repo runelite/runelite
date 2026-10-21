@@ -81006,10 +81006,6 @@ public final class ObjectID extends ObjectID1
 	 * Statue
 	 */
 	public static final int KR_CAMELOT_KNIGHT_STATUE = 26073;
-
-	/**
-	 * Table
-	 */
 	public static final int KR_CAMELOT_TABLE = 26074;
 
 	/**

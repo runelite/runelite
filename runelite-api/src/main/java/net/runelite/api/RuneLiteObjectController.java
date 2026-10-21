@@ -47,6 +47,7 @@ public abstract class RuneLiteObjectController
 	 * first prior to the object being drawn, so that the object renders correctly over top of each tile.
 	 * The default radius is 60, marginally less than 128/2, which works well for models the size of a single tile.
 	 */
+	@Deprecated
 	private int radius = 60;
 
 	/**
@@ -55,6 +56,7 @@ public abstract class RuneLiteObjectController
 	 * radius of the object would not place the object on that tile.
 	 * The default is false.
 	 */
+	@Deprecated
 	private boolean drawFrontTilesFirst = false;
 
 	/**

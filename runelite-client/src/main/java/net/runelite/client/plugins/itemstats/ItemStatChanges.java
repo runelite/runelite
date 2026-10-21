@@ -296,7 +296,7 @@ public class ItemStatChanges
 
 		// Recovery potions
 		final Effect restorePot = combo(heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10)));
-		final Effect energyPot = heal(RUN_ENERGY, 10);
+		final Effect energyPot = heal(RUN_ENERGY, 15);
 		final SingleEffect prayerPot = new PrayerPotion(7);
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
 		final Effect superRestorePot = new SuperRestore(.25, 8);

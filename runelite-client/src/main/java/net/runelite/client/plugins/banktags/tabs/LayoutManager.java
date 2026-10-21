@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.banktags.tabs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -59,6 +60,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -880,6 +882,13 @@ public class LayoutManager
 				}
 			}
 
+			// quiver
+			if (hasQuiver(i, e))
+			{
+				final int quiverAmmo = client.getVarpValue(VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO);
+				l.setItemAtPos(quiverAmmo, 2);
+			}
+
 			// Middle column
 			for (int j = 0; j < 5; ++j)
 			{
@@ -914,6 +923,14 @@ public class LayoutManager
 			Collection<Integer> runePouchVariations = ItemVariationMapping.getVariations(ItemID.BH_RUNE_POUCH);
 			Collection<Integer> divineRunePouchVariations = ItemVariationMapping.getVariations(ItemID.DIVINE_RUNE_POUCH);
 			return runePouchVariations.stream().anyMatch(inv::contains) || divineRunePouchVariations.stream().anyMatch(inv::contains);
+		}
+
+		private boolean hasQuiver(ItemContainer inv, ItemContainer worn)
+		{
+			final Item cape = worn != null ? worn.getItem(EquipmentInventorySlot.CAPE.getSlotIdx()) : null;
+
+			return (cape != null && client.getItemDefinition(cape.getId()).getIntValue(ParamID.QUIVER_AMMO_AVAILABLE) == 1)
+				|| (inv != null && Arrays.stream(inv.getItems()).anyMatch(item -> client.getItemDefinition(item.getId()).getIntValue(ParamID.QUIVER_AMMO_AVAILABLE) == 1));
 		}
 	}
 }
