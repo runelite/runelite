@@ -107,7 +107,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
 	private static final Pattern QUEST_PATTERN_1 = Pattern.compile(".+?ve\\.*? (?<verb>been|rebuilt|.+?ed)? ?(?:the )?'?(?<quest>.+?)'?(?: [Qq]uest)?[!.]?$");
 	private static final Pattern QUEST_PATTERN_2 = Pattern.compile("'?(?<quest>.+?)'?(?: [Qq]uest)? (?<verb>[a-z]\\w+?ed)?(?: f.*?)?[!.]?$");
-	private static final Pattern COMBAT_ACHIEVEMENTS_PATTERN = Pattern.compile("Congratulations, you've completed an? (?<tier>\\w+) combat task: <col=[0-9a-f]+>(?<task>(.+))</col>");
+	private static final Pattern COMBAT_ACHIEVEMENTS_PATTERN = Pattern.compile("Congratulations, you've completed an? (?<tier>\\w+) combat task: @.+?@(?<task>(.+))</col>");
 	private static final ImmutableList<String> RFD_TAGS = ImmutableList.of("Another Cook", "freed", "defeated", "saved");
 	private static final ImmutableList<String> WORD_QUEST_IN_NAME_TAGS = ImmutableList.of("Another Cook", "Doric", "Heroes", "Legends", "Observatory", "Olaf", "Waterfall");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
@@ -150,7 +150,8 @@ public class ScreenshotPlugin extends Plugin
 		TOA_ENTRY_MODE,
 		TOA,
 		TOA_EXPERT_MODE,
-		FORTIS_COLOSSEUM
+		FORTIS_COLOSSEUM,
+		TFA
 	}
 
 	private KillType killType;
@@ -427,6 +428,17 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.startsWith("Your completed Fractured Archive count is"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				killType = KillType.TFA;
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
+				return;
+			}
+		}
+
 		if (chatMessage.startsWith("Your Lunar Chest count is"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
@@ -677,6 +689,19 @@ public class ScreenshotPlugin extends Plugin
 				}
 
 				screenshotSubDir = SD_BOSS_KILLS;
+				killType = null;
+				killCountNumber = 0;
+				break;
+			}
+			case InterfaceID.TFA_CHESTS:
+			{
+				if (killType != KillType.TFA)
+				{
+					return;
+				}
+
+				screenshotSubDir = SD_BOSS_KILLS;
+				fileName = "The Fractured Archive(" + killCountNumber + ")";
 				killType = null;
 				killCountNumber = 0;
 				break;

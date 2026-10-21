@@ -41,54 +41,10 @@ public class WorldUtil
 	 */
 	public static EnumSet<WorldType> toWorldTypes(final EnumSet<net.runelite.http.api.worlds.WorldType> apiTypes)
 	{
-		final EnumSet<WorldType> types = EnumSet.noneOf(WorldType.class);
-
-		for (net.runelite.http.api.worlds.WorldType apiType : apiTypes)
-		{
-			types.add(fromApiWorldType(apiType));
-		}
-
-		return types;
-	}
-
-	private static WorldType fromApiWorldType(net.runelite.http.api.worlds.WorldType apiType)
-	{
-		switch (apiType)
-		{
-			case MEMBERS:
-				return WorldType.MEMBERS;
-			case PVP:
-				return WorldType.PVP;
-			case BOUNTY:
-				return WorldType.BOUNTY;
-			case PVP_ARENA:
-				return WorldType.PVP_ARENA;
-			case SKILL_TOTAL:
-				return WorldType.SKILL_TOTAL;
-			case QUEST_SPEEDRUNNING:
-				return WorldType.QUEST_SPEEDRUNNING;
-			case HIGH_RISK:
-				return WorldType.HIGH_RISK;
-			case LAST_MAN_STANDING:
-				return WorldType.LAST_MAN_STANDING;
-			case BETA_WORLD:
-				return WorldType.BETA_WORLD;
-			case LEGACY_ONLY:
-				return WorldType.LEGACY_ONLY;
-			case EOC_ONLY:
-				return WorldType.EOC_ONLY;
-			case NOSAVE_MODE:
-				return WorldType.NOSAVE_MODE;
-			case TOURNAMENT:
-				return WorldType.TOURNAMENT_WORLD;
-			case FRESH_START_WORLD:
-				return WorldType.FRESH_START_WORLD;
-			case DEADMAN:
-				return WorldType.DEADMAN;
-			case SEASONAL:
-				return WorldType.SEASONAL;
-			default:
-				throw new IllegalArgumentException("unknown world type " + apiType);
-		}
+		int mask = apiTypes.stream()
+			.mapToInt(net.runelite.http.api.worlds.WorldType::getMask)
+			.reduce((left, right) -> left | right)
+			.orElse(0);
+		return WorldType.fromMask(mask);
 	}
 }
