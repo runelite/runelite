@@ -87,6 +87,10 @@ public class SpotAnimLoader
 		{
 			def.debugName = stream.readString();
 		}
+		else if (opcode == 10)
+		{
+			def.clickable = false;
+		}
 		else if (opcode == 40)
 		{
 			int var3 = stream.readUnsignedByte();
@@ -110,6 +114,10 @@ public class SpotAnimLoader
 				def.textureToFind[var4] = (short) stream.readUnsignedShort();
 				def.textureToReplace[var4] = (short) stream.readUnsignedShort();
 			}
+		}
+		else if (opcode == 42)
+		{
+			def.fullRecolor = (short) stream.readUnsignedShort();
 		}
 	}
 }

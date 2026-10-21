@@ -36,7 +36,6 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -74,14 +73,25 @@ class PrayerBarOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showPrayerBar() || !showingPrayerBar)
+		if (!showingPrayerBar || !config.showPrayerBar())
 		{
 			return null;
 		}
 
-		final int height = client.getLocalPlayer().getLogicalHeight() + 10;
-		final LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		final Point canvasPoint = Perspective.localToCanvas(client, localLocation, client.getPlane(), height);
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return null;
+		}
+
+		var coord = local.getLocalLocation();
+		int actorHeight = local.getLogicalHeight() + local.getAnimationHeightOffset() + 10;
+		int actorY = Perspective.getFootprintTileHeight(client, coord, local.getWorldView().getPlane(), local.getFootprintSize());
+		final Point canvasPoint = Perspective.localToCanvas(client, local.getWorldView().getId(), coord.getX(), coord.getY(), actorY - actorHeight);
+		if (canvasPoint == null)
+		{
+			return null;
+		}
 
 		final float ratio = (float) client.getBoostedSkillLevel(Skill.PRAYER) / client.getRealSkillLevel(Skill.PRAYER);
 

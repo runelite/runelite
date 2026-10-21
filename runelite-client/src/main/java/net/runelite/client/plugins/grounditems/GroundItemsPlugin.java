@@ -618,7 +618,7 @@ public class GroundItemsPlugin extends Plugin
 			return itemColor;
 		}
 
-		final int price = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+		final long price = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
 		for (PriceHighlight highlight : priceChecks)
 		{
 			if (price > highlight.getPrice())
@@ -736,7 +736,7 @@ public class GroundItemsPlugin extends Plugin
 		notifier.notify(notificationStringBuilder.toString());
 	}
 
-	private int getValueByMode(int gePrice, int haPrice)
+	private long getValueByMode(long gePrice, int haPrice)
 	{
 		switch (config.valueCalculationMode())
 		{
@@ -761,7 +761,7 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
-		int highestPrice = -1;
+		long highestPrice = -1;
 		GroundItem highestItem = null;
 		Collection<GroundItem> groundItems = collectedGroundItems.row(worldPoint).values();
 		final OwnershipFilterMode ownershipFilterMode = config.ownershipFilterMode();
@@ -792,7 +792,7 @@ public class GroundItemsPlugin extends Plugin
 				continue;
 			}
 
-			int itemPrice = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+			long itemPrice = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
 			if (itemPrice > highestPrice)
 			{
 				highestPrice = itemPrice;
