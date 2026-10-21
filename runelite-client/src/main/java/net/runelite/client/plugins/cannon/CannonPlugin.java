@@ -43,6 +43,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -71,6 +72,9 @@ public class CannonPlugin extends Plugin
 
 	@Getter
 	private boolean cannonPlaced;
+
+	@Getter
+	private boolean cannonDecayed;
 
 	@Getter
 	private WorldArea cannonPosition;
@@ -121,7 +125,17 @@ public class CannonPlugin extends Plugin
 		overlayManager.add(cannonSpotOverlay);
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			cballsLeft = client.getVarpValue(VarPlayerID.ROCKTHROWER);
+			clientThread.invoke(() ->
+			{
+				cballsLeft = client.getVarpValue(VarPlayerID.ROCKTHROWER);
+				cannonPlaced = client.getVarpValue(VarPlayerID.DROPCANNON) == 4;
+				cannonDecayed = client.getVarbitValue(VarbitID.MCANNON_DECAYED) == 1;
+
+				if (cannonPlaced && !cannonDecayed)
+				{
+					addCounter();
+				}
+			});
 		}
 	}
 
@@ -132,6 +146,7 @@ public class CannonPlugin extends Plugin
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
+		cannonDecayed = false;
 		cannonWorld = -1;
 		cannonPosition = null;
 		cannonBallNotificationSent = false;
@@ -269,6 +284,19 @@ public class CannonPlugin extends Plugin
 				removeCounter();
 			}
 		}
+		else if (varbitChanged.getVarbitId() == VarbitID.MCANNON_DECAYED)
+		{
+			cannonDecayed = varbitChanged.getValue() == 1;
+
+			if (cannonDecayed)
+			{
+				removeCounter();
+			}
+			else if (cannonPlaced)
+			{
+				addCounter();
+			}
+		}
 	}
 
 	@Subscribe
@@ -305,7 +333,7 @@ public class CannonPlugin extends Plugin
 
 	private void addCounter()
 	{
-		if (!config.showInfobox() || counter != null)
+		if (!config.showInfobox() || cannonDecayed || counter != null)
 		{
 			return;
 		}

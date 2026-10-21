@@ -58,11 +58,31 @@ public class VarbitChanged
 	/**
 	 * The new value of the varp or varbit
 	 */
-	private int value;
+	private long value;
 
 	@Deprecated
 	public int getIndex()
 	{
 		return varpId;
+	}
+
+	public int getValue()
+	{
+		return (int) value;
+	}
+
+	public void setValue(int value)
+	{
+		this.value = value;
+	}
+
+	public long getLongValue()
+	{
+		return value;
+	}
+
+	public void setLongValue(long value)
+	{
+		this.value = value;
 	}
 }
