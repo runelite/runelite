@@ -40,6 +40,7 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.Filepath;
 
 /**
  * General audio playback manager.
@@ -69,7 +70,22 @@ public class AudioPlayer
 	}
 
 	/**
-	 * Plays an audio stream loaded from a class resource.
+	 * Plays an audio stream loaded from a filepath.
+	 *
+	 * @param file The file object pointing to the audio data.
+	 * @param gain Gain control (in dB) to apply to audio playback.
+	 */
+	public void play(Filepath file, float gain)
+		throws IOException, UnsupportedAudioFileException, LineUnavailableException
+	{
+		try (BufferedInputStream stream = new BufferedInputStream(file.openInputStream()))
+		{
+			play(stream, gain);
+		}
+	}
+
+	/**
+	 * Plays an audio stream loaded from a resource.
 	 *
 	 * @param c    The class with which to load the resource.
 	 * @param path The class resource path.

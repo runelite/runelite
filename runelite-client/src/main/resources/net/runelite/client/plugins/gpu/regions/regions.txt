@@ -460,3 +460,7 @@ r 42 158
 // keldagrim tunnel
 n
 r 43 158
+
+// toa lobby
+n
+r 52 142

@@ -147,4 +147,10 @@ public class EmojiPluginTest
 	{
 		assertEquals("test <img=0>", emojiPlugin.updateMessage("test :test:"));
 	}
+
+	@Test
+	public void testNamedAfterEmoji()
+	{
+		assertEquals("<img=0> <img=1>", emojiPlugin.updateMessage(":) :test:"));
+	}
 }

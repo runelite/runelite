@@ -227,9 +227,9 @@ public class ItemPricesPlugin extends Plugin
 			return null;
 		}
 
-		int gePrice = 0;
+		long gePrice = 0;
 		int haPrice = 0;
-		int haProfit = 0;
+		long haProfit = 0;
 		final int itemHaPrice = itemDef.getHaPrice();
 
 		if (config.showGEPrice())
@@ -253,12 +253,12 @@ public class ItemPricesPlugin extends Plugin
 		return null;
 	}
 
-	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
+	private String stackValueText(int qty, long gePrice, int haValue, long haProfit)
 	{
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("GE: ")
-				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize(gePrice * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -291,7 +291,7 @@ public class ItemPricesPlugin extends Plugin
 
 			itemStringBuilder.append("</br>");
 			itemStringBuilder.append("HA Profit: ")
-				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
+				.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit * qty), haColor))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -307,13 +307,13 @@ public class ItemPricesPlugin extends Plugin
 		return text;
 	}
 
-	private int calculateHAProfit(int haPrice, int gePrice)
+	private long calculateHAProfit(int haPrice, long gePrice)
 	{
-		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURERUNE);
+		long natureRunePrice = itemManager.getItemPrice(ItemID.NATURERUNE);
 		return haPrice - gePrice - natureRunePrice;
 	}
 
-	private static Color haProfitColor(int haProfit)
+	private static Color haProfitColor(long haProfit)
 	{
 		return haProfit >= 0 ? Color.GREEN : Color.RED;
 	}
