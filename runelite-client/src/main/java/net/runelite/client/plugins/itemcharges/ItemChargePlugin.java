@@ -37,14 +37,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
+import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -140,6 +144,9 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
 		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
+	private static final Pattern INOCULATION_BRACELET_CHECK_PATTERN = Pattern.compile(
+		"Your bracelet will protect you from (\\d{1,3}) points of disease damage\\."
+	);
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -150,8 +157,11 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
+	private static final int MAX_INOCULATION_BRACELET_CHARGES = 275;
+	private static final int INOCULATION_BRACELET_CHAT_DECREMENT_TICK_WINDOW = 3;
 
 	private boolean varrockPlatebodySmeltTwo;
+	private int lastInoculationBraceletChatTick = -1;
 
 	@Inject
 	private Client client;
@@ -265,6 +275,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+			Matcher inoculationBraceletCheckMatcher = INOCULATION_BRACELET_CHECK_PATTERN.matcher(message);
 
 			if (message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -432,6 +443,11 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateBraceletOfClayCharges(Integer.parseInt(braceletOfClayCheckMatcher.group(1)));
 			}
+			else if (inoculationBraceletCheckMatcher.find())
+			{
+				updateInoculationBraceletCharges(Integer.parseInt(inoculationBraceletCheckMatcher.group(1)));
+				lastInoculationBraceletChatTick = client.getTickCount();
+			}
 			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT) || message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN))
 			{
 				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
@@ -458,7 +474,6 @@ public class ItemChargePlugin extends Plugin
 				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
-
 			varrockPlatebodySmeltTwo = message.equals(RING_OF_FORGING_VARROCK_PLATEBODY);
 		}
 	}
@@ -472,6 +487,39 @@ public class ItemChargePlugin extends Plugin
 		}
 
 		updateInfoboxes();
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		final Actor actor = event.getActor();
+		final Hitsplat hitsplat = event.getHitsplat();
+		if (actor != client.getLocalPlayer()
+			|| hitsplat.getHitsplatType() != HitsplatID.DISEASE_BLOCKED
+			|| hitsplat.getAmount() != 0)
+		{
+			return;
+		}
+
+		final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+		if (equipment == null || !equipment.contains(ItemID.JEWL_BRACELET_OF_INNOCULATION))
+		{
+			return;
+		}
+
+		final int tick = client.getTickCount();
+		if (lastInoculationBraceletChatTick != -1
+			&& tick - lastInoculationBraceletChatTick <= INOCULATION_BRACELET_CHAT_DECREMENT_TICK_WINDOW)
+		{
+			lastInoculationBraceletChatTick = -1;
+			return;
+		}
+
+		final int charges = getItemCharges(ItemChargeConfig.KEY_INOCULATION_BRACELET);
+		if (charges > 0)
+		{
+			updateInoculationBraceletCharges(Ints.constrainToRange(charges - 1, 0, MAX_INOCULATION_BRACELET_CHARGES));
+		}
 	}
 
 	@Subscribe
@@ -518,6 +566,10 @@ public class ItemChargePlugin extends Plugin
 						case ItemID.EXPEDITIOUS_BRACELET:
 							log.debug("Reset expeditious bracelet");
 							updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
+							break;
+						case ItemID.JEWL_BRACELET_OF_INNOCULATION:
+							log.debug("Reset inoculation bracelet");
+							updateInoculationBraceletCharges(MAX_INOCULATION_BRACELET_CHARGES);
 							break;
 					}
 				}
@@ -583,6 +635,12 @@ public class ItemChargePlugin extends Plugin
 	private void updateBraceletOfClayCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
+
+	private void updateInoculationBraceletCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_INOCULATION_BRACELET, value);
 		updateInfoboxes();
 	}
 
