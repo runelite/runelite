@@ -352,6 +352,142 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testPersonalBestRestatedWithoutTenths()
+	{
+		when(configManager.getRSProfileConfiguration("personalbest", "kree'arra", double.class)).thenReturn(79.2);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("kree'arra"), any());
+	}
+
+	@Test
+	public void testPersonalBestRestatedOverAnotherTime()
+	{
+		// 1:19 is 78.6 or 79.2, never 79.8
+		when(configManager.getRSProfileConfiguration("personalbest", "kree'arra", double.class)).thenReturn(79.8);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "kree'arra", 79.0);
+	}
+
+	@Test
+	public void testNewPersonalBestWithoutTenths()
+	{
+		// A new pb replaces the old one, even one it rounds from: never read as a restatement
+		lenient().when(configManager.getRSProfileConfiguration("personalbest", "tzkal-zuk", double.class)).thenReturn(104 * 60 + 31.2);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your TzKal-Zuk kill count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>104:31</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "tzkal-zuk", 104 * 60 + 31.0);
+	}
+
+	@Test
+	public void testRaidPersonalBestRestatedBeforeKillCount()
+	{
+		// 13:53 is the 13:52.80 solo record and the 13:53.40 overall one, shown without tenths
+		when(configManager.getRSProfileConfiguration("personalbest", "theatre of blood", double.class)).thenReturn(13 * 60 + 53.4);
+		when(configManager.getRSProfileConfiguration("personalbest", "theatre of blood solo", double.class)).thenReturn(13 * 60 + 52.8);
+		when(client.getVarbitValue(VarbitID.TOB_CLIENT_P0)).thenReturn(1);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
+				"Duration: <col=ff0000>2:42</col><br>" +
+				"Theatre of Blood completion time: <col=ff0000>17:00</col>. Personal best: 13:53", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("theatre of blood"), any());
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("theatre of blood solo"), any());
+	}
+
+	@Test
+	public void testRaidNewPersonalBestWithoutTenthsBeforeKillCount()
+	{
+		// 17:00.40 also shows as 17:00, but a new personal best replaces it: the run was 16:59.80
+		when(configManager.getRSProfileConfiguration("personalbest", "theatre of blood", double.class)).thenReturn(17 * 60 + 0.4);
+		when(client.getVarbitValue(VarbitID.TOB_CLIENT_P0)).thenReturn(1);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
+				"Duration: <col=ff0000>2:42</col><br>" +
+				"Theatre of Blood completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>74</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 17 * 60.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood solo", 17 * 60.0);
+	}
+
+	@Test
+	public void testHsPersonalBestRestatedWithoutTenths()
+	{
+		when(configManager.getRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", double.class)).thenReturn(4 * 60 + 40.2);
+		when(configManager.getRSProfileConfiguration("personalbest", "hallowed sepulchre", double.class)).thenReturn(9 * 60 + 49.8);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Floor 5 time: <col=ff0000>4:46</col>. Personal best: 4:40<br>Overall time: <col=ff0000>9:53</col>. Personal best: 9:50<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("hallowed sepulchre floor 5"), any());
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("hallowed sepulchre"), any());
+	}
+
+	@Test
+	public void testAdventureLogRestatedWithoutTenths()
+	{
+		when(configManager.getRSProfileConfiguration("personalbest", "tempoross", double.class)).thenReturn(3 * 60 + 54.4);
+		when(configManager.getRSProfileConfiguration("personalbest", "tztok-jad", double.class)).thenReturn(33 * 60 + 54.0);
+
+		Widget advLogWidget = mock(Widget.class);
+		Widget title = mock(Widget.class);
+		when(title.getText()).thenReturn("The Exploits of " + PLAYER_NAME);
+		when(advLogWidget.getChildren()).thenReturn(new Widget[]{title});
+		when(client.getWidget(InterfaceID.Menu.LJ_LAYER2)).thenReturn(advLogWidget);
+		String[] log = {
+			"Tempoross",
+			"Fastest run: <col=ffffff>3:54</col>",
+			"",
+			"TzHaar Fight Cave",
+			"Fastest run: <col=ffffff>33:53</col>",
+			"",
+		};
+		Widget[] lines = Arrays.stream(log).map(line ->
+		{
+			Widget w = mock(Widget.class);
+			when(w.getText()).thenReturn(line);
+			return w;
+		}).toArray(Widget[]::new);
+		Widget scroll = mock(Widget.class);
+		when(scroll.getStaticChildren()).thenReturn(lines);
+		when(client.getWidget(InterfaceID.Journalscroll.TEXTLAYER)).thenReturn(scroll);
+
+		WidgetLoaded advLogEvent = new WidgetLoaded();
+		advLogEvent.setGroupId(InterfaceID.MENU);
+		chatCommandsPlugin.onWidgetLoaded(advLogEvent);
+		chatCommandsPlugin.onGameTick(new GameTick());
+		WidgetLoaded countersLogEvent = new WidgetLoaded();
+		countersLogEvent.setGroupId(InterfaceID.JOURNALSCROLL);
+		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		// The log's 3:54 is the precise 3:54.40 kept; its 33:53 is a different time from the whole 33:54 kept
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("tempoross"), any());
+		verify(configManager).setRSProfileConfiguration("personalbest", "tztok-jad", 33 * 60 + 53.0);
+	}
+
+	@Test
 	public void testPersonalBestNoTrailingPeriod()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>0:59</col>. Personal best: 0:55";
@@ -622,6 +758,40 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 51);
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 37 * 60 + 4.2);
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 24+ players", 37 * 60 + 4.2);
+	}
+
+	@Test
+	public void testCoXPersonalBestRestatedWithoutTenths()
+	{
+		// 40:03 is the 40:03.40 overall record and the 40:02.80 three-player one, shown without tenths
+		when(configManager.getRSProfileConfiguration("personalbest", "chambers of xeric", double.class)).thenReturn(40 * 60 + 3.4);
+		when(configManager.getRSProfileConfiguration("personalbest", "chambers of xeric 3 players", double.class)).thenReturn(40 * 60 + 2.8);
+
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "",
+			"<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>41:10</col> Personal best: </col><col=ff0000>40:03</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("chambers of xeric"), any());
+		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("chambers of xeric 3 players"), any());
+	}
+
+	@Test
+	public void testCoXNewPersonalBestWithoutTenths()
+	{
+		// 40:00.40 also shows as 40:00, but a new personal best replaces it: the run was 39:59.80
+		when(configManager.getRSProfileConfiguration("personalbest", "chambers of xeric", double.class)).thenReturn(40 * 60 + 0.4);
+		lenient().when(configManager.getRSProfileConfiguration("personalbest", "chambers of xeric 3 players", double.class)).thenReturn(40 * 60 + 0.4);
+
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "",
+			"<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>40:00</col> (new personal best)</col>>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>53</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 40 * 60.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 3 players", 40 * 60.0);
 	}
 
 	@Test
