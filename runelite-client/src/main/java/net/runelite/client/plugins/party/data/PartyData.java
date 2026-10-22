@@ -49,4 +49,7 @@ public class PartyData
 	private int runEnergy;
 	private int specEnergy;
 	private boolean vengeanceActive;
+
+	// Ready check state: null = no response in the current check, TRUE = ready, FALSE = not ready
+	private Boolean ready;
 }
