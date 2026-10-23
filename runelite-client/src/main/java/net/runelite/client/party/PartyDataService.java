@@ -27,7 +27,6 @@ package net.runelite.client.party;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -57,19 +56,17 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.party.messages.PartyData;
 import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.Text;
 
 @Singleton
 public class PartyDataService
 {
-	private static final int DIRTY_LOCATION = 0x1;
-	private static final int DIRTY_INV = 0x2;
-	private static final int DIRTY_WORN = 0x4;
-	private static final int DIRTY_RUNEPOUCH = 0x08;
-	private static final int DIRTY_QUIVER = 0x10;
-	private static final int DIRTY_VENGEANCE = 0x20;
+	private static final int DIRTY_INV = 0x1;
+	private static final int DIRTY_WORN = 0x2;
+	private static final int DIRTY_RUNEPOUCH = 0x04;
+	private static final int DIRTY_QUIVER = 0x08;
+	private static final int DIRTY_VENGEANCE = 0x10;
 
 	private static class Subscription
 	{
@@ -94,6 +91,7 @@ public class PartyDataService
 	private final int[] lastStatBoost = new int[Skill.values().length];
 	private WorldPoint lastLocation;
 
+	private int updateTicks;
 	private int dirtyMask;
 	private int statDirty, statBoostDirty;
 
@@ -261,31 +259,14 @@ public class PartyDataService
 		}
 	}
 
-	@Schedule(
-		period = 10,
-		unit = ChronoUnit.SECONDS
-	)
-	private void updateLocation()
-	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			WorldPoint location = client.getLocalPlayer().getWorldLocation();
-			if (location.equals(lastLocation))
-			{
-				return;
-			}
-
-			lastLocation = location;
-			dirtyMask |= DIRTY_LOCATION;
-		}
-	}
-
 	private void checkStateChanged(boolean forceSend)
 	{
 		if (!partyService.isInParty())
 		{
 			return;
 		}
+
+		++updateTicks;
 
 		final int runEnergy = (int) Math.ceil(client.getEnergy() / 1000.0) * 10; // flatten to reduce network load
 		final int specEnergy = client.getVarpValue(VarPlayerID.SA_ENERGY) / 10;
@@ -295,6 +276,7 @@ public class PartyDataService
 
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
+		final WorldPoint location = localPlayer == null ? null : localPlayer.getWorldLocation();
 
 		final PartyData update = new PartyData();
 		boolean hasChange = false;
@@ -305,9 +287,9 @@ public class PartyDataService
 			hasChange = true;
 			update.setCharacterName(characterName);
 		}
-		if (isSubscribed(PartyDataType.COORD) && lastLocation != null && (forceSend || (dirtyMask & DIRTY_LOCATION) != 0))
+		if (isSubscribed(PartyDataType.COORD) && lastLocation != null && (forceSend || !lastLocation.equals(location)))
 		{
-			hasChange = true;
+			hasChange |= updateTicks > 16;
 			update.setCoord(serializeCoord(lastLocation));
 		}
 		if (isSubscribed(PartyDataType.ENERGY) && (forceSend || runEnergy != lastRunEnergy))
@@ -376,8 +358,10 @@ public class PartyDataService
 			lastPrayer0 = prayer0;
 			lastPrayerAllActiveAlternate0 = prayerAllActiveAlternate0;
 			lastPrayerRuinous0 = prayerRuinous0;
+			updateTicks = 0;
 			dirtyMask = 0;
 			statDirty = statBoostDirty = 0;
+			lastLocation = location;
 
 			partyService.send(update);
 		}
