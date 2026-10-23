@@ -223,6 +223,32 @@ public class TimersAndBuffsPluginTest
 	}
 
 	@Test
+	public void testFreezeTimerOldFormat()
+	{
+		when(timersAndBuffsConfig.showFreezes()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>You have been frozen!</col>", "", 0);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.ICEBARRAGE, infoBox.getTimer());
+	}
+
+	@Test
+	public void testFreezeTimerNewFormat()
+	{
+		when(timersAndBuffsConfig.showFreezes()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "@mes_hl_red@You have been frozen!</col>", "", 0);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.ICEBARRAGE, infoBox.getTimer());
+	}
+
+	@Test
 	public void testTzhaarTimer()
 	{
 		when(timersAndBuffsConfig.showTzhaarTimers()).thenReturn(true);
@@ -370,7 +396,7 @@ public class TimersAndBuffsPluginTest
 	{
 		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=0000b2>Your defence against Arceuus magic has been strengthened.</col>", "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "@mes_hl_blu@Your defence against Arceuus magic has been strengthened.</col>", "", 0);
 		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
@@ -418,7 +444,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
 
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Your thieving abilities have been enhanced.</col>", "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "@mes_hl_pur@Your thieving abilities have been enhanced.</col>", "", 0);
 		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
@@ -449,7 +475,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.MAGIC)).thenReturn(60);
 
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef0083>You resurrect a greater zombified thrall.</col>", "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "@mes_hl_mag@You resurrect a greater zombified thrall.</col>", "", 0);
 		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
@@ -480,7 +506,7 @@ public class TimersAndBuffsPluginTest
 	{
 		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(61);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have placed a Mark of Darkness upon yourself.</col>", "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "@mes_hl_pur@You have placed a Mark of Darkness upon yourself.</col>", "", 0);
 		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
@@ -494,7 +520,7 @@ public class TimersAndBuffsPluginTest
 	public void testMarkOfDarknessCooldown()
 	{
 		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have placed a Mark of Darkness upon yourself.</col>", "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "@mes_hl_pur@You have placed a Mark of Darkness upon yourself.</col>", "", 0);
 		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);

@@ -36,11 +36,12 @@ class ItemThreshold
 		MORE_THAN
 	}
 
-	private final String itemName;
-	private final int quantity;
-	private final Inequality inequality;
+	String name;
+	int quantity;
+	Inequality inequality;
+	boolean wildcard;
 
-	static ItemThreshold fromConfigEntry(String entry)
+	static ItemThreshold fromName(String entry)
 	{
 		if (Strings.isNullOrEmpty(entry))
 		{
@@ -49,6 +50,7 @@ class ItemThreshold
 
 		Inequality operator = Inequality.MORE_THAN;
 		int qty = 0;
+		boolean wildcard = entry.contains("*");
 
 		for (int i = entry.length() - 1; i >= 0; i--)
 		{
@@ -80,7 +82,7 @@ class ItemThreshold
 			break;
 		}
 
-		return new ItemThreshold(entry.trim(), qty, operator);
+		return new ItemThreshold(entry.trim(), qty, operator, wildcard);
 	}
 
 	boolean quantityHolds(int itemCount)

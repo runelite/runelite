@@ -218,6 +218,11 @@ class InstanceMapOverlay extends Overlay
 	private void drawPlayerDot(Graphics2D graphics, Player player,
 		Color dotColor, Color outlineColor, int expandedChunks)
 	{
+		if (player == null)
+		{
+			return;
+		}
+
 		LocalPoint playerLoc = player.getLocalLocation();
 
 		int tileX = playerLoc.getSceneX() + expandedChunks * 8;

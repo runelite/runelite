@@ -89,7 +89,7 @@ public class BankPluginTest
 
 		// 400k GE Price * 30 = 12m
 		when(itemManager.getItemPrice(itemId))
-			.thenReturn(400_000);
+			.thenReturn(400_000L);
 		when(itemManager.getItemComposition(itemId))
 			.thenReturn(comp);
 
@@ -142,7 +142,7 @@ public class BankPluginTest
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
 			.thenReturn(whipComp);
 		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP))
-			.thenReturn(3); // 1b * 3 overflows
+			.thenReturn(3L); // 1b * 3 overflows
 
 		final ContainerPrices prices = bankPlugin.calculate(items);
 		assertNotNull(prices);

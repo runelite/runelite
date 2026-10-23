@@ -56,14 +56,14 @@ public interface GrandExchangeOffer
 	 *
 	 * @return the offer price
 	 */
-	int getPrice();
+	long getPrice();
 
 	/**
 	 * Gets the total amount of money spent so far.
 	 *
 	 * @return the amount spent
 	 */
-	int getSpent();
+	long getSpent();
 
 	/**
 	 * Gets the current state of the offer.

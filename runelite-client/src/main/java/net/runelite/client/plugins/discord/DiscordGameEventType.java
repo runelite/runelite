@@ -336,6 +336,7 @@ enum DiscordGameEventType
 	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, 12889, 13136, 13137, 13138, 13139, 13140, 13141, 13145, 13393, 13394, 13395, 13396, 13397, 13401),
 	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, 12611, 12612, 12613, 12867, 12869, 13122, 13123, 13125, 13379),
 	RAIDS_TOMBS_OF_AMASCUT("Tombs of Amascut", DiscordAreaType.RAIDS, 14160, 14162, 14164, 14674, 14676, 15184, 15186, 15188, 15696, 15698, 15700),
+	RAIDS_THE_FRACTURED_ARCHIVE("The Fractured Archive", DiscordAreaType.RAIDS, 16214, 16726, 16215, 16727, 16216, 16728, 16472, 16474),
 	RAIDS_JALTEVAS_PYRAMID("Jaltevas Pyramid", DiscordAreaType.RAIDS, 13454),
 	RAIDS_OSMUMTENS_BURIAL_CHAMBER("Osmumten's Burial Chamber", DiscordAreaType.RAIDS, 14672),
 
@@ -442,7 +443,7 @@ enum DiscordGameEventType
 	REGION_OURANIA_HUNTER("Ourania Hunter Area", DiscordAreaType.REGIONS, 9778),
 	REGION_PIRATES_COVE("Pirates' Cove", DiscordAreaType.REGIONS, 8763),
 	REGION_PISCATORIS_HUNTER_AREA("Piscatoris Hunter Area", DiscordAreaType.REGIONS, 9015, 9016, 9271, 9272, 9528),
-	REGION_POH("Player Owned House", DiscordAreaType.REGIONS, 7513, 7514, 7769, 7770),
+	REGION_POH("Player Owned House", DiscordAreaType.REGIONS, 7534, 7535, 7790, 7791, 8046, 8047, 8302, 8303),
 	REGION_POISON_WASTE("Poison Waste", DiscordAreaType.REGIONS, 8752, 9008),
 	REGION_PORT_TYRAS("Port Tyras", DiscordAreaType.REGIONS, 8496),
 	REGION_PURO_PURO("Puro-Puro", DiscordAreaType.REGIONS, 10307),
@@ -623,6 +624,7 @@ enum DiscordGameEventType
 			case RUNECRAFT: return TRAINING_RUNECRAFT;
 			case HUNTER: return TRAINING_HUNTER;
 			case CONSTRUCTION: return TRAINING_CONSTRUCTION;
+			case SAILING: return TRAINING_SAILING;
 			default: return null;
 		}
 	}

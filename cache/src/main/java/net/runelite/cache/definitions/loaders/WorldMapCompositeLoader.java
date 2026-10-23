@@ -31,9 +31,17 @@ import net.runelite.cache.region.Position;
 
 public class WorldMapCompositeLoader
 {
+	private boolean rev238 = true;
+
+	public WorldMapCompositeLoader configureForRevision(int rev)
+	{
+		rev238 = rev > 425;
+		return this;
+	}
+
 	public WorldMapCompositeDefinition load(byte[] buffer)
 	{
-		WorldMapDataLoader worldMapDataLoader = new WorldMapDataLoader();
+		WorldMapDataLoader worldMapDataLoader = new WorldMapDataLoader(rev238);
 		WorldMapElementLoader worldMapElementLoader = new WorldMapElementLoader();
 
 		WorldMapCompositeDefinition worldMapCompositeDefinition = new WorldMapCompositeDefinition();

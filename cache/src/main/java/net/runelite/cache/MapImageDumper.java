@@ -158,7 +158,7 @@ public class MapImageDumper
 	{
 		Options options = new Options();
 		options.addOption(Option.builder().longOpt("cachedir").hasArg().required().build());
-		options.addOption(Option.builder().longOpt("xteapath").hasArg().required().build());
+		options.addOption(Option.builder().longOpt("xteapath").hasArg().build());
 		options.addOption(Option.builder().longOpt("outputdir").hasArg().required().build());
 
 		CommandLineParser parser = new DefaultParser();
@@ -179,9 +179,12 @@ public class MapImageDumper
 		final String outputDirectory = cmd.getOptionValue("outputdir");
 
 		XteaKeyManager xteaKeyManager = new XteaKeyManager();
-		try (FileInputStream fin = new FileInputStream(xteaJSONPath))
+		if (xteaJSONPath != null)
 		{
-			xteaKeyManager.loadKeys(fin);
+			try (FileInputStream fin = new FileInputStream(xteaJSONPath))
+			{
+				xteaKeyManager.loadKeys(fin);
+			}
 		}
 
 		File base = new File(cacheDirectory);

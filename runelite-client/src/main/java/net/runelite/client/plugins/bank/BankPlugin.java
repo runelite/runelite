@@ -63,6 +63,7 @@ import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.events.WidgetClosed;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -84,7 +85,7 @@ public class BankPlugin extends Plugin
 {
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
-	private static final String DEPOSIT_LOOT = "Deposit loot";
+	private static final String EMPTY_CONTAINERS = "Empty containers";
 	private static final String TOGGLE_PLACEHOLDERS = "Always set placeholders";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
 	private static final int POTION_STORE_TAB = 15;
@@ -114,6 +115,7 @@ public class BankPlugin extends Plugin
 	private KeyManager keyManager;
 
 	private boolean forceRightClickFlag;
+	private boolean bankOpen;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
 	private ContainerPrices prices;
@@ -131,8 +133,7 @@ public class BankPlugin extends Plugin
 			Keybind keybind = config.searchKeybind();
 			if (keybind.matches(e))
 			{
-				Widget bankContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
-				if (bankContainer != null && !bankContainer.isSelfHidden())
+				if (bankOpen)
 				{
 					log.debug("Search hotkey pressed");
 					bankSearch.initSearch();
@@ -157,8 +158,9 @@ public class BankPlugin extends Plugin
 							return;
 						}
 
-						client.createScriptEvent(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
+						client.createScriptEventBuilder(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
 							.setOp(1)
+							.build()
 							.run();
 					});
 					e.consume();
@@ -197,6 +199,7 @@ public class BankPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		bankOpen = false;
 		keyManager.registerKeyListener(searchHotkeyListener);
 	}
 
@@ -206,6 +209,7 @@ public class BankPlugin extends Plugin
 		keyManager.unregisterKeyListener(searchHotkeyListener);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
+		bankOpen = false;
 		itemQuantities = null;
 		searchString = null;
 	}
@@ -225,7 +229,7 @@ public class BankPlugin extends Plugin
 
 			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+				|| (entry.getOption().equals(EMPTY_CONTAINERS) && config.rightClickBankLoot())
 				|| (entry.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders())
 			)
 			{
@@ -240,7 +244,7 @@ public class BankPlugin extends Plugin
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+			|| (event.getOption().equals(EMPTY_CONTAINERS) && config.rightClickBankLoot())
 			|| (event.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders()))
 		{
 			forceRightClickFlag = true;
@@ -290,8 +294,10 @@ public class BankPlugin extends Plugin
 					}
 
 					log.debug("Bank pin keypress");
-
-					client.runScript(onOpListener);
+					client.createScriptEventBuilder(onOpListener)
+						.build()
+						.setCanSendPackets(true)
+						.run();
 					// Block the key press this tick in keypress_permit so it doesn't enter the chatbox
 					client.setVarcIntValue(VarClientID.KEYBOARD_TIMEOUT, client.getGameCycle() + 1);
 				});
@@ -303,9 +309,23 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
+		if (event.getGroupId() == InterfaceID.BANKMAIN)
+		{
+			bankOpen = true;
+		}
+
 		if (event.getGroupId() == InterfaceID.SEED_VAULT && config.seedVaultValue())
 		{
 			clientThread.invokeLater(this::updateSeedVaultTotal);
+		}
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed event)
+	{
+		if (event.getGroupId() == InterfaceID.BANKMAIN)
+		{
+			bankOpen = false;
 		}
 	}
 
@@ -495,7 +515,7 @@ public class BankPlugin extends Plugin
 
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int qty = matcher.group("individual") != null ? 1 : itemQuantities.count(itemId);
-		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
+		final long gePrice = itemManager.getItemPrice(itemId) * qty;
 		final long haPrice = (long) itemComposition.getHaPrice() * qty;
 		final boolean isPlaceholder = itemComposition.getPlaceholderTemplateId() != -1;
 
@@ -609,7 +629,7 @@ public class BankPlugin extends Plugin
 			}
 
 			alch += (long) getHaPrice(id) * qty;
-			ge += (long) itemManager.getItemPrice(id) * qty;
+			ge += itemManager.getItemPrice(id) * qty;
 		}
 
 		return new ContainerPrices(ge, alch);
@@ -648,7 +668,7 @@ public class BankPlugin extends Plugin
 				if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
 				{
 					final int alchPrice = getHaPrice(child.getItemId());
-					geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
+					geTotal += itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
 					haTotal += (long) alchPrice * child.getItemQuantity();
 				}
 			}
@@ -722,7 +742,7 @@ public class BankPlugin extends Plugin
 
 			log.debug("Potion store has {} of {} (doses={}, withdrawDoses={})", qty, itemId, doses, withdrawDoses);
 
-			geTotal += (long) itemManager.getItemPrice(itemId) * qty;
+			geTotal += itemManager.getItemPrice(itemId) * qty;
 			haTotal += (long) getHaPrice(itemId) * qty;
 		}
 

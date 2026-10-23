@@ -187,6 +187,17 @@ public class ChatFilterPluginTest
 	}
 
 	@Test
+	public void testFilterTags()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+		when(chatFilterConfig.filteredWords()).thenReturn("@");
+		when(chatFilterConfig.stripAccents()).thenReturn(true);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals("* <lt>lt<gt> <lt>", chatFilterPlugin.censorMessage("Blue", "<at> <lt>lt<gt> <lt>"));
+	}
+
+	@Test
 	public void testFilterUnicode()
 	{
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);

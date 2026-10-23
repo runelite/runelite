@@ -54,6 +54,8 @@ public class RuntimeConfig
 	private Set<Integer> healthCheckDeadNpcs; // npc is only dead if healthratio == 0
 
 	private Set<String> outdatedClientVersions;
+	private String[] outdatedPluginVersions;
+
 	private String[] updateLauncherWinVers;
 	private double updateRollout;
 
@@ -94,5 +96,6 @@ public class RuntimeConfig
 		healthCheckDeadNpcs = config.healthCheckDeadNpcs;
 
 		outdatedClientVersions = config.outdatedClientVersions;
+		outdatedPluginVersions = config.outdatedPluginVersions;
 	}
 }

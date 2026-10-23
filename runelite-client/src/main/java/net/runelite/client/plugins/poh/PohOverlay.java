@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -47,7 +48,8 @@ public class PohOverlay extends Overlay
 		PohIcons.TROLLSTRONGHOLD, PohIcons.CARRALLANGER, PohIcons.CATHERBY, PohIcons.WEISS, PohIcons.GHORROCK,
 		PohIcons.APEATOLLDUNGEON, PohIcons.BARROWS, PohIcons.BATTLEFRONT, PohIcons.CEMETERY, PohIcons.DRAYNORMANOR,
 		PohIcons.FENKENSTRAINSCASTLE, PohIcons.HARMONYISLAND, PohIcons.ARCEUUSLIBRARY, PohIcons.MINDALTAR, PohIcons.SALVEGRAVEYARD,
-		PohIcons.WESTARDOUGNE, PohIcons.CIVITASILLAFORTIS,
+		PohIcons.WESTARDOUGNE, PohIcons.CIVITASILLAFORTIS, PohIcons.TROLLHEIM, PohIcons.PADDEWWA, PohIcons.LASSAR, PohIcons.DAREEYAK,
+		PohIcons.OURANIA, PohIcons.BARBARIAN, PohIcons.KHAZARD, PohIcons.ICEPLATEAU, PohIcons.RESPAWN, PohIcons.BOAT
 	};
 
 	private static final int MAX_DISTANCE = 2350;
@@ -72,7 +74,13 @@ public class PohOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return null;
+		}
+
+		LocalPoint localLocation = player.getLocalLocation();
 		plugin.getPohObjects().forEach((object, tile) ->
 		{
 			LocalPoint location = object.getLocalLocation();

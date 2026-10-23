@@ -197,4 +197,16 @@ public class Layout
 		}
 		layout = n;
 	}
+
+	int lastItemIndex()
+	{
+		for (int i = layout.length - 1; i >= 0; --i)
+		{
+			if (layout[i] != -1)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
 }

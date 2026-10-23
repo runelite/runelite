@@ -32,8 +32,6 @@ dependencies {
     implementation("net.runelite:cache:${project.version}")
 
     implementation(libs.guava)
-    implementation(libs.tomlj)
-    implementation(libs.javapoet)
 }
 
 gradlePlugin {
@@ -41,10 +39,6 @@ gradlePlugin {
         create("rl-assemble") {
             id = "net.runelite.runelite-gradle-plugin.assemble"
             implementationClass = "net.runelite.gradle.assemble.AssemblePlugin"
-        }
-        create("rl-component") {
-            id = "net.runelite.runelite-gradle-plugin.component"
-            implementationClass = "net.runelite.gradle.component.ComponentPlugin"
         }
         create("rl-index") {
             id = "net.runelite.runelite-gradle-plugin.index"

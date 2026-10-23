@@ -41,9 +41,9 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.ParamID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.annotations.Interface;
-import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.WidgetDrag;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -185,10 +185,10 @@ class PrayerReorder
 	}
 
 	@Subscribe
-	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
+	public void onWidgetDrag(WidgetDrag event)
 	{
 		// is dragging widget and mouse button released
-		if (event.isDraggingWidget() && client.getMouseCurrentButton() == 0)
+		if (client.getMouseCurrentButton() == 0)
 		{
 			Widget draggedWidget = client.getDraggedWidget();
 			Widget draggedOnWidget = client.getDraggedOnWidget();
@@ -250,33 +250,13 @@ class PrayerReorder
 		}
 	}
 
-	// from script7823
 	private EnumComposition getPrayerBookEnum(int prayerbook)
 	{
 		if (prayerbook == 1)
 		{
 			return client.getEnum(EnumID.PRAYERS_RUINOUS);
 		}
-
-		boolean deadeye = client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED) != 0;
-		boolean vigour = client.getVarbitValue(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED) != 0;
-
-		if (deadeye && vigour)
-		{
-			return client.getEnum(EnumID.PRAYERS_NORMAL_DEADEYE_MYSTIC_VIGOUR);
-		}
-		else if (deadeye)
-		{
-			return client.getEnum(EnumID.PRAYERS_NORMAL_DEADEYE);
-		}
-		else if (vigour)
-		{
-			return client.getEnum(EnumID.PRAYERS_NORMAL_MYSTIC_VIGOUR);
-		}
-		else
-		{
-			return client.getEnum(EnumID.PRAYERS_NORMAL);
-		}
+		return client.getEnum(EnumID.PRAYERS_NORMAL);
 	}
 
 	private int[] defaultPrayerOrder(EnumComposition prayerEnum)

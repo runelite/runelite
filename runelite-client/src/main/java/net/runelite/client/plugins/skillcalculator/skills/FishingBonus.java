@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -32,8 +34,30 @@ import lombok.Getter;
 public enum FishingBonus implements SkillBonus
 {
 	ANGLERS_OUTFIT("Angler's Outfit", 1.025f),
+	DIABOLIC_WORMS("Diabolic Worms", 0.66f),
+	SHARK_LURE_1("Shark Lure x1", 0.25f),
+	SHARK_LURE_3("Shark Lure x3", 0.2f),
+	SHARK_LURE_5("Shark Lure x5", 0.16f)
 	;
 
 	private final String name;
 	private final float value;
+
+	@Override
+	public Set<FishingBonus> getCanBeStackedWith()
+	{
+		switch (this)
+		{
+			case SHARK_LURE_1:
+			case SHARK_LURE_3:
+			case SHARK_LURE_5:
+				return EnumSet.complementOf(EnumSet.of(
+					SHARK_LURE_1,
+					SHARK_LURE_3,
+					SHARK_LURE_5
+				));
+			default:
+				return EnumSet.complementOf(EnumSet.of(this));
+		}
+	}
 }

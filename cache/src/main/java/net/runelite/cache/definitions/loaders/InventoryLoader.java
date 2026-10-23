@@ -47,6 +47,10 @@ public class InventoryLoader
 			{
 				def.size = is.readUnsignedShort();
 			}
+			else if (opcode == 249)
+			{
+				def.params = is.readParams();
+			}
 		}
 
 		return def;

@@ -54,6 +54,7 @@ public class Perspective
 {
 	// How much of the unit circle each unit of SINE/COSINE is
 	public static final double UNIT = 0.0030679615d; // ~pi/1024
+	public static final double UNIT14 = 3.834951969714103E-4D; // ~pi/8192
 
 	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
@@ -64,8 +65,14 @@ public class Perspective
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
 
-	private static final float[] SINF = new float[2048];
-	private static final float[] COSF = new float[2048];
+	public static final float[] SINEF = new float[2048];
+	public static final float[] COSINEF = new float[2048];
+
+	public static final int[] SINE14 = new int[0x4000];
+	public static final int[] COSINE14 = new int[0x4000];
+
+	public static final float[] SINEF14 = new float[0x4000];
+	public static final float[] COSINEF14 = new float[0x4000];
 
 	private static final int ESCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 
@@ -75,10 +82,19 @@ public class Perspective
 		{
 			double s = Math.sin((double) i * UNIT);
 			double c = Math.cos((double) i * UNIT);
-			SINF[i] = (float) s;
-			COSF[i] = (float) c;
+			SINEF[i] = (float) s;
+			COSINEF[i] = (float) c;
 			SINE[i] = (int) (65536.0 * s);
 			COSINE[i] = (int) (65536.0 * c);
+		}
+		for (int i = 0; i < 0x4000; ++i)
+		{
+			double s = Math.sin((double) i * UNIT14);
+			double c = Math.cos((double) i * UNIT14);
+			SINEF14[i] = (float) s;
+			COSINEF14[i] = (float) c;
+			SINE14[i] = (int) (65536.0 * s);
+			COSINE14[i] = (int) (65536.0 * c);
 		}
 	}
 
@@ -112,7 +128,7 @@ public class Perspective
 	@Nullable
 	public static Point localToCanvas(@Nonnull Client client, @Nonnull LocalPoint point, int plane, int heightOffset)
 	{
-		if (point.getWorldView() > -1)
+		if (point.getWorldView() != WorldView.TOPLEVEL)
 		{
 			WorldView wv = client.getTopLevelWorldView();
 			WorldEntity we = wv.worldEntities().byIndex(point.getWorldView());
@@ -122,8 +138,8 @@ public class Perspective
 			}
 
 			LocalPoint entityLocation = we.getLocalLocation();
-			int height = getTileHeight(we.getWorldView(), point.getX(), point.getY(), plane); // height in wv
-			height += getTileHeight(wv, entityLocation.getX(), entityLocation.getY(), wv.getPlane()); // height of we
+			int height = we.getWorldView().getTileHeight(point.getX(), point.getY(), plane); // height in wv
+			height += wv.getTileHeight(entityLocation.getX(), entityLocation.getY(), wv.getPlane()); // height of we
 			height -= heightOffset;
 
 			WorldView subWv = we.getWorldView();
@@ -166,7 +182,7 @@ public class Perspective
 
 	public static Point localToCanvas(@Nonnull Client client, int worldId, int x, int y, int z)
 	{
-		if (worldId > -1)
+		if (worldId != WorldView.TOPLEVEL)
 		{
 			WorldView wv = client.getTopLevelWorldView();
 			WorldEntity we = wv.worldEntities().byIndex(worldId);
@@ -207,10 +223,10 @@ public class Perspective
 			final int cameraPitch = client.getCameraPitch();
 			final int cameraYaw = client.getCameraYaw();
 
-			final int pitchSin = SINE[cameraPitch];
-			final int pitchCos = COSINE[cameraPitch];
-			final int yawSin = SINE[cameraYaw];
-			final int yawCos = COSINE[cameraYaw];
+			final int pitchSin = SINE14[cameraPitch];
+			final int pitchCos = COSINE14[cameraPitch];
+			final int yawSin = SINE14[cameraYaw];
+			final int yawCos = COSINE14[cameraYaw];
 
 			final int
 				x1 = x * yawCos + y * yawSin >> 16,
@@ -238,14 +254,14 @@ public class Perspective
 		if (x >= -ESCENE_OFFSET << LOCAL_COORD_BITS && y >= -ESCENE_OFFSET << LOCAL_COORD_BITS &&
 			x <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS && y <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS)
 		{
-			final double
+			final float
 				cameraPitch = client.getCameraFpPitch(),
 				cameraYaw = client.getCameraFpYaw();
 
 			final float
-				fx = x - (float) client.getCameraFpX(),
-				fy = y - (float) client.getCameraFpY(),
-				fz = z - (float) client.getCameraFpZ(),
+				fx = x - client.getCameraFpX(),
+				fy = y - client.getCameraFpY(),
+				fz = z - client.getCameraFpZ(),
 				pitchSin = (float) Math.sin(cameraPitch),
 				pitchCos = (float) Math.cos(cameraPitch),
 				yawSin = (float) Math.sin(cameraYaw),
@@ -360,7 +376,7 @@ public class Perspective
 
 	private static void modelToCanvasGpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, float[] x3d, float[] y3d, float[] z3d, int[] x2d, int[] y2d)
 	{
-		final double
+		final float
 			cameraPitch = client.getCameraFpPitch(),
 			cameraYaw = client.getCameraFpYaw();
 		final float
@@ -371,9 +387,9 @@ public class Perspective
 			rotateSin = SINE[rotate] / 65536.0f,
 			rotateCos = COSINE[rotate] / 65536.0f,
 
-			cx = x3dCenter - (float) client.getCameraFpX(),
-			cy = y3dCenter - (float) client.getCameraFpY(),
-			cz = z3dCenter - (float) client.getCameraFpZ(),
+			cx = x3dCenter - client.getCameraFpX(),
+			cy = y3dCenter - client.getCameraFpY(),
+			cz = z3dCenter - client.getCameraFpZ(),
 
 			viewportXMiddle = client.getViewportWidth() / 2f,
 			viewportYMiddle = client.getViewportHeight() / 2f,
@@ -430,12 +446,12 @@ public class Perspective
 			cameraYaw = client.getCameraYaw();
 
 		final float
-			pitchSin = SINF[cameraPitch],
-			pitchCos = COSF[cameraPitch],
-			yawSin = SINF[cameraYaw],
-			yawCos = COSF[cameraYaw],
-			rotateSin = SINF[rotate],
-			rotateCos = COSF[rotate];
+			pitchSin = SINEF14[cameraPitch],
+			pitchCos = COSINEF14[cameraPitch],
+			yawSin = SINEF14[cameraYaw],
+			yawCos = COSINEF14[cameraYaw],
+			rotateSin = SINEF[rotate],
+			rotateCos = COSINEF[rotate];
 
 		final int
 			cx = x3dCenter - client.getCameraX(),
@@ -523,7 +539,7 @@ public class Perspective
 	@Nullable
 	public static Point localToMinimap(@Nonnull Client client, @Nonnull LocalPoint point, int distance)
 	{
-		if (point.getWorldView() > -1)
+		if (point.getWorldView() != WorldView.TOPLEVEL)
 		{
 			WorldView toplevel = client.getTopLevelWorldView();
 			WorldEntity we = toplevel.worldEntities().byIndex(point.getWorldView());
@@ -536,8 +552,13 @@ public class Perspective
 		}
 
 		CameraFocusableEntity cameraFocus = client.getCameraFocusEntity();
+		if (cameraFocus == null)
+		{
+			return null;
+		}
+
 		LocalPoint cameraFocusPoint = cameraFocus.getCameraFocus();
-		if (cameraFocusPoint.getWorldView() > -1)
+		if (cameraFocusPoint.getWorldView() != WorldView.TOPLEVEL)
 		{
 			WorldView toplevel = client.getTopLevelWorldView();
 			WorldView wv = cameraFocus.getWorldView();
@@ -581,10 +602,10 @@ public class Perspective
 		final int x = (int) (dx * zoom);
 		final int y = (int) (dy * zoom);
 
-		final int angle = client.getCameraYawTarget() & 0x7FF;
+		final int angle = client.getCameraYawTarget() & 0x3fff;
 
-		final int sin = SINE[angle];
-		final int cos = COSINE[angle];
+		final int sin = SINE14[angle];
+		final int cos = COSINE14[angle];
 
 		final int rx = cos * x + sin * y >> 16;
 		final int ry = sin * x - cos * y >> 16;
@@ -632,7 +653,20 @@ public class Perspective
 
 	public static int getFootprintTileHeight(@Nonnull Client client, @Nonnull LocalPoint p, int level, int footprintSize)
 	{
+		final var wv = client.getWorldView(p.getWorldView());
 		final int x = p.getX(), z = p.getY();
+
+		int mapLevel = level;
+		if (level < Constants.MAX_Z - 1 && (wv.getTileSettings()[1][x >> LOCAL_COORD_BITS][z >> LOCAL_COORD_BITS] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
+		{
+			mapLevel = level + 1;
+		}
+
+		if (footprintSize == 0)
+		{
+			return wv.getTileHeight(x, z, mapLevel);
+		}
+
 		int halfFootprint = footprintSize / 2;
 		int lx = x - halfFootprint;
 		int lz = z - halfFootprint;
@@ -648,41 +682,17 @@ public class Perspective
 		{
 			for (int tz = lsz; tz <= usz; ++tz)
 			{
-				h = Math.min(h, getTileHeight(client, new LocalPoint(tx << LOCAL_COORD_BITS, tz << LOCAL_COORD_BITS, p.getWorldView()), level));
+				h = Math.min(h, wv.getTileHeight(tx << LOCAL_COORD_BITS, tz << LOCAL_COORD_BITS, mapLevel));
 			}
 		}
 
-		h = Math.min(h, getTileHeight(client, new LocalPoint(x, z, p.getWorldView()), level));
-		h = Math.min(h, getTileHeight(client, new LocalPoint(x - halfFootprint, z - halfFootprint, p.getWorldView()), level));
-		h = Math.min(h, getTileHeight(client, new LocalPoint(x - halfFootprint, z + halfFootprint, p.getWorldView()), level));
-		h = Math.min(h, getTileHeight(client, new LocalPoint(x + halfFootprint, z - halfFootprint, p.getWorldView()), level));
-		h = Math.min(h, getTileHeight(client, new LocalPoint(x + halfFootprint, z + halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, wv.getTileHeight(x, z, mapLevel));
+		h = Math.min(h, wv.getTileHeight(x - halfFootprint, z - halfFootprint, mapLevel));
+		h = Math.min(h, wv.getTileHeight(x - halfFootprint, z + halfFootprint, mapLevel));
+		h = Math.min(h, wv.getTileHeight(x + halfFootprint, z - halfFootprint, mapLevel));
+		h = Math.min(h, wv.getTileHeight(x + halfFootprint, z + halfFootprint, mapLevel));
 
 		return h;
-	}
-
-	/**
-	 * Get the height of a location, in local coordinates. Interpolates the height from the adjacent tiles.
-	 * Does not account for bridges.
-	 * @return
-	 */
-	private static int getTileHeight(@Nonnull WorldView wv, int localX, int localY, int plane)
-	{
-		int offset = wv.isTopLevel() ? ESCENE_OFFSET : 0;
-		int sceneX = (localX >> LOCAL_COORD_BITS) + offset;
-		int sceneY = (localY >> LOCAL_COORD_BITS) + offset;
-		if (sceneX >= 0 && sceneY >= 0 && sceneX < wv.getSizeX() + offset && sceneY < wv.getSizeY() + offset)
-		{
-			int[][][] tileHeights = wv.getScene().getTileHeights();
-
-			int x = localX & (LOCAL_TILE_SIZE - 1);
-			int y = localY & (LOCAL_TILE_SIZE - 1);
-			int var8 = x * tileHeights[plane][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[plane][sceneX][sceneY] >> LOCAL_COORD_BITS;
-			int var9 = tileHeights[plane][sceneX][sceneY + 1] * (LOCAL_TILE_SIZE - x) + x * tileHeights[plane][sceneX + 1][sceneY + 1] >> LOCAL_COORD_BITS;
-			return (LOCAL_TILE_SIZE - y) * var8 + y * var9 >> LOCAL_COORD_BITS;
-		}
-
-		return 0;
 	}
 
 	/**
@@ -751,10 +761,11 @@ public class Perspective
 		}
 
 		int offset = wv.isTopLevel() ? ESCENE_OFFSET : 0;
+		int escene = offset << 1;
 		final int msx = localLocation.getSceneX() + offset;
 		final int msy = localLocation.getSceneY() + offset;
 
-		if (msx < 0 || msy < 0 || msx >= wv.getSizeX() + offset || msy >= wv.getSizeY() + offset)
+		if (msx < 0 || msy < 0 || msx >= wv.getSizeX() + escene || msy >= wv.getSizeY() + escene)
 		{
 			// out of scene
 			return null;
@@ -768,10 +779,10 @@ public class Perspective
 		var scene = wv.getScene();
 		final byte[][][] tileSettings = scene.getExtendedTileSettings();
 
-		int tilePlane = level;
+		int mapLevel = level;
 		if (level < Constants.MAX_Z - 1 && (tileSettings[1][msx][msy] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
 		{
-			tilePlane = level + 1;
+			mapLevel = level + 1;
 		}
 
 		final int swX = localLocation.getX() - (sizeX * LOCAL_TILE_SIZE / 2);
@@ -786,10 +797,10 @@ public class Perspective
 		final int nwX = neX;
 		final int nwY = swY;
 
-		final int swHeight = getTileHeight(wv, swX, swY, tilePlane) - heightOffset;
-		final int nwHeight = getTileHeight(wv, nwX, nwY, tilePlane) - heightOffset;
-		final int neHeight = getTileHeight(wv, neX, neY, tilePlane) - heightOffset;
-		final int seHeight = getTileHeight(wv, seX, seY, tilePlane) - heightOffset;
+		final int swHeight = wv.getTileHeight(swX, swY, mapLevel) - heightOffset;
+		final int nwHeight = wv.getTileHeight(nwX, nwY, mapLevel) - heightOffset;
+		final int neHeight = wv.getTileHeight(neX, neY, mapLevel) - heightOffset;
+		final int seHeight = wv.getTileHeight(seX, seY, mapLevel) - heightOffset;
 
 		Point p1 = localToCanvas(client, wv.getId(), swX, swY, swHeight);
 		Point p2 = localToCanvas(client, wv.getId(), nwX, nwY, nwHeight);

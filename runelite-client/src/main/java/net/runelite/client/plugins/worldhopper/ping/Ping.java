@@ -29,12 +29,18 @@ import com.google.common.primitives.Bytes;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.ptr.IntByReference;
+import java.io.FileDescriptor;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.OSType;
 import net.runelite.http.api.worlds.World;
@@ -49,7 +55,13 @@ public class Ping
 
 	private static short seq;
 
+	@Deprecated
 	public static int ping(World world)
+	{
+		return ping(world, false);
+	}
+
+	public static int ping(World world, boolean useTcpPing)
 	{
 		InetAddress inetAddress;
 		try
@@ -73,18 +85,28 @@ public class Ping
 			switch (OSType.getOSType())
 			{
 				case Windows:
-					return windowsPing(inetAddress);
+					int p = windowsPing(inetAddress);
+					if (p == -1 && useTcpPing)
+					{
+						p = tcpPing(inetAddress);
+					}
+					return p;
 				case MacOS:
 				case Linux:
+					p = -1;
 					try
 					{
-						return icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
+						p = icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
 					}
-					catch (Exception ex)
+					catch (IOException ex)
 					{
 						log.debug("error during icmp ping", ex);
+					}
+					if (p == -1 && useTcpPing)
+					{
 						return tcpPing(inetAddress);
 					}
+					return p;
 				default:
 					return tcpPing(inetAddress);
 			}
@@ -268,5 +290,100 @@ public class Ping
 			long end = System.nanoTime();
 			return (int) ((end - start) / 1000000L);
 		}
+	}
+
+	@Nullable
+	public static TCPInfo getTCPInfo(FileDescriptor fd)
+	{
+		switch (OSType.getOSType())
+		{
+			case Windows:
+				return getTCPInfoWindows(fd);
+			case MacOS:
+			case Linux:
+				return getTCPInfoNix(fd);
+			default:
+				return null;
+		}
+	}
+
+	private static TCP_INFO_v0 getTCPInfoWindows(FileDescriptor fd)
+	{
+		int handle;
+		try
+		{
+			Field f = FileDescriptor.class.getDeclaredField("fd");
+			f.setAccessible(true);
+			handle = f.getInt(fd);
+		}
+		catch (NoSuchFieldException | IllegalAccessException ex)
+		{
+			log.debug(null, ex);
+			return null;
+		}
+
+		IntByReference tcpInfoVersion = new IntByReference(0); // Version 0 of TCP_INFO
+		TCP_INFO_v0 info = new TCP_INFO_v0();
+		IntByReference bytesReturned = new IntByReference();
+
+		Ws2_32 winsock = Ws2_32.INSTANCE;
+		int rc;
+		try
+		{
+			rc = winsock.WSAIoctl(
+				new WinNT.HANDLE(Pointer.createConstant(handle)),
+				Ws2_32.SIO_TCP_INFO,
+				tcpInfoVersion.getPointer(), Integer.BYTES,
+				info.getPointer(), info.size(),
+				bytesReturned,
+				Pointer.NULL,
+				Pointer.NULL
+			);
+		}
+		catch (UnsatisfiedLinkError ex)
+		{
+			// probably Windows 7
+			log.debug("WSAIoctl()", ex);
+			return null;
+		}
+		if (rc != 0)
+		{
+			log.debug("WSAIoctl(SIO_TCP_INFO) error"); // WSAGetLastError() seems to always be 0?
+			return null;
+		}
+
+		info.read();
+		return info;
+	}
+
+	private static TCPInfo getTCPInfoNix(FileDescriptor fdObj)
+	{
+		int fd;
+		try
+		{
+			Field f = FileDescriptor.class.getDeclaredField("fd");
+			f.setAccessible(true);
+			fd = f.getInt(fdObj);
+		}
+		catch (NoSuchFieldException | IllegalAccessException ex)
+		{
+			log.debug(null, ex);
+			return null;
+		}
+
+		Structure out = OSType.getOSType() == OSType.MacOS
+			? new MacOSTCPConnectionInfo()
+			: new LinuxTCPInfo();
+		var size = new IntByReference(out.size());
+		int err = RLLibC.INSTANCE.getsockopt(fd, RLLibC.IPPROTO_TCP, RLLibC.TCP_INFO, out.getPointer(), size.getPointer());
+		out.read();
+
+		if (err != 0)
+		{
+			log.debug("getsockopt(TCP_INFO): {}", Native.getLastError());
+			return null;
+		}
+
+		return (TCPInfo) out;
 	}
 }

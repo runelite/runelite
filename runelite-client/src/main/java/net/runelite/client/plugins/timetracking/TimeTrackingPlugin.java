@@ -32,11 +32,9 @@ import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetClosed;
@@ -72,8 +70,6 @@ import net.runelite.client.util.ImageUtil;
 )
 public class TimeTrackingPlugin extends Plugin
 {
-	private static final String CONTRACT_COMPLETED = "You've completed a Farming Guild Contract. You should return to Guildmaster Jane.";
-
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -213,12 +209,6 @@ public class TimeTrackingPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick t)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			lastTickLocation = null;
-			return;
-		}
-
 		// bird house data is only sent after exiting the post-login screen
 		Widget motd = client.getWidget(InterfaceID.WelcomeScreen.MOTW);
 		if (motd != null && !motd.isHidden())
@@ -234,9 +224,10 @@ public class TimeTrackingPlugin extends Plugin
 		}
 
 		WorldPoint loc = lastTickLocation;
-		lastTickLocation = client.getLocalPlayer().getWorldLocation();
+		Player player = client.getLocalPlayer();
+		lastTickLocation = player == null ? null : player.getWorldLocation();
 
-		if (loc == null || loc.getRegionID() != lastTickLocation.getRegionID())
+		if (loc == null || lastTickLocation == null || loc.getRegionID() != lastTickLocation.getRegionID())
 		{
 			return;
 		}
@@ -258,17 +249,6 @@ public class TimeTrackingPlugin extends Plugin
 		birdHouseTracker.loadFromConfig();
 		farmingContractManager.loadContractFromConfig();
 		panel.update();
-	}
-
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE || !event.getMessage().equals(CONTRACT_COMPLETED))
-		{
-			return;
-		}
-
-		farmingContractManager.setContract(null);
 	}
 
 	@Subscribe

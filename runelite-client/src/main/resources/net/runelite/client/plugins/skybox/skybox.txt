@@ -894,11 +894,11 @@ C 4 0 24 4
 
 // POH
 b 12
-m29 89
+m 29 110
 
-// 29 89 p0 Basic wood
-// 29 89 p1 Basic stone
-// 29 89 p3 Fremennik-style wood
+// 29 110 p0 Basic wood
+// 29 110 p1 Basic stone
+// 29 110 p3 Fremennik-style wood
 p 0 1 3
 #B9D6FF
 C 0 0 7 15
@@ -921,7 +921,7 @@ c 6 3
 c 7 4
 c 4 1
 
-// 29 89 p2 Whitewashed stone
+// 29 110 p2 Whitewashed stone
 p 2
 #7fc7d9
 C 0 0 7 15
@@ -935,15 +935,15 @@ c 6 3
 c 7 4
 c 4 1
 
-m30 89
+m 30 110
 
-// 30 89 p0 Tropical wood
+// 30 110 p0 Tropical wood
 p 0
 #7fc7d9
 C 0 0 7 15
 
-// 30 89 p1 Fancy stone
-// 30 89 p2 Deathly mansion
+// 30 110 p1 Fancy stone
+// 30 110 p2 Deathly mansion
 p 1 2
 #B9D6FF
 C 0 0 7 15
@@ -958,7 +958,7 @@ c 6 3
 c 7 4
 c 4 1
 
-// 30 89 p3 Twisted League
+// 30 110 p3 Twisted League
 p 3
 #161414
 C 0 0 7 15
@@ -974,9 +974,9 @@ c 7 4
 c 4 1
 
 
-m31 89
+m 31 110
 
-// 31 89 p0 Hosidius
+// 31 110 p0 Hosidius
 p 0
 #B9D6FF
 C 0 0 7 15
@@ -990,7 +990,7 @@ c 6 3
 c 7 4
 c 4 1
 
-// 31 89 p1 Cozy cabin
+// 31 110 p1 Cozy cabin
 p 1
 #b6cbd8
 C 0 0 7 15
@@ -1004,7 +1004,7 @@ c 6 3
 c 7 4
 c 4 1
 
-// 31 89 p2 Civitas
+// 31 110 p2 Civitas
 p 2
 #A3D8E6
 C 0 0 7 15
@@ -1019,12 +1019,29 @@ c 7 4
 c 4 1
 
 
-// 31 89 p3 Canifis
+// 31 110 p3 Canifis
 p 3
 #4a706a
 C 0 0 7 15
 // dungeon
 #251B09
+c 3 0
+c 0 3
+c 2 3
+c 4 3
+c 6 3
+c 7 4
+c 4 1
+
+
+m 32 110
+
+// 31 110 p0 Wilderness
+p 0
+#1a1a1a
+C 0 0 7 15
+// dungeon
+#2c2214
 c 3 0
 c 0 3
 c 2 3

@@ -1,5 +1,6 @@
 .id                       8080
 .int_arg_count            6
+.long_arg_count           0
 .obj_arg_count            0
    iload                  2
    iconst                 1

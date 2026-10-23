@@ -485,7 +485,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			final Line line = editLines.get(currentLine);
 			final String tsValue = line.text;
 			int charIndex = tsValue.length();
-			int fullWidth = font.getTextWidth(tsValue);
+			int fullWidth = font.getTextWidth(Text.escapeJagex(tsValue));
 
 			int tx = ox;
 			if (w > 0)

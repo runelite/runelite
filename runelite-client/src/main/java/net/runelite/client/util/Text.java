@@ -41,7 +41,7 @@ import org.apache.commons.text.similarity.JaroWinklerDistance;
 public class Text
 {
 	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
-	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+	private static final Pattern TAG_REGEXP = Pattern.compile("<([^>]*)>");
 	private static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
 		.omitEmptyStrings()
@@ -85,7 +85,34 @@ public class Text
 	}
 
 	/**
-	 * Remove tags from the given string, except for &lt;lt&gt; and &lt;gt&gt;
+	 * Removes all tags from the given string, repacing printable tags with their unescaped equivalent.
+	 */
+	public static String unescapeJagex(String str)
+	{
+		return TAG_REGEXP.matcher(str)
+			.replaceAll(mr ->
+			{
+				switch (mr.group(1))
+				{
+					case "br":
+					case "n":
+						return "\n";
+					case "lt":
+						return "<";
+					case "gt":
+						return ">";
+					case "at":
+						return "@";
+					case "nbh":
+						return "-";
+					default:
+						return "";
+				}
+			});
+	}
+
+	/**
+	 * Remove tags from the given string, except for &lt;lt&gt;, &lt;gt&gt;, &lt;at&gt;, and &lt;nbh&gt;
 	 *
 	 * @param str The string to remove formatting tags from.
 	 * @return The given string with all formatting tags removed from it.
@@ -102,6 +129,8 @@ public class Text
 			{
 				case "<lt>":
 				case "<gt>":
+				case "<at>":
+				case "<nbh>":
 					sb.append(match);
 					break;
 			}
@@ -145,6 +174,8 @@ public class Text
 		return removeTags(str
 			.replace("-<br>", "-")
 			.replace("<br>", " ")
+			.replace("-<n>", "-")
+			.replace("<n>", " ")
 			.replaceAll("[ ]+", " "));
 	}
 
@@ -165,6 +196,10 @@ public class Text
 			else if (c == '>')
 			{
 				out.append("<gt>");
+			}
+			else if (c == '@')
+			{
+				out.append("<at>");
 			}
 			else if (c == '\n')
 			{

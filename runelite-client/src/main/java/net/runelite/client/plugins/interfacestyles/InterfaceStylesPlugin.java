@@ -169,7 +169,7 @@ public class InterfaceStylesPlugin extends Plugin
 				{
 					// Change this menu to be the submenu parent
 					menuEntry.setOption("");
-					menuEntry.setType(MenuAction.RUNELITE);
+					menuEntry.setType(MenuAction.RUNELITE_PLAYER);
 					menuEntry.setDeprioritized(false);
 					submenu = menuEntry.createSubMenu();
 
@@ -381,8 +381,12 @@ public class InterfaceStylesPlugin extends Plugin
 			}
 
 			Widget widget = client.getWidget(widgetOffset.getComponent());
+			if (widget == null)
+			{
+				continue;
+			}
 
-			if (widget != null)
+			if (widgetOffset.getSpriteId() == null || widgetOffset.getSpriteId() == widget.getSpriteId())
 			{
 				if (widgetOffset.getOffsetX() != null)
 				{

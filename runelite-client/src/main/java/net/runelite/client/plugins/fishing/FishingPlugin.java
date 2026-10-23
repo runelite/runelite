@@ -46,6 +46,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -365,7 +366,13 @@ public class FishingPlugin extends Plugin
 	 */
 	private void updateTrawlerContribution()
 	{
-		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return;
+		}
+
+		int regionID = player.getWorldLocation().getRegionID();
 		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
 		{
 			return;

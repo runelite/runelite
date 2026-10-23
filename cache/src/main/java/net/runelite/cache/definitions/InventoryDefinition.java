@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.definitions;
 
+import java.util.Map;
 import lombok.Data;
 
 @Data
@@ -31,4 +32,6 @@ public class InventoryDefinition
 {
 	public int id;
 	public int size;
+
+	public Map<Integer, Object> params = null;
 }

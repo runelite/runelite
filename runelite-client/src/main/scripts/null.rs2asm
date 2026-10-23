@@ -28,7 +28,7 @@
 ; because you need an op listener attached to it for it to work
 ;;
 
-.id                 10003
+.id                 100003
 .int_arg_count      0
 .obj_arg_count      0
 

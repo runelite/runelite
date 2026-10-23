@@ -56,8 +56,9 @@ public class RenderCallbackManager
 			return true;
 		}
 
-		for (var cb : callbacks)
+		for (int i = 0; i < callbacks.size(); ++i)
 		{
+			var cb = callbacks.get(i);
 			try
 			{
 				if (!cb.addEntity(renderable, ui))
@@ -81,8 +82,9 @@ public class RenderCallbackManager
 			return true;
 		}
 
-		for (var cb : callbacks)
+		for (int i = 0; i < callbacks.size(); ++i)
 		{
+			var cb = callbacks.get(i);
 			try
 			{
 				if (!cb.drawTile(scene, tile))
@@ -106,8 +108,9 @@ public class RenderCallbackManager
 			return true;
 		}
 
-		for (var cb : callbacks)
+		for (int i = 0; i < callbacks.size(); ++i)
 		{
+			var cb = callbacks.get(i);
 			try
 			{
 				if (!cb.drawObject(scene, object))

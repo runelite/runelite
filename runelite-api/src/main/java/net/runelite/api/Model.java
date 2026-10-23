@@ -52,6 +52,8 @@ public interface Model extends Mesh<Model>, Renderable
 
 	void calculateBoundsCylinder();
 
+	byte getTransparency();
+
 	byte[] getFaceRenderPriorities();
 
 	byte[] getFaceBias();

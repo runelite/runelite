@@ -32,11 +32,12 @@ import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
-import net.runelite.api.ScriptID;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.AnimationID;
@@ -150,6 +151,17 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(489, screenshotPlugin.getKillCountNumber());
+	}
+
+	@Test
+	public void testDelveLootClaimed()
+	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
+		ScriptPostFired scriptPostFiredEvent = new ScriptPostFired(ScriptID.DOM_LOOT_CLAIM);
+		screenshotPlugin.onScriptPostFired(scriptPostFiredEvent);
+
+		verify(screenshotPlugin).takeScreenshot("Doom of Mokhaiotl", "Chest Loot");
 	}
 
 	@Test
@@ -327,7 +339,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testCraftingLevel96NoInterface()
 	{
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CRAFTING_LEVEL_96_MESSAGE, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -335,7 +347,7 @@ public class ScreenshotPluginTest
 		verify(screenshotPlugin).takeScreenshot("Crafting(96)", "Levels");
 		reset(screenshotPlugin);
 
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(0);
 
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
@@ -344,7 +356,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testStrengthLevel99NoInterface()
 	{
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", STRENGTH_LEVEL_99_MESSAGE, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -352,7 +364,7 @@ public class ScreenshotPluginTest
 		verify(screenshotPlugin).takeScreenshot("Strength(99)", "Levels");
 		reset(screenshotPlugin);
 
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(0);
 
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
@@ -374,12 +386,12 @@ public class ScreenshotPluginTest
 	@Test
 	public void testCombatAchievementsParsing()
 	{
-		assertEquals("Combat task (Into the Den of Giants)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an easy combat task: <col=06600c>Into the Den of Giants</col>."));
-		assertEquals("Combat task (I'd Rather Not Learn)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a medium combat task: <col=06600c>I'd Rather Not Learn</col>."));
-		assertEquals("Combat task (Why Cook)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a hard combat task: <col=0cc919>Why Cook?</col>."));
-		assertEquals("Combat task (From Dusk...)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an elite combat task: <col=06600c>From Dusk...</col>."));
-		assertEquals("Combat task (Perfect Olm (Trio))", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a master combat task: <col=0cc919>Perfect Olm (Trio)</col>."));
-		assertEquals("Combat task (Chambers of Xeric CM (5-Scale) Speed-Runner)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a grandmaster combat task: <col=0cc919>Chambers of Xeric: CM (5-Scale) Speed-Runner</col>."));
+		assertEquals("Combat task (Into the Den of Giants)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an easy combat task: @ach_comp@Into the Den of Giants</col>."));
+		assertEquals("Combat task (I'd Rather Not Learn)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a medium combat task: @ach_comp@I'd Rather Not Learn</col>."));
+		assertEquals("Combat task (Why Cook)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a hard combat task: @ach_comp@Why Cook?</col>."));
+		assertEquals("Combat task (From Dusk...)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an elite combat task: @ach_comp@From Dusk...</col>."));
+		assertEquals("Combat task (Perfect Olm (Trio))", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a master combat task: @ach_comp@Perfect Olm (Trio)</col>."));
+		assertEquals("Combat task (Chambers of Xeric CM (5-Scale) Speed-Runner)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a grandmaster combat task: @ach_comp@Chambers of Xeric: CM (5-Scale) Speed-Runner</col>."));
 	}
 
 	@Test
@@ -512,7 +524,7 @@ public class ScreenshotPluginTest
 		when(client.getVarbitValue(VarbitID.CA_TASK_POPUP)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
-			"Congratulations, you've completed a grandmaster combat task: <col=06600c>Egniol Diet II</col> (6 points).", null, 0);
+			"Congratulations, you've completed a grandmaster combat task: @ach_comp@Egniol Diet II</col> (6 points).", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Combat task (Egniol Diet II)", "Combat Achievements");

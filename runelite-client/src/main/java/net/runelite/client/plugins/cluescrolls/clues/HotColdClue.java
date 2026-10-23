@@ -39,6 +39,7 @@ import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -66,6 +67,17 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		"Speak to Jorral to receive a strange device.",
 		new WorldPoint(2436, 3347, 0),
 		false);
+	private static final String LEAGUE_TUTOR_CLUE_TEXT = "Buried beneath the ground, who knows where it's found. The League Tutor may have a strange device lying around.";
+	private static final HotColdClue LEAGUE_TUTOR_BEGINNER_CLUE = new HotColdClue(LEAGUE_TUTOR_CLUE_TEXT,
+		"Leagues Tutor",
+		"Speak to Leagues Tutor to receive a strange device.",
+		new WorldPoint(1500, 5596, 0),
+		true);
+	private static final HotColdClue LEAGUE_TUTOR_MASTER_CLUE = new HotColdClue(LEAGUE_TUTOR_CLUE_TEXT,
+		"Leagues Tutor",
+		"Speak to Leagues Tutor to receive a strange device.",
+		new WorldPoint(1500, 5596, 0),
+		false);
 
 	private final String text;
 	private final String npc;
@@ -76,7 +88,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private HotColdSolver hotColdSolver;
 	private WorldPoint location;
 
-	public static HotColdClue forText(String text)
+	public static HotColdClue forText(String text, int clueItemId)
 	{
 		if (BEGINNER_CLUE.text.equalsIgnoreCase(text))
 		{
@@ -87,6 +99,20 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			MASTER_CLUE.reset();
 			return MASTER_CLUE;
+		}
+		else if (LEAGUE_TUTOR_CLUE_TEXT.equalsIgnoreCase(text))
+		{
+			if (clueItemId == ItemID.TRAIL_CLUE_BEGINNER)
+			{
+				LEAGUE_TUTOR_BEGINNER_CLUE.reset();
+				return LEAGUE_TUTOR_BEGINNER_CLUE;
+			}
+
+			if (clueItemId == ItemID.TRAIL_CLUE_MASTER)
+			{
+				LEAGUE_TUTOR_MASTER_CLUE.reset();
+				return LEAGUE_TUTOR_MASTER_CLUE;
+			}
 		}
 
 		return null;

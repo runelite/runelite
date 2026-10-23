@@ -27,8 +27,9 @@ package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.inject.Binder;
+import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.util.Providers;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -108,6 +109,7 @@ public class SlayerPlugin extends Plugin
 
 	// Task streak
 	private static final int KRYSTILIA_SLAYER_MASTER = 7;
+	private static final int MORTIMER_SLAYER_MASTER = 10;
 
 	@Inject
 	private Client client;
@@ -150,6 +152,9 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private NpcOverlayService npcOverlayService;
+
+	@Inject
+	private SlayerPluginServiceImpl slayerPluginService;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
@@ -200,9 +205,9 @@ public class SlayerPlugin extends Plugin
 	};
 
 	@Override
-	public void configure(Binder binder)
+	public Module getPublicModule()
 	{
-		binder.bind(SlayerPluginService.class).to(SlayerPluginServiceImpl.class);
+		return b -> b.bind(SlayerPluginService.class).toProvider(Providers.of(slayerPluginService));
 	}
 
 	@Override
@@ -327,7 +332,10 @@ public class SlayerPlugin extends Plugin
 			|| varpId == VarPlayerID.SLAYER_AREA
 			|| varpId == VarPlayerID.SLAYER_TARGET
 			|| varbitId == VarbitID.SLAYER_TARGET_BOSSID
-			|| varpId == VarPlayerID.SLAYER_COUNT_ORIGINAL)
+			|| varpId == VarPlayerID.SLAYER_COUNT_ORIGINAL
+			|| varbitId == VarbitID.SLAYER_MODIFIER_ID
+			|| varbitId == VarbitID.SLAYER_MODIFIER_VALUE
+			|| varbitId == VarbitID.SLAYER_MODIFIER_NEGATIVE)
 		{
 			clientThread.invokeLater(this::updateTask);
 		}
@@ -342,7 +350,7 @@ public class SlayerPlugin extends Plugin
 				addCounter();
 			}
 		}
-		else if (varbitId == VarbitID.SLAYER_TASKS_COMPLETED || varbitId == VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED)
+		else if (varbitId == VarbitID.SLAYER_TASKS_COMPLETED || varbitId == VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED || varpId == VarPlayerID.SLAYER_MORTIMER_TASKS_COMPLETED)
 		{
 			setProfileConfig(SlayerConfig.STREAK_KEY, varbitChanged.getValue());
 
@@ -403,6 +411,12 @@ public class SlayerPlugin extends Plugin
 			}
 
 			int initialAmount = client.getVarpValue(VarPlayerID.SLAYER_COUNT_ORIGINAL);
+			if (client.getVarbitValue(VarbitID.SLAYER_MODIFIER_ID) == 2)
+			{
+				boolean isNegative = client.getVarbitValue(VarbitID.SLAYER_MODIFIER_NEGATIVE) == 1;
+				int modifierValue = client.getVarbitValue(VarbitID.SLAYER_MODIFIER_VALUE);
+				initialAmount += isNegative ? -modifierValue : modifierValue;
+			}
 
 			if (loginFlag)
 			{
@@ -467,9 +481,8 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
-
-		if (chatMsg.equals(CHAT_SUPERIOR_MESSAGE))
+		var msg = event.getMessage();
+		if (msg.contains(CHAT_SUPERIOR_MESSAGE))
 		{
 			notifier.notify(config.showSuperiorNotification(), CHAT_SUPERIOR_MESSAGE);
 		}
@@ -667,9 +680,19 @@ public class SlayerPlugin extends Plugin
 				+ " " + initialAmount;
 		}
 
-		final int streak = client.getVarbitValue(VarbitID.SLAYER_MASTER) == KRYSTILIA_SLAYER_MASTER
-			? client.getVarbitValue(VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED)
-			: client.getVarbitValue(VarbitID.SLAYER_TASKS_COMPLETED);
+		final int streak;
+		switch (client.getVarbitValue(VarbitID.SLAYER_MASTER))
+		{
+			case KRYSTILIA_SLAYER_MASTER:
+				streak = client.getVarbitValue(VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED);
+				break;
+			case MORTIMER_SLAYER_MASTER:
+				streak = client.getVarpValue(VarPlayerID.SLAYER_MORTIMER_TASKS_COMPLETED);
+				break;
+			default:
+				streak = client.getVarbitValue(VarbitID.SLAYER_TASKS_COMPLETED);
+				break;
+		}
 		counter = new TaskCounter(taskImg, this, amount);
 		counter.setTooltip(String.format(taskTooltip, capsString(taskName), client.getVarbitValue(VarbitID.SLAYER_POINTS),  streak));
 
