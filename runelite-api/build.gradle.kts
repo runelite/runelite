@@ -28,8 +28,6 @@ plugins {
     `maven-publish`
     checkstyle
     alias(libs.plugins.lombok)
-
-    id("net.runelite.runelite-gradle-plugin.component")
 }
 
 lombok.version = libs.versions.lombok.get()
@@ -111,16 +109,6 @@ publishing {
             artifact(runtimeJar) { classifier = "runtime" }
         }
     }
-}
-
-tasks.withType<net.runelite.gradle.component.ComponentTask> {
-    inputFile = file("src/main/interfaces/interfaces.toml")
-    outputDirectory = file("build/generated/sources/runelite/java/main")
-}
-
-tasks.checkstyleMain {
-    exclude("net/runelite/api/widgets/ComponentID.java")
-    exclude("net/runelite/api/widgets/InterfaceID.java")
 }
 
 tasks.javadoc {

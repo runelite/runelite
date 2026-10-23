@@ -38,30 +38,30 @@ public enum Produce
 	SCARECROW("Scarecrow", ItemID.SCARECROW_COMPLETE, 5, 4),
 
 	// Allotment crops
-	POTATO("Potato", "Potatoes", PatchImplementation.ALLOTMENT, ItemID.POTATO, 10, 5, 0, 3),
-	ONION("Onion", "Onions", PatchImplementation.ALLOTMENT, ItemID.ONION, 10, 5, 0, 3),
-	CABBAGE("Cabbage", "Cabbages", PatchImplementation.ALLOTMENT, ItemID.CABBAGE, 10, 5, 0, 3),
-	TOMATO("Tomato", "Tomatoes", PatchImplementation.ALLOTMENT, ItemID.TOMATO, 10, 5, 0, 3),
-	SWEETCORN("Sweetcorn", PatchImplementation.ALLOTMENT, ItemID.SWEETCORN, 10, 7, 0, 3),
-	STRAWBERRY("Strawberry", "Strawberries", PatchImplementation.ALLOTMENT, ItemID.STRAWBERRY, 10, 7, 0, 3),
-	WATERMELON("Watermelon", "Watermelons", PatchImplementation.ALLOTMENT, ItemID.WATERMELON, 10, 9, 0, 3),
-	SNAPE_GRASS("Snape grass", PatchImplementation.ALLOTMENT, ItemID.SNAPE_GRASS, 10, 8, 0, 3),
+	POTATO("Potato", 40, PatchImplementation.ALLOTMENT, ItemID.POTATO, 10, 5, 0, 3),
+	ONION("Onion", 41, PatchImplementation.ALLOTMENT, ItemID.ONION, 10, 5, 0, 3),
+	CABBAGE("Cabbage", 42, PatchImplementation.ALLOTMENT, ItemID.CABBAGE, 10, 5, 0, 3),
+	TOMATO("Tomato", 43, PatchImplementation.ALLOTMENT, ItemID.TOMATO, 10, 5, 0, 3),
+	SWEETCORN("Sweetcorn", 44, PatchImplementation.ALLOTMENT, ItemID.SWEETCORN, 10, 7, 0, 3),
+	STRAWBERRY("Strawberry", 45, PatchImplementation.ALLOTMENT, ItemID.STRAWBERRY, 10, 7, 0, 3),
+	WATERMELON("Watermelon", 46, PatchImplementation.ALLOTMENT, ItemID.WATERMELON, 10, 9, 0, 3),
+	SNAPE_GRASS("Snape grass", 47, PatchImplementation.ALLOTMENT, ItemID.SNAPE_GRASS, 10, 8, 0, 3),
 
 	// Flower crops
-	MARIGOLD("Marigold", "Marigolds", PatchImplementation.FLOWER, ItemID.MARIGOLD, 5, 5),
-	ROSEMARY("Rosemary", PatchImplementation.FLOWER, ItemID.ROSEMARY, 5, 5),
-	NASTURTIUM("Nasturtium", "Nasturtiums", PatchImplementation.FLOWER, ItemID.NASTURTIUM, 5, 5),
-	WOAD("Woad", PatchImplementation.FLOWER, ItemID.WOADLEAF, 5, 5),
-	LIMPWURT("Limpwurt", "Limpwurt roots", PatchImplementation.FLOWER, ItemID.LIMPWURT_ROOT, 5, 5),
-	WHITE_LILY("White lily", "White lillies", PatchImplementation.FLOWER, ItemID.WHITELILLY, 5, 5),
+	MARIGOLD("Marigold", 34, PatchImplementation.FLOWER, ItemID.MARIGOLD, 5, 5),
+	ROSEMARY("Rosemary", 35, PatchImplementation.FLOWER, ItemID.ROSEMARY, 5, 5),
+	NASTURTIUM("Nasturtium", 36, PatchImplementation.FLOWER, ItemID.NASTURTIUM, 5, 5),
+	WOAD("Woad", 37, PatchImplementation.FLOWER, ItemID.WOADLEAF, 5, 5),
+	LIMPWURT("Limpwurt", 38, PatchImplementation.FLOWER, ItemID.LIMPWURT_ROOT, 5, 5),
+	WHITE_LILY("White lily", 39, PatchImplementation.FLOWER, ItemID.WHITELILLY, 5, 5),
 
 	// Bush crops
-	REDBERRIES("Redberry", "Redberries", PatchImplementation.BUSH, ItemID.REDBERRIES, 20, 6, 20, 5),
-	CADAVABERRIES("Cadavaberry", "Cadava berries", PatchImplementation.BUSH, ItemID.CADAVABERRIES, 20, 7, 20, 5),
-	DWELLBERRIES("Dwellberry", "Dwellberries", PatchImplementation.BUSH, ItemID.DWELLBERRIES, 20, 8, 20, 5),
-	JANGERBERRIES("Jangerberry", "Jangerberries", PatchImplementation.BUSH, ItemID.JANGERBERRIES, 20, 9, 20, 5),
-	WHITEBERRIES("Whiteberry", "White berries", PatchImplementation.BUSH, ItemID.WHITE_BERRIES, 20, 9, 20, 5),
-	POISON_IVY("Poison ivy", "Poison ivy berries", PatchImplementation.BUSH, ItemID.POISONIVY_BERRIES, 20, 9, 20, 5),
+	REDBERRIES("Redberry", 1, PatchImplementation.BUSH, ItemID.REDBERRIES, 20, 6, 20, 5),
+	CADAVABERRIES("Cadavaberry", 2, PatchImplementation.BUSH, ItemID.CADAVABERRIES, 20, 7, 20, 5),
+	DWELLBERRIES("Dwellberry", 3, PatchImplementation.BUSH, ItemID.DWELLBERRIES, 20, 8, 20, 5),
+	JANGERBERRIES("Jangerberry", 4, PatchImplementation.BUSH, ItemID.JANGERBERRIES, 20, 9, 20, 5),
+	WHITEBERRIES("Whiteberry", 5, PatchImplementation.BUSH, ItemID.WHITE_BERRIES, 20, 9, 20, 5),
+	POISON_IVY("Poison ivy", 6, PatchImplementation.BUSH, ItemID.POISONIVY_BERRIES, 20, 9, 20, 5),
 
 	// Hop crops
 	BARLEY("Barley", PatchImplementation.HOPS, ItemID.BARLEY, 10, 5, 0, 3),
@@ -76,44 +76,44 @@ public enum Produce
 	COTTON("Cotton", PatchImplementation.HOPS, ItemID.COTTON_BOLL, 20, 6, 0, 3),
 
 	// Herb crops
-	GUAM("Guam", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
-	MARRENTILL("Marrentill", PatchImplementation.HERB, ItemID.MARENTILL, 20, 5, 0, 3),
-	TARROMIN("Tarromin", PatchImplementation.HERB, ItemID.TARROMIN, 20, 5, 0, 3),
-	HARRALANDER("Harralander", PatchImplementation.HERB, ItemID.HARRALANDER, 20, 5, 0, 3),
-	RANARR("Ranarr", PatchImplementation.HERB, ItemID.RANARR_WEED, 20, 5, 0, 3),
-	TOADFLAX("Toadflax", PatchImplementation.HERB, ItemID.TOADFLAX, 20, 5, 0, 3),
-	IRIT("Irit", PatchImplementation.HERB, ItemID.IRIT_LEAF, 20, 5, 0, 3),
-	AVANTOE("Avantoe", PatchImplementation.HERB, ItemID.AVANTOE, 20, 5, 0, 3),
-	KWUARM("Kwuarm", PatchImplementation.HERB, ItemID.KWUARM, 20, 5, 0, 3),
+	GUAM("Guam", 20, PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
+	MARRENTILL("Marrentill", 21, PatchImplementation.HERB, ItemID.MARENTILL, 20, 5, 0, 3),
+	TARROMIN("Tarromin", 22, PatchImplementation.HERB, ItemID.TARROMIN, 20, 5, 0, 3),
+	HARRALANDER("Harralander", 23, PatchImplementation.HERB, ItemID.HARRALANDER, 20, 5, 0, 3),
+	RANARR("Ranarr", 24, PatchImplementation.HERB, ItemID.RANARR_WEED, 20, 5, 0, 3),
+	TOADFLAX("Toadflax", 25, PatchImplementation.HERB, ItemID.TOADFLAX, 20, 5, 0, 3),
+	IRIT("Irit", 26, PatchImplementation.HERB, ItemID.IRIT_LEAF, 20, 5, 0, 3),
+	AVANTOE("Avantoe", 27, PatchImplementation.HERB, ItemID.AVANTOE, 20, 5, 0, 3),
+	KWUARM("Kwuarm", 28, PatchImplementation.HERB, ItemID.KWUARM, 20, 5, 0, 3),
 	HUASCA("Huasca", PatchImplementation.HERB, ItemID.HUASCA, 20, 5, 0, 3),
-	SNAPDRAGON("Snapdragon", PatchImplementation.HERB, ItemID.SNAPDRAGON, 20, 5, 0, 3),
-	CADANTINE("Cadantine", PatchImplementation.HERB, ItemID.CADANTINE, 20, 5, 0, 3),
-	LANTADYME("Lantadyme", PatchImplementation.HERB, ItemID.LANTADYME, 20, 5, 0, 3),
-	DWARF_WEED("Dwarf weed", PatchImplementation.HERB, ItemID.DWARF_WEED, 20, 5, 0, 3),
-	TORSTOL("Torstol", PatchImplementation.HERB, ItemID.TORSTOL, 20, 5, 0, 3),
+	SNAPDRAGON("Snapdragon", 29, PatchImplementation.HERB, ItemID.SNAPDRAGON, 20, 5, 0, 3),
+	CADANTINE("Cadantine", 30, PatchImplementation.HERB, ItemID.CADANTINE, 20, 5, 0, 3),
+	LANTADYME("Lantadyme", 31, PatchImplementation.HERB, ItemID.LANTADYME, 20, 5, 0, 3),
+	DWARF_WEED("Dwarf weed", 32, PatchImplementation.HERB, ItemID.DWARF_WEED, 20, 5, 0, 3),
+	TORSTOL("Torstol", 33, PatchImplementation.HERB, ItemID.TORSTOL, 20, 5, 0, 3),
 	GOUTWEED("Goutweed", PatchImplementation.HERB, ItemID.EADGAR_GOUTWEED_HERB, 20, 5, 0, 2),
 	ANYHERB("Any herb", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
 
 	// Tree crops
-	OAK("Oak", "Oak tree", PatchImplementation.TREE, ItemID.OAK_LOGS, 40, 5),
-	WILLOW("Willow", "Willow tree", PatchImplementation.TREE, ItemID.WILLOW_LOGS, 40, 7),
-	MAPLE("Maple", "Maple tree", PatchImplementation.TREE, ItemID.MAPLE_LOGS, 40, 9),
-	YEW("Yew", "Yew tree", PatchImplementation.TREE, ItemID.YEW_LOGS, 40, 11),
-	MAGIC("Magic", "Magic tree", PatchImplementation.TREE, ItemID.MAGIC_LOGS, 40, 13),
+	OAK("Oak", 7, PatchImplementation.TREE, ItemID.OAK_LOGS, 40, 5),
+	WILLOW("Willow", 8, PatchImplementation.TREE, ItemID.WILLOW_LOGS, 40, 7),
+	MAPLE("Maple", 9, PatchImplementation.TREE, ItemID.MAPLE_LOGS, 40, 9),
+	YEW("Yew", 10, PatchImplementation.TREE, ItemID.YEW_LOGS, 40, 11),
+	MAGIC("Magic", 11, PatchImplementation.TREE, ItemID.MAGIC_LOGS, 40, 13),
 
 	// Fruit tree crops
-	APPLE("Apple", "Apple tree", PatchImplementation.FRUIT_TREE, ItemID.COOKING_APPLE, 160, 7, 45, 7),
-	BANANA("Banana", "Banana tree", PatchImplementation.FRUIT_TREE, ItemID.BANANA, 160, 7, 45, 7),
-	ORANGE("Orange", "Orange tree", PatchImplementation.FRUIT_TREE, ItemID.ORANGE, 160, 7, 45, 7),
-	CURRY("Curry", "Curry tree", PatchImplementation.FRUIT_TREE, ItemID.CURRY_LEAF, 160, 7, 45, 7),
-	PINEAPPLE("Pineapple", "Pineapple plant", PatchImplementation.FRUIT_TREE, ItemID.PINEAPPLE, 160, 7, 45, 7),
-	PAPAYA("Papaya", "Papaya tree", PatchImplementation.FRUIT_TREE, ItemID.PAPAYA, 160, 7, 45, 7),
-	PALM("Palm", "Palm tree", PatchImplementation.FRUIT_TREE, ItemID.COCONUT, 160, 7, 45, 7),
-	DRAGONFRUIT("Dragonfruit", "Dragonfruit tree", PatchImplementation.FRUIT_TREE, ItemID.DRAGONFRUIT, 160, 7, 45, 7),
+	APPLE("Apple", 12, PatchImplementation.FRUIT_TREE, ItemID.COOKING_APPLE, 160, 7, 45, 7),
+	BANANA("Banana", 13, PatchImplementation.FRUIT_TREE, ItemID.BANANA, 160, 7, 45, 7),
+	ORANGE("Orange", 14, PatchImplementation.FRUIT_TREE, ItemID.ORANGE, 160, 7, 45, 7),
+	CURRY("Curry", 15, PatchImplementation.FRUIT_TREE, ItemID.CURRY_LEAF, 160, 7, 45, 7),
+	PINEAPPLE("Pineapple", 16, PatchImplementation.FRUIT_TREE, ItemID.PINEAPPLE, 160, 7, 45, 7),
+	PAPAYA("Papaya", 17, PatchImplementation.FRUIT_TREE, ItemID.PAPAYA, 160, 7, 45, 7),
+	PALM("Palm", 18, PatchImplementation.FRUIT_TREE, ItemID.COCONUT, 160, 7, 45, 7),
+	DRAGONFRUIT("Dragonfruit", 19, PatchImplementation.FRUIT_TREE, ItemID.DRAGONFRUIT, 160, 7, 45, 7),
 
 	// Cactus
-	CACTUS("Cactus", PatchImplementation.CACTUS, ItemID.CACTUS_SPINE, 80, 8, 20, 4),
-	POTATO_CACTUS("Potato cactus", "Potato cacti", PatchImplementation.CACTUS, ItemID.CACTUS_POTATO, 10, 8, 5, 7),
+	CACTUS("Cactus", 48, PatchImplementation.CACTUS, ItemID.CACTUS_SPINE, 80, 8, 20, 4),
+	POTATO_CACTUS("Potato cactus", 49, PatchImplementation.CACTUS, ItemID.CACTUS_POTATO, 10, 8, 5, 7),
 
 	// Hardwood
 	TEAK("Teak", PatchImplementation.HARDWOOD_TREE, ItemID.TEAK_LOGS, 640, 8),
@@ -139,8 +139,8 @@ public enum Produce
 	BELLADONNA("Belladonna", PatchImplementation.BELLADONNA, ItemID.NIGHTSHADE, 80, 5),
 	CALQUAT("Calquat", PatchImplementation.CALQUAT, ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
 	SPIRIT_TREE("Spirit tree", PatchImplementation.SPIRIT_TREE, ItemID.SPIRIT_TREE_DUMMY, 320, 13),
-	CELASTRUS("Celastrus", "Celastrus tree", PatchImplementation.CELASTRUS, ItemID.BATTLESTAFF, 160, 6, 0, 4),
-	REDWOOD("Redwood", "Redwood tree", PatchImplementation.REDWOOD, ItemID.REDWOOD_LOGS, 640, 11),
+	CELASTRUS("Celastrus", 51, PatchImplementation.CELASTRUS, ItemID.BATTLESTAFF, 160, 6, 0, 4),
+	REDWOOD("Redwood", 50, PatchImplementation.REDWOOD, ItemID.REDWOOD_LOGS, 640, 11),
 	HESPORI("Hespori", PatchImplementation.HESPORI, ItemID.HESPORI, 640, 4, 0, 2),
 	CRYSTAL_TREE("Crystal tree", PatchImplementation.CRYSTAL_TREE, ItemID.GAUNTLET_CRYSTAL_SHARD, 80, 7),
 
@@ -161,9 +161,9 @@ public enum Produce
 	 */
 	private final String name;
 	/**
-	 * Farming contract names
+	 * Value of VarbitID.FARMGUILD_CONTRACT_TYPE for this crop
 	 */
-	private final String contractName;
+	private final int contractVarbitValue;
 	/**
 	 * Patch type for the crop
 	 */
@@ -190,29 +190,24 @@ public enum Produce
 	 */
 	private final int harvestStages;
 
-	Produce(String name, int itemID, int tickrate, int stages, int regrowTickrate, int harvestStages)
-	{
-		this(name, name, null, itemID, tickrate, stages, regrowTickrate, harvestStages);
-	}
-
 	Produce(String name, PatchImplementation patchImplementation, int itemID, int tickrate, int stages, int regrowTickrate, int harvestStages)
 	{
-		this(name, name, patchImplementation, itemID, tickrate, stages, regrowTickrate, harvestStages);
+		this(name, -1, patchImplementation, itemID, tickrate, stages, regrowTickrate, harvestStages);
 	}
 
-	Produce(String name, String contractName, PatchImplementation patchImplementation, int itemID, int tickrate, int stages)
+	Produce(String name, int contractVarbitValue, PatchImplementation patchImplementation, int itemID, int tickrate, int stages)
 	{
-		this(name, contractName, patchImplementation, itemID, tickrate, stages, 0, 1);
+		this(name, contractVarbitValue, patchImplementation, itemID, tickrate, stages, 0, 1);
 	}
 
 	Produce(String name, PatchImplementation patchImplementation, int itemID, int tickrate, int stages)
 	{
-		this(name, name, patchImplementation, itemID, tickrate, stages, 0, 1);
+		this(name, -1, patchImplementation, itemID, tickrate, stages, 0, 1);
 	}
 
 	Produce(String name, int itemID, int tickrate, int stages)
 	{
-		this(name, name, null, itemID, tickrate, stages, 0, 1);
+		this(name, -1, null, itemID, tickrate, stages, 0, 1);
 	}
 
 	@Nullable
@@ -229,11 +224,11 @@ public enum Produce
 	}
 
 	@Nullable
-	static Produce getByContractName(String contractName)
+	static Produce getByContractVarbitValue(int contractVarbitValue)
 	{
 		for (Produce produce : Produce.values())
 		{
-			if (produce.getContractName().equalsIgnoreCase(contractName))
+			if (produce.getContractVarbitValue() == contractVarbitValue)
 			{
 				return produce;
 			}

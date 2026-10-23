@@ -313,7 +313,7 @@ public class WoodcuttingPlugin extends Plugin
 
 		if (msg.equals("There are no open, unpollinated flowers on this bush yet.")
 			|| msg.equals("The flowers on this bush have not yet opened enough to harvest pollen.")
-			|| msg.equals("<col=06600c>The bush is already fruiting and won't benefit from <col=06600c>any more pollen.</col>"))
+			|| msg.equals("@mes_hl_gre@The bush is already fruiting and won't benefit from any more pollen.</col>"))
 		{
 			if (activeFlowers.contains(lastInteractFlower))
 			{

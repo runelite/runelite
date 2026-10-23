@@ -39,6 +39,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -178,7 +179,11 @@ public class RunEnergyPlugin extends Plugin
 			client.getLocalDestinationLocation() != null &&
 			prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
 
-		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
+		Player local =  client.getLocalPlayer();
+		if (local != null)
+		{
+			prevLocalPlayerLocation = local.getWorldLocation();
+		}
 	}
 
 	@Subscribe

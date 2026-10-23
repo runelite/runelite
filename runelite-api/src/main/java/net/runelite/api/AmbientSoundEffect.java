@@ -25,7 +25,6 @@
 package net.runelite.api;
 
 import javax.annotation.Nullable;
-import net.runelite.api.coords.LocalPoint;
 
 /**
  * An ambient sound effect. These are loaded only at scene load and are used to play ambient
@@ -53,16 +52,4 @@ public interface AmbientSoundEffect
 	 * @return
 	 */
 	int getPlane();
-
-	/**
-	 * The min x/y position of the area this sound effect is at.
-	 * @return
-	 */
-	LocalPoint getMinPosition();
-
-	/**
-	 * The max x/y position of the area this sound effect is at
-	 * @return
-	 */
-	LocalPoint getMaxPosition();
 }

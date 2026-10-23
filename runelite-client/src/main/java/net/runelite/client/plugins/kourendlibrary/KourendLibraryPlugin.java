@@ -279,7 +279,13 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
+		var player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return;
+		}
+
+		boolean inRegion = player.getWorldLocation().getRegionID() == REGION;
 		if (config.hideButton() && inRegion != buttonAttached)
 		{
 			SwingUtilities.invokeLater(() ->

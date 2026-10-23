@@ -74,7 +74,7 @@ enum PrayerType
 	REDEMPTION("Redemption", Prayer.REDEMPTION, "Heals the player if they fall below 10% health", SpriteID.Prayeron.REDEMPTION, true, 6),
 	SMITE("Smite", Prayer.SMITE, "Removes 1 Prayer point from an enemy for every 4 damage inflicted on the enemy", SpriteID.Prayeron.SMITE, true, 18),
 	PRESERVE("Preserve", Prayer.PRESERVE, "Boosted stats last 50% longer", SpriteID.Prayeron.PRESERVE, false, 2),
-	CHIVALRY("Chivalry", Prayer.CHIVALRY, "+15% Attack, +18% Strength, +20% Defence", SpriteID.Prayeron.CHIVALRY, false, 24),
+	CHIVALRY("Chivalry", Prayer.CHIVALRY, "+15% Attack, +18% Strength, +20% Defence", SpriteID.Prayeron.CHIVALRY, false, 12),
 	DEADEYE("Deadeye", Prayer.DEADEYE, "+18% Ranged attack, +18% Ranged strength, +5% Defence", SpriteID.Prayeron.DEADEYE, false, 12)
 	{
 		@Override
@@ -95,7 +95,24 @@ enum PrayerType
 			return vigour && !inLms;
 		}
 	},
-	PIETY("Piety", Prayer.PIETY, "+20% Attack, +23% Strength, +25% Defence", SpriteID.Prayeron.PIETY, false, 24),
+	PIETY("Piety", Prayer.PIETY, "+20% Attack, +23% Strength, +25% Defence", SpriteID.Prayeron.PIETY, false, 24)
+	{
+		@Override
+		boolean isEnabled(Client client)
+		{
+			return !ZEAL.isEnabled(client);
+		}
+	},
+	ZEAL("Zeal", Prayer.ZEAL, "+25% Attack, +28% Strength, +25% Defence", SpriteID.Prayeron.ZEAL, false, 24)
+	{
+		@Override
+		boolean isEnabled(Client client)
+		{
+			boolean inLms = client.getVarbitValue(VarbitID.BR_INGAME) != 0;
+			boolean zeal = client.getVarbitValue(VarbitID.PRAYER_ZEAL_UNLOCKED) != 0;
+			return zeal || inLms;
+		}
+	},
 	RIGOUR("Rigour", Prayer.RIGOUR, "+20% Ranged attack, +23% Ranged strength, +25% Defence", SpriteID.Prayeron.RIGOUR, false, 24),
 	AUGURY("Augury", Prayer.AUGURY, "+25% Magical attack and defence, +25% Defence", SpriteID.Prayeron.AUGURY, false, 24),
 

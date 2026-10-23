@@ -31,6 +31,9 @@ import java.awt.Canvas;
  */
 public interface GameEngine
 {
+	void setConfiguration(ClientConfiguration configuration);
+	void initialize();
+
 	/**
 	 * Gets the canvas that contains everything.
 	 *
@@ -53,4 +56,9 @@ public interface GameEngine
 	boolean isClientThread();
 
 	void resizeCanvas();
+
+	/**
+	 * Releases the startup block if "runelite.delaystart" is set true
+	 */
+	public void unblockStartup();
 }

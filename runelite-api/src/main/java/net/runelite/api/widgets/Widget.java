@@ -622,6 +622,13 @@ public interface Widget
 	String[] getActions();
 
 	/**
+	 * Get the menu subops for the widget.
+	 * @return
+	 */
+	@Nullable
+	String[][] getSubOps();
+
+	/**
 	 * Creates a dynamic widget child
 	 *
 	 * @param index the index of the new widget in the children list or -1 to append to the back
@@ -642,12 +649,19 @@ public interface Widget
 	void deleteAllChildren();
 
 	/**
-	 * Creates a menu option on the widget
-	 *
-	 * @param index  The index of the menu
-	 * @param action The verb to be displayed next to the widget's name in the context menu
+	 * Set a menu op
+	 * @param index The op index
+	 * @param option The menu option
 	 */
-	void setAction(int index, String action);
+	void setAction(int index, String option);
+
+	/**
+	 * Set a menu subop
+	 * @param index The parent op index
+	 * @param subop The subop index
+	 * @param option The menu option
+	 */
+	void setSubOp(int index, int subop, String option);
 
 	/**
 	 * Clear the menu options on a widget.

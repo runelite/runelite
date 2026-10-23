@@ -58,6 +58,19 @@ public class TextTest
 	}
 
 	@Test
+	public void unescapeJagex()
+	{
+		assertEquals("Test", Text.unescapeJagex("<col=FFFFFF>Test</col>"));
+		assertEquals("Test", Text.unescapeJagex("<img=1><s>Test</s>"));
+		assertEquals("Zezima  (level-126)", Text.unescapeJagex("<col=ffffff><img=2>Zezima<col=00ffff>  (level-126)"));
+		assertEquals("", Text.unescapeJagex("<colrandomtext test>"));
+		assertEquals("Not so much.", Text.unescapeJagex("<col=FFFFFF This is a very special message.</col>Not so much."));
+		assertEquals("Use Item -> Man", Text.unescapeJagex("Use Item -> Man"));
+		assertEquals("a < b", Text.unescapeJagex("a <lt> b"));
+		assertEquals("Remove no tags", Text.unescapeJagex("Remove no tags"));
+	}
+
+	@Test
 	public void toJagexName()
 	{
 		assertEquals("lab rat", Text.toJagexName("lab rat"));

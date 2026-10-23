@@ -77,13 +77,11 @@ publishing {
 
 tasks.processTestResources {
     filesMatching("cache.properties") {
-        filter { it.replace("\${rs.version}", libs.versions.rs.get()) }
         filter { it.replace("\${cache.version}", libs.versions.cache.get()) }
     }
 }
 
 tasks.test {
-    enabled = false
     jvmArgs("-Xmx2048m")
 }
 

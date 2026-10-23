@@ -27,6 +27,7 @@ package net.runelite.api;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.coords.LocalPoint;
+import org.intellij.lang.annotations.MagicConstant;
 
 @Getter
 @Setter
@@ -46,6 +47,7 @@ public abstract class RuneLiteObjectController
 	 * first prior to the object being drawn, so that the object renders correctly over top of each tile.
 	 * The default radius is 60, marginally less than 128/2, which works well for models the size of a single tile.
 	 */
+	@Deprecated
 	private int radius = 60;
 
 	/**
@@ -54,6 +56,7 @@ public abstract class RuneLiteObjectController
 	 * radius of the object would not place the object on that tile.
 	 * The default is false.
 	 */
+	@Deprecated
 	private boolean drawFrontTilesFirst = false;
 
 	/**
@@ -61,6 +64,19 @@ public abstract class RuneLiteObjectController
 	 * @see net.runelite.api.coords.Angle
 	 */
 	private int orientation = 0;
+
+	/**
+	 * The render mode to use when drawing the model.
+	 * @see net.runelite.api.Renderable
+	 */
+	@MagicConstant(intValues = {
+			Renderable.RENDERMODE_DEFAULT,
+			Renderable.RENDERMODE_SORTED,
+			Renderable.RENDERMODE_SORTED_NO_DEPTH,
+			Renderable.RENDERMODE_UNSORTED,
+			Renderable.RENDERMODE_UNSORTED_NO_DEPTH,
+	})
+	private int renderMode = Renderable.RENDERMODE_DEFAULT;
 
 	/**
 	 * Sets the location in the scene for the RuneLiteObjectController

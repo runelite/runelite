@@ -55,6 +55,10 @@ public interface DecorativeObject extends TileObject
 	 */
 	int getYOffset();
 
+	int getXOffset2();
+
+	int getYOffset2();
+
 	/**
 	 * A bitfield containing various flags:
 	 * <pre>{@code

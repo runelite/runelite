@@ -36,6 +36,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -59,6 +60,11 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (client.getVarbitValue(VarbitID.CUTSCENE_STATUS) == 1)
+		{
+			return null;
+		}
+
 		if (config.highlightHoveredTile())
 		{
 			WorldView wv = client.getLocalPlayer().getWorldView();
@@ -77,7 +83,13 @@ public class TileIndicatorsOverlay extends Overlay
 
 		if (config.highlightCurrentTile())
 		{
-			final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
+			var player = client.getLocalPlayer();
+			if (player == null)
+			{
+				return null;
+			}
+
+			final WorldPoint playerPos = player.getWorldLocation();
 			if (playerPos == null)
 			{
 				return null;

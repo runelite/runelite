@@ -336,7 +336,14 @@ public class ClientUI
 				OSXFullScreenAdapter.install(frame);
 			}
 
-			frame.setTitle(title);
+			final Client client = (Client) this.client;
+			String frameTitle = title;
+			if (client.getLauncherDisplayName() != null && config.usernameInTitle())
+			{
+				frameTitle += " - " + client.getLauncherDisplayName();
+			}
+
+			frame.setTitle(frameTitle);
 			frame.setIconImages(Arrays.asList(ICON_128, ICON_16));
 			frame.setLocationRelativeTo(frame.getOwner());
 			frame.setResizable(true);
@@ -396,7 +403,7 @@ public class ClientUI
 			content = new JPanel();
 			content.setLayout(new Layout());
 
-			clientPanel = new ClientPanel(client);
+			clientPanel = new ClientPanel(this.client);
 			content.add(clientPanel);
 
 			sidebar = new JTabbedPane(JTabbedPane.RIGHT);
@@ -1189,12 +1196,24 @@ public class ClientUI
 
 		if (config.usernameInTitle())
 		{
-			final Player player = ((Client) client).getLocalPlayer();
+			final Client client = (Client) this.client;
+			final Player player = client.getLocalPlayer();
 
+			String playerName = null;
 			if (player != null && player.getName() != null)
 			{
-				frame.setTitle(title + " - " + player.getName());
+				playerName = player.getName();
 			}
+			else if (client.getLauncherDisplayName() != null)
+			{
+				playerName = client.getLauncherDisplayName();
+			}
+
+			if (playerName != null)
+			{
+				frame.setTitle(title + " - " + playerName);
+			}
+
 		}
 		else
 		{

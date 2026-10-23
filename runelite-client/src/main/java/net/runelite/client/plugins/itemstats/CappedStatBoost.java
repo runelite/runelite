@@ -46,19 +46,14 @@ public class CappedStatBoost extends StatBoost
 	@Override
 	public int heals(Client client)
 	{
-		final int current = getStat().getValue(client);
 		final int max = getStat().getMaximum(client);
+		final int current = Math.min(getStat().getValue(client), max);
 		final int delta = deltaCalculator.calculateDelta(max);
 		final int cap = capCalculator.calculateDelta(max);
 
 		if (delta + current <= max + cap)
 		{
 			return delta;
-		}
-
-		if (current > max + cap)
-		{
-			return 0;
 		}
 
 		return max + cap - current;

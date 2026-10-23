@@ -38,8 +38,10 @@ public class SpotAnimDefinition
 	public int animationId = -1;
 	public short[] recolorToFind;
 	public short[] recolorToReplace;
+	public short fullRecolor = -1;
 	public int resizeX = 128;
 	public int modelId;
 	public int ambient = 0;
 	public int contrast = 0;
+	public boolean clickable = true;
 }

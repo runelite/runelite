@@ -26,8 +26,12 @@ package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.Graphs;
+import com.google.common.graph.MutableGraph;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,14 +44,23 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.Menu;
+import net.runelite.api.MenuAction;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ProfileChanged;
+import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
+import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 
 /**
  * Manages state of all game overlays
@@ -60,6 +73,9 @@ public class OverlayManager
 
 	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
 	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
+	private static final String OVERLAY_CONFIG_ORIGIN = "_origin";
+	private static final String OVERLAY_CONFIG_ORIGIN_X = "_originX";
+	private static final String OVERLAY_CONFIG_ORIGIN_Y = "_originY";
 	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
 	private static final String RUNELITE_CONFIG_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 
@@ -105,12 +121,41 @@ public class OverlayManager
 
 	private final ConfigManager configManager;
 	private final RuneLiteConfig runeLiteConfig;
+	private final Client client;
+	private final ChatMessageManager chatMessageManager;
+	private final SnapCorners snapCorners;
+	private final TooltipOverlay tooltipOverlay;
+	private final WorldMapOverlay worldMapOverlay;
+
+	private final WidgetOverlays widgetOverlays;
 
 	@Inject
-	private OverlayManager(final ConfigManager configManager, final RuneLiteConfig runeLiteConfig)
+	private OverlayManager(
+		final ConfigManager configManager,
+		final RuneLiteConfig runeLiteConfig,
+		final Client client,
+		final ChatMessageManager chatMessageManager,
+		final SnapCorners snapCorners,
+		final TooltipOverlay tooltipOverlay,
+		final WorldMapOverlay worldMapOverlay
+	)
 	{
 		this.configManager = configManager;
 		this.runeLiteConfig = runeLiteConfig;
+		this.client = client;
+		this.chatMessageManager = chatMessageManager;
+		this.snapCorners = snapCorners;
+		this.tooltipOverlay = tooltipOverlay;
+		this.worldMapOverlay = worldMapOverlay;
+		this.widgetOverlays = new WidgetOverlays(client, this, snapCorners);
+	}
+
+	public void init()
+	{
+		widgetOverlays.createOverlays().forEach(this::add);
+		this.add(worldMapOverlay);
+		this.add(tooltipOverlay);
+		snapCorners.getSnapCorners().forEach(snapCorners::loadSnapcorner);
 	}
 
 	@Subscribe
@@ -134,6 +179,11 @@ public class OverlayManager
 				loadOverlay(o);
 				o.revalidate();
 			});
+
+			for (SnapCorner s : snapCorners.getSnapCorners())
+			{
+				snapCorners.loadSnapcorner(s);
+			}
 		}
 		rebuildOverlayLayers();
 	}
@@ -245,12 +295,14 @@ public class OverlayManager
 	}
 
 	/**
-	 * Force save overlay data
+	 * Save overlay data
 	 *
 	 * @param overlay overlay to save
 	 */
 	public synchronized void saveOverlay(final Overlay overlay)
 	{
+		log.debug("Saving overlay {} origin: {} x: {} y: {}", overlay.getName(), overlay.getOrigin(), overlay.getOriginX(), overlay.getOriginY());
+
 		saveOverlayPosition(overlay);
 		saveOverlaySize(overlay);
 		saveOverlayLocation(overlay);
@@ -264,11 +316,10 @@ public class OverlayManager
 	 */
 	public synchronized void resetOverlay(final Overlay overlay)
 	{
-		overlay.setPreferredPosition(null);
-		overlay.setPreferredSize(null);
-		overlay.setPreferredLocation(null);
+		overlay.reset();
 		saveOverlay(overlay);
-		overlay.revalidate();
+		// revalidate all overlays so if this is a snapcorner, WidgetOverlays in it correctly reset
+		overlays.forEach(Overlay::revalidate);
 	}
 
 	synchronized void rebuildOverlayLayers()
@@ -282,7 +333,7 @@ public class OverlayManager
 			{
 				// When UNDER_WIDGET overlays are in preferred locations, move to
 				// ABOVE_WIDGETS so that it can draw over interfaces
-				if (layer == OverlayLayer.UNDER_WIDGETS && !(overlay instanceof WidgetOverlay))
+				if (layer == OverlayLayer.UNDER_WIDGETS && !(overlay instanceof WidgetOverlays.WidgetOverlay))
 				{
 					layer = OverlayLayer.ABOVE_WIDGETS;
 				}
@@ -317,6 +368,35 @@ public class OverlayManager
 		this.overlayMap = overlayMap;
 	}
 
+	void computeOverlayOrigins(Overlay overlay, int x, int y, int w, int h)
+	{
+		Dimension canvasDimensions = client.getRealDimensions();
+
+		// rough heuristic to determine overlay origins based on position
+		OverlayOriginX originX = OverlayOriginX.LEFT;
+		if (x + w / 2 > canvasDimensions.width * .55f)
+		{
+			originX = OverlayOriginX.RIGHT;
+		}
+		else if (x + w / 2 >= canvasDimensions.width * .45f)
+		{
+			originX = OverlayOriginX.CENTER;
+		}
+
+		OverlayOriginY originY = OverlayOriginY.TOP;
+		if (y + h / 2 > canvasDimensions.height * .55f)
+		{
+			originY = OverlayOriginY.BOTTOM;
+		}
+		else if (y + h / 2 > canvasDimensions.height * .45f)
+		{
+			originY = OverlayOriginY.CENTER;
+		}
+
+		overlay.setOriginX(originX);
+		overlay.setOriginY(originY);
+	}
+
 	private void loadOverlay(final Overlay overlay)
 	{
 		final Point location = loadOverlayLocation(overlay);
@@ -325,12 +405,26 @@ public class OverlayManager
 
 		if (overlay.isMovable())
 		{
+			OverlayOrigin originMode = loadOverlayOrigin(overlay);
+			OverlayOriginX originX = loadOverlayOriginX(overlay);
+			OverlayOriginY originY = loadOverlayOriginY(overlay);
+
+			if (location != null && originMode != null && originX != null && originY != null)
+			{
+				overlay.setOrigin(originMode);
+				overlay.setOriginX(originX);
+				overlay.setOriginY(originY);
+			}
+
 			overlay.setPreferredLocation(location);
 		}
 		else if (location != null)
 		{
 			log.info("Resetting preferred location of non-movable overlay {} (class {})", overlay.getName(), overlay.getClass().getName());
 			overlay.setPreferredLocation(null);
+			overlay.setOrigin(OverlayOrigin.AUTO);
+			overlay.setOriginX(OverlayOriginX.LEFT);
+			overlay.setOriginY(OverlayOriginY.TOP);
 			saveOverlayLocation(overlay);
 		}
 
@@ -357,6 +451,240 @@ public class OverlayManager
 		}
 	}
 
+	private Widget getHudContainer()
+	{
+		if (client.isResized())
+		{
+			if (client.getTopLevelInterfaceId() == InterfaceID.TOPLEVEL_PRE_EOC)
+			{
+				return client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_FRONT);
+			}
+			else
+			{
+				return client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_FRONT);
+			}
+		}
+		return client.getWidget(InterfaceID.Toplevel.OVERLAY_HUD);
+	}
+
+	private Widget getChatContainer()
+	{
+		if (client.isResized())
+		{
+			if (client.getTopLevelInterfaceId() == InterfaceID.TOPLEVEL_PRE_EOC)
+			{
+				return client.getWidget(InterfaceID.ToplevelPreEoc.CHAT_CONTAINER);
+			}
+			else
+			{
+				return client.getWidget(InterfaceID.ToplevelOsrsStretch.CHAT_CONTAINER);
+			}
+		}
+		return client.getWidget(InterfaceID.Toplevel.CHAT_CONTAINER);
+	}
+
+	private Widget getChatbox()
+	{
+		return client.getWidget(InterfaceID.Chatbox.CHATAREA); // this part gets hidden
+	}
+
+	private static Rectangle bounds(Widget w)
+	{
+		return w != null ? w.getBounds() : new Rectangle();
+	}
+
+	private void convertOriginToAbsolute(Point p, OverlayOriginX originX, OverlayOriginY originY, Point out)
+	{
+		Dimension d = client.getRealDimensions();
+		Rectangle h = bounds(getHudContainer());
+		Rectangle c = bounds(getChatContainer());
+		int ax;
+		switch (originX)
+		{
+			case LEFT:
+				ax = p.x;
+				break;
+			case RIGHT:
+				ax = d.width + p.x;
+				break;
+			case CENTER:
+				ax = d.width / 2 + p.x;
+				break;
+			case HUD_CONTAINER_LEFT:
+				ax = h.x + p.x;
+				break;
+			case HUD_CONTAINER_CENTER:
+				ax = h.x + h.width / 2 + p.x;
+				break;
+			case HUD_CONTAINER_RIGHT:
+				ax = h.x + h.width + p.x;
+				break;
+			case CHATBOX_LEFT:
+				ax = c.x + p.x;
+				break;
+			case CHATBOX_RIGHT:
+				ax = c.x + c.width + p.x;
+				break;
+			default:
+				throw new IllegalStateException();
+		}
+
+		int ay;
+		switch (originY)
+		{
+			case TOP:
+				ay = p.y;
+				break;
+			case BOTTOM:
+				ay = d.height + p.y;
+				break;
+			case CENTER:
+				ay = d.height / 2 + p.y;
+				break;
+			case HUD_CONTAINER_TOP:
+				ay = h.y + p.y;
+				break;
+			case HUD_CONTAINER_BOTTOM:
+				ay = h.y + h.height + p.y;
+				break;
+			case CHATBOX_TOP:
+				Widget w = getChatbox();
+				int cy = c.y;
+				if (w != null && w.isSelfHidden())
+				{
+					cy += w.getBounds().height;
+				}
+				ay = cy + p.y;
+				break;
+			default:
+				throw new IllegalStateException();
+		}
+
+		out.setLocation(ax, ay);
+	}
+
+	void computeAbsolutePosition(OverlayOrigin origin, OverlayOriginX originX, OverlayOriginY originY, Point op, Point out)
+	{
+		if (origin != OverlayOrigin.AUTO && origin != OverlayOrigin.MANUAL)
+		{
+			Widget w = origin.getWidget(client);
+			int wx, wy;
+			if (w != null)
+			{
+				var wp = w.getCanvasLocation();
+				wx = wp.getX();
+				wy = wp.getY();
+				origin.coord.setLocation(wx, wy);
+			}
+			else
+			{
+				wx = origin.coord.x;
+				wy = origin.coord.y;
+			}
+
+			out.setLocation(wx + op.x, wy + op.y);
+		}
+		else
+		{
+			convertOriginToAbsolute(op, originX, originY, out);
+		}
+	}
+
+	private Point convertAbsoluteToOrigin(Point p, OverlayOriginX originX, OverlayOriginY originY)
+	{
+		Dimension d = client.getRealDimensions();
+		Rectangle h = bounds(getHudContainer());
+		Rectangle c = bounds(getChatContainer());
+		int ox;
+		switch (originX)
+		{
+			case LEFT:
+				ox = p.x;
+				break;
+			case RIGHT:
+				ox = p.x - d.width;
+				break;
+			case CENTER:
+				ox = p.x - d.width / 2;
+				break;
+			case HUD_CONTAINER_LEFT:
+				ox = p.x - h.x;
+				break;
+			case HUD_CONTAINER_CENTER:
+				ox = p.x - (h.x +  h.width / 2);
+				break;
+			case HUD_CONTAINER_RIGHT:
+				ox = p.x - (h.x + h.width);
+				break;
+			case CHATBOX_LEFT:
+				ox = p.x - c.x;
+				break;
+			case CHATBOX_RIGHT:
+				ox = p.x - (c.x + c.width);
+				break;
+			default:
+				throw new IllegalStateException();
+		}
+
+		int oy;
+		switch (originY)
+		{
+			case TOP:
+				oy = p.y;
+				break;
+			case BOTTOM:
+				oy = p.y - d.height;
+				break;
+			case CENTER:
+				oy = p.y - d.height / 2;
+				break;
+			case HUD_CONTAINER_TOP:
+				oy = p.y - h.y;
+				break;
+			case HUD_CONTAINER_BOTTOM:
+				oy = p.y - (h.y + h.height);
+				break;
+			case CHATBOX_TOP:
+				Widget w = getChatbox();
+				int cy = c.y;
+				if (w != null && w.isSelfHidden())
+				{
+					cy += w.getBounds().height;
+				}
+				oy = p.y - cy;
+				break;
+			default:
+				throw new IllegalStateException();
+		}
+
+		return new Point(ox, oy);
+	}
+
+	Point computeOriginPosition(Point absPosition, OverlayOrigin origin, OverlayOriginX originX, OverlayOriginY originY)
+	{
+		if (origin != OverlayOrigin.AUTO && origin != OverlayOrigin.MANUAL)
+		{
+			Widget w = origin.getWidget(client);
+			int wx, wy;
+			if (w != null)
+			{
+				var wp = w.getCanvasLocation();
+				wx = wp.getX();
+				wy = wp.getY();
+			}
+			else
+			{
+				wx = origin.coord.x;
+				wy = origin.coord.y;
+			}
+			return new Point(absPosition.x - wx, absPosition.y - wy);
+		}
+		else
+		{
+			return convertAbsoluteToOrigin(absPosition, originX, originY);
+		}
+	}
+
 	private void saveOverlayLocation(final Overlay overlay)
 	{
 		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
@@ -366,12 +694,24 @@ public class OverlayManager
 				RUNELITE_CONFIG_GROUP_NAME,
 				key,
 				overlay.getPreferredLocation());
+			configManager.setConfiguration(RUNELITE_CONFIG_GROUP_NAME,
+				overlay.getName() + OVERLAY_CONFIG_ORIGIN,
+				overlay.getOrigin());
+			configManager.setConfiguration(RUNELITE_CONFIG_GROUP_NAME,
+				overlay.getName() + OVERLAY_CONFIG_ORIGIN_X,
+				overlay.getOriginX());
+			configManager.setConfiguration(RUNELITE_CONFIG_GROUP_NAME,
+				overlay.getName() + OVERLAY_CONFIG_ORIGIN_Y,
+				overlay.getOriginY());
 		}
 		else
 		{
 			configManager.unsetConfiguration(
 				RUNELITE_CONFIG_GROUP_NAME,
 				key);
+			configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, overlay.getName() + OVERLAY_CONFIG_ORIGIN);
+			configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, overlay.getName() + OVERLAY_CONFIG_ORIGIN_X);
+			configManager.unsetConfiguration(RUNELITE_CONFIG_GROUP_NAME, overlay.getName() + OVERLAY_CONFIG_ORIGIN_Y);
 		}
 	}
 
@@ -428,4 +768,138 @@ public class OverlayManager
 		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
 		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey, OverlayPosition.class);
 	}
+
+	private OverlayOrigin loadOverlayOrigin(final Overlay overlay)
+	{
+		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, overlay.getName() + OVERLAY_CONFIG_ORIGIN, OverlayOrigin.class);
+	}
+
+	private OverlayOriginX loadOverlayOriginX(final Overlay overlay)
+	{
+		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, overlay.getName() + OVERLAY_CONFIG_ORIGIN_X, OverlayOriginX.class);
+	}
+
+	private OverlayOriginY loadOverlayOriginY(final Overlay overlay)
+	{
+		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, overlay.getName() + OVERLAY_CONFIG_ORIGIN_Y, OverlayOriginY.class);
+	}
+
+	void addOriginMenu(Overlay overlay)
+	{
+		Menu menu = client.getMenu();
+		Menu sub = menu.createMenuEntry(1)
+			.setType(MenuAction.RUNELITE_OVERLAY)
+			.setOption(overlay instanceof WidgetOverlays.WidgetOverlay ? "Interface Origin" : "Overlay Origin")
+			.createSubMenu();
+		String[] opts = {"Top left", "Top center", "Top right", "Bottom left", "Bottom center", "Bottom right"};
+		OverlayOriginX[] originX = {
+			OverlayOriginX.LEFT, OverlayOriginX.CENTER, OverlayOriginX.RIGHT,
+			OverlayOriginX.LEFT, OverlayOriginX.CENTER, OverlayOriginX.RIGHT
+		};
+		OverlayOriginY[] originY = {
+			OverlayOriginY.TOP, OverlayOriginY.TOP, OverlayOriginY.TOP,
+			OverlayOriginY.BOTTOM, OverlayOriginY.BOTTOM, OverlayOriginY.BOTTOM
+		};
+		int off = 0;
+		for (int i = 0; i < opts.length; ++i)
+		{
+			OverlayOriginX ox = originX[i];
+			OverlayOriginY oy = originY[i];
+			sub.createMenuEntry(-1 - off++)
+				.setType(MenuAction.RUNELITE_OVERLAY)
+				.setOption(opts[i])
+				.onClick(e ->
+				{
+					chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.CONSOLE)
+						.runeLiteFormattedMessage("This overlay will now be automatically repositioned relative to the " +
+							oy.name().toLowerCase() + " " + ox.name().toLowerCase() + " of the screen when the client is resized.")
+						.build());
+
+					Point p = overlay.getBounds().getLocation();
+					p = computeOriginPosition(p, OverlayOrigin.MANUAL, ox, oy);
+					overlay.setPreferredLocation(p);
+					overlay.setPreferredPosition(null);
+
+					overlay.setOrigin(OverlayOrigin.MANUAL);
+					overlay.setOriginX(ox);
+					overlay.setOriginY(oy);
+					saveOverlay(overlay);
+				});
+		}
+		opts = new String[]{"Sidepanel", "Chatbox", "Minimap"};
+		OverlayOrigin[] origins = {OverlayOrigin.SIDEPANEL, OverlayOrigin.CHATBOX, OverlayOrigin.MINIMAP};
+		for (int i = 0; i < opts.length; ++i)
+		{
+			OverlayOrigin origin = origins[i];
+			sub.createMenuEntry(-1 - off++)
+				.setType(MenuAction.RUNELITE_OVERLAY)
+				.setOption(opts[i])
+				.onClick(e ->
+				{
+					if (cycleCheck(overlay, origin, overlay.getPreferredPosition()))
+					{
+						chatMessageManager.queue(QueuedMessage.builder()
+							.type(ChatMessageType.CONSOLE)
+							.runeLiteFormattedMessage("The origin of " + origin.name().toLowerCase() + " is already linked to this overlay, either directly, or indirectly through multiple other overlays. " +
+								"Introducing a circular dependency is not permitted.")
+							.build());
+						return;
+					}
+
+					chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.CONSOLE)
+						.runeLiteFormattedMessage("This overlay will now be automatically repositioned relative to the " +
+							origin.name().toLowerCase() + ".")
+						.build());
+
+					Point p = overlay.getBounds().getLocation();
+					p = computeOriginPosition(p, origin, null, null);
+					overlay.setPreferredLocation(p);
+					overlay.setPreferredPosition(null);
+
+					overlay.setOrigin(origin);
+					saveOverlay(overlay);
+				});
+		}
+	}
+
+	synchronized boolean cycleCheck(Overlay curOverlay, OverlayOrigin newOrigin, OverlayPosition newPosition)
+	{
+		MutableGraph<Object> g = GraphBuilder
+			.directed()
+			.allowsSelfLoops(true)
+			.build();
+		for (Overlay overlay : overlays)
+		{
+			if (overlay instanceof WidgetOverlays.WidgetOverlay)
+			{
+				OverlayOrigin origin = overlay == curOverlay ? newOrigin : overlay.getOrigin();
+				OverlayPosition position = overlay == curOverlay ? newPosition : overlay.getPreferredPosition();
+
+				Widget overlayWidget = client.getWidget(((WidgetOverlays.WidgetOverlay) overlay).componentId);
+				Widget originWidget = origin.getWidget(client);
+				if (overlayWidget != null && originWidget != null)
+				{
+					g.putEdge(overlayWidget, originWidget);
+				}
+
+				if (overlayWidget != null && position != null)
+				{
+					assert originWidget == null;
+					SnapCorner s = snapCorners.forPosition(position);
+					g.putEdge(overlayWidget, s);
+				}
+			}
+		}
+		for (SnapCorner s : snapCorners.getSnapCorners())
+		{
+			if (s.originY == OverlayOriginY.CHATBOX_TOP)
+			{
+				g.putEdge(s, getChatContainer());
+			}
+		}
+		return Graphs.hasCycle(g);
+	}
+
 }

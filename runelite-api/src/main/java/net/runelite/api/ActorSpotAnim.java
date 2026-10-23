@@ -24,7 +24,7 @@
  */
 package net.runelite.api;
 
-public interface ActorSpotAnim extends Node
+public interface ActorSpotAnim extends Renderable
 {
 	/**
 	 * Get the spotanim id
@@ -39,6 +39,18 @@ public interface ActorSpotAnim extends Node
 	 * @param id
 	 */
 	void setId(int id);
+
+	/**
+	 * Get the client cycle that the spotanim starts at
+	 * @return
+	 */
+	int getStartCycle();
+
+	/**
+	 * Set the client cycle that the spotanim starts at
+	 * @param cycle
+	 */
+	void setStartCycle(int cycle);
 
 	/**
 	 * Get the spotanim height

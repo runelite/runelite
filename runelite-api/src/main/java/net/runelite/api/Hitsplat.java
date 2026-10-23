@@ -24,7 +24,6 @@
  */
 package net.runelite.api;
 
-import lombok.Getter;
 import static net.runelite.api.HitsplatID.BLOCK_ME;
 import static net.runelite.api.HitsplatID.BLOCK_OTHER;
 import static net.runelite.api.HitsplatID.DAMAGE_MAX_ME;
@@ -50,37 +49,27 @@ import net.runelite.api.annotations.HitsplatType;
 /**
  * A hitsplat that has been applied to an {@link Actor}.
  */
-public class Hitsplat
+public interface Hitsplat
 {
 	/**
 	 * The type of hitsplat.
 	 */
-	@Getter(onMethod_ = {@HitsplatType})
 	@HitsplatType
-	private int hitsplatType;
+	int getHitsplatType();
 
 	/**
 	 * The value displayed by the hitsplat.
 	 */
-	@Getter
-	private int amount;
+	int getAmount();
 
 	/**
 	 * When the hitsplat will disappear.
 	 */
-	@Getter
-	private int disappearsOnGameCycle;
+	int getDisappearsOnGameCycle();
 
-	public Hitsplat(@HitsplatType int hitsplatType, int amount, int disappearsOnGameCycle)
+	default boolean isMine()
 	{
-		this.hitsplatType = hitsplatType;
-		this.amount = amount;
-		this.disappearsOnGameCycle = disappearsOnGameCycle;
-	}
-
-	public boolean isMine()
-	{
-		switch (hitsplatType)
+		switch (getHitsplatType())
 		{
 			case BLOCK_ME:
 			case DAMAGE_ME:
@@ -101,9 +90,9 @@ public class Hitsplat
 		}
 	}
 
-	public boolean isOthers()
+	default boolean isOthers()
 	{
-		switch (hitsplatType)
+		switch (getHitsplatType())
 		{
 			case BLOCK_OTHER:
 			case DAMAGE_OTHER:

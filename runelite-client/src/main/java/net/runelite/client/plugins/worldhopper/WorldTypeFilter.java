@@ -94,7 +94,7 @@ enum WorldTypeFilter
 			@Override
 			boolean matches(Set<WorldType> types)
 			{
-				return types.contains(WorldType.HIGH_RISK);
+				return types.contains(WorldType.HIGH_RISK) && !types.contains(WorldType.PVP);
 			}
 		},
 	BOUNTY_HUNTER

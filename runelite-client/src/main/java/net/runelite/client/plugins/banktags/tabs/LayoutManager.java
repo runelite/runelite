@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.banktags.tabs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -59,6 +60,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -272,24 +274,24 @@ public class LayoutManager
 			drawItem(l, c, bank, bankItemId, pos);
 		}
 
-		int lastEmptySlot = -1;
+		int insertionSlot = (plugin.getOptions() & BankTagsService.OPTION_ITEMS_NOT_IN_LAYOUT_AT_BOTTOM) != 0 ? l.lastItemIndex() : -1;
 		boolean modified = false;
 		// Items from the bank but not in the layout.
 		for (int itemId : bankItems)
 		{
 			do
 			{
-				++lastEmptySlot;
+				++insertionSlot;
 			}
-			while (lastEmptySlot < layout.length && layout[lastEmptySlot] > -1);
+			while (l.getItemAtPos(insertionSlot) > -1);
 
-			Widget c = itemContainer.getChild(lastEmptySlot);
+			Widget c = itemContainer.getChild(insertionSlot);
 			if (c == null || c.getOriginalHeight() != BANK_ITEM_HEIGHT) // check for tabs
 			{
 				break;
 			}
 
-			drawItem(l, c, bank, itemId, lastEmptySlot);
+			drawItem(l, c, bank, itemId, insertionSlot);
 
 			if (log.isDebugEnabled())
 			{
@@ -300,26 +302,27 @@ public class LayoutManager
 			}
 
 			int layoutItemId = itemManager.canonicalize(itemId);
-			l.addItem(layoutItemId);
+			l.addItemAfter(layoutItemId, insertionSlot);
 			modified = true;
 		}
 
 		// Fill the remaining slots with -1 so that items can be dragged to them
+		insertionSlot = -1;
 		while (true)
 		{
 			do
 			{
-				++lastEmptySlot;
+				++insertionSlot;
 			}
-			while (lastEmptySlot < layout.length && layout[lastEmptySlot] > -1);
+			while (l.getItemAtPos(insertionSlot) > -1);
 
-			Widget c = itemContainer.getChild(lastEmptySlot);
+			Widget c = itemContainer.getChild(insertionSlot);
 			if (c == null || c.getOriginalHeight() != BANK_ITEM_HEIGHT)  // check for tabs
 			{
 				break;
 			}
 
-			drawItem(l, c, bank, -1, lastEmptySlot);
+			drawItem(l, c, bank, -1, insertionSlot);
 		}
 
 		if (modified)
@@ -421,6 +424,35 @@ public class LayoutManager
 				{
 					c.setAction(10, "Examine");
 				}
+				if (isPotStorage)
+				{
+					Potion potion = potionStorage.findPotion(item);
+					if (potion != null)
+					{
+						var potionEnum = potion.potionEnum;
+						int potionItemId1 = potionEnum.getIntValue(1);
+						int potionItemId2 = potionEnum.getIntValue(2);
+						int potionItemId3 = potionEnum.getIntValue(3);
+						int potionItemId4 = potionEnum.getIntValue(4);
+						c.setAction(10, "Doses");
+						if (potionItemId1 > -1)
+						{
+							c.setSubOp(10, 6, "1 Dose");
+						}
+						if (potionItemId2 > -1)
+						{
+							c.setSubOp(10, 7, "2 Dose");
+						}
+						if (potionItemId3 > -1)
+						{
+							c.setSubOp(10, 8, "3 Dose");
+						}
+						if (potionItemId4 > -1)
+						{
+							c.setSubOp(10, 9, "4 Dose");
+						}
+					}
+				}
 				c.setOpacity(0);
 			}
 
@@ -436,7 +468,7 @@ public class LayoutManager
 			c.setItemId(-1);
 			c.setItemQuantity(0);
 			c.setOnDragListener((Object[]) null);
-			c.setOnDragCompleteListener((Object[]) null);
+			c.setOnDragCompleteListener((JavaScriptCallback) ev -> client.setDraggedOnWidget(null));
 		}
 
 		int posX = (idx % BANK_ITEMS_PER_ROW) * (BANK_ITEM_WIDTH + BANK_ITEM_X_PADDING) + BANK_ITEM_START_X;
@@ -516,9 +548,10 @@ public class LayoutManager
 	private int matchesVariant(Set<Integer> bank, int itemId)
 	{
 		int baseId = ItemVariationMapping.map(itemId);
-		if (baseId != itemId)
+		Collection<Integer> variations = ItemVariationMapping.getVariations(baseId);
+		if (variations.size() > 1)
 		{
-			for (int variationId : ItemVariationMapping.getVariations(baseId))
+			for (int variationId : variations)
 			{
 				if (bank.contains(variationId))
 				{
@@ -687,12 +720,28 @@ public class LayoutManager
 					return;
 				}
 
-				idx = potionStorage.getIdx(w.getItemId());
-				if (idx > -1)
+				Potion p = potionStorage.findPotion(w.getItemId());
+				if (p != null)
 				{
 					potionStorage.prepareWidgets();
 					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
-					menu.setParam0(idx);
+					if (event.getId() > 0xffff)
+					{
+						// submenu click for doses
+						menu.setParam0(p.dosesChildId());
+						menu.setIdentifier((event.getId() >> 16) - 1);
+					}
+					else
+					{
+						menu.setParam0(p.withdrawChildId());
+					}
+				}
+
+				if (w.getItemId() == ItemID.VIAL_EMPTY)
+				{
+					potionStorage.prepareWidgets();
+					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
+					menu.setParam0(potionStorage.getVialsChildIdx());
 				}
 			}
 		}
@@ -833,6 +882,13 @@ public class LayoutManager
 				}
 			}
 
+			// quiver
+			if (hasQuiver(i, e))
+			{
+				final int quiverAmmo = client.getVarpValue(VarPlayerID.DIZANAS_QUIVER_TEMP_AMMO);
+				l.setItemAtPos(quiverAmmo, 2);
+			}
+
 			// Middle column
 			for (int j = 0; j < 5; ++j)
 			{
@@ -867,6 +923,14 @@ public class LayoutManager
 			Collection<Integer> runePouchVariations = ItemVariationMapping.getVariations(ItemID.BH_RUNE_POUCH);
 			Collection<Integer> divineRunePouchVariations = ItemVariationMapping.getVariations(ItemID.DIVINE_RUNE_POUCH);
 			return runePouchVariations.stream().anyMatch(inv::contains) || divineRunePouchVariations.stream().anyMatch(inv::contains);
+		}
+
+		private boolean hasQuiver(ItemContainer inv, ItemContainer worn)
+		{
+			final Item cape = worn != null ? worn.getItem(EquipmentInventorySlot.CAPE.getSlotIdx()) : null;
+
+			return (cape != null && client.getItemDefinition(cape.getId()).getIntValue(ParamID.QUIVER_AMMO_AVAILABLE) == 1)
+				|| (inv != null && Arrays.stream(inv.getItems()).anyMatch(item -> client.getItemDefinition(item.getId()).getIntValue(ParamID.QUIVER_AMMO_AVAILABLE) == 1));
 		}
 	}
 }

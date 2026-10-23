@@ -1401,7 +1401,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("The far north eastern corner where 1 of 4 was defeated, the shadows still linger.")
 			.location(new WorldPoint(2744, 5116, 0))
-			.solution("Dig on the northeastern-most corner of the Shadow Dungeon. Bring a ring of visibility.")
+			.solution("Dig on the northeastern-most corner of the Shadow Dungeon. Bring a ring of visibility or ring of shadows.")
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_EASY_VAGUE027)
@@ -2030,7 +2030,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_RIDDLE_SAIL)
 			.text("Their bane awaits, but don't be going in there without permission.")
-			.location(new WorldPoint(3120, 2424, 0))
+			.location(new WorldPoint(3176, 2478, 0))
 			.npc("Shellbane gryphon")
 			.solution("Kill the shellbane gryphon.")
 			.build(),

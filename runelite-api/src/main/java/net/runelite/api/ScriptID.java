@@ -176,13 +176,13 @@ public final class ScriptID
 	 */
 	@ScriptArguments()
 	@Deprecated
-	public static final int NULL = 10003;
+	public static final int NULL = 100003;
 
 	/**
 	 * Send a private message.
 	 */
 	@ScriptArguments(string = 2)
-	public static final int PRIVMSG = 10004;
+	public static final int PRIVMSG = 100004;
 
 	/**
 	 * Creates a disabled experience drop
@@ -272,7 +272,7 @@ public final class ScriptID
 	 * <li> int (WidgetID) * 16, various widgets making up the bank interface </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 17)
+	@ScriptArguments(integer = 20)
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
 
 	@ScriptArguments(integer = 6)
@@ -289,6 +289,9 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 1)
 	public static final int COMBAT_INTERFACE_SETUP = 7593;
+
+	@ScriptArguments(integer = 1)
+	public static final int COMBAT_INTERFACE_SP = 327;
 
 	/**
 	 * Called to build the toplevel interface
@@ -308,7 +311,7 @@ public final class ScriptID
 	@ScriptArguments(integer = 4, string = 1)
 	public static final int XPDROPS_SETDROPSIZE = 996;
 
-	@ScriptArguments(integer = 34)
+	@ScriptArguments(integer = 35)
 	public static final int BANKMAIN_INIT = 274;
 
 	/**
@@ -317,10 +320,10 @@ public final class ScriptID
 	 * <li>int (WidgetID) * 17, various widgets making up the bank interface</li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 17)
+	@ScriptArguments(integer = 20)
 	public static final int BANKMAIN_BUILD = 277;
 
-	@ScriptArguments(integer = 19)
+	@ScriptArguments(integer = 22)
 	public static final int BANKMAIN_FINISHBUILDING = 505;
 
 	@ScriptArguments()
@@ -337,7 +340,7 @@ public final class ScriptID
 	 * These can be retrieved from the onInvTransmitListener of BANK_ITEM_CONTAINER. Note that this array also
 	 * contains the script ID for the bank layout script in the first index
 	 */
-	@ScriptArguments(integer = 18)
+	@ScriptArguments(integer = 21)
 	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
 
 	@ScriptArguments(integer = 6)
@@ -357,7 +360,7 @@ public final class ScriptID
 	 * <li>int (WidgetID) drag parent</li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 11, string = 1)
+	@ScriptArguments(integer = 12, string = 1)
 	public static final int SETTINGS_SLIDER_CHOOSE_ONOP = 3885;
 
 	/**
@@ -483,10 +486,10 @@ public final class ScriptID
 	@ScriptArguments(integer = 1, string = 1)
 	public static final int POPUP_OVERLAY_YESNO_INIT = 4212;
 
-	@ScriptArguments(integer = 12)
+	@ScriptArguments(integer = 17)
 	public static final int BANK_DEPOSITBOX_INIT = 144;
 
-	@ScriptArguments(integer = 7)
+	@ScriptArguments(integer = 8)
 	public static final int SEED_VAULT_BUILD = 2819;
 
 	@ScriptArguments(integer = 4)
@@ -500,4 +503,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 6, string = 9)
 	public static final int INTERFACE_INV_DRAW_SLOT_BIG = 154;
+
+	@ScriptArguments(integer = 4)
+	public static final int BANKMAIN_POPUP_TAB_DRAW = 9221;
 }

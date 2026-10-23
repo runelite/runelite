@@ -55,6 +55,11 @@ public interface NPCComposition extends ParamHolder
 	int[] getChatheadModels();
 
 	/**
+	 * The menu ops associated with this object
+	 */
+	EntityOps getOps();
+
+	/**
 	 * The 5 menuops this NPC has when in world. Index 0 corresponds to
 	 * {@link MenuAction#NPC_FIRST_OPTION}, Index 2 to
 	 * {@link MenuAction#NPC_SECOND_OPTION} and so on.

@@ -56,6 +56,15 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	@Nullable
 	private final Plugin plugin;
 	private Point preferredLocation;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private OverlayOrigin origin = OverlayOrigin.AUTO;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private OverlayOriginX originX = OverlayOriginX.LEFT;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private OverlayOriginY originY = OverlayOriginY.TOP;
 	private Dimension preferredSize;
 	private OverlayPosition preferredPosition;
 	private Rectangle bounds = new Rectangle();
@@ -201,6 +210,10 @@ public abstract class Overlay implements LayoutableRenderableEntity
 		drawHooks.add(component);
 	}
 
+	void onDrag()
+	{
+	}
+
 	public void onMouseOver()
 	{
 	}
@@ -227,6 +240,16 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	public Rectangle getParentBounds()
 	{
 		return null;
+	}
+
+	void reset()
+	{
+		setPreferredPosition(null);
+		setPreferredSize(null);
+		setPreferredLocation(null);
+		setOrigin(OverlayOrigin.AUTO);
+		setOriginX(OverlayOriginX.LEFT);
+		setOriginY(OverlayOriginY.TOP);
 	}
 
 	public void revalidate()

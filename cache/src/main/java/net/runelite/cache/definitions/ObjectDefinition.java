@@ -27,6 +27,7 @@ package net.runelite.cache.definitions;
 
 import java.util.Map;
 import lombok.Data;
+import net.runelite.cache.EntityOpsDefinition;
 
 @Data
 public class ObjectDefinition
@@ -38,6 +39,7 @@ public class ObjectDefinition
 	private String name = "null";
 	private int[] objectModels;
 	private int[] objectTypes;
+	private short fullRecolor = -1;
 	private short[] recolorToFind;
 	private int mapAreaId = -1;
 	private short[] textureToReplace;
@@ -53,7 +55,7 @@ public class ObjectDefinition
 	private int varbitID = -1;
 	private int ambient = 0;
 	private int contrast = 0;
-	private String[] actions = new String[5];
+	private EntityOpsDefinition ops = new EntityOpsDefinition();
 	private int interactType = 2;
 	private int mapSceneID = -1;
 	private int blockingMask = 0;
@@ -68,6 +70,7 @@ public class ObjectDefinition
 	private boolean obstructsGround = false;
 	private int contouredGround = -1;
 	private int supportsItems = -1;
+	private int raise;
 	private int[] configChangeDest;
 	private int category;
 	private boolean isRotated = false;

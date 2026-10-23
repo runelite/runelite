@@ -38,7 +38,7 @@ class Trade
 	@SerializedName("q")
 	int quantity;
 	@SerializedName("p")
-	int price;
+	long price;
 	@SerializedName("t")
 	Instant time;
 }

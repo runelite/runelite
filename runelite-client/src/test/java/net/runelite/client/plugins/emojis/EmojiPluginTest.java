@@ -134,17 +134,23 @@ public class EmojiPluginTest
 	{
 		String PARTY_POPPER = "<img=0>";
 		String OPEN_MOUTH = "<img=1>";
-		assertNull(emojiPlugin.updateMessage("@@@@@"));
-		assertEquals(PARTY_POPPER, emojiPlugin.updateMessage("@@@"));
-		assertEquals(PARTY_POPPER + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@ @@@"));
-		assertEquals(PARTY_POPPER + '\u00A0' + OPEN_MOUTH, emojiPlugin.updateMessage("@@@\u00A0:O"));
-		assertEquals(PARTY_POPPER + '\u00A0' + OPEN_MOUTH + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0:O @@@"));
-		assertEquals(PARTY_POPPER + "\u00A0Hello World\u00A0" + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0Hello World\u00A0@@@"));
+		assertNull(emojiPlugin.updateMessage("<at><at><at><at><at>"));
+		assertEquals(PARTY_POPPER, emojiPlugin.updateMessage("<at><at><at>"));
+		assertEquals(PARTY_POPPER + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("<at><at><at> <at><at><at>"));
+		assertEquals(PARTY_POPPER + '\u00A0' + OPEN_MOUTH, emojiPlugin.updateMessage("<at><at><at>\u00A0:O"));
+		assertEquals(PARTY_POPPER + '\u00A0' + OPEN_MOUTH + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("<at><at><at>\u00A0:O <at><at><at>"));
+		assertEquals(PARTY_POPPER + "\u00A0Hello World\u00A0" + PARTY_POPPER, emojiPlugin.updateMessage("<at><at><at>\u00A0Hello World\u00A0<at><at><at>"));
 	}
 
 	@Test
 	public void testNamed()
 	{
 		assertEquals("test <img=0>", emojiPlugin.updateMessage("test :test:"));
+	}
+
+	@Test
+	public void testNamedAfterEmoji()
+	{
+		assertEquals("<img=0> <img=1>", emojiPlugin.updateMessage(":) :test:"));
 	}
 }
