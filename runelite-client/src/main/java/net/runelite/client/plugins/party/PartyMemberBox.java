@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.party;
 
 import java.awt.BorderLayout;
@@ -38,9 +37,10 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Skill;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
-import net.runelite.client.plugins.party.data.PartyData;
+import net.runelite.client.plugins.party.data.PartyMemberData;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -56,7 +56,7 @@ class PartyMemberBox extends JPanel
 	private static final Color PRAY_BG = Color.black;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final PartyData memberPartyData;
+	private final PartyMemberData memberPartyData;
 	private final PartyService partyService;
 
 	private final ProgressBar hpBar = new ProgressBar();
@@ -69,7 +69,7 @@ class PartyMemberBox extends JPanel
 
 	private boolean avatarSet;
 
-	PartyMemberBox(final PartyConfig config, final JComponent panel, final PartyData memberPartyData,
+	PartyMemberBox(final PartyConfig config, final JComponent panel, final PartyMemberData memberPartyData,
 		final PartyService partyService)
 	{
 		this.config = config;
@@ -154,13 +154,13 @@ class PartyMemberBox extends JPanel
 		}
 
 		// Update progress bars
-		hpBar.setValue(memberPartyData.getHitpoints());
-		hpBar.setMaximumValue(memberPartyData.getMaxHitpoints());
-		hpBar.setCenterLabel(progressBarLabel(memberPartyData.getHitpoints(), memberPartyData.getMaxHitpoints()));
+		hpBar.setValue(member.getStatBoost(Skill.HITPOINTS));
+		hpBar.setMaximumValue(member.getStatBase(Skill.HITPOINTS));
+		hpBar.setCenterLabel(progressBarLabel(member.getStatBoost(Skill.HITPOINTS), member.getStatBase(Skill.HITPOINTS)));
 
-		prayerBar.setValue(memberPartyData.getPrayer());
-		prayerBar.setMaximumValue(memberPartyData.getMaxPrayer());
-		prayerBar.setCenterLabel(progressBarLabel(memberPartyData.getPrayer(), memberPartyData.getMaxPrayer()));
+		prayerBar.setValue(member.getStatBoost(Skill.PRAYER));
+		prayerBar.setMaximumValue(member.getStatBase(Skill.PRAYER));
+		prayerBar.setCenterLabel(progressBarLabel(member.getStatBoost(Skill.PRAYER), member.getStatBase(Skill.PRAYER)));
 
 		// Update name label
 		Color playerColor = config.recolorNames() ? memberPartyData.getColor() : Color.WHITE;

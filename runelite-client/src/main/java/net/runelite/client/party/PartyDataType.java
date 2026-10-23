@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, LlemonDuck <napkinorton@gmail.com>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.messages;
+package net.runelite.client.party;
 
-import com.google.gson.annotations.SerializedName;
-import java.awt.Color;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import net.runelite.client.party.messages.PartyMemberMessage;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class StatusUpdate extends PartyMemberMessage
+public enum PartyDataType
 {
-
-	// we use boxed fields to null out properties that haven't changed
-	@SerializedName("n")
-	private String characterName = null;
-
-	@SerializedName("hc")
-	private Integer healthCurrent = null;
-
-	@SerializedName("hm")
-	private Integer healthMax = null;
-
-	@SerializedName("pc")
-	private Integer prayerCurrent = null;
-
-	@SerializedName("pm")
-	private Integer prayerMax = null;
-
-	@SerializedName("r")
-	private Integer runEnergy = null;
-
-	@SerializedName("s")
-	private Integer specEnergy = null;
-
-	@SerializedName("v")
-	private Boolean vengeanceActive = null;
-
-	@SerializedName("c")
-	private Color memberColor = null;
-
+	CHARACTER_NAME,
+	COORD,
+	ENERGY,
+	SPEC,
+	VENGEANCE,
+	INV,
+	WORN,
+	ACTIVE_PRAYERS,
+	RUNE_POUCH,
+	QUIVER,
 }

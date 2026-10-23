@@ -300,7 +300,7 @@ public class PartyService
 
 		if (memberById != null)
 		{
-			memberById.setAvatar(image);
+			memberById.avatar = image;
 			eventBus.post(new PartyMemberAvatar(memberID, image));
 		}
 	}

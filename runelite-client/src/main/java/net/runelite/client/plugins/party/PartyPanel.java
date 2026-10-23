@@ -43,7 +43,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.party.PartyService;
-import net.runelite.client.plugins.party.data.PartyData;
+import net.runelite.client.plugins.party.data.PartyMemberData;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.DragAndDropReorderPane;
@@ -229,7 +229,7 @@ class PartyPanel extends PluginPanel
 		}
 	}
 
-	void addMember(PartyData partyData)
+	void addMember(PartyMemberData partyData)
 	{
 		if (!memberBoxes.containsKey(partyData.getMemberId()))
 		{

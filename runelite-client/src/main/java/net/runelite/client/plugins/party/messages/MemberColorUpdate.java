@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,27 +24,16 @@
  */
 package net.runelite.client.plugins.party.messages;
 
-import lombok.ToString;
-import net.runelite.api.coords.WorldPoint;
+import java.awt.Color;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.runelite.client.party.messages.PartyMemberMessage;
 
-@ToString(onlyExplicitlyIncluded = true)
-public class LocationUpdate extends PartyMemberMessage
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class MemberColorUpdate extends PartyMemberMessage
 {
-	private final int c;
-
-	public LocationUpdate(WorldPoint worldPoint)
-	{
-		c = (worldPoint.getPlane() << 28) | (worldPoint.getX() << 14) | (worldPoint.getY());
-	}
-
-	@ToString.Include
-	public WorldPoint getWorldPoint()
-	{
-		return new WorldPoint(
-			(c >> 14) & 0x3fff,
-			c & 0x3fff,
-			(c >> 28) & 3
-		);
-	}
+	private Color color;
 }

@@ -35,18 +35,10 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class PartyData
+public class PartyMemberData
 {
 	private final long memberId;
 	private final WorldMapPoint worldMapPoint;
 	private final PanelComponent panel = new PanelComponent();
 	private Color color = Color.WHITE;
-
-	private int hitpoints;
-	private int maxHitpoints;
-	private int prayer;
-	private int maxPrayer;
-	private int runEnergy;
-	private int specEnergy;
-	private boolean vengeanceActive;
 }
