@@ -110,6 +110,7 @@ public class ItemStatPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private boolean toggleableDown;
 
+	@Inject
 	private ItemStatChangesServiceImpl itemStatChangesService;
 
 	private Widget itemInformationTitle;
