@@ -27,9 +27,9 @@ package net.runelite.client.party;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.protobuf.InvalidProtocolBufferException;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -55,18 +55,19 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private final EventBus eventBus;
 	private final OkHttpClient okHttpClient;
 	private final HttpUrl runeliteWs;
-	private final Collection<Class<? extends WebsocketMessage>> messages = new HashSet<>();
+	private final Gson gson;
 
-	private volatile Gson gson;
+	private final Map<String, Class<? extends WebsocketMessage>> messageTypes = new ConcurrentHashMap<>();
+
 	private WebSocket webSocket;
 
 	@Inject
-	private WSClient(EventBus eventBus, OkHttpClient okHttpClient, @Named("runelite.ws") HttpUrl runeliteWs)
+	private WSClient(EventBus eventBus, OkHttpClient okHttpClient, @Named("runelite.ws") HttpUrl runeliteWs, Gson gson)
 	{
 		this.eventBus = eventBus;
 		this.okHttpClient = okHttpClient;
 		this.runeliteWs = runeliteWs;
-		this.gson = WebsocketGsonFactory.build(WebsocketGsonFactory.factory(messages));
+		this.gson = gson;
 	}
 
 	synchronized void connect(long partyId, long memberId)
@@ -96,18 +97,12 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 
 	public void registerMessage(final Class<? extends WebsocketMessage> message)
 	{
-		if (messages.add(message))
-		{
-			gson = WebsocketGsonFactory.build(WebsocketGsonFactory.factory(messages));
-		}
+		messageTypes.put(message.getSimpleName(), message);
 	}
 
 	public void unregisterMessage(final Class<? extends WebsocketMessage> message)
 	{
-		if (messages.remove(message))
-		{
-			gson = WebsocketGsonFactory.build(WebsocketGsonFactory.factory(messages));
-		}
+		messageTypes.remove(message.getSimpleName());
 	}
 
 	private void join(long partyId, long memberId)
@@ -125,7 +120,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	void send(WebsocketMessage message)
 	{
 		log.debug("Sending: {}", message);
-		final String json = gson.toJson(message, WebsocketMessage.class);
+		final String json = gson.toJson(message);
 		final Party.Data data = Party.Data.newBuilder()
 			.setType(message.getClass().getSimpleName())
 			.setData(com.google.protobuf.ByteString.copyFromUtf8(json))
@@ -192,11 +187,19 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 				break;
 			case DATA:
 				Party.PartyData data = s2c.getData();
+
+				Class<? extends WebsocketMessage> messageType = messageTypes.get(data.getType());
+				if (messageType == null)
+				{
+					log.debug("cannot deserialize message type {}; did you forget to registerMessage()?", data.getType());
+					return;
+				}
+
 				final WebsocketMessage message;
 
 				try
 				{
-					message = gson.fromJson(data.getData().toStringUtf8(), WebsocketMessage.class);
+					message = gson.fromJson(data.getData().toStringUtf8(), messageType);
 				}
 				catch (JsonParseException e)
 				{

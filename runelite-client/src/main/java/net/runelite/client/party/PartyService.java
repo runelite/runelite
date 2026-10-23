@@ -84,6 +84,8 @@ public class PartyService
 		this.eventBus = eventBus;
 		this.chat = chat;
 		eventBus.register(this);
+		wsClient.registerMessage(UserSync.class);
+		wsClient.registerMessage(PartyChatMessage.class);
 	}
 
 	public String generatePassphrase()
