@@ -230,6 +230,16 @@ public class ChatFilterPluginTest
 	}
 
 	@Test
+	public void testEmDash()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(chatFilterConfig.filteredWords()).thenReturn("te—st");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertNull(chatFilterPlugin.censorMessage("test", "te—st"));
+	}
+
+	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
 		when(chatFilterConfig.filterFriends()).thenReturn(true);
