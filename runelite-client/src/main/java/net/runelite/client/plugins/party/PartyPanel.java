@@ -262,18 +262,18 @@ class PartyPanel extends PluginPanel
 		updateParty();
 	}
 
-	void updateMember(long userId)
+	void updateMember(long userId, boolean forceUpdateAvatar)
 	{
 		final PartyMemberBox memberBox = memberBoxes.get(userId);
 
 		if (memberBox != null)
 		{
-			memberBox.update();
+			memberBox.update(forceUpdateAvatar);
 		}
 	}
 
 	void updateAll()
 	{
-		memberBoxes.forEach((key, value) -> value.update());
+		memberBoxes.forEach((key, value) -> value.update(false));
 	}
 }
