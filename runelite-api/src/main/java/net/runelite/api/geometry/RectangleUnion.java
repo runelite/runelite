@@ -27,6 +27,8 @@ package net.runelite.api.geometry;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -330,9 +332,17 @@ public class RectangleUnion
 	private static class Segments
 	{
 		Segment first;
+		private TreeMap<Integer, Segment> byY;
+		private int size;
 
 		Segment findLE(int y)
 		{
+			if (byY != null)
+			{
+				return findIndexedLE(y);
+			}
+
+			// Avoid allocating an index for small clickboxes.
 			Segment s = first;
 			if (s == null || s.y > y)
 			{
@@ -353,6 +363,29 @@ public class RectangleUnion
 
 				s = n;
 			}
+		}
+
+		private Segment findIndexedLE(int y)
+		{
+			if (y <= first.y)
+			{
+				return y == first.y ? first : null;
+			}
+			// Removal edges and repeated y coordinates already have a segment.
+			Segment exact = byY.get(y);
+			if (exact != null)
+			{
+				return exact;
+			}
+			Map.Entry<Integer, Segment> entry = byY.floorEntry(y);
+			Segment s = entry.getValue();
+			// Zero-height rectangles can introduce duplicate edges. An exact
+			// match uses the first; an insertion after them uses the last.
+			while (s.next != null && s.next.y == s.y)
+			{
+				s = s.next;
+			}
+			return s;
 		}
 
 		Segment insertAfter(Segment before, int y)
@@ -379,6 +412,21 @@ public class RectangleUnion
 				}
 				first = n;
 			}
+			if (byY != null)
+			{
+				byY.putIfAbsent(y, n);
+			}
+			else if (++size > 256)
+			{
+				// Bound predecessor searches as the sweep accumulates y edges. Keep
+				// the linked list for traversing the segments covered by an edge.
+				byY = new TreeMap<>();
+				for (Segment s = first; s != null; s = s.next)
+				{
+					byY.putIfAbsent(s.y, s);
+				}
+			}
+
 			return n;
 		}
 
