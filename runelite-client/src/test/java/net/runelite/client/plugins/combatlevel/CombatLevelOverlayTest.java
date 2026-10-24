@@ -67,13 +67,13 @@ public class CombatLevelOverlayTest
 	public void testGetLevelsUntilTooltip()
 	{
 		when(client.getRealSkillLevel(Skill.ATTACK)).thenReturn(99);
-		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(99);
+		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(94);
 		when(client.getRealSkillLevel(Skill.DEFENCE)).thenReturn(97);
-		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(99);
+		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(98);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(99);
-		when(client.getRealSkillLevel(Skill.RANGED)).thenReturn(99);
+		when(client.getRealSkillLevel(Skill.RANGED)).thenReturn(91);
 		when(client.getRealSkillLevel(Skill.PRAYER)).thenReturn(94);
 
-		assertEquals("<col=ff981f>Next combat level:</br></col>4 Defence/Hitpoints</br>8 Prayer", combatLevelOverlay.getLevelsUntilTooltip());
+		assertEquals("<col=ff981f>Next combat level:</br></col>3 Strength</br>4 Defence/Hitpoints</br>8 Prayer", combatLevelOverlay.getLevelsUntilTooltip());
 	}
 }

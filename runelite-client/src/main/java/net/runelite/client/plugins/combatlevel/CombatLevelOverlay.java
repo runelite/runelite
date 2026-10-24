@@ -120,19 +120,39 @@ class CombatLevelOverlay extends Overlay
 
 		if ((attackLevel + strengthLevel) < Experience.MAX_REAL_LEVEL * 2)
 		{
-			sb.append(meleeNeed).append(" Attack/Strength</br>");
+			sb.append(meleeNeed);
+			if (attackLevel < Experience.MAX_REAL_LEVEL && strengthLevel < Experience.MAX_REAL_LEVEL)
+			{
+				sb.append(" Attack/Strength</br>");
+			}
+			else if (attackLevel < Experience.MAX_REAL_LEVEL)
+			{
+				sb.append(" Attack</br>");
+			}
+			else
+			{
+				sb.append(" Strength</br>");
+			}
 		}
 		if ((hitpointsLevel + defenceLevel) < Experience.MAX_REAL_LEVEL * 2)
 		{
-			sb.append(hpDefNeed).append(" Defence/Hitpoints</br>");
+			sb.append(hpDefNeed);
+			if (hitpointsLevel < Experience.MAX_REAL_LEVEL && defenceLevel < Experience.MAX_REAL_LEVEL)
+			{
+				sb.append(" Defence/Hitpoints</br>");
+			}
+			else if (defenceLevel < Experience.MAX_REAL_LEVEL)
+			{
+				sb.append(" Defence</br>");
+			}
+			else
+			{
+				sb.append(" Hitpoints</br>");
+			}
 		}
-		if (rangeLevel < Experience.MAX_REAL_LEVEL)
+		if (rangeLevel < Experience.MAX_REAL_LEVEL && magicLevel < Experience.MAX_REAL_LEVEL)
 		{
-			sb.append(rangeNeed).append(" Ranged</br>");
-		}
-		if (magicLevel < Experience.MAX_REAL_LEVEL)
-		{
-			sb.append(magicNeed).append(" Magic</br>");
+			sb.append(rangeNeed).append(" Ranged</br>").append(magicNeed).append(" Magic</br>");
 		}
 		if (prayerLevel < Experience.MAX_REAL_LEVEL)
 		{
