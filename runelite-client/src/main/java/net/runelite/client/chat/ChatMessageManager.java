@@ -546,6 +546,8 @@ public class ChatMessageManager
 				ChatMessageType.GAMEMESSAGE);
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueServerMessage(), false),
 				ChatMessageType.ENGINE);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueServerMessage(), false),
+				ChatMessageType.WELCOME);
 		}
 		if (chatColorConfig.opaqueServerMessageHighlight() != null)
 		{
@@ -736,6 +738,8 @@ public class ChatMessageManager
 				ChatMessageType.GAMEMESSAGE);
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentServerMessage(), true),
 				ChatMessageType.ENGINE);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentServerMessage(), true),
+				ChatMessageType.WELCOME);
 		}
 		if (chatColorConfig.transparentServerMessageHighlight() != null)
 		{
