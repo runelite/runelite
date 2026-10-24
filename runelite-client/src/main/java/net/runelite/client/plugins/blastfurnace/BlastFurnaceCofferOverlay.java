@@ -74,10 +74,12 @@ class BlastFurnaceCofferOverlay extends OverlayPanel
 
 			sack.setHidden(true);
 
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Coffer:")
-				.right(QuantityFormatter.quantityToStackSize(coffer) + " gp")
-				.build());
+			if (config.showCofferAmount()) {
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left("Coffer:")
+						.right(QuantityFormatter.quantityToStackSize(coffer) + " gp")
+						.build());
+			}
 
 			if (config.showCofferTime())
 			{
