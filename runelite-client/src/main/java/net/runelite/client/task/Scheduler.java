@@ -24,17 +24,22 @@
  */
 package net.runelite.client.task;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.ReflectUtil;
 
 @Singleton
 @Slf4j
@@ -42,22 +47,57 @@ public class Scheduler
 {
 	private final List<ScheduledMethod> scheduledMethods = new CopyOnWriteArrayList<>();
 
+	private final ScheduledExecutorService executor;
+
 	@Inject
-	ScheduledExecutorService executor;
-
-	public void addScheduledMethod(ScheduledMethod method)
+	private Scheduler(ScheduledExecutorService executor)
 	{
-		scheduledMethods.add(method);
+		this.executor = executor;
 	}
 
-	public void removeScheduledMethod(ScheduledMethod method)
+	public <T> void register(T object)
 	{
-		scheduledMethods.remove(method);
+		for (Method method : object.getClass().getDeclaredMethods())
+		{
+			Schedule schedule = method.getDeclaredAnnotation(Schedule.class);
+			if (schedule == null)
+			{
+				continue;
+			}
+
+			Runnable runnable = null;
+			try
+			{
+				final Class<?> clazz = method.getDeclaringClass();
+				final MethodHandles.Lookup caller = ReflectUtil.privateLookupIn(clazz);
+				final MethodType subscription = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
+				final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
+				final CallSite site = LambdaMetafactory.metafactory(
+					caller,
+					"run",
+					MethodType.methodType(Runnable.class, clazz),
+					subscription,
+					target,
+					subscription);
+
+				final MethodHandle factory = site.getTarget();
+				runnable = (Runnable) factory.bindTo(object).invokeExact();
+			}
+			catch (Throwable e)
+			{
+				log.warn("Unable to create lambda for method {}", method, e);
+			}
+
+			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, object, runnable);
+			log.debug("Scheduled task {}", scheduledMethod);
+
+			scheduledMethods.add(scheduledMethod);
+		}
 	}
 
-	public List<ScheduledMethod> getScheduledMethods()
+	public <T> void unregister(T object)
 	{
-		return Collections.unmodifiableList(scheduledMethods);
+		scheduledMethods.removeIf(scheduledMethod -> scheduledMethod.getObject() == object);
 	}
 
 	public void tick()

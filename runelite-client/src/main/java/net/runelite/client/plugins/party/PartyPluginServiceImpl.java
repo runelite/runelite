@@ -26,7 +26,7 @@ package net.runelite.client.plugins.party;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.client.plugins.party.data.PartyData;
+import net.runelite.client.plugins.party.data.PartyMemberData;
 
 @Singleton
 public class PartyPluginServiceImpl implements PartyPluginService
@@ -41,7 +41,7 @@ public class PartyPluginServiceImpl implements PartyPluginService
 	}
 
 	@Override
-	public PartyData getPartyData(long memberId)
+	public PartyMemberData getPartyData(long memberId)
 	{
 		return plugin.getPartyData(memberId);
 	}
