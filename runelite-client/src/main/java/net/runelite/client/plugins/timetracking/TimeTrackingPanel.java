@@ -32,7 +32,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
@@ -45,6 +47,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingContractManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingNextTickPanel;
+import net.runelite.client.plugins.timetracking.farming.FarmingTabPanel;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ColorScheme;
@@ -62,6 +65,7 @@ class TimeTrackingPanel extends PluginPanel
 	private final JPanel display = new JPanel();
 	private final Map<Tab, MaterialTab> uiTabs = new HashMap<>();
 	private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
+	private final List<FarmingTabPanel> farmingTabPanels = new ArrayList<>();
 
 	private boolean active;
 
@@ -97,7 +101,9 @@ class TimeTrackingPanel extends PluginPanel
 
 		for (Tab tab : Tab.FARMING_TABS)
 		{
-			addTab(tab, farmingTracker.createTabPanel(tab, farmingContractManager));
+			FarmingTabPanel farmingTabPanel = farmingTracker.createTabPanel(tab, farmingContractManager);
+			farmingTabPanels.add(farmingTabPanel);
+			addTab(tab, farmingTabPanel);
 		}
 
 		if (developerMode)
@@ -152,6 +158,15 @@ class TimeTrackingPanel extends PluginPanel
 	void switchTab(Tab tab)
 	{
 		tabGroup.select(uiTabs.get(tab));
+	}
+
+	/**
+	 * Reloads the farming tabs' custom patch order from the now-active RuneScape profile.
+	 * The order is otherwise only loaded once, at plugin startup, before the player has logged in.
+	 */
+	void reloadFarmingPatchOrder()
+	{
+		SwingUtilities.invokeLater(() -> farmingTabPanels.forEach(FarmingTabPanel::reloadPatchOrder));
 	}
 
 	/**
