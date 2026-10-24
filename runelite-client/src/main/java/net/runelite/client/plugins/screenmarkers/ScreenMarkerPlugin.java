@@ -253,6 +253,18 @@ public class ScreenMarkerPlugin extends Plugin
 		updateConfig();
 	}
 
+	public void deleteAllMarkers()
+	{
+		for (ScreenMarkerOverlay screenMarker : screenMarkers)
+		{
+			overlayManager.remove(screenMarker);
+			overlayManager.resetOverlay(screenMarker);
+		}
+		screenMarkers.clear();
+		pluginPanel.rebuild();
+		updateConfig();
+	}
+
 	void resizeMarker(Point point)
 	{
 		drawingScreenMarker = true;
