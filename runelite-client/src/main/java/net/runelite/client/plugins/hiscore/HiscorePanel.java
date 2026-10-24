@@ -29,6 +29,8 @@ package net.runelite.client.plugins.hiscore;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -46,6 +48,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -53,7 +56,6 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.Player;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
@@ -144,7 +146,7 @@ public class HiscorePanel extends PluginPanel
 
 		searchBar = new IconTextField();
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
-		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 56, 30));
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.setMinimumSize(new Dimension(0, 30));
@@ -159,11 +161,9 @@ public class HiscorePanel extends PluginPanel
 					return;
 				}
 
-				Player localPlayer = client.getLocalPlayer();
-
-				if (localPlayer != null)
+				if (!loading)
 				{
-					lookup(localPlayer.getName(), plugin.getLocalHiscoreEndpoint());
+					plugin.lookupLocalPlayer();
 				}
 			}
 		});
@@ -174,7 +174,26 @@ public class HiscorePanel extends PluginPanel
 			loading = false;
 		});
 
-		add(searchBar, c);
+		JButton myStatsButton = new JButton(new ImageIcon(ImageUtil.loadImageResource(
+			getClass(), "/net/runelite/client/plugins/config/profile_icon.png")));
+		myStatsButton.setPreferredSize(new Dimension(30, 30));
+		myStatsButton.setMargin(new Insets(0, 0, 0, 0));
+		myStatsButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		myStatsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		myStatsButton.setToolTipText("My stats - look up your logged-in character");
+		myStatsButton.getAccessibleContext().setAccessibleName("My stats");
+		myStatsButton.addActionListener(e ->
+		{
+			if (!loading)
+			{
+				plugin.lookupLocalPlayer();
+			}
+		});
+		JPanel searchRow = new JPanel(new BorderLayout(6, 0));
+		searchRow.setOpaque(false);
+		searchRow.add(searchBar, BorderLayout.CENTER);
+		searchRow.add(myStatsButton, BorderLayout.EAST);
+		add(searchRow, c);
 		c.gridy++;
 
 		tabGroup = new MaterialTabGroup();
