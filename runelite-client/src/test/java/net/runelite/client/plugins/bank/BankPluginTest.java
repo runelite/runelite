@@ -36,6 +36,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -62,6 +63,10 @@ public class BankPluginTest
 	@Mock
 	@Bind
 	private BankConfig bankConfig;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeLiteConfig;
 
 	@Inject
 	private BankPlugin bankPlugin;

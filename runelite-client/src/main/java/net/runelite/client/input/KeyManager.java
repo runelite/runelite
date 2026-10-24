@@ -25,7 +25,12 @@
 package net.runelite.client.input;
 
 import java.awt.event.KeyEvent;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -42,15 +47,20 @@ import net.runelite.client.eventbus.Subscribe;
 public class KeyManager
 {
 	private final Client client;
+	private final ChatboxInputManager chatboxInputManager;
 
 	@Inject
-	private KeyManager(@Nullable final Client client, final EventBus eventBus)
+	private KeyManager(@Nullable final Client client, final EventBus eventBus, final ChatboxInputManager chatboxInputManager)
 	{
 		this.client = client;
+		this.chatboxInputManager = chatboxInputManager;
 		eventBus.register(this);
 	}
 
 	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
+	// Raw physical keys, before listeners can remap the event. Guarded by pressedKeys;
+	// registration and focus changes can arrive outside the AWT dispatch thread.
+	private final Map<Long, Set<KeyListener>> pressedKeys = new HashMap<>();
 
 	public void registerKeyListener(KeyListener keyListener)
 	{
@@ -66,12 +76,26 @@ public class KeyManager
 		final boolean unregistered = keyListeners.remove(keyListener);
 		if (unregistered)
 		{
+			synchronized (pressedKeys)
+			{
+				pressedKeys.values().forEach(listeners -> listeners.remove(keyListener));
+				pressedKeys.values().removeIf(Set::isEmpty);
+			}
 			log.debug("Unregistered key listener: {}", keyListener);
 		}
 	}
 
 	public void processKeyPressed(KeyEvent keyEvent)
 	{
+		final long key = physicalKey(keyEvent);
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
+		boolean chatInputActive = chatboxInputManager.isChatInputActive();
+		chatboxInputManager.processKeyPressed(keyEvent);
+		chatInputActive |= chatboxInputManager.isChatInputActive();
 		if (keyEvent.isConsumed())
 		{
 			return;
@@ -79,13 +103,21 @@ public class KeyManager
 
 		for (KeyListener keyListener : keyListeners)
 		{
-			if (!shouldProcess(keyListener))
+			if (!shouldProcess(keyListener, chatInputActive))
 			{
 				continue;
 			}
 
 			log.trace("Processing key pressed {} for key listener {}", keyEvent.paramString(), keyListener);
 
+			synchronized (pressedKeys)
+			{
+				if (!keyListeners.contains(keyListener))
+				{
+					continue;
+				}
+				pressedKeys.computeIfAbsent(key, k -> Collections.newSetFromMap(new IdentityHashMap<>())).add(keyListener);
+			}
 			keyListener.keyPressed(keyEvent);
 			if (keyEvent.isConsumed())
 			{
@@ -97,14 +129,27 @@ public class KeyManager
 
 	public void processKeyReleased(KeyEvent keyEvent)
 	{
+		final Set<KeyListener> listeners;
+		synchronized (pressedKeys)
+		{
+			listeners = pressedKeys.remove(physicalKey(keyEvent));
+		}
+
 		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
+		chatboxInputManager.processKeyReleased(keyEvent);
+		if (keyEvent.isConsumed() || listeners == null)
 		{
 			return;
 		}
 
 		for (KeyListener keyListener : keyListeners)
 		{
-			if (!shouldProcess(keyListener))
+			// Release pre-chat presses even while typing, but never deliver an orphan release.
+			if (!listeners.contains(keyListener) || !shouldProcess(keyListener, false))
 			{
 				continue;
 			}
@@ -127,9 +172,17 @@ public class KeyManager
 			return;
 		}
 
+		boolean chatInputActive = chatboxInputManager.isChatInputActive();
+		chatInputActive |= chatboxInputManager.processKeyTyped(keyEvent);
+		chatInputActive |= chatboxInputManager.isChatInputActive();
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
-			if (!shouldProcess(keyListener))
+			if (!shouldProcess(keyListener, chatInputActive))
 			{
 				continue;
 			}
@@ -145,7 +198,7 @@ public class KeyManager
 		}
 	}
 
-	private boolean shouldProcess(final KeyListener keyListener)
+	private boolean shouldProcess(final KeyListener keyListener, boolean chatInputActive)
 	{
 		if (client == null)
 		{
@@ -159,7 +212,17 @@ public class KeyManager
 			return keyListener.isEnabledOnLoginScreen();
 		}
 
+		if (chatInputActive)
+		{
+			return keyListener.isEnabledOnChatInput();
+		}
+
 		return true;
+	}
+
+	private static long physicalKey(KeyEvent event)
+	{
+		return ((long) event.getKeyCode() << 32) | event.getKeyLocation();
 	}
 
 	@Subscribe
@@ -167,6 +230,10 @@ public class KeyManager
 	{
 		if (!event.isFocused())
 		{
+			synchronized (pressedKeys)
+			{
+				pressedKeys.clear();
+			}
 			for (KeyListener keyListener : keyListeners)
 			{
 				keyListener.focusLost();
