@@ -337,8 +337,6 @@ public class WorldMapOverlay extends Overlay
 			return;
 		}
 
-		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
-
 		final Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
 		final Shape mapArea = getWorldMapClipArea(bounds);
 		graphics.setClip(mapArea);
@@ -347,6 +345,17 @@ public class WorldMapOverlay extends Overlay
 		FontMetrics fm = graphics.getFontMetrics();
 		int width = rows.stream().map(fm::stringWidth).max(Integer::compareTo).get();
 		int height = fm.getHeight();
+
+		// Make sure the tooltip stays within the world map
+		Rectangle worldMapBounds = client.getWidget(WidgetInfo.WORLD_MAP_VIEW).getBounds();
+		int drawPointX = drawPoint.getX();
+		int tooltipWidth = width + TOOLTIP_PADDING_WIDTH * 2;
+		int worldMapRightBoundary = (int) (worldMapBounds.getX() + worldMapBounds.getWidth());
+		if (drawPointX + tooltipWidth > worldMapRightBoundary)
+		{
+			drawPointX = worldMapRightBoundary - tooltipWidth;
+		}
+		drawPoint = new Point(drawPointX + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
 
 		Rectangle tooltipRect = new Rectangle(drawPoint.getX() - TOOLTIP_PADDING_WIDTH, drawPoint.getY() - TOOLTIP_PADDING_HEIGHT, width + TOOLTIP_PADDING_WIDTH * 2, height * rows.size() + TOOLTIP_PADDING_HEIGHT * 2);
 		graphics.fillRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
