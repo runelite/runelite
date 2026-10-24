@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -48,6 +49,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetUtil;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -76,6 +78,9 @@ public class HiscorePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private Provider<MenuManager> menuManager;
@@ -250,6 +255,18 @@ public class HiscorePlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		localHiscoreEndpoint = findHiscoreEndpointFromLocalPlayer();
+	}
+
+	void lookupLocalPlayer()
+	{
+		clientThread.invoke(() ->
+		{
+			Player player = client.getLocalPlayer();
+			if (client.getGameState() == GameState.LOGGED_IN && player != null && player.getName() != null)
+			{
+				lookupPlayer(player.getName(), findHiscoreEndpointFromLocalPlayer());
+			}
+		});
 	}
 
 	void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
