@@ -137,6 +137,8 @@ class MouseHighlightOverlay extends Overlay
 				}
 		}
 
+		boolean isPrayerTooltip = false;
+
 		if (WIDGET_MENU_ACTIONS.contains(type))
 		{
 			final int widgetId = menuEntry.getParam1();
@@ -156,20 +158,31 @@ class MouseHighlightOverlay extends Overlay
 			{
 				return null;
 			}
+
+			if (config.disablePrayertooltip() && groupId == InterfaceID.PRAYERBOOK)
+			{
+				return null;
+			}
+
+			isPrayerTooltip = groupId == InterfaceID.PRAYERBOOK;
 		}
 
-		// If this varc is set, a tooltip will be displayed soon
-		int tooltipTimeout = client.getVarcIntValue(VarClientID.TOOLTIP_TIME);
-		if (tooltipTimeout > client.getGameCycle())
+		// Ignore OSRS prayer tooltips so they don't suppress the Mouse Highlight tooltip
+		if (!isPrayerTooltip)
 		{
-			return null;
-		}
+			// If this varc is set, a tooltip will be displayed soon
+			int tooltipTimeout = client.getVarcIntValue(VarClientID.TOOLTIP_TIME);
+			if (tooltipTimeout > client.getGameCycle())
+			{
+				return null;
+			}
 
-		// If this varc is set, a tooltip is already being displayed
-		int tooltipDisplayed = client.getVarcIntValue(VarClientID.TOOLTIP_BUILT);
-		if (tooltipDisplayed == 1)
-		{
-			return null;
+			// If this varc is set, a tooltip is already being displayed
+			int tooltipDisplayed = client.getVarcIntValue(VarClientID.TOOLTIP_BUILT);
+			if (tooltipDisplayed == 1)
+			{
+				return null;
+			}
 		}
 
 		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
