@@ -31,7 +31,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used with ConfigItem, describes valid int range for a config item.
+ * <p>
+ * Used with {@link ConfigItem}, describes valid range for a numeric config item.
+ * </p>
+ * <ul>
+ *     <li>for an {@code int} item, use {@link #min()} and {@link #max()}</li>
+ *     <li>for a {@code double} item, use {@link #minDouble()} and {@link #maxDouble()}</li>
+ *     <li>for a {@link java.awt.Dimension} item, use:
+ *     <ul>
+ *         <li>{@link #min()} and {@link #max()} for the {@link java.awt.Dimension#width}</li>
+ *         <li>{@link #minHeight()} and {@link #maxHeight()} for the {@link java.awt.Dimension#height}</li>
+ *     </ul>
+ * </ul>
+ * <p>
+ * Any values specified other than those described above will be ignored.
+ * </p>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -41,4 +55,12 @@ public @interface Range
 	int min() default 0;
 
 	int max() default Integer.MAX_VALUE;
+
+	int minHeight() default 0;
+
+	int maxHeight() default Integer.MAX_VALUE;
+
+	double minDouble() default 0.0;
+
+	double maxDouble() default Double.MAX_VALUE;
 }
