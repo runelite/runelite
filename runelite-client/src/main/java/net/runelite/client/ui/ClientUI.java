@@ -162,6 +162,7 @@ public class ClientUI
 	private ClientToolbarPanel toolbarPanel;
 	private boolean withTitleBar;
 
+	@Getter
 	private ContainableFrame frame;
 	private JPanel content;
 	private ClientPanel clientPanel;
