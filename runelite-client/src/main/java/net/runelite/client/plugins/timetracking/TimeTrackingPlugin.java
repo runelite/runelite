@@ -141,6 +141,7 @@ public class TimeTrackingPlugin extends Plugin
 		panel = injector.getInstance(TimeTrackingPanel.class);
 
 		navButton = NavigationButton.builder()
+			.sidebarId("time-tracking")
 			.tooltip("Time Tracking")
 			.icon(icon)
 			.panel(panel)
