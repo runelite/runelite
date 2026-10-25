@@ -33,8 +33,6 @@ import java.io.IOException;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -42,7 +40,6 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
-import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
@@ -126,75 +123,27 @@ class WikiDpsManager
 	public void startUp()
 	{
 		eventBus.register(this);
-		clientThread.invokeLater(() -> tryAddButton(this::launch));
+		clientThread.invokeLater(this::rebuild);
 	}
 
 	public void shutDown()
 	{
 		eventBus.unregister(this);
-		clientThread.invokeLater(this::removeButton);
+		clientThread.invokeLater(this::rebuild);
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	public void onScriptPreFired(ScriptPreFired event)
 	{
-		if (scriptPreFired.getScriptId() == ScriptID.EQUIPMENT_SET_STAT_BONUS_SETUP)
+		if (event.getScriptId() == ScriptID.EQUIPMENT_SET_STAT_BONUS_SETUP)
 		{
-			int interfaceId = WidgetUtil.componentToInterface((int) scriptPreFired.getScriptEvent().getArguments()[1]);
-			boolean setBonus = (int) scriptPreFired.getScriptEvent().getArguments()[4] == 1;
+			var args = event.getScriptEvent().getArguments();
+			int layer = (int) args[1]; // the button to the next page
 
-			if (!setBonus)
-			{
-				if (interfaceId == InterfaceID.BANKMAIN)
-				{
-					clientThread.invokeLater(() -> addButton(Screen.BANK_EQUIPMENT, this::launch));
-				}
-				else if (interfaceId == InterfaceID.EQUIPMENT)
-				{
-					addButton(Screen.EQUIPMENT_BONUSES, this::launch);
-				}
-			}
-		}
-	}
+			log.debug("EQUIPMENT_SET_STAT_BONUS_SETUP: layer {}.{}",
+				WidgetUtil.componentToInterface(layer), WidgetUtil.componentToId(layer));
 
-	@Getter
-	@RequiredArgsConstructor
-	enum Screen
-	{
-		EQUIPMENT_BONUSES(InterfaceID.Equipment.CONTENTS, InterfaceID.Equipment.NEXT_PAGE, InterfaceID.Equipment.PREVIOUS_PAGE, 55),
-		BANK_EQUIPMENT(InterfaceID.Bankmain.WORNITEMS_CONTAINER, InterfaceID.Bankmain.NEXT_PAGE, InterfaceID.Bankmain.PREVIOUS_PAGE, 49),
-		;
-
-		/**
-		 * parent widget of the interface, install target
-		 */
-		@Getter(onMethod_ = @Component)
-		private final int parentId;
-
-		/**
-		 * the "Set Bonus" button widget layer
-		 */
-		@Getter(onMethod_ = @Component)
-		private final int setBonusId;
-
-		/**
-		 * the "Stat Bonus" button widget layer, which replaces "Set Bonus" after it is clicked
-		 */
-		@Getter(onMethod_ = @Component)
-		private final int statBonusId;
-
-		/**
-		 * OriginalX for Set Bonus and Stat Bonus, prior to us moving them around (for shutdown)
-		 **/
-		private final int originalX;
-
-	}
-
-	void tryAddButton(Runnable onClick)
-	{
-		for (Screen screen : Screen.values())
-		{
-			addButton(screen, onClick);
+			clientThread.invokeLater(() -> addButton(layer, this::launch));
 		}
 	}
 
@@ -202,65 +151,58 @@ class WikiDpsManager
 	 * Shifts over the Set Bonus / Stat Bonus buttons
 	 * and adds new widgets to make a visually equal button with a different name.
 	 */
-	void addButton(Screen screen, Runnable onClick)
+	private void addButton(int btnLayer, Runnable onClick)
 	{
-		Widget parent = client.getWidget(screen.getParentId());
-		Widget setBonus = client.getWidget(screen.getSetBonusId());
-		Widget statBonus = client.getWidget(screen.getStatBonusId());
-		Widget[] refComponents;
-		if (parent == null || setBonus == null || statBonus == null || (refComponents = setBonus.getChildren()) == null)
-		{
-			return;
-		}
+		Widget setBonus = client.getWidget(btnLayer);
+		Widget parent = setBonus.getParent();
+		Widget[] btnChld = setBonus.getChildren();
+
+		final int padding = 4;
+		// now shift the Equipment Effects/Stats button over a bit to make room
+		setBonus.setOriginalX(Math.max(setBonus.getOriginalX() - (setBonus.getOriginalWidth() / 2) - padding, padding))
+			.revalidate();
 
 		// Since the Set Bonus button uses absolute positioning,
 		// we must also use absolute for all the children below,
 		// which means it's necessary to offset the values by simulating corresponding pos/size modes.
-		int padding = 8;
 		final int w = setBonus.getOriginalWidth();
 		final int h = setBonus.getOriginalHeight();
-		final int x = setBonus.getOriginalX() + (w / 2) + (padding / 2);
+		final int x = setBonus.getOriginalX() + setBonus.getOriginalWidth() + padding;
 		final int y = setBonus.getOriginalY();
-
-		// now shift the Set Bonus and Stat Bonus buttons over a bit to make room
-		setBonus.setOriginalX(setBonus.getOriginalX() - (w / 2) - (padding / 2))
-			.revalidate();
-		statBonus.setOriginalX(statBonus.getOriginalX() - (w / 2) - (padding / 2))
-			.revalidate();
 
 		final Widget[] spriteWidgets = new Widget[9];
 
 		// the background uses ABSOLUTE_CENTER and MINUS sizing
-		int bgWidth = w - refComponents[0].getOriginalWidth();
-		int bgHeight = h - refComponents[0].getOriginalHeight();
-		int bgX = (x + refComponents[0].getOriginalX()) + (w - bgWidth) / 2;
-		int bgY = (y + refComponents[0].getOriginalY()) + (h - bgHeight) / 2;
+		int bgWidth = w - btnChld[0].getOriginalWidth();
+		int bgHeight = h - btnChld[0].getOriginalHeight();
+		int bgX = (x + btnChld[0].getOriginalX()) + (w - bgWidth) / 2;
+		int bgY = (y + btnChld[0].getOriginalY()) + (h - bgHeight) / 2;
 		spriteWidgets[0] = parent.createChild(-1, WidgetType.GRAPHIC)
-			.setSpriteId(refComponents[0].getSpriteId())
+			.setSpriteId(btnChld[0].getSpriteId())
 			.setPos(bgX, bgY)
 			.setSize(bgWidth, bgHeight)
-			.setYPositionMode(statBonus.getYPositionMode());
+			.setYPositionMode(setBonus.getYPositionMode());
 		spriteWidgets[0].revalidate();
 
 		// borders and corners
 		for (int i = 1; i < 9; i++)
 		{
 			Widget c = spriteWidgets[i] = parent.createChild(-1, WidgetType.GRAPHIC)
-				.setSpriteId(refComponents[i].getSpriteId())
-				.setSize(refComponents[i].getOriginalWidth(), refComponents[i].getOriginalHeight());
-			if (statBonus.getYPositionMode() == WidgetPositionMode.ABSOLUTE_CENTER)
+				.setSpriteId(btnChld[i].getSpriteId())
+				.setSize(btnChld[i].getOriginalWidth(), btnChld[i].getOriginalHeight());
+			if (setBonus.getYPositionMode() == WidgetPositionMode.ABSOLUTE_CENTER)
 			{
 				// Convert x/y from the reference component's, whose parent is the Set Bonus layer,
 				// to our components whose parent is the bank equipment parent.
 				// For y we have to reverse the ABSOLUTE_CENTER y calculation to convert
 				// the reference component original y into an offset from where the client will
 				// compute the ABSOLUTE_CENTER y to be.
-				c.setPos(x + refComponents[i].getOriginalX(), y - (setBonus.getHeight() - refComponents[i].getHeight() + 1) / 2 + refComponents[i].getOriginalY())
-					.setYPositionMode(statBonus.getYPositionMode());
+				c.setPos(x + btnChld[i].getOriginalX(), y - (setBonus.getHeight() - btnChld[i].getHeight() + 1) / 2 + btnChld[i].getOriginalY())
+					.setYPositionMode(setBonus.getYPositionMode());
 			}
 			else
 			{
-				c.setPos(x + refComponents[i].getOriginalX(), y + refComponents[i].getOriginalY());
+				c.setPos(x + btnChld[i].getOriginalX(), y + btnChld[i].getOriginalY());
 			}
 
 			spriteWidgets[i].revalidate();
@@ -271,13 +213,13 @@ class WikiDpsManager
 		final Widget text = parent.createChild(-1, WidgetType.TEXT)
 			.setText("View DPS")
 			.setTextColor(FONT_COLOUR_INACTIVE)
-			.setFontId(refComponents[9].getFontId())
-			.setTextShadowed(refComponents[9].getTextShadowed())
-			.setXTextAlignment(refComponents[9].getXTextAlignment())
-			.setYTextAlignment(refComponents[9].getYTextAlignment())
+			.setFontId(btnChld[9].getFontId())
+			.setTextShadowed(btnChld[9].getTextShadowed())
+			.setXTextAlignment(btnChld[9].getXTextAlignment())
+			.setYTextAlignment(btnChld[9].getYTextAlignment())
 			.setPos(x, y)
 			.setSize(w, h)
-			.setYPositionMode(statBonus.getYPositionMode());
+			.setYPositionMode(setBonus.getYPositionMode());
 		text.revalidate();
 
 		// we'll give the text layer the listeners since it covers the whole area
@@ -307,30 +249,24 @@ class WikiDpsManager
 		parent.revalidate();
 	}
 
-	void removeButton()
+	private void rebuild()
 	{
-		for (Screen screen : Screen.values())
+		Widget w = client.getWidget(InterfaceID.Equipment.NEXT_PAGE);
+		if (w != null)
 		{
-			Widget parent = client.getWidget(screen.getParentId());
-			if (parent != null)
-			{
-				parent.deleteAllChildren();
-				parent.revalidate();
-			}
+			var listener = w.getOnLoadListener();
+			client.runScript(listener);
 
-			Widget setBonus = client.getWidget(screen.getSetBonusId());
-			if (setBonus != null)
-			{
-				setBonus.setOriginalX(screen.getOriginalX())
-					.revalidate();
-			}
+			w.getParent().deleteAllChildren();
+		}
 
-			Widget statBonus = client.getWidget(screen.getStatBonusId());
-			if (statBonus != null)
-			{
-				statBonus.setOriginalX(screen.getOriginalX())
-					.revalidate();
-			}
+		w = client.getWidget(InterfaceID.Bankmain.NEXT_PAGE);
+		if (w != null)
+		{
+			var listener = w.getOnLoadListener();
+			client.runScript(listener);
+
+			w.getParent().deleteAllChildren();
 		}
 	}
 
