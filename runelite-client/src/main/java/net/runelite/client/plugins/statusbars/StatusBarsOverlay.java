@@ -114,7 +114,32 @@ class StatusBarsOverlay extends Overlay
 			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.HITPOINTS),
 			() -> client.getBoostedSkillLevel(Skill.HITPOINTS),
 			() -> getRestoreValue(Skill.HITPOINTS.getName()),
-			() -> withOpacity(getHealthColor(), config.healthBarOpacity()),
+			() ->
+			{
+				final int poisonState = client.getVarpValue(VarPlayerID.POISON);
+
+				if (poisonState >= 1000000)
+				{
+					return VENOMED_COLOR;
+				}
+
+				if (poisonState > 0)
+				{
+					return POISONED_COLOR;
+				}
+
+				if (client.getVarpValue(VarPlayerID.DISEASE) > 0)
+				{
+					return DISEASE_COLOR;
+				}
+
+				if (client.getVarbitValue(VarbitID.PARASITE) >= 1)
+				{
+					return PARASITE_COLOR;
+				}
+
+				return HEALTH_COLOR;
+			},
 			() -> HEAL_COLOR,
 			() ->
 			{
@@ -155,7 +180,7 @@ class StatusBarsOverlay extends Overlay
 					}
 				}
 
-				return withOpacity(prayerColor, config.prayerBarOpacity());
+				return prayerColor;
 			},
 			() -> PRAYER_HEAL_COLOR,
 			() -> skillIconManager.getSkillImage(Skill.PRAYER, true)
@@ -194,9 +219,6 @@ class StatusBarsOverlay extends Overlay
 			() -> null,
 			() -> skillIconManager.getSkillImage(Skill.FIREMAKING, true)
 		));
-
-		barRenderers.get(StatusBarsConfig.BarMode.HITPOINTS).setOpacitySupplier(config::healthBarOpacity);
-		barRenderers.get(StatusBarsConfig.BarMode.PRAYER).setOpacitySupplier(config::prayerBarOpacity);
 	}
 
 	@Override
@@ -256,12 +278,12 @@ class StatusBarsOverlay extends Overlay
 
 		if (left != null)
 		{
-			left.renderBar(config, g, offsetLeftBarX, offsetLeftBarY, width, height);
+			left.renderBar(config, g, offsetLeftBarX, offsetLeftBarY, width, height, config.leftBarOpacity());
 		}
 
 		if (right != null)
 		{
-			right.renderBar(config, g, offsetRightBarX, offsetRightBarY, width, height);
+			right.renderBar(config, g, offsetRightBarX, offsetRightBarY, width, height, config.rightBarOpacity());
 		}
 
 		return null;
@@ -299,39 +321,6 @@ class StatusBarsOverlay extends Overlay
 		}
 
 		return restoreValue;
-	}
-
-	private Color getHealthColor()
-	{
-		final int poisonState = client.getVarpValue(VarPlayerID.POISON);
-
-		if (poisonState >= 1000000)
-		{
-			return VENOMED_COLOR;
-		}
-
-		if (poisonState > 0)
-		{
-			return POISONED_COLOR;
-		}
-
-		if (client.getVarpValue(VarPlayerID.DISEASE) > 0)
-		{
-			return DISEASE_COLOR;
-		}
-
-		if (client.getVarbitValue(VarbitID.PARASITE) >= 1)
-		{
-			return PARASITE_COLOR;
-		}
-
-		return HEALTH_COLOR;
-	}
-
-	private static Color withOpacity(Color color, int percent)
-	{
-		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
-			color.getAlpha() * percent / 100);
 	}
 
 	private BufferedImage loadSprite(int spriteId)

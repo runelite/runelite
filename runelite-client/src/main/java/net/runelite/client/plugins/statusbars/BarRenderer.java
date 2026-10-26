@@ -54,13 +54,6 @@ class BarRenderer
 	private final Supplier<Image> iconSupplier;
 	private int maxValue;
 	private int currentValue;
-	// Opacity (percent) applied to the black background; set per bar by the overlay
-	private Supplier<Integer> opacitySupplier = () -> 100;
-
-	void setOpacitySupplier(Supplier<Integer> opacitySupplier)
-	{
-		this.opacitySupplier = opacitySupplier;
-	}
 
 	private void refreshSkills()
 	{
@@ -76,16 +69,15 @@ class BarRenderer
 	 * @param x The location on the client where it will draw the bar on the x axis starting on the left side.
 	 * @param y The location on the client where it will draw the bar on the y axis starting on the bottom side.
 	 * @param height The height of the bar.
+	 * @param opacity Opacity of the bar fill and background, as a percentage (100 = default look).
 	 */
-	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height)
+	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height, int opacity)
 	{
 		final int filledHeight = getBarHeight(maxValue, currentValue, height);
-		final Color fill = colorSupplier.get();
+		final Color fill = withOpacity(colorSupplier.get(), opacity);
 		refreshSkills();
 
-		final int opacity = opacitySupplier.get();
-		graphics.setColor(new Color(BACKGROUND.getRed(), BACKGROUND.getGreen(), BACKGROUND.getBlue(),
-			BACKGROUND.getAlpha() * opacity / 100));
+		graphics.setColor(withOpacity(BACKGROUND, opacity));
 		graphics.drawRect(x, y, width - BORDER_SIZE, height - BORDER_SIZE);
 		graphics.fillRect(x, y, width, height);
 
@@ -172,6 +164,12 @@ class BarRenderer
 			fillY,
 			width - BORDER_SIZE * 2,
 			fillHeight);
+	}
+
+	private static Color withOpacity(Color color, int percent)
+	{
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
+			color.getAlpha() * percent / 100);
 	}
 
 	private static int getBarHeight(int base, int current, int size)

@@ -126,11 +126,11 @@ public interface StatusBarsConfig extends Config
 	)
 	@Units(Units.PERCENT)
 	@ConfigItem(
-		keyName = "healthBarOpacity",
-		name = "Health bar opacity",
-		description = "Opacity of the health bar fill (100% = default look)."
+		keyName = "leftBarOpacity",
+		name = "Left bar opacity",
+		description = "Opacity of the left status bar (100% = default look)."
 	)
-	default int healthBarOpacity()
+	default int leftBarOpacity()
 	{
 		return 100;
 	}
@@ -141,11 +141,11 @@ public interface StatusBarsConfig extends Config
 	)
 	@Units(Units.PERCENT)
 	@ConfigItem(
-		keyName = "prayerBarOpacity",
-		name = "Prayer bar opacity",
-		description = "Opacity of the prayer bar fill (100% = default look)."
+		keyName = "rightBarOpacity",
+		name = "Right bar opacity",
+		description = "Opacity of the right status bar (100% = default look)."
 	)
-	default int prayerBarOpacity()
+	default int rightBarOpacity()
 	{
 		return 100;
 	}
