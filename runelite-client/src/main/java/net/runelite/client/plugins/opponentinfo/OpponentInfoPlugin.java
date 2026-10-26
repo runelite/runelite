@@ -224,12 +224,13 @@ public class OpponentInfoPlugin extends Plugin
 
 	/**
 	 * Update the in-game boss health bar overlay extra text to what the user's config specifies.
-	 * A known boss that uses this is the Bork and the Smorks room at The Fractured Archive.
+	 * Known boss that have this bar is Bork and the Smorks & Ocellus P1 at The Fractured Archive.
+	 * Ocellus P1 has the bar, but has no text.
 	 */
 	private void updateBossHealthBarExtraText()
 	{
 		Widget widget = client.getWidget(InterfaceID.HpbarHud.HP_BAR_TEXT_EXTRA);
-		if (widget == null)
+		if (widget == null || widget.getText().isEmpty())
 		{
 			return;
 		}
