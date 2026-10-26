@@ -54,6 +54,13 @@ class BarRenderer
 	private final Supplier<Image> iconSupplier;
 	private int maxValue;
 	private int currentValue;
+	// Opacity (percent) applied to the black background; set per bar by the overlay
+	private Supplier<Integer> opacitySupplier = () -> 100;
+
+	void setOpacitySupplier(Supplier<Integer> opacitySupplier)
+	{
+		this.opacitySupplier = opacitySupplier;
+	}
 
 	private void refreshSkills()
 	{
@@ -76,7 +83,9 @@ class BarRenderer
 		final Color fill = colorSupplier.get();
 		refreshSkills();
 
-		graphics.setColor(BACKGROUND);
+		final int opacity = opacitySupplier.get();
+		graphics.setColor(new Color(BACKGROUND.getRed(), BACKGROUND.getGreen(), BACKGROUND.getBlue(),
+			BACKGROUND.getAlpha() * opacity / 100));
 		graphics.drawRect(x, y, width - BORDER_SIZE, height - BORDER_SIZE);
 		graphics.fillRect(x, y, width, height);
 

@@ -119,4 +119,34 @@ public interface StatusBarsConfig extends Config
 	{
 		return BarRenderer.DEFAULT_WIDTH;
 	}
+
+	@Range(
+		min = 0,
+		max = 100
+	)
+	@Units(Units.PERCENT)
+	@ConfigItem(
+		keyName = "healthBarOpacity",
+		name = "Health bar opacity",
+		description = "Opacity of the health bar fill (100% = default look)."
+	)
+	default int healthBarOpacity()
+	{
+		return 100;
+	}
+
+	@Range(
+		min = 0,
+		max = 100
+	)
+	@Units(Units.PERCENT)
+	@ConfigItem(
+		keyName = "prayerBarOpacity",
+		name = "Prayer bar opacity",
+		description = "Opacity of the prayer bar fill (100% = default look)."
+	)
+	default int prayerBarOpacity()
+	{
+		return 100;
+	}
 }
