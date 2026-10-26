@@ -576,6 +576,7 @@ public class ScreenshotPlugin extends Plugin
 			case InterfaceID.RAIDS_REWARDS:
 			case InterfaceID.TOB_CHESTS:
 			case InterfaceID.TOA_CHESTS:
+			case InterfaceID.TFA_CHESTS:
 			case InterfaceID.BARROWS_REWARD:
 			case InterfaceID.PMOON_REWARD:
 			case InterfaceID.COLOSSEUM_REWARD_CHEST_2:
