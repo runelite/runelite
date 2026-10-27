@@ -137,6 +137,8 @@ class MouseHighlightOverlay extends Overlay
 				}
 		}
 
+
+
 		if (WIDGET_MENU_ACTIONS.contains(type))
 		{
 			final int widgetId = menuEntry.getParam1();
@@ -147,12 +149,32 @@ class MouseHighlightOverlay extends Overlay
 				return null;
 			}
 
+			if (groupId == InterfaceID.WELCOME_SCREEN)
+			{
+				return null;
+			}
+
 			if (!config.chatboxTooltip() && groupId == InterfaceID.CHATBOX)
 			{
 				return null;
 			}
 
 			if (config.disableSpellbooktooltip() && groupId == InterfaceID.MAGIC_SPELLBOOK)
+			{
+				return null;
+			}
+
+			if (config.disablePrayertooltip() && groupId == InterfaceID.PRAYERBOOK)
+			{
+				return null;
+			}
+
+			if (config.disableMenuStonesTooltip() && (groupId == InterfaceID.TOPLEVEL || groupId == InterfaceID.TOPLEVEL_PRE_EOC || groupId == InterfaceID.TOPLEVEL_OSRS_STRETCH))
+			{
+				return null;
+			}
+
+			if (config.disableOrbsTooltip() && (groupId == InterfaceID.ORBS || groupId == InterfaceID.ORBS_NOMAP))
 			{
 				return null;
 			}
