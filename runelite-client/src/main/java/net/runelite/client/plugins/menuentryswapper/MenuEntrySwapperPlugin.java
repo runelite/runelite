@@ -231,6 +231,35 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swaps.clear();
 	}
 
+	@Override
+	public void resetConfiguration()
+	{
+		// Item swaps live in two different config groups depending on left-click vs shift-click
+		removeKeysWithPrefix(MenuEntrySwapperConfig.GROUP, ITEM_KEY_PREFIX);
+		removeKeysWithPrefix(SHIFTCLICK_CONFIG_GROUP, ITEM_KEY_PREFIX);
+
+		// Everything else lives in the same group, split by prefix instead.
+		// Note: "npc_shift_123" also starts with "npc_", so the base prefix
+		// already covers the shift-click variant too - no need to query it separately.
+		removeKeysWithPrefix(MenuEntrySwapperConfig.GROUP, OBJECT_KEY_PREFIX);
+		removeKeysWithPrefix(MenuEntrySwapperConfig.GROUP, NPC_KEY_PREFIX);
+		removeKeysWithPrefix(MenuEntrySwapperConfig.GROUP, WORN_ITEM_KEY_PREFIX);
+		removeKeysWithPrefix(MenuEntrySwapperConfig.GROUP, UI_KEY_PREFIX);
+	}
+
+	private void removeKeysWithPrefix(String group, String keyPrefix)
+	{
+		for (String key : configManager.getConfigurationKeys(group + "." + keyPrefix))
+		{
+			// getConfigurationKeys returns "group.key" - split off the group part
+			String[] split = key.split("\\.", 2);
+			if (split.length == 2)
+			{
+				configManager.unsetConfiguration(split[0], split[1]);
+			}
+		}
+	}
+
 	@VisibleForTesting
 	void setupSwaps()
 	{
