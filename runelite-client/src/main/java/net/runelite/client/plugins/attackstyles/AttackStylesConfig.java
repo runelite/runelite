@@ -121,10 +121,21 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "hideNpcAttackOptions",
+			name = "Warned Hide NPC attack",
+			description = "Hide NPC attack options when a warned attack style is selected.",
+			position = 9
+	)
+	default boolean hideNpcAttackOptions()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showChatWarnings",
 		name = "Show chat warnings",
 		description = "Show chat warnings about switching to an unwanted attack style.",
-		position = 9
+		position = 10
 	)
 	default boolean showChatWarnings()
 	{
@@ -135,7 +146,7 @@ public interface AttackStylesConfig extends Config
 		keyName = "warningNotification",
 		name = "Warning notification",
 		description = "Notification for switching to an unwanted attack style.",
-		position = 10
+		position = 11
 	)
 	default Notification warningNotification()
 	{
