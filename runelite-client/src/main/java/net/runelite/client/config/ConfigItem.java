@@ -48,4 +48,24 @@ public @interface ConfigItem
 	boolean secret() default false;
 
 	String section() default "";
+
+	/**
+	 * Position of this item within a sub-panel opened by {@link #opensSubmenu()}.
+	 * Use this instead of {@link #position()} for items inside a submenu so the two
+	 * orderings are visually distinct in source — readers won't see {@code position}
+	 * appear to "reset" partway down the file. Falls back to {@link #position()} when
+	 * unset (default -1).
+	 */
+	int submenuPosition() default -1;
+
+	/**
+	 * If non-empty, marks this boolean item as the "opener" for a sibling {@link ConfigSection}.
+	 * The item renders as a regular checkbox, with a gear button next to it that opens a sub-panel
+	 * containing the section's items. While the checkbox is unchecked, the proxy reports the
+	 * type's zero value for every item in that section (transparent feature flagging).
+	 * <p>
+	 * Value is the section's key (the value of the {@code String} field annotated with
+	 * {@link ConfigSection}). Only meaningful for {@code boolean} items.
+	 */
+	String opensSubmenu() default "";
 }
