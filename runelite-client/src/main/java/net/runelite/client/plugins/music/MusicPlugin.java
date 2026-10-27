@@ -106,6 +106,7 @@ public class MusicPlugin extends Plugin
 		SoundEffectID.PRAYER_ACTIVATE_SMITE,
 		SoundEffectID.PRAYER_ACTIVATE_CHIVALRY,
 		SoundEffectID.PRAYER_ACTIVATE_PIETY,
+		SoundEffectID.PRAYER_ACTIVATE_ZEAL,
 		SoundEffectID.PRAYER_DEACTIVE_VWOOP
 	);
 
