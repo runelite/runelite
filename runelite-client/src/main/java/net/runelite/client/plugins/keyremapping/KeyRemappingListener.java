@@ -99,59 +99,62 @@ class KeyRemappingListener implements KeyListener
 			// In addition to the above checks, the F-key remapping shouldn't
 			// activate when dialogs are open which listen for number keys
 			// to select options
-			if (config.fkeyRemap() && !plugin.isDialogOpen())
+			if (config.fkeyRemap())
 			{
-				if (config.f1().matches(e))
+				if ((plugin.isDialogOpen() && !(e.getKeyCode() >= 48 && e.getKeyCode() <= 57)) || !plugin.isDialogOpen())
 				{
-					mappedKeyCode = KeyEvent.VK_F1;
-				}
-				else if (config.f2().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F2;
-				}
-				else if (config.f3().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F3;
-				}
-				else if (config.f4().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F4;
-				}
-				else if (config.f5().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F5;
-				}
-				else if (config.f6().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F6;
-				}
-				else if (config.f7().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F7;
-				}
-				else if (config.f8().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F8;
-				}
-				else if (config.f9().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F9;
-				}
-				else if (config.f10().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F10;
-				}
-				else if (config.f11().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F11;
-				}
-				else if (config.f12().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F12;
-				}
-				else if (config.esc().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_ESCAPE;
+					if (config.f1().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F1;
+					}
+					else if (config.f2().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F2;
+					}
+					else if (config.f3().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F3;
+					}
+					else if (config.f4().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F4;
+					}
+					else if (config.f5().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F5;
+					}
+					else if (config.f6().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F6;
+					}
+					else if (config.f7().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F7;
+					}
+					else if (config.f8().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F8;
+					}
+					else if (config.f9().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F9;
+					}
+					else if (config.f10().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F10;
+					}
+					else if (config.f11().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F11;
+					}
+					else if (config.f12().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_F12;
+					}
+					else if (config.esc().matches(e))
+					{
+						mappedKeyCode = KeyEvent.VK_ESCAPE;
+					}
 				}
 			}
 
