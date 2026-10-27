@@ -33,6 +33,27 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("inventorygrid")
 public interface InventoryGridConfig extends Config
 {
+
+	@ConfigItem(
+			keyName = "hitboxColor",
+			name = "Hitbox Outline Color",
+			description = "Color of the hitbox grid outline"
+	)
+	default Color hitboxColor()
+	{
+		return new Color(255, 0, 0, 100);
+	}
+
+	@ConfigItem(
+			keyName = "showHitboxes",
+			name = "Show Hitbox Grid",
+			description = "Overlay each inventory slot with its hitbox"
+	)
+	default boolean showHitboxes()
+	{
+		return false;
+	}
+
 	@ConfigItem(
 		keyName = "showItem",
 		name = "Show item",
