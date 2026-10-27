@@ -44,6 +44,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.ToolTipManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.Config;
@@ -141,18 +142,21 @@ class PluginListPanel extends PluginPanel
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
+				hideToolTip();
 				onSearchBarChanged();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e)
 			{
+				hideToolTip();
 				onSearchBarChanged();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
 			{
+				hideToolTip();
 				onSearchBarChanged();
 			}
 		});
@@ -378,5 +382,12 @@ class PluginListPanel extends PluginPanel
 	private void onProfileChanged(ProfileChanged ev)
 	{
 		SwingUtilities.invokeLater(this::rebuildPluginList);
+	}
+
+	private static void hideToolTip(){
+		if (ToolTipManager.sharedInstance().isEnabled()) {
+			ToolTipManager.sharedInstance().setEnabled(false);
+			ToolTipManager.sharedInstance().setEnabled(true);
+		}
 	}
 }
