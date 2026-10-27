@@ -31,14 +31,20 @@ import java.util.HashSet;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.gameval.ItemID;
-import static net.runelite.client.plugins.itemstats.Builders.*;
+import static net.runelite.client.plugins.itemstats.Builders.boost;
+import static net.runelite.client.plugins.itemstats.Builders.combo;
+import static net.runelite.client.plugins.itemstats.Builders.dec;
+import static net.runelite.client.plugins.itemstats.Builders.food;
+import static net.runelite.client.plugins.itemstats.Builders.heal;
+import static net.runelite.client.plugins.itemstats.Builders.perc;
+import static net.runelite.client.plugins.itemstats.Builders.range;
 import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.food.CookedBream;
 import net.runelite.client.plugins.itemstats.food.CookedMossLizard;
-import net.runelite.client.plugins.itemstats.special.SunlightMoth;
 import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
+import net.runelite.client.plugins.itemstats.potions.CastlewarsBrew;
 import net.runelite.client.plugins.itemstats.potions.MixedPotion;
 import net.runelite.client.plugins.itemstats.potions.MoonlightPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
@@ -51,6 +57,7 @@ import net.runelite.client.plugins.itemstats.special.DwarvenRockCake;
 import net.runelite.client.plugins.itemstats.special.LocatorOrb;
 import net.runelite.client.plugins.itemstats.special.NettleTeaRunEnergy;
 import net.runelite.client.plugins.itemstats.special.SpicyStew;
+import net.runelite.client.plugins.itemstats.special.SunlightMoth;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
 @Singleton
@@ -169,7 +176,7 @@ public class ItemStatChanges
 		add(combo(food(1), boost(STRENGTH, 3), new BoostedStatBoost(ATTACK, false, perc(.05, -3))), ItemID.MATURE_ASGARNIAN_ALE, ItemID.KEG_MATURE_ASGARNIAN_ALE_1, ItemID.KEG_MATURE_ASGARNIAN_ALE_2, ItemID.KEG_MATURE_ASGARNIAN_ALE_3, ItemID.KEG_MATURE_ASGARNIAN_ALE_4);
 		add(combo(food(1), boost(WOODCUTTING, 1), new BoostedStatBoost(ATTACK, false, perc(.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(.02, -2))), ItemID.AXEMANS_FOLLY, ItemID.KEG_AXEMANS_FOLLY_1, ItemID.KEG_AXEMANS_FOLLY_2, ItemID.KEG_AXEMANS_FOLLY_3, ItemID.KEG_AXEMANS_FOLLY_4);
 		add(combo(food(2), boost(WOODCUTTING, 2), new BoostedStatBoost(ATTACK, false, perc(.02, -3)), new BoostedStatBoost(STRENGTH, false, perc(.02, -3))), ItemID.MATURE_AXEMANS_FOLLY, ItemID.KEG_MATURE_AXEMANS_FOLLY_1, ItemID.KEG_MATURE_AXEMANS_FOLLY_2, ItemID.KEG_MATURE_AXEMANS_FOLLY_3, ItemID.KEG_MATURE_AXEMANS_FOLLY_4);
-		add(combo(food(1), boost(THIEVING, 1), boost(ATTACK, 1),  new BoostedStatBoost(DEFENCE, false, perc(.06, -3)), new BoostedStatBoost(STRENGTH, false, perc(.06, -3))), ItemID.BANDIT_BREW);
+		add(combo(food(1), boost(THIEVING, 1), boost(ATTACK, 1), new BoostedStatBoost(DEFENCE, false, perc(.06, -3)), new BoostedStatBoost(STRENGTH, false, perc(.06, -3))), ItemID.BANDIT_BREW);
 		add(combo(food(1), new SimpleStatBoost(COOKING, true, perc(.05, 1)), new BoostedStatBoost(ATTACK, false, perc(.05, -2)), new BoostedStatBoost(STRENGTH, false, perc(.05, -2))), ItemID.CHEFS_DELIGHT, ItemID.KEG_CHEFS_DELIGHT_1, ItemID.KEG_CHEFS_DELIGHT_2, ItemID.KEG_CHEFS_DELIGHT_3, ItemID.KEG_CHEFS_DELIGHT_4, ItemID.POH_CHEFS_DELIGHT);
 		add(combo(food(2), new SimpleStatBoost(COOKING, true, perc(.05, 2)), new BoostedStatBoost(ATTACK, false, perc(.05, -3)), new BoostedStatBoost(STRENGTH, false, perc(.05, -3))), ItemID.MATURE_CHEFS_DELIGHT, ItemID.KEG_MATURE_CHEFS_DELIGHT_1, ItemID.KEG_MATURE_CHEFS_DELIGHT_2, ItemID.KEG_MATURE_CHEFS_DELIGHT_3, ItemID.KEG_MATURE_CHEFS_DELIGHT_4);
 		add(combo(food(1), boost(FARMING, 1), new BoostedStatBoost(ATTACK, false, perc(.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(.02, -2))), ItemID.CIDER, ItemID.KEG_CIDER_1, ItemID.KEG_CIDER_2, ItemID.KEG_CIDER_3, ItemID.KEG_CIDER_4, ItemID.POH_CIDER);
@@ -258,8 +265,6 @@ public class ItemStatChanges
 		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT, SUPER_DEFENCE_POT, divinePot), ItemID._1DOSEDIVINECOMBAT, ItemID._2DOSEDIVINECOMBAT, ItemID._3DOSEDIVINECOMBAT, ItemID._4DOSEDIVINECOMBAT);
 		add(combo(rangingPot, SUPER_DEFENCE_POT, divinePot), ItemID._1DOSEDIVINEBASTION, ItemID._2DOSEDIVINEBASTION, ItemID._3DOSEDIVINEBASTION, ItemID._4DOSEDIVINEBASTION);
 		add(combo(magicPot, SUPER_DEFENCE_POT, divinePot), ItemID._1DOSEDIVINEBATTLEMAGE, ItemID._2DOSEDIVINEBATTLEMAGE, ItemID._3DOSEDIVINEBATTLEMAGE, ItemID._4DOSEDIVINEBATTLEMAGE);
-		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT, SUPER_DEFENCE_POT, rangingPot, imbuedHeart),
-			ItemID._4DOSE_CASTLEWARS_SKILL_POTION, ItemID._3DOSE_CASTLEWARS_SKILL_POTION, ItemID._2DOSE_CASTLEWARS_SKILL_POTION, ItemID._1DOSE_CASTLEWARS_SKILL_POTION);
 		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT),
 			ItemID.BR_4DOSE2COMBAT, ItemID.BR_3DOSE2COMBAT, ItemID.BR_2DOSE2COMBAT, ItemID.BR_1DOSE2COMBAT);
 		add(ancientBrew, ItemID._1DOSEANCIENTBREW, ItemID._2DOSEANCIENTBREW, ItemID._3DOSEANCIENTBREW, ItemID._4DOSEANCIENTBREW);
@@ -302,6 +307,7 @@ public class ItemStatChanges
 		final Effect superRestorePot = new SuperRestore(.25, 8);
 		final SingleEffect staminaPot = new StaminaPotion(20);
 		final DeltaPercentage remedyHeal = perc(0.16, 6);
+		final Effect castlewarsBrew = new CastlewarsBrew();
 		add(restorePot, ItemID._1DOSESTATRESTORE, ItemID._2DOSESTATRESTORE, ItemID._3DOSESTATRESTORE, ItemID._4DOSESTATRESTORE);
 		add(energyPot, ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY);
 		add(prayerPot, ItemID._1DOSEPRAYERRESTORE, ItemID._2DOSEPRAYERRESTORE, ItemID._3DOSEPRAYERRESTORE, ItemID._4DOSEPRAYERRESTORE);
@@ -318,6 +324,9 @@ public class ItemStatChanges
 		add(new StaminaPotion(40), ItemID._1DOSE2STAMINA, ItemID._2DOSE2STAMINA, ItemID._3DOSE2STAMINA, ItemID._4DOSE2STAMINA);
 		add(heal(RUN_ENERGY, 40), ItemID._1DOSE3ENERGY, ItemID._2DOSE3ENERGY, ItemID._3DOSE3ENERGY, ItemID._4DOSE3ENERGY);
 		add(combo(heal(HITPOINTS, 99), heal(PRAYER, 99), heal(RUN_ENERGY, 100)), ItemID.VAMPYRIUM_CONGEALED_BLOOD);
+
+		// Castlewars Brew (Super Combat + Ranging + Stamina + Super Restore + Imbued Heart)
+		add(castlewarsBrew, ItemID._4DOSE_CASTLEWARS_SKILL_POTION, ItemID._3DOSE_CASTLEWARS_SKILL_POTION, ItemID._2DOSE_CASTLEWARS_SKILL_POTION, ItemID._1DOSE_CASTLEWARS_SKILL_POTION);
 
 		// Mixed recovery potions
 		add(new MixedPotion(3, restorePot), ItemID.BRUTAL_1DOSESTATRESTORE, ItemID.BRUTAL_2DOSESTATRESTORE);
