@@ -29,6 +29,10 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.EnumSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -39,7 +43,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,5 +134,20 @@ public class FarmingTrackerTest
 		farmingTracker.sendNotification(runeScapeProfile, patchPrediction, patch);
 
 		verify(notifier).notify("Your Ranarr is ready to harvest in Ardougne.");
+	}
+
+	@Test
+	public void createTabPanelBuildsAPanelForTheRequestedTabsPatches()
+	{
+		FarmingPatch patch = new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.HERB);
+		new FarmingRegion("Catherby", 11061, false, patch);
+
+		Set<FarmingPatch> herbPatches = new LinkedHashSet<>(List.of(patch));
+		when(farmingWorld.getTabs()).thenReturn(Map.of(Tab.HERB, herbPatches));
+
+		FarmingContractManager farmingContractManager = mock(FarmingContractManager.class);
+		FarmingTabPanel panel = farmingTracker.createTabPanel(Tab.HERB, farmingContractManager);
+
+		assertEquals(List.of(patch), panel.getPatchOrder());
 	}
 }
