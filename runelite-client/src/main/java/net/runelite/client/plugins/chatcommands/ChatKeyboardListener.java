@@ -32,6 +32,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.vars.InputType;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.KeyListener;
 
 @Singleton
@@ -46,10 +47,19 @@ public class ChatKeyboardListener implements KeyListener
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private ChatboxPanelManager chatboxPanelManager;
+
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
 
+	}
+
+	@Override
+	public boolean isEnabledDuringTextInput()
+	{
+		return false;
 	}
 
 	@Override
