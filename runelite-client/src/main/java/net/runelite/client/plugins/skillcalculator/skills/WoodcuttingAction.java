@@ -71,7 +71,7 @@ public enum WoodcuttingAction implements ItemSkillAction
 		@Override
 		public String getName(final ItemManager itemManager)
 		{
-			return "Bloodwood tree";
+			return "Bloodwood tree (draining)";
 		}
 
 		@Override
