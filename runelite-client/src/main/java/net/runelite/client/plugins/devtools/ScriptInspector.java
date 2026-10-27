@@ -237,7 +237,7 @@ public class ScriptInspector extends DevToolsFrame
 		listModel = new DefaultListModel<>();
 		changeState(ListState.BLACKLIST);
 		jList = new JList<>(listModel);
-		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		JScrollPane listScrollPane = new JScrollPane(jList);
 
 		final JButton blacklistButton = new JButton("Blacklist");
@@ -381,6 +381,17 @@ public class ScriptInspector extends DevToolsFrame
 			tree.setRootVisible(true);
 			tree.setShowsRootHandles(true);
 			tree.collapsePath(new TreePath(treeNode));
+			tree.addMouseListener(new java.awt.event.MouseAdapter()
+			{
+				@Override
+				public void mouseReleased(java.awt.event.MouseEvent e)
+				{
+					if (e.isPopupTrigger())
+					{
+						showRightClickMenu(e, tree);
+					}
+				}
+			});
 
 			ScriptTreeNode highlightNode = findHighlightPathNode(treeNode);
 
@@ -426,8 +437,8 @@ public class ScriptInspector extends DevToolsFrame
 			return;
 		}
 
-		int script = listModel.get(index);
-		getSet().remove(script);
+		Set<Integer> set = getSet();
+		jList.getSelectedValuesList().forEach(set::remove);
 		refreshList();
 	}
 
@@ -482,5 +493,52 @@ public class ScriptInspector extends DevToolsFrame
 		}
 
 		return null;
+	}
+
+	private void showRightClickMenu(java.awt.event.MouseEvent e, JTree targetTree)
+	{
+		TreePath path = targetTree.getPathForLocation(e.getX(), e.getY());
+		if (path != null)
+		{
+			targetTree.setSelectionPath(path);
+			int scriptId = ((ScriptTreeNode) path.getLastPathComponent()).getScriptId();
+
+			boolean isBlacklisted = blacklist.contains(scriptId);
+			boolean isHighlighted = highlights.contains(scriptId);
+			String blacklistStr = (isBlacklisted ? "Remove from blacklist " : "Blacklist ") + scriptId;
+			String highlightStr = (isHighlighted ? "Remove from highlights " : "Highlight ") + scriptId;
+
+			javax.swing.JPopupMenu popup = new javax.swing.JPopupMenu();
+			javax.swing.JMenuItem blacklistOpt = new javax.swing.JMenuItem(blacklistStr);
+			blacklistOpt.addActionListener(action ->
+			{
+				if (isBlacklisted)
+				{
+					blacklist.remove(scriptId);
+				}
+				else
+				{
+					blacklist.add(scriptId);
+				}
+				refreshList();
+			});
+			popup.add(blacklistOpt);
+			javax.swing.JMenuItem highlightOpt = new javax.swing.JMenuItem(highlightStr);
+			highlightOpt.addActionListener(action ->
+			{
+				if (isHighlighted)
+				{
+					highlights.remove(scriptId);
+				}
+				else
+				{
+					highlights.add(scriptId);
+				}
+				refreshList();
+			});
+			popup.add(highlightOpt);
+
+			popup.show(e.getComponent(), e.getX(), e.getY());
+		}
 	}
 }
