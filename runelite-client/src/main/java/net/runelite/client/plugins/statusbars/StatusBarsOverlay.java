@@ -60,16 +60,12 @@ class StatusBarsOverlay extends Overlay
 	private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
 	private static final Color ACTIVE_PRAYER_COLOR = new Color(57, 255, 186, 225);
 	private static final Color HEALTH_COLOR = new Color(225, 35, 0, 125);
-	private static final Color POISONED_COLOR = new Color(0, 145, 0, 150);
-	private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
 	private static final Color ENERGY_HEAL_COLOR = new Color (199,  118, 0, 218);
 	private static final Color RUN_STAMINA_COLOR = new Color(160, 124, 72, 255);
 	private static final Color SPECIAL_ATTACK_COLOR = new Color(3, 153, 0, 195);
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
-	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
-	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
@@ -120,22 +116,22 @@ class StatusBarsOverlay extends Overlay
 
 				if (poisonState >= 1000000)
 				{
-					return VENOMED_COLOR;
+					return config.venomedColor();
 				}
 
 				if (poisonState > 0)
 				{
-					return POISONED_COLOR;
+					return config.poisonedColor();
 				}
 
 				if (client.getVarpValue(VarPlayerID.DISEASE) > 0)
 				{
-					return DISEASE_COLOR;
+					return config.diseaseColor();
 				}
 
 				if (client.getVarbitValue(VarbitID.PARASITE) >= 1)
 				{
-					return PARASITE_COLOR;
+					return config.parasiteColor();
 				}
 
 				return HEALTH_COLOR;
