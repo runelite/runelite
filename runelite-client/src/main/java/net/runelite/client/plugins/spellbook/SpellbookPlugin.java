@@ -38,6 +38,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ParamID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetDrag;
 import net.runelite.api.gameval.InterfaceID;
@@ -125,7 +126,43 @@ public class SpellbookPlugin extends Plugin
 	protected void shutDown()
 	{
 		clearReoderMenus();
-		clientThread.invokeLater(this::reinitializeSpellbook);
+		clientThread.invokeLater(() ->
+		{
+			resetSpellbookWidgets();
+			reinitializeSpellbook();
+		});
+	}
+
+	private void resetSpellbookWidgets()
+	{
+		reordering = false;
+
+		Widget universe = client.getWidget(InterfaceID.MagicSpellbook.UNIVERSE);
+		if (universe == null)
+		{
+			return;
+		}
+
+		// Remove the red reorder-mode overlay added by createWarning()
+		universe.deleteAllChildren();
+
+		int subSpellbookId = client.getEnum(EnumID.SPELLBOOKS_SUB).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK));
+		int spellbookId = client.getEnum(subSpellbookId).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK_SUBLIST));
+		EnumComposition spellbook = client.getEnum(spellbookId);
+		for (int i = 0; i < spellbook.size(); ++i)
+		{
+			ItemComposition spellObj = client.getItemDefinition(spellbook.getIntValue(i));
+			Widget w = client.getWidget(spellObj.getIntValue(ParamID.SPELL_BUTTON));
+			if (w == null)
+			{
+				continue;
+			}
+
+			w.setHidden(false);
+			w.setOpacity(0);
+			w.setAction(HIDE_UNHIDE_OP, null);
+			w.setClickMask(w.getClickMask() & ~(DRAG | DRAG_ON));
+		}
 	}
 
 	@Subscribe
@@ -315,17 +352,9 @@ public class SpellbookPlugin extends Plugin
 			int widgetConfig = w.getClickMask();
 			if (reordering)
 			{
-				if (hidden)
-				{
-					w.setOpacity(100);
-					w.setAction(HIDE_UNHIDE_OP, "Unhide");
-				}
-				else
-				{
-					w.setOpacity(0);
-					w.setAction(HIDE_UNHIDE_OP, "Hide");
-				}
-
+				// Opacity and the Hide/Unhide op are applied later, in onScriptPostFired,
+				// so that scripts which run after spellbookSort (e.g. cooldown rendering)
+				// can't overwrite them.
 				newSpells[numNewSpells++] = spells[i];
 				widgetConfig |= DRAG | DRAG_ON;
 			}
@@ -362,6 +391,34 @@ public class SpellbookPlugin extends Plugin
 
 		System.arraycopy(newSpells, 0, spells, 0, numNewSpells);
 		stack[size - 1] = numSpells = numNewSpells;
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() != ScriptID.MAGIC_SPELLBOOK_REDRAW || !reordering)
+		{
+			return;
+		}
+
+		int subSpellbookId = client.getEnum(EnumID.SPELLBOOKS_SUB).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK));
+		int spellbookId = client.getEnum(subSpellbookId).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK_SUBLIST));
+
+		EnumComposition spellbook = client.getEnum(spellbookId);
+		for (int i = 0; i < spellbook.size(); ++i)
+		{
+			int spellObjId = spellbook.getIntValue(i);
+			ItemComposition spellObj = client.getItemDefinition(spellObjId);
+			Widget w = client.getWidget(spellObj.getIntValue(ParamID.SPELL_BUTTON));
+			if (w == null || w.isSelfHidden())
+			{
+				continue;
+			}
+
+			boolean hidden = isHidden(spellbookId, spellObjId);
+			w.setOpacity(hidden ? 100 : 0);
+			w.setAction(HIDE_UNHIDE_OP, hidden ? "Unhide" : "Hide");
+		}
 	}
 
 	private void createWarning(boolean unlocked)
