@@ -49,6 +49,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
 	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
+	String KEY_RING_OF_THE_ELEMENTS = "ringOfTheElements";
 
 	@ConfigSection(
 		name = "Charge settings",
