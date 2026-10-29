@@ -26,7 +26,10 @@
 package net.runelite.client.plugins.stretchedmode;
 
 import com.google.inject.Provides;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import javax.inject.Inject;
+import javax.swing.Timer;
 import net.runelite.api.Client;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
@@ -59,6 +62,21 @@ public class StretchedModePlugin extends Plugin
 	@Inject
 	private TranslateMouseWheelListener mouseWheelListener;
 
+	// Work around the resize corruption reported in https://github.com/runelite/runelite/issues/19688.
+	// It appears to primarily affect Wayland/XWayland; a Windows report was mentioned but remains unconfirmed.
+	// The suspected cause is that an intermediate canvas size is used to calculate stretched dimensions
+	// before resizing settles, leaving those dimensions stale.
+	private final Timer canvasResizeTimer = new Timer(200, event -> client.invalidateStretching(false));
+
+	private final ComponentAdapter canvasResizeListener = new ComponentAdapter()
+	{
+		@Override
+		public void componentResized(ComponentEvent event)
+		{
+			canvasResizeTimer.restart();
+		}
+	};
+
 	@Provides
 	StretchedModeConfig provideConfig(ConfigManager configManager)
 	{
@@ -68,16 +86,21 @@ public class StretchedModePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		canvasResizeTimer.setRepeats(false);
+
 		mouseManager.registerMouseListener(0, mouseListener);
 		mouseManager.registerMouseWheelListener(0, mouseWheelListener);
 
 		client.setStretchedEnabled(true);
 		updateConfig();
+		client.getCanvas().addComponentListener(canvasResizeListener);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		client.getCanvas().removeComponentListener(canvasResizeListener);
+		canvasResizeTimer.stop();
 		client.setStretchedEnabled(false);
 		client.invalidateStretching(true);
 
