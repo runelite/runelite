@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
@@ -56,6 +58,28 @@ public enum WoodcuttingAction implements ItemSkillAction
 	},
 	CAMPHOR_LOGS(ItemID.CAMPHOR_LOGS, 66, 143.5f),
 	MAGIC_LOGS(ItemID.MAGIC_LOGS, 75, 250),
+	ENGORGED_BLOODWOOD_TREE(ItemID.BUCKET_OF_BLOODWOOD_SAP, 77, 165)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Engorged bloodwood tree";
+		}
+	},
+	BLOODWOOD_TREE(ItemID.BUCKET_OF_BLOODWOOD_SAP, 77, 1360)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Bloodwood tree (draining)";
+		}
+
+		@Override
+		public Set<WoodcuttingBonus> getExcludedSkillBonuses()
+		{
+			return EnumSet.allOf(WoodcuttingBonus.class);
+		}
+	},
 	IRONWOOD_LOGS(ItemID.IRONWOOD_LOGS, 80, 175),
 	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 380),
 	ROSEWOOD_LOGS(ItemID.ROSEWOOD_LOGS, 92, 212.5f),

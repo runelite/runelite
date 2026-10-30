@@ -34,6 +34,7 @@ import net.runelite.client.game.ItemManager;
 public enum CookingAction implements ItemSkillAction
 {
 	SINEW(ItemID.XBOWS_SINEW, 1, 3),
+	LEECHFIN(ItemID.LEECHFIN, 1, 20),
 	ANCHOVIES(ItemID.ANCHOVIES, 1, 30),
 	COOKED_CHICKEN(ItemID.COOKED_CHICKEN, 1, 30),
 	COOKED_MEAT(ItemID.COOKED_MEAT, 1, 30),
