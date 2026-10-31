@@ -26,7 +26,15 @@ package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -34,19 +42,29 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.WorldView;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -77,6 +95,31 @@ public class BarrowsPlugin extends Plugin
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
 	private static final int CRYPT_REGION_ID = 14231;
 	private static final int BARROWS_REGION_ID = 14131;
+	private static final int MAX_BASE_POTENTIAL = 1000;
+	static final int MAX_REWARD_POTENTIAL = 1012;
+	private static final Map<String, Integer> BROTHER_VARBITS;
+	private static final Set<String> CRYPT_MONSTERS;
+
+	static
+	{
+		Map<String, Integer> brothers = new HashMap<>();
+		brothers.put("Ahrim the Blighted", VarbitID.BARROWS_KILLED_AHRIM);
+		brothers.put("Dharok the Wretched", VarbitID.BARROWS_KILLED_DHAROK);
+		brothers.put("Guthan the Infested", VarbitID.BARROWS_KILLED_GUTHAN);
+		brothers.put("Karil the Tainted", VarbitID.BARROWS_KILLED_KARIL);
+		brothers.put("Torag the Corrupted", VarbitID.BARROWS_KILLED_TORAG);
+		brothers.put("Verac the Defiled", VarbitID.BARROWS_KILLED_VERAC);
+		BROTHER_VARBITS = Collections.unmodifiableMap(brothers);
+
+		Set<String> monsters = new HashSet<>();
+		monsters.add("crypt rat");
+		monsters.add("bloodworm");
+		monsters.add("crypt spider");
+		monsters.add("giant crypt rat");
+		monsters.add("skeleton");
+		monsters.add("giant crypt spider");
+		CRYPT_MONSTERS = Collections.unmodifiableSet(monsters);
+	}
 
 	private LoopTimer barrowsPrayerDrainTimer;
 
@@ -91,6 +134,9 @@ public class BarrowsPlugin extends Plugin
 
 	@Inject
 	private BarrowsBrotherSlainOverlay brotherOverlay;
+
+	@Inject
+	private BarrowsPotentialNpcOverlay potentialNpcOverlay;
 
 	@Inject
 	private Client client;
@@ -110,6 +156,11 @@ public class BarrowsPlugin extends Plugin
 	@Inject
 	private BarrowsConfig config;
 
+	@Inject
+	private ClientThread clientThread;
+
+	private final Set<NPC> trackedPotentialNpcs = Collections.newSetFromMap(new IdentityHashMap<>());
+
 	@Provides
 	BarrowsConfig provideConfig(ConfigManager configManager)
 	{
@@ -121,6 +172,8 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
+		overlayManager.add(potentialNpcOverlay);
+		clientThread.invokeLater(this::rebuildTrackedPotentialNpcs);
 	}
 
 	@Override
@@ -128,6 +181,8 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
+		overlayManager.remove(potentialNpcOverlay);
+		trackedPotentialNpcs.clear();
 		puzzleAnswer = null;
 		stopPrayerDrainTimer();
 
@@ -159,6 +214,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
+			rebuildTrackedPotentialNpcs();
 			boolean isInCrypt = isInCrypt();
 			if (!isInCrypt && barrowsPrayerDrainTimer != null)
 			{
@@ -169,6 +225,70 @@ public class BarrowsPlugin extends Plugin
 				startPrayerDrainTimer();
 			}
 		}
+		else
+		{
+			trackedPotentialNpcs.clear();
+		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		trackPotentialNpc(event.getNpc());
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged event)
+	{
+		trackPotentialNpc(event.getNpc());
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		trackedPotentialNpcs.remove(event.getNpc());
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!config.preventExceedingGoal() || !isInCrypt())
+		{
+			return;
+		}
+
+		MenuEntry menuEntry = event.getMenuEntry();
+		NPC npc = menuEntry.getNpc();
+		if (npc == null || !isNpcAttackOption(menuEntry.getType())
+			|| !"Attack".equalsIgnoreCase(menuEntry.getOption())
+			|| isPotentialBrother(npc.getName()) || !isPotentialNpc(npc.getName()))
+		{
+			return;
+		}
+
+		int goalPoints = BarrowsPotentialPlan.getPotentialGoalPoints(config.potentialGoal());
+		if (getPotentialAfterRequiredBrothersAndNpc(npc) <= goalPoints)
+		{
+			return;
+		}
+
+		event.consume();
+		String warning = new ChatMessageBuilder()
+			.append(Color.RED, "Killing this NPC would take you over your barrows reward potential goal.")
+			.build();
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.GAMEMESSAGE)
+			.runeLiteFormattedMessage(warning)
+			.build());
+	}
+
+	private boolean isNpcAttackOption(MenuAction action)
+	{
+		return action == MenuAction.NPC_FIRST_OPTION
+			|| action == MenuAction.NPC_SECOND_OPTION
+			|| action == MenuAction.NPC_THIRD_OPTION
+			|| action == MenuAction.NPC_FOURTH_OPTION
+			|| action == MenuAction.NPC_FIFTH_OPTION;
 	}
 
 	@Subscribe
@@ -278,10 +398,145 @@ public class BarrowsPlugin extends Plugin
 		barrowsPrayerDrainTimer = null;
 	}
 
-	private boolean isInCrypt()
+	boolean isInCrypt()
 	{
 		Player localPlayer = client.getLocalPlayer();
 		return localPlayer != null && localPlayer.getWorldLocation().getRegionID() == CRYPT_REGION_ID;
+	}
+
+	boolean shouldShowPotentialKillRecommendations()
+	{
+		return isInCrypt() && getKilledBrotherCount() >= 5;
+	}
+
+	int getBasePotential()
+	{
+		return client.getVarbitValue(VarbitID.BARROWS_KILLED_MONSTER);
+	}
+
+	int getRewardPotential()
+	{
+		int slainBrothers = 0;
+		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		{
+			slainBrothers += client.getVarbitValue(brother.getKilledVarbit());
+		}
+		return getBasePotential() + slainBrothers * 2;
+	}
+
+	int getKilledBrotherCount()
+	{
+		int count = 0;
+		for (int varbit : BROTHER_VARBITS.values())
+		{
+			count += client.getVarbitValue(varbit);
+		}
+		return count;
+	}
+
+	boolean isBrotherKilled(String brotherName)
+	{
+		Integer varbit = BROTHER_VARBITS.get(brotherName);
+		return varbit != null && client.getVarbitValue(varbit) > 0;
+	}
+
+	static boolean isPotentialNpc(String name)
+	{
+		return name != null && (BROTHER_VARBITS.containsKey(name)
+			|| CRYPT_MONSTERS.contains(name.trim().toLowerCase(Locale.ROOT)));
+	}
+
+	static boolean isPotentialBrother(String name)
+	{
+		return BROTHER_VARBITS.containsKey(name);
+	}
+
+	/**
+	 * Calculates the reward potential after the target NPC is killed.
+	 *
+	 * @param target the NPC to calculate potential for
+	 * @return reward potential points, from 0 to 1012
+	 */
+	int getPotentialAfterKilling(NPC target)
+	{
+		int potential = Math.min(MAX_BASE_POTENTIAL, getBasePotential() + Math.max(0, target.getCombatLevel()));
+		int brothersSlain = getKilledBrotherCount();
+		if (isPotentialBrother(target.getName()) && !isBrotherKilled(target.getName()))
+		{
+			brothersSlain++;
+		}
+		return Math.min(MAX_REWARD_POTENTIAL, potential + brothersSlain * 2);
+	}
+
+	boolean shouldPotentialBeRed(NPC target)
+	{
+		return !isPotentialBrother(target.getName())
+			&& getPotentialAfterRequiredBrothersAndNpc(target)
+				> BarrowsPotentialPlan.getPotentialGoalPoints(config.potentialGoal());
+	}
+
+	private int getPotentialAfterRequiredBrothersAndNpc(NPC target)
+	{
+		int basePotential = getBasePotential() + Math.max(0, target.getCombatLevel());
+		int brothersSlain = getKilledBrotherCount();
+		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		{
+			if (client.getVarbitValue(brother.getKilledVarbit()) == 0)
+			{
+				basePotential += BarrowsPotentialPlan.getBrotherCombatLevel(brother);
+				brothersSlain++;
+			}
+		}
+
+		int potential = Math.min(MAX_BASE_POTENTIAL, basePotential) + brothersSlain * 2;
+		return Math.min(MAX_REWARD_POTENTIAL, potential);
+	}
+
+	Set<NPC> getTrackedPotentialNpcs()
+	{
+		return trackedPotentialNpcs;
+	}
+
+	private void rebuildTrackedPotentialNpcs()
+	{
+		trackedPotentialNpcs.clear();
+		if (client.getGameState() != GameState.LOGGED_IN || !isInCrypt())
+		{
+			return;
+		}
+
+		Set<WorldView> visitedWorldViews = Collections.newSetFromMap(new IdentityHashMap<>());
+		collectPotentialNpcs(client.getTopLevelWorldView(), visitedWorldViews);
+	}
+
+	private void collectPotentialNpcs(WorldView worldView, Set<WorldView> visitedWorldViews)
+	{
+		if (worldView == null || !visitedWorldViews.add(worldView))
+		{
+			return;
+		}
+
+		for (NPC npc : worldView.npcs())
+		{
+			trackPotentialNpc(npc);
+		}
+
+		for (WorldView childWorldView : worldView.worldViews())
+		{
+			collectPotentialNpcs(childWorldView, visitedWorldViews);
+		}
+	}
+
+	private void trackPotentialNpc(NPC npc)
+	{
+		if (isInCrypt() && isPotentialNpc(npc.getName()))
+		{
+			trackedPotentialNpcs.add(npc);
+		}
+		else
+		{
+			trackedPotentialNpcs.remove(npc);
+		}
 	}
 
 	boolean isBarrowsLoaded()
