@@ -812,7 +812,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_HARD_RIDDLE_EXP3)
 			.text("Surviving.")
-			.location(new WorldPoint(2983, 3338, 0))
+			.location(new WorldPoint(2983, 3338, 2))
 			.npc("Sir Vyvin")
 			.solution("Talk to Sir Vyvin on the second floor of Falador castle.")
 			.build(),
