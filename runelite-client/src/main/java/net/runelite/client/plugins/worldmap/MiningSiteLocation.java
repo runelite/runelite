@@ -239,6 +239,7 @@ enum MiningSiteLocation
 	TLATI_RAINFOREST_EAST(new WorldPoint(1352, 3112, 0), new Rock(7, Ore.IRON), new Rock(4, Ore.COAL), new Rock(5, Ore.GOLD), new Rock(4, Ore.MITHRIL), new Rock(4, Ore.ADAMANTITE), new Rock(1, Ore.GEMSTONE_CRAB)),
 	TLATI_RAINFOREST_NORTH(new WorldPoint(1272, 3173, 0), new Rock(9, Ore.SILVER), new Rock(8, Ore.CLAY), new Rock(1, Ore.GEMSTONE_CRAB)),
 	TLATI_RAINFOREST_SOUTH(new WorldPoint(1238, 3043, 0), new Rock(13, Ore.COPPER), new Rock(10, Ore.IRON), new Rock(7, Ore.COAL), new Rock(1, Ore.GEMSTONE_CRAB)),
+	THE_FRACTURED_ARCHIVE(new WorldPoint(3152, 9440, 0), new Rock(10, Ore.ASCENSION_ROCKS)),
 	TRAHEARN(new WorldPoint(3295, 12387, 0),
 		new Rock(26, Ore.IRON), new Rock(8, Ore.SILVER), new Rock(19, Ore.COAL), new Rock(14, Ore.GOLD),
 		new Rock(7, Ore.MITHRIL), new Rock(10, Ore.SOFT_CLAY), new Rock(7, Ore.ADAMANTITE), new Rock(4, Ore.RUNITE)),
@@ -325,6 +326,7 @@ enum MiningSiteLocation
 		LEAD("Lead"),
 		NICKEL("Nickel"),
 		SUNSTONE("Sunstone"),
+		ASCENSION_ROCKS("Ascension rock")
 		;
 
 		private final String name;

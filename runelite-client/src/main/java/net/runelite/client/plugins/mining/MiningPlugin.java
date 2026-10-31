@@ -75,7 +75,7 @@ public class MiningPlugin extends Plugin
 {
 	private static final Pattern MINING_PATTERN = Pattern.compile(
 		"You swing your pick at the " +
-			"(?:rock|star|deposit)" +
+			"(?:rock|star|deposit|crystal)" +
 			"(?:\\.|!)");
 
 	private static final int DAEYALT_ESSENCE_MINE_REGION = 14744;
