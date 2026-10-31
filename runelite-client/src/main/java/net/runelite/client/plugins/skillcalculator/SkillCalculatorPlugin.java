@@ -62,6 +62,7 @@ public class SkillCalculatorPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
 
 		uiNavigationButton = NavigationButton.builder()
+			.sidebarId("skill-calculator")
 			.tooltip("Skill Calculator")
 			.icon(icon)
 			.priority(6)

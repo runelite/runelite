@@ -67,6 +67,7 @@ public class NotesPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "notes_icon.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("notes")
 			.tooltip("Notes")
 			.icon(icon)
 			.priority(7)

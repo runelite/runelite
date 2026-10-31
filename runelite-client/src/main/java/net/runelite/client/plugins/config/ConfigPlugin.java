@@ -90,6 +90,7 @@ public class ConfigPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "config_icon.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("configuration")
 			.tooltip("Configuration")
 			.icon(icon)
 			.priority(0)

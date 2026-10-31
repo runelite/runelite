@@ -53,6 +53,7 @@ public class InfoPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "info_icon.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("info")
 			.tooltip("Info")
 			.icon(icon)
 			.priority(10)

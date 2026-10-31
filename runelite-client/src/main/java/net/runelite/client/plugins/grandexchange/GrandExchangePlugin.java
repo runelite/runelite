@@ -243,6 +243,7 @@ public class GrandExchangePlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "ge_icon.png");
 
 		button = NavigationButton.builder()
+			.sidebarId("grand-exchange")
 			.tooltip("Grand Exchange")
 			.icon(icon)
 			.priority(3)
