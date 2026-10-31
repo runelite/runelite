@@ -470,6 +470,12 @@ public class ChatCommandsPlugin extends Plugin
 					int toaTeamSize = toaTeamSize();
 					lastTeamSize = toaTeamSize == 1 ? "Solo" : (toaTeamSize + " players");
 				}
+				else if (renamedBoss.contains("Fractured Archive"))
+				{
+					// TFA team size isn't sent in the kill message, but can be computed from varbits
+					int tfaTeamSize = tfaTeamSize();
+					lastTeamSize = tfaTeamSize == 1 ? "Solo" : (tfaTeamSize + " players");
+				}
 
 				final double pb = getPb(renamedBoss);
 				// If a raid with a team size, only update the pb if it is lower than the existing pb
@@ -2522,6 +2528,24 @@ public class ChatCommandsPlugin extends Plugin
 			case "the fractured archive":
 			case "tfa":
 				return "Fractured Archive";
+			case "tfa 1":
+			case "tfa solo":
+				return "Fractured Archive Solo";
+			case "tfa 2":
+			case "tfa duo":
+				return "Fractured Archive 2 players";
+			case "tfa 3":
+				return "Fractured Archive 3 players";
+			case "tfa 4":
+				return "Fractured Archive 4 players";
+			case "tfa 5":
+				return "Fractured Archive 5 players";
+			case "tfa 6":
+				return "Fractured Archive 6 players";
+			case "tfa 7":
+				return "Fractured Archive 7 players";
+			case "tfa 8":
+				return "Fractured Archive 8 players";
 
 			// The Gauntlet
 			case "gaunt":
@@ -2965,6 +2989,18 @@ public class ChatCommandsPlugin extends Plugin
 			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P5), 1) +
 			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P6), 1) +
 			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P7), 1);
+	}
+
+	private int tfaTeamSize()
+	{
+		return Math.min(client.getVarbitValue(VarbitID.TFA_CLIENT_P0), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TFA_CLIENT_P1), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TFA_CLIENT_P2), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TFA_CLIENT_P3), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TFA_CLIENT_P4), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TFA_CLIENT_P5), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TFA_CLIENT_P6), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TFA_CLIENT_P7), 1);
 	}
 
 	private int findPet(String name)
