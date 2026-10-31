@@ -186,6 +186,10 @@ public class OpponentInfoPlugin extends Plugin
 		{
 			updateBossHealthBarText();
 		}
+		if (event.getScriptId() == 10153)
+		{
+			updateBossHealthBarExtraText();
+		}
 	}
 
 	/**
@@ -202,6 +206,37 @@ public class OpponentInfoPlugin extends Plugin
 
 		final int currHp = client.getVarbitValue(VarbitID.HPBAR_HUD_HP);
 		final int maxHp = client.getVarbitValue(VarbitID.HPBAR_HUD_BASEHP);
+		if (maxHp <= 0)
+		{
+			return;
+		}
+
+		switch (config.hitpointsDisplayStyle())
+		{
+			case PERCENTAGE:
+				widget.setText(getPercentText(currHp, maxHp));
+				break;
+			case BOTH:
+				widget.setText(widget.getText() + " (" + getPercentText(currHp, maxHp) + ")");
+				break;
+		}
+	}
+
+	/**
+	 * Update the in-game boss health bar overlay extra text to what the user's config specifies.
+	 * Known bosses that have this bar is Bork and the Smorks & Ocellus P1 at The Fractured Archive.
+	 * Ocellus P1 has the bar, but has no text.
+	 */
+	private void updateBossHealthBarExtraText()
+	{
+		Widget widget = client.getWidget(InterfaceID.HpbarHud.HP_BAR_TEXT_EXTRA);
+		if (widget == null || widget.getText().isEmpty())
+		{
+			return;
+		}
+
+		final int currHp = client.getVarbitValue(VarbitID.HPBAR_HUD_EXTRA_CURRENT);
+		final int maxHp = client.getVarbitValue(VarbitID.HPBAR_HUD_EXTRA_BASE);
 		if (maxHp <= 0)
 		{
 			return;
