@@ -92,7 +92,7 @@ LABEL51:
    jump                   LABEL61
 LABEL55:
    get_varbit             13775
-   iconst                 1
+   iconst                 2
    if_icmpeq              LABEL59
    jump                   LABEL61
 LABEL59:
@@ -118,7 +118,7 @@ LABEL71:
    jump                   LABEL81
 LABEL75:
    get_varbit             13777
-   iconst                 1
+   iconst                 2
    if_icmpeq              LABEL79
    jump                   LABEL81
 LABEL79:

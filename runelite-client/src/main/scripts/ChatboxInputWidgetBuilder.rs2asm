@@ -44,7 +44,7 @@ LABEL23:
    get_varbit             8119
    iconst                 1
    if_icmpeq              LABEL40
-   jump                   LABEL165
+   jump                   LABEL174
 LABEL40:
    invoke                 3160
    iconst                 1
@@ -55,7 +55,7 @@ LABEL44:
    chat_playername       
    join_string            2
    ostore                 2
-   jump                   LABEL66
+   jump                   LABEL75
 LABEL49:
    invoke                 5849
    iconst                 1
@@ -66,8 +66,19 @@ LABEL53:
    chat_playername       
    join_string            2
    ostore                 2
-   jump                   LABEL66
+   jump                   LABEL75
 LABEL58:
+   invoke                 10311
+   iconst                 1
+   if_icmpeq              LABEL62
+   jump                   LABEL67
+LABEL62:
+   sconst                 "<img=56>"
+   chat_playername       
+   join_string            2
+   ostore                 2
+   jump                   LABEL75
+LABEL67:
    iconst                 105
    iconst                 115
    iconst                 1894
@@ -76,47 +87,47 @@ LABEL58:
    chat_playername       
    join_string            2
    ostore                 2
-LABEL66:
+LABEL75:
    get_varc_int           945
    switch                
-      1: LABEL69
-      2: LABEL74
-      3: LABEL79
-      4: LABEL84
-   jump                   LABEL95
-LABEL69:
+      1: LABEL78
+      2: LABEL83
+      3: LABEL88
+      4: LABEL93
+   jump                   LABEL104
+LABEL78:
    oload                  2
    sconst                 " (channel)"
    append                
    ostore                 2
-   jump                   LABEL95
-LABEL74:
+   jump                   LABEL104
+LABEL83:
    oload                  2
    sconst                 " (clan)"
    append                
    ostore                 2
-   jump                   LABEL95
-LABEL79:
+   jump                   LABEL104
+LABEL88:
    oload                  2
    sconst                 " (guest clan)"
    append                
    ostore                 2
-   jump                   LABEL95
-LABEL84:
+   jump                   LABEL104
+LABEL93:
    invoke                 5262
    iconst                 1
-   if_icmpeq              LABEL88
-   jump                   LABEL93
-LABEL88:
+   if_icmpeq              LABEL97
+   jump                   LABEL102
+LABEL97:
    oload                  2
    sconst                 " (group)"
    append                
    ostore                 2
-   jump                   LABEL95
-LABEL93:
+   jump                   LABEL104
+LABEL102:
    iconst                 0
    set_varc_int           945
-LABEL95:
+LABEL104:
    oload                  2
    sconst                 ": "
    oload                  0
@@ -128,35 +139,35 @@ LABEL95:
    get_varc_string        335
    invoke                 1353
    iconst                 1
-   if_icmpeq              LABEL108
-   jump                   LABEL119
-LABEL108:
+   if_icmpeq              LABEL117
+   jump                   LABEL128
+LABEL117:
    iload                  2
    iconst                 79
-   if_icmplt              LABEL112
-   jump                   LABEL118
-LABEL112:
+   if_icmplt              LABEL121
+   jump                   LABEL127
+LABEL121:
    oload                  2
    oload                  0
    sconst                 "*</col>"
    join_string            2
    append                
    ostore                 2
-LABEL118:
-   jump                   LABEL129
-LABEL119:
+LABEL127:
+   jump                   LABEL138
+LABEL128:
    iload                  2
    iconst                 80
-   if_icmplt              LABEL123
-   jump                   LABEL129
-LABEL123:
+   if_icmplt              LABEL132
+   jump                   LABEL138
+LABEL132:
    oload                  2
    oload                  0
    sconst                 "*</col>"
    join_string            2
    append                
    ostore                 2
-LABEL129:
+LABEL138:
    oload                  2
    iconst                 2147483647
    iconst                 495
@@ -165,22 +176,22 @@ LABEL129:
    iload                  3
    iconst                 10616890
    if_getwidth           
-   if_icmpgt              LABEL139
-   jump                   LABEL145
-LABEL139:
+   if_icmpgt              LABEL148
+   jump                   LABEL154
+LABEL148:
    iconst                 2
    iconst                 2
    iconst                 0
    iconst                 10616890
    if_settextalign       
-   jump                   LABEL150
-LABEL145:
+   jump                   LABEL159
+LABEL154:
    iconst                 0
    iconst                 2
    iconst                 0
    iconst                 10616890
    if_settextalign       
-LABEL150:
+LABEL159:
    iconst                 10616890
    if_clearops           
    iconst                 -1
@@ -195,30 +206,41 @@ LABEL150:
    sconst                 ""
    iconst                 10616890
    if_setonop            
-   jump                   LABEL221
-LABEL165:
-   invoke                 3160
-   iconst                 1
-   if_icmpeq              LABEL169
-   jump                   LABEL174
-LABEL169:
-   invoke                 7776
-   sconst                 " You must set a name before you can chat."
-   join_string            2
-   ostore                 2
-   jump                   LABEL191
+   jump                   LABEL239
 LABEL174:
-   invoke                 5849
+   invoke                 3160
    iconst                 1
    if_icmpeq              LABEL178
    jump                   LABEL183
 LABEL178:
+   invoke                 7776
+   sconst                 " You must set a name before you can chat."
+   join_string            2
+   ostore                 2
+   jump                   LABEL209
+LABEL183:
+   invoke                 5849
+   iconst                 1
+   if_icmpeq              LABEL187
+   jump                   LABEL192
+LABEL187:
    sconst                 "<img=52>"
    sconst                 " You must set a name before you can chat."
    join_string            2
    ostore                 2
-   jump                   LABEL191
-LABEL183:
+   jump                   LABEL209
+LABEL192:
+   invoke                 10311
+   iconst                 1
+   if_icmpeq              LABEL196
+   jump                   LABEL201
+LABEL196:
+   sconst                 "<img=56>"
+   sconst                 " You must set a name before you can chat."
+   join_string            2
+   ostore                 2
+   jump                   LABEL209
+LABEL201:
    iconst                 105
    iconst                 115
    iconst                 1894
@@ -227,7 +249,7 @@ LABEL183:
    sconst                 " You must set a name before you can chat."
    join_string            2
    ostore                 2
-LABEL191:
+LABEL209:
    iconst                 1
    iconst                 2
    iconst                 0
@@ -258,7 +280,7 @@ LABEL191:
    sconst                 "ii"
    iconst                 10616890
    if_setonop            
-LABEL221:
+LABEL239:
    oload                  2
    iconst                 10616890
    if_settext            
