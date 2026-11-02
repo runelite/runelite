@@ -48,7 +48,7 @@ import net.runelite.api.clan.ClanID;
 import net.runelite.api.events.ClanChannelChanged;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ClanMemberLeft;
-import net.runelite.api.events.FriendsChatChanged;
+import net.runelite.api.events.FriendsChatSync;
 import net.runelite.api.events.FriendsChatMemberJoined;
 import net.runelite.api.events.FriendsChatMemberLeft;
 import net.runelite.api.events.GameStateChanged;
@@ -279,9 +279,9 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFriendsChatChanged(FriendsChatChanged event)
+	public void onFriendsChatSync(FriendsChatSync event)
 	{
-		if (!event.isJoined())
+		if (!event.isSync()) // is leaving friends chat
 		{
 			removeFriendsChatCounter();
 			friendsChatCount = 0;
