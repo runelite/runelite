@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,13 +27,18 @@ package net.runelite.api.events;
 import lombok.Value;
 
 /**
- * An event where the client has joined or left a friends chat.
+ * An event fired when a full friends chat sync happens.
+ * This can happen from joining, or leaving, a friends chat, but also can happen
+ * any time the server resyncs the friend chat state. All previous state should be
+ * considered invalidated if this event fires.
+ * After this event fires, a {@link FriendsChatMemberJoined} will fire for each
+ * member if {@link FriendsChatSync#isSync()} is true.
  */
 @Value
-public class FriendsChatChanged
+public class FriendsChatSync
 {
 	/**
-	 * Whether or not the client is now in a friends chat.
+	 * Is either a new join, or a sync for an existing channel.
 	 */
-	private boolean joined;
+	boolean sync;
 }

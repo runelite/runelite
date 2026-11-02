@@ -50,7 +50,7 @@ public class OverlayLoader
 
 			if (opcode == 1)
 			{
-				int color = is.read24BitInt();
+				int color = is.readUnsigned24BitInt();
 				def.setRgbColor(color);
 			}
 			else if (opcode == 2)
@@ -64,7 +64,7 @@ public class OverlayLoader
 			}
 			else if (opcode == 7)
 			{
-				int secondaryColor = is.read24BitInt();
+				int secondaryColor = is.readUnsigned24BitInt();
 				def.setSecondaryRgbColor(secondaryColor);
 			}
 		}
