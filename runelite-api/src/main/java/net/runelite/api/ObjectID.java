@@ -24715,6 +24715,9 @@ public final class ObjectID
 	public static final int STAIRS_50750 = 50750;
 	public static final int ENTRANCE_50751 = 50751;
 	public static final int GATE_50752 = 50752;
+	public static final int JACKOLANTERN_50777 = 50777;
+	public static final int JACKOLANTERN_50778 = 50778;
+	public static final int CRATE_OF_ONIONS = 50779;
 	public static final int COLOSSEUM_ENTRANCE_50825 = 50825;
 	public static final int COLOSSEUM_ENTRANCE_50826 = 50826;
 	public static final int BUILDING_SUPPLIES = 50855;
