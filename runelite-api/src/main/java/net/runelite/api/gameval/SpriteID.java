@@ -866,6 +866,20 @@ public final class SpriteID
 	public static final int TOA_INVOCATIONS_PROGRESS_BAR_INDICATOR = 8798;
 	public static final int TOA_INFO_ICON = 8802;
 	public static final int STARS_TILED_GUTHIXIAN01 = 8803;
+	public static final int MEMBERSHIP_BANNER_HARDCOREMAIN = 8804;
+	public static final int GE_TEXTBACKDROP_NW = 8805;
+	public static final int GE_TEXTBACKDROP_N = 8806;
+	public static final int GE_TEXTBACKDROP_NE = 8807;
+	public static final int GE_TEXTBACKDROP_W = 8808;
+	public static final int GE_TEXTBACKDROP_C = 8809;
+	public static final int GE_TEXTBACKDROP_E = 8810;
+	public static final int GE_TEXTBACKDROP_SW = 8811;
+	public static final int GE_TEXTBACKDROP_S = 8812;
+	public static final int GE_TEXTBACKDROP_SE = 8813;
+	public static final int WOTW_SYMBOL_MAIN = 8870;
+	public static final int WOTW_SYMBOL_MAIN_RED = 8919;
+	public static final int ICON_GRAVESTONE = 8920;
+	public static final int LOGO_HCMAIN = 8921;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -6896,6 +6910,10 @@ public final class SpriteID
 		public static final int _3 = 3389;
 		public static final int _4 = 3390;
 		public static final int _5 = 7318;
+		public static final int _6 = 8814;
+		public static final int _7 = 8815;
+		public static final int _8 = 8816;
+		public static final int _9 = 8817;
 	}
 
 	public static final class CaProgressBar
@@ -12574,5 +12592,117 @@ public final class SpriteID
 		public static final int _5 = 8701;
 		public static final int _6 = 8702;
 		public static final int _7 = 8703;
+	}
+
+	public static final class OrbsComplete
+	{
+		public static final int _0 = 8818;
+		public static final int _1 = 8819;
+		public static final int _2 = 8820;
+		public static final int _3 = 8821;
+	}
+
+	public static final class WotwSymbols
+	{
+		public static final int _0 = 8822;
+		public static final int _1 = 8823;
+		public static final int _2 = 8824;
+		public static final int _3 = 8825;
+		public static final int _4 = 8826;
+		public static final int _5 = 8827;
+		public static final int _6 = 8828;
+		public static final int _7 = 8829;
+		public static final int _8 = 8830;
+		public static final int _9 = 8831;
+		public static final int _10 = 8832;
+		public static final int _11 = 8833;
+		public static final int _12 = 8834;
+		public static final int _13 = 8835;
+		public static final int _14 = 8836;
+		public static final int _15 = 8837;
+		public static final int _16 = 8838;
+		public static final int _17 = 8839;
+		public static final int _18 = 8840;
+		public static final int _19 = 8841;
+		public static final int _20 = 8842;
+		public static final int _21 = 8843;
+		public static final int _22 = 8844;
+		public static final int _23 = 8845;
+		public static final int _24 = 8846;
+		public static final int _25 = 8847;
+		public static final int _26 = 8848;
+		public static final int _27 = 8849;
+		public static final int _28 = 8850;
+		public static final int _29 = 8851;
+		public static final int _30 = 8852;
+		public static final int _31 = 8853;
+		public static final int _32 = 8854;
+		public static final int _33 = 8855;
+		public static final int _34 = 8856;
+		public static final int _35 = 8857;
+		public static final int _36 = 8858;
+		public static final int _37 = 8859;
+		public static final int _38 = 8860;
+		public static final int _39 = 8861;
+		public static final int _40 = 8862;
+		public static final int _41 = 8863;
+		public static final int _42 = 8864;
+		public static final int _43 = 8865;
+		public static final int _44 = 8866;
+		public static final int _45 = 8867;
+		public static final int _46 = 8868;
+		public static final int _47 = 8869;
+	}
+
+	public static final class WotwSymbolsRed
+	{
+		public static final int _0 = 8871;
+		public static final int _1 = 8872;
+		public static final int _2 = 8873;
+		public static final int _3 = 8874;
+		public static final int _4 = 8875;
+		public static final int _5 = 8876;
+		public static final int _6 = 8877;
+		public static final int _7 = 8878;
+		public static final int _8 = 8879;
+		public static final int _9 = 8880;
+		public static final int _10 = 8881;
+		public static final int _11 = 8882;
+		public static final int _12 = 8883;
+		public static final int _13 = 8884;
+		public static final int _14 = 8885;
+		public static final int _15 = 8886;
+		public static final int _16 = 8887;
+		public static final int _17 = 8888;
+		public static final int _18 = 8889;
+		public static final int _19 = 8890;
+		public static final int _20 = 8891;
+		public static final int _21 = 8892;
+		public static final int _22 = 8893;
+		public static final int _23 = 8894;
+		public static final int _24 = 8895;
+		public static final int _25 = 8896;
+		public static final int _26 = 8897;
+		public static final int _27 = 8898;
+		public static final int _28 = 8899;
+		public static final int _29 = 8900;
+		public static final int _30 = 8901;
+		public static final int _31 = 8902;
+		public static final int _32 = 8903;
+		public static final int _33 = 8904;
+		public static final int _34 = 8905;
+		public static final int _35 = 8906;
+		public static final int _36 = 8907;
+		public static final int _37 = 8908;
+		public static final int _38 = 8909;
+		public static final int _39 = 8910;
+		public static final int _40 = 8911;
+		public static final int _41 = 8912;
+		public static final int _42 = 8913;
+		public static final int _43 = 8914;
+		public static final int _44 = 8915;
+		public static final int _45 = 8916;
+		public static final int _46 = 8917;
+		public static final int _47 = 8918;
 	}
 }

@@ -6762,7 +6762,6 @@ public final class ObjectID extends ObjectID1
 	 * Palm tree
 	 */
 	public static final int ZQQUEST_HIDYTREE = 2237;
-	public static final int CLUESCROLL_TUTOR_ICON = 2238;
 	public static final int MIMIC_WALL_WOOD_01 = 2239;
 
 	/**
@@ -32071,22 +32070,22 @@ public final class ObjectID extends ObjectID1
 	public static final int RIMMINGTON_COUNTER = 9616;
 
 	/**
-	 * Warehouse shelves
+	 * Shelves
 	 */
 	public static final int RIMMINGTON_WAREHOUSE_SHELVES = 9617;
 
 	/**
-	 * Warehouse shelves
+	 * Shelves
 	 */
 	public static final int RIMMINGTON_WAREHOUSE_SHELVES2 = 9618;
 
 	/**
-	 * Warehouse shelves
+	 * Shelves
 	 */
 	public static final int RIMMINGTON_WAREHOUSE_SHELVES3 = 9619;
 
 	/**
-	 * Warehouse shelves
+	 * Shelves
 	 */
 	public static final int RIMMINGTON_WAREHOUSE_SHELVES4 = 9620;
 
@@ -81548,16 +81547,6 @@ public final class ObjectID extends ObjectID1
 	public static final int ROUTE_SWAMPBRIDGE_1 = 26245;
 	public static final int ROUTE_SWAMPBRIDGE_2 = 26246;
 	public static final int ROUTE_SWAMPBRIDGE_3 = 26247;
-
-	/**
-	 * Tree
-	 */
-	public static final int ROUTE_TREEBASE_1OP = 26248;
-
-	/**
-	 * Tree
-	 */
-	public static final int ROUTE_TREEBASE_2OPS = 26249;
 	public static final int RCU_OUTER_MULTI8 = 26250;
 	public static final int RCU_OUTER_MULTI9 = 26251;
 	public static final int RCU_OUTER_MULTI10 = 26252;
@@ -84406,62 +84395,62 @@ public final class ObjectID extends ObjectID1
 	public static final int SHAYZIEN_LOUNGE_BED_SMALL = 27339;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_01 = 27340;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_01_W_PARCHMENT = 27341;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_01_W_PARCHMENT_01 = 27342;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_01_W_PARCHMENT_02 = 27343;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_02 = 27344;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_02_W_PARCHMENT = 27345;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_02_W_PARCHMENT_01 = 27346;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_02_W_PARCHMENT_02 = 27347;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_03 = 27348;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_03_W_PARCHMENT = 27349;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_03_W_PARCHMENT_01 = 27350;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_03_W_PARCHMENT_02 = 27351;
 	public static final int SHAYZIEN_WAR_TABLE = 27352;
@@ -85645,17 +85634,17 @@ public final class ObjectID extends ObjectID1
 	public static final int PISCARILIUS_CRATE_01 = 27754;
 
 	/**
-	 * Crate
+	 * Crates
 	 */
 	public static final int PISCARILIUS_CRATE_02 = 27755;
 
 	/**
-	 * Crate
+	 * Crates
 	 */
 	public static final int PISCARILIUS_CRATE_03 = 27756;
 
 	/**
-	 * Crate
+	 * Crates
 	 */
 	public static final int PISCARILIUS_CRATE_04 = 27757;
 
@@ -88501,12 +88490,12 @@ public final class ObjectID extends ObjectID1
 	public static final int LOVAKENGJ_SMALL_WHEELY_TABLE = 28526;
 
 	/**
-	 * Velvet stool
+	 * Stool
 	 */
 	public static final int LOVAKENG_LARGE_STOOL = 28527;
 
 	/**
-	 * Velvet stool
+	 * Stool
 	 */
 	public static final int LOVAKENG_SMALL_STOOL = 28528;
 
@@ -88521,7 +88510,7 @@ public final class ObjectID extends ObjectID1
 	public static final int LOVAKENG_WOODEN_CHAIR = 28530;
 
 	/**
-	 * Velvet round chair
+	 * Chair
 	 */
 	public static final int LOVAKENG_VELVET_ROUND_CHAIR = 28531;
 
@@ -99538,12 +99527,12 @@ public final class ObjectID extends ObjectID1
 	public static final int SHAYZIENQUEST_LOUNGE_BED_FIXED = 31971;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIENQUEST_TABLE_FIXED = 31972;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIENQUEST_TABLE_FIXED_2 = 31973;
 
