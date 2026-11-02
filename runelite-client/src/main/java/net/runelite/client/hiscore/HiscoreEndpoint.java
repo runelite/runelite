@@ -42,7 +42,9 @@ public enum HiscoreEndpoint
 	TOURNAMENT("Tournament", "https://services.runescape.com/m=hiscore_oldschool_tournament/index_lite.json"),
 	FRESH_START_WORLD("Fresh Start", "https://secure.runescape.com/m=hiscore_oldschool_fresh_start/index_lite.json"),
 	PURE("1 Defence Pure", "https://secure.runescape.com/m=hiscore_oldschool_skiller_defence/index_lite.json"),
-	LEVEL_3_SKILLER("Level 3 Skiller", "https://secure.runescape.com/m=hiscore_oldschool_skiller/index_lite.json");
+	LEVEL_3_SKILLER("Level 3 Skiller", "https://secure.runescape.com/m=hiscore_oldschool_skiller/index_lite.json"),
+	HARDCORE_MAIN("Hardcore Main", "https://secure.runescape.com/m=hiscore_oldschool_hardcore_mains/index_lite.json"),
+	;
 
 	private final String name;
 	private final HttpUrl hiscoreURL;
@@ -70,6 +72,10 @@ public enum HiscoreEndpoint
 		else if (worldTypes.contains(WorldType.FRESH_START_WORLD))
 		{
 			return HiscoreEndpoint.FRESH_START_WORLD;
+		}
+		else if (worldTypes.contains(WorldType.HARDCORE_MAIN))
+		{
+			return HiscoreEndpoint.HARDCORE_MAIN;
 		}
 		else
 		{
