@@ -454,6 +454,7 @@ public final class DBTableID
 			public static final int HALLOWEEN_2025 = 6989;
 			public static final int BIRTHDAY_2026 = 7033;
 			public static final int EASTER_2026 = 13319;
+			public static final int HALLOWEEN_2026 = 17178;
 		}
 	}
 
@@ -8367,6 +8368,20 @@ public final class DBTableID
 			public static final int DIDYOUKNOW_SAILING_SHIPWRIGHTS = 7100;
 			public static final int DIDYOUKNOW_SAILING_WITH_FRIENDS = 7101;
 			public static final int DIDYOUKNOW_SAILING_REPAIR_KITS = 7102;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_GENERAL = 17180;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT1 = 17181;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT2 = 17182;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT3 = 17183;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT4 = 17184;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT5 = 17185;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT6 = 17186;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT7 = 17187;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT8 = 17188;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT9 = 17189;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_MOBILE_BENEFIT10 = 17190;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_DESKTOP_BENEFIT1 = 17191;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_DESKTOP_BENEFIT2 = 17192;
+			public static final int DIDYOUKNOW_CROSSPLATPROMO_DESKTOP_BENEFIT3 = 17193;
 		}
 	}
 
@@ -19301,6 +19316,7 @@ public final class DBTableID
 			public static final int SKILL_GUIDE_SUBSECTION_WOODCUTTING_AXES = 13208;
 			public static final int SKILL_GUIDE_SUBSECTION_WOODCUTTING_FORESTRY = 13209;
 			public static final int SKILL_GUIDE_SUBSECTION_WOODCUTTING_OTHER = 13210;
+			public static final int SKILL_GUIDE_SUBSECTION_STRENGTH_PRAYERS = 17179;
 		}
 	}
 
