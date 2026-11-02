@@ -1542,7 +1542,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				{
 					swap(menu, menuEntries, index, menuEntries.length - 1);
 				}
-				else if (parent != null && customOption == packSubID(objMenuIdx, menuEntry.getIdentifier() >> 16))
+				else if (parent != null && customOption == packSubID(objMenuIdx, menuEntry.getIdentifier() >> 24))
 				{
 					clone(menuEntry);
 				}
