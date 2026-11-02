@@ -508,7 +508,7 @@ public class InterfaceLoader
 			iface.lineDirection = var1.readUnsignedByte() == 1;
 		}
 
-		iface.clickMask = var1.read24BitInt();
+		iface.clickMask = var1.readUnsigned24BitInt();
 		iface.name = var1.readString();
 		int var2 = var1.readUnsignedByte();
 		if (var2 > 0)

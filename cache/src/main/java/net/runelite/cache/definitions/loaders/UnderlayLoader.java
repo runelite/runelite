@@ -50,7 +50,7 @@ public class UnderlayLoader
 
 			if (opcode == 1)
 			{
-				int color = is.read24BitInt();
+				int color = is.readUnsigned24BitInt();
 				def.setColor(color);
 			}
 		}

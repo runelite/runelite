@@ -222,7 +222,7 @@ public class SequenceLoader
 		int weight = -1;
 		if (!rev220FrameSounds)
 		{
-			int bits = stream.read24BitInt();
+			int bits = stream.readUnsigned24BitInt();
 			location = bits & 15;
 			id = bits >> 8;
 			loops = bits >> 4 & 7;
