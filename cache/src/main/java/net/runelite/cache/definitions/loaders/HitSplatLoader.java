@@ -46,7 +46,7 @@ public class HitSplatLoader
 					def.setFontType(stream.readBigSmart2());
 					break;
 				case 2:
-					def.setTextColor(stream.read24BitInt());
+					def.setTextColor(stream.readUnsigned24BitInt());
 					break;
 				case 3:
 					def.setLeftSprite(stream.readBigSmart2());

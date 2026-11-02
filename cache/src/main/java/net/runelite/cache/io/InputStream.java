@@ -60,11 +60,6 @@ public class InputStream extends java.io.InputStream
 		return "InputStream{" + "buffer=" + buffer + '}';
 	}
 
-	public int read24BitInt()
-	{
-		return (this.readUnsignedByte() << 16) + (this.readUnsignedByte() << 8) + this.readUnsignedByte();
-	}
-
 	public void skip(int length)
 	{
 		int pos = buffer.position();
@@ -120,6 +115,22 @@ public class InputStream extends java.io.InputStream
 	public short readShort()
 	{
 		return buffer.getShort();
+	}
+
+	public int readUnsigned24BitInt()
+	{
+		return (this.readUnsignedByte() << 16) + (this.readUnsignedByte() << 8) + this.readUnsignedByte();
+	}
+
+	public int readSigned24BitInt()
+	{
+		int i = readUnsigned24BitInt();
+		if (i > 8388607)
+		{
+			i -= 16777216;
+		}
+
+		return i;
 	}
 
 	public int readInt()
@@ -273,7 +284,7 @@ public class InputStream extends java.io.InputStream
 		for (int i = 0; i < size; ++i)
 		{
 			int var4 = this.readUnsignedByte();
-			int paramID = this.read24BitInt();
+			int paramID = this.readUnsigned24BitInt();
 			Object value;
 			if (var4 == 1)
 			{
