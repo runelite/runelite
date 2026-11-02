@@ -60,7 +60,7 @@ import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ClanMemberLeft;
-import net.runelite.api.events.FriendsChatChanged;
+import net.runelite.api.events.FriendsChatSync;
 import net.runelite.api.events.FriendsChatMemberJoined;
 import net.runelite.api.events.FriendsChatMemberLeft;
 import net.runelite.api.events.GameStateChanged;
@@ -125,7 +125,7 @@ public class ChatChannelPlugin extends Plugin
 	 */
 	private final Deque<MemberJoinMessage> joinMessages = new ArrayDeque<>();
 	private final List<MemberActivity> activityBuffer = new LinkedList<>();
-	private int joinedTick;
+	private int syncTick;
 
 	private boolean kickConfirmed = false;
 
@@ -180,7 +180,7 @@ public class ChatChannelPlugin extends Plugin
 		final FriendsChatMember member = event.getMember();
 
 		// members getting initialized isn't relevant
-		if (joinedTick == client.getTickCount())
+		if (syncTick == client.getTickCount())
 		{
 			return;
 		}
@@ -511,13 +511,9 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFriendsChatChanged(FriendsChatChanged event)
+	public void onFriendsChatSync(FriendsChatSync event)
 	{
-		if (event.isJoined())
-		{
-			joinedTick = client.getTickCount();
-		}
-
+		syncTick = client.getTickCount();
 		activityBuffer.clear();
 	}
 

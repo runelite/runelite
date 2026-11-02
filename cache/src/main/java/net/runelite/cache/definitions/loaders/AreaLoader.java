@@ -65,11 +65,11 @@ public class AreaLoader
 		}
 		else if (opcode == 4)
 		{
-			def.textColor = in.read24BitInt();
+			def.textColor = in.readUnsigned24BitInt();
 		}
 		else if (opcode == 5)
 		{
-			in.read24BitInt();
+			in.readUnsigned24BitInt();
 		}
 		else if (opcode == 6)
 		{
