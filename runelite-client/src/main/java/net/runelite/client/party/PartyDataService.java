@@ -334,12 +334,12 @@ public class PartyDataService
 			hasChange = true;
 			update.setStatBoost(serializeStats(client::getBoostedSkillLevel));
 		}
-		if (isSubscribed(PartyDataType.RUNE_POUCH) && (dirtyMask & DIRTY_RUNEPOUCH) != 0)
+		if (isSubscribed(PartyDataType.RUNE_POUCH) && (forceSend || (dirtyMask & DIRTY_RUNEPOUCH) != 0))
 		{
 			hasChange = true;
 			update.setRunePouch(serializeRunepouch());
 		}
-		if (isSubscribed(PartyDataType.QUIVER) && (dirtyMask & DIRTY_QUIVER) != 0)
+		if (isSubscribed(PartyDataType.QUIVER) && (forceSend || (dirtyMask & DIRTY_QUIVER) != 0))
 		{
 			hasChange = true;
 			update.setQuiver(serializeQuiver());
