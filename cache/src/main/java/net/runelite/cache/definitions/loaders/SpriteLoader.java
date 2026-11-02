@@ -87,7 +87,7 @@ public class SpriteLoader
 
 		for (int i = 1; i < paletteLength; ++i)
 		{
-			palette[i] = is.read24BitInt();
+			palette[i] = is.readUnsigned24BitInt();
 
 			if (palette[i] == 0)
 			{

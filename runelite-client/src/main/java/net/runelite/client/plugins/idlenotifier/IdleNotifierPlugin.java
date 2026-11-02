@@ -55,7 +55,6 @@ import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -121,7 +120,6 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		// can't tell when 6hr will be if enabled while already logged in
 		sixHourWarningTime = null;
-		migrateConfig();
 	}
 
 	@Subscribe
@@ -203,17 +201,40 @@ public class IdleNotifierPlugin extends Plugin
 			/* Sap collection */
 			case AnimationID.HUMAN_PICKUPTABLE_WALKMERGE_NOHELD:
 			/* Firemaking */
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_ACHEY_TREE_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_ACHEY_TREE_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_ARCTIC_PINE_LOG:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_ARCTIC_PINE_LOG_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_BLISTERWOOD_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_BLISTERWOOD_LOGS_NOLOOP:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_CAMPHOR_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_CAMPHOR_LOGS_NOLOOP:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_GENERIC:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_GENERIC_NOLOOP:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_IRONWOOD_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_IRONWOOD_LOGS_NOLOOP:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_JATOBA_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_JATOBA_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAGIC_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAGIC_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAHOGANY_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAHOGANY_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAPLE_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAPLE_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_OAK_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_OAK_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_REDWOOD_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_REDWOOD_LOGS_NOLOOP:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_ROSEWOOD_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_ROSEWOOD_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_TEAK_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_TEAK_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_WILLOW_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_WILLOW_LOGS_NOLOOP:
 			case AnimationID.FORESTRY_CAMPFIRE_BURNING_YEW_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_YEW_LOGS_NOLOOP:
 			/* Cooking(Fire, Range) */
 			case AnimationID.HUMAN_FIRECOOKING:
 			case AnimationID.HUMAN_COOKING:
@@ -656,83 +677,6 @@ public class IdleNotifierPlugin extends Plugin
 			lastAnimation = AnimationID.HUMAN_WOODCUTTING_RUNE_AXE;
 			lastAnimating = Instant.now();
 		}
-	}
-
-	private void migrateConfig()
-	{
-		String migrated = configManager.getConfiguration(IdleNotifierConfig.GROUP, "migrated");
-		if ("1".equals(migrated))
-		{
-			return;
-		}
-
-		int hitpointsThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "hitpoints", int.class);
-		if (hitpointsThreshold == 0)
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpoints", 1);
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpointsNotification", Notification.OFF);
-		}
-		else
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpointsNotification", Notification.ON);
-		}
-
-		int prayerThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "prayer", int.class);
-		if (prayerThreshold == 0)
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayer", 1);
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayerNotification", Notification.OFF);
-		}
-		else
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayerNotification", Notification.ON);
-		}
-
-		int lowEnergyThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "lowEnergy", int.class);
-		if (lowEnergyThreshold == 100)
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergy", 0);
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergyNotification", Notification.OFF);
-		}
-		else
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergyNotification", Notification.ON);
-		}
-
-		int highEnergyThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "highEnergy", int.class);
-		if (highEnergyThreshold == 0)
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergy", 100);
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergyNotification", Notification.OFF);
-		}
-		else
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergyNotification", Notification.ON);
-		}
-
-		int oxygenThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "oxygen", int.class);
-		if (oxygenThreshold == 0)
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygen", 1);
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygenNotification", Notification.OFF);
-		}
-		else
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygenNotification", Notification.ON);
-		}
-
-		int specThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "spec", int.class);
-		if (specThreshold == 0)
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "spec", 1);
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "specNotification", Notification.OFF);
-		}
-		else
-		{
-			configManager.setConfiguration(IdleNotifierConfig.GROUP, "specNotification", Notification.ON);
-		}
-
-		configManager.setConfiguration(IdleNotifierConfig.GROUP, "migrated", 1);
 	}
 
 	private void checkNpcInteraction(final NPC target)

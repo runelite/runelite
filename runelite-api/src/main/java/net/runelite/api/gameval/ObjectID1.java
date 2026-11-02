@@ -49974,6 +49974,7 @@ class ObjectID1
 	 * Rewards Chest
 	 */
 	public static final int COLOSSEUM_REWARD = 50741;
+	public static final int HW26_JACKOLANTERN_1 = 50742;
 	public static final int COLOSSEUM_MOLTEN_POOL_1 = 50743;
 	public static final int COLOSSEUM_MOLTEN_POOL_2 = 50744;
 	public static final int COLOSSEUM_MOLTEN_POOL_3 = 50745;
@@ -50029,6 +50030,29 @@ class ObjectID1
 	public static final int WALLKIT_COLOSSEUM10_ARCH02_M = 50767;
 	public static final int WALLKIT_COLOSSEUM10_WALLTOP01 = 50768;
 	public static final int WALLKIT_COLOSSEUM10_WALLTOP02 = 50769;
+	public static final int HW26_JACKOLANTERN_2 = 50770;
+	public static final int HW26_JACKOLANTERN_3 = 50771;
+	public static final int HW26_JACKOLANTERN_4 = 50772;
+	public static final int HW26_JACKOLANTERN_5 = 50773;
+	public static final int HW26_JACKOLANTERN_6 = 50774;
+	public static final int HW26_JACKOLANTERN_7 = 50775;
+	public static final int HW26_JACKOLANTERN_8 = 50776;
+
+	/**
+	 * Jack-O-Lantern
+	 */
+	public static final int HW26_JACKOLANTERN_WHOLE = 50777;
+
+	/**
+	 * Jack-O-Lantern
+	 */
+	public static final int HW26_JACKOLANTERN_SMASHED = 50778;
+
+	/**
+	 * Crate of onions
+	 */
+	public static final int HW26_ONION_CRATE = 50779;
+	public static final int HW26_VOMIT_PUDDLE = 50780;
 	public static final int WAVES_ROCKS_FLOOR_HARD_01 = 50820;
 	public static final int WAVES_ROCKS_FLOOR_HARD_02 = 50821;
 	public static final int WAVES_ROCKS_FLOOR_HARD_03 = 50822;
