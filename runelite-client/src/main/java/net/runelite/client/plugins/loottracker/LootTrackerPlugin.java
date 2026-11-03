@@ -1056,7 +1056,8 @@ public class LootTrackerPlugin extends Plugin
 				return;
 			}
 
-			if (12093 == regionID && message.equals(PIRATES_HIDEOUT_CHEST_LOOTED_MESSAGE)){
+			if (12093 == regionID && message.equals(PIRATES_HIDEOUT_CHEST_LOOTED_MESSAGE))
+			{
 				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, "Pirates' Hideout chest"));
 				return;
 			}
