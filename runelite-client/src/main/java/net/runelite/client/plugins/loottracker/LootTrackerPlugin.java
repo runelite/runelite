@@ -201,6 +201,7 @@ public class LootTrackerPlugin extends Plugin
 	// Used by Stone Chest, Isle of Souls chest, Dark Chest
 	private static final String OTHER_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
 	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
+	private static final String PIRATES_HIDEOUT_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
 	private static final Pattern GRUBBY_CHEST_LOOTED_MESSAGE = Pattern.compile("You find treasure(?: and supplies|, supplies, and a weirdly coloured egg sac) within the chest.");
 	private static final String ANCIENT_CHEST_LOOTED_MESSAGE = "You open the chest and find";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
@@ -1052,6 +1053,11 @@ public class LootTrackerPlugin extends Plugin
 			{
 				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, CHEST_EVENT_TYPES.get(regionID),
 					client.getWorld()));
+				return;
+			}
+
+			if (12093 == regionID && message.equals(PIRATES_HIDEOUT_CHEST_LOOTED_MESSAGE)){
+				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, "Pirates' Hideout chest"));
 				return;
 			}
 
