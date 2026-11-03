@@ -269,7 +269,8 @@ class WorldTableRow extends JPanel
 		EnumSet<WorldType> types = world.getTypes();
 		if (types.contains(WorldType.PVP)
 			|| types.contains(WorldType.HIGH_RISK)
-			|| types.contains(WorldType.DEADMAN))
+			|| types.contains(WorldType.DEADMAN)
+			|| types.contains(WorldType.HARDCORE_MAIN))
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
 		}
