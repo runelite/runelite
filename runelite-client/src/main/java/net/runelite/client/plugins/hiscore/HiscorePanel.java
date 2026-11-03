@@ -96,7 +96,8 @@ public class HiscorePanel extends PluginPanel
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
 		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN,
-		HiscoreEndpoint.DEADMAN, HiscoreEndpoint.PURE, HiscoreEndpoint.LEVEL_3_SKILLER, HiscoreEndpoint.SEASONAL
+		HiscoreEndpoint.DEADMAN, HiscoreEndpoint.PURE, HiscoreEndpoint.LEVEL_3_SKILLER, HiscoreEndpoint.SEASONAL,
+		HiscoreEndpoint.HARDCORE_MAIN
 	};
 
 	private final HiscorePlugin plugin;
@@ -178,7 +179,7 @@ public class HiscorePanel extends PluginPanel
 		c.gridy++;
 
 		tabGroup = new MaterialTabGroup();
-		tabGroup.setLayout(new GridLayout(2, 4, 7, 7));
+		tabGroup.setLayout(new GridLayout(3, 3, 7, 7));
 
 		for (HiscoreEndpoint endpoint : ENDPOINTS)
 		{
