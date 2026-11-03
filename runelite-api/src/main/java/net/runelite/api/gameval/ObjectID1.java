@@ -2827,17 +2827,6 @@ class ObjectID1
 	 */
 	public static final int DEADMAN_CRYSTAL_SMOKE = 33149;
 	public static final int TUTOR_MAIN_ICON = 33150;
-	public static final int TUTOR_BANK_ICON = 33151;
-	public static final int TUTOR_SECURITY_ICON = 33152;
-	public static final int TUTOR_WOODCUTTING_ICON = 33153;
-	public static final int TUTOR_MINING_ICON = 33154;
-	public static final int TUTOR_FISHING_ICON = 33155;
-	public static final int TUTOR_HUNTER_ICON = 33156;
-	public static final int TUTOR_SMITHING_ICON = 33157;
-	public static final int TUTOR_CRAFTING_ICON = 33158;
-	public static final int TUTOR_COOKING_ICON = 33159;
-	public static final int TUTOR_COMBAT_ICON = 33160;
-	public static final int TUTOR_PRAYER_ICON = 33161;
 	public static final int TUTOR_DANGER_ICON = 33162;
 	public static final int TUTOR_IRONMAN_ICON = 33163;
 	public static final int TUTOR_DEADMAN_ICON = 33164;
@@ -50053,6 +50042,145 @@ class ObjectID1
 	 */
 	public static final int HW26_ONION_CRATE = 50779;
 	public static final int HW26_VOMIT_PUDDLE = 50780;
+	public static final int DEATHS_MIRROR = 50781;
+
+	/**
+	 * Wall
+	 */
+	public static final int DEATHS_MIRROR_INVIS = 50782;
+
+	/**
+	 * Death's Mirror
+	 */
+	public static final int DEATHS_MIRROR_VIS = 50783;
+	public static final int QUEST_START_ICON_MUDFOOTSBIGADVENTURE = 50784;
+	public static final int QUEST_START_ICON_WRITINGSONTHEWALL = 50785;
+	public static final int QUEST_START_ICON_DADDYSHOME = 50786;
+
+	/**
+	 * Tree
+	 */
+	public static final int ROUTE_TREEBASE_INITIAL = 50787;
+
+	/**
+	 * Tree
+	 */
+	public static final int ROUTE_TREEBASE_DONE = 50788;
+	public static final int WOTW_BED_LANDS_END = 50789;
+
+	/**
+	 * Bed
+	 */
+	public static final int WOTW_BED_LANDS_END_NORMAL = 50790;
+
+	/**
+	 * Dead Body
+	 */
+	public static final int WOTW_BED_LANDS_END_BODY = 50791;
+
+	/**
+	 * Dead Body
+	 */
+	public static final int WOTW_BED_LANDS_END_BODY_INSPECT = 50792;
+	public static final int WOTW_BLOOD_LANDS_END = 50793;
+
+	/**
+	 * Blood
+	 */
+	public static final int WOTW_BLOOD_LANDS_END_VIS = 50794;
+
+	/**
+	 * Blood
+	 */
+	public static final int WOTW_BLOOD_LANDS_END_INSPECT = 50795;
+	public static final int WOTW_BLOOD_LANDS_END_FLOOR = 50796;
+	public static final int WOTW_BLOOD_FLOOR_VIS = 50797;
+
+	/**
+	 * Shelves
+	 */
+	public static final int WOTW_SHELVES_LANDS_END = 50798;
+
+	/**
+	 * Bed
+	 */
+	public static final int WOTW_BUTCHER_BED_LANDS_END = 50799;
+
+	/**
+	 * Door
+	 */
+	public static final int WOTW_HOSIDIUS_FRONT_DOOR = 50800;
+
+	/**
+	 * Door
+	 */
+	public static final int WOTW_HOSIDIUS_BACK_DOOR = 50801;
+
+	/**
+	 * Door
+	 */
+	public static final int WOTW_HOSIDIUS_DOOR_OPEN = 50802;
+
+	/**
+	 * Window
+	 */
+	public static final int WOTW_HOSIDIUS_WINDOW = 50803;
+	public static final int WOTW_TABLE_HOSIDIUS = 50804;
+
+	/**
+	 * Dead Body
+	 */
+	public static final int WOTW_TABLE_HOSIDIUS_BODY = 50805;
+
+	/**
+	 * Table
+	 */
+	public static final int WOTW_TABLE_HOSIDIUS_NORMAL = 50806;
+	public static final int WOTW_BLOOD_HOSIDIUS_FLOOR = 50807;
+
+	/**
+	 * Compost Bin
+	 */
+	public static final int WOTW_COMPOST_BIN_HOSIDIUS = 50808;
+
+	/**
+	 * Shelves
+	 */
+	public static final int WOTW_DRINK_SHELVES_HOSIDIUS = 50809;
+
+	/**
+	 * Bookcase
+	 */
+	public static final int WOTW_BOOKCASE_HOSIDIUS = 50810;
+
+	/**
+	 * Ladder
+	 */
+	public static final int WOTW_PISCARILIUS_LADDER_BOTTOM = 50811;
+	public static final int WOTW_PISCARILIUS_CELL_WALL = 50812;
+
+	/**
+	 * Wall
+	 */
+	public static final int WOTW_PISCARILIUS_CELL_WALL_BLOCKED = 50813;
+
+	/**
+	 * Wall
+	 */
+	public static final int WOTW_PISCARILIUS_CELL_WALL_UNBLOCKED = 50814;
+	public static final int WOTW_ARMOUR_STAND_PISCARILIUS = 50815;
+
+	/**
+	 * Armour stand
+	 */
+	public static final int WOTW_ARMOUR_STAND_PISCARILIUS_NORMAL = 50816;
+
+	/**
+	 * Dead Body
+	 */
+	public static final int WOTW_ARMOUR_STAND_PISCARILIUS_BODY = 50817;
+	public static final int WOTW_BLOOD_PISCARILIUS_FLOOR = 50818;
+	public static final int WOTW_DRAWERS_PISCARILIUS = 50819;
 	public static final int WAVES_ROCKS_FLOOR_HARD_01 = 50820;
 	public static final int WAVES_ROCKS_FLOOR_HARD_02 = 50821;
 	public static final int WAVES_ROCKS_FLOOR_HARD_03 = 50822;
@@ -85656,5 +85784,96 @@ class ObjectID1
 	public static final int INVISIBLE_RAISE_PLAYER_8 = 63304;
 	public static final int INVISIBLE_RAISE_PLAYER_16 = 63305;
 	public static final int INVISIBLE_RAISE_PLAYER_20 = 63306;
+
+	/**
+	 * Drawers
+	 */
+	public static final int WOTW_DRAWERS_PISCARILIUS_NORMAL = 63307;
+
+	/**
+	 * Drawers
+	 */
+	public static final int WOTW_DRAWERS_PISCARILIUS_BLOODY = 63308;
+	public static final int WOTW_BLOOD_PISCARILIUS = 63309;
+
+	/**
+	 * Blood
+	 */
+	public static final int WOTW_BLOOD_PISCARILIUS_INSPECT = 63310;
+	public static final int WOTW_BLOOD_WALL_PISCARILIUS = 63311;
+	public static final int WOTW_BLOOD_WALL_PISCARILIUS_HIDDEN = 63312;
+	public static final int WOTW_BLOOD_WALL_PISCARILIUS_VIS = 63313;
+
+	/**
+	 * Wardrobe
+	 */
+	public static final int WOTW_WARDROBE_PISCARILIUS = 63314;
+
+	/**
+	 * Bed
+	 */
+	public static final int WOTW_BED_PISCARILIUS = 63315;
+	public static final int WOTW_BED_SHAYZIEN = 63316;
+
+	/**
+	 * Bed
+	 */
+	public static final int WOTW_BED_SHAYZIEN_NORMAL = 63317;
+
+	/**
+	 * Dead Body
+	 */
+	public static final int WOTW_BED_SHAYZIEN_BODY = 63318;
+	public static final int WOTW_BLOOD_SHAYZIEN_FLOOR = 63319;
+	public static final int WOTW_BLOOD_SHAYZIEN = 63320;
+
+	/**
+	 * Blood
+	 */
+	public static final int WOTW_BLOOD_SHAYZIEN_INSPECT = 63321;
+
+	/**
+	 * Shelves
+	 */
+	public static final int WOTW_DRINK_SHELVES_SHAYZIEN = 63322;
+	public static final int WOTW_HIDEOUT_TRAPDOOR = 63323;
+	public static final int WOTW_HIDEOUT_TRAPDOOR_VIS = 63324;
+
+	/**
+	 * Plant
+	 */
+	public static final int WOTW_HIDEOUT_TRAPDOOR_BUSH = 63325;
+
+	/**
+	 * Ladder
+	 */
+	public static final int WOTW_HIDEOUT_LADDER = 63326;
+	public static final int WOTW_BLOOD_HIDEOUT = 63327;
+
+	/**
+	 * Blood
+	 */
+	public static final int WOTW_BLOOD_HIDEOUT_INSPECT = 63328;
+
+	/**
+	 * Desk
+	 */
+	public static final int FAI_VARROCK_POSH_DESK_UNTIDY_1X3 = 63329;
+
+	/**
+	 * Bed
+	 */
+	public static final int REDBED = 63330;
+	public static final int DEATH_OFFICE_WALL_ALCOVE03 = 63331;
+
+	/**
+	 * Market stall
+	 */
+	public static final int GE_EVENTS_STALL01 = 63332;
+
+	/**
+	 * Market stall
+	 */
+	public static final int GE_EVENTS_STALL02 = 63333;
 /* This file is automatically generated. Do not edit. */
 }
