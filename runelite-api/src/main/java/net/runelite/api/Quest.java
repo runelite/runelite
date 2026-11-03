@@ -50,7 +50,6 @@ public enum Quest
 	THE_CORSAIR_CURSE(18, "The Corsair Curse"),
 	CREATURE_OF_FENKENSTRAIN(19, "Creature of Fenkenstrain"),
 	CURSE_OF_THE_EMPTY_LORD(20, "Curse of the Empty Lord"),
-	DADDYS_HOME(21, "Daddy's Home"),
 	DARKNESS_OF_HALLOWVALE(22, "Darkness of Hallowvale"),
 	DEATH_PLATEAU(23, "Death Plateau"),
 	DEATH_TO_THE_DORGESHUUN(24, "Death to the Dorgeshuun"),
@@ -244,6 +243,9 @@ public enum Quest
 	A_RUFF_SITUATION(16971, "A Ruff Situation"),
 	CRAB_QUEST(16972, "Crab Quest"),
 	THE_FRACTURED_ARCHIVE(17027, "The Fractured Archive"),
+	DADDYS_HOME(17229, "Daddy's Home"),
+	MUDFOOTS_BIG_ADVENTURE(17230, "Mudfoot's Big Adventure"),
+	THE_WRITINGS_ON_THE_WALL(17231, "The Writing's on the Wall"),
 	;
 
 	@Getter

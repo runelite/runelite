@@ -593,7 +593,6 @@ public final class InterfaceID
 	public static final int KR_ADDRESS_FORM = 586;
 	public static final int KR_SCRAP_PAPER = 587;
 	public static final int KR_PICKLOCK = 588;
-	public static final int DISPLAYNAME = 589;
 	public static final int POH_JEWELLERY_BOX = 590;
 	public static final int ARAXXOR_SCOREBOARD = 591;
 	public static final int DIZANAS_QUIVER = 592;
@@ -984,6 +983,19 @@ public final class InterfaceID
 	public static final int TFA_PARTYLIST = 977;
 	public static final int TFA_SPECTATE_HUD_INV = 978;
 	public static final int TFA_STATS = 979;
+	public static final int DISPLAYNAME_MENU = 980;
+	public static final int HC_SUMMARY = 981;
+	public static final int HC_DEATH_CHOICE = 982;
+	public static final int QUEST_RATING = 983;
+	public static final int WOTW_CERTIFICATE_HOSIDIUS = 984;
+	public static final int WOTW_DRAWERS_PISCARILIUS = 985;
+	public static final int WOTW_LETTER_HOSIDIUS = 986;
+	public static final int WOTW_LETTER_LANDS_END = 987;
+	public static final int WOTW_NEWS_LANDS_END = 988;
+	public static final int WOTW_WALL_HIDEOUT = 989;
+	public static final int WOTW_WALL_LANDS_END = 990;
+	public static final int WOTW_WALL_PISCARILIUS = 991;
+	public static final int WOTW_WALL_SHAYZIEN = 992;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -4623,6 +4635,7 @@ public final class InterfaceID
 		public static final int LINK4 = 0x006d_005b;
 		public static final int LINK5 = 0x006d_005c;
 		public static final int LINK6 = 0x006d_005d;
+		public static final int LINK7 = 0x006d_005e;
 	}
 
 	public static final class My2ArmBoatride
@@ -20948,31 +20961,6 @@ public final class InterfaceID
 		public static final int KR_KEY_3 = 0x024c_0042;
 	}
 
-	public static final class Displayname
-	{
-		public static final int UNIVERSE = 0x024d_0000;
-		public static final int UNIVERSE_TEXT0 = 0x024d_0001;
-		public static final int CLOSE = 0x024d_0002;
-		public static final int FRAME = 0x024d_0003;
-		public static final int FRAME_RECT0 = 0x024d_0004;
-		public static final int CONTENT = 0x024d_0005;
-		public static final int COOLDOWNTYPE = 0x024d_0006;
-		public static final int COOLDOWNTIME = 0x024d_0007;
-		public static final int EXTRACHANGES = 0x024d_0008;
-		public static final int WARNING_RELOAD = 0x024d_0009;
-		public static final int CONTENT_TEXT4 = 0x024d_000a;
-		public static final int STATUS_CONTAINER = 0x024d_000b;
-		public static final int STATUS_CONTAINER_GRAPHIC0 = 0x024d_000c;
-		public static final int STATUS_CONTAINER_GRAPHIC1 = 0x024d_000d;
-		public static final int STATUS_CONTAINER_GRAPHIC2 = 0x024d_000e;
-		public static final int STATUS = 0x024d_000f;
-		public static final int WARNING_RESERVATIONS = 0x024d_0010;
-		public static final int BOTTOM_BUTTONS = 0x024d_0011;
-		public static final int CHECK = 0x024d_0012;
-		public static final int CHANGE = 0x024d_0013;
-		public static final int BONDS = 0x024d_0014;
-	}
-
 	public static final class PohJewelleryBox
 	{
 		public static final int UNIVERSE = 0x024e_0000;
@@ -28702,33 +28690,38 @@ public final class InterfaceID
 	{
 		public static final int INFINITE = 0x035d_0000;
 		public static final int UNIVERSE = 0x035d_0001;
-		public static final int FRAME = 0x035d_0002;
-		public static final int BOND_POUCH_TOP = 0x035d_0003;
-		public static final int CONTENTS = 0x035d_0004;
-		public static final int INFO_CONTAINER = 0x035d_0005;
-		public static final int BOND_STORE = 0x035d_0006;
-		public static final int BOND_POUCH_BODY = 0x035d_0007;
-		public static final int MEMBERSHIP_STORE = 0x035d_0008;
-		public static final int QUANTITY_CONTAINER = 0x035d_0009;
-		public static final int REDEEM_CONTAINER = 0x035d_000a;
-		public static final int REDEEM_OPTIONS = 0x035d_000b;
-		public static final int PACKAGE_00 = 0x035d_000c;
-		public static final int PACKAGE_01 = 0x035d_000d;
-		public static final int PACKAGE_02 = 0x035d_000e;
-		public static final int PACKAGE_03 = 0x035d_000f;
-		public static final int PACKAGE_04 = 0x035d_0010;
-		public static final int PACKAGE_05 = 0x035d_0011;
-		public static final int PACKAGE_06 = 0x035d_0012;
-		public static final int PACKAGE_07 = 0x035d_0013;
-		public static final int PACKAGE_08 = 0x035d_0014;
-		public static final int PACKAGE_09 = 0x035d_0015;
-		public static final int PACKAGE_10 = 0x035d_0016;
-		public static final int PACKAGE_11 = 0x035d_0017;
-		public static final int PACKAGE_12 = 0x035d_0018;
-		public static final int PACKAGE_13 = 0x035d_0019;
-		public static final int PACKAGE_14 = 0x035d_001a;
-		public static final int REDEEM_SCROLLBAR = 0x035d_001b;
-		public static final int POPUP = 0x035d_001c;
+		public static final int DROPDOWN_CONTAINER = 0x035d_0002;
+		public static final int FRAME = 0x035d_0003;
+		public static final int BOND_POUCH_TOP = 0x035d_0004;
+		public static final int CONTENTS = 0x035d_0005;
+		public static final int INFO_CONTAINER = 0x035d_0006;
+		public static final int BOND_STORE = 0x035d_0007;
+		public static final int BOND_POUCH_BODY = 0x035d_0008;
+		public static final int MEMBERSHIP_STORE = 0x035d_0009;
+		public static final int QUANTITY_CONTAINER = 0x035d_000a;
+		public static final int NAME_SELECTION_HOLDER = 0x035d_000b;
+		public static final int REDEEM_CONTAINER = 0x035d_000c;
+		public static final int REDEEM_OPTIONS = 0x035d_000d;
+		public static final int PACKAGE_00 = 0x035d_000e;
+		public static final int PACKAGE_01 = 0x035d_000f;
+		public static final int PACKAGE_02 = 0x035d_0010;
+		public static final int PACKAGE_03 = 0x035d_0011;
+		public static final int PACKAGE_04 = 0x035d_0012;
+		public static final int PACKAGE_05 = 0x035d_0013;
+		public static final int PACKAGE_06 = 0x035d_0014;
+		public static final int PACKAGE_07 = 0x035d_0015;
+		public static final int PACKAGE_08 = 0x035d_0016;
+		public static final int PACKAGE_09 = 0x035d_0017;
+		public static final int PACKAGE_10 = 0x035d_0018;
+		public static final int PACKAGE_11 = 0x035d_0019;
+		public static final int PACKAGE_12 = 0x035d_001a;
+		public static final int PACKAGE_13 = 0x035d_001b;
+		public static final int PACKAGE_14 = 0x035d_001c;
+		public static final int REDEEM_SCROLLBAR = 0x035d_001d;
+		public static final int POPUP = 0x035d_001e;
+		public static final int DROPDOWN = 0x035d_001f;
+		public static final int DROPDOWN_CONTENT = 0x035d_0020;
+		public static final int DROPDOWN_SCROLLER = 0x035d_0021;
 	}
 
 	public static final class BondConvert
@@ -31737,6 +31730,487 @@ public final class InterfaceID
 		public static final int PARTY_PANEL_STATS_BACKGROUND = 0x03d3_002c;
 		public static final int PARTY_PANEL_STATS = 0x03d3_002d;
 		public static final int PARTY_PANEL_TIMES = 0x03d3_002e;
+	}
+
+	public static final class DisplaynameMenu
+	{
+		public static final int INFINITE = 0x03d4_0000;
+		public static final int UNIVERSE = 0x03d4_0001;
+		public static final int FRAME = 0x03d4_0002;
+		public static final int CLOSE = 0x03d4_0003;
+		public static final int CONTENTS = 0x03d4_0004;
+		public static final int _1 = 0x03d4_0005;
+		public static final int BG_FREECHANGE = 0x03d4_0006;
+		public static final int FREECHANGE = 0x03d4_0007;
+		public static final int BG_EXTRACHANGES = 0x03d4_0008;
+		public static final int EXTRACHANGES = 0x03d4_0009;
+		public static final int STARTSESSION = 0x03d4_000a;
+		public static final int BONDS = 0x03d4_000b;
+		public static final int _2 = 0x03d4_000c;
+		public static final int SWIRLY2 = 0x03d4_000d;
+		public static final int EXITQUEUE = 0x03d4_000e;
+		public static final int _3 = 0x03d4_000f;
+		public static final int ENTERNAME = 0x03d4_0010;
+		public static final int ACTION = 0x03d4_0011;
+		public static final int EXITSESSION = 0x03d4_0012;
+		public static final int _4 = 0x03d4_0013;
+		public static final int SWIRLY4 = 0x03d4_0014;
+	}
+
+	public static final class HcSummary
+	{
+		public static final int UNIVERSE = 0x03d5_0000;
+		public static final int CONTENTS = 0x03d5_0001;
+		public static final int FRAME = 0x03d5_0002;
+		public static final int SECONDARY = 0x03d5_0003;
+		public static final int PRIMARY = 0x03d5_0004;
+		public static final int PRIMARY_SCROLL = 0x03d5_0005;
+		public static final int RIGHT_COLUMN = 0x03d5_0006;
+		public static final int PLAYER_MODEL = 0x03d5_0007;
+		public static final int PLAYER_MODEL_GRAPHIC = 0x03d5_0008;
+		public static final int PLAYER_MODEL_BACKING = 0x03d5_0009;
+		public static final int PLAYER_MODEL_CONTENT = 0x03d5_000a;
+		public static final int PRIMARY_BACKING = 0x03d5_000b;
+		public static final int PRIMARY_CONTENT = 0x03d5_000c;
+		public static final int SECONDARY_BACKING = 0x03d5_000d;
+		public static final int SECONDARY_CONTENT = 0x03d5_000e;
+		public static final int STATS = 0x03d5_000f;
+		public static final int STATS_BACKING = 0x03d5_0010;
+		public static final int STATS_CONTENT = 0x03d5_0011;
+		public static final int STATS_SCROLL = 0x03d5_0012;
+		public static final int TOOLTIP = 0x03d5_0013;
+	}
+
+	public static final class HcDeathChoice
+	{
+		public static final int UNIVERSE = 0x03d6_0000;
+		public static final int FRAME = 0x03d6_0001;
+		public static final int CONTAINER = 0x03d6_0002;
+		public static final int POPUP = 0x03d6_0003;
+		public static final int TOP = 0x03d6_0004;
+		public static final int OPTION_RESET = 0x03d6_0005;
+		public static final int OPTION_TRANSFER = 0x03d6_0006;
+		public static final int TRANSFER_BUTTON = 0x03d6_0007;
+		public static final int TRANSFER_ICON = 0x03d6_0008;
+		public static final int BOTTOM = 0x03d6_0009;
+		public static final int TEXT_CONTAINER = 0x03d6_000a;
+		public static final int TEXT = 0x03d6_000b;
+		public static final int SCROLLBAR = 0x03d6_000c;
+		public static final int TEXT_CONTAINER_RECT2 = 0x03d6_000d;
+		public static final int TEXT_CONTAINER_RECT3 = 0x03d6_000e;
+		public static final int RESET_BUTTON = 0x03d6_000f;
+		public static final int RESET_ICON = 0x03d6_0010;
+	}
+
+	public static final class QuestRating
+	{
+		public static final int UNIVERSE = 0x03d7_0000;
+		public static final int CONTENTS = 0x03d7_0001;
+		public static final int TITLE = 0x03d7_0002;
+		public static final int QUESTION = 0x03d7_0003;
+		public static final int BUTTONS = 0x03d7_0004;
+		public static final int _0 = 0x03d7_0005;
+		public static final int _1 = 0x03d7_0006;
+		public static final int _2 = 0x03d7_0007;
+		public static final int _3 = 0x03d7_0008;
+		public static final int _4 = 0x03d7_0009;
+		public static final int _5 = 0x03d7_000a;
+		public static final int CLOSE = 0x03d7_000b;
+	}
+
+	public static final class WotwCertificateHosidius
+	{
+		public static final int UNIVERSE = 0x03d8_0000;
+		public static final int CLOSE = 0x03d8_0001;
+		public static final int CONTENT = 0x03d8_0002;
+		public static final int SCROLL = 0x03d8_0003;
+		public static final int ROSET = 0x03d8_0004;
+		public static final int TITLE = 0x03d8_0005;
+		public static final int TEXT = 0x03d8_0006;
+		public static final int CLOSE_GRAPHIC = 0x03d8_0007;
+	}
+
+	public static final class WotwDrawersPiscarilius
+	{
+		public static final int UNIVERSE = 0x03d9_0000;
+		public static final int CONTENT = 0x03d9_0001;
+		public static final int CLOSE_BUTTON = 0x03d9_0002;
+		public static final int CLOSE = 0x03d9_0003;
+		public static final int BACKGROUND = 0x03d9_0004;
+		public static final int CONTENT_MODEL2 = 0x03d9_0005;
+		public static final int CONTENT_MODEL3 = 0x03d9_0006;
+		public static final int INNER = 0x03d9_0007;
+		public static final int INNER_TEXT0 = 0x03d9_0008;
+		public static final int INNER_GRAPHIC1 = 0x03d9_0009;
+		public static final int INNER_TEXT2 = 0x03d9_000a;
+		public static final int INNER_GRAPHIC3 = 0x03d9_000b;
+		public static final int INNER_TEXT4 = 0x03d9_000c;
+		public static final int INNER_GRAPHIC5 = 0x03d9_000d;
+		public static final int INNER_TEXT6 = 0x03d9_000e;
+		public static final int INNER_GRAPHIC7 = 0x03d9_000f;
+		public static final int INNER_GRAPHIC8 = 0x03d9_0010;
+	}
+
+	public static final class WotwLetterHosidius
+	{
+		public static final int UNIVERSE = 0x03da_0000;
+		public static final int CONTENT = 0x03da_0001;
+		public static final int CLOSE_BUTTON = 0x03da_0002;
+		public static final int CLOSE = 0x03da_0003;
+		public static final int BACKGROUND = 0x03da_0004;
+		public static final int CONTENT_MODEL2 = 0x03da_0005;
+		public static final int CONTENT_MODEL3 = 0x03da_0006;
+		public static final int SCROLL_TEXT_LAYER = 0x03da_0007;
+		public static final int SCROLL_TEXT_LAYER_TEXT0 = 0x03da_0008;
+		public static final int SCROLL_TEXT_LAYER_GRAPHIC1 = 0x03da_0009;
+		public static final int SCROLL_TEXT_LAYER_TEXT2 = 0x03da_000a;
+		public static final int SCROLL_TEXT_LAYER_GRAPHIC3 = 0x03da_000b;
+		public static final int SCROLL_TEXT_LAYER_TEXT4 = 0x03da_000c;
+		public static final int SCROLL_TEXT_LAYER_GRAPHIC5 = 0x03da_000d;
+		public static final int SCROLL_TEXT_LAYER_TEXT6 = 0x03da_000e;
+		public static final int SCROLL_TEXT_LAYER_GRAPHIC7 = 0x03da_000f;
+		public static final int SCROLL_TEXT_LAYER_GRAPHIC8 = 0x03da_0010;
+	}
+
+	public static final class WotwLetterLandsEnd
+	{
+		public static final int UNIVERSE = 0x03db_0000;
+		public static final int CONTENT = 0x03db_0001;
+		public static final int CLOSE_BUTTON = 0x03db_0002;
+		public static final int CLOSE = 0x03db_0003;
+		public static final int BACKGROUND = 0x03db_0004;
+		public static final int SCROLL_TEXT_LAYER = 0x03db_0005;
+		public static final int SCROLL_TEXT = 0x03db_0006;
+		public static final int SYMBOLS_1 = 0x03db_0007;
+		public static final int _1_A = 0x03db_0008;
+		public static final int _1_B = 0x03db_0009;
+		public static final int _1_C = 0x03db_000a;
+		public static final int _1_D = 0x03db_000b;
+		public static final int _1_E = 0x03db_000c;
+		public static final int _1_F = 0x03db_000d;
+		public static final int _1_G = 0x03db_000e;
+		public static final int _1_H = 0x03db_000f;
+		public static final int _1_I = 0x03db_0010;
+		public static final int _1_J = 0x03db_0011;
+		public static final int _1_K = 0x03db_0012;
+		public static final int _1_L = 0x03db_0013;
+		public static final int SYMBOLS_2 = 0x03db_0014;
+		public static final int _2_A = 0x03db_0015;
+		public static final int _2_B = 0x03db_0016;
+		public static final int _2_C = 0x03db_0017;
+		public static final int _2_D = 0x03db_0018;
+		public static final int _2_E = 0x03db_0019;
+		public static final int _2_F = 0x03db_001a;
+		public static final int _2_G = 0x03db_001b;
+		public static final int _2_H = 0x03db_001c;
+		public static final int _2_I = 0x03db_001d;
+		public static final int _2_J = 0x03db_001e;
+		public static final int _2_K = 0x03db_001f;
+		public static final int _2_L = 0x03db_0020;
+		public static final int SYMBOLS_3 = 0x03db_0021;
+		public static final int _3_A = 0x03db_0022;
+		public static final int _3_B = 0x03db_0023;
+		public static final int _3_C = 0x03db_0024;
+		public static final int _3_D = 0x03db_0025;
+		public static final int _3_E = 0x03db_0026;
+		public static final int _3_F = 0x03db_0027;
+		public static final int _3_G = 0x03db_0028;
+		public static final int _3_H = 0x03db_0029;
+		public static final int _3_I = 0x03db_002a;
+		public static final int _3_J = 0x03db_002b;
+		public static final int SYMBOLS_4 = 0x03db_002c;
+		public static final int _4_A = 0x03db_002d;
+		public static final int _4_B = 0x03db_002e;
+		public static final int _4_C = 0x03db_002f;
+		public static final int _4_D = 0x03db_0030;
+		public static final int _4_E = 0x03db_0031;
+		public static final int _4_F = 0x03db_0032;
+		public static final int _4_G = 0x03db_0033;
+		public static final int _4_H = 0x03db_0034;
+		public static final int _4_I = 0x03db_0035;
+		public static final int _4_J = 0x03db_0036;
+		public static final int SYMBOLS_5 = 0x03db_0037;
+		public static final int _5_A = 0x03db_0038;
+		public static final int _5_B = 0x03db_0039;
+		public static final int _5_C = 0x03db_003a;
+		public static final int _5_D = 0x03db_003b;
+		public static final int _5_E = 0x03db_003c;
+		public static final int _5_F = 0x03db_003d;
+		public static final int _5_G = 0x03db_003e;
+		public static final int _5_H = 0x03db_003f;
+		public static final int _5_I = 0x03db_0040;
+		public static final int _5_J = 0x03db_0041;
+		public static final int SYMBOLS_6 = 0x03db_0042;
+		public static final int _6_A = 0x03db_0043;
+		public static final int _6_B = 0x03db_0044;
+		public static final int _6_C = 0x03db_0045;
+		public static final int _6_D = 0x03db_0046;
+		public static final int _6_E = 0x03db_0047;
+		public static final int SYMBOLS_7 = 0x03db_0048;
+		public static final int _7_A = 0x03db_0049;
+		public static final int _7_B = 0x03db_004a;
+		public static final int _7_C = 0x03db_004b;
+		public static final int _7_D = 0x03db_004c;
+		public static final int _7_E = 0x03db_004d;
+		public static final int _7_F = 0x03db_004e;
+		public static final int _7_G = 0x03db_004f;
+		public static final int _7_H = 0x03db_0050;
+		public static final int _7_I = 0x03db_0051;
+		public static final int _7_J = 0x03db_0052;
+		public static final int _7_K = 0x03db_0053;
+		public static final int _7_L = 0x03db_0054;
+		public static final int SYMBOLS_8 = 0x03db_0055;
+		public static final int _8_A = 0x03db_0056;
+		public static final int _8_B = 0x03db_0057;
+		public static final int _8_C = 0x03db_0058;
+		public static final int _8_D = 0x03db_0059;
+		public static final int _8_E = 0x03db_005a;
+		public static final int _8_F = 0x03db_005b;
+		public static final int _8_G = 0x03db_005c;
+		public static final int _8_H = 0x03db_005d;
+		public static final int _8_I = 0x03db_005e;
+		public static final int _8_J = 0x03db_005f;
+		public static final int SYMBOLS_9 = 0x03db_0060;
+		public static final int _9_A = 0x03db_0061;
+		public static final int _9_B = 0x03db_0062;
+		public static final int _9_C = 0x03db_0063;
+		public static final int _9_D = 0x03db_0064;
+		public static final int _9_E = 0x03db_0065;
+		public static final int _9_F = 0x03db_0066;
+		public static final int _9_G = 0x03db_0067;
+		public static final int _9_H = 0x03db_0068;
+		public static final int _9_I = 0x03db_0069;
+		public static final int _9_J = 0x03db_006a;
+		public static final int _9_K = 0x03db_006b;
+		public static final int SYMBOLS_10 = 0x03db_006c;
+		public static final int _10_A = 0x03db_006d;
+		public static final int _10_B = 0x03db_006e;
+		public static final int _10_C = 0x03db_006f;
+		public static final int _10_D = 0x03db_0070;
+		public static final int _10_E = 0x03db_0071;
+		public static final int _10_F = 0x03db_0072;
+		public static final int _10_G = 0x03db_0073;
+		public static final int _10_H = 0x03db_0074;
+		public static final int _10_I = 0x03db_0075;
+		public static final int SYMBOLS_11 = 0x03db_0076;
+		public static final int _11_A = 0x03db_0077;
+		public static final int _11_B = 0x03db_0078;
+		public static final int _11_C = 0x03db_0079;
+		public static final int _11_D = 0x03db_007a;
+		public static final int _11_E = 0x03db_007b;
+		public static final int _11_F = 0x03db_007c;
+		public static final int _11_G = 0x03db_007d;
+		public static final int _11_H = 0x03db_007e;
+		public static final int SYMBOLS_12 = 0x03db_007f;
+		public static final int _12_A = 0x03db_0080;
+		public static final int _12_B = 0x03db_0081;
+		public static final int _12_C = 0x03db_0082;
+		public static final int _12_D = 0x03db_0083;
+		public static final int _12_E = 0x03db_0084;
+		public static final int _12_F = 0x03db_0085;
+		public static final int _12_G = 0x03db_0086;
+		public static final int _12_H = 0x03db_0087;
+		public static final int _12_I = 0x03db_0088;
+		public static final int _12_J = 0x03db_0089;
+		public static final int _12_K = 0x03db_008a;
+		public static final int _12_L = 0x03db_008b;
+		public static final int SYMBOLS_13 = 0x03db_008c;
+		public static final int _13_A = 0x03db_008d;
+		public static final int _13_B = 0x03db_008e;
+		public static final int _13_C = 0x03db_008f;
+		public static final int _13_D = 0x03db_0090;
+		public static final int SYMBOLS_14 = 0x03db_0091;
+		public static final int _14_A = 0x03db_0092;
+		public static final int _14_B = 0x03db_0093;
+		public static final int _14_C = 0x03db_0094;
+		public static final int _14_D = 0x03db_0095;
+		public static final int _14_E = 0x03db_0096;
+		public static final int _14_F = 0x03db_0097;
+		public static final int _14_G = 0x03db_0098;
+		public static final int _14_H = 0x03db_0099;
+		public static final int _14_I = 0x03db_009a;
+		public static final int _14_J = 0x03db_009b;
+		public static final int _14_K = 0x03db_009c;
+		public static final int _14_L = 0x03db_009d;
+		public static final int _14_M = 0x03db_009e;
+		public static final int SYMBOLS_15 = 0x03db_009f;
+		public static final int _15_A = 0x03db_00a0;
+		public static final int _15_B = 0x03db_00a1;
+		public static final int _15_C = 0x03db_00a2;
+		public static final int _15_D = 0x03db_00a3;
+		public static final int _15_E = 0x03db_00a4;
+		public static final int _15_F = 0x03db_00a5;
+		public static final int _15_G = 0x03db_00a6;
+		public static final int _15_H = 0x03db_00a7;
+		public static final int _15_I = 0x03db_00a8;
+		public static final int _15_J = 0x03db_00a9;
+		public static final int _15_K = 0x03db_00aa;
+		public static final int _15_L = 0x03db_00ab;
+		public static final int SYMBOLS_16 = 0x03db_00ac;
+		public static final int _16_A = 0x03db_00ad;
+		public static final int _16_B = 0x03db_00ae;
+		public static final int _16_C = 0x03db_00af;
+		public static final int _16_D = 0x03db_00b0;
+		public static final int _16_E = 0x03db_00b1;
+		public static final int _16_F = 0x03db_00b2;
+		public static final int _16_G = 0x03db_00b3;
+		public static final int _16_H = 0x03db_00b4;
+		public static final int _16_I = 0x03db_00b5;
+		public static final int SYMBOLS_17 = 0x03db_00b6;
+		public static final int _17_A = 0x03db_00b7;
+		public static final int _17_B = 0x03db_00b8;
+		public static final int _17_C = 0x03db_00b9;
+		public static final int _17_D = 0x03db_00ba;
+		public static final int _17_E = 0x03db_00bb;
+		public static final int _17_F = 0x03db_00bc;
+		public static final int _17_G = 0x03db_00bd;
+		public static final int _17_H = 0x03db_00be;
+		public static final int _17_I = 0x03db_00bf;
+		public static final int _17_J = 0x03db_00c0;
+		public static final int SYMBOLS_18 = 0x03db_00c1;
+		public static final int _18_A = 0x03db_00c2;
+		public static final int _18_B = 0x03db_00c3;
+		public static final int _18_C = 0x03db_00c4;
+		public static final int _18_D = 0x03db_00c5;
+		public static final int _18_E = 0x03db_00c6;
+		public static final int _18_F = 0x03db_00c7;
+		public static final int _18_G = 0x03db_00c8;
+		public static final int _18_H = 0x03db_00c9;
+		public static final int _18_I = 0x03db_00ca;
+		public static final int _18_J = 0x03db_00cb;
+		public static final int _18_K = 0x03db_00cc;
+		public static final int _18_L = 0x03db_00cd;
+		public static final int SYMBOLS_19 = 0x03db_00ce;
+		public static final int _19_A = 0x03db_00cf;
+		public static final int _19_B = 0x03db_00d0;
+		public static final int _19_C = 0x03db_00d1;
+		public static final int _19_D = 0x03db_00d2;
+		public static final int _19_E = 0x03db_00d3;
+		public static final int _19_F = 0x03db_00d4;
+		public static final int _19_G = 0x03db_00d5;
+		public static final int _19_H = 0x03db_00d6;
+		public static final int _19_I = 0x03db_00d7;
+		public static final int _19_J = 0x03db_00d8;
+		public static final int _19_K = 0x03db_00d9;
+		public static final int SYMBOLS_20 = 0x03db_00da;
+		public static final int _20_A = 0x03db_00db;
+		public static final int _20_B = 0x03db_00dc;
+		public static final int _20_C = 0x03db_00dd;
+		public static final int _20_D = 0x03db_00de;
+		public static final int _20_E = 0x03db_00df;
+		public static final int _20_F = 0x03db_00e0;
+		public static final int _20_G = 0x03db_00e1;
+		public static final int _20_H = 0x03db_00e2;
+		public static final int _20_I = 0x03db_00e3;
+		public static final int _20_J = 0x03db_00e4;
+		public static final int _20_K = 0x03db_00e5;
+		public static final int _20_L = 0x03db_00e6;
+		public static final int SYMBOLS_21 = 0x03db_00e7;
+		public static final int _21_A = 0x03db_00e8;
+		public static final int _21_B = 0x03db_00e9;
+		public static final int _21_C = 0x03db_00ea;
+		public static final int _21_D = 0x03db_00eb;
+		public static final int _21_E = 0x03db_00ec;
+		public static final int _21_F = 0x03db_00ed;
+		public static final int _21_G = 0x03db_00ee;
+		public static final int _21_H = 0x03db_00ef;
+		public static final int SYMBOLS_22 = 0x03db_00f0;
+		public static final int _22_A = 0x03db_00f1;
+		public static final int SCROLLBAR = 0x03db_00f2;
+	}
+
+	public static final class WotwNewsLandsEnd
+	{
+		public static final int UNIVERSE = 0x03dc_0000;
+		public static final int FRAME = 0x03dc_0001;
+		public static final int BACKGROUND = 0x03dc_0002;
+		public static final int CONTENT = 0x03dc_0003;
+		public static final int CLOSE_BUTTON = 0x03dc_0004;
+		public static final int LEFT_CONTENT = 0x03dc_0005;
+		public static final int LEFT_TEXT = 0x03dc_0006;
+		public static final int RIGHT_CONTENT = 0x03dc_0007;
+		public static final int RIGHT_TEXT = 0x03dc_0008;
+		public static final int CLOSE = 0x03dc_0009;
+	}
+
+	public static final class WotwWallHideout
+	{
+		public static final int UNIVERSE = 0x03dd_0000;
+		public static final int CLOSE = 0x03dd_0001;
+		public static final int CLOSE_GRAPHIC = 0x03dd_0002;
+		public static final int CONTENT = 0x03dd_0003;
+		public static final int WALL = 0x03dd_0004;
+		public static final int CONTENT_MODEL1 = 0x03dd_0005;
+		public static final int CONTENT_MODEL2 = 0x03dd_0006;
+		public static final int CONTENT_MODEL3 = 0x03dd_0007;
+		public static final int CONTENT_GRAPHIC4 = 0x03dd_0008;
+		public static final int CONTENT_TEXT5 = 0x03dd_0009;
+		public static final int CONTENT_TEXT6 = 0x03dd_000a;
+	}
+
+	public static final class WotwWallLandsEnd
+	{
+		public static final int UNIVERSE = 0x03de_0000;
+		public static final int CLOSE = 0x03de_0001;
+		public static final int CLOSE_GRAPHIC = 0x03de_0002;
+		public static final int CONTENT = 0x03de_0003;
+		public static final int CONTENT_RECT0 = 0x03de_0004;
+		public static final int WALL = 0x03de_0005;
+		public static final int CONTENT_MODEL2 = 0x03de_0006;
+		public static final int CONTENT_MODEL3 = 0x03de_0007;
+		public static final int CONTENT_MODEL4 = 0x03de_0008;
+		public static final int CONTENT_MODEL5 = 0x03de_0009;
+		public static final int CONTENT_TEXT6 = 0x03de_000a;
+		public static final int CONTENT_GRAPHIC7 = 0x03de_000b;
+		public static final int CONTENT_TEXT8 = 0x03de_000c;
+		public static final int CONTENT_GRAPHIC9 = 0x03de_000d;
+		public static final int CONTENT_TEXT10 = 0x03de_000e;
+		public static final int CONTENT_GRAPHIC11 = 0x03de_000f;
+		public static final int CONTENT_TEXT12 = 0x03de_0010;
+		public static final int CONTENT_GRAPHIC13 = 0x03de_0011;
+		public static final int CONTENT_GRAPHIC14 = 0x03de_0012;
+	}
+
+	public static final class WotwWallPiscarilius
+	{
+		public static final int UNIVERSE = 0x03df_0000;
+		public static final int CLOSE = 0x03df_0001;
+		public static final int CLOSE_GRAPHIC = 0x03df_0002;
+		public static final int CONTENT = 0x03df_0003;
+		public static final int WALL = 0x03df_0004;
+		public static final int CONTENT_MODEL1 = 0x03df_0005;
+		public static final int CONTENT_MODEL2 = 0x03df_0006;
+		public static final int CONTENT_TEXT3 = 0x03df_0007;
+		public static final int CONTENT_GRAPHIC4 = 0x03df_0008;
+		public static final int INNER = 0x03df_0009;
+		public static final int INNER_TEXT0 = 0x03df_000a;
+		public static final int INNER_GRAPHIC1 = 0x03df_000b;
+		public static final int INNER_TEXT2 = 0x03df_000c;
+		public static final int INNER_GRAPHIC3 = 0x03df_000d;
+		public static final int INNER_TEXT4 = 0x03df_000e;
+		public static final int INNER_GRAPHIC5 = 0x03df_000f;
+		public static final int INNER_TEXT6 = 0x03df_0010;
+		public static final int INNER_GRAPHIC7 = 0x03df_0011;
+		public static final int INNER_TEXT8 = 0x03df_0012;
+		public static final int INNER_GRAPHIC9 = 0x03df_0013;
+	}
+
+	public static final class WotwWallShayzien
+	{
+		public static final int UNIVERSE = 0x03e0_0000;
+		public static final int CLOSE = 0x03e0_0001;
+		public static final int CLOSE_GRAPHIC = 0x03e0_0002;
+		public static final int CONTENT = 0x03e0_0003;
+		public static final int CONTENT_RECT0 = 0x03e0_0004;
+		public static final int WALL = 0x03e0_0005;
+		public static final int CONTENT_MODEL2 = 0x03e0_0006;
+		public static final int CONTENT_MODEL3 = 0x03e0_0007;
+		public static final int CONTENT_MODEL4 = 0x03e0_0008;
+		public static final int CONTENT_GRAPHIC5 = 0x03e0_0009;
+		public static final int CONTENT_TEXT6 = 0x03e0_000a;
+		public static final int CONTENT_TEXT7 = 0x03e0_000b;
+		public static final int CONTENT_TEXT8 = 0x03e0_000c;
+		public static final int CONTENT_TEXT9 = 0x03e0_000d;
 	}
 /* This file is automatically generated. Do not edit. */
 }
