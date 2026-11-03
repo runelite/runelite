@@ -1515,10 +1515,6 @@ public final class NpcID
 	 * Ayesha
 	 */
 	public static final int FARMING_GARDENER_CACTUS = 310;
-
-	/**
-	 * Ironman tutor
-	 */
 	public static final int IRONMAN_TUTOR_1 = 311;
 
 	/**
@@ -15176,66 +15172,6 @@ public final class NpcID
 	 * Frincos
 	 */
 	public static final int FRINCOS = 3215;
-
-	/**
-	 * Melee combat tutor
-	 */
-	public static final int AIDE_TUTOR_MELEE = 3216;
-
-	/**
-	 * Ranged combat tutor
-	 */
-	public static final int AIDE_TUTOR_RANGING = 3217;
-
-	/**
-	 * Magic combat tutor
-	 */
-	public static final int AIDE_TUTOR_MAGIC = 3218;
-
-	/**
-	 * Cooking tutor
-	 */
-	public static final int AIDE_TUTOR_COOKING = 3219;
-
-	/**
-	 * Crafting tutor
-	 */
-	public static final int AIDE_TUTOR_CRAFTING = 3220;
-
-	/**
-	 * Fishing tutor
-	 */
-	public static final int AIDE_TUTOR_FISHING = 3221;
-
-	/**
-	 * Mining tutor
-	 */
-	public static final int AIDE_TUTOR_MINING = 3222;
-
-	/**
-	 * Prayer tutor
-	 */
-	public static final int AIDE_TUTOR_PRAYER = 3223;
-
-	/**
-	 * Smithing apprentice
-	 */
-	public static final int AIDE_TUTOR_SMITHING_APPRENTICE = 3224;
-
-	/**
-	 * Master smithing tutor
-	 */
-	public static final int AIDE_TUTOR_SMITHING_MASTER = 3225;
-
-	/**
-	 * Woodsman tutor
-	 */
-	public static final int AIDE_TUTOR_WOODSMAN = 3226;
-
-	/**
-	 * Banker tutor
-	 */
-	public static final int AIDE_TUTOR_BANKER = 3227;
 	public static final int RCU_ZAMMY_MAGE1 = 3228;
 	public static final int RCU_ZAMMY_MAGE1_EDGE = 3229;
 	public static final int MULTI_SKIPPY = 3230;
@@ -20702,12 +20638,12 @@ public final class NpcID
 	public static final int ANMA_GHOST_FARMER_MULTI = 4415;
 
 	/**
-	 * Tree
+	 * &#60;col=00ffff&#62;Tree&#60;/col&#62;
 	 */
 	public static final int NASTY_TREE_UNCHOPPABLE = 4416;
 
 	/**
-	 * Undead tree
+	 * &#60;col=00ffff&#62;Undead tree&#60;/col&#62;
 	 */
 	public static final int NASTY_TREE_CHOPPABLE = 4417;
 	public static final int NASTY_TREE = 4418;
@@ -25771,11 +25707,6 @@ public final class NpcID
 	 * Flax keeper
 	 */
 	public static final int DIARY_FLAX_KEEPER = 5522;
-
-	/**
-	 * Hatius Cosaintus
-	 */
-	public static final int HATIUS_LUMBRIDGE_DIARY = 5523;
 
 	/**
 	 * Sir Rebral
@@ -34127,10 +34058,6 @@ public final class NpcID
 	 * Hugor
 	 */
 	public static final int KW_HUGOR = 7478;
-
-	/**
-	 * Lan the Butcher
-	 */
 	public static final int KW_BUTCHER_LAN = 7479;
 
 	/**
@@ -39133,11 +39060,6 @@ public final class NpcID
 	public static final int _3RD_AGE_DRUID_STAFF_TRANSMOG = 8662;
 	public static final int _3RD_AGE_DRUID_CLOAK_TRANSMOG = 8663;
 	public static final int _3RD_AGE_RING_TRANSMOG = 8664;
-
-	/**
-	 * Arthur the Clue Hunter
-	 */
-	public static final int AIDE_TUTOR_CLUES = 8665;
 
 	/**
 	 * Banker
@@ -71321,22 +71243,6 @@ public final class NpcID
 	public static final int CRAB_MAINCRAB_END = 16474;
 
 	/**
-	 * Floatsam
-	 */
-	public static final int CRAB_FLOATSAM_1 = 16475;
-
-	/**
-	 * Floatsam
-	 */
-	public static final int CRAB_FLOATSAM_2 = 16476;
-
-	/**
-	 * Floatsam
-	 */
-	public static final int CRAB_FLOATSAM_3 = 16477;
-	public static final int CRAB_FLOATSAM_MULTI = 16478;
-
-	/**
 	 * Crab
 	 */
 	public static final int CRAB_MAINCRAB_CUTSCENE = 16479;
@@ -72684,5 +72590,253 @@ public final class NpcID
 	 * Trick or treater
 	 */
 	public static final int HW26_TRICKORTREATER_ADULT_5_VOMIT = 16803;
+
+	/**
+	 * Mikasi
+	 */
+	public static final int MIKASI_LUMBRIDGE_DIARY = 16804;
+
+	/**
+	 * Lan the Butcher
+	 */
+	public static final int KW_BUTCHER_LAN_VIS = 16805;
+
+	/**
+	 * Feoras
+	 */
+	public static final int LUMBRIDGE_BLACKSMITH = 16806;
+
+	/**
+	 * Cadmus
+	 */
+	public static final int CADMUS = 16807;
+
+	/**
+	 * Wilfred
+	 */
+	public static final int WILFRED = 16808;
+
+	/**
+	 * Monlum
+	 */
+	public static final int MONLUM = 16809;
+
+	/**
+	 * Finlay
+	 */
+	public static final int FINLAY = 16810;
+
+	/**
+	 * Arthur
+	 */
+	public static final int CLUE_HUNTER_ARTHUR = 16811;
+	public static final int DEADMAN_NIGEL_VARROCK = 16812;
+
+	/**
+	 * Death's Delegate
+	 */
+	public static final int DEATHS_DELEGATE = 16813;
+
+	/**
+	 * Ironman tutor
+	 */
+	public static final int IRONMAN_TUTOR_1_VIS = 16814;
+
+	/**
+	 * Hatius Cosaintus
+	 */
+	public static final int HATIUS_COSAINTUS = 16815;
+
+	/**
+	 * Sani
+	 */
+	public static final int VARROCK_SANI = 16816;
+
+	/**
+	 * Flotsam
+	 */
+	public static final int CRAB_FLOTSAM_1 = 16817;
+
+	/**
+	 * Flotsam
+	 */
+	public static final int CRAB_FLOTSAM_2 = 16818;
+
+	/**
+	 * Flotsam
+	 */
+	public static final int CRAB_FLOTSAM_3 = 16819;
+	public static final int CRAB_FLOTSAM_MULTI = 16820;
+
+	/**
+	 * Captain Harlan
+	 */
+	public static final int CAPTAIN_HARLAN = 16821;
+
+	/**
+	 * Captain Harlan
+	 */
+	public static final int CAPTAIN_HARLAN_CUTSCENE = 16822;
+	public static final int MBA_MUDFOOT_RUINED_BUILDING = 16823;
+	public static final int MBA_MUDFOOT_WINDMILL = 16824;
+	public static final int MBA_MUDFOOT_WOODS = 16825;
+	public static final int MBA_MUDFOOT_GRAVEYARD = 16826;
+	public static final int MBA_MUDFOOT_FOLLOWER = 16827;
+	public static final int MBA_MUDFOOT_FOLLOWER_SPEAR = 16828;
+
+	/**
+	 * Mudfoot
+	 */
+	public static final int MBA_MUDFOOT_VIS = 16829;
+
+	/**
+	 * Mudfoot
+	 */
+	public static final int MBA_MUDFOOT_SPEAR_VIS = 16830;
+
+	/**
+	 * Mudfoot
+	 */
+	public static final int MBA_MUDFOOT_SPEAR_COMBAT = 16831;
+
+	/**
+	 * Mudfoot
+	 */
+	public static final int MBA_MUDFOOT_ROCKS_COMBAT = 16832;
+	public static final int MBA_OUTLAW_RANGED_GENERAL_STORE = 16833;
+	public static final int MBA_OUTLAW_RANGED_WINDMILL = 16834;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int MBA_OUTLAW_RANGED_VIS = 16835;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int MBA_OUTLAW_RANGED_NOOP_VIS = 16836;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int MBA_OUTLAW_RANGED_COMBAT = 16837;
+	public static final int MBA_OUTLAW_MAGIC_WOODS = 16838;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int MBA_OUTLAW_MAGIC_VIS = 16839;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int MBA_OUTLAW_MAGIC_COMBAT = 16840;
+	public static final int MBA_OUTLAW_MELEE_GRAVEYARD = 16841;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int MBA_OUTLAW_MELEE_VIS = 16842;
+
+	/**
+	 * Outlaw
+	 */
+	public static final int MBA_OUTLAW_MELEE_COMBAT = 16843;
+
+	/**
+	 * Maris
+	 */
+	public static final int MARIS = 16844;
+	public static final int WOTW_BETTY_LANDS_END = 16845;
+	public static final int WOTW_BETTY_HOSIDIUS = 16846;
+	public static final int WOTW_BETTY_HOSIDIUS_INSIDE = 16847;
+	public static final int WOTW_BETTY_PISCARILIUS = 16848;
+	public static final int WOTW_BETTY_PISCARILIUS_JAIL = 16849;
+
+	/**
+	 * Betty
+	 */
+	public static final int WOTW_BETTY_CHILD = 16850;
+
+	/**
+	 * Betty
+	 */
+	public static final int WOTW_BETTY_CUTSCENE = 16851;
+
+	/**
+	 * Hooded Figure
+	 */
+	public static final int WOTW_BETTY_CUTSCENE_HOODED = 16852;
+
+	/**
+	 * Familiar Voice
+	 */
+	public static final int WOTW_BETTY_CUTSCENE_PRE_REVEAL = 16853;
+
+	/**
+	 * Betty
+	 */
+	public static final int WOTW_BETTY_CUTSCENE_REVEALED = 16854;
+
+	/**
+	 * Betty
+	 */
+	public static final int WOTW_BETTY_CUTSCENE_REVEALED_DEAD = 16855;
+	public static final int WOTW_HUDSON_LANDS_END = 16856;
+	public static final int WOTW_HUDSON_PISCARILIUS = 16857;
+	public static final int WOTW_HUDSON_SHAYZIEN = 16858;
+	public static final int WOTW_HUDSON_HIDEOUT = 16859;
+	public static final int WOTW_HUDSON_POSTQUEST = 16860;
+
+	/**
+	 * Sergeant Hudson
+	 */
+	public static final int WOTW_HUDSON_CHILD = 16861;
+
+	/**
+	 * Sergeant Hudson
+	 */
+	public static final int WOTW_HUDSON_CUTSCENE = 16862;
+	public static final int WOTW_SOLDIER_LANDS_END_1 = 16863;
+	public static final int WOTW_SOLDIER_PISCARILIUS_1 = 16864;
+	public static final int WOTW_SOLDIER_SHAYZIEN_1 = 16865;
+
+	/**
+	 * Corporal Breiman
+	 */
+	public static final int WOTW_SOLDIER_CHILD_1 = 16866;
+
+	/**
+	 * Corporal Breiman
+	 */
+	public static final int WOTW_SOLDIER_CUTSCENE_1 = 16867;
+	public static final int WOTW_SOLDIER_LANDS_END_2 = 16868;
+	public static final int WOTW_SOLDIER_PISCARILIUS_2 = 16869;
+	public static final int WOTW_SOLDIER_SHAYZIEN_2 = 16870;
+
+	/**
+	 * Corporal Campter
+	 */
+	public static final int WOTW_SOLDIER_CHILD_2 = 16871;
+
+	/**
+	 * Corporal Campter
+	 */
+	public static final int WOTW_SOLDIER_CUTSCENE_2 = 16872;
+
+	/**
+	 * Monk
+	 */
+	public static final int WOTW_MONK = 16873;
+
+	/**
+	 * Joyce
+	 */
+	public static final int WOTW_FARMER = 16874;
+
+	/**
+	 * Kyle
+	 */
+	public static final int WOTW_FORESTER = 16875;
 /* This file is automatically generated. Do not edit. */
 }
