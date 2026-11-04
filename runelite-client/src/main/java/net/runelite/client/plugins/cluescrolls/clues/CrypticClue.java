@@ -751,7 +751,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_EASY_VAGUE_EXP14)
-			.text("I wonder how many bronze swords he has handed out.")
+			.text("I wonder how many bronze shortswords he has handed out.")
 			.location(new WorldPoint(3146, 9913, 0))
 			.npc("Vannaka")
 			.solution("Talk to Vannaka. He can be found in Edgeville Dungeon.")
