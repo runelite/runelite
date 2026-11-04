@@ -31,6 +31,15 @@ public interface KeyListener extends java.awt.event.KeyListener
 		return false;
 	}
 
+	/**
+	 * Whether this listener receives keys that can edit text while the player is typing in chat or
+	 * another text input with press-to-chat enabled. Modifier and function keys are always delivered.
+	 */
+	default boolean isEnabledOnChatInput()
+	{
+		return false;
+	}
+
 	default void focusLost()
 	{
 	}

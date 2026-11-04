@@ -25,7 +25,12 @@
 package net.runelite.client.input;
 
 import java.awt.event.KeyEvent;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -42,15 +47,20 @@ import net.runelite.client.eventbus.Subscribe;
 public class KeyManager
 {
 	private final Client client;
+	private final ChatboxInputManager chatboxInputManager;
 
 	@Inject
-	private KeyManager(@Nullable final Client client, final EventBus eventBus)
+	private KeyManager(@Nullable final Client client, final EventBus eventBus, final ChatboxInputManager chatboxInputManager)
 	{
 		this.client = client;
+		this.chatboxInputManager = chatboxInputManager;
 		eventBus.register(this);
 	}
 
 	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
+	// Held physical keys, each with the listeners its first press was withheld from, so their release is withheld too.
+	// Guarded by itself; registration and focus changes can arrive outside the AWT dispatch thread.
+	private final Map<Long, Set<KeyListener>> withheldKeys = new HashMap<>();
 
 	public void registerKeyListener(KeyListener keyListener)
 	{
@@ -66,6 +76,10 @@ public class KeyManager
 		final boolean unregistered = keyListeners.remove(keyListener);
 		if (unregistered)
 		{
+			synchronized (withheldKeys)
+			{
+				withheldKeys.values().forEach(listeners -> listeners.remove(keyListener));
+			}
 			log.debug("Unregistered key listener: {}", keyListener);
 		}
 	}
@@ -77,11 +91,52 @@ public class KeyManager
 			return;
 		}
 
+		final long key = physicalKey(keyEvent);
+		final boolean chatInput = chatboxInputManager.processKeyPressed(keyEvent);
+		final boolean repeat;
+		final Set<KeyListener> withheld;
+		synchronized (withheldKeys)
+		{
+			repeat = withheldKeys.containsKey(key);
+			withheld = withheldKeys.computeIfAbsent(key, k -> Collections.newSetFromMap(new IdentityHashMap<>()));
+			if (keyEvent.isConsumed() && !repeat)
+			{
+				// No listener saw this press, so none should see its release either.
+				withheld.addAll(keyListeners);
+			}
+		}
+
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
 			if (!shouldProcess(keyListener))
 			{
 				continue;
+			}
+
+			if (chatInput && !keyListener.isEnabledOnChatInput())
+			{
+				// Only a withheld first press withholds the release; auto-repeat of a key held before typing does not.
+				if (!repeat)
+				{
+					synchronized (withheldKeys)
+					{
+						withheld.add(keyListener);
+					}
+				}
+				continue;
+			}
+
+			if (repeat)
+			{
+				synchronized (withheldKeys)
+				{
+					withheld.remove(keyListener);
+				}
 			}
 
 			log.trace("Processing key pressed {} for key listener {}", keyEvent.paramString(), keyListener);
@@ -97,6 +152,13 @@ public class KeyManager
 
 	public void processKeyReleased(KeyEvent keyEvent)
 	{
+		final Set<KeyListener> withheld;
+		synchronized (withheldKeys)
+		{
+			withheld = withheldKeys.remove(physicalKey(keyEvent));
+		}
+
+		chatboxInputManager.processKeyReleased(keyEvent);
 		if (keyEvent.isConsumed())
 		{
 			return;
@@ -104,7 +166,7 @@ public class KeyManager
 
 		for (KeyListener keyListener : keyListeners)
 		{
-			if (!shouldProcess(keyListener))
+			if (!shouldProcess(keyListener) || withheld != null && withheld.contains(keyListener))
 			{
 				continue;
 			}
@@ -127,9 +189,15 @@ public class KeyManager
 			return;
 		}
 
+		final boolean chatInput = chatboxInputManager.processKeyTyped(keyEvent);
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
-			if (!shouldProcess(keyListener))
+			if (!shouldProcess(keyListener) || chatInput && !keyListener.isEnabledOnChatInput())
 			{
 				continue;
 			}
@@ -162,11 +230,20 @@ public class KeyManager
 		return true;
 	}
 
+	private static long physicalKey(KeyEvent event)
+	{
+		return ((long) event.getKeyCode() << 32) | event.getKeyLocation();
+	}
+
 	@Subscribe
 	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
+			synchronized (withheldKeys)
+			{
+				withheldKeys.clear();
+			}
 			for (KeyListener keyListener : keyListeners)
 			{
 				keyListener.focusLost();
