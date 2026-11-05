@@ -91,6 +91,7 @@ public final class SoundEffectID
 	public final static int PRAYER_ACTIVATE_SMITE = 2686;
 	public final static int PRAYER_ACTIVATE_CHIVALRY = 3826;
 	public final static int PRAYER_ACTIVATE_PIETY = 3825;
+	public final static int PRAYER_ACTIVATE_ZEAL = 12645;
 	public final static int PRAYER_DEACTIVE_VWOOP = 2663;
 	public final static int PRAYER_DEPLETE_TWINKLE = 2672;
 
