@@ -72,10 +72,10 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.build(),
 		CipherClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_CIPHER005)
-			.text("HQNM LZM STSNQ")
-			.npc(NpcID.IRONMAN_TUTOR_1)
-			.location(new WorldPoint(3227, 3227, 0))
-			.area("Outside Lumbridge castle")
+			.text("BZOSZHM GZQKZM")
+			.npc(NpcID.CAPTAIN_HARLAN)
+			.location(new WorldPoint(3218, 3238, 0))
+			.area("North of Lumbridge castle")
 			.question("How many snakeskins are needed in order to craft 44 boots, 29 vambraces and 34 bandanas?")
 			.answer("666")
 			.build(),
