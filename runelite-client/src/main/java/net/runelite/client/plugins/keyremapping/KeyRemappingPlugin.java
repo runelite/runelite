@@ -137,6 +137,13 @@ public class KeyRemappingPlugin extends Plugin
 			return false;
 		}
 
+		// The name change interface is open and focused
+		Widget nameChangeMenu = client.getWidget(InterfaceID.DisplaynameMenu.ENTERNAME);
+		if (nameChangeMenu != null && client.getVarcIntValue(VarClientID.DISPLAYNAME_INPUT_LISTENING) == 1)
+		{
+			return false;
+		}
+
 		if (client.getFocusedInputFieldWidget() != null)
 		{
 			return false;
