@@ -190,6 +190,55 @@ public class BankPlugin extends Plugin
 		}
 	};
 
+	private final KeyListener toggleNoteHotkeyListener = new KeyListener()
+	{
+		@Override
+		public void keyTyped(KeyEvent e)
+		{
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			Keybind keybind = config.toggleNoteKeybind();
+			if (!keybind.matches(e))
+			{
+				return;
+			}
+
+			Widget bankContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
+			if (bankContainer == null || bankContainer.isSelfHidden())
+			{
+				return;
+			}
+
+			clientThread.invoke(() ->
+			{
+				Widget noteButton = client.getWidget(InterfaceID.Bankmain.NOTE);
+				if (noteButton == null || noteButton.isHidden())
+				{
+					return;
+				}
+				Object[] onOp = noteButton.getOnOpListener();
+				if (onOp == null)
+				{
+					return;
+				}
+				log.debug("Note hotkey pressed");
+				client.createScriptEventBuilder(onOp)
+					.setOp(1)
+					.build()
+					.run();
+			});
+			e.consume();
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+		}
+	};
+
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
 	{
@@ -201,12 +250,14 @@ public class BankPlugin extends Plugin
 	{
 		bankOpen = false;
 		keyManager.registerKeyListener(searchHotkeyListener);
+		keyManager.registerKeyListener(toggleNoteHotkeyListener);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		keyManager.unregisterKeyListener(searchHotkeyListener);
+		keyManager.unregisterKeyListener(toggleNoteHotkeyListener);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 		bankOpen = false;
