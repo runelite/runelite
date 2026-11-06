@@ -37,6 +37,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -76,7 +77,9 @@ class InventoryViewerOverlay extends OverlayPanel
 			return null;
 		}
 
-		if ((client.getVarcIntValue(VarClientID.TOPLEVEL_PANEL) == 3 || client.getWidget(InterfaceID.Bankmain.UNIVERSE) != null)
+		final Widget bankWidget = client.getWidget(InterfaceID.Bankmain.UNIVERSE);
+
+		if ((client.getVarcIntValue(VarClientID.TOPLEVEL_PANEL) == 3 || (bankWidget != null && !bankWidget.isHidden()))
 				&& config.hideIfInventoryActive())
 		{
 			return null;
