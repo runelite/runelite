@@ -383,7 +383,7 @@ public interface GroundItemsConfig extends Config
 	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
 	{
-		return 250;
+		return 0;
 	}
 
 	@ConfigItem(
