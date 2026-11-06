@@ -140,6 +140,13 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
 		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
+	private static final Pattern RING_OF_PURSUIT_CHECK_PATTERN = Pattern.compile(
+		"Your ring of pursuit has (\\d{1,2}) charges? left\\."
+	);
+	private static final Pattern RING_OF_PURSUIT_USED_PATTERN = Pattern.compile(
+		"Your ring of pursuit reveals the entire trail to you\\. (?:It has (\\d{1,2}) charges? left\\.|It then crumbles to dust\\.)"
+	);
+	private static final String RING_OF_PURSUIT_BREAK_TEXT = "Your ring of pursuit has crumbled to dust.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -150,6 +157,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
+	private static final int MAX_RING_OF_PURSUIT_CHARGES = 10;
 
 	private boolean varrockPlatebodySmeltTwo;
 
@@ -265,6 +273,8 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+			Matcher ringOfPursuitCheckMatcher = RING_OF_PURSUIT_CHECK_PATTERN.matcher(message);
+			Matcher ringOfPursuitUsedMatcher = RING_OF_PURSUIT_USED_PATTERN.matcher(message);
 
 			if (message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -458,6 +468,23 @@ public class ItemChargePlugin extends Plugin
 				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
+			else if (ringOfPursuitCheckMatcher.find())
+			{
+				updateRingOfPursuitCharges(Integer.parseInt(ringOfPursuitCheckMatcher.group(1)));
+			}
+			else if (ringOfPursuitUsedMatcher.find())
+			{
+				final String found = ringOfPursuitUsedMatcher.group(1);
+				if (found == null)
+				{
+					updateRingOfPursuitCharges(MAX_RING_OF_PURSUIT_CHARGES);
+					notifier.notify(config.ringOfPursuitNotification(), RING_OF_PURSUIT_BREAK_TEXT);
+				}
+				else
+				{
+					updateRingOfPursuitCharges(Integer.parseInt(found));
+				}
+			}
 
 			varrockPlatebodySmeltTwo = message.equals(RING_OF_FORGING_VARROCK_PLATEBODY);
 		}
@@ -518,6 +545,10 @@ public class ItemChargePlugin extends Plugin
 						case ItemID.EXPEDITIOUS_BRACELET:
 							log.debug("Reset expeditious bracelet");
 							updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
+							break;
+						case ItemID.RING_OF_PURSUIT:
+							log.debug("Reset ring of pursuit");
+							updateRingOfPursuitCharges(MAX_RING_OF_PURSUIT_CHARGES);
 							break;
 					}
 				}
@@ -583,6 +614,12 @@ public class ItemChargePlugin extends Plugin
 	private void updateBraceletOfClayCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
+
+	private void updateRingOfPursuitCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_RING_OF_PURSUIT, value);
 		updateInfoboxes();
 	}
 
