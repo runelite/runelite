@@ -42,6 +42,7 @@ import net.runelite.api.Player;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.AmbientSoundEffectCreated;
 import net.runelite.api.events.AreaSoundEffectPlayed;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.SoundEffectPlayed;
@@ -131,6 +132,8 @@ public class MusicPlugin extends Plugin
 
 	@Nullable
 	private MusicState currentMusicFilter = null;
+
+	private int preFocusLossMusicVolume = -1;
 
 	@Override
 	protected void startUp()
@@ -461,5 +464,34 @@ public class MusicPlugin extends Plugin
 		{
 			client.getAmbientSoundEffects().clear();
 		}
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!musicConfig.muteMusicOnFocusLoss())
+		{
+			return;
+		}
+
+		clientThread.invoke(() ->
+		{
+			if (!focusChanged.isFocused())
+			{
+				if (preFocusLossMusicVolume == -1)
+				{
+					preFocusLossMusicVolume = client.getMusicVolume();
+					// Use minimum non-zero value to keep music stream alive.
+					// Setting to 0 stops the current track entirely & the game will not
+					// resume playback.
+					client.setMusicVolume(1);
+				}
+			}
+			else if (preFocusLossMusicVolume != -1)
+			{
+				client.setMusicVolume(preFocusLossMusicVolume);
+				preFocusLossMusicVolume = -1;
+			}
+		});
 	}
 }
