@@ -115,7 +115,10 @@ class MotherlodeSceneOverlay extends Overlay
 				LocalPoint location = rock.getLocalLocation();
 				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 				{
-					renderRock(graphics, rock);
+					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(location))
+					{
+						renderRock(graphics, rock);
+					}
 				}
 			}
 		}
