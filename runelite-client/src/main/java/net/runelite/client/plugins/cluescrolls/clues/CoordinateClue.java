@@ -79,12 +79,12 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT025)
 			.location(new WorldPoint(3184, 3150, 0))
-			.directions("South of Lumbridge Swamp.")
+			.directions("Southern Lumbridge Swamp.")
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT012)
 			.location(new WorldPoint(3217, 3177, 0))
-			.directions("East of Lumbridge Swamp.")
+			.directions("Eastern Lumbridge Swamp.")
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT010)
@@ -139,7 +139,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT008)
 			.location(new WorldPoint(2848, 3296, 0))
-			.directions("North of Crandor island.")
+			.directions("Northern Crandor island.")
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT022)
@@ -169,7 +169,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT015)
 			.location(new WorldPoint(3430, 3388, 0))
-			.directions("West of Mort Myre Swamp (BKR).")
+			.directions("Western Mort Myre Swamp (BKR).")
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT011)
@@ -179,12 +179,12 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_EXP1)
 			.location(new WorldPoint(2594, 2899, 0))
-			.directions("South-east of Feldip Hills, by the crimson swifts (AKS).")
+			.directions("Southeastern Feldip Hills, by the crimson swifts (AKS).")
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT019)
 			.location(new WorldPoint(2387, 3435, 0))
-			.directions("West of Tree Gnome Stronghold, near the pen containing terrorbirds.")
+			.directions("Western Tree Gnome Stronghold, near the pen containing terrorbirds.")
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT006)
@@ -194,7 +194,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_EXP7)
 			.location(new WorldPoint(2381, 3468, 0))
-			.directions("West of Tree Gnome Stronghold, north of the pen with terrorbirds.")
+			.directions("Western Tree Gnome Stronghold, north of the pen with terrorbirds.")
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT024)
@@ -398,13 +398,13 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_HARD_SEXTANT019)
 			.location(new WorldPoint(2950, 2902, 0))
-			.directions("South-east of Kharazi Jungle.")
+			.directions("Southeastern Kharazi Jungle.")
 			.enemy(SARADOMIN_WIZARD)
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_HARD_SEXTANT017)
 			.location(new WorldPoint(2775, 2891, 0))
-			.directions("South-west of Kharazi Jungle.")
+			.directions("Southwestern Kharazi Jungle.")
 			.enemy(SARADOMIN_WIZARD)
 			.build(),
 		CoordinateClue.builder()
@@ -669,7 +669,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_SEXTANT_EXP4)
 			.location(new WorldPoint(3828, 2848, 0))
-			.directions("East of Harmony Island.")
+			.directions("Eastern Harmony Island.")
 			.enemy(ARMADYLEAN_OR_BANDOSIAN_GUARD)
 			.build(),
 		CoordinateClue.builder()
@@ -687,7 +687,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_SEXTANT_EXP1)
 			.location(new WorldPoint(3822, 3562, 0))
-			.directions("North-east of Dragontooth Island. Bring a Ghostspeak Amulet and 25 Ecto-tokens to reach the island.")
+			.directions("Northeastern Dragontooth Island. Bring a Ghostspeak Amulet and 25 Ecto-tokens to reach the island.")
 			.enemy(ARMADYLEAN_OR_BANDOSIAN_GUARD)
 			.build(),
 		CoordinateClue.builder()
@@ -705,7 +705,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_SEXTANT_EXP12)
 			.location(new WorldPoint(2697, 2705, 0))
-			.directions("South-west of Ape Atoll.")
+			.directions("Southwestern Ape Atoll.")
 			.enemy(ARMADYLEAN_OR_BANDOSIAN_GUARD)
 			.build(),
 		CoordinateClue.builder()
