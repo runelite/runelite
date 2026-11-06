@@ -52,6 +52,7 @@ import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_SELL;
 import static net.runelite.api.GrandExchangeOfferState.EMPTY;
 import net.runelite.api.ItemComposition;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
@@ -69,6 +70,7 @@ public class GrandExchangeOfferSlot extends JPanel
 	private static final ImageIcon LEFT_ARROW_ICON;
 
 	private final GrandExchangePlugin grandExchangePlugin;
+	private final RuneLiteConfig runeLiteConfig;
 
 	private final JPanel container = new JPanel();
 	private final CardLayout cardLayout = new CardLayout();
@@ -80,6 +82,7 @@ public class GrandExchangeOfferSlot extends JPanel
 	private final JLabel itemPrice = new JLabel();
 	private final JLabel offerSpent = new JLabel();
 
+	final JMenuItem openGeLink = new JMenuItem();
 	private final ThinProgressBar progressBar = new ThinProgressBar();
 
 	private boolean showingFace = true;
@@ -95,9 +98,10 @@ public class GrandExchangeOfferSlot extends JPanel
 	 * This (sub)panel is used for each GE slot displayed
 	 * in the sidebar
 	 */
-	GrandExchangeOfferSlot(GrandExchangePlugin grandExchangePlugin)
+	GrandExchangeOfferSlot(GrandExchangePlugin grandExchangePlugin, RuneLiteConfig runeLiteConfig)
 	{
 		this.grandExchangePlugin = grandExchangePlugin;
+		this.runeLiteConfig = runeLiteConfig;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -249,7 +253,29 @@ public class GrandExchangeOfferSlot extends JPanel
 			final JPopupMenu popupMenu = new JPopupMenu();
 			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-			final JMenuItem openGeLink = new JMenuItem("Open Grand Exchange website");
+			/* toggle for runelite cfg's Use Actively Traded Prices */
+			popupMenu.addPopupMenuListener(new javax.swing.event.PopupMenuListener()
+			{
+				@Override
+				public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e)
+				{
+					boolean useWikiPrices = runeLiteConfig.useWikiItemPrices();
+					openGeLink.setText(useWikiPrices ? "Open RuneScape Wiki prices website" : "Open Grand Exchange website");
+				}
+
+				@Override
+				public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e)
+				{
+
+				}
+
+				@Override
+				public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e)
+				{
+
+				}
+			});
+
 			openGeLink.addActionListener(e -> grandExchangePlugin.openGeLink(offerItem.getMembersName(), offerItem.getId()));
 			popupMenu.add(openGeLink);
 
