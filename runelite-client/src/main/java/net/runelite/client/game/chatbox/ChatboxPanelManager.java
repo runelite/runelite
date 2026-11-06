@@ -126,6 +126,7 @@ public class ChatboxPanelManager
 		}
 
 		currentInput = input;
+		keyManager.setTextInputActive(true);
 		client.setVarcIntValue(VarClientID.MESLAYERMODE, InputType.RUNELITE_CHATBOX_PANEL.getType());
 		client.getWidget(InterfaceID.Chatbox.MES_TEXT).setHidden(true);
 		client.getWidget(InterfaceID.Chatbox.MES_TEXT2).setHidden(true);
@@ -196,6 +197,7 @@ public class ChatboxPanelManager
 			mouseManager.unregisterMouseWheelListener((MouseWheelListener) currentInput);
 		}
 		currentInput = null;
+		keyManager.setTextInputActive(false);
 	}
 
 	public Widget getContainerWidget()
