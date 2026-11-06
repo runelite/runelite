@@ -26,15 +26,18 @@
 package net.runelite.client.plugins.inventorygrid;
 
 import com.google.inject.Inject;
-import java.awt.AlphaComposite;
+
+import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Client;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -67,6 +70,11 @@ class InventoryGridOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (config.showHitboxes())
+		{
+			renderHitboxOverlay(graphics);
+		}
+
 		final Widget draggingWidget = client.getDraggedWidget();
 		if (draggingWidget == null)
 		{
@@ -155,5 +163,27 @@ class InventoryGridOverlay extends Overlay
 		graphics.setComposite(AlphaComposite.SrcOver.derive(0.3f));
 		graphics.drawImage(draggedItemImage, x, y, null);
 		graphics.setComposite(AlphaComposite.SrcOver);
+	}
+
+	private void renderHitboxOverlay(Graphics2D graphics)
+	{
+		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+		if (inventoryWidget == null || inventoryWidget.isHidden())
+		{
+			return;
+		}
+
+		Widget[] items = inventoryWidget.getChildren();
+		if (items != null)
+		{
+			Color hitboxOutlineColor = config.hitboxColor();
+			graphics.setColor(hitboxOutlineColor);
+
+			for (Widget item : items)
+			{
+				Rectangle bounds = item.getBounds();
+				graphics.draw(bounds);
+			}
+		}
 	}
 }
