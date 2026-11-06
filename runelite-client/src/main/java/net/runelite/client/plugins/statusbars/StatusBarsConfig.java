@@ -119,4 +119,14 @@ public interface StatusBarsConfig extends Config
 	{
 		return BarRenderer.DEFAULT_WIDTH;
 	}
+
+	@ConfigItem(
+			keyName = "opaqueBars",
+			name = "Opaque Bars",
+			description = "Removes the semi-transparency effect from bars."
+	)
+	default boolean enableOpaque()
+	{
+		return BarRenderer.DEFAULT_OPAQUE;
+	}
 }

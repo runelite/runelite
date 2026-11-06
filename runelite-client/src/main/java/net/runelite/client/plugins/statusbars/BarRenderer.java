@@ -37,8 +37,11 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 @RequiredArgsConstructor
 class BarRenderer
 {
-	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
-	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
+	private static final int SEMI_BACKGROUND_TRANSPARENCY = 150;
+	private static final int OPAQUE_BACKGROUND_TRANSPARENCY = 255;
+	private static final Color SEMI_BACKGROUND = new Color(0, 0, 0, SEMI_BACKGROUND_TRANSPARENCY);
+	private static final Color OPAQUE_BACKGROUND = new Color(0, 0, 0, OPAQUE_BACKGROUND_TRANSPARENCY);
+	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, SEMI_BACKGROUND_TRANSPARENCY);
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int BORDER_SIZE = 1;
@@ -46,6 +49,7 @@ class BarRenderer
 	static final int DEFAULT_WIDTH = 20;
 	static final int MIN_WIDTH = 3;
 	static final int MAX_WIDTH = 40;
+	static final boolean DEFAULT_OPAQUE = false;
 	private final Supplier<Integer> maxValueSupplier;
 	private final Supplier<Integer> currentValueSupplier;
 	private final Supplier<Integer> healSupplier;
@@ -76,7 +80,9 @@ class BarRenderer
 		final Color fill = colorSupplier.get();
 		refreshSkills();
 
-		graphics.setColor(BACKGROUND);
+		Color backgroundColor = getBackgroundColor(config);
+		graphics.setColor(backgroundColor);
+
 		graphics.drawRect(x, y, width - BORDER_SIZE, height - BORDER_SIZE);
 		graphics.fillRect(x, y, width, height);
 
@@ -175,5 +181,17 @@ class BarRenderer
 		}
 
 		return (int) Math.round(ratio * size);
+	}
+
+	private static Color getBackgroundColor(StatusBarsConfig config)
+	{
+		if (config.enableOpaque())
+		{
+			return OPAQUE_BACKGROUND;
+		}
+		else
+		{
+			return SEMI_BACKGROUND;
+		}
 	}
 }
