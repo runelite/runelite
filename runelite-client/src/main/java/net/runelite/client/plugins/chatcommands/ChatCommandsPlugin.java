@@ -2847,6 +2847,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "doom":
 				return "Doom of Mokhaiotl";
 
+			case "bryophyta":
+				return "Bryophyta chests opened";
+			case "obor":
+				return "Obor chests opened";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
