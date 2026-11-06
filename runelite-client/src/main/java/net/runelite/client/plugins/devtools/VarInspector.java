@@ -28,20 +28,30 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
@@ -55,11 +65,13 @@ import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.Text;
 
 class VarInspector extends DevToolsFrame
 {
@@ -79,6 +91,12 @@ class VarInspector extends DevToolsFrame
 			this.name = name;
 			checkBox = new JCheckBox(name, true);
 		}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
 	}
 
 	private final static int MAX_LOG_ENTRIES = 10_000;
@@ -90,8 +108,16 @@ class VarInspector extends DevToolsFrame
 	private final Client client;
 	private final ClientThread clientThread;
 	private final EventBus eventBus;
+	private final ConfigManager configManager;
 
 	private final JPanel tracker = new JPanel();
+	@SuppressWarnings({"PMD.ImmutableField"})
+	private Set<String> blacklist;
+	@SuppressWarnings({"PMD.ImmutableField"})
+	private Set<String> highlights;
+	private final JList<String> jList;
+	private final DefaultListModel<String> listModel;
+	private ListState state = ListState.BLACKLIST;
 
 	private int lastTick = 0;
 
@@ -101,12 +127,19 @@ class VarInspector extends DevToolsFrame
 	private Multimap<Integer, Integer> varbits;
 	private Map<Integer, Object> varcs = null;
 
+	private enum ListState
+	{
+		BLACKLIST,
+		HIGHLIGHT
+	}
+
 	@Inject
-	VarInspector(Client client, ClientThread clientThread, EventBus eventBus)
+	VarInspector(Client client, ClientThread clientThread, EventBus eventBus, ConfigManager configManager)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.eventBus = eventBus;
+		this.configManager = configManager;
 
 		setTitle("RuneLite Var Inspector");
 
@@ -142,7 +175,9 @@ class VarInspector extends DevToolsFrame
 			}
 		});
 
-		add(trackerScroller, BorderLayout.CENTER);
+		final JPanel leftSide = new JPanel();
+		leftSide.setLayout(new BorderLayout());
+		leftSide.add(trackerScroller, BorderLayout.CENTER);
 
 		final JPanel trackerOpts = new JPanel();
 		trackerOpts.setLayout(new FlowLayout());
@@ -159,19 +194,79 @@ class VarInspector extends DevToolsFrame
 		});
 		trackerOpts.add(clearBtn);
 
-		add(trackerOpts, BorderLayout.SOUTH);
+		leftSide.add(trackerOpts, BorderLayout.SOUTH);
+		add(leftSide, BorderLayout.CENTER);
+
+		blacklist = loadList("varInspectorBlacklist");
+		highlights = loadList("varInspectorHighlights");
+
+		final JPanel rightSide = new JPanel();
+		rightSide.setLayout(new BorderLayout());
+		rightSide.setBorder(new CompoundBorder(
+			BorderFactory.createMatteBorder(0, 1, 0, 0, ColorScheme.LIGHT_GRAY_COLOR),
+			BorderFactory.createEmptyBorder(0, 6, 0, 0)
+		));
+
+		listModel = new DefaultListModel<>();
+		changeState(ListState.BLACKLIST);
+		jList = new JList<>(listModel);
+		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane listScrollPane = new JScrollPane(jList);
+
+		final JButton blacklistButton = new JButton("Blacklist");
+		blacklistButton.addActionListener(e -> changeState(ListState.BLACKLIST));
+
+		final JButton highlightsButton = new JButton("Highlights");
+		highlightsButton.addActionListener(e -> changeState(ListState.HIGHLIGHT));
+
+		final JPanel topLeftRow = new JPanel();
+		topLeftRow.setLayout(new FlowLayout());
+		topLeftRow.add(blacklistButton);
+		topLeftRow.add(highlightsButton);
+
+		rightSide.add(topLeftRow, BorderLayout.NORTH);
+		rightSide.add(listScrollPane, BorderLayout.CENTER);
+
+		final JComboBox<VarType> typeComboBox = new JComboBox<>(VarType.values());
+		final JSpinner jSpinner = new JSpinner();
+		Component mySpinnerEditor = jSpinner.getEditor();
+		JFormattedTextField textField = ((JSpinner.DefaultEditor) mySpinnerEditor).getTextField();
+		textField.setColumns(5);
+
+		final JButton addButton = new JButton("Add");
+		addButton.addActionListener(e -> addToSet(typeComboBox, jSpinner));
+
+		final JButton removeButton = new JButton("Remove");
+		removeButton.addActionListener(e -> removeSelectedFromSet());
+
+		final JPanel bottomButtonRow = new JPanel();
+		bottomButtonRow.setLayout(new FlowLayout());
+		bottomButtonRow.add(addButton);
+		bottomButtonRow.add(typeComboBox);
+		bottomButtonRow.add(jSpinner);
+		bottomButtonRow.add(removeButton);
+
+		rightSide.add(bottomButtonRow, BorderLayout.SOUTH);
+
+		add(rightSide, BorderLayout.EAST);
 
 		pack();
 	}
 
-	private void addVarLog(VarType type, String name, int old, int neew)
+	private void addVarLog(VarType type, int id, String name, int old, int neew)
 	{
-		addVarLog(type, name, Integer.toString(old), Integer.toString(neew));
+		addVarLog(type, id, name, Integer.toString(old), Integer.toString(neew));
 	}
 
-	private void addVarLog(VarType type, String name, String old, String neew)
+	private void addVarLog(VarType type, int id, String name, String old, String neew)
 	{
 		if (!type.getCheckBox().isSelected())
+		{
+			return;
+		}
+
+		String key = getListKey(type, id);
+		if (blacklist.contains(key))
 		{
 			return;
 		}
@@ -190,7 +285,12 @@ class VarInspector extends DevToolsFrame
 				));
 				tracker.add(header);
 			}
-			tracker.add(new JLabel(String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew)));
+			JLabel label = new JLabel(String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew));
+			if (highlights.contains(key))
+			{
+				label.setForeground(ColorScheme.BRAND_ORANGE);
+			}
+			tracker.add(label);
 
 			// Cull very old stuff
 			while (tracker.getComponentCount() > MAX_LOG_ENTRIES)
@@ -220,8 +320,8 @@ class VarInspector extends DevToolsFrame
 				// Example: 4101 collides with 4104-4129
 				client.setVarbitValue(oldVarps2, i, neew);
 
-				final String name = VARBIT_NAMES.getOrDefault(i, Integer.toString(i));
-				addVarLog(VarType.VARBIT, name, old, neew);
+				final String name = getVarName(VARBIT_NAMES, i);
+				addVarLog(VarType.VARBIT, i, name, old, neew);
 			}
 		}
 
@@ -230,16 +330,8 @@ class VarInspector extends DevToolsFrame
 		int neew = varps[index];
 		if (old != neew)
 		{
-			String name = VARP_NAMES.get(index);
-			if (name != null)
-			{
-				name += "(" + index + ")";
-			}
-			else
-			{
-				name = Integer.toString(index);
-			}
-			addVarLog(VarType.VARP, name, old, neew);
+			String name = getVarName(VARP_NAMES, index);
+			addVarLog(VarType.VARP, index, name, old, neew);
 		}
 
 		System.arraycopy(client.getVarps(), 0, oldVarps, 0, oldVarps.length);
@@ -256,8 +348,8 @@ class VarInspector extends DevToolsFrame
 
 		if (old != neew)
 		{
-			final String name = VARC_NAMES.getOrDefault(idx, Integer.toString(idx));
-			addVarLog(VarType.VARCINT, name, old, neew);
+			final String name = getVarName(VARC_NAMES, idx);
+			addVarLog(VarType.VARCINT, idx, name, old, neew);
 		}
 	}
 
@@ -271,7 +363,7 @@ class VarInspector extends DevToolsFrame
 
 		if (!Objects.equals(old, neew))
 		{
-			final String name = VARC_NAMES.getOrDefault(idx, Integer.toString(idx));
+			final String name = getVarName(VARC_NAMES, idx);
 			if (old != null)
 			{
 				old = "\"" + old + "\"";
@@ -288,7 +380,7 @@ class VarInspector extends DevToolsFrame
 			{
 				neew = "null";
 			}
-			addVarLog(VarType.VARCSTR, name, old, neew);
+			addVarLog(VarType.VARCSTR, idx, name, old, neew);
 		}
 	}
 
@@ -328,10 +420,91 @@ class VarInspector extends DevToolsFrame
 	@Override
 	public void close()
 	{
+		configManager.setConfiguration("devtools", "varInspectorHighlights",
+			Text.toCSV(new ArrayList<>(highlights)));
+		configManager.setConfiguration("devtools", "varInspectorBlacklist",
+			Text.toCSV(new ArrayList<>(blacklist)));
 		super.close();
 		tracker.removeAll();
 		eventBus.unregister(this);
 		varcs = null;
 		varbits = null;
+	}
+
+	private Set<String> loadList(String key)
+	{
+		String config = configManager.getConfiguration("devtools", key);
+		if (config == null)
+		{
+			return new HashSet<>();
+		}
+
+		return new HashSet<>(Text.fromCSV(config));
+	}
+
+	private void changeState(ListState state)
+	{
+		this.state = state;
+		refreshList();
+	}
+
+	private void addToSet(JComboBox<VarType> typeComboBox, JSpinner spinner)
+	{
+		VarType type = (VarType) typeComboBox.getSelectedItem();
+		int var = (Integer) spinner.getValue();
+		getSet().add(getListKey(type, var));
+		refreshList();
+		spinner.setValue(0);
+	}
+
+	private void removeSelectedFromSet()
+	{
+		int index = jList.getSelectedIndex();
+
+		if (index == -1)
+		{
+			return;
+		}
+
+		String var = listModel.get(index);
+		getSet().remove(var);
+		refreshList();
+	}
+
+	private void refreshList()
+	{
+		listModel.clear();
+		Set<String> set = getSet();
+
+		for (String i : set)
+		{
+			listModel.addElement(i);
+		}
+	}
+
+	private Set<String> getSet()
+	{
+		if (state == ListState.BLACKLIST)
+		{
+			return blacklist;
+		}
+
+		return highlights;
+	}
+
+	private static String getListKey(VarType type, int id)
+	{
+		return type.getName() + ":" + id;
+	}
+
+	private static String getVarName(Map<Integer, String> names, int id)
+	{
+		String name = names.get(id);
+		if (name != null)
+		{
+			return name + "(" + id + ")";
+		}
+
+		return Integer.toString(id);
 	}
 }
