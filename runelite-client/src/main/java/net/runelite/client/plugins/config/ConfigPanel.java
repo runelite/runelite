@@ -477,7 +477,9 @@ class ConfigPanel extends PluginPanel
 		JSpinner spinner = new JSpinner(model);
 		Component editor = spinner.getEditor();
 		JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
-		spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+		int fieldWidth = range == null ? SPINNER_FIELD_WIDTH
+			: Math.max(Integer.toString(min).length(), Integer.toString(max).length());
+		spinnerTextField.setColumns(fieldWidth);
 		spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
 
 		Units units = cid.getUnits();
