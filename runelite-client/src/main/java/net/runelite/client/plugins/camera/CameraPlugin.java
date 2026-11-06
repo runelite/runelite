@@ -55,6 +55,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.SceneMirrorPicking;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
@@ -72,6 +73,9 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 )
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
+	@Inject
+	private SceneMirrorPicking sceneMirrorPicking;
+
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
 
 	private boolean controlDown;
@@ -154,7 +158,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		client.setCameraMouseButtonMask(0);
 		client.setCameraSpeed(1f);
 		client.setCameraPitchRelaxerEnabled(false);
-		client.setInvertYaw(false);
+		clientThread.invoke(() -> sceneMirrorPicking.setCameraYawPreference(client, false));
 		client.setInvertPitch(false);
 		client.setCameraShakeDisabled(false);
 		keyManager.unregisterKeyListener(this);
@@ -195,7 +199,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		client.setCameraMouseButtonMask((config.rightClickMovesCamera() && !config.rightClickMenuBlocksCamera()) ? ((1 << MouseEvent.BUTTON2) | (1 << 4 /* button 4 */)) : 0);
 		client.setCameraSpeed((float) config.cameraSpeed());
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
-		client.setInvertYaw(config.invertYaw());
+		clientThread.invoke(() -> sceneMirrorPicking.setCameraYawPreference(client, config.invertYaw()));
 		client.setInvertPitch(config.invertPitch());
 		client.setCameraShakeDisabled(config.disableCameraShake());
 	}
