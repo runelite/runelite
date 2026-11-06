@@ -291,10 +291,13 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onRemovedFriend(RemovedFriend event)
 	{
-		// Delete a friend's note if they are removed
-		final String displayName = Text.toJagexName(event.getNameable().getName());
-		log.debug("Remove friend: '{}'", displayName);
-		setFriendNote(displayName, null);
+		if (!config.keepNoteOnDelete())
+		{
+			// Delete a friend's note if they are removed
+			final String displayName = Text.toJagexName(event.getNameable().getName());
+			log.debug("Remove friend: '{}'", displayName);
+			setFriendNote(displayName, null);
+		}
 	}
 
 	@Subscribe
