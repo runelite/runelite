@@ -189,6 +189,10 @@ public class InterfaceStylesPlugin extends Plugin
 					.setDeprioritized(deprioritized);
 				changed = true;
 			}
+			else if (type == MenuAction.WALK)
+			{
+				newMenus[newIdx++] = menuEntry.setTarget("");
+			}
 			else
 			{
 				newMenus[newIdx++] = menuEntry;
