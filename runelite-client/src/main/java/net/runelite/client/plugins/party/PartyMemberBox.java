@@ -136,15 +136,15 @@ class PartyMemberBox extends JPanel
 
 		add(container, BorderLayout.NORTH);
 
-		update();
+		update(false);
 	}
 
-	void update()
+	void update(boolean forceUpdateAvatar)
 	{
 		final PartyMember member = partyService.getMemberById(memberPartyData.getMemberId());
 
 		// Avatar
-		if (!avatarSet && member.getAvatar() != null)
+		if ((!avatarSet || forceUpdateAvatar) && member.getAvatar() != null)
 		{
 			ImageIcon icon = new ImageIcon(ImageUtil.resizeImage(member.getAvatar(), 32, 32));
 			icon.getImage().flush();
