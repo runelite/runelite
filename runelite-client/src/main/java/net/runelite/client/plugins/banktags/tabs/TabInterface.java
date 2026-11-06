@@ -114,6 +114,7 @@ public class TabInterface
 	private static final String TAG_INVENTORY = "Tag-inventory";
 	private static final String TAGTABS = "tagtabs";
 	private static final String OPEN_TAB_MENU = "View tag tabs";
+	private static final String FILTER_TAB_MENU = "Filter tag tabs";
 	static final String ENABLE_LAYOUT = "Enable layout";
 	static final String DISABLE_LAYOUT = "Disable layout";
 	static final String REMOVE_LAYOUT = "Remove-layout";
@@ -140,6 +141,7 @@ public class TabInterface
 	private static final int NEWTAB_OP_NEW_TAB = 1;
 	private static final int NEWTAB_OP_IMPORT_TAB = 2;
 	private static final int NEWTAB_OP_OPEN_TAB_MENU = 3;
+	private static final int NEWTAB_OP_FILTER_TAB_MENU = 4;
 	private static final int TAGTAB_CHILD_OFFSET = 4;
 
 	private final Client client;
@@ -162,6 +164,7 @@ public class TabInterface
 	private int activeOptions;
 	@Getter
 	private boolean tagTabActive;
+	private String tagTabFilter;
 	private int tagTabFirstChildIdx = -1;
 	private int tabScrollOffset;
 	private Instant startScroll = Instant.now();
@@ -343,6 +346,7 @@ public class TabInterface
 		newTab.setAction(NEWTAB_OP_NEW_TAB, NEW_TAB);
 		newTab.setAction(NEWTAB_OP_IMPORT_TAB, IMPORT_TAB);
 		newTab.setAction(NEWTAB_OP_OPEN_TAB_MENU, OPEN_TAB_MENU);
+		newTab.setAction(NEWTAB_OP_FILTER_TAB_MENU, FILTER_TAB_MENU);
 		newTab.setOnOpListener((JavaScriptCallback) this::handleNewTab);
 
 		tabManager.clear();
@@ -489,6 +493,9 @@ public class TabInterface
 			case NEWTAB_OP_OPEN_TAB_MENU:
 				client.setVarbit(VarbitID.BANK_CURRENTTAB, 0);
 				plugin.openTag(TAGTABS, null, 0);
+				break;
+			case NEWTAB_OP_FILTER_TAB_MENU:
+				filterTagTabs();
 				break;
 		}
 	}
@@ -1145,6 +1152,7 @@ public class TabInterface
 		activeLayout = layout;
 		activeOptions = options;
 		tagTabActive = TAGTABS.equals(tag);
+		tagTabFilter = null;
 		config.tab(tag);
 
 		if (relayout)
@@ -1159,6 +1167,7 @@ public class TabInterface
 		activeLayout = null;
 		activeOptions = 0;
 		tagTabActive = false;
+		tagTabFilter = null;
 		plugin.openTag(null, null);
 		config.tab("");
 
@@ -1289,6 +1298,44 @@ public class TabInterface
 		}
 	}
 
+	private boolean matchesTagTabFilter(TagTab tagTab)
+	{
+		return Strings.isNullOrEmpty(tagTabFilter)
+			|| tagTab.getTag().toLowerCase().contains(tagTabFilter);
+	}
+
+	/**
+	 * Opens a prompt which filters the tag tab tab as it is typed into.
+	 */
+	public void filterTagTabs()
+	{
+		if (!tagTabActive)
+		{
+			client.setVarbit(VarbitID.BANK_CURRENTTAB, 0);
+			plugin.openTag(TAGTABS, null, 0);
+		}
+
+		chatboxPanelManager.openTextInput("Filter tag tabs:")
+			.value(Strings.nullToEmpty(tagTabFilter))
+			.onChanged(filter -> clientThread.invoke(() -> applyTagTabFilter(filter)))
+			.onDone((Consumer<String>) filter -> clientThread.invoke(() -> applyTagTabFilter(filter)))
+			.build();
+	}
+
+	private void applyTagTabFilter(String filter)
+	{
+		String trimmed = filter == null ? "" : filter.trim().toLowerCase();
+		if (trimmed.equals(Strings.nullToEmpty(tagTabFilter)))
+		{
+			return;
+		}
+
+		tagTabFilter = trimmed;
+		// layoutBank rather than reset: reset runs MESSAGE_LAYER_CLOSE, which closes the
+		// filter prompt the player is still typing into.
+		bankSearch.layoutBank();
+	}
+
 	private int rebuildTagTabTab()
 	{
 		int itemX = BANK_ITEM_START_X;
@@ -1319,6 +1366,11 @@ public class TabInterface
 		idx = tagTabFirstChildIdx;
 		for (TagTab tagTab : tabManager.getTabs())
 		{
+			if (!matchesTagTabFilter(tagTab))
+			{
+				continue;
+			}
+
 			Widget menu = parent.getChild(idx++);
 			if (menu == null)
 			{
