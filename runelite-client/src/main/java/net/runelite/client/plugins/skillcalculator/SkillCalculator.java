@@ -152,13 +152,13 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldXPMultiplier().addFocusListener(buildFocusAdapter(e -> onFieldXPMultiplierUpdated()));
 	}
 
-	void openCalculator(CalculatorType calculatorType, boolean forceReload)
+	void openCalculator(CalculatorType calculatorType, boolean forceReload, boolean reclick)
 	{
 		// Update internal skill/XP values.
 		currentXP = client.getSkillExperience(calculatorType.getSkill());
 		currentLevel = Experience.getLevelForXp(currentXP);
 
-		if (forceReload || currentCalculator != calculatorType)
+		if (forceReload || reclick || currentCalculator != calculatorType)
 		{
 			currentCalculator = calculatorType;
 			currentBonuses.clear();
@@ -176,29 +176,33 @@ class SkillCalculator extends JPanel
 				targetXP = Experience.getXpForLevel(targetLevel);
 			}
 
-			// Remove all components (action slots) from this panel.
-			removeAll();
-
-			// Clear the search bar
-			searchBar.setText(null);
-
-			// Clear the combined action slots
-			clearCombinedSlots();
-
-			// Add in checkboxes for available skill bonuses if we're not on a F2P world.
-			if (client.getWorldType().contains(WorldType.MEMBERS))
+			if (!reclick)
 			{
-				renderBonusOptions();
+				// Remove all components (action slots) from this panel.
+				removeAll();
+
+				// Clear the search bar
+				searchBar.setText(null);
+
+				// Clear the combined action slots
+				clearCombinedSlots();
+
+
+				// Add in checkboxes for available skill bonuses if we're not on a F2P world.
+				if (client.getWorldType().contains(WorldType.MEMBERS))
+				{
+					renderBonusOptions();
+				}
+
+				// Add the combined action slot.
+				add(combinedActionSlot);
+
+				// Add the search bar
+				add(searchBar);
+
+				// Create action slots for the skill actions.
+				renderActionSlots();
 			}
-
-			// Add the combined action slot.
-			add(combinedActionSlot);
-
-			// Add the search bar
-			add(searchBar);
-
-			// Create action slots for the skill actions.
-			renderActionSlots();
 		}
 
 		// Update the input fields.
