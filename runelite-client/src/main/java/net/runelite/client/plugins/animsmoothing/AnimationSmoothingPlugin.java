@@ -99,6 +99,10 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.BASILISK_KNIGHT_MELEE:
 
 			case AnimationID.WGS_HEROIC_CLIMB_SUCCESS_TWO:
+
+			case AnimationID.RAIDS_OLMS_LAIR_ENTRANCE:
+
+			case AnimationID.MACHINERY_ALCHEMY01_CONVEYOR01_IDLE01:
 				return false;
 
 			default:
