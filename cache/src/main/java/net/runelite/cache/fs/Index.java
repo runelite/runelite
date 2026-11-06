@@ -26,7 +26,9 @@ package net.runelite.cache.fs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -61,6 +63,7 @@ public class Index
 	private int compression; // compression method of this index's data in 255
 
 	private final List<Archive> archives = new ArrayList<>();
+	private volatile Map<Integer, Archive> archivesByName;
 
 	public Index(int id)
 	{
@@ -83,6 +86,7 @@ public class Index
 		idx = -idx - 1;
 		Archive archive = new Archive(this, id);
 		this.archives.add(idx, archive);
+		invalidateNameCache();
 		return archive;
 	}
 
@@ -127,20 +131,34 @@ public class Index
 
 	public boolean removeArchive(Archive archive)
 	{
-		return archives.remove(archive);
+		boolean removed = archives.remove(archive);
+		if (removed)
+		{
+			invalidateNameCache();
+		}
+		return removed;
 	}
 
 	public Archive findArchiveByName(String name)
 	{
 		int hash = Djb2.hash(name);
-		for (Archive a : archives)
+		Map<Integer, Archive> byName = archivesByName;
+		if (byName == null)
 		{
-			if (a.getNameHash() == hash)
+			byName = new HashMap<>();
+			for (Archive archive : archives)
 			{
-				return a;
+				// Archives are ordered by id. Preserve the first match for duplicate hashes.
+				byName.putIfAbsent(archive.getNameHash(), archive);
 			}
+			archivesByName = byName;
 		}
-		return null;
+		return byName.get(hash);
+	}
+
+	void invalidateNameCache()
+	{
+		archivesByName = null;
 	}
 
 	public IndexData toIndexData()
