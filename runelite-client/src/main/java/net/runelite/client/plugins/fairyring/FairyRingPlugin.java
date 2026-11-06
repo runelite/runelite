@@ -57,18 +57,19 @@ import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import net.runelite.api.events.MenuOpened;
 
 @Slf4j
-@PluginDescriptor(
-	name = "Fairy Rings",
-	description = "Show the location of the fairy ring teleport",
-	tags = {"teleportation"}
-)
+@PluginDescriptor(name = "Fairy Rings", description = "Show the location of the fairy ring teleport", tags = {
+		"teleportation" })
 public class FairyRingPlugin extends Plugin
 {
-	private static final String[] leftDial = {"A", "D", "C", "B"};
-	private static final String[] middleDial = {"I", "L", "K", "J"};
-	private static final String[] rightDial = {"P", "S", "R", "Q"};
+	private static final String[] leftDial = { "A", "D", "C", "B" };
+	private static final String[] middleDial = { "I", "L", "K", "J" };
+	private static final String[] rightDial = { "P", "S", "R", "Q" };
+	private static final Pattern FAVORITE_FAIRY_RING_PATTERN = Pattern.compile("^([A-Z]{3})\\s+Fairy ring$");
 
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit Tags";
 
@@ -98,7 +99,8 @@ public class FairyRingPlugin extends Plugin
 	@Override
 	public void resetConfiguration()
 	{
-		List<String> extraKeys = configManager.getConfigurationKeys(FairyRingConfig.CONFIG_GROUP + '.' + FairyRingConfig.CONFIG_GROUP_TAGS);
+		List<String> extraKeys = configManager
+				.getConfigurationKeys(FairyRingConfig.CONFIG_GROUP + '.' + FairyRingConfig.CONFIG_GROUP_TAGS);
 		for (String prefix : extraKeys)
 		{
 			List<String> keys = configManager.getConfigurationKeys(prefix);
@@ -110,6 +112,77 @@ public class FairyRingPlugin extends Plugin
 					configManager.unsetConfiguration(str[0], str[1]);
 				}
 			}
+		}
+	}
+
+	private boolean replaceDisplayedCodeWithDestination(MenuEntry entry)
+	{
+		String option = Text.removeTags(entry.getOption());
+		if (option == null)
+		{
+			return false;
+		}
+
+		Matcher matcher = FAVORITE_FAIRY_RING_PATTERN.matcher(option.trim());
+		if (!matcher.find())
+		{
+			return false;
+		}
+
+		String code = matcher.group(1);
+		FairyRing ring = FairyRing.forCode(code);
+		if (ring == null)
+		{
+			return false;
+		}
+
+		entry.setOption(ring.getDestination());
+		return true;
+	}
+
+	@Subscribe
+	public void onMenuOpened(MenuOpened event)
+	{
+		if (!config.replaceFavoriteCodesWithDestinationNames())
+		{
+			return;
+		}
+
+		MenuEntry[] entries = event.getMenuEntries();
+		boolean changed = false;
+
+		for (MenuEntry entry : entries)
+		{
+			String option = Text.removeTags(entry.getOption());
+			if (!"Favourites Fairy ring".equals(option))
+			{
+				continue;
+			}
+
+			var subMenu = entry.getSubMenu();
+			if (subMenu == null)
+			{
+				continue;
+			}
+
+			MenuEntry[] subEntries = subMenu.getMenuEntries();
+			boolean subChanged = false;
+
+			for (MenuEntry subEntry : subEntries)
+			{
+				subChanged |= replaceDisplayedCodeWithDestination(subEntry);
+			}
+
+			if (subChanged)
+			{
+				subMenu.setMenuEntries(subEntries);
+				changed = true;
+			}
+		}
+
+		if (changed)
+		{
+			event.setMenuEntries(entries);
 		}
 	}
 
@@ -137,7 +210,7 @@ public class FairyRingPlugin extends Plugin
 			try
 			{
 				FairyRing fairyRingDestination = getFairyRingDestination(client.getVarbitValue(VarbitID.FAIRYRING_1),
-					client.getVarbitValue(VarbitID.FAIRYRING_2), client.getVarbitValue(VarbitID.FAIRYRING_3));
+						client.getVarbitValue(VarbitID.FAIRYRING_2), client.getVarbitValue(VarbitID.FAIRYRING_3));
 				destination = fairyRingDestination.getDestination();
 			}
 			catch (IllegalArgumentException ex)
@@ -156,9 +229,9 @@ public class FairyRingPlugin extends Plugin
 		{
 			client.setVarcStrValue(VarClientID.MESLAYERINPUT, "");
 			client.createScriptEventBuilder(widget.getOnOpListener())
-				.setOp(1)
-				.build()
-				.run();
+					.setOp(1)
+					.build()
+					.run();
 		}
 	}
 
@@ -176,7 +249,8 @@ public class FairyRingPlugin extends Plugin
 		}
 		else if ("fairyringFilterDbrow".equals(ev.getEventName()))
 		{
-			code = (String) client.getDBTableField(client.getIntStack()[client.getIntStackSize() - 2], DBTableID.Fairyring.COL_CODE, 0)[0];
+			code = (String) client.getDBTableField(client.getIntStack()[client.getIntStackSize() - 2],
+					DBTableID.Fairyring.COL_CODE, 0)[0];
 		}
 
 		if (code != null && !code.isEmpty())
@@ -193,9 +267,8 @@ public class FairyRingPlugin extends Plugin
 			var filter = client.getVarcStrValue(VarClientID.FAIRYRINGS_SEARCHSTRING).toLowerCase();
 
 			if (code.toLowerCase().contains(filter)
-				|| tags != null && tags.contains(filter)
-				|| getConfigTags(code).stream().anyMatch(s -> s.contains(filter))
-			)
+					|| tags != null && tags.contains(filter)
+					|| getConfigTags(code).stream().anyMatch(s -> s.contains(filter)))
 			{
 				client.getIntStack()[client.getIntStackSize() - 1] = 1;
 			}
@@ -216,32 +289,37 @@ public class FairyRingPlugin extends Plugin
 		}
 	}
 
-	private FairyRing getFairyRingDestination(int varbitValueDialLeft, int varbitValueDialMiddle, int varbitValueDialRight)
+	private FairyRing getFairyRingDestination(int varbitValueDialLeft, int varbitValueDialMiddle,
+			int varbitValueDialRight)
 	{
-		return FairyRing.valueOf(leftDial[varbitValueDialLeft] + middleDial[varbitValueDialMiddle] + rightDial[varbitValueDialRight]);
+		return FairyRing.valueOf(
+				leftDial[varbitValueDialLeft] + middleDial[varbitValueDialMiddle] + rightDial[varbitValueDialRight]);
 	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (WidgetUtil.componentToInterface(event.getActionParam1()) == InterfaceID.FAIRYRINGS_LOG
-			&& event.getOption().equals("Use code")
-			&& !event.getTarget().isEmpty())
+				&& event.getOption().equals("Use code")
+				&& !event.getTarget().isEmpty())
 		{
 			client.getMenu().createMenuEntry(-1)
-				.setParam0(event.getActionParam0())
-				.setParam1(event.getActionParam1())
-				.setTarget(event.getTarget())
-				.setOption(EDIT_TAGS_MENU_OPTION)
-				.setType(MenuAction.RUNELITE)
-				.setIdentifier(event.getIdentifier())
-				.onClick(this::setTagMenuOpen);
+					.setParam0(event.getActionParam0())
+					.setParam1(event.getActionParam1())
+					.setTarget(event.getTarget())
+					.setOption(EDIT_TAGS_MENU_OPTION)
+					.setType(MenuAction.RUNELITE)
+					.setIdentifier(event.getIdentifier())
+					.onClick(this::setTagMenuOpen);
 		}
 	}
 
 	private List<String> getConfigTags(String fairyRingCode)
 	{
-		String config = Optional.ofNullable(configManager.getConfiguration(FairyRingConfig.CONFIG_GROUP + '.' + FairyRingConfig.CONFIG_GROUP_TAGS, fairyRingCode)).orElse("").toLowerCase();
+		String config = Optional
+				.ofNullable(configManager.getConfiguration(
+						FairyRingConfig.CONFIG_GROUP + '.' + FairyRingConfig.CONFIG_GROUP_TAGS, fairyRingCode))
+				.orElse("").toLowerCase();
 		return Text.fromCSV(config);
 	}
 
@@ -249,11 +327,13 @@ public class FairyRingPlugin extends Plugin
 	{
 		if (Strings.isNullOrEmpty(tags))
 		{
-			configManager.unsetConfiguration(FairyRingConfig.CONFIG_GROUP + '.' + FairyRingConfig.CONFIG_GROUP_TAGS, fairyRingCode);
+			configManager.unsetConfiguration(FairyRingConfig.CONFIG_GROUP + '.' + FairyRingConfig.CONFIG_GROUP_TAGS,
+					fairyRingCode);
 		}
 		else
 		{
-			configManager.setConfiguration(FairyRingConfig.CONFIG_GROUP + '.' + FairyRingConfig.CONFIG_GROUP_TAGS, fairyRingCode, tags);
+			configManager.setConfiguration(FairyRingConfig.CONFIG_GROUP + '.' + FairyRingConfig.CONFIG_GROUP_TAGS,
+					fairyRingCode, tags);
 		}
 	}
 
@@ -263,12 +343,12 @@ public class FairyRingPlugin extends Plugin
 		String initialValue = Text.toCSV(getConfigTags(code));
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 		tagInput = chatboxPanelManager.openTextInput("Code " + code + " tags:")
-			.value(initialValue)
-			.onDone(s ->
-			{
-				setConfigTags(code, s);
-				clientThread.invokeLater(() -> clientThread.invokeLater(this::openSearch));
-			})
-			.build();
+				.value(initialValue)
+				.onDone(s ->
+				{
+					setConfigTags(code, s);
+					clientThread.invokeLater(() -> clientThread.invokeLater(this::openSearch));
+				})
+				.build();
 	}
 }
