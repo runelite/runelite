@@ -192,8 +192,10 @@ class ModelUploader
 
 				if (aX == -5000 || bX == -5000 || cX == -5000 || (aX - bX) * (cY - bY) - (cX - bX) * (aY - bY) > 0)
 				{
+					// the model bounds are not always exact and the distances are truncated, so a face can land
+					// just outside [0, diameter). Clamp it, since only that range of zsort was reset above.
 					int distance = radius + (distances[v1] + distances[v2] + distances[v3]) / 3;
-					assert distance >= 0 && distance < diameter;
+					distance = Math.max(0, Math.min(diameter - 1, distance));
 
 					if (zsortTail[distance] == (char) -1)
 					{
