@@ -46,6 +46,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
@@ -141,6 +142,10 @@ public class ItemChargePlugin extends Plugin
 		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
 
+	private static final Pattern QUETZAL_WHISTLE_CHECK_PATTERN = Pattern.compile(
+		"Your quetzal whistle has (\\d+) charges? remaining\\."
+	);
+
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORER_RING_CHARGES = 30;
@@ -184,6 +189,8 @@ public class ItemChargePlugin extends Plugin
 	private int lastCheckTick;
 	private final Map<EquipmentInventorySlot, ItemChargeInfobox> infoboxes = new EnumMap<>(EquipmentInventorySlot.class);
 	private boolean loginFlag;
+	// The quetzal whistle charge message does not name the whistle, so track the last one used
+	private String lastQuetzalWhistleKey;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -208,6 +215,7 @@ public class ItemChargePlugin extends Plugin
 		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
 		infoboxes.clear();
 		lastCheckTick = -1;
+		lastQuetzalWhistleKey = null;
 	}
 
 	@Subscribe
@@ -265,6 +273,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+			Matcher quetzalWhistleCheckMatcher = QUETZAL_WHISTLE_CHECK_PATTERN.matcher(message);
 
 			if (message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -458,8 +467,29 @@ public class ItemChargePlugin extends Plugin
 				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
+			else if (quetzalWhistleCheckMatcher.find() && lastQuetzalWhistleKey != null)
+			{
+				setItemCharges(lastQuetzalWhistleKey, Integer.parseInt(quetzalWhistleCheckMatcher.group(1)));
+			}
 
 			varrockPlatebodySmeltTwo = message.equals(RING_OF_FORGING_VARROCK_PLATEBODY);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		switch (event.getItemId())
+		{
+			case ItemID.HG_QUETZALWHISTLE_BASIC:
+				lastQuetzalWhistleKey = ItemChargeConfig.KEY_QUETZAL_WHISTLE_BASIC;
+				break;
+			case ItemID.HG_QUETZALWHISTLE_ENHANCED:
+				lastQuetzalWhistleKey = ItemChargeConfig.KEY_QUETZAL_WHISTLE_ENHANCED;
+				break;
+			case ItemID.HG_QUETZALWHISTLE_PERFECTED:
+				lastQuetzalWhistleKey = ItemChargeConfig.KEY_QUETZAL_WHISTLE_PERFECTED;
+				break;
 		}
 	}
 
