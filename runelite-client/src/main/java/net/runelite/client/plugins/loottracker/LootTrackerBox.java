@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -38,8 +39,10 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -48,6 +51,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
@@ -63,6 +67,8 @@ class LootTrackerBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
 	private static final int TITLE_PADDING = 5;
+	private static final Border ITEM_BORDER = new EmptyBorder(2, 2, 2, 2);
+	private static final Border HIGHLIGHT_BORDER = BorderFactory.createLineBorder(ColorScheme.BRAND_ORANGE, 2);
 
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
@@ -71,8 +77,12 @@ class LootTrackerBox extends JPanel
 	private final ItemManager itemManager;
 	private final LootTrackerPriceType priceType;
 	private final boolean showPriceType;
+	private final Predicate<LootTrackerItem> highlightItem;
 
 	private final LootTrackerRecord record;
+	private final Map<JPanel, LootTrackerItem> itemSlots = new LinkedHashMap<>();
+	private boolean hasVisibleItems;
+	private String highlightedFilter;
 
 	private long totalPrice;
 	private final boolean hideIgnoredItems;
@@ -86,7 +96,8 @@ class LootTrackerBox extends JPanel
 		final boolean showPriceType,
 		final BiConsumer<String, Boolean> onItemToggle,
 		final BiConsumer<String, Boolean> onEventToggle,
-		final boolean eventIgnored)
+		final boolean eventIgnored,
+		final Predicate<LootTrackerItem> highlightItem)
 	{
 		this.record = record;
 		this.itemManager = itemManager;
@@ -94,6 +105,7 @@ class LootTrackerBox extends JPanel
 		this.hideIgnoredItems = hideIgnoredItems;
 		this.priceType = priceType;
 		this.showPriceType = showPriceType;
+		this.highlightItem = highlightItem;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -167,6 +179,40 @@ class LootTrackerBox extends JPanel
 		}
 
 		return record.getTitle().equals(id) && record.getType() == type;
+	}
+
+	LootTrackerRecord getRecord()
+	{
+		return record;
+	}
+
+	/**
+	 * Updates search visibility and borders without rebuilding item components or images.
+	 */
+	void updateSearch(boolean matches, String itemFilter)
+	{
+		setVisible(matches && hasVisibleItems);
+		if (isVisible() && !itemFilter.equals(highlightedFilter))
+		{
+			// Fresh slots already have empty borders; unchanged searches need no slot scan.
+			if (!itemFilter.isEmpty() || highlightedFilter != null)
+			{
+				updateHighlights();
+			}
+			highlightedFilter = itemFilter;
+		}
+	}
+
+	private void updateHighlights()
+	{
+		itemSlots.forEach((slot, item) ->
+		{
+			Border border = highlightItem.test(item) ? HIGHLIGHT_BORDER : ITEM_BORDER;
+			if (slot.getBorder() != border)
+			{
+				slot.setBorder(border);
+			}
+		});
 	}
 
 	void rebuild()
@@ -256,10 +302,13 @@ class LootTrackerBox extends JPanel
 				LinkedHashMap::new
 			));
 
-		boolean isHidden = items.isEmpty();
-		setVisible(!isHidden);
+		hasVisibleItems = !items.isEmpty();
+		setVisible(hasVisibleItems);
+		itemSlots.clear();
+		highlightedFilter = null;
+		itemContainer.removeAll();
 
-		if (isHidden)
+		if (!hasVisibleItems)
 		{
 			return;
 		}
@@ -271,19 +320,21 @@ class LootTrackerBox extends JPanel
 		// Calculates how many rows need to be display to fit all items
 		final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
 
-		itemContainer.removeAll();
 		itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
 		final EmptyBorder emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		Iterator<LootTrackerItem> it = items.values().iterator();
 		for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++)
 		{
-			final JPanel slotContainer = new JPanel();
+			// Reserve border space without changing the original slot dimensions.
+			final JPanel slotContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 3));
+			slotContainer.setBorder(ITEM_BORDER);
 			slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 			if (it.hasNext())
 			{
 				final LootTrackerItem item = it.next();
+				itemSlots.put(slotContainer, item);
 				final JLabel imageLabel = new JLabel();
 				imageLabel.setToolTipText(buildToolTip(item));
 				imageLabel.setVerticalAlignment(SwingConstants.CENTER);
