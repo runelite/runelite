@@ -350,7 +350,7 @@ public class GroundItemsOverlay extends Overlay
 			{
 				drawTimerPieOverlay(graphics, textX, textY, item);
 			}
-			else if (groundItemTimers == DespawnTimerMode.SECONDS || groundItemTimers == DespawnTimerMode.TICKS)
+			else if (groundItemTimers == DespawnTimerMode.SECONDS || groundItemTimers == DespawnTimerMode.WHOLE_SECONDS || groundItemTimers == DespawnTimerMode.TICKS)
 			{
 				Instant despawnTime = calculateDespawnTime(item);
 				Color timerColor = getItemTimerColor(item);
@@ -361,6 +361,10 @@ public class GroundItemsOverlay extends Overlay
 					if (groundItemTimers == DespawnTimerMode.SECONDS)
 					{
 						timerText = String.format(" - %.1f", despawnTimeMillis / 1000f);
+					}
+					else if (groundItemTimers == DespawnTimerMode.WHOLE_SECONDS)
+					{
+						timerText = String.format(" - %.0f", despawnTimeMillis / 1000f);
 					}
 					else // TICKS
 					{
