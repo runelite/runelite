@@ -45,6 +45,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
@@ -77,6 +78,8 @@ class LootTrackerBox extends JPanel
 	private long totalPrice;
 	private final boolean hideIgnoredItems;
 	private final BiConsumer<String, Boolean> onItemToggle;
+	private final BiConsumer<LootTrackerRecord, Integer> onItemReset;
+	private final boolean groupLoot;
 
 	LootTrackerBox(
 		final ItemManager itemManager,
@@ -85,12 +88,16 @@ class LootTrackerBox extends JPanel
 		final LootTrackerPriceType priceType,
 		final boolean showPriceType,
 		final BiConsumer<String, Boolean> onItemToggle,
+		final BiConsumer<LootTrackerRecord, Integer> onItemReset,
 		final BiConsumer<String, Boolean> onEventToggle,
-		final boolean eventIgnored)
+		final boolean eventIgnored,
+		final boolean groupLoot)
 	{
 		this.record = record;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
+		this.onItemReset = onItemReset;
+		this.groupLoot = groupLoot;
 		this.hideIgnoredItems = hideIgnoredItems;
 		this.priceType = priceType;
 		this.showPriceType = showPriceType;
@@ -319,6 +326,25 @@ class LootTrackerBox extends JPanel
 				});
 
 				popupMenu.add(toggle);
+
+				final int mappedItemId = LootTrackerMapping.map(item.getId(), item.getName());
+				final JMenuItem reset = new JMenuItem("Reset item");
+				reset.addActionListener(e ->
+				{
+					String warning = groupLoot
+						? String.format("This will permanently reset all %s loot from %s.", item.getName(), record.getTitle())
+						: String.format("This will permanently reset %s loot from this kill.", item.getName());
+					final int result = JOptionPane.showOptionDialog(slotContainer,
+						warning, "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+						null, new String[]{"Yes", "No"}, "No");
+
+					if (result == JOptionPane.YES_OPTION)
+					{
+						onItemReset.accept(record, mappedItemId);
+					}
+				});
+
+				popupMenu.add(reset);
 			}
 
 			itemContainer.add(slotContainer);
