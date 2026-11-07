@@ -70,6 +70,52 @@ class ConfigLoot
 		drops[drops.length - 1] = qty;
 	}
 
+	void remove(int id)
+	{
+		int[] remainingDrops = new int[drops.length];
+		int remainingLength = 0;
+		for (int i = 0; i < drops.length; i += 2)
+		{
+			if (drops[i] == id)
+			{
+				continue;
+			}
+
+			remainingDrops[remainingLength++] = drops[i];
+			remainingDrops[remainingLength++] = drops[i + 1];
+		}
+		drops = Arrays.copyOf(remainingDrops, remainingLength);
+	}
+
+	void remove(int id, int quantity)
+	{
+		if (quantity <= 0)
+		{
+			return;
+		}
+
+		for (int i = 0; i < drops.length; i += 2)
+		{
+			if (drops[i] != id)
+			{
+				continue;
+			}
+
+			if (quantity >= drops[i + 1])
+			{
+				int[] remainingDrops = new int[drops.length - 2];
+				System.arraycopy(drops, 0, remainingDrops, 0, i);
+				System.arraycopy(drops, i + 2, remainingDrops, i, drops.length - i - 2);
+				drops = remainingDrops;
+			}
+			else
+			{
+				drops[i + 1] -= quantity;
+			}
+			return;
+		}
+	}
+
 	int numDrops()
 	{
 		return drops.length / 2;

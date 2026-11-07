@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -94,5 +96,56 @@ class LootTrackerRecord
 		}
 
 		kills += record.kills;
+	}
+
+	List<LootTrackerItem> removeItems(int mappedItemId)
+	{
+		List<LootTrackerItem> removed = new ArrayList<>();
+		List<LootTrackerItem> remaining = new ArrayList<>();
+
+		for (LootTrackerItem item : items)
+		{
+			if (LootTrackerMapping.map(item.getId(), item.getName()) == mappedItemId)
+			{
+				removed.add(item);
+			}
+			else
+			{
+				remaining.add(item);
+			}
+		}
+
+		items = remaining.toArray(new LootTrackerItem[0]);
+		return removed;
+	}
+
+	void removeItem(int itemId, int quantity)
+	{
+		if (quantity <= 0)
+		{
+			return;
+		}
+
+		int remainingQuantity = quantity;
+		List<LootTrackerItem> remainingItems = new ArrayList<>();
+		for (LootTrackerItem item : items)
+		{
+			if (item.getId() != itemId || remainingQuantity == 0)
+			{
+				remainingItems.add(item);
+				continue;
+			}
+
+			int removedQuantity = Math.min(item.getQuantity(), remainingQuantity);
+			remainingQuantity -= removedQuantity;
+			int itemQuantity = item.getQuantity() - removedQuantity;
+			if (itemQuantity > 0)
+			{
+				remainingItems.add(new LootTrackerItem(item.getId(), item.getName(), itemQuantity,
+					item.getGePrice(), item.getHaPrice(), item.isIgnored()));
+			}
+		}
+
+		items = remainingItems.toArray(new LootTrackerItem[0]);
 	}
 }
