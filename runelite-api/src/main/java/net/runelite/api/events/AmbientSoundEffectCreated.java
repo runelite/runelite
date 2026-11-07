@@ -26,6 +26,7 @@ package net.runelite.api.events;
 
 import lombok.Value;
 import net.runelite.api.AmbientSoundEffect;
+import net.runelite.api.WorldView;
 
 /**
  * An event fired when an ambient sound effect is created. Note that ambient sound effects
@@ -34,5 +35,6 @@ import net.runelite.api.AmbientSoundEffect;
 @Value
 public class AmbientSoundEffectCreated
 {
-	private AmbientSoundEffect ambientSoundEffect;
+	WorldView worldView;
+	AmbientSoundEffect ambientSoundEffect;
 }

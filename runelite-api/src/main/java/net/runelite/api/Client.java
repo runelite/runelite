@@ -1206,44 +1206,57 @@ public interface Client extends OAuthApi, GameEngine
 	 * and player-generated (e.g. mining, woodcutting) sound effects are
 	 * normally played.
 	 *
-	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link net.runelite.api.gameval.SoundEffectID} for some common ones
+	 * @param id the ID of the sound effect to play
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 */
 	void playSoundEffect(int id);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link net.runelite.api.gameval.SoundEffectID} for some common ones
+	 * @param id the ID of the sound effect to play
 	 * @param x the ground coordinate on the x axis
 	 * @param y the ground coordinate on the y axis
-	 * @param range the number of tiles away that the sound can be heard
-	 * from
+	 * @param range the number of tiles away that the sound can be heard from
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 */
 	void playSoundEffect(int id, int x, int y, int range);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link net.runelite.api.gameval.SoundEffectID} for some common ones
+	 * @param id the ID of the sound effect to play
 	 * @param x the ground coordinate on the x axis
 	 * @param y the ground coordinate on the y axis
-	 * @param range the number of tiles away that the sound can be heard
-	 * from
+	 * @param range the number of tiles away that the sound can be heard from
 	 * @param delay the amount of frames before the sound starts playing
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 */
 	void playSoundEffect(int id, int x, int y, int range, int delay);
 
 	/**
 	 * Plays a sound effect, even if the player's sound effect volume is muted.
 	 *
-	 * @param id     the ID of the sound effect - {@link net.runelite.api.gameval.SoundEffectID}
+	 * @param id     the ID of the sound effect to play
 	 * @param volume the volume to play the sound effect at, see {@link SoundEffectVolume} for values used
 	 *               in the settings interface. if the sound effect volume is not muted, uses the set volume
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 */
 	void playSoundEffect(int id, int volume);
+
+	/**
+	 * Get the currently playing ambient sound
+	 * @see net.runelite.api.gameval.AmbientSoundID
+	 * @return
+	 */
+	@Nullable
+	AmbientSoundComposition getAmbientSound();
+
+	/**
+	 * Set the currently playing ambient sound
+	 * @param ambientSound
+	 */
+	void setAmbientSound(AmbientSoundComposition ambientSound);
 
 	/**
 	 * Get the currently playing midi requests.

@@ -27,8 +27,10 @@ package net.runelite.api;
 import javax.annotation.Nullable;
 
 /**
- * An ambient sound effect. These are loaded only at scene load and are used to play ambient
- * sound effects that are purely client side and not sent from the server.
+ * An ambient sound effect.
+ * These are created during map loading, or when objects or NPCs are spawned,
+ * and are used to play ambient sound effects.
+ * @see net.runelite.api.events.AmbientSoundEffectCreated
  */
 public interface AmbientSoundEffect
 {
@@ -41,11 +43,10 @@ public interface AmbientSoundEffect
 
 	/**
 	 * The background sound effect ids. One sound effect is picked from this at random.
-	 * @see net.runelite.api.gameval.SoundEffectID
 	 * @return
 	 */
 	@Nullable
-	int[] getBackgroundSoundEffectIds();
+	RandomSound getRandomSound();
 
 	/**
 	 * The plane the sound effect is on

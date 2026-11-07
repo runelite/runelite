@@ -39,6 +39,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.events.AmbientSoundChanged;
 import net.runelite.api.events.AmbientSoundEffectCreated;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.GameStateChanged;
@@ -144,6 +145,7 @@ public class MusicPlugin extends Plugin
 				{
 					// Reload the scene to remove ambient sounds
 					client.setGameState(GameState.LOADING);
+					client.setAmbientSound(null);
 				}
 			}
 		});
@@ -268,6 +270,10 @@ public class MusicPlugin extends Plugin
 					if (client.getGameState() == GameState.LOGGED_IN)
 					{
 						client.setGameState(GameState.LOADING);
+						if (musicConfig.muteAmbientSounds())
+						{
+							client.setAmbientSound(null);
+						}
 					}
 				}
 			});
@@ -459,7 +465,16 @@ public class MusicPlugin extends Plugin
 	{
 		if (musicConfig.muteAmbientSounds())
 		{
-			client.getAmbientSoundEffects().clear();
+			ev.getWorldView().getAmbientSoundEffects().clear();
+		}
+	}
+
+	@Subscribe
+	private void onAmbientSoundChanged(AmbientSoundChanged event)
+	{
+		if (musicConfig.muteAmbientSounds())
+		{
+			client.setAmbientSound(null);
 		}
 	}
 }
