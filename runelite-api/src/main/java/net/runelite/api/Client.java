@@ -1207,7 +1207,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * normally played.
 	 *
 	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
+	 * {@link net.runelite.api.gameval.SoundEffectID} for some common ones
 	 */
 	void playSoundEffect(int id);
 
@@ -1215,7 +1215,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Play a sound effect from some point in the world.
 	 *
 	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
+	 * {@link net.runelite.api.gameval.SoundEffectID} for some common ones
 	 * @param x the ground coordinate on the x axis
 	 * @param y the ground coordinate on the y axis
 	 * @param range the number of tiles away that the sound can be heard
@@ -1227,7 +1227,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Play a sound effect from some point in the world.
 	 *
 	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
+	 * {@link net.runelite.api.gameval.SoundEffectID} for some common ones
 	 * @param x the ground coordinate on the x axis
 	 * @param y the ground coordinate on the y axis
 	 * @param range the number of tiles away that the sound can be heard
@@ -1239,7 +1239,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Plays a sound effect, even if the player's sound effect volume is muted.
 	 *
-	 * @param id     the ID of the sound effect - {@link SoundEffectID}
+	 * @param id     the ID of the sound effect - {@link net.runelite.api.gameval.SoundEffectID}
 	 * @param volume the volume to play the sound effect at, see {@link SoundEffectVolume} for values used
 	 *               in the settings interface. if the sound effect volume is not muted, uses the set volume
 	 */

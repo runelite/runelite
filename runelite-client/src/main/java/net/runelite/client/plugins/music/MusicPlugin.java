@@ -39,7 +39,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.AmbientSoundEffectCreated;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.GameStateChanged;
@@ -50,6 +49,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SoundEffectID;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
@@ -74,40 +74,40 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class MusicPlugin extends Plugin
 {
 	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
-		SoundEffectID.TELEPORT_VWOOP
+		SoundEffectID.TELEPORT_ALL
 	);
 
 	private static final Set<Integer> PRAYER_SOUNDS = ImmutableSet.of(
-		SoundEffectID.PRAYER_ACTIVATE_THICK_SKIN,
-		SoundEffectID.PRAYER_ACTIVATE_BURST_OF_STRENGTH,
-		SoundEffectID.PRAYER_ACTIVATE_CLARITY_OF_THOUGHT,
-		SoundEffectID.PRAYER_ACTIVATE_SHARP_EYE_RIGOUR,
-		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_WILL_AUGURY,
-		SoundEffectID.PRAYER_ACTIVATE_ROCK_SKIN,
-		SoundEffectID.PRAYER_ACTIVATE_SUPERHUMAN_STRENGTH,
-		SoundEffectID.PRAYER_ACTIVATE_IMPROVED_REFLEXES,
-		SoundEffectID.PRAYER_ACTIVATE_RAPID_RESTORE_PRESERVE,
-		SoundEffectID.PRAYER_ACTIVATE_RAPID_HEAL,
-		SoundEffectID.PRAYER_ACTIVATE_PROTECT_ITEM,
-		SoundEffectID.PRAYER_ACTIVATE_HAWK_EYE,
-		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_LORE,
-		SoundEffectID.PRAYER_ACTIVATE_STEEL_SKIN,
-		SoundEffectID.PRAYER_ACTIVATE_ULTIMATE_STRENGTH,
-		SoundEffectID.PRAYER_ACTIVATE_INCREDIBLE_REFLEXES,
-		SoundEffectID.PRAYER_ACTIVATE_PROTECT_FROM_MAGIC,
-		SoundEffectID.PRAYER_ACTIVATE_PROTECT_FROM_MISSILES,
-		SoundEffectID.PRAYER_ACTIVATE_PROTECT_FROM_MELEE,
-		SoundEffectID.PRAYER_ACTIVATE_EAGLE_EYE,
-		SoundEffectID.PRAYER_ACTIVATE_DEADEYE,
-		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_MIGHT,
-		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_VIGOUR,
-		SoundEffectID.PRAYER_ACTIVATE_RETRIBUTION,
-		SoundEffectID.PRAYER_ACTIVATE_REDEMPTION,
-		SoundEffectID.PRAYER_ACTIVATE_SMITE,
-		SoundEffectID.PRAYER_ACTIVATE_CHIVALRY,
-		SoundEffectID.PRAYER_ACTIVATE_PIETY,
-		SoundEffectID.PRAYER_ACTIVATE_ZEAL,
-		SoundEffectID.PRAYER_DEACTIVE_VWOOP
+		SoundEffectID.THICK_SKIN,
+		SoundEffectID.STRENGTH_BURST,
+		SoundEffectID.CLARITY,
+		SoundEffectID.SHARP_EYE,
+		SoundEffectID.MYSTIC_WILL,
+		SoundEffectID.ROCK_SKIN,
+		SoundEffectID.SUPERHUMAN_STRENGTH,
+		SoundEffectID.IMPROVED_REFLEXES,
+		SoundEffectID.RAPID_RESTORE,
+		SoundEffectID.RAPID_HEAL,
+		SoundEffectID.PROTECT_ITEMS,
+		SoundEffectID.HAWK_EYE,
+		SoundEffectID.MYSTIC_LORE,
+		SoundEffectID.STEEL_SKIN,
+		SoundEffectID.ULTIMATE_STRENGTH,
+		SoundEffectID.INCREDIBLE_REFLEXES,
+		SoundEffectID.PROTECT_FROM_MAGIC,
+		SoundEffectID.PROTECT_FROM_MISSILES,
+		SoundEffectID.PROTECT_FROM_MELEE,
+		SoundEffectID.EAGLE_EYE,
+		SoundEffectID.RT_DEADEYE_PRAYER_ACTIVATE_10,
+		SoundEffectID.MYSTIC_MIGHT,
+		SoundEffectID.RT_MYSTIC_VIGOUR_ACTIVATE,
+		SoundEffectID.RETRIBUTION,
+		SoundEffectID.REDEMPTION,
+		SoundEffectID.SMITE,
+		SoundEffectID.KR_CHIVALRY,
+		SoundEffectID.KR_PIETY,
+		SoundEffectID.TFA_ZEAL_PRAYER_ACTIVIATE_01,
+		SoundEffectID.CANCEL_PRAYER
 	);
 
 	@Inject
@@ -344,7 +344,7 @@ public class MusicPlugin extends Plugin
 
 		currentMusicFilter = states[(currentMusicFilter.ordinal() + 1) % states.length];
 		updateFilterButton();
-		client.playSoundEffect(SoundEffectID.UI_BOOP);
+		client.playSoundEffect(SoundEffectID.INTERFACE_SELECT1);
 
 		redrawList();
 	}
@@ -374,7 +374,7 @@ public class MusicPlugin extends Plugin
 	private void openSearch()
 	{
 		updateFilter("");
-		client.playSoundEffect(SoundEffectID.UI_BOOP);
+		client.playSoundEffect(SoundEffectID.INTERFACE_SELECT1);
 		musicSearchButton.setAction(1, "Close");
 		musicSearchButton.setOnOpListener((JavaScriptCallback) e -> closeSearch());
 		searchInput = chatboxPanelManager.openTextInput("Search music list")
@@ -393,7 +393,7 @@ public class MusicPlugin extends Plugin
 	{
 		updateFilter("");
 		chatboxPanelManager.close();
-		client.playSoundEffect(SoundEffectID.UI_BOOP);
+		client.playSoundEffect(SoundEffectID.INTERFACE_SELECT1);
 	}
 
 	private void updateFilter(String input)

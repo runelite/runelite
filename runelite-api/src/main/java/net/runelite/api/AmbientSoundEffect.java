@@ -34,14 +34,14 @@ public interface AmbientSoundEffect
 {
 	/**
 	 * The id of the sound effect
-	 * @see SoundEffectID
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 * @return
 	 */
 	int getSoundEffectId();
 
 	/**
 	 * The background sound effect ids. One sound effect is picked from this at random.
-	 * @see SoundEffectID
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 * @return
 	 */
 	@Nullable

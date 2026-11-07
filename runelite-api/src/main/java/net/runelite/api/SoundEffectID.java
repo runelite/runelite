@@ -27,6 +27,7 @@ package net.runelite.api;
 /**
  * Utility class used for mapping sound effect IDs.
  */
+@Deprecated
 public final class SoundEffectID
 {
 	public final static int UI_BOOP = 2266;

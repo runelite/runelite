@@ -29,8 +29,8 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Preferences;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.SoundEffectID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -84,12 +84,12 @@ public class MetronomePlugin extends Plugin
 			if (shouldTock && config.tockVolume() > 0)
 			{
 				preferences.setSoundEffectVolume(config.tockVolume());
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, config.tockVolume());
+				client.playSoundEffect(SoundEffectID.GE_DOWN_AMOUNT, config.tockVolume());
 			}
 			else if (config.tickVolume() > 0)
 			{
 				preferences.setSoundEffectVolume(config.tickVolume());
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, config.tickVolume());
+				client.playSoundEffect(SoundEffectID.GE_UP_AMOUNT, config.tickVolume());
 			}
 
 			preferences.setSoundEffectVolume(previousVolume);
