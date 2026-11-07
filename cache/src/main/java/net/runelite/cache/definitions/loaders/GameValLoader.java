@@ -46,6 +46,10 @@ public class GameValLoader
 	public static final int INTERFACES_LEGACY = 13;
 	public static final int INTERFACES = 14;
 	public static final int VARCS = 15;
+	public static final int SFX = 16;
+	public static final int MIDI = 17;
+	public static final int JINGLE = 18;
+	public static final int AMBIENTSOUND = 19;
 
 	public GameValDefinition load(int gameValId, int id, byte[] data)
 	{
