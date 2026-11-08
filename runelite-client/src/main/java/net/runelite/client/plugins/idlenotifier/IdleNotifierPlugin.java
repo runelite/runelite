@@ -108,6 +108,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean ready;
 	private boolean lastInteractWasCombat;
 	private static final int BUFF_BAR_NOT_DISPLAYED = -1;
+	private static final Duration ENCHANT_MIN_IDLE = Duration.ofMillis(7 * Constants.GAME_TICK_LENGTH); // enchantment spells are autocasting every 7 ticks
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -935,6 +936,11 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
+		if (isJewelleryEnchant(lastAnimation) && waitDuration.compareTo(ENCHANT_MIN_IDLE) < 0)
+		{
+			waitDuration = ENCHANT_MIN_IDLE;
+		}
+
 		final int animation = local.getAnimation();
 
 		if (animation == -1)
@@ -957,6 +963,14 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	private static boolean isJewelleryEnchant(int animation)
+	{
+		return animation == AnimationID.HUMAN_CAST_ENCHANTRING
+			|| animation == AnimationID.HUMAN_ENCHANTAMULETLVL1
+			|| animation == AnimationID.HUMAN_ENCHANTAMULETLVL2
+			|| animation == AnimationID.HUMAN_ENCHANTAMULETLVL3;
 	}
 
 	private boolean checkMovementIdle(Duration waitDuration, Player local)
