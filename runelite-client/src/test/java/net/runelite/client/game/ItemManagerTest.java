@@ -28,9 +28,10 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.inject.Named;
 import net.runelite.api.Client;
+import net.runelite.api.WorldType;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
@@ -40,6 +41,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -68,18 +70,11 @@ public class ItemManagerTest
 	@Bind
 	private RuneLiteConfig runeLiteConfig;
 
-	@Bind
-	@Named("activePriceThreshold")
-	private double activePriceThreshold = 5;
-
-	@Bind
-	@Named("lowPriceThreshold")
-	private int lowPriceThreshold = 1000;
-
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
 	}
 
 	@Test
@@ -91,8 +86,5 @@ public class ItemManagerTest
 		itemPrice.setPrice(47_975);
 		itemPrice.setWikiPrice(50_754);
 		assertEquals(itemPrice.getWikiPrice(), itemManager.getWikiPrice(itemPrice));
-
-		itemPrice.setWikiPrice(300_000); // outside of 5x range
-		assertEquals(itemPrice.getPrice(), itemManager.getWikiPrice(itemPrice));
 	}
 }
