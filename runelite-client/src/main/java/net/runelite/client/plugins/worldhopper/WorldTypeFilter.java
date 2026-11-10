@@ -104,7 +104,16 @@ enum WorldTypeFilter
 			{
 				return types.contains(WorldType.BOUNTY);
 			}
-		};
+		},
+	HARDCORE_MAIN
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
+			{
+				return types.contains(WorldType.HARDCORE_MAIN);
+			}
+		},
+	;
 
 	abstract boolean matches(Set<WorldType> types);
 }
