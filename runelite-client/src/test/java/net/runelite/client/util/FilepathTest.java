@@ -27,7 +27,9 @@ package net.runelite.client.util;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardWatchEventKinds;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -163,6 +165,23 @@ public class FilepathTest
 		}
 		catch (IllegalArgumentException ignored)
 		{
+		}
+	}
+
+	@Test
+	public void watchCreate() throws Exception
+	{
+		var path = Filepath.Unchecked.getLegacyPluginDirectory(dotRunelite, "my-plugin");
+		path.createDirectory();
+
+		try (var watcher = path.watch(StandardWatchEventKinds.ENTRY_CREATE))
+		{
+			path.join("test-file").write(new byte[0]);
+
+			var key = watcher.poll(1, TimeUnit.SECONDS);
+			Assert.assertNotNull(key);
+			Assert.assertTrue(key.pollEvents().stream()
+					.anyMatch(event -> event.getKind() == StandardWatchEventKinds.ENTRY_CREATE));
 		}
 	}
 
