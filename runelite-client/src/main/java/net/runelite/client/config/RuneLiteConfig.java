@@ -479,4 +479,21 @@ public interface RuneLiteConfig extends Config
 	{
 		return Keybind.ALT;
 	}
+
+	@Units(Units.PERCENT)
+	@Range(
+		min = 1,
+		max = 500
+	)
+	@ConfigItem(
+		keyName = "iconScale",
+		name = "Icon scaling",
+		description = "Scaling for the sidebar icons",
+		position = 53,
+		section = windowSettings
+	)
+	default int iconScale()
+	{
+		return 100;
+	}
 }
