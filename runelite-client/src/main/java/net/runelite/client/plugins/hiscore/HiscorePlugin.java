@@ -304,6 +304,10 @@ public class HiscorePlugin extends Plugin
 		{
 			return HiscoreEndpoint.SEASONAL;
 		}
+		if (name.contains(IconID.HARDCORE_MAIN.toString()))
+		{
+			return HiscoreEndpoint.HARDCORE_MAIN;
+		}
 		return HiscoreEndpoint.NORMAL;
 	}
 }

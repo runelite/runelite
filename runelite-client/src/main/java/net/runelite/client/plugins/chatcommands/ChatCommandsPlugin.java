@@ -2149,6 +2149,10 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			return HiscoreEndpoint.SEASONAL;
 		}
+		else if (name.contains(IconID.HARDCORE_MAIN.toString()))
+		{
+			return HiscoreEndpoint.HARDCORE_MAIN;
+		}
 		else
 		{
 			return HiscoreEndpoint.NORMAL;

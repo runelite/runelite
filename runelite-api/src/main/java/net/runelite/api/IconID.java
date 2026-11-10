@@ -51,13 +51,15 @@ public enum IconID
 	LEAGUE(22),
 	GROUP_IRONMAN(41),
 	HARDCORE_GROUP_IRONMAN(42),
-	UNRANKED_GROUP_IRONMAN(43);
+	UNRANKED_GROUP_IRONMAN(43),
+	HARDCORE_MAIN(56),
+	;
 
 	private final int index;
 
 	@Override
 	public String toString()
 	{
-		return "<img=" + String.valueOf(this.index) + ">";
+		return "<img=" + this.index + ">";
 	}
 }
