@@ -160,20 +160,29 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		connect();
 	}
 
-	private void addChatMessage(String sender, String message)
+	private void addChatMessage(String sender, String message, boolean isSystemMessage)
 	{
 		String chatMessage = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
 			.append(message)
 			.build();
 
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHAT)
-			.sender("Twitch")
-			.name(sender)
-			.runeLiteFormattedMessage(chatMessage)
-			.timestamp((int) (System.currentTimeMillis() / 1000))
-			.build());
+		QueuedMessage.QueuedMessageBuilder queuedMessage = QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHAT)
+				.sender("Twitch")
+				.name(sender)
+				.timestamp((int) (System.currentTimeMillis() / 1000));
+
+		if (isSystemMessage)
+		{
+			queuedMessage.runeLiteFormattedMessage(chatMessage);
+		}
+		else
+		{
+			queuedMessage.value(chatMessage);
+		}
+
+		chatMessageManager.queue(queuedMessage.build());
 	}
 
 	@Override
@@ -186,7 +195,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 
 		String displayName = tags.get("display-name");
 		String name = source.equalsIgnoreCase(displayName) ? displayName : source;
-		addChatMessage(name, message);
+		addChatMessage(name, message, false);
 	}
 
 	@Override
@@ -206,7 +215,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		}
 
 		String sysmsg = tags.get("system-msg");
-		addChatMessage("[System]", sysmsg);
+		addChatMessage("[System]", sysmsg, true);
 	}
 
 	@Subscribe
@@ -235,7 +244,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			try
 			{
 				twitchIRCClient.privmsg(message);
-				addChatMessage(twitchConfig.username(), message);
+				addChatMessage(twitchConfig.username(), message, false);
 			}
 			catch (IOException e)
 			{
