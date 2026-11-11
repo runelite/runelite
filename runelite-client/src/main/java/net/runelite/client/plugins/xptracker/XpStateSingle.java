@@ -41,6 +41,8 @@ class XpStateSingle
 	private final int[] actionExps = new int[10];
 	private int actionExpIndex = 0;
 
+	private final StringBuilder sb = new StringBuilder();
+
 	@Getter
 	@Setter
 	private long startXp;
@@ -77,6 +79,13 @@ class XpStateSingle
 	int getTotalXpGained()
 	{
 		return xpGainedBeforeReset + xpGainedSinceReset;
+	}
+
+	private StringBuilder appendTwoDigits(long v)
+	{
+		if (v < 10) sb.append('0');
+		sb.append(v);
+		return sb;
 	}
 
 	private int getActionsHr()
@@ -172,20 +181,33 @@ class XpStateSingle
 			case DAYS:
 				if (durationDays > 1)
 				{
-					return String.format("%d days %02d:%02d:%02d", durationDays, durationHours, durationMinutes, durationSeconds);
+					sb.setLength(0);
+					sb.append(durationDays).append(" days ");
+					appendTwoDigits(durationHours).append(':');
+					return appendTwoDigits(durationMinutes).append(':').toString();
 				}
 				else if (durationDays == 1)
 				{
-					return String.format("1 day %02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
+					sb.setLength(0);
+					sb.append("1 day ");
+					appendTwoDigits(durationHours).append(':');
+					appendTwoDigits(durationMinutes).append(':');
+					return appendTwoDigits(durationSeconds).toString();
 				}
 			case HOURS:
 				if (durationHoursTotal > 1)
 				{
-					return String.format("%d hours %02d:%02d", durationHoursTotal, durationMinutes, durationSeconds);
+					sb.setLength(0);
+					sb.append(durationHoursTotal).append(" hours ");
+					appendTwoDigits(durationMinutes).append(':');
+					return appendTwoDigits(durationSeconds).toString();
 				}
 				else if (durationHoursTotal == 1)
 				{
-					return String.format("1 hour %02d:%02d", durationMinutes, durationSeconds);
+					sb.setLength(0);
+					sb.append("1 hour ");
+					appendTwoDigits(durationMinutes).append(':');
+					return appendTwoDigits(durationSeconds).toString();
 				}
 			case SHORT:
 			default:
@@ -193,11 +215,16 @@ class XpStateSingle
 				// return time remaining in hh:mm:ss or mm:ss format where hh can be > 24
 				if (durationHoursTotal > 0)
 				{
-					return String.format("%d:%02d:%02d", durationHoursTotal, durationMinutes, durationSeconds);
+					sb.setLength(0);
+					sb.append(durationHoursTotal).append(':');
+					appendTwoDigits(durationMinutes).append(':');
+					return appendTwoDigits(durationSeconds).toString();
 				}
 
 				// Minutes and seconds will always be present
-				return String.format("%02d:%02d", durationMinutes, durationSeconds);
+				sb.setLength(0);
+				appendTwoDigits(durationMinutes).append(':');
+				return appendTwoDigits(durationSeconds).toString();
 		}
 	}
 
