@@ -150,10 +150,21 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "pingFilter",
+		name = "Ping Filter",
+		description = "Only show worlds with ping less than or equal to this value (0 to disable)",
+		position = 11
+	)
+	default int pingFilter()
+	{
+		return 170;
+	}
+
+	@ConfigItem(
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world.",
-		position = 11
+		position = 12
 	)
 	default boolean displayPing()
 	{
