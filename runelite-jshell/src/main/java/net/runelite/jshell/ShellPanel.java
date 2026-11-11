@@ -57,7 +57,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Segment;
 import jdk.jshell.DeclarationSnippet;
 import jdk.jshell.Diag;
+import jdk.jshell.ImportSnippet;
 import jdk.jshell.JShell;
+import jdk.jshell.PersistentSnippet;
 import jdk.jshell.Snippet;
 import jdk.jshell.SnippetEvent;
 import jdk.jshell.SourceCodeAnalysis;
@@ -207,6 +209,18 @@ public abstract class ShellPanel extends JPanel
 
 		this.injector = injector;
 
+		buildJShell();
+
+		var cp = new JShellAutocompleteProvider(shell);
+		autoCompletion = new AutoCompletion(cp);
+		autoCompletion.setAutoActivationDelay(200);
+		autoCompletion.setAutoActivationEnabled(true);
+		autoCompletion.setAutoCompleteSingleChoices(false);
+		autoCompletion.install(this.textArea);
+	}
+
+	private void buildJShell()
+	{
 		exec = new RLShellExecutionControl()
 		{
 			@Override
@@ -252,13 +266,6 @@ public abstract class ShellPanel extends JPanel
 			throw new RuntimeException(e);
 		}
 		prelude = ImmutableSet.copyOf(eval(preludeStr, false));
-
-		var cp = new JShellAutocompleteProvider(shell);
-		autoCompletion = new AutoCompletion(cp);
-		autoCompletion.setAutoActivationDelay(200);
-		autoCompletion.setAutoActivationEnabled(true);
-		autoCompletion.setAutoCompleteSingleChoices(false);
-		autoCompletion.install(this.textArea);
 	}
 
 	public void logToConsole(String message)
@@ -295,7 +302,9 @@ public abstract class ShellPanel extends JPanel
 	private List<Snippet> eval(String src, boolean isUserCode)
 	{
 		var out = new ArrayList<Snippet>();
+		boolean shellIsDirty = false;
 		var offsets = new HashMap<String, Integer>();
+		var overwrittenOffsets = new HashMap<String, Integer>();
 		String output = null;
 		evaluation:
 		for (int offset = 0; offset < src.length(); )
@@ -315,7 +324,24 @@ public abstract class ShellPanel extends JPanel
 			for (var ev : evs)
 			{
 				Snippet snip = ev.snippet();
-				offsets.put("#" + snip.id(), thisOffset);
+				String snippetKey = "#" + snip.id();
+				if (ev.status() != Snippet.Status.OVERWRITTEN)
+				{
+					// when a identifier is redeclared (OVERWRITTEN) 3 events fire
+					// 1) the first declaration normally
+					// 2) the second declaration normally
+					// 3) the first declaration again, but with OVERWRITTEN set
+					// also the second and first declaration share an id() since it is internally keyed
+					// by variable name.
+					// so we don't want to write an offset for the 3rd event, since we will be at the second
+					// declaration's offset, and the 2nd event needs to save the 1st's true offset, since they
+					// don't key uniquely
+					Integer old = offsets.put(snippetKey, thisOffset);
+					if (old != null && old != thisOffset)
+					{
+						overwrittenOffsets.putIfAbsent(snippetKey, old);
+					}
+				}
 				if (ev.status() != Snippet.Status.VALID)
 				{
 					boolean handled = false;
@@ -340,8 +366,40 @@ public abstract class ShellPanel extends JPanel
 						for (var ident : unresolved)
 						{
 							handled = true;
-							logToConsole("Unresolved symbol: " + ident);
+							String loc = offsetToLineColumn(src, thisOffset);
+							logToConsole(loc + ": Unresolved symbol: " + ident);
 						}
+					}
+					if (!handled && ev.status() == Snippet.Status.OVERWRITTEN)
+					{
+						if (snip instanceof ImportSnippet)
+						{
+							// this eval can continue successfully, but later evals will fail so we need to rebuild the context
+							shellIsDirty = true;
+							continue;
+						}
+
+						String prevLoc;
+						Integer overwrittenOffset = overwrittenOffsets.get("#" + ev.snippet().id());
+						if (overwrittenOffset != null)
+						{
+							prevLoc = "at " + offsetToLineColumn(src, overwrittenOffset);
+						}
+						else
+						{
+							prevLoc = "in the prelude";
+						}
+
+						String loc = offsetToLineColumn(src, thisOffset);
+						logToConsole(loc + ": Redeclared symbol \"" + ((PersistentSnippet) snip).name() + "\". Previously declared " + prevLoc);
+
+						if (isUserCode)
+						{
+							// we have to recreate the context since the prelude's var is now permanently OVERRIDDEN
+							buildJShell();
+						}
+
+						return out;
 					}
 					if (!handled)
 					{
@@ -357,6 +415,7 @@ public abstract class ShellPanel extends JPanel
 					if (isUserCode)
 					{
 						shellLogger.error("", new RemappingThrowable(src, offsets, ev.exception()));
+						break evaluation;
 					}
 					else
 					{
@@ -369,19 +428,23 @@ public abstract class ShellPanel extends JPanel
 			}
 		}
 
-		if (isUserCode && !Strings.isNullOrEmpty(output))
+		if (isUserCode && !Strings.isNullOrEmpty(output) && !"null".equals(output))
 		{
 			logToConsole("[OUTPUT] " + output);
+		}
+
+		if (shellIsDirty && isUserCode)
+		{
+			buildJShell();
 		}
 
 		return out;
 	}
 
-	private String toStringDiagnostic(String source, int offset, Diag diag)
+	private String offsetToLineColumn(String source, int offset)
 	{
 		int line = 1;
 		int column = 1;
-		offset += (int) diag.getPosition();
 		for (int i = 0; i < offset && i < source.length(); i++)
 		{
 			if (source.charAt(i) == '\n')
@@ -395,7 +458,13 @@ public abstract class ShellPanel extends JPanel
 			}
 		}
 
-		return line + ":" + column + ": " + diag.getMessage(Locale.getDefault());
+		return line + ":" + column;
+	}
+
+	private String toStringDiagnostic(String source, int offset, Diag diag)
+	{
+		String loc = offsetToLineColumn(source, offset + (int) diag.getPosition());
+		return loc + ": " + diag.getMessage(Locale.getDefault());
 	}
 
 	protected void run()
