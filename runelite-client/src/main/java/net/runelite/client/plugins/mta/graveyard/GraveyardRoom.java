@@ -29,12 +29,12 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTAPlugin;
@@ -43,8 +43,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 public class GraveyardRoom extends MTARoom
 {
-	private static final int MTA_GRAVEYARD_REGION = 13462;
-
 	static final int MIN_SCORE = 16;
 
 	private final Client client;
@@ -69,9 +67,7 @@ public class GraveyardRoom extends MTARoom
 	@Override
 	public boolean inside()
 	{
-		Player player = client.getLocalPlayer();
-		return player != null && player.getWorldLocation().getRegionID() == MTA_GRAVEYARD_REGION
-			&& player.getWorldLocation().getPlane() == 1;
+		return GameArea.MTA_CREATURE_GRAVEYARD.contains(client.getLocalPlayer().getWorldLocation());
 	}
 
 	@Subscribe

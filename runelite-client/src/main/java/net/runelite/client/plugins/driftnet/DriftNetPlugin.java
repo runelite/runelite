@@ -64,6 +64,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -77,7 +78,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class DriftNetPlugin extends Plugin
 {
 	static final String CONFIG_GROUP = "driftnet";
-	private static final int UNDERWATER_REGION = 15008;
 	private static final String CHAT_PRODDING_FISH  = "You prod at the shoal of fish to scare it.";
 
 	@Inject
@@ -356,7 +356,6 @@ public class DriftNetPlugin extends Plugin
 			return false;
 		}
 
-		final WorldPoint point = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation());
-		return point.getRegionID() == UNDERWATER_REGION;
+		return GameArea.DRIFT_NET_COVES.contains(WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()));
 	}
 }
