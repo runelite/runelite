@@ -78,6 +78,11 @@ public class MusicPlugin extends Plugin
 		SoundEffectID.TELEPORT_ALL
 	);
 
+	private static final Set<Integer> SOURCELESS_NPC_AREA_SOUNDS = ImmutableSet.of(
+		SoundEffectID.MINING_TINK,
+		SoundEffectID.MINING_TINK_ALT
+	);
+
 	private static final Set<Integer> PRAYER_SOUNDS = ImmutableSet.of(
 		SoundEffectID.THICK_SKIN,
 		SoundEffectID.STRENGTH_BURST,
@@ -437,7 +442,7 @@ public class MusicPlugin extends Plugin
 		{
 			areaSoundEffectPlayed.consume();
 		}
-		else if (source instanceof NPC
+		else if (source instanceof NPC || (source == null && SOURCELESS_NPC_AREA_SOUNDS.contains(soundId))
 			&& musicConfig.muteNpcAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
