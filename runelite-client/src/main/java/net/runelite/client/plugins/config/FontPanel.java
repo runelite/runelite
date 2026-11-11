@@ -45,6 +45,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
@@ -53,6 +54,7 @@ import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.FontType;
+import net.runelite.client.ui.AppFontManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -172,7 +174,18 @@ class FontPanel extends PluginPanel
 		// to build components for each combobox element in order to compute the display size of the
 		// combobox
 		box.setRenderer(new TruncatedListCellRenderer(23));
-		box.setPreferredSize(new Dimension(box.getPreferredSize().width, 22));
+		AppFontManager.onFontChange(box, () ->
+		{
+			box.setPreferredSize(null);
+			boolean custom = UIManager.getBoolean("RuneLite.customAppFont");
+			int width = box.getPreferredSize().width;
+			if (custom)
+			{
+				// Leave room for the field label within the panel's horizontal padding.
+				width = Math.min(width, Math.max(60, PANEL_WIDTH - 28 - box.getFontMetrics(box.getFont()).stringWidth("Font")));
+			}
+			box.setPreferredSize(new Dimension(width, custom ? Math.max(22, box.getPreferredSize().height) : 22));
+		});
 		box.setSelectedItem(value);
 		box.setToolTipText(value.toString());
 

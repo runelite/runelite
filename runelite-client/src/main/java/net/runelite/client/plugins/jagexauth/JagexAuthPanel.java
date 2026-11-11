@@ -148,7 +148,7 @@ class JagexAuthPanel extends PluginPanel
 	{
 		JLabel title = new JLabel(session.getNickname(), JAGEX_ACCOUNT_ICON, SwingConstants.LEADING);
 		title.setIconTextGap(6);
-		title.setFont(FontManager.getRunescapeBoldFont());
+		FontManager.setUiBoldFont(title);
 		title.setForeground(ColorScheme.BRAND_ORANGE);
 
 		JButton removeButton = new JButton(DELETE_ICON);

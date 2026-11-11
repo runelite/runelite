@@ -52,7 +52,7 @@ public class PluginErrorPanel extends JPanel
 		noResultsTitle.setForeground(Color.WHITE);
 		noResultsTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
-		noResultsDescription.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(noResultsDescription);
 		noResultsDescription.setForeground(Color.GRAY);
 		noResultsDescription.setHorizontalAlignment(SwingConstants.CENTER);
 

@@ -105,7 +105,7 @@ class PartyMemberBox extends JPanel
 		namesPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		namesPanel.setBorder(new EmptyBorder(2, 5, 2, 5));
 
-		name.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(name);
 		name.putClientProperty("html.disable", Boolean.TRUE);
 
 		namesPanel.add(name);
