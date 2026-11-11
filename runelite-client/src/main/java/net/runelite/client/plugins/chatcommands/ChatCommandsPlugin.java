@@ -159,6 +159,7 @@ public class ChatCommandsPlugin extends Plugin
 	private String lastBossKill;
 	private int lastBossTime = -1;
 	private double lastPb = -1;
+	private boolean lastPbRestated;
 	private String lastTeamSize;
 	private int petsIconIdx = -1;
 	private int[] pets;
@@ -292,6 +293,29 @@ public class ChatCommandsPlugin extends Plugin
 	private void setPb(String boss, double seconds)
 	{
 		configManager.setRSProfileConfiguration("personalbest", boss.toLowerCase(), seconds);
+	}
+
+	// With precise timing off the game shows a pb rounded to the nearest second, so a whole second restating the
+	// pb leaves the precise time it rounds from alone
+	private void restatePb(String boss, double seconds)
+	{
+		double pb = getPb(boss);
+		if (seconds != Math.floor(seconds) || pb == Math.floor(pb) || Math.round(pb) != seconds)
+		{
+			setPb(boss, seconds);
+		}
+	}
+
+	private void setPb(String boss, double seconds, boolean restated)
+	{
+		if (restated)
+		{
+			restatePb(boss, seconds);
+		}
+		else
+		{
+			setPb(boss, seconds);
+		}
 	}
 
 	private void unsetPb(String boss)
@@ -477,12 +501,12 @@ public class ChatCommandsPlugin extends Plugin
 				if (lastTeamSize == null || pb == 0 || lastPb < pb)
 				{
 					log.debug("Setting overall pb (old: {})", pb);
-					setPb(renamedBoss, lastPb);
+					setPb(renamedBoss, lastPb, lastPbRestated);
 				}
 				if (lastTeamSize != null)
 				{
 					log.debug("Setting team size pb: {}", lastTeamSize);
-					setPb(renamedBoss + " " + lastTeamSize, lastPb);
+					setPb(renamedBoss + " " + lastTeamSize, lastPb, lastPbRestated);
 				}
 
 				lastPb = -1;
@@ -538,25 +562,25 @@ public class ChatCommandsPlugin extends Plugin
 		matcher = KILL_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			matchPb(matcher);
+			matchPb(matcher, true);
 		}
 
 		matcher = NEW_PB_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			matchPb(matcher);
+			matchPb(matcher, false);
 		}
 
 		matcher = RAIDS_PB_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			matchPb(matcher);
+			matchPb(matcher, false);
 		}
 
 		matcher = RAIDS_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			matchPb(matcher);
+			matchPb(matcher, true);
 		}
 
 		matcher = HS_PB_PATTERN.matcher(message);
@@ -569,12 +593,12 @@ public class ChatCommandsPlugin extends Plugin
 			String opb = matcher.group("opb");
 
 			String pb = MoreObjects.firstNonNull(floorpb, floortime);
-			setPb("Hallowed Sepulchre Floor " + floor, timeStringToSeconds(pb));
+			setPb("Hallowed Sepulchre Floor " + floor, timeStringToSeconds(pb), floorpb != null);
 
 			if (otime != null)
 			{
 				pb = MoreObjects.firstNonNull(opb, otime);
-				setPb("Hallowed Sepulchre", timeStringToSeconds(pb));
+				setPb("Hallowed Sepulchre", timeStringToSeconds(pb), opb != null);
 			}
 		}
 
@@ -757,7 +781,7 @@ public class ChatCommandsPlugin extends Plugin
 		return timeString + (Math.floor(seconds) == seconds ? String.format("%02d", (int) seconds) : String.format("%05.2f", seconds));
 	}
 
-	private void matchPb(Matcher matcher)
+	private void matchPb(Matcher matcher, boolean restated)
 	{
 		double seconds = timeStringToSeconds(matcher.group("pb"));
 		if (lastBossKill != null)
@@ -765,7 +789,7 @@ public class ChatCommandsPlugin extends Plugin
 			// Most bosses send boss kill message, and then pb message, so we
 			// use the remembered lastBossKill
 			log.debug("Got personal best for {}: {}", lastBossKill, seconds);
-			setPb(lastBossKill, seconds);
+			setPb(lastBossKill, seconds, restated);
 			lastPb = -1;
 			lastTeamSize = null;
 		}
@@ -773,6 +797,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			// Some bosses send the pb message, and then the kill message!
 			lastPb = seconds;
+			lastPbRestated = restated;
 			try
 			{
 				lastTeamSize = matcher.group("teamsize");
@@ -884,12 +909,12 @@ public class ChatCommandsPlugin extends Plugin
 								}
 
 								log.debug("Found team-size adventure log PB for {} {}: {}", boss, teamSize, s);
-								setPb(boss + " " + teamSize, s);
+								restatePb(boss + " " + teamSize, s);
 							}
 							else
 							{
 								log.debug("Found adventure log PB for {}: {}", boss, s);
-								setPb(boss, s);
+								restatePb(boss, s);
 							}
 						}
 					}
