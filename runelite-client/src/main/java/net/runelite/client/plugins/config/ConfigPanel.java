@@ -358,17 +358,18 @@ class ConfigPanel extends PluginPanel
 			PluginListItem.addLabelPopupMenu(configEntryName, createResetMenuItem(pluginConfig, cid));
 			item.add(configEntryName, BorderLayout.CENTER);
 
+			String controlPosition = cid.getItem().below() ? BorderLayout.SOUTH : BorderLayout.EAST;
 			if (cid.getType() == boolean.class)
 			{
-				item.add(createCheckbox(cd, cid), BorderLayout.EAST);
+				item.add(createCheckbox(cd, cid), controlPosition);
 			}
 			else if (cid.getType() == int.class)
 			{
-				item.add(createIntSpinner(cd, cid), BorderLayout.EAST);
+				item.add(createIntSpinner(cd, cid), controlPosition);
 			}
 			else if (cid.getType() == double.class)
 			{
-				item.add(createDoubleSpinner(cd, cid), BorderLayout.EAST);
+				item.add(createDoubleSpinner(cd, cid), controlPosition);
 			}
 			else if (cid.getType() == String.class)
 			{
@@ -376,34 +377,34 @@ class ConfigPanel extends PluginPanel
 			}
 			else if (cid.getType() == Color.class)
 			{
-				item.add(createColorPicker(cd, cid), BorderLayout.EAST);
+				item.add(createColorPicker(cd, cid), controlPosition);
 			}
 			else if (cid.getType() == Dimension.class)
 			{
-				item.add(createDimension(cd, cid), BorderLayout.EAST);
+				item.add(createDimension(cd, cid), controlPosition);
 			}
 			else if (cid.getType() instanceof Class && ((Class<?>) cid.getType()).isEnum())
 			{
-				item.add(createComboBox(cd, cid), BorderLayout.EAST);
+				item.add(createComboBox(cd, cid), controlPosition);
 			}
 			else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
-				item.add(createKeybind(cd, cid), BorderLayout.EAST);
+				item.add(createKeybind(cd, cid), controlPosition);
 			}
 			else if (cid.getType() == Notification.class)
 			{
-				item.add(createNotification(cd, cid), BorderLayout.EAST);
+				item.add(createNotification(cd, cid), controlPosition);
 			}
 			else if (cid.getType() == FontType.class)
 			{
-				item.add(createFont(cd, cid), BorderLayout.EAST);
+				item.add(createFont(cd, cid), controlPosition);
 			}
 			else if (cid.getType() instanceof ParameterizedType)
 			{
 				ParameterizedType parameterizedType = (ParameterizedType) cid.getType();
 				if (parameterizedType.getRawType() == Set.class)
 				{
-					item.add(createList(cd, cid), BorderLayout.EAST);
+					item.add(createList(cd, cid), controlPosition);
 				}
 			}
 
