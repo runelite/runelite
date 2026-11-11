@@ -36,14 +36,7 @@ import net.runelite.client.config.Units;
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
-	@ConfigSection(
-		name = "Hallowed Sepulchre",
-		description = "Settings for Hallowed Sepulchre highlights.",
-		position = 18
-	)
-	String sepulchreSection = "Hallowed Sepulchre";
-
-	@ConfigItem(
+		@ConfigItem(
 		keyName = "showClickboxes",
 		name = "Show clickboxes",
 		description = "Show agility course and other obstacle clickboxes.",
@@ -247,6 +240,13 @@ public interface AgilityConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigSection(
+		name = "Hallowed Sepulchre",
+		description = "Settings for Hallowed Sepulchre highlights.",
+		position = 18
+	)
+	String sepulchreSection = "Hallowed Sepulchre";
 
 	@ConfigItem(
 		keyName = "highlightSepulchreNpcs",
