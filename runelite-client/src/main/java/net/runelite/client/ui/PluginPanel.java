@@ -55,6 +55,7 @@ public abstract class PluginPanel extends JPanel implements Activatable
 	protected PluginPanel(boolean wrap)
 	{
 		super();
+		AppFontManager.register(this);
 		if (wrap)
 		{
 			setBorder(BORDER_PADDING);

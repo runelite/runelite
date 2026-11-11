@@ -114,11 +114,11 @@ class OverviewItemPanel extends JPanel
 
 		JLabel titleLabel = new JLabel(title);
 		titleLabel.setForeground(Color.WHITE);
-		titleLabel.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(titleLabel);
 
 		statusLabel = new JLabel();
 		statusLabel.setForeground(Color.GRAY);
-		statusLabel.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(statusLabel);
 
 		textContainer.add(titleLabel);
 		textContainer.add(statusLabel);

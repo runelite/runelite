@@ -158,7 +158,7 @@ public class ClockTabPanel extends TabContentPanel
 
 		JLabel headerLabel = new JLabel(title);
 		headerLabel.setForeground(Color.WHITE);
-		headerLabel.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(headerLabel);
 		panel.add(headerLabel, BorderLayout.CENTER);
 
 		JButton addButton = new JButton(ADD_ICON);
@@ -180,7 +180,7 @@ public class ClockTabPanel extends TabContentPanel
 
 		JLabel infoLabel = new JShadowedLabel(text);
 		infoLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
-		infoLabel.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(infoLabel);
 		panel.add(infoLabel);
 
 		return panel;

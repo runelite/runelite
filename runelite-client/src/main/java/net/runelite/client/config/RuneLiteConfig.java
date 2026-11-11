@@ -60,6 +60,18 @@ public interface RuneLiteConfig extends Config
 	String overlaySettings = "overlaySettings";
 
 	@ConfigItem(
+		keyName = "appInterfaceFont",
+		name = "App interface font",
+		description = "Font for RuneLite panels and controls. Does not change game or overlay text.",
+		position = 48,
+		section = windowSettings
+	)
+	default FontType appInterfaceFont()
+	{
+		return FontType.REGULAR;
+	}
+
+	@ConfigItem(
 		keyName = "gameSize",
 		name = "Game size",
 		description = "The game will resize to this resolution upon starting the client.",
