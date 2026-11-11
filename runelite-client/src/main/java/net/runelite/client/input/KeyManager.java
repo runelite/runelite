@@ -51,6 +51,25 @@ public class KeyManager
 	}
 
 	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
+	private final List<KeyEventInterceptor> keyEventInterceptors = new CopyOnWriteArrayList<>();
+
+	public void registerKeyEventInterceptor(KeyEventInterceptor keyEventInterceptor)
+	{
+		if (!keyEventInterceptors.contains(keyEventInterceptor))
+		{
+			log.debug("Registering key event interceptor: {}", keyEventInterceptor);
+			keyEventInterceptors.add(keyEventInterceptor);
+		}
+	}
+
+	public void unregisterKeyEventInterceptor(KeyEventInterceptor keyEventInterceptor)
+	{
+		final boolean unregistered = keyEventInterceptors.remove(keyEventInterceptor);
+		if (unregistered)
+		{
+			log.debug("Unregistered key event interceptor: {}", keyEventInterceptor);
+		}
+	}
 
 	public void registerKeyListener(KeyListener keyListener)
 	{
@@ -72,7 +91,7 @@ public class KeyManager
 
 	public void processKeyPressed(KeyEvent keyEvent)
 	{
-		if (keyEvent.isConsumed())
+		if (keyEvent.isConsumed() || intercept(keyEvent))
 		{
 			return;
 		}
@@ -97,7 +116,7 @@ public class KeyManager
 
 	public void processKeyReleased(KeyEvent keyEvent)
 	{
-		if (keyEvent.isConsumed())
+		if (keyEvent.isConsumed() || intercept(keyEvent))
 		{
 			return;
 		}
@@ -122,7 +141,7 @@ public class KeyManager
 
 	public void processKeyTyped(KeyEvent keyEvent)
 	{
-		if (keyEvent.isConsumed())
+		if (keyEvent.isConsumed() || intercept(keyEvent))
 		{
 			return;
 		}
@@ -143,6 +162,41 @@ public class KeyManager
 				break;
 			}
 		}
+	}
+
+	private boolean intercept(final KeyEvent keyEvent)
+	{
+		for (KeyEventInterceptor keyEventInterceptor : keyEventInterceptors)
+		{
+			if (!shouldProcess(keyEventInterceptor))
+			{
+				continue;
+			}
+
+			if (keyEventInterceptor.intercept(keyEvent) || keyEvent.isConsumed())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean shouldProcess(final KeyEventInterceptor keyEventInterceptor)
+	{
+		if (client == null)
+		{
+			return true;
+		}
+
+		final GameState gameState = client.getGameState();
+
+		if (gameState == GameState.LOGIN_SCREEN || gameState == GameState.LOGIN_SCREEN_AUTHENTICATOR)
+		{
+			return keyEventInterceptor.isEnabledOnLoginScreen();
+		}
+
+		return true;
 	}
 
 	private boolean shouldProcess(final KeyListener keyListener)
