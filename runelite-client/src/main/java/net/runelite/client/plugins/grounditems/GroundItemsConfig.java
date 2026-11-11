@@ -377,7 +377,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "doubleTapDelay",
 		name = "Double-tap delay",
-		description = "Delay for the double-tap ALT to hide ground items. 0 to disable.",
+		description = "Delay for the double-tap ALT to hide non-highlighted ground items. 0 to disable.",
 		position = 26
 	)
 	@Units(Units.MILLISECONDS)
