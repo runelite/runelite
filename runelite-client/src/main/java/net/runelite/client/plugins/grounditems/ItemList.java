@@ -24,46 +24,69 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.regex.Pattern;
 import lombok.Value;
 import net.runelite.client.util.WildcardMatcher;
 
-@Value
 class ItemList
 {
 	static final int NONE = 0;
 	static final int WILDCARD = 1;
 	static final int EXACT = 2;
 
-	List<ItemThreshold> items;
+	// Use the same case folding as String.equalsIgnoreCase, including non-ASCII names.
+	private final Map<String, List<ItemThreshold>> exactItems = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private final List<WildcardItem> wildcardItems = new ArrayList<>();
+
+	@Value
+	private static class WildcardItem
+	{
+		ItemThreshold threshold;
+		Pattern pattern;
+	}
 
 	ItemList(List<String> items)
 	{
-		this.items = items.stream()
-			.map(ItemThreshold::fromName)
-			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
+		for (String name : items)
+		{
+			ItemThreshold threshold = ItemThreshold.fromName(name);
+			if (threshold == null)
+			{
+				continue;
+			}
+			if (threshold.isWildcard())
+			{
+				wildcardItems.add(new WildcardItem(threshold, WildcardMatcher.compile(threshold.getName())));
+			}
+			else
+			{
+				exactItems.computeIfAbsent(threshold.getName(), k -> new ArrayList<>()).add(threshold);
+			}
+		}
 	}
 
 	int matches(GroundItem item)
 	{
-		for (ItemThreshold it : items)
+		List<ItemThreshold> exact = exactItems.get(item.getName());
+		if (exact != null)
 		{
-			if (!it.isWildcard()
-				&& it.getName().equalsIgnoreCase(item.getName())
-				&& it.quantityHolds(item.getQuantity()))
+			for (ItemThreshold it : exact)
 			{
-				return EXACT;
+				if (it.quantityHolds(item.getQuantity()))
+				{
+					return EXACT;
+				}
 			}
 		}
 
-		for (ItemThreshold it : items)
+		for (WildcardItem it : wildcardItems)
 		{
-			if (it.isWildcard()
-				&& WildcardMatcher.matches(it.getName(), item.getName())
-				&& it.quantityHolds(item.getQuantity()))
+			if (it.threshold.quantityHolds(item.getQuantity())
+				&& it.pattern.matcher(item.getName()).matches())
 			{
 				return WILDCARD;
 			}

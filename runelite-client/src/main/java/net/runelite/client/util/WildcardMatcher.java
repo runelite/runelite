@@ -33,6 +33,11 @@ public class WildcardMatcher
 
 	public static boolean matches(String pattern, String text)
 	{
+		return compile(pattern).matcher(text).matches();
+	}
+
+	public static Pattern compile(String pattern)
+	{
 		final Matcher matcher = WILDCARD_PATTERN.matcher(pattern);
 		final StringBuilder buffer = new StringBuilder();
 
@@ -50,8 +55,6 @@ public class WildcardMatcher
 		}
 
 		matcher.appendTail(buffer);
-		final String replaced = buffer.toString();
-
-		return text.matches(replaced);
+		return Pattern.compile(buffer.toString());
 	}
 }
