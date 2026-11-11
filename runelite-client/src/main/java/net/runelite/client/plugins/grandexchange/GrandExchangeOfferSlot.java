@@ -42,6 +42,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -141,11 +142,11 @@ public class GrandExchangeOfferSlot extends JPanel
 
 		itemName.setForeground(Color.WHITE);
 		itemName.setVerticalAlignment(JLabel.BOTTOM);
-		itemName.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(itemName);
 
 		offerInfo.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		offerInfo.setVerticalAlignment(JLabel.TOP);
-		offerInfo.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(offerInfo);
 
 		JLabel switchFaceViewIcon = new JLabel();
 		switchFaceViewIcon.setIcon(RIGHT_ARROW_ICON);
@@ -172,11 +173,11 @@ public class GrandExchangeOfferSlot extends JPanel
 
 		itemPrice.setForeground(Color.WHITE);
 		itemPrice.setVerticalAlignment(JLabel.BOTTOM);
-		itemPrice.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(itemPrice);
 
 		offerSpent.setForeground(Color.WHITE);
 		offerSpent.setVerticalAlignment(JLabel.TOP);
-		offerSpent.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(offerSpent);
 
 		JLabel switchDetailsViewIcon = new JLabel();
 		switchDetailsViewIcon.setIcon(LEFT_ARROW_ICON);
@@ -184,10 +185,19 @@ public class GrandExchangeOfferSlot extends JPanel
 		switchDetailsViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setPreferredSize(new Dimension(30, PANEL_HEIGHT));
 
-		JPanel offerDetails = new JPanel();
+		JPanel offerDetails = new JPanel()
+		{
+			@Override
+			public Dimension getPreferredSize()
+			{
+				// Offer text arrives after construction; measure it at layout time.
+				int height = UIManager.getBoolean("RuneLite.customAppFont")
+					? Math.max(PANEL_HEIGHT, super.getPreferredSize().height) : PANEL_HEIGHT;
+				return new Dimension(0, height);
+			}
+		};
 		offerDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerDetails.setLayout(new BoxLayout(offerDetails, BoxLayout.PAGE_AXIS));
-		offerDetails.setPreferredSize(new Dimension(0, PANEL_HEIGHT));
 
 		JPanel offerDetailsWrapper = new JPanel();
 		offerDetailsWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
