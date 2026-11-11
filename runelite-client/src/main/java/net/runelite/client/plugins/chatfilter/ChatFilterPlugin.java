@@ -346,7 +346,7 @@ public class ChatFilterPlugin extends Plugin
 			switch (config.filterType())
 			{
 				case CENSOR_WORDS:
-					return StringUtils.repeat('*', Text.unescapeJagex(message).length());
+					return StringUtils.repeat('*', Text.unescapeJagex(client.macroExpand(message)).length());
 				case CENSOR_MESSAGE:
 					return CENSOR_MESSAGE;
 				case REMOVE_MESSAGE:
@@ -354,7 +354,8 @@ public class ChatFilterPlugin extends Plugin
 			}
 		}
 
-		String strippedMessage = Text.JAGEX_PRINTABLE_CHAR_MATCHER.retainFrom(Text.unescapeJagex(message))
+		String strippedMessage = Text.JAGEX_PRINTABLE_CHAR_MATCHER
+			.retainFrom(Text.unescapeJagex(client.macroExpand(message)))
 			.replace('\u00A0', ' ');
 		String strippedAccents = stripAccents(strippedMessage);
 		assert strippedMessage.length() == strippedAccents.length();
