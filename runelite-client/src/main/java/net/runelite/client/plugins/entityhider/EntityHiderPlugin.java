@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Set;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
@@ -38,6 +39,8 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.WorldEntity;
+import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.callback.Hooks;
@@ -74,7 +77,6 @@ public class EntityHiderPlugin extends Plugin
 		NpcID.MACRO_EVIL_BOB_OUTSIDE, NpcID.MACRO_EVIL_BOB_PRISON,
 		NpcID.PINBALL_INVITATION,
 		NpcID.MACRO_FORESTER_INVITATION,
-		NpcID.MACRO_FROG_CRIER, NpcID.MACRO_FROG_GENERIC, NpcID.MACRO_FROG_SULKING, NpcID.MACRO_FROG_NONCOMBAT, NpcID.MACRO_FROG_NOHAT, NpcID.MACRO_FROG_PRIN_HE, NpcID.MACRO_FROG_PRIN_SHE, NpcID.MACRO_FROG_PRIN_A, NpcID.MACRO_FROG_PRIN_B,
 		NpcID.MACRO_GENI, NpcID.MACRO_GENI_UNDERWATER,
 		NpcID.MACRO_GILES, NpcID.MACRO_GILES_UNDERWATER,
 		NpcID.MACRO_GRAVEDIGGER_INVITATION,
@@ -89,6 +91,10 @@ public class EntityHiderPlugin extends Plugin
 		NpcID.MACRO_SANDWICH_LADY_NPC,
 		NpcID.MACRO_DRILLDEMON_INVITATION,
 		NpcID.MACRO_COUNTCHECK_SURFACE, NpcID.MACRO_COUNTCHECK_UNDERWATER
+	);
+	// Kiss the frog: the herald talks to you, but the crowned frog and the frogs around it never do
+	private static final Set<Integer> FROG_EVENT_NPC_IDS = ImmutableSet.of(
+		NpcID.MACRO_FROG_CRIER, NpcID.MACRO_FROG_GENERIC, NpcID.MACRO_FROG_SULKING, NpcID.MACRO_FROG_NONCOMBAT, NpcID.MACRO_FROG_NOHAT, NpcID.MACRO_FROG_PRIN_HE, NpcID.MACRO_FROG_PRIN_SHE, NpcID.MACRO_FROG_PRIN_A, NpcID.MACRO_FROG_PRIN_B
 	);
 
 	@Inject
@@ -125,6 +131,9 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
 
+	// the frog herald of the local player's own Kiss the frog event, while it is spawned
+	private NPC ownFrogHerald;
+
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
 	@Provides
@@ -145,6 +154,29 @@ public class EntityHiderPlugin extends Plugin
 	protected void shutDown()
 	{
 		hooks.unregisterRenderableDrawListener(drawListener);
+		ownFrogHerald = null;
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		Actor source = event.getSource();
+		if (source instanceof NPC
+			&& ((NPC) source).getId() == NpcID.MACRO_FROG_CRIER
+			&& event.getTarget() != null
+			&& event.getTarget() == client.getLocalPlayer())
+		{
+			ownFrogHerald = (NPC) source;
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		if (event.getNpc() == ownFrogHerald)
+		{
+			ownFrogHerald = null;
+		}
 	}
 
 	@Subscribe
@@ -270,6 +302,12 @@ public class EntityHiderPlugin extends Plugin
 			if (RANDOM_EVENT_NPC_IDS.contains(npc.getId()))
 			{
 				return !hideRandomEvents;
+			}
+
+			if (FROG_EVENT_NPC_IDS.contains(npc.getId()))
+			{
+				// while your own frog event is on, the frogs around you are yours
+				return !hideRandomEvents || ownFrogHerald != null;
 			}
 
 			return !(drawingUI ? hideNPCs2D : hideNPCs);
