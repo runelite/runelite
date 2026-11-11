@@ -52,15 +52,17 @@ class CookingOverlay extends OverlayPanel
 
 	private final Client client;
 	private final CookingPlugin plugin;
+	private final CookingConfig config;
 	private final XpTrackerService xpTrackerService;
 
 	@Inject
-	private CookingOverlay(Client client, CookingPlugin plugin, XpTrackerService xpTrackerService)
+	private CookingOverlay(Client client, CookingPlugin plugin, CookingConfig config, XpTrackerService xpTrackerService)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 		this.xpTrackerService = xpTrackerService;
 		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Cooking overlay");
 		addMenuEntry(RUNELITE_OVERLAY, COOKING_RESET, "Cooking overlay", e -> plugin.setSession(null));
@@ -70,7 +72,7 @@ class CookingOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		CookingSession session = plugin.getSession();
-		if (session == null)
+		if (!config.showCookingStats() || session == null)
 		{
 			return null;
 		}
