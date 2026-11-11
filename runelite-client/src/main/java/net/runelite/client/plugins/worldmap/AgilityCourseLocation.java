@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum AgilityCourseLocation
+public enum AgilityCourseLocation
 {
 	AGILITY_PYRAMID("Agility Pyramid", new WorldPoint(3347, 2827, 0)),
 	AL_KHARID_ROOFTOP_COURSE("Al Kharid Rooftop Course", new WorldPoint(3272, 3195, 0)),
