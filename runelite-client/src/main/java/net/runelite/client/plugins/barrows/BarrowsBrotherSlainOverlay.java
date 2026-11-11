@@ -28,43 +28,56 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.FontManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 class BarrowsBrotherSlainOverlay extends OverlayPanel
 {
 	private static final DecimalFormat REWARD_POTENTIAL_FORMATTER = new DecimalFormat("##0.00%");
-
 	private final Client client;
+	private final BarrowsPlugin plugin;
+	private final BarrowsConfig config;
+	private final BarrowsPotentialProgressBar progressBar = new BarrowsPotentialProgressBar();
+	private int cachedPotential = -1;
+	private int cachedSlainBrothers = -1;
+	private int cachedPotentialGoal = -1;
+	private List<String> cachedRecommendations;
 
 	@Inject
-	private BarrowsBrotherSlainOverlay(BarrowsPlugin plugin, Client client)
+	private BarrowsBrotherSlainOverlay(BarrowsPlugin plugin, Client client, BarrowsConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(PRIORITY_LOW);
+		this.plugin = plugin;
 		this.client = client;
+		this.config = config;
 		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Barrows overlay");
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// Only render the brothers slain overlay if the vanilla interface is loaded
 		final Widget barrowsBrothers = client.getWidget(InterfaceID.BarrowsOverlay.BROTHERS);
 		if (barrowsBrothers == null)
 		{
 			return null;
 		}
+
+		boolean extended = config.showPotentialKillRecommendations() && plugin.shouldShowPotentialKillRecommendations();
+		panelComponent.setPreferredSize(new Dimension(extended ? 350 : ComponentConstants.STANDARD_WIDTH, 0));
 
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
@@ -78,41 +91,65 @@ class BarrowsBrotherSlainOverlay extends OverlayPanel
 				.build());
 		}
 
-		final int rewardPotential = rewardPotential();
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Potential")
-			.right(REWARD_POTENTIAL_FORMATTER.format(rewardPotential / 1012f))
-			.rightColor(rewardPotential >= 756 && rewardPotential < 881 ? Color.GREEN : rewardPotential < 631 ? Color.WHITE : Color.YELLOW)
-			.build());
+		final int rewardPotential = plugin.getRewardPotential();
+		if (config.showPotentialProgressBar())
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Potential:").build());
+			progressBar.setRewardPotential(rewardPotential);
+			progressBar.setGoalPercent(config.potentialGoal());
+			panelComponent.getChildren().add(progressBar);
+		}
+		else
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Potential")
+				.right(REWARD_POTENTIAL_FORMATTER.format(rewardPotential / 1012f))
+				.rightColor(rewardPotential >= 756 && rewardPotential < 881 ? Color.GREEN : rewardPotential < 631 ? Color.WHITE : Color.YELLOW)
+				.build());
+		}
+
+		if (config.showPotentialKillRecommendations() && plugin.shouldShowPotentialKillRecommendations())
+		{
+			addPotentialKillRecommendations(rewardPotential);
+		}
 
 		return super.render(graphics);
 	}
 
-	/**
-	 * Compute the barrows reward potential. Potential rewards are based off of the amount of
-	 * potential.
-	 * <p>
-	 * The reward potential thresholds are as follows:
-	 * Mind rune - 381
-	 * Chaos rune - 506
-	 * Death rune - 631
-	 * Blood rune - 756
-	 * Bolt rack - 881
-	 * Half key - 1006
-	 * Dragon med - 1012
-	 *
-	 * @return potential, 0-1012 inclusive
-	 * @see <a href="https://twitter.com/jagexkieren/status/705428283509366785?lang=en">source</a>
-	 */
-	private int rewardPotential()
+	private void addPotentialKillRecommendations(int rewardPotential)
 	{
-		// this is from [proc,barrows_overlay_reward]
-		int brothers = client.getVarbitValue(VarbitID.BARROWS_KILLED_AHRIM)
-			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_DHAROK)
-			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_GUTHAN)
-			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_KARIL)
-			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_TORAG)
-			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_VERAC);
-		return client.getVarbitValue(VarbitID.BARROWS_KILLED_MONSTER) + brothers * 2;
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Recommended kills, including remaining brothers:")
+			.build());
+
+		Set<BarrowsBrothers> slainBrothers = EnumSet.noneOf(BarrowsBrothers.class);
+		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		{
+			if (client.getVarbitValue(brother.getKilledVarbit()) > 0)
+			{
+				slainBrothers.add(brother);
+			}
+		}
+
+		int slainMask = 0;
+		for (BarrowsBrothers brother : slainBrothers)
+		{
+			slainMask |= 1 << brother.ordinal();
+		}
+		int potentialGoal = config.potentialGoal();
+		if (cachedPotential != rewardPotential || cachedSlainBrothers != slainMask || cachedPotentialGoal != potentialGoal)
+		{
+			cachedPotential = rewardPotential;
+			cachedSlainBrothers = slainMask;
+			cachedPotentialGoal = potentialGoal;
+			cachedRecommendations = BarrowsPotentialPlan.findClosestPlans(rewardPotential, slainBrothers, potentialGoal);
+		}
+
+		for (String recommendation : cachedRecommendations)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("• " + recommendation)
+				.build());
+		}
 	}
 }
