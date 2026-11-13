@@ -143,6 +143,17 @@ public interface CameraConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "pinchToZoom",
+		name = "Pinch to zoom",
+		description = "Zoom the camera by pinching on a trackpad. Only works on macOS.",
+		position = 9
+	)
+	default boolean pinchToZoom()
+	{
+		return false;
+	}
+
 	// region mouse settings
 	@ConfigItem(
 		keyName = "rightClickMovesCamera",

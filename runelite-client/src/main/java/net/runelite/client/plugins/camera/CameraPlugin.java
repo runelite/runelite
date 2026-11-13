@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Point;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
 import net.runelite.api.events.BeforeRender;
@@ -55,6 +56,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.MagnificationGesture;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
@@ -73,6 +75,8 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
+	// The client draws the scene twice as large for every 256 added to a zoom value
+	private static final int ZOOM_PER_DOUBLING = 256;
 
 	private boolean controlDown;
 	// flags used to store the mousedown states
@@ -83,6 +87,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private int defaultZoomSmallMax;
 	private int defaultZoomBigMin;
 	private int defaultZoomBigMax;
+
+	// Fraction of a zoom value left over from earlier pinches, as the zoom script only takes whole values
+	private double pinchZoomRemainder;
 
 	/**
 	 * Whether or not the current menu has any non-ignored menu entries
@@ -289,6 +296,84 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			copyConfigs();
 			clientThread.invoke(() -> applyConfigs(config.innerLimit(), config.outerLimit()));
+		}
+	}
+
+	@Subscribe
+	public void onMagnificationGesture(MagnificationGesture ev)
+	{
+		if (config.pinchToZoom() && client.getGameState() == GameState.LOGGED_IN && isMouseOverScene())
+		{
+			pinchZoom(1 + ev.getMagnification());
+		}
+	}
+
+	/**
+	 * Whether the scroll wheel would zoom the camera here: the menu offers walking or a sailing heading, so the
+	 * cursor is over the scene, and no interface under it keeps scrolls for itself, as the chatbox does.
+	 */
+	private boolean isMouseOverScene()
+	{
+		for (MenuEntry entry : client.getMenuEntries())
+		{
+			if (entry.getType() == MenuAction.WALK || entry.getType() == MenuAction.SET_HEADING)
+			{
+				final Point mouse = client.getMouseCanvasPosition();
+				return !blocksScrolling(client.getWidgetRoots(), mouse.getX(), mouse.getY());
+			}
+		}
+		return false;
+	}
+
+	private static boolean blocksScrolling(Widget[] widgets, int x, int y)
+	{
+		if (widgets == null)
+		{
+			return false;
+		}
+
+		for (Widget widget : widgets)
+		{
+			// Children are only checked under visible parents, so only the widget's own flag matters
+			if (widget == null || widget.isSelfHidden() || !widget.getBounds().contains(x, y))
+			{
+				continue;
+			}
+
+			if (widget.getNoScrollThrough()
+				|| blocksScrolling(widget.getStaticChildren(), x, y)
+				|| blocksScrolling(widget.getDynamicChildren(), x, y)
+				|| blocksScrolling(widget.getNestedChildren(), x, y))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * A zoom value is the logarithm of the size the scene is drawn at, so adding the logarithm of the pinch's scale
+	 * makes the scene follow the fingers. The zoom script applies the zoom limits, as it does for the scroll wheel,
+	 * but a pinch ignores the in-game scroll wheel zoom setting, which players turn off to stop 2-finger scrolling
+	 * from zooming.
+	 */
+	@VisibleForTesting
+	void pinchZoom(double scale)
+	{
+		final double zoom = pinchZoomRemainder + ZOOM_PER_DOUBLING * Math.log(scale) / Math.log(2);
+		// A scale that is not above 0, or is infinite, has no usable logarithm
+		if (!Double.isFinite(zoom))
+		{
+			return;
+		}
+
+		final int step = (int) zoom;
+		pinchZoomRemainder = zoom - step;
+		if (step != 0)
+		{
+			client.runScript(ScriptID.CAMERA_DO_ZOOM,
+				client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL) + step,
+				client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG) + step);
 		}
 	}
 

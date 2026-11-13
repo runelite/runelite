@@ -406,6 +406,12 @@ public class ClientUI
 			clientPanel = new ClientPanel(this.client);
 			content.add(clientPanel);
 
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				// Installed on the client panel, not the frame, so pinching over the sidebar is ignored
+				OSXGestureAdapter.install(clientPanel, eventBus, clientThreadProvider.get());
+			}
+
 			sidebar = new JTabbedPane(JTabbedPane.RIGHT);
 			sidebar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			sidebar.setOpaque(true);
