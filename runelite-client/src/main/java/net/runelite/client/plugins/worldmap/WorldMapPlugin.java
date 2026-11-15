@@ -50,10 +50,13 @@ import net.runelite.api.worldmap.WorldMap;
 import net.runelite.api.worldmap.WorldMapIcon;
 import net.runelite.api.worldmap.WorldMapRegion;
 import net.runelite.api.worldmap.WorldMapRenderer;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
@@ -163,6 +166,18 @@ public class WorldMapPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Inject
+	private WorldMapTrackpad trackpad;
+
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
 	private int sailingLevel = 0;
@@ -182,11 +197,18 @@ public class WorldMapPlugin extends Plugin
 		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
 		sailingLevel = client.getRealSkillLevel(Skill.SAILING);
 		updateShownIcons();
+		// Its state belongs to the client thread, where swipes from before a restart may still arrive
+		clientThread.invoke(trackpad::reset);
+		// First, so a sideways swipe over the map isn't taken by the Camera plugin's swipe to rotate
+		mouseManager.registerMouseWheelListener(0, trackpad);
+		eventBus.register(trackpad);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		mouseManager.unregisterMouseWheelListener(trackpad);
+		eventBus.unregister(trackpad);
 		worldMapPointManager.removeIf(MapPoint.class::isInstance);
 		questStartLocations.clear();
 		agilityLevel = 0;

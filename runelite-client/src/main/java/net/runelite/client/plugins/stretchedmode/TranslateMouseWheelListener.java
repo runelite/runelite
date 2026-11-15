@@ -57,6 +57,7 @@ public class TranslateMouseWheelListener implements MouseWheelListener
 		int newY = (int) (e.getY() / (stretchedDimensions.height / realDimensions.getHeight()));
 
 		return new MouseWheelEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), newX, newY,
-				e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation());
+				e.getXOnScreen(), e.getYOnScreen(), e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(),
+				e.getWheelRotation(), e.getPreciseWheelRotation());
 	}
 }
