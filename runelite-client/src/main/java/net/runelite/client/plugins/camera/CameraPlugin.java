@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Point;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
 import net.runelite.api.events.BeforeRender;
@@ -49,12 +50,14 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.MagnificationGesture;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
@@ -73,6 +76,9 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
+	// Below this zoom value a pinch moves the zoom at a fixed rate, because scaling alone
+	// slows to a stop near 0 and can never reach the negative limits the outer limit allows
+	private static final int PINCH_ZOOM_FIXED_RATE_BELOW = 128;
 
 	private boolean controlDown;
 	// flags used to store the mousedown states
@@ -83,6 +89,12 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private int defaultZoomSmallMax;
 	private int defaultZoomBigMin;
 	private int defaultZoomBigMax;
+
+	// Unrounded zoom values from the last pinch, so the fraction lost to rounding carries into the next one
+	private double pinchZoomSmall;
+	private double pinchZoomBig;
+	// Combined scale of the pinch events since the last client tick
+	private double pendingPinchScale = 1;
 
 	/**
 	 * Whether or not the current menu has any non-ignored menu entries
@@ -121,6 +133,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		rightClick = false;
 		middleClick = false;
 		menuHasEntries = false;
+		pendingPinchScale = 1;
 		copyConfigs();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
@@ -292,6 +305,94 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		}
 	}
 
+	@Subscribe
+	public void onMagnificationGesture(MagnificationGesture ev)
+	{
+		if (isMouseOverScene())
+		{
+			pendingPinchScale *= 1 + ev.getMagnification();
+		}
+	}
+
+	/**
+	 * Whether the scroll wheel would zoom the camera here: the menu offers walking or a sailing heading, so the
+	 * cursor is over the scene, and no interface under it keeps scrolls for itself, as the chatbox does.
+	 */
+	private boolean isMouseOverScene()
+	{
+		for (MenuEntry entry : client.getMenuEntries())
+		{
+			if (entry.getType() == MenuAction.WALK || entry.getType() == MenuAction.SET_HEADING)
+			{
+				final Point mouse = client.getMouseCanvasPosition();
+				return !blocksScrolling(client.getWidgetRoots(), mouse.getX(), mouse.getY());
+			}
+		}
+		return false;
+	}
+
+	private static boolean blocksScrolling(Widget[] widgets, int x, int y)
+	{
+		if (widgets == null)
+		{
+			return false;
+		}
+
+		for (Widget widget : widgets)
+		{
+			// Children are only checked under visible parents, so only the widget's own flag matters
+			if (widget == null || widget.isSelfHidden() || !widget.getBounds().contains(x, y))
+			{
+				continue;
+			}
+
+			if (widget.getNoScrollThrough()
+				|| blocksScrolling(widget.getStaticChildren(), x, y)
+				|| blocksScrolling(widget.getDynamicChildren(), x, y)
+				|| blocksScrolling(widget.getNestedChildren(), x, y))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@VisibleForTesting
+	void pinchZoom(double scale)
+	{
+		// The scroll wheel zoom script also stops when zoom is clamped. It ignores the in-game
+		// scroll wheel zoom setting, which players turn off to stop 2-finger scrolling from zooming.
+		if (client.getGameState() != GameState.LOGGED_IN || client.getVarbitValue(VarbitID.FOV_CLAMP) != 0)
+		{
+			return;
+		}
+
+		final int small = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL);
+		final int big = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG);
+		pinchZoomSmall = scaleZoom(pinchZoomSmall, small, scale,
+			client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MIN), client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MAX));
+		pinchZoomBig = scaleZoom(pinchZoomBig, big, scale,
+			client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MIN), client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MAX));
+
+		final int newSmall = (int) Math.round(pinchZoomSmall);
+		final int newBig = (int) Math.round(pinchZoomBig);
+		if (newSmall != small || newBig != big)
+		{
+			client.runScript(ScriptID.CAMERA_DO_ZOOM, newSmall, newBig);
+		}
+	}
+
+	/**
+	 * The zoom value sets the scene's projection scale, so scaling it makes the zoom follow the fingers. It
+	 * carries on from the unrounded value of the last pinch unless something else has changed the zoom since.
+	 */
+	private static double scaleZoom(double unrounded, int current, double scale, int min, int max)
+	{
+		final double zoom = Math.round(unrounded) == current ? unrounded : current;
+		final double step = (scale - 1) * Math.max(zoom, PINCH_ZOOM_FIXED_RATE_BELOW);
+		return Math.max(min, Math.min(max, zoom + step));
+	}
+
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
@@ -390,6 +491,13 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		menuHasEntries = hasMenuEntries(client.getMenuEntries());
 		sliderTooltip = null;
+
+		final double pinchScale = pendingPinchScale;
+		pendingPinchScale = 1;
+		if (pinchScale != 1 && config.pinchToZoom())
+		{
+			pinchZoom(pinchScale);
+		}
 	}
 
 	@Subscribe
