@@ -27,7 +27,12 @@ package net.runelite.client.plugins.camera;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.Canvas;
 import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +45,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -377,5 +383,271 @@ public class CameraPluginTest
 		cameraPlugin.startUp();
 		cameraPlugin.onClientTick(new ClientTick());
 		verify(client, never()).runScript(any(Object[].class));
+	}
+
+	/**
+	 * A 2-finger trackpad scroll as Java on macOS reports it, where a sideways scroll carries the shift flag.
+	 */
+	private static MouseWheelEvent swipe(boolean sideways, double amount)
+	{
+		return new MouseWheelEvent(new Canvas(), MouseEvent.MOUSE_WHEEL, 0, sideways ? InputEvent.SHIFT_DOWN_MASK : 0,
+			100, 100, 100, 100, 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, 0, amount);
+	}
+
+	// Camera targets the swipe tests read back, as the client would keep them
+	private final int[] yawTarget = {1000};
+	private final int[] pitchTarget = {2000};
+
+	private void setUpSwipe(MenuAction sceneOption)
+	{
+		lenient().when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		lenient().when(cameraConfig.swipeToRotate()).thenReturn(true);
+		lenient().when(cameraConfig.swipeToTilt()).thenReturn(true);
+		lenient().when(client.getCameraYawTarget()).thenAnswer(inv -> yawTarget[0]);
+		lenient().when(client.getCameraPitchTarget()).thenAnswer(inv -> pitchTarget[0]);
+		lenient().doAnswer(inv -> yawTarget[0] = inv.getArgument(0)).when(client).setCameraYawTarget(anyInt());
+		lenient().doAnswer(inv -> pitchTarget[0] = inv.getArgument(0)).when(client).setCameraPitchTarget(anyInt());
+		lenient().doAnswer(inv ->
+		{
+			inv.<Runnable>getArgument(0).run();
+			return null;
+		}).when(clientThread).invokeLater(any(Runnable.class));
+		cameraPlugin.macOS = true;
+		hover(sceneOption);
+	}
+
+	/**
+	 * Runs enough client ticks for a swipe to finish moving the camera.
+	 */
+	private void settle()
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			cameraPlugin.onClientTick(new ClientTick());
+		}
+	}
+
+	@Test
+	public void testSidewaysSwipeOverSceneRotatesCamera()
+	{
+		setUpSwipe(MenuAction.WALK);
+
+		MouseWheelEvent event = swipe(true, -1);
+		cameraPlugin.mouseWheelMoved(event);
+		settle();
+
+		assertEquals(800, yawTarget[0]);
+		verify(client, never()).setCameraPitchTarget(anyInt());
+		// Otherwise the game also takes the swipe as an up or down scroll and zooms
+		assertTrue(event.isConsumed());
+	}
+
+	@Test
+	public void testUpDownSwipeOverSceneTiltsCamera()
+	{
+		setUpSwipe(MenuAction.WALK);
+
+		MouseWheelEvent event = swipe(false, 1);
+		cameraPlugin.mouseWheelMoved(event);
+		settle();
+
+		assertEquals(1880, pitchTarget[0]);
+		verify(client, never()).setCameraYawTarget(anyInt());
+		// Left for the game, so it still scrolls interfaces, and its zoom over the scene is stopped separately
+		assertFalse(event.isConsumed());
+	}
+
+	@Test
+	public void testSwipeSpreadsOverTicks()
+	{
+		setUpSwipe(MenuAction.WALK);
+
+		// Moving the whole swipe in 1 tick makes the camera jump whenever trackpad events bunch up
+		cameraPlugin.mouseWheelMoved(swipe(true, -1));
+		cameraPlugin.onClientTick(new ClientTick());
+		assertTrue(yawTarget[0] < 1000 && yawTarget[0] > 800);
+
+		settle();
+		assertEquals(800, yawTarget[0]);
+	}
+
+	@Test
+	public void testSwipeOverInterfaceIsIgnored()
+	{
+		setUpSwipe(MenuAction.CC_OP);
+
+		MouseWheelEvent sideways = swipe(true, -1);
+		cameraPlugin.mouseWheelMoved(sideways);
+		MouseWheelEvent upDown = swipe(false, 1);
+		cameraPlugin.mouseWheelMoved(upDown);
+		settle();
+
+		verify(client, never()).setCameraYawTarget(anyInt());
+		verify(client, never()).setCameraPitchTarget(anyInt());
+		// A sideways swipe would otherwise scroll the interface up or down
+		assertTrue(sideways.isConsumed());
+		assertFalse(upDown.isConsumed());
+	}
+
+	@Test
+	public void testSwipesWhileOptionsOffPassThrough()
+	{
+		setUpSwipe(MenuAction.WALK);
+		lenient().when(cameraConfig.swipeToRotate()).thenReturn(false);
+		lenient().when(cameraConfig.swipeToTilt()).thenReturn(false);
+
+		MouseWheelEvent sideways = swipe(true, -1);
+		cameraPlugin.mouseWheelMoved(sideways);
+		cameraPlugin.mouseWheelMoved(swipe(false, 1));
+		settle();
+
+		verify(client, never()).setCameraYawTarget(anyInt());
+		verify(client, never()).setCameraPitchTarget(anyInt());
+		assertFalse(sideways.isConsumed());
+	}
+
+	@Test
+	public void testSidewaysSwipeWhileLoggedOutPassesThrough()
+	{
+		setUpSwipe(MenuAction.WALK);
+		lenient().when(client.getGameState()).thenReturn(GameState.LOGIN_SCREEN);
+
+		MouseWheelEvent event = swipe(true, -1);
+		cameraPlugin.mouseWheelMoved(event);
+
+		assertFalse(event.isConsumed());
+	}
+
+	@Test
+	public void testSwipesAddUpAndKeepFractionsBetweenTicks()
+	{
+		setUpSwipe(MenuAction.WALK);
+
+		cameraPlugin.mouseWheelMoved(swipe(true, -0.5));
+		cameraPlugin.mouseWheelMoved(swipe(true, -0.5));
+		settle();
+		assertEquals(800, yawTarget[0]);
+
+		// Each of these moves the camera less than 1 angle unit, so without carrying the fraction it would never move
+		cameraPlugin.mouseWheelMoved(swipe(true, 0.003));
+		settle();
+		assertEquals(800, yawTarget[0]);
+
+		cameraPlugin.mouseWheelMoved(swipe(true, 0.003));
+		settle();
+		assertEquals(801, yawTarget[0]);
+	}
+
+	@Test
+	public void testYawWrapsAfterFullTurn()
+	{
+		setUpSwipe(MenuAction.WALK);
+		yawTarget[0] = 16380;
+
+		cameraPlugin.mouseWheelMoved(swipe(true, 0.1));
+		settle();
+
+		assertEquals(16, yawTarget[0]);
+	}
+
+	@Test
+	public void testInvertSettingsReverseSwipes()
+	{
+		setUpSwipe(MenuAction.WALK);
+		lenient().when(cameraConfig.invertYaw()).thenReturn(true);
+		lenient().when(cameraConfig.invertPitch()).thenReturn(true);
+
+		cameraPlugin.mouseWheelMoved(swipe(true, -1));
+		cameraPlugin.mouseWheelMoved(swipe(false, 1));
+		settle();
+
+		assertEquals(1200, yawTarget[0]);
+		assertEquals(2120, pitchTarget[0]);
+	}
+
+	@Test
+	public void testShiftScrollOffMacPassesThrough()
+	{
+		setUpSwipe(MenuAction.WALK);
+		cameraPlugin.macOS = false;
+
+		// Only Java on macOS turns a sideways swipe into a shift scroll; elsewhere it is a real shift scroll
+		MouseWheelEvent event = swipe(true, -1);
+		cameraPlugin.mouseWheelMoved(event);
+		settle();
+
+		verify(client, never()).setCameraYawTarget(anyInt());
+		assertFalse(event.isConsumed());
+	}
+
+	@Test
+	public void testControlScrollStillZoomsWithControlToZoom()
+	{
+		setUpSwipe(MenuAction.WALK);
+		lenient().when(cameraConfig.controlFunction()).thenReturn(ControlFunction.CONTROL_TO_ZOOM);
+		final int[] intStack = {0};
+		lenient().when(client.getIntStack()).thenReturn(intStack);
+		lenient().when(client.getIntStackSize()).thenReturn(1);
+		ScriptCallbackEvent zoom = new ScriptCallbackEvent();
+		zoom.setEventName("scrollWheelZoom");
+		cameraPlugin.keyPressed(new KeyEvent(new Canvas(), KeyEvent.KEY_PRESSED, 0, 0, KeyEvent.VK_CONTROL, KeyEvent.CHAR_UNDEFINED));
+
+		cameraPlugin.onScriptCallbackEvent(zoom);
+		cameraPlugin.mouseWheelMoved(swipe(false, 1));
+		settle();
+
+		assertEquals(0, intStack[0]);
+		verify(client, never()).setCameraPitchTarget(anyInt());
+	}
+
+	@Test
+	public void testTurningSwipeOffStopsGlide()
+	{
+		setUpSwipe(MenuAction.WALK);
+
+		cameraPlugin.mouseWheelMoved(swipe(true, -1));
+		cameraPlugin.mouseWheelMoved(swipe(false, 1));
+		cameraPlugin.onClientTick(new ClientTick());
+		final int yaw = yawTarget[0];
+		final int pitch = pitchTarget[0];
+		lenient().when(cameraConfig.swipeToRotate()).thenReturn(false);
+		lenient().when(cameraConfig.swipeToTilt()).thenReturn(false);
+		settle();
+
+		assertEquals(yaw, yawTarget[0]);
+		assertEquals(pitch, pitchTarget[0]);
+	}
+
+	@Test
+	public void testSwipeToTiltStopsScrollZoom()
+	{
+		final int[] intStack = {0};
+		lenient().when(client.getIntStack()).thenReturn(intStack);
+		lenient().when(client.getIntStackSize()).thenReturn(1);
+		ScriptCallbackEvent event = new ScriptCallbackEvent();
+		event.setEventName("scrollWheelZoom");
+
+		cameraPlugin.onScriptCallbackEvent(event);
+		assertEquals(0, intStack[0]);
+
+		// 1 tells the game's scroll zoom script to stop
+		lenient().when(cameraConfig.swipeToTilt()).thenReturn(true);
+		cameraPlugin.onScriptCallbackEvent(event);
+		assertEquals(1, intStack[0]);
+	}
+
+	@Test
+	public void testStartUpDropsEarlierSwipes()
+	{
+		setUpSwipe(MenuAction.WALK);
+
+		// Swipes that arrived after the plugin last stopped
+		cameraPlugin.mouseWheelMoved(swipe(true, -1));
+		cameraPlugin.mouseWheelMoved(swipe(false, 1));
+		cameraPlugin.startUp();
+		cameraPlugin.onClientTick(new ClientTick());
+
+		verify(client, never()).setCameraYawTarget(anyInt());
+		verify(client, never()).setCameraPitchTarget(anyInt());
 	}
 }

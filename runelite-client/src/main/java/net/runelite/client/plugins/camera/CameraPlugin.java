@@ -31,6 +31,7 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
@@ -62,10 +63,12 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
 	name = "Camera",
@@ -73,12 +76,24 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 	tags = {"zoom", "limit", "vertical", "click", "mouse"},
 	enabledByDefault = false
 )
-public class CameraPlugin extends Plugin implements KeyListener, MouseListener
+public class CameraPlugin extends Plugin implements KeyListener, MouseListener, MouseWheelListener
 {
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
 	// Below this zoom value a pinch moves the zoom at a fixed rate, because scaling alone
 	// slows to a stop near 0 and can never reach the negative limits the outer limit allows
 	private static final int PINCH_ZOOM_FIXED_RATE_BELOW = 128;
+	// Camera angle moved per unit of trackpad scrolling, in units of 1/16,384 of a turn. Pitch is
+	// negative so scrolling down, as Java counts it, lowers the camera towards the horizon.
+	private static final double SWIPE_YAW_PER_SCROLL = 200;
+	private static final double SWIPE_PITCH_PER_SCROLL = -120;
+	// Share of the swiped angle still to move that is moved each client tick, so uneven trackpad events glide
+	private static final double SWIPE_SMOOTHING = 0.35;
+	// Yaw wraps back to 0 after a full turn
+	private static final int YAW_MASK = 16383;
+
+	// Only Java on macOS reports a sideways trackpad scroll, which it does as a scroll with shift held
+	@VisibleForTesting
+	boolean macOS = OSType.getOSType() == OSType.MacOS;
 
 	private boolean controlDown;
 	// flags used to store the mousedown states
@@ -95,6 +110,10 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private double pinchZoomBig;
 	// Combined scale of the pinch events since the last client tick
 	private double pendingPinchScale = 1;
+	// Camera angle from 2-finger swipes since the last client tick. Whole units are applied
+	// each tick and the fraction carries into the next.
+	private double pendingSwipeYaw;
+	private double pendingSwipePitch;
 
 	/**
 	 * Whether or not the current menu has any non-ignored menu entries
@@ -134,9 +153,12 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		middleClick = false;
 		menuHasEntries = false;
 		pendingPinchScale = 1;
+		pendingSwipeYaw = 0;
+		pendingSwipePitch = 0;
 		copyConfigs();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
+		mouseManager.registerMouseWheelListener(this);
 		clientThread.invoke(() ->
 		{
 			Widget sideSlider = client.getWidget(InterfaceID.SettingsSide.ZOOM_SLIDER);
@@ -172,6 +194,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		client.setCameraShakeDisabled(false);
 		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseListener(this);
+		mouseManager.unregisterMouseWheelListener(this);
 		controlDown = false;
 
 		clientThread.invoke(() ->
@@ -245,7 +268,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		switch (event.getEventName())
 		{
 			case "scrollWheelZoom":
-				if (!controlDown && config.controlFunction() == ControlFunction.CONTROL_TO_ZOOM)
+				// Swiping up or down tilts instead, as the game can't tell a swipe from a scroll, but holding
+				// control to zoom still zooms
+				if (config.controlFunction() == ControlFunction.CONTROL_TO_ZOOM ? !controlDown : config.swipeToTilt())
 				{
 					intStack[intStackSize - 1] = 1;
 				}
@@ -498,6 +523,30 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			pinchZoom(pinchScale);
 		}
+
+		// Drop the rest of a swipe once its option is turned off or the player logs out
+		final boolean loggedIn = client.getGameState() == GameState.LOGGED_IN;
+		if (!loggedIn || !config.swipeToRotate())
+		{
+			pendingSwipeYaw = 0;
+		}
+		if (!loggedIn || !config.swipeToTilt())
+		{
+			pendingSwipePitch = 0;
+		}
+
+		final int yaw = swipeStep(pendingSwipeYaw);
+		final int pitch = swipeStep(pendingSwipePitch);
+		pendingSwipeYaw -= yaw;
+		pendingSwipePitch -= pitch;
+		if (yaw != 0)
+		{
+			client.setCameraYawTarget((client.getCameraYawTarget() + yaw) & YAW_MASK);
+		}
+		if (pitch != 0)
+		{
+			client.setCameraPitchTarget(client.getCameraPitchTarget() + pitch);
+		}
 	}
 
 	@Subscribe
@@ -674,4 +723,49 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		return mouseEvent;
 	}
 	// endregion
+
+	/**
+	 * Runs on the AWT thread, so it only decides whether the game also gets the scroll and leaves the camera to
+	 * the client thread. Java on macOS reports a sideways trackpad scroll as a scroll with shift held.
+	 */
+	@Override
+	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return event;
+		}
+
+		final double amount = event.getPreciseWheelRotation();
+		if (event.isShiftDown())
+		{
+			if (macOS && config.swipeToRotate())
+			{
+				// The game would take it as an up or down scroll, zooming or scrolling an interface
+				event.consume();
+				clientThread.invokeLater(() -> queueSwipe(amount, 0));
+			}
+		}
+		else if (config.swipeToTilt() && !(controlDown && config.controlFunction() == ControlFunction.CONTROL_TO_ZOOM))
+		{
+			clientThread.invokeLater(() -> queueSwipe(0, amount));
+		}
+		return event;
+	}
+
+	private static int swipeStep(double pending)
+	{
+		final double step = pending * SWIPE_SMOOTHING;
+		// Below 1 unit per tick the last few units move 1 at a time, or the swipe would never finish
+		return (int) (Math.abs(step) >= 1 ? step : Math.signum(pending) * Math.min(1, Math.abs(pending)));
+	}
+
+	private void queueSwipe(double sideways, double upDown)
+	{
+		if (isMouseOverScene())
+		{
+			pendingSwipeYaw += sideways * SWIPE_YAW_PER_SCROLL * (config.invertYaw() ? -1 : 1);
+			pendingSwipePitch += upDown * SWIPE_PITCH_PER_SCROLL * (config.invertPitch() ? -1 : 1);
+		}
+	}
 }
