@@ -36,18 +36,22 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.gameval.VarClientID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.TwitchMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.twitch.irc.TwitchIRCClient;
 import net.runelite.client.plugins.twitch.irc.TwitchListener;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Twitch",
@@ -66,7 +70,13 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private TwitchIRCClient twitchIRCClient;
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private EventBus eventBus;
+
+	private volatile TwitchIRCClient twitchIRCClient;
 
 	@Override
 	protected void startUp()
@@ -152,7 +162,11 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (!configChanged.getGroup().equals("twitch"))
+		if (!configChanged.getGroup().equals("twitch")
+			|| "overlayIntegration".equals(configChanged.getKey())
+			|| "showInChatbox".equals(configChanged.getKey())
+			|| "showNotices".equals(configChanged.getKey())
+			|| "ignoredUsernames".equals(configChanged.getKey()))
 		{
 			return;
 		}
@@ -160,20 +174,55 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		connect();
 	}
 
-	private void addChatMessage(String sender, String message)
+	private void addChatMessage(String sender, String message, boolean notice)
 	{
-		String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append(message)
-			.build();
+		TwitchIRCClient connection = twitchIRCClient;
+		if (connection == null)
+		{
+			return;
+		}
 
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHAT)
-			.sender("Twitch")
-			.name(sender)
-			.runeLiteFormattedMessage(chatMessage)
-			.timestamp((int) (System.currentTimeMillis() / 1000))
-			.build());
+		int timestamp = (int) (System.currentTimeMillis() / 1000);
+		clientThread.invokeLater(() ->
+		{
+			if (connection != twitchIRCClient || client.getGameState() != GameState.LOGGED_IN)
+			{
+				return;
+			}
+
+			if (notice && !twitchConfig.showNotices())
+			{
+				return;
+			}
+
+			if (sender != null && Text.fromCSV(twitchConfig.ignoredUsernames()).stream().anyMatch(sender::equalsIgnoreCase))
+			{
+				return;
+			}
+
+			String name = notice ? "[System]" : sender;
+			if (twitchConfig.overlayIntegration())
+			{
+				eventBus.post(new TwitchMessage(name, message, timestamp));
+			}
+			if (!twitchConfig.showInChatbox())
+			{
+				return;
+			}
+
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append(message)
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHAT)
+				.sender("Twitch")
+				.name(name)
+				.runeLiteFormattedMessage(chatMessage)
+				.timestamp(timestamp)
+				.build());
+		});
 	}
 
 	@Override
@@ -186,7 +235,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 
 		String displayName = tags.get("display-name");
 		String name = source.equalsIgnoreCase(displayName) ? displayName : source;
-		addChatMessage(name, message);
+		addChatMessage(name, message, false);
 	}
 
 	@Override
@@ -206,7 +255,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		}
 
 		String sysmsg = tags.get("system-msg");
-		addChatMessage("[System]", sysmsg);
+		addChatMessage(tags.get("login"), sysmsg, true);
 	}
 
 	@Subscribe
@@ -235,7 +284,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			try
 			{
 				twitchIRCClient.privmsg(message);
-				addChatMessage(twitchConfig.username(), message);
+				addChatMessage(twitchConfig.username(), message, false);
 			}
 			catch (IOException e)
 			{
