@@ -36,6 +36,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.game.ItemManager;
@@ -125,8 +126,9 @@ public class FarmingTrackerTest
 		);
 		FarmingPatch patch = region.getPatches()[3];
 		patch.setRegion(region);
+		when(config.timerNotification()).thenReturn(Notification.ON);
 		farmingTracker.sendNotification(runeScapeProfile, patchPrediction, patch);
 
-		verify(notifier).notify("Your Ranarr is ready to harvest in Ardougne.");
+		verify(notifier).notify(Notification.ON, "Your Ranarr is ready to harvest in Ardougne.");
 	}
 }

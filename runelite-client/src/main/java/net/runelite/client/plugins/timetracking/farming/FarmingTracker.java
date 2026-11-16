@@ -646,6 +646,6 @@ public class FarmingTracker
 			.append(patch.getRegion().getName())
 			.append('.');
 
-		notifier.notify(stringBuilder.toString());
+		notifier.notify(config.timerNotification(), stringBuilder.toString());
 	}
 }
