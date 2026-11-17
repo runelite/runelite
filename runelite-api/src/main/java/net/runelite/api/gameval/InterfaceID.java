@@ -593,6 +593,7 @@ public final class InterfaceID
 	public static final int KR_ADDRESS_FORM = 586;
 	public static final int KR_SCRAP_PAPER = 587;
 	public static final int KR_PICKLOCK = 588;
+	public static final int RAG3_BOSS_OVERLAY = 589;
 	public static final int POH_JEWELLERY_BOX = 590;
 	public static final int ARAXXOR_SCOREBOARD = 591;
 	public static final int DIZANAS_QUIVER = 592;
@@ -20898,6 +20899,14 @@ public final class InterfaceID
 		public static final int KR_KEY_3 = 0x024c_0042;
 	}
 
+	public static final class Rag3BossOverlay
+	{
+		public static final int UNIVERSE = 0x024d_0000;
+		public static final int CONTENTS = 0x024d_0001;
+		public static final int TINT_BOX = 0x024d_0002;
+		public static final int FADER = 0x024d_0003;
+	}
+
 	public static final class PohJewelleryBox
 	{
 		public static final int UNIVERSE = 0x024e_0000;
@@ -31753,7 +31762,10 @@ public final class InterfaceID
 		public static final int _3 = 0x03d7_0008;
 		public static final int _4 = 0x03d7_0009;
 		public static final int _5 = 0x03d7_000a;
-		public static final int CLOSE = 0x03d7_000b;
+		public static final int TOGGLE = 0x03d7_000b;
+		public static final int TOGGLE_TEXT = 0x03d7_000c;
+		public static final int TOGGLE_ICON = 0x03d7_000d;
+		public static final int CLOSE = 0x03d7_000e;
 	}
 
 	public static final class WotwCertificateHosidius

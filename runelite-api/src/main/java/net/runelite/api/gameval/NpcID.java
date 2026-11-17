@@ -5971,10 +5971,6 @@ public final class NpcID
 	 * fluffie
 	 */
 	public static final int EYEGLO_FLUFFIE_REVEALED = 1258;
-
-	/**
-	 * Odd Old Man
-	 */
 	public static final int RAG_ODD_OLD_MAN = 1259;
 
 	/**
@@ -38896,10 +38892,6 @@ public final class NpcID
 	 * Felfiz Yaryus
 	 */
 	public static final int FARMING_GUILD_ANIMA_GARDENER = 8595;
-
-	/**
-	 * Keith
-	 */
 	public static final int KEBOS_FARMER_1 = 8596;
 	public static final int GA_MARY = 8597;
 
@@ -72560,102 +72552,6 @@ public final class NpcID
 	 * Dork
 	 */
 	public static final int POH_BORK_PET = 16771;
-	public static final int HW26_TRICKORTREATER_CHILD_1_MULTI = 16772;
-	public static final int HW26_TRICKORTREATER_CHILD_2_MULTI = 16773;
-	public static final int HW26_TRICKORTREATER_CHILD_3_MULTI = 16774;
-	public static final int HW26_TRICKORTREATER_CHILD_4_MULTI = 16775;
-	public static final int HW26_TRICKORTREATER_CHILD_5_MULTI = 16776;
-
-	/**
-	 * none
-	 */
-	public static final int HW26_TRICKORTREATER_CHILD_INVISIBLE = 16777;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE01 = 16778;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE02 = 16779;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE03 = 16780;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE04 = 16781;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE05 = 16782;
-	public static final int HW26_TRICKORTREATER_CHILD_1_RUNNING = 16783;
-	public static final int HW26_TRICKORTREATER_CHILD_2_RUNNING = 16784;
-	public static final int HW26_TRICKORTREATER_CHILD_3_RUNNING = 16785;
-	public static final int HW26_TRICKORTREATER_CHILD_4_RUNNING = 16786;
-	public static final int HW26_TRICKORTREATER_CHILD_5_RUNNING = 16787;
-	public static final int HW26_TRICKORTREATER_ADULT_1_MULTI = 16788;
-	public static final int HW26_TRICKORTREATER_ADULT_2_MULTI = 16789;
-	public static final int HW26_TRICKORTREATER_ADULT_3_MULTI = 16790;
-	public static final int HW26_TRICKORTREATER_ADULT_4_MULTI = 16791;
-	public static final int HW26_TRICKORTREATER_ADULT_5_MULTI = 16792;
-
-	/**
-	 * none
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_INVISIBLE = 16793;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE = 16794;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE_02 = 16795;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE_03 = 16796;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE_04 = 16797;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE_05 = 16798;
-	public static final int HW26_TRICKORTREATER_ADULT_1_VOMIT = 16799;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_2_VOMIT = 16800;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_3_VOMIT = 16801;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_4_VOMIT = 16802;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_5_VOMIT = 16803;
 
 	/**
 	 * Mikasi
@@ -72938,5 +72834,183 @@ public final class NpcID
 	 * SnelmLover500
 	 */
 	public static final int SNAILQUEST_SNELMLOVER_COMBAT = 16885;
+
+	/**
+	 * Keith
+	 */
+	public static final int KEBOS_FARMER_1_VIS = 16886;
+	public static final int ANL_DISHOP_DENNIS_MULTI = 16887;
+
+	/**
+	 * Dishop Dennis
+	 */
+	public static final int ANL_DISHOP_DENNIS = 16888;
+
+	/**
+	 * Sir Loin
+	 */
+	public static final int ANL_SIR_LOIN = 16889;
+
+	/**
+	 * Fermenter of chaos
+	 */
+	public static final int ANL_FERMENTER_OF_CHAOS = 16890;
+
+	/**
+	 * Goblin meat tenderiser
+	 */
+	public static final int ANL_GOBLIN_MEAT_TENDERISER = 16891;
+
+	/**
+	 * Gardener of Armadyl
+	 */
+	public static final int ANL_GARDENER_OF_ARMADYL = 16892;
+
+	/**
+	 * Bandit cactus cultivator
+	 */
+	public static final int ANL_BANDIT_CACTUS_CULTIVATOR = 16893;
+	public static final int RAG_ODD_OLD_MAN_NOSACK = 16894;
+
+	/**
+	 * Odd Old Man
+	 */
+	public static final int RAG_ODD_OLD_MAN_VIS = 16895;
+
+	/**
+	 * Odd Old Man
+	 */
+	public static final int RAG_ODD_OLD_MAN_NOSACK_VIS = 16896;
+
+	/**
+	 * Death
+	 */
+	public static final int RAG3_DEATH = 16897;
+
+	/**
+	 * Romeo
+	 */
+	public static final int RAG3_ROMEO = 16898;
+
+	/**
+	 * Gielinor Guide
+	 */
+	public static final int RAG3_NEWBIE_BASICS_INSTRUCTOR = 16899;
+
+	/**
+	 * Survival Expert
+	 */
+	public static final int RAG3_NEWBIE_SURVIVAL_INSTRUCTOR = 16900;
+
+	/**
+	 * Fishing spot
+	 */
+	public static final int RAG3_NEWBIEFISHING = 16901;
+
+	/**
+	 * King Roald
+	 */
+	public static final int RAG3_KING_ROALD = 16902;
+
+	/**
+	 * Lost Soul
+	 */
+	public static final int RAG3_GHOST = 16903;
+
+	/**
+	 * Archmage Sedridor
+	 */
+	public static final int RAG3_HEAD_WIZARD = 16904;
+
+	/**
+	 * Archmage Sedridor
+	 */
+	public static final int RAG3_HEAD_WIZARD_COMBAT = 16905;
+
+	/**
+	 * Wizard Traiborn
+	 */
+	public static final int RAG3_TRAIBORN = 16906;
+
+	/**
+	 * Wizard Traiborn
+	 */
+	public static final int RAG3_TRAIBORN_CAMDOZAAL = 16907;
+
+	/**
+	 * Tolna
+	 */
+	public static final int RAG3_TOLNA_CHILD = 16908;
+
+	/**
+	 * Tolna
+	 */
+	public static final int RAG3_TOLNA1 = 16909;
+
+	/**
+	 * Tolna
+	 */
+	public static final int RAG3_TOLNA2 = 16910;
+
+	/**
+	 * Tolna
+	 */
+	public static final int RAG3_TOLNA3 = 16911;
+
+	/**
+	 * Skeletal Horror
+	 */
+	public static final int RAG3_SKELETAL_HORROR = 16912;
+
+	/**
+	 * Skeletal Horror
+	 */
+	public static final int RAG3_SKELETAL_HORROR_CUTSCENE = 16913;
+
+	/**
+	 * Horrifying Creature
+	 */
+	public static final int RAG3_STALKER = 16914;
+
+	/**
+	 * Odd Old Man
+	 */
+	public static final int RAG3_ODD_OLD_MAN_CUTSCENE = 16915;
+
+	/**
+	 * Odd Old Man
+	 */
+	public static final int RAG3_ODD_OLD_MAN_CUTSCENE_TRANCE = 16916;
+
+	/**
+	 * Shade
+	 */
+	public static final int RAG3_SHADE = 16917;
+
+	/**
+	 * Shadow
+	 */
+	public static final int RAG3_SHADOW = 16918;
+
+	/**
+	 * Ancient Banshee
+	 */
+	public static final int RAG3_BANSHEE = 16919;
+	public static final int RAG3_HIDDEN_GHOST = 16920;
+
+	/**
+	 * Ghost
+	 */
+	public static final int RAG3_HIDDEN_GHOST_VIS = 16921;
+
+	/**
+	 * &#60;col=00ffff&#62;Shadow Rift&#60;/col&#62;
+	 */
+	public static final int RAG3_HORROR_RIFT = 16922;
+
+	/**
+	 * Skeletal Hand
+	 */
+	public static final int RAG3_CRAWLING_HAND = 16923;
 /* This file is automatically generated. Do not edit. */
 }

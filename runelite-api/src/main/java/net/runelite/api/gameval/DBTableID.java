@@ -428,6 +428,8 @@ public final class DBTableID
 			public static final int QUEST_FALLENFROMGRACE = 7133;
 			public static final int QUEST_LEARNINGTHEROPES = 9643;
 			public static final int QUEST_IDESOFMILK = 9645;
+			public static final int QUEST_NEWLEAF = 13708;
+			public static final int QUEST_RAGANDBONEMAN3 = 13730;
 			public static final int QUEST_BLOODMOONRISES = 16414;
 			public static final int QUEST_RUFFSITUATION = 16971;
 			public static final int QUEST_CRABQUEST = 16972;
@@ -6006,6 +6008,8 @@ public final class DBTableID
 			public static final int MUSIC_SCAPE_SAIL = 7096;
 			public static final int MUSIC_MAD_ANGEL_BOSS = 7132;
 			public static final int MUSIC_BRUTUS_COW_BOSS = 8662;
+			public static final int MUSIC_SEVERED = 13704;
+			public static final int MUSIC_HORROR = 13705;
 			public static final int MUSIC_SAILING_COMBAT = 16223;
 			public static final int MUSIC_RED_ROCK_ISLAND = 16224;
 			public static final int MUSIC_RED_REEFS_UNDERWATER = 16225;
@@ -23834,6 +23838,8 @@ public final class DBTableID
 			public static final int SANGVESTI = 11968;
 			public static final int SOTFA_FOREST = 12008;
 			public static final int SOTFA_FOREST_UNDERGROUND = 12065;
+			public static final int RAG3_ASYLUM = 13640;
+			public static final int WIZARDS_TOWER_BASEMENT = 13641;
 			public static final int SUGADINTI_HIDEOUT_INNER = 16389;
 			public static final int SUGADINTI_HIDEOUT_OUTER = 16390;
 			public static final int CASTLE_DRAKAN_ROOF = 16391;
