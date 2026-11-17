@@ -42,6 +42,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,6 +66,7 @@ import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -76,6 +80,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.Config;
 import net.runelite.client.eventbus.Subscribe;
@@ -106,6 +111,27 @@ class PluginHubPanel extends PluginPanel
 	private static final ImageIcon CONFIGURE_ICON;
 	private static final ImageIcon PLUGIN_UNAVAILABLE_ICON;
 	private static final Pattern SPACES = Pattern.compile(" +");
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
+
+	@RequiredArgsConstructor
+	private enum SortOrder
+	{
+		DEFAULT("Default"),
+		MOST_INSTALLS("Most installs"),
+		RECENTLY_UPDATED("Updated"),
+		NEWEST("Newest"),
+		OLDEST("Oldest"),
+		NAME("Name"),
+		AUTHOR("Author");
+
+		private final String label;
+
+		@Override
+		public String toString()
+		{
+			return label;
+		}
+	}
 
 	static
 	{
@@ -398,7 +424,18 @@ class PluginHubPanel extends PluginPanel
 			author.setToolTipText(manifest.getAuthor());
 
 			version.setText(manifest.getVersion());
-			version.setToolTipText(manifest.getVersion());
+
+			StringBuilder versionTooltip = new StringBuilder("<html>Version: ")
+				.append(HtmlEscapers.htmlEscaper().escape(manifest.getVersion()));
+			if (manifest.getLastUpdatedAt() > 0)
+			{
+				versionTooltip.append("<br>Updated: ").append(formatDate(manifest.getLastUpdatedAt()));
+			}
+			if (manifest.getCreatedAt() > 0)
+			{
+				versionTooltip.append("<br>Created: ").append(formatDate(manifest.getCreatedAt()));
+			}
+			version.setToolTipText(versionTooltip.append("</html>").toString());
 
 			String descriptionText = manifest.getDescription();
 			if (item.jarData == null)
@@ -511,6 +548,8 @@ class PluginHubPanel extends PluginPanel
 	private final Deque<PluginIcon> iconLoadQueue = new ArrayDeque<>();
 
 	private final IconTextField searchBar;
+	private final JComboBox<SortOrder> sortBox = new JComboBox<>(SortOrder.values());
+	private volatile SortOrder sortOrder = SortOrder.DEFAULT;
 	private final JPanel error = new JPanel();
 	private final JLabel refreshing;
 	private final VirtualList<PluginView, PluginItem> list = new VirtualList<>()
@@ -597,6 +636,14 @@ class PluginHubPanel extends PluginPanel
 			}
 		});
 
+		sortBox.setToolTipText("Sort by");
+		sortBox.setFocusable(false);
+		sortBox.addActionListener(e ->
+		{
+			sortOrder = (SortOrder) sortBox.getSelectedItem();
+			executor.execute(PluginHubPanel.this::filter);
+		});
+
 		JLabel externalPluginWarning = new JLabel("<html>Plugin Hub plugins are provided by third parties not affiliated with RuneLite. " +
 			"<u>Click here to learn more.</u></html>");
 		externalPluginWarning.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -644,6 +691,8 @@ class PluginHubPanel extends PluginPanel
 				.addComponent(externalPluginWarning)
 				.addGap(7)
 				.addComponent(searchBar, 30, 30, 30)
+				.addGap(5)
+				.addComponent(sortBox, 25, 25, 25)
 				.addGap(10)
 				.addComponent(scrollPane));
 
@@ -655,6 +704,10 @@ class PluginHubPanel extends PluginPanel
 				.addGroup(layout.createSequentialGroup()
 					.addGap(10)
 					.addComponent(searchBar)
+					.addGap(10))
+				.addGroup(layout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(sortBox)
 					.addGap(10))
 				.addComponent(scrollPane));
 		}
@@ -757,27 +810,64 @@ class PluginHubPanel extends PluginPanel
 
 		String query = searchBar.getText();
 		boolean isSearching = query != null && !query.trim().isEmpty();
+		SortOrder order = sortOrder;
 		List<PluginItem> pluginItems;
 		if (isSearching)
 		{
 			pluginItems = PluginSearch.search(plugins, query);
+			if (order != SortOrder.DEFAULT)
+			{
+				// stable sort, so search relevance is kept as the tie breaker
+				pluginItems = new ArrayList<>(pluginItems);
+				pluginItems.sort(comparator(order));
+			}
 		}
 		else
 		{
 			pluginItems = plugins.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
-				.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
-					.thenComparing(PluginItem::isInstalled)
-					.thenComparingInt(PluginItem::getUserCount)
-					.reversed()
-					.thenComparing(p -> p.manifest.getDisplayName())
-				)
+				.sorted(comparator(order))
 				.collect(Collectors.toList());
 		}
 
-		SwingUtilities.invokeLater(() ->
+		List<PluginItem> sortedItems = pluginItems;
+		SwingUtilities.invokeLater(() -> list.setModel(sortedItems));
+	}
+
+	private static Comparator<PluginItem> comparator(SortOrder order)
+	{
+		Comparator<PluginItem> byName = Comparator.comparing(p -> p.manifest.getDisplayName(), String.CASE_INSENSITIVE_ORDER);
+		switch (order)
 		{
-			list.setModel(pluginItems);
-		});
+			case RECENTLY_UPDATED:
+				return Comparator.comparingLong((PluginItem p) -> p.manifest.getLastUpdatedAt()).reversed()
+					.thenComparing(byName);
+			case NEWEST:
+				return Comparator.comparingLong((PluginItem p) -> p.manifest.getCreatedAt()).reversed()
+					.thenComparing(byName);
+			case OLDEST:
+				return Comparator.comparingLong((PluginItem p) -> p.manifest.getCreatedAt() > 0 ? p.manifest.getCreatedAt() : Long.MAX_VALUE)
+					.thenComparing(byName);
+			case NAME:
+				return byName;
+			case AUTHOR:
+				return Comparator.comparing((PluginItem p) -> p.manifest.getAuthor(), String.CASE_INSENSITIVE_ORDER)
+					.thenComparing(byName);
+			case MOST_INSTALLS:
+				return Comparator.comparingInt(PluginItem::getUserCount).reversed()
+					.thenComparing(byName);
+			case DEFAULT:
+			default:
+				return Comparator.comparing((PluginItem p) -> p.getJarData() == null)
+					.thenComparing(PluginItem::isInstalled)
+					.thenComparingInt(PluginItem::getUserCount)
+					.reversed()
+					.thenComparing(p -> p.manifest.getDisplayName());
+		}
+	}
+
+	private static String formatDate(long epochSeconds)
+	{
+		return DATE_FORMAT.format(Instant.ofEpochSecond(epochSeconds));
 	}
 
 	@Override
