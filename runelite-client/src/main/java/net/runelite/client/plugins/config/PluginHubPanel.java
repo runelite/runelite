@@ -66,6 +66,7 @@ import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -550,6 +551,8 @@ class PluginHubPanel extends PluginPanel
 	private final IconTextField searchBar;
 	private final JComboBox<SortOrder> sortBox = new JComboBox<>(SortOrder.values());
 	private volatile SortOrder sortOrder = SortOrder.DEFAULT;
+	private final JCheckBox hideInstalledBox = new JCheckBox("Hide installed");
+	private volatile boolean hideInstalled;
 	private final JPanel error = new JPanel();
 	private final JLabel refreshing;
 	private final VirtualList<PluginView, PluginItem> list = new VirtualList<>()
@@ -644,6 +647,13 @@ class PluginHubPanel extends PluginPanel
 			executor.execute(PluginHubPanel.this::filter);
 		});
 
+		hideInstalledBox.setFocusable(false);
+		hideInstalledBox.addActionListener(e ->
+		{
+			hideInstalled = hideInstalledBox.isSelected();
+			executor.execute(PluginHubPanel.this::filter);
+		});
+
 		JLabel externalPluginWarning = new JLabel("<html>Plugin Hub plugins are provided by third parties not affiliated with RuneLite. " +
 			"<u>Click here to learn more.</u></html>");
 		externalPluginWarning.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -692,7 +702,9 @@ class PluginHubPanel extends PluginPanel
 				.addGap(7)
 				.addComponent(searchBar, 30, 30, 30)
 				.addGap(5)
-				.addComponent(sortBox, 25, 25, 25)
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+					.addComponent(sortBox, 25, 25, 25)
+					.addComponent(hideInstalledBox))
 				.addGap(10)
 				.addComponent(scrollPane));
 
@@ -707,7 +719,9 @@ class PluginHubPanel extends PluginPanel
 					.addGap(10))
 				.addGroup(layout.createSequentialGroup()
 					.addGap(10)
-					.addComponent(sortBox)
+					.addComponent(sortBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(6)
+					.addComponent(hideInstalledBox, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(10))
 				.addComponent(scrollPane));
 		}
@@ -811,10 +825,13 @@ class PluginHubPanel extends PluginPanel
 		String query = searchBar.getText();
 		boolean isSearching = query != null && !query.trim().isEmpty();
 		SortOrder order = sortOrder;
+		List<PluginItem> candidates = hideInstalled
+			? plugins.stream().filter(p -> !p.isInstalled()).collect(Collectors.toList())
+			: plugins;
 		List<PluginItem> pluginItems;
 		if (isSearching)
 		{
-			pluginItems = PluginSearch.search(plugins, query);
+			pluginItems = PluginSearch.search(candidates, query);
 			if (order != SortOrder.DEFAULT)
 			{
 				// stable sort, so search relevance is kept as the tie breaker
@@ -824,7 +841,7 @@ class PluginHubPanel extends PluginPanel
 		}
 		else
 		{
-			pluginItems = plugins.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
+			pluginItems = candidates.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
 				.sorted(comparator(order))
 				.collect(Collectors.toList());
 		}
