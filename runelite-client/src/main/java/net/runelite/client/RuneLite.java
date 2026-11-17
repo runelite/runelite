@@ -77,6 +77,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
@@ -732,7 +733,8 @@ public class RuneLite
 
 	private void setCharacter()
 	{
-		if (character == null)
+		String defaultAccountId = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, "defaultJagexAccount");
+		if (character == null && defaultAccountId == null)
 		{
 			return;
 		}
@@ -753,16 +755,27 @@ public class RuneLite
 					for (Account account : accounts)
 					{
 						String displayName = account.getDisplayName();
-						if (displayName != null && displayName.equalsIgnoreCase(character))
+						String accountId = Long.toString(account.getAccountId());
+
+						boolean matchesCli = character != null
+							&& displayName != null
+							&& displayName.equalsIgnoreCase(character);
+						boolean matchesDefault = character == null
+							&& accountId.equals(defaultAccountId);
+
+						if (matchesCli || matchesDefault)
 						{
 							log.info("Switching to character {}", displayName);
-							jagexAuthService.switchJagexAccount(session.getSessionId(), Long.toString(account.getAccountId()), displayName);
+							jagexAuthService.switchJagexAccount(session.getSessionId(), accountId, displayName);
 							return;
 						}
 					}
 				}
 
-				log.info("Unable to find character {} ({} sessions and {} characters total)", character, jagexAuthService.getSessions().size(), numChars);
+				log.info("Unable to find character {} ({} sessions and {} characters total)",
+					character != null ? character : defaultAccountId,
+					jagexAuthService.getSessions().size(),
+					numChars);
 			});
 	}
 }

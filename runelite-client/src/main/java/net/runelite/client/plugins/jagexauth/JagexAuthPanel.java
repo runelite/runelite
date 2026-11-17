@@ -27,19 +27,26 @@ package net.runelite.client.plugins.jagexauth;
 
 import com.google.common.base.MoreObjects;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.rs.auth.Account;
 import net.runelite.client.rs.auth.JagexAuthService;
 import net.runelite.client.rs.auth.Session;
@@ -53,22 +60,42 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 class JagexAuthPanel extends PluginPanel
 {
+	static final String DEFAULT_ACCOUNT_KEY = "defaultJagexAccount";
+
 	private static final ImageIcon DELETE_ICON = new ImageIcon(ImageUtil.loadImageResource(
 		JagexAuthPanel.class, "/net/runelite/client/plugins/config/mdi_delete.png"));
 	private static final ImageIcon JAGEX_ACCOUNT_ICON = new ImageIcon(ImageUtil.resizeImage(
 		ImageUtil.loadImageResource(JagexAuthPanel.class, "icon.png"), 16, 16));
+	private static final ImageIcon ON_STAR;
+	private static final ImageIcon OFF_STAR;
+
+	static
+	{
+		BufferedImage onStar = ImageUtil.loadImageResource(
+			JagexAuthPanel.class, "/net/runelite/client/plugins/config/star_on.png");
+		ON_STAR = new ImageIcon(onStar);
+
+		BufferedImage offStar = ImageUtil.luminanceScale(
+			ImageUtil.grayscaleImage(onStar),
+			0.77f
+		);
+		OFF_STAR = new ImageIcon(offStar);
+	}
 
 	private final JagexAuthService jagexAuthService;
+	private final ConfigManager configManager;
 
 	private final JPanel sessionList = new JPanel(new DynamicGridLayout(0, 1, 0, 8));
 	private final JPanel actions = new JPanel(new GridLayout(0, 1, 0, 4));
 	private final JButton addAccountButton = new JButton("Add Jagex Account");
 	private final JLabel infoLabel = new JLabel();
+	private final Map<String, JToggleButton> defaultAccountButtons = new HashMap<>();
 
 	@Inject
-	private JagexAuthPanel(JagexAuthService jagexAuthService)
+	private JagexAuthPanel(JagexAuthService jagexAuthService, ConfigManager configManager)
 	{
 		this.jagexAuthService = jagexAuthService;
+		this.configManager = configManager;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setLayout(new DynamicGridLayout(0, 1, 0, 10));
@@ -93,6 +120,7 @@ class JagexAuthPanel extends PluginPanel
 
 		removeAll();
 		sessionList.removeAll();
+		defaultAccountButtons.clear();
 
 		for (Session session : sessions)
 		{
@@ -140,6 +168,20 @@ class JagexAuthPanel extends PluginPanel
 
 	private void removeSession(Session session)
 	{
+		String defaultAccountId = getDefaultAccountId();
+		Account[] accounts = jagexAuthService.getAccounts(session.getSessionId());
+		if (defaultAccountId != null && accounts != null)
+		{
+			for (Account account : accounts)
+			{
+				if (defaultAccountId.equals(Long.toString(account.getAccountId())))
+				{
+					setDefaultAccountId(null);
+					break;
+				}
+			}
+		}
+
 		jagexAuthService.removeSession(session);
 		rebuild();
 	}
@@ -178,13 +220,32 @@ class JagexAuthPanel extends PluginPanel
 		}
 		else
 		{
+			String defaultAccountId = getDefaultAccountId();
 			for (Account account : accounts)
 			{
+				String accountId = Long.toString(account.getAccountId());
 				String displayName = account.getDisplayName();
+
+				JToggleButton defaultAccountButton = new JToggleButton(OFF_STAR);
+				defaultAccountButton.setSelectedIcon(ON_STAR);
+				SwingUtil.removeButtonDecorations(defaultAccountButton);
+				SwingUtil.addModalTooltip(defaultAccountButton, "Unset as default account", "Set as default account");
+				defaultAccountButton.setPreferredSize(new Dimension(21, 0));
+				defaultAccountButton.setSelected(accountId.equals(defaultAccountId));
+				defaultAccountButton.addActionListener(e -> toggleDefaultAccount(accountId));
+				defaultAccountButtons.put(accountId, defaultAccountButton);
+
 				JButton button = createCharacterButton(MoreObjects.firstNonNull(displayName, "<New Character>"));
 				button.addActionListener(e -> jagexAuthService.switchJagexAccount(
-					session.getSessionId(), Long.toString(account.getAccountId()), displayName));
-				characters.add(button);
+					session.getSessionId(), accountId, displayName));
+
+				JPanel row = new JPanel(new BorderLayout(3, 0));
+				row.setOpaque(false);
+				row.setBorder(new EmptyBorder(0, 6, 0, 0));
+				row.add(defaultAccountButton, BorderLayout.LINE_START);
+				row.add(button, BorderLayout.CENTER);
+
+				characters.add(row);
 			}
 		}
 
@@ -195,11 +256,35 @@ class JagexAuthPanel extends PluginPanel
 		return card;
 	}
 
+	private void toggleDefaultAccount(String accountId)
+	{
+		String nextDefault = accountId.equals(getDefaultAccountId()) ? null : accountId;
+		setDefaultAccountId(nextDefault);
+		defaultAccountButtons.forEach((id, btn) -> btn.setSelected(id.equals(nextDefault)));
+	}
+
+	private String getDefaultAccountId()
+	{
+		return configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, DEFAULT_ACCOUNT_KEY);
+	}
+
+	private void setDefaultAccountId(String accountId)
+	{
+		if (accountId == null)
+		{
+			configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME, DEFAULT_ACCOUNT_KEY);
+		}
+		else
+		{
+			configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, DEFAULT_ACCOUNT_KEY, accountId);
+		}
+	}
+
 	private static JButton createCharacterButton(String text)
 	{
 		JButton button = new JButton(text);
 		button.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		button.setBorder(new EmptyBorder(6, 10, 6, 10));
+		button.setBorder(new EmptyBorder(6, 4, 6, 10));
 		button.setHorizontalAlignment(SwingConstants.LEADING);
 		return button;
 	}
