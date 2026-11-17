@@ -78,6 +78,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.Getter;
@@ -585,6 +586,7 @@ class PluginHubPanel extends PluginPanel
 	private volatile boolean hideInstalled;
 	private final JPanel error = new JPanel();
 	private final JLabel refreshing;
+	private final JLabel resultCount = new JLabel();
 	private final VirtualList<PluginView, PluginItem> list = new VirtualList<>()
 	{
 		@Override
@@ -709,6 +711,11 @@ class PluginHubPanel extends PluginPanel
 		mainPanelWrapper.add(northPanel, BorderLayout.NORTH);
 		mainPanelWrapper.add(list, BorderLayout.CENTER);
 
+		resultCount.setFont(FontManager.getRunescapeSmallFont());
+		resultCount.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		resultCount.setHorizontalAlignment(JLabel.CENTER);
+		resultCount.setBorder(new MatteBorder(1, 0, 0, 0, ColorScheme.DARKER_GRAY_COLOR));
+
 		error.setVisible(false);
 		error.setLayout(new DynamicGridLayout(0, 1));
 		error.add(new JLabel("Downloading the plugin manifest failed"));
@@ -736,7 +743,8 @@ class PluginHubPanel extends PluginPanel
 					.addComponent(sortBox, 25, 25, 25)
 					.addComponent(hideInstalledBox))
 				.addGap(10)
-				.addComponent(scrollPane));
+				.addComponent(scrollPane)
+				.addComponent(resultCount, 20, 20, 20));
 
 			layout.setHorizontalGroup(layout.createParallelGroup()
 				.addGroup(layout.createSequentialGroup()
@@ -753,7 +761,8 @@ class PluginHubPanel extends PluginPanel
 					.addGap(6)
 					.addComponent(hideInstalledBox, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(10))
-				.addComponent(scrollPane));
+				.addComponent(scrollPane)
+				.addComponent(resultCount, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
 		}
 
 		revalidate();
@@ -772,6 +781,7 @@ class PluginHubPanel extends PluginPanel
 		refreshing.setVisible(true);
 		error.setVisible(false);
 		list.setModel(null);
+		resultCount.setText("");
 
 		executor.submit(() ->
 		{
@@ -877,7 +887,13 @@ class PluginHubPanel extends PluginPanel
 		}
 
 		List<PluginItem> sortedItems = pluginItems;
-		SwingUtilities.invokeLater(() -> list.setModel(sortedItems));
+		int total = plugins.size();
+		SwingUtilities.invokeLater(() ->
+		{
+			list.setModel(sortedItems);
+			resultCount.setText("Displaying " + QuantityFormatter.formatNumber(sortedItems.size())
+				+ " of " + QuantityFormatter.formatNumber(total) + " plugins");
+		});
 	}
 
 	private static Comparator<PluginItem> comparator(SortOrder order)
@@ -930,6 +946,7 @@ class PluginHubPanel extends PluginPanel
 	public void onDeactivate()
 	{
 		list.setModel(null);
+		resultCount.setText("");
 		refreshing.setVisible(false);
 		plugins = null;
 		lastManifest = null;
