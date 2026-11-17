@@ -99,6 +99,7 @@ import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.VirtualList;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.VerificationException;
 
@@ -111,6 +112,7 @@ class PluginHubPanel extends PluginPanel
 	private static final ImageIcon HELP_ICON;
 	private static final ImageIcon CONFIGURE_ICON;
 	private static final ImageIcon PLUGIN_UNAVAILABLE_ICON;
+	private static final ImageIcon INSTALLS_ICON;
 	private static final Pattern SPACES = Pattern.compile(" +");
 	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
 
@@ -146,6 +148,9 @@ class PluginHubPanel extends PluginPanel
 		CONFIGURE_ICON = new ImageIcon(configureIcon);
 
 		PLUGIN_UNAVAILABLE_ICON = new ImageIcon(ImageUtil.loadImageResource(PluginHubPanel.class, "mdi_alert.png"));
+
+		BufferedImage installsIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "mdi_download.png");
+		INSTALLS_ICON = new ImageIcon(ImageUtil.recolorImage(installsIcon, ColorScheme.LIGHT_GRAY_COLOR));
 	}
 
 	private class PluginIcon extends JLabel
@@ -325,6 +330,7 @@ class PluginHubPanel extends PluginPanel
 		private final JLabel description = new JLabel();
 		private final PluginIcon icon = new PluginIcon();
 		private final JLabel badge = new JLabel();
+		private final JLabel installs = new JLabel();
 		private final JButton configure = new JButton(CONFIGURE_ICON);
 		private final JButton addrm = new JButton();
 
@@ -345,6 +351,13 @@ class PluginHubPanel extends PluginPanel
 			description.setVerticalAlignment(JLabel.TOP);
 
 			icon.setHorizontalAlignment(JLabel.CENTER);
+
+			installs.setFont(FontManager.getRunescapeSmallFont());
+			installs.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			installs.setHorizontalAlignment(JLabel.CENTER);
+			installs.setVerticalAlignment(JLabel.TOP);
+			// the icon has transparent padding of its own
+			installs.setIconTextGap(0);
 
 			JButton help = new JButton(HELP_ICON);
 			SwingUtil.removeButtonDecorations(help);
@@ -377,7 +390,8 @@ class PluginHubPanel extends PluginPanel
 			layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
 					.addComponent(badge, GroupLayout.Alignment.TRAILING)
-					.addComponent(icon, ICON_WIDTH, ICON_WIDTH, ICON_WIDTH))
+					.addComponent(icon, ICON_WIDTH, ICON_WIDTH, ICON_WIDTH)
+					.addComponent(installs, ICON_WIDTH, ICON_WIDTH, ICON_WIDTH))
 				.addGap(5)
 				.addGroup(layout.createParallelGroup()
 					.addGroup(layout.createSequentialGroup()
@@ -396,7 +410,10 @@ class PluginHubPanel extends PluginPanel
 			int lineHeight = description.getFontMetrics(description.getFont()).getHeight();
 			layout.setVerticalGroup(layout.createParallelGroup()
 				.addComponent(badge, GroupLayout.Alignment.TRAILING)
-				.addComponent(icon, HEIGHT, GroupLayout.DEFAULT_SIZE, HEIGHT)
+				.addGroup(layout.createSequentialGroup()
+					// hub icons are up to 72px tall, so leave them as much room as possible
+					.addComponent(icon, HEIGHT - BOTTOM_LINE_HEIGHT, GroupLayout.DEFAULT_SIZE, HEIGHT - BOTTOM_LINE_HEIGHT)
+					.addComponent(installs, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT))
 				.addGroup(layout.createSequentialGroup()
 					.addGap(5)
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -425,6 +442,19 @@ class PluginHubPanel extends PluginPanel
 			author.setToolTipText(manifest.getAuthor());
 
 			version.setText(manifest.getVersion());
+
+			if (item.getUserCount() >= 0)
+			{
+				installs.setIcon(INSTALLS_ICON);
+				installs.setText(QuantityFormatter.quantityToStackSize(item.getUserCount()));
+				installs.setToolTipText(QuantityFormatter.formatNumber(item.getUserCount()) + " active installs");
+			}
+			else
+			{
+				installs.setIcon(null);
+				installs.setText(null);
+				installs.setToolTipText(null);
+			}
 
 			StringBuilder versionTooltip = new StringBuilder("<html>Version: ")
 				.append(HtmlEscapers.htmlEscaper().escape(manifest.getVersion()));
