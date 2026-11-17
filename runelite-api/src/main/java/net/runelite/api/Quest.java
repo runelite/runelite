@@ -239,6 +239,8 @@ public enum Quest
 	FALLEN_FROM_GRACE(7133, "Fallen From Grace"),
 	LEARNING_THE_ROPES(9643, "Learning the Ropes"),
 	THE_IDES_OF_MILK(9645, "The Ides of Milk"),
+	A_NEW_LEAF(13708, "A New Leaf"),
+	RAG_AND_BONE_MAN_III(13730, "Rag and Bone Man III"),
 	THE_BLOOD_MOON_RISES(16414, "The Blood Moon Rises"),
 	A_RUFF_SITUATION(16971, "A Ruff Situation"),
 	CRAB_QUEST(16972, "Crab Quest"),
