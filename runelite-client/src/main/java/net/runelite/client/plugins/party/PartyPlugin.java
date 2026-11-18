@@ -259,6 +259,7 @@ public class PartyPlugin extends Plugin
 		if (event.getGroup().equals(PartyConfig.GROUP))
 		{
 			partyStatusOverlay.updateConfig();
+			partyPingOverlay.updateConfig();
 			// rebuild the panel in the event the "Recolor names" option changes
 			SwingUtilities.invokeLater(panel::updateAll);
 			if ("memberColor".equals(event.getKey()) && event.getOldValue() != null)
@@ -323,7 +324,7 @@ public class PartyPlugin extends Plugin
 		{
 			final PartyMemberData partyData = getPartyData(event.getMemberId());
 			final Color color = partyData != null ? partyData.getColor() : Color.RED;
-			pendingTilePings.add(new PartyTilePingData(event.getPoint(), color));
+			pendingTilePings.add(new PartyTilePingData(event.getPoint(), color, client.getLocalPlayer().getName()));
 		}
 
 		if (config.sounds())
