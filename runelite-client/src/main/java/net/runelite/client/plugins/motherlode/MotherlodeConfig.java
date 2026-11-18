@@ -81,4 +81,15 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "preventMiningWhenSackFull",
+		name = "Prevent mining when sack full",
+		description = "Prevents mining when the sack is full or would be full after depositing current inventory",
+		position = 6
+	)
+	default boolean preventMiningWhenSackFull()
+	{
+		return false;
+	}
 }
