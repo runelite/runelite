@@ -32,7 +32,9 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
@@ -47,6 +49,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -84,6 +87,7 @@ public class RegenMeterPlugin extends Plugin
 
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
+	private int lastSpecEnergy = -1;
 
 	private boolean wearingLightbearer;
 
@@ -97,6 +101,7 @@ public class RegenMeterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		lastSpecEnergy = client.getVarpValue(VarPlayerID.SA_ENERGY);
 	}
 
 	@Override
@@ -112,6 +117,7 @@ public class RegenMeterPlugin extends Plugin
 		{
 			ticksSinceHPRegen = -2; // For some reason this makes this accurate
 			ticksSinceSpecRegen = 0;
+			lastSpecEnergy = -1;
 		}
 	}
 
@@ -124,7 +130,8 @@ public class RegenMeterPlugin extends Plugin
 		}
 
 		ItemContainer equipment = event.getItemContainer();
-		final boolean hasLightbearer = equipment.contains(ItemID.LIGHTBEARER);
+		final Item ring = equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx());
+		final boolean hasLightbearer = ring != null && ItemVariationMapping.map(ring.getId()) == ItemID.LIGHTBEARER;
 		if (hasLightbearer == wearingLightbearer)
 		{
 			return;
@@ -149,16 +156,26 @@ public class RegenMeterPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		final int ticksPerSpecRegen = wearingLightbearer ? SPEC_REGEN_TICKS / 2 : SPEC_REGEN_TICKS;
+		final int currentSpecEnergy = client.getVarpValue(VarPlayerID.SA_ENERGY);
+		final boolean specRegenObserved = lastSpecEnergy != -1
+			&& currentSpecEnergy > lastSpecEnergy
+			&& currentSpecEnergy - lastSpecEnergy <= 100;
 
-		if (client.getVarpValue(VarPlayerID.SA_ENERGY) == 1000)
+		if (currentSpecEnergy == 1000)
 		{
 			// The recharge doesn't tick when at 100%
+			ticksSinceSpecRegen = 0;
+		}
+		else if (specRegenObserved)
+		{
+			// Snap the ring back to empty when the client has observed a real spec regen this tick.
 			ticksSinceSpecRegen = 0;
 		}
 		else
 		{
 			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % ticksPerSpecRegen;
 		}
+		lastSpecEnergy = currentSpecEnergy;
 		specialPercentage = ticksSinceSpecRegen / (double) ticksPerSpecRegen;
 
 
