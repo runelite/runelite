@@ -31,6 +31,11 @@ public interface KeyListener extends java.awt.event.KeyListener
 		return false;
 	}
 
+	default boolean isEnabledDuringTextInput()
+	{
+		return true;
+	}
+
 	default void focusLost()
 	{
 	}
