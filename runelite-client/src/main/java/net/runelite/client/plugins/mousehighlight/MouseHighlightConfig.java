@@ -63,4 +63,37 @@ public interface MouseHighlightConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "disablePrayertooltip",
+		name = "Disable prayer tooltips",
+		description = "Disable prayer tooltips."
+	)
+	default boolean disablePrayertooltip()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "disableMenuStonesTooltip",
+		name = "Disable menu stones tooltips",
+		description = "Disable menu stones tooltips."
+	)
+	default boolean disableMenuStonesTooltip()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "disableOrbsTooltip",
+		name = "Disable orbs tooltips",
+		description = "Disable orbs tooltips."
+	)
+	default boolean disableOrbsTooltip()
+	{
+		return false;
+	}
 }
