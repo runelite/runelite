@@ -282,4 +282,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "partyDrawTrueTile",
+		name = "Draw true tile for party members",
+		description = "Configures whether or not true tiles for highlighted party members should be drawn."
+	)
+	default boolean partyDrawTrueTile()
+	{
+		return false;
+	}
 }
