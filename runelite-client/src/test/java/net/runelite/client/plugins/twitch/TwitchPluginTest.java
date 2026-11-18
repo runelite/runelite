@@ -24,15 +24,16 @@
  */
 package net.runelite.client.plugins.twitch;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.gameval.VarClientID;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
@@ -45,6 +46,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,24 +59,19 @@ public class TwitchPluginTest
 	private Client client;
 
 	@Mock
-	private ClientThread clientThread;
-
-	@Mock
 	private TwitchConfig config;
 
 	@Mock
 	private ChatMessageManager chatMessageManager;
 
-	@Mock
-	private EventBus eventBus;
+	@Spy
+	private EventBus eventBus = new EventBus();
 
 	@Mock
 	private TwitchIRCClient twitchIRCClient;
 
 	@InjectMocks
 	private TwitchPlugin plugin;
-
-	private final Queue<Runnable> callbacks = new ArrayDeque<>();
 
 	@Before
 	public void setUp()
@@ -84,19 +81,6 @@ public class TwitchPluginTest
 		lenient().when(config.showInChatbox()).thenCallRealMethod();
 		lenient().when(config.showNotices()).thenCallRealMethod();
 		lenient().when(config.ignoredUsernames()).thenCallRealMethod();
-		lenient().doAnswer(invocation ->
-		{
-			callbacks.add(invocation.getArgument(0));
-			return null;
-		}).when(clientThread).invokeLater(any(Runnable.class));
-	}
-
-	private void drain()
-	{
-		while (!callbacks.isEmpty())
-		{
-			callbacks.remove().run();
-		}
 	}
 
 	@Test
@@ -107,7 +91,6 @@ public class TwitchPluginTest
 		assertTrue(config.showNotices());
 		assertEquals("", config.ignoredUsernames());
 		plugin.privmsg("alice", Map.of("display-name", "Alice"), "hello");
-		drain();
 
 		verifyNoInteractions(eventBus);
 		ArgumentCaptor<QueuedMessage> queued = ArgumentCaptor.forClass(QueuedMessage.class);
@@ -123,8 +106,6 @@ public class TwitchPluginTest
 	{
 		when(config.overlayIntegration()).thenReturn(true);
 		plugin.privmsg("alice", Map.of("display-name", "Alice"), "hello");
-		verifyNoInteractions(eventBus, chatMessageManager);
-		drain();
 
 		ArgumentCaptor<TwitchMessage> event = ArgumentCaptor.forClass(TwitchMessage.class);
 		verify(eventBus).post(event.capture());
@@ -144,7 +125,6 @@ public class TwitchPluginTest
 		when(config.overlayIntegration()).thenReturn(true);
 		when(config.showInChatbox()).thenReturn(false);
 		plugin.privmsg("alice", Map.of("display-name", "Alice"), "hello");
-		drain();
 
 		verify(eventBus).post(any(TwitchMessage.class));
 		verifyNoInteractions(chatMessageManager);
@@ -156,7 +136,6 @@ public class TwitchPluginTest
 		when(config.overlayIntegration()).thenReturn(true);
 		when(config.showInChatbox()).thenReturn(false);
 		plugin.usernotice(Map.of("system-msg", "Alice subscribed"), "");
-		drain();
 
 		ArgumentCaptor<TwitchMessage> event = ArgumentCaptor.forClass(TwitchMessage.class);
 		verify(eventBus).post(event.capture());
@@ -168,6 +147,8 @@ public class TwitchPluginTest
 	@Test
 	public void nativeSlashTStillSendsAndEchoesOnlyToTheEventWhenDisabled() throws Exception
 	{
+		List<Thread> deliveryThreads = new ArrayList<>();
+		eventBus.register(TwitchMessage.class, event -> deliveryThreads.add(Thread.currentThread()), 0);
 		when(config.overlayIntegration()).thenReturn(true);
 		when(config.showInChatbox()).thenReturn(false);
 		when(config.username()).thenReturn("alice");
@@ -178,7 +159,6 @@ public class TwitchPluginTest
 		ScriptCallbackEvent callback = new ScriptCallbackEvent();
 		callback.setEventName("chatDefaultReturn");
 		plugin.onScriptCallbackEvent(callback);
-		drain();
 
 		assertEquals(1, stack[0]);
 		verify(twitchIRCClient).privmsg("hello");
@@ -186,7 +166,26 @@ public class TwitchPluginTest
 		verify(eventBus).post(event.capture());
 		assertEquals("alice", event.getValue().getSender());
 		assertEquals("hello", event.getValue().getMessage());
+		assertEquals(List.of(Thread.currentThread()), deliveryThreads);
 		verifyNoInteractions(chatMessageManager);
+	}
+
+	@Test
+	public void incomingMessagesAndNoticesAreDeliveredOnTheReceivingThread() throws Exception
+	{
+		when(config.overlayIntegration()).thenReturn(true);
+		List<Thread> deliveryThreads = new ArrayList<>();
+		eventBus.register(TwitchMessage.class, event -> deliveryThreads.add(Thread.currentThread()), 0);
+		FutureTask<Void> receive = new FutureTask<>(() ->
+		{
+			plugin.privmsg("alice", Map.of(), "hello");
+			plugin.usernotice(Map.of("system-msg", "Alice subscribed"), "");
+			return null;
+		});
+		Thread receiver = new Thread(receive, "twitch-test-receiver");
+		receiver.start();
+		receive.get(5, TimeUnit.SECONDS);
+		assertEquals(List.of(receiver, receiver), deliveryThreads);
 	}
 
 	@Test
@@ -222,7 +221,6 @@ public class TwitchPluginTest
 		when(config.showInChatbox()).thenReturn(false, true);
 		plugin.privmsg("alice", Map.of(), "first");
 		plugin.privmsg("alice", Map.of(), "second");
-		drain();
 
 		ArgumentCaptor<TwitchMessage> event = ArgumentCaptor.forClass(TwitchMessage.class);
 		verify(eventBus, times(2)).post(event.capture());
@@ -239,7 +237,6 @@ public class TwitchPluginTest
 		when(config.overlayIntegration()).thenReturn(true, false);
 		plugin.privmsg("alice", Map.of(), "first");
 		plugin.privmsg("alice", Map.of(), "second");
-		drain();
 
 		ArgumentCaptor<TwitchMessage> event = ArgumentCaptor.forClass(TwitchMessage.class);
 		verify(eventBus).post(event.capture());
@@ -253,7 +250,6 @@ public class TwitchPluginTest
 		when(config.showInChatbox()).thenReturn(false);
 		plugin.privmsg("alice", Map.of(), "hello");
 		plugin.usernotice(Map.of("system-msg", "Alice subscribed"), "");
-		drain();
 		verifyNoInteractions(eventBus, chatMessageManager);
 	}
 
@@ -261,7 +257,6 @@ public class TwitchPluginTest
 	public void noticesRemainInNativeChatByDefault()
 	{
 		plugin.usernotice(Map.of("system-msg", "Alice gifted 20 subs"), "");
-		drain();
 
 		ArgumentCaptor<QueuedMessage> queued = ArgumentCaptor.forClass(QueuedMessage.class);
 		verify(chatMessageManager).queue(queued.capture());
@@ -277,7 +272,6 @@ public class TwitchPluginTest
 		when(config.showNotices()).thenReturn(false);
 		plugin.usernotice(Map.of("system-msg", "Alice gifted 20 subs"), "");
 		plugin.privmsg("bob", Map.of(), "hello");
-		drain();
 
 		ArgumentCaptor<TwitchMessage> event = ArgumentCaptor.forClass(TwitchMessage.class);
 		verify(eventBus).post(event.capture());
@@ -295,7 +289,6 @@ public class TwitchPluginTest
 		plugin.privmsg("nightbot", Map.of("display-name", "NightBot"), "bot message");
 		plugin.privmsg("streamelements", Map.of(), "another bot message");
 		plugin.privmsg("nightbotfan", Map.of(), "hello");
-		drain();
 
 		ArgumentCaptor<TwitchMessage> event = ArgumentCaptor.forClass(TwitchMessage.class);
 		verify(eventBus).post(event.capture());
@@ -306,22 +299,10 @@ public class TwitchPluginTest
 	}
 
 	@Test
-	public void filtersUseCurrentSettingsBeforeDelivery()
-	{
-		plugin.usernotice(Map.of("system-msg", "Alice gifted 20 subs"), "");
-		plugin.privmsg("nightbot", Map.of(), "bot message");
-		when(config.showNotices()).thenReturn(false);
-		when(config.ignoredUsernames()).thenReturn("nightbot");
-		drain();
-		verifyNoInteractions(eventBus, chatMessageManager);
-	}
-
-	@Test
 	public void ignoredUsernamesAlsoFilterNoticesFromThatUser()
 	{
 		when(config.ignoredUsernames()).thenReturn("alice");
 		plugin.usernotice(Map.of("login", "Alice", "system-msg", "Alice gifted 20 subs"), "");
-		drain();
 		verifyNoInteractions(eventBus, chatMessageManager);
 	}
 
@@ -337,7 +318,6 @@ public class TwitchPluginTest
 		ScriptCallbackEvent callback = new ScriptCallbackEvent();
 		callback.setEventName("chatDefaultReturn");
 		plugin.onScriptCallbackEvent(callback);
-		drain();
 
 		assertEquals(1, stack[0]);
 		verify(twitchIRCClient).privmsg("hello");
@@ -345,53 +325,11 @@ public class TwitchPluginTest
 	}
 
 	@Test
-	public void shuttingDownBeforeDeliveryDiscardsQueuedMessages()
-	{
-		plugin.privmsg("alice", Map.of(), "hello");
-		plugin.shutDown();
-		drain();
-		verify(twitchIRCClient).close();
-		verifyNoInteractions(eventBus, chatMessageManager);
-	}
-
-	@Test
-	public void changingConnectionSettingsDiscardsQueuedMessages()
-	{
-		plugin.privmsg("alice", Map.of(), "hello");
-		ConfigChanged change = new ConfigChanged();
-		change.setGroup("twitch");
-		change.setKey("channel");
-		plugin.onConfigChanged(change);
-		drain();
-		verify(twitchIRCClient).close();
-		verifyNoInteractions(eventBus, chatMessageManager);
-	}
-
-	@Test
-	public void messagesAfterShutdownAreNotScheduled()
-	{
-		plugin.shutDown();
-		plugin.privmsg("alice", Map.of(), "hello");
-		verify(clientThread, never()).invokeLater(any(Runnable.class));
-		verifyNoInteractions(eventBus, chatMessageManager);
-	}
-
-	@Test
-	public void loggingOutBeforeDeliveryDiscardsQueuedMessages()
-	{
-		plugin.privmsg("alice", Map.of(), "hello");
-		when(client.getGameState()).thenReturn(GameState.LOGIN_SCREEN);
-		drain();
-		verifyNoInteractions(eventBus, chatMessageManager);
-	}
-
-	@Test
-	public void loggedOutMessagesAreNotScheduled()
+	public void loggedOutMessagesAreNotDelivered()
 	{
 		when(client.getGameState()).thenReturn(GameState.LOGIN_SCREEN);
 		plugin.privmsg("alice", Map.of(), "hello");
 		plugin.usernotice(Map.of("system-msg", "Alice subscribed"), "");
-		verify(clientThread, never()).invokeLater(any(Runnable.class));
 		verifyNoInteractions(eventBus, chatMessageManager);
 	}
 }

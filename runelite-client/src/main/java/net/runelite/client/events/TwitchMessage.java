@@ -26,10 +26,21 @@ package net.runelite.client.events;
 
 import lombok.Value;
 
+/**
+ * A Twitch message or notice that passed the plugin's filters, published when overlay integration is enabled.
+ * <p>
+ * Delivered synchronously on the IRC reader thread for incoming messages and notices, or on the client thread
+ * for local echoes sent with {@code /t}. Callbacks from these threads may overlap. Subscribers must not block;
+ * schedule game-client work on {@link net.runelite.client.callback.ClientThread} and Swing work on the
+ * Swing event dispatch thread.
+ */
 @Value
 public class TwitchMessage
 {
+	/** Twitch username, or {@code [System]} for a notice. */
 	String sender;
+	/** Message text without RuneLite chat formatting or escaping. */
 	String message;
+	/** Local message time in seconds since the Unix epoch. */
 	int timestamp;
 }
