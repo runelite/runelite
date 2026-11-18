@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum TeleportLocationData
+public enum TeleportLocationData
 {
 	VARROCK(TeleportType.NORMAL_MAGIC, "Varrock", 25, new WorldPoint(3213, 3424, 0), "varrock_teleport_icon.png"),
 	VARROCK_GE(TeleportType.NORMAL_MAGIC, "Varrock GE", 25, new WorldPoint(3164, 3478, 0), "varrock_teleport_icon.png"),

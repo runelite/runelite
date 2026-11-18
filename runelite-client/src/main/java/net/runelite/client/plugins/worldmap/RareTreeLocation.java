@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum RareTreeLocation
+public enum RareTreeLocation
 {
 	WILLOW("Willow tree", 30,
 		// Kandarin
