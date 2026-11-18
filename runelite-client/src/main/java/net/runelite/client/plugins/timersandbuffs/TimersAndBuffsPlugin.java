@@ -70,6 +70,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
@@ -79,7 +80,6 @@ import static net.runelite.client.plugins.timersandbuffs.GameCounter.*;
 import static net.runelite.client.plugins.timersandbuffs.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.RSTimeUnit;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Timers & Buffs",
@@ -127,8 +127,6 @@ public class TimersAndBuffsPlugin extends Plugin
 	private static final int ANTIFIRE_TICK_LENGTH = 30;
 	private static final int SUPERANTIFIRE_TICK_LENGTH = 20;
 
-	static final int FIGHT_CAVES_REGION_ID = 9551;
-	static final int INFERNO_REGION_ID = 9043;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
 
@@ -147,7 +145,6 @@ public class TimersAndBuffsPlugin extends Plugin
 	private int lastDeathChargeVarb;
 
 	private final Map<GameCounter, BuffCounter> varCounters = new EnumMap<>(GameCounter.class);
-	private static final int ECLIPSE_MOON_REGION_ID = 6038;
 
 	@Inject
 	private ItemManager itemManager;
@@ -607,7 +604,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (event.getVarbitId() == VarbitID.PMOON_BOSS_CONDITION && config.showCurseOfTheMoons())
 		{
 			final int regionID = WorldPoint.fromLocal(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-			if (regionID == ECLIPSE_MOON_REGION_ID)
+			if (GameArea.ECLIPSE_MOON.containsRegion(regionID))
 			{
 				updateVarCounter(CURSE_OF_THE_MOONS_ECLIPSE, event.getValue());
 			}
@@ -1134,14 +1131,20 @@ public class TimersAndBuffsPlugin extends Plugin
 		return markOfDarknessDuration;
 	}
 
-	private boolean isInFightCaves()
+	@VisibleForTesting
+	boolean isInFightCaves()
 	{
-		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), FIGHT_CAVES_REGION_ID);
+		final Player localPlayer = client.getLocalPlayer();
+		return localPlayer != null
+			&& GameArea.TZHAAR_FIGHT_CAVE.containsRegion(WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID());
 	}
 
-	private boolean isInInferno()
+	@VisibleForTesting
+	boolean isInInferno()
 	{
-		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), INFERNO_REGION_ID);
+		final Player localPlayer = client.getLocalPlayer();
+		return localPlayer != null
+			&& GameArea.INFERNO.containsRegion(WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID());
 	}
 
 	private void createTzhaarTimer()

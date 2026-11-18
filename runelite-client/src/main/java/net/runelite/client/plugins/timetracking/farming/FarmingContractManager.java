@@ -36,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.Tab;
@@ -46,7 +47,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @Singleton
 public class FarmingContractManager
 {
-	private static final int FARMING_GUILD_REGION_ID = 4922;
 	private static final String CONFIG_KEY_CONTRACT = "contract";
 
 	@Getter
@@ -117,7 +117,7 @@ public class FarmingContractManager
 	{
 		PatchPrediction patchPrediction = farmingTracker.predictPatch(patch);
 		if (contract != null &&
-			patch.getRegion().getRegionID() == FARMING_GUILD_REGION_ID &&
+			GameArea.FARMING_GUILD.containsRegion(patch.getRegion().getRegionID()) &&
 			contract.getPatchImplementation() == patch.getImplementation() &&
 			patchPrediction != null &&
 			(summary == SummaryState.EMPTY &&
@@ -141,7 +141,7 @@ public class FarmingContractManager
 
 		handleContractState();
 		handleContractVarbit();
-		if (loc.getRegionID() == FARMING_GUILD_REGION_ID)
+		if (GameArea.FARMING_GUILD.containsRegion(loc.getRegionID()))
 		{
 			handleInfoBox();
 		}
