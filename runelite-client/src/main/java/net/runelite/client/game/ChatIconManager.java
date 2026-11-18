@@ -88,7 +88,7 @@ public class ChatIconManager
 	}
 
 	@AllArgsConstructor
-	private static class ChatIcon
+	public static class ChatIcon
 	{
 		int idx;
 		IndexedSprite sprite;
@@ -150,13 +150,35 @@ public class ChatIconManager
 		return icons.size() - 1;
 	}
 
+	public synchronized ChatIcon getChatIcon(int iconId)
+	{
+		return icons.get(iconId);
+	}
+
 	/**
-	 * Update an existing chat icons image
+	 * Update an existing chat icons image using an int iconId and BufferedImage
 	 */
 	public synchronized void updateChatIcon(int iconId, BufferedImage image)
 	{
 		ChatIcon ci = icons.get(iconId);
 		IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
+		int idx = ci.idx;
+		if (idx == -1)
+		{
+			ci.sprite = sprite;
+			return;
+		}
+
+		IndexedSprite[] modicons = client.getModIcons();
+		modicons[idx] = sprite;
+		return;
+	}
+
+	/**
+	 * Update an existing chat icons image using a ChatIcon and IndexedSprite
+	 */
+	public synchronized void updateChatIcon(ChatIcon ci, IndexedSprite sprite)
+	{
 		int idx = ci.idx;
 		if (idx == -1)
 		{
