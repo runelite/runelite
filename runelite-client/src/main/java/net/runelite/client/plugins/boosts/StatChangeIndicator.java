@@ -25,42 +25,40 @@
 package net.runelite.client.plugins.boosts;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
 class StatChangeIndicator extends InfoBox
 {
-	private final boolean up;
+	private final BoostTimer boostTimer;
 	private final BoostsPlugin plugin;
 	private final BoostsConfig config;
 
-	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
+	StatChangeIndicator(BoostTimer boostTimer, BoostsPlugin plugin, BoostsConfig config)
 	{
-		super(image, plugin);
-		this.up = up;
+		super(boostTimer.indicatorImage, plugin);
+		this.boostTimer = boostTimer;
 		this.plugin = plugin;
 		this.config = config;
 		setPriority(InfoBoxPriority.MED);
-		setTooltip(up ? "Next debuff change" : "Next buff change");
+		setTooltip(boostTimer.indicatorTooltipText);
 	}
 
 	@Override
 	public String getText()
 	{
-		return String.format("%02d", plugin.getChangeTime(up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()));
+		return String.format("%02d", plugin.getChangeTime(plugin.getTicksRemaining(boostTimer)));
 	}
 
 	@Override
 	public Color getTextColor()
 	{
-		return (up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
+		return plugin.getTicksRemaining(boostTimer) < 10 ? Color.RED.brighter() : Color.WHITE;
 	}
 
 	@Override
 	public boolean render()
 	{
-		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
-		return time != -1 && config.displayInfoboxes();
+		return plugin.getTicksRemaining(boostTimer) != -1 && config.displayInfoboxes();
 	}
 }
