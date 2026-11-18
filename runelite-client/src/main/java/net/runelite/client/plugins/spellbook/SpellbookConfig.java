@@ -26,9 +26,20 @@ package net.runelite.client.plugins.spellbook;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(SpellbookConfig.GROUP)
 public interface SpellbookConfig extends Config
 {
 	String GROUP = "spellbook";
+
+	@ConfigItem(
+		keyName = "spellbookGaps",
+		name = "Enable gaps",
+		description = "Enables gaps where hidden spells are in the spellbook after filtering & sorting"
+	)
+	default boolean spellbookGaps()
+	{
+		return true;
+	}
 }
