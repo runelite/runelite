@@ -298,4 +298,15 @@ public interface KeyRemappingConfig extends Config
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
 	}
+	
+	@ConfigItem(
+		position = 22,
+		keyName = "shift",
+		name = "Shift",
+		description = "The key which will replace {Shift}."
+	)
+	default ModifierlessKeybind shift()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_SHIFT, 0);
+	}
 }
