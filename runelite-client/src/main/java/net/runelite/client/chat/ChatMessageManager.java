@@ -205,6 +205,27 @@ public class ChatMessageManager
 		objectStack[osize - 2] = prefix + message;
 	}
 
+	void colorClanName(String callbackEvent)
+	{
+		final Object[] oStack = client.getObjectStack();
+		final int oSize = client.getObjectStackSize();
+
+		final Color clanNameColor = callbackEvent.equalsIgnoreCase("chatClanNameColor") ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
+		final Color clanGuestNameColor = callbackEvent.equalsIgnoreCase("chatClanNameColor") ? chatColorConfig.transparentClanChannelGuestName() : chatColorConfig.opaqueClanGuestChatChannelName();
+
+		String colorTag;
+		if (clanNameColor != null)
+		{
+			colorTag = ColorUtil.colorTag(clanNameColor);
+			oStack[oSize - 3] = colorTag;
+		}
+		if (clanGuestNameColor != null)
+		{
+			colorTag = ColorUtil.colorTag(clanGuestNameColor);
+			oStack[oSize - 1] = colorTag;
+		}
+	}
+
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
@@ -221,6 +242,10 @@ public class ChatMessageManager
 				break;
 			case "chatMessageBuilding":
 				colorChatMessage();
+				return;
+			case "chatClanNameColorDefault":
+			case "chatClanNameColor":
+				colorClanName(eventName);
 				return;
 			default:
 				return;
