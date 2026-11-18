@@ -39,7 +39,7 @@ class ConfigInvocationHandler implements InvocationHandler
 	private static final Object NULL = new Object();
 
 	private final ConfigManager manager;
-	private final Cache<Method, Object> cache = CacheBuilder.newBuilder()
+	private final Cache<ConfigKeyPair, Object> cache = CacheBuilder.newBuilder()
 		.maximumSize(256)
 		.build();
 
@@ -51,10 +51,15 @@ class ConfigInvocationHandler implements InvocationHandler
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
 	{
+		if (args == null && "hashCode".equals(method.getName())) {
+			return System.identityHashCode(proxy);
+		}
+
 		// Use cached configuration value if available
 		if (args == null)
 		{
-			Object cachedValue = cache.getIfPresent(method);
+			ConfigKeyPair cacheKey = ConfigKeyPair.of(method, proxy);
+			Object cachedValue = cache.getIfPresent(cacheKey);
 			if (cachedValue != null)
 			{
 				return cachedValue == NULL ? null : cachedValue;
@@ -66,11 +71,6 @@ class ConfigInvocationHandler implements InvocationHandler
 		if ("toString".equals(method.getName()) && args == null)
 		{
 			return iface.getSimpleName();
-		}
-
-		if ("hashCode".equals(method.getName()) && args == null)
-		{
-			return System.identityHashCode(proxy);
 		}
 
 		if ("equals".equals(method.getName()) && args != null && args.length == 1)
@@ -99,17 +99,18 @@ class ConfigInvocationHandler implements InvocationHandler
 
 			// Getting configuration item
 			String value = manager.getConfiguration(group.value(), item.keyName());
+			ConfigKeyPair cacheKey = ConfigKeyPair.of(method, proxy);
 
 			if (value == null)
 			{
 				if (method.isDefault())
 				{
 					Object defaultValue = callDefaultMethod(proxy, method, null);
-					cache.put(method, defaultValue == null ? NULL : defaultValue);
+					cache.put(cacheKey, defaultValue == null ? NULL : defaultValue);
 					return defaultValue;
 				}
 
-				cache.put(method, NULL);
+				cache.put(cacheKey, NULL);
 				return null;
 			}
 
@@ -117,7 +118,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			try
 			{
 				Object objectValue = manager.stringToObject(value, method.getGenericReturnType());
-				cache.put(method, objectValue == null ? NULL : objectValue);
+				cache.put(cacheKey, objectValue == null ? NULL : objectValue);
 				return objectValue;
 			}
 			catch (Exception e)
