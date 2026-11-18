@@ -382,7 +382,7 @@ public class PartyPlugin extends Plugin
 
 		partyData.setColor(event.getColor());
 
-		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId()));
+		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId(), false));
 	}
 
 	@Subscribe
@@ -463,7 +463,7 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onPartyMemberAvatar(PartyMemberAvatar event)
 	{
-		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId()));
+		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId(), true));
 	}
 
 	@Nullable
