@@ -80,6 +80,17 @@ public interface GrandExchangeConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "showHighAlchValue",
+		name = "Enable high alch values",
+		description = "Shows the high alch value and profit on the GE buy interface"
+	)
+	default boolean showHighAlchValue()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "enableGeLimits",
 		name = "Enable GE limits on GE",
 		description = "Shows the GE limits on the GE."
@@ -90,7 +101,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "enableGELimitReset",
 		name = "Enable GE limit reset timer",
 		description = "Shows when GE trade limits reset (H:MM)."
@@ -102,7 +113,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "showTotal",
 		name = "Show GE total",
 		description = "Display the total value of all trades at the top of the GE interface."
@@ -113,7 +124,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "showExact",
 		name = "Show exact total value",
 		description = "When enabled along with the ‘Show GE total’ option, the unabbreviated value will be displayed."
@@ -124,7 +135,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "highlightSearchMatch",
 		name = "Highlight search match",
 		description = "Highlights the search match with an underline."
@@ -135,7 +146,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "geSearchMode",
 		name = "Search mode",
 		description = "The search mode to use for the GE:<br>"
