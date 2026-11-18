@@ -77,6 +77,11 @@ class SpecialCounter extends Counter
 
 	private String buildTooltip(int hitValue)
 	{
+		if (config.hideTooltip())
+		{
+			return null;
+		}
+
 		if (!weapon.isDamage())
 		{
 			if (hitValue == 1)
