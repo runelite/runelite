@@ -369,6 +369,12 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	{
 	}
 
+	@Override
+	public boolean isEnabledOnChatInput()
+	{
+		return true;
+	}
+
 	private String findPreviousFriend()
 	{
 		final String currentTarget = client.getVarcStrValue(VarClientID.FRIENDTOMESSAGE);

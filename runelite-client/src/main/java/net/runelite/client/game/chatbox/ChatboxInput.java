@@ -36,4 +36,14 @@ public abstract class ChatboxInput
 	protected void close()
 	{
 	}
+
+	/**
+	 * Chatbox inputs that listen for keys receive them while press-to-chat withholds them from hotkeys.
+	 *
+	 * @see net.runelite.client.input.KeyListener#isEnabledOnChatInput()
+	 */
+	public boolean isEnabledOnChatInput()
+	{
+		return true;
+	}
 }
