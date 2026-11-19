@@ -28,6 +28,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatSystemProperties;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.RenderingHints;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,22 +42,37 @@ import java.util.Map;
 import java.util.Properties;
 import javax.swing.UIDefaults;
 import lombok.SneakyThrows;
+import net.runelite.client.config.FontType;
+import net.runelite.client.ui.AppFontManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
 public class RuneLiteLAF extends FlatDarkLaf
 {
+	private final Font appFont;
+
 	public static boolean setup()
+	{
+		return setup(FontType.REGULAR.getFont());
+	}
+
+	public static boolean setup(Font appFont)
 	{
 		// flatlaf always gets this wrong
 		System.setProperty(FlatSystemProperties.UI_SCALE_ENABLED, "false");
 
-		return setup(new RuneLiteLAF());
+		return setup(new RuneLiteLAF(appFont));
+	}
+
+	public RuneLiteLAF()
+	{
+		this(FontType.REGULAR.getFont());
 	}
 
 	@SneakyThrows
-	public RuneLiteLAF()
+	public RuneLiteLAF(Font appFont)
 	{
+		this.appFont = appFont;
 		Map<String, String> extras = new HashMap<>();
 
 		// load the properties ourselves to avoid platform specific styles
@@ -129,7 +145,13 @@ public class RuneLiteLAF extends FlatDarkLaf
 	{
 		UIDefaults d = super.getDefaults();
 
-		d.put("defaultFont", FontManager.getRunescapeFont());
+		boolean custom = !appFont.equals(FontType.REGULAR.getFont());
+		Font font = custom ? appFont : FontManager.getRunescapeFont();
+		// Tag app-owned fonts independently of equal fonts explicitly chosen by plugins.
+		d.put("defaultFont", new AppFontManager.ThemeFont(font));
+		d.put("RuneLite.customAppFont", custom);
+		d.put("RuneLite.uiBoldFont", custom ? font.deriveFont(font.getStyle() | Font.BOLD) : FontManager.getRunescapeBoldFont());
+		d.put("RuneLite.uiSmallFont", custom ? font.deriveFont((float) Math.max(1, font.getSize() - 2)) : FontManager.getRunescapeSmallFont());
 		d.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 
 		return d;

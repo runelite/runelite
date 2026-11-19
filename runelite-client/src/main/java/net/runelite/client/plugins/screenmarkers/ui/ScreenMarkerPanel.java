@@ -27,7 +27,6 @@ package net.runelite.client.plugins.screenmarkers.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -48,6 +47,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
+import net.runelite.client.ui.AppFontManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
@@ -164,7 +164,7 @@ class ScreenMarkerPanel extends JPanel
 		nameActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		save.setVisible(false);
-		save.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(save);
 		save.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		save.addMouseListener(new MouseAdapter()
 		{
@@ -188,7 +188,7 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		cancel.setVisible(false);
-		cancel.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(cancel);
 		cancel.setForeground(ColorScheme.PROGRESS_ERROR_COLOR);
 		cancel.addMouseListener(new MouseAdapter()
 		{
@@ -211,7 +211,7 @@ class ScreenMarkerPanel extends JPanel
 			}
 		});
 
-		rename.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(rename);
 		rename.setForeground(ColorScheme.LIGHT_GRAY_COLOR.darker());
 		rename.addMouseListener(new MouseAdapter()
 		{
@@ -243,7 +243,7 @@ class ScreenMarkerPanel extends JPanel
 		nameInput.setBorder(null);
 		nameInput.setEditable(false);
 		nameInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		nameInput.setPreferredSize(new Dimension(0, 24));
+		AppFontManager.bindPreferredHeight(nameInput, 0, 24);
 		nameInput.getTextField().setForeground(Color.WHITE);
 		nameInput.getTextField().setBorder(new EmptyBorder(0, 8, 0, 0));
 		nameInput.addKeyListener(new KeyAdapter()
@@ -331,7 +331,7 @@ class ScreenMarkerPanel extends JPanel
 		});
 
 		thicknessSpinner.setValue(marker.getMarker().getBorderThickness());
-		thicknessSpinner.setPreferredSize(new Dimension(50, 20));
+		AppFontManager.bindPreferredHeight(thicknessSpinner, 50, 20);
 		thicknessSpinner.addChangeListener(ce -> updateThickness(true));
 		thicknessSpinner.setToolTipText("Border thickness");
 

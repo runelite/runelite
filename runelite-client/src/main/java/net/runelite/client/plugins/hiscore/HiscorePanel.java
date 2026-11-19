@@ -307,7 +307,7 @@ public class HiscorePanel extends PluginPanel
 
 		JLabel label = new JLabel();
 		label.setToolTipText(skill == null ? "Combat" : skill.getName());
-		label.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(label);
 		label.setText(pad("--", skillType));
 
 		spriteManager.getSpriteAsync(skill == null ? SpriteID.SideIcons.COMBAT : skill.getSpriteId(), 0, (sprite) ->

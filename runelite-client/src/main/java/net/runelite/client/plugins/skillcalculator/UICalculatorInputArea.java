@@ -169,7 +169,7 @@ class UICalculatorInputArea extends JPanel
 		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
 
-		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(uiLabel);
 		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
 		uiLabel.setForeground(Color.WHITE);
 
@@ -198,7 +198,7 @@ class UICalculatorInputArea extends JPanel
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
 
-		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+		FontManager.setUiSmallFont(uiLabel);
 		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
 		uiLabel.setForeground(Color.WHITE);
 

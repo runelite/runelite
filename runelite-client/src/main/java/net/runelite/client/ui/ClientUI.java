@@ -226,7 +226,14 @@ public class ClientUI
 			return;
 		}
 
-		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+		SwingUtilities.invokeLater(() ->
+		{
+			if (event.getKey().equals("appInterfaceFont"))
+			{
+				AppFontManager.apply(config.appInterfaceFont().getFont());
+			}
+			updateFrameConfig(event.getKey().equals("lockWindowSize"));
+		});
 	}
 
 	void addNavigation(NavigationButton navBtn)
@@ -317,16 +324,22 @@ public class ClientUI
 	}
 
 	/**
+	 * Apply the optional interface font before plugins cache fonts in their controls.
+	 */
+	public void initLookAndFeel() throws Exception
+	{
+		SwingUtilities.invokeAndWait(() -> RuneLiteLAF.setup(config.appInterfaceFont().getFont()));
+	}
+
+	/**
 	 * Initialize UI.
 	 */
 	public void init() throws Exception
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
-			// Set some sensible swing defaults
+			// The theme is installed before plugin construction so inherited fonts are app-owned.
 			setupDefaults();
-
-			RuneLiteLAF.setup();
 
 			// Create main window
 			frame = new ContainableFrame();

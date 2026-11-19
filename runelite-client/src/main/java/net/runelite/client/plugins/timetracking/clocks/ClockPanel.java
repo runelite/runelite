@@ -37,10 +37,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.ui.AppFontManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.FlatTextField;
 import net.runelite.client.util.SwingUtil;
@@ -89,7 +91,7 @@ abstract class ClockPanel extends JPanel
 		nameInput.setText(clock.getName());
 		nameInput.setBorder(null);
 		nameInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		nameInput.setPreferredSize(new Dimension(0, 24));
+		AppFontManager.onFontChange(nameInput, () -> nameInput.setPreferredSize(new Dimension(0, UIManager.getBoolean("RuneLite.customAppFont") ? Math.max(24, nameInput.getTextField().getPreferredSize().height + 4) : 24)));
 		nameInput.getTextField().setBorder(new EmptyBorder(0, 8, 0, 0));
 		nameInput.addActionListener(e -> getParent().requestFocusInWindow());
 
@@ -122,7 +124,7 @@ abstract class ClockPanel extends JPanel
 		displayInput.setEditable(editable);
 		displayInput.setBorder(null);
 		displayInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		displayInput.setPreferredSize(new Dimension(0, 24));
+		AppFontManager.onFontChange(displayInput, () -> displayInput.setPreferredSize(new Dimension(0, UIManager.getBoolean("RuneLite.customAppFont") ? Math.max(24, displayInput.getTextField().getPreferredSize().height + 4) : 24)));
 		displayInput.getTextField().setHorizontalAlignment(SwingConstants.CENTER);
 		displayInput.addActionListener(e -> getParent().requestFocusInWindow());
 
