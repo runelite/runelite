@@ -42,6 +42,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,6 +66,8 @@ import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -73,9 +78,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.Config;
 import net.runelite.client.eventbus.Subscribe;
@@ -93,6 +100,7 @@ import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.VirtualList;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.VerificationException;
 
@@ -105,7 +113,29 @@ class PluginHubPanel extends PluginPanel
 	private static final ImageIcon HELP_ICON;
 	private static final ImageIcon CONFIGURE_ICON;
 	private static final ImageIcon PLUGIN_UNAVAILABLE_ICON;
+	private static final ImageIcon INSTALLS_ICON;
 	private static final Pattern SPACES = Pattern.compile(" +");
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
+
+	@RequiredArgsConstructor
+	private enum SortOrder
+	{
+		DEFAULT("Default"),
+		MOST_INSTALLS("Most installs"),
+		RECENTLY_UPDATED("Updated"),
+		NEWEST("Newest"),
+		OLDEST("Oldest"),
+		NAME("Name"),
+		AUTHOR("Author");
+
+		private final String label;
+
+		@Override
+		public String toString()
+		{
+			return label;
+		}
+	}
 
 	static
 	{
@@ -119,6 +149,9 @@ class PluginHubPanel extends PluginPanel
 		CONFIGURE_ICON = new ImageIcon(configureIcon);
 
 		PLUGIN_UNAVAILABLE_ICON = new ImageIcon(ImageUtil.loadImageResource(PluginHubPanel.class, "mdi_alert.png"));
+
+		BufferedImage installsIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "mdi_download.png");
+		INSTALLS_ICON = new ImageIcon(ImageUtil.recolorImage(installsIcon, ColorScheme.LIGHT_GRAY_COLOR));
 	}
 
 	private class PluginIcon extends JLabel
@@ -298,6 +331,7 @@ class PluginHubPanel extends PluginPanel
 		private final JLabel description = new JLabel();
 		private final PluginIcon icon = new PluginIcon();
 		private final JLabel badge = new JLabel();
+		private final JLabel installs = new JLabel();
 		private final JButton configure = new JButton(CONFIGURE_ICON);
 		private final JButton addrm = new JButton();
 
@@ -318,6 +352,13 @@ class PluginHubPanel extends PluginPanel
 			description.setVerticalAlignment(JLabel.TOP);
 
 			icon.setHorizontalAlignment(JLabel.CENTER);
+
+			installs.setFont(FontManager.getRunescapeSmallFont());
+			installs.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			installs.setHorizontalAlignment(JLabel.CENTER);
+			installs.setVerticalAlignment(JLabel.TOP);
+			// the icon has transparent padding of its own
+			installs.setIconTextGap(0);
 
 			JButton help = new JButton(HELP_ICON);
 			SwingUtil.removeButtonDecorations(help);
@@ -350,7 +391,8 @@ class PluginHubPanel extends PluginPanel
 			layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
 					.addComponent(badge, GroupLayout.Alignment.TRAILING)
-					.addComponent(icon, ICON_WIDTH, ICON_WIDTH, ICON_WIDTH))
+					.addComponent(icon, ICON_WIDTH, ICON_WIDTH, ICON_WIDTH)
+					.addComponent(installs, ICON_WIDTH, ICON_WIDTH, ICON_WIDTH))
 				.addGap(5)
 				.addGroup(layout.createParallelGroup()
 					.addGroup(layout.createSequentialGroup()
@@ -369,7 +411,10 @@ class PluginHubPanel extends PluginPanel
 			int lineHeight = description.getFontMetrics(description.getFont()).getHeight();
 			layout.setVerticalGroup(layout.createParallelGroup()
 				.addComponent(badge, GroupLayout.Alignment.TRAILING)
-				.addComponent(icon, HEIGHT, GroupLayout.DEFAULT_SIZE, HEIGHT)
+				.addGroup(layout.createSequentialGroup()
+					// hub icons are up to 72px tall, so leave them as much room as possible
+					.addComponent(icon, HEIGHT - BOTTOM_LINE_HEIGHT, GroupLayout.DEFAULT_SIZE, HEIGHT - BOTTOM_LINE_HEIGHT)
+					.addComponent(installs, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT))
 				.addGroup(layout.createSequentialGroup()
 					.addGap(5)
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -398,7 +443,31 @@ class PluginHubPanel extends PluginPanel
 			author.setToolTipText(manifest.getAuthor());
 
 			version.setText(manifest.getVersion());
-			version.setToolTipText(manifest.getVersion());
+
+			if (item.getUserCount() >= 0)
+			{
+				installs.setIcon(INSTALLS_ICON);
+				installs.setText(QuantityFormatter.quantityToStackSize(item.getUserCount()));
+				installs.setToolTipText(QuantityFormatter.formatNumber(item.getUserCount()) + " active installs");
+			}
+			else
+			{
+				installs.setIcon(null);
+				installs.setText(null);
+				installs.setToolTipText(null);
+			}
+
+			StringBuilder versionTooltip = new StringBuilder("<html>Version: ")
+				.append(HtmlEscapers.htmlEscaper().escape(manifest.getVersion()));
+			if (manifest.getLastUpdatedAt() > 0)
+			{
+				versionTooltip.append("<br>Updated: ").append(formatDate(manifest.getLastUpdatedAt()));
+			}
+			if (manifest.getCreatedAt() > 0)
+			{
+				versionTooltip.append("<br>Created: ").append(formatDate(manifest.getCreatedAt()));
+			}
+			version.setToolTipText(versionTooltip.append("</html>").toString());
 
 			String descriptionText = manifest.getDescription();
 			if (item.jarData == null)
@@ -511,8 +580,13 @@ class PluginHubPanel extends PluginPanel
 	private final Deque<PluginIcon> iconLoadQueue = new ArrayDeque<>();
 
 	private final IconTextField searchBar;
+	private final JComboBox<SortOrder> sortBox = new JComboBox<>(SortOrder.values());
+	private volatile SortOrder sortOrder = SortOrder.DEFAULT;
+	private final JCheckBox hideInstalledBox = new JCheckBox("Hide installed");
+	private volatile boolean hideInstalled;
 	private final JPanel error = new JPanel();
 	private final JLabel refreshing;
+	private final JLabel resultCount = new JLabel();
 	private final VirtualList<PluginView, PluginItem> list = new VirtualList<>()
 	{
 		@Override
@@ -597,6 +671,21 @@ class PluginHubPanel extends PluginPanel
 			}
 		});
 
+		sortBox.setToolTipText("Sort by");
+		sortBox.setFocusable(false);
+		sortBox.addActionListener(e ->
+		{
+			sortOrder = (SortOrder) sortBox.getSelectedItem();
+			executor.execute(PluginHubPanel.this::filter);
+		});
+
+		hideInstalledBox.setFocusable(false);
+		hideInstalledBox.addActionListener(e ->
+		{
+			hideInstalled = hideInstalledBox.isSelected();
+			executor.execute(PluginHubPanel.this::filter);
+		});
+
 		JLabel externalPluginWarning = new JLabel("<html>Plugin Hub plugins are provided by third parties not affiliated with RuneLite. " +
 			"<u>Click here to learn more.</u></html>");
 		externalPluginWarning.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -622,6 +711,11 @@ class PluginHubPanel extends PluginPanel
 		mainPanelWrapper.add(northPanel, BorderLayout.NORTH);
 		mainPanelWrapper.add(list, BorderLayout.CENTER);
 
+		resultCount.setFont(FontManager.getRunescapeSmallFont());
+		resultCount.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		resultCount.setHorizontalAlignment(JLabel.CENTER);
+		resultCount.setBorder(new MatteBorder(1, 0, 0, 0, ColorScheme.DARKER_GRAY_COLOR));
+
 		error.setVisible(false);
 		error.setLayout(new DynamicGridLayout(0, 1));
 		error.add(new JLabel("Downloading the plugin manifest failed"));
@@ -644,8 +738,13 @@ class PluginHubPanel extends PluginPanel
 				.addComponent(externalPluginWarning)
 				.addGap(7)
 				.addComponent(searchBar, 30, 30, 30)
+				.addGap(5)
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+					.addComponent(sortBox, 25, 25, 25)
+					.addComponent(hideInstalledBox))
 				.addGap(10)
-				.addComponent(scrollPane));
+				.addComponent(scrollPane)
+				.addComponent(resultCount, 20, 20, 20));
 
 			layout.setHorizontalGroup(layout.createParallelGroup()
 				.addGroup(layout.createSequentialGroup()
@@ -656,7 +755,14 @@ class PluginHubPanel extends PluginPanel
 					.addGap(10)
 					.addComponent(searchBar)
 					.addGap(10))
-				.addComponent(scrollPane));
+				.addGroup(layout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(sortBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(6)
+					.addComponent(hideInstalledBox, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(10))
+				.addComponent(scrollPane)
+				.addComponent(resultCount, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
 		}
 
 		revalidate();
@@ -675,6 +781,7 @@ class PluginHubPanel extends PluginPanel
 		refreshing.setVisible(true);
 		error.setVisible(false);
 		list.setModel(null);
+		resultCount.setText("");
 
 		executor.submit(() ->
 		{
@@ -757,27 +864,73 @@ class PluginHubPanel extends PluginPanel
 
 		String query = searchBar.getText();
 		boolean isSearching = query != null && !query.trim().isEmpty();
+		SortOrder order = sortOrder;
+		List<PluginItem> candidates = hideInstalled
+			? plugins.stream().filter(p -> !p.isInstalled()).collect(Collectors.toList())
+			: plugins;
 		List<PluginItem> pluginItems;
 		if (isSearching)
 		{
-			pluginItems = PluginSearch.search(plugins, query);
+			pluginItems = PluginSearch.search(candidates, query);
+			if (order != SortOrder.DEFAULT)
+			{
+				// stable sort, so search relevance is kept as the tie breaker
+				pluginItems = new ArrayList<>(pluginItems);
+				pluginItems.sort(comparator(order));
+			}
 		}
 		else
 		{
-			pluginItems = plugins.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
-				.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
-					.thenComparing(PluginItem::isInstalled)
-					.thenComparingInt(PluginItem::getUserCount)
-					.reversed()
-					.thenComparing(p -> p.manifest.getDisplayName())
-				)
+			pluginItems = candidates.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
+				.sorted(comparator(order))
 				.collect(Collectors.toList());
 		}
 
+		List<PluginItem> sortedItems = pluginItems;
+		int total = plugins.size();
 		SwingUtilities.invokeLater(() ->
 		{
-			list.setModel(pluginItems);
+			list.setModel(sortedItems);
+			resultCount.setText("Displaying " + QuantityFormatter.formatNumber(sortedItems.size())
+				+ " of " + QuantityFormatter.formatNumber(total) + " plugins");
 		});
+	}
+
+	private static Comparator<PluginItem> comparator(SortOrder order)
+	{
+		Comparator<PluginItem> byName = Comparator.comparing(p -> p.manifest.getDisplayName(), String.CASE_INSENSITIVE_ORDER);
+		switch (order)
+		{
+			case RECENTLY_UPDATED:
+				return Comparator.comparingLong((PluginItem p) -> p.manifest.getLastUpdatedAt()).reversed()
+					.thenComparing(byName);
+			case NEWEST:
+				return Comparator.comparingLong((PluginItem p) -> p.manifest.getCreatedAt()).reversed()
+					.thenComparing(byName);
+			case OLDEST:
+				return Comparator.comparingLong((PluginItem p) -> p.manifest.getCreatedAt() > 0 ? p.manifest.getCreatedAt() : Long.MAX_VALUE)
+					.thenComparing(byName);
+			case NAME:
+				return byName;
+			case AUTHOR:
+				return Comparator.comparing((PluginItem p) -> p.manifest.getAuthor(), String.CASE_INSENSITIVE_ORDER)
+					.thenComparing(byName);
+			case MOST_INSTALLS:
+				return Comparator.comparingInt(PluginItem::getUserCount).reversed()
+					.thenComparing(byName);
+			case DEFAULT:
+			default:
+				return Comparator.comparing((PluginItem p) -> p.getJarData() == null)
+					.thenComparing(PluginItem::isInstalled)
+					.thenComparingInt(PluginItem::getUserCount)
+					.reversed()
+					.thenComparing(p -> p.manifest.getDisplayName());
+		}
+	}
+
+	private static String formatDate(long epochSeconds)
+	{
+		return DATE_FORMAT.format(Instant.ofEpochSecond(epochSeconds));
 	}
 
 	@Override
@@ -793,6 +946,7 @@ class PluginHubPanel extends PluginPanel
 	public void onDeactivate()
 	{
 		list.setModel(null);
+		resultCount.setText("");
 		refreshing.setVisible(false);
 		plugins = null;
 		lastManifest = null;
