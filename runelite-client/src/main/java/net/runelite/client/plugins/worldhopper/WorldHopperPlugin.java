@@ -60,15 +60,12 @@ import net.runelite.api.NameableContainer;
 import net.runelite.api.Skill;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WorldListLoad;
+import net.runelite.api.events.*;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -87,13 +84,10 @@ import net.runelite.client.plugins.worldhopper.ping.Ping;
 import net.runelite.client.plugins.worldhopper.ping.RetransmitCalculator;
 import net.runelite.client.plugins.worldhopper.ping.TCPInfo;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.ExecutorServiceExceptionLogger;
-import net.runelite.client.util.HotkeyListener;
-import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.Text;
-import net.runelite.client.util.WorldUtil;
+import net.runelite.client.util.*;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
@@ -447,6 +441,99 @@ public class WorldHopperPlugin extends Plugin
 					}
 				});
 		}
+	}
+
+	@Subscribe
+	public void onPostMenuSort(PostMenuSort event)
+	{
+		if (!config.menuOption())
+		{
+			return;
+		}
+
+		Widget clansHeader = client.getWidget(InterfaceID.ClansSidepanel.HEADER);
+		if (clansHeader == null || clansHeader.isHidden())
+		{
+			clansHeader = client.getWidget(InterfaceID.ClansGuestSidepanel.HEADER);
+			if (clansHeader == null || clansHeader.isHidden())
+			{
+				return;
+			}
+		}
+
+		final Widget[] children = clansHeader.getDynamicChildren();
+		if (children == null || children.length < 2)
+		{
+			return;
+		}
+
+		Widget homeWorldIcon = null;
+		Widget homeWorldText = null;
+
+		for (int i = 0; i < children.length - 1; i++)
+		{
+			final Widget child = children[i];
+			final Widget sibling = children[i + 1];
+
+			if (child == null || sibling == null
+				|| child.isHidden() || sibling.isHidden()
+				|| child.getType() != WidgetType.GRAPHIC || sibling.getType() != WidgetType.TEXT
+				|| child.getSpriteId() != SpriteID.GroupIcon._1)
+			{
+				continue;
+			}
+
+			homeWorldIcon = child;
+			homeWorldText = sibling;
+			break;
+		}
+
+		if (homeWorldIcon == null)
+		{
+			return;
+		}
+
+		final var mousePosition = client.getMouseCanvasPosition();
+		if (!homeWorldIcon.contains(mousePosition) && !homeWorldText.contains(mousePosition))
+		{
+			return;
+		}
+
+		final int homeWorldNumber;
+		try
+		{
+			homeWorldNumber = Integer.parseInt(homeWorldText.getText());
+		}
+		catch (NumberFormatException ignored)
+		{
+			return;
+		}
+
+		if (client.getWorld() == homeWorldNumber)
+		{
+			return;
+		}
+
+		WorldResult worldResult = worldService.getWorlds();
+		if (worldResult == null)
+		{
+			return;
+		}
+
+		World currentWorld = worldResult.findWorld(client.getWorld());
+		World targetWorld = worldResult.findWorld(homeWorldNumber);
+		if (targetWorld == null || currentWorld == null
+				|| (!currentWorld.getTypes().contains(WorldType.PVP) && targetWorld.getTypes().contains(WorldType.PVP)))
+		{
+			// Disable Hop-to a PVP world from a regular world
+			return;
+		}
+
+		client.getMenu().createMenuEntry(-1)
+				.setOption(HOP_TO)
+				.setTarget(ColorUtil.wrapWithColorTag(String.valueOf(homeWorldNumber), JagexColors.MENU_TARGET))
+				.setType(MenuAction.RUNELITE)
+				.onClick(e -> hop(homeWorldNumber));
 	}
 
 	@Subscribe
