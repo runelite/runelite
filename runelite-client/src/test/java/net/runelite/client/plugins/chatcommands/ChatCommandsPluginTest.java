@@ -1433,6 +1433,48 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testTfaPbNew()
+	{
+		when(client.getVarbitValue(VarbitID.TFA_CLIENT_P1)).thenReturn(27);
+		when(client.getVarbitValue(VarbitID.TFA_CLIENT_P2)).thenReturn(30);
+		when(client.getVarbitValue(VarbitID.TFA_CLIENT_P3)).thenReturn(20);
+		when(client.getVarbitValue(VarbitID.TFA_CLIENT_P4)).thenReturn(13);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: Ocellus. Duration: <col=ef1020>14:28.80</col>. Total: <col=ef1020>36:01.80</col>. Personal best: 13:54.60", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "The Fractured Archive: Total completion time: <col=ef1020>36:01.80</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Fractured Archive count is: <col=ff0000>116</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "fractured archive", 116);
+		verify(configManager).setRSProfileConfiguration("personalbest", "fractured archive", 36 * 60 + 1.8);
+		verify(configManager).setRSProfileConfiguration("personalbest", "fractured archive 4 players", 36 * 60 + 1.8);
+	}
+
+	@Test
+	public void testTfaPb()
+	{
+		when(client.getVarbitValue(VarbitID.TFA_CLIENT_P1)).thenReturn(24);
+		when(client.getVarbitValue(VarbitID.TFA_CLIENT_P2)).thenReturn(15);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: Ocellus. Duration: <col=ef1020>7:31.80</col>. Total: <col=ef1020>16:43.80</col>. Personal best: 6:46.20", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "The Fractured Archive: Total completion time: <col=ef1020>16:43.80</col>. Personal best: 15:30.00", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Fractured Archive count is: <col=ff0000>213</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "fractured archive", 213);
+		verify(configManager).setRSProfileConfiguration("personalbest", "fractured archive", 15 * 60 + 30.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "fractured archive 2 players", 15 * 60 + 30.);
+	}
+
+	@Test
 	public void testAgilityArena()
 	{
 		testKillCountChatMessage("agility arena", "Your Agility Arena Total Ticket count is: <col=ff0000>206</col>.", 206);
