@@ -43,7 +43,7 @@ public interface CameraConfig extends Config
 	@ConfigSection(
 		name = "Mouse settings",
 		description = "Mouse settings.",
-		position = 10
+		position = 12
 	)
 	String mouseSettingsSection = "mouseSettings";
 
@@ -143,6 +143,40 @@ public interface CameraConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "pinchToZoom",
+		name = "Pinch to zoom",
+		description = "Zoom the camera by pinching on a trackpad. Only works on macOS.",
+		position = 9
+	)
+	default boolean pinchToZoom()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swipeToRotate",
+		name = "Swipe to rotate",
+		description = "Rotate the camera by swiping left or right with 2 fingers on a trackpad. Only works on macOS.",
+		position = 10
+	)
+	default boolean swipeToRotate()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swipeToTilt",
+		name = "Swipe to tilt",
+		description = "Tilt the camera by swiping up or down with 2 fingers on a trackpad.<br>" +
+			"Scrolling over the game then tilts instead of zooming, including with a mouse wheel.",
+		position = 11
+	)
+	default boolean swipeToTilt()
+	{
+		return false;
+	}
+
 	// region mouse settings
 	@ConfigItem(
 		keyName = "rightClickMovesCamera",
@@ -208,7 +242,7 @@ public interface CameraConfig extends Config
 	@ConfigItem(
 		keyName = "invertYaw",
 		name = "Invert yaw",
-		description = "Makes moving the camera horizontally with the mouse backwards.",
+		description = "Makes moving the camera horizontally with the mouse or a trackpad swipe backwards.",
 		position = 12,
 		section = mouseSettingsSection
 	)
@@ -220,7 +254,7 @@ public interface CameraConfig extends Config
 	@ConfigItem(
 		keyName = "invertPitch",
 		name = "Invert pitch",
-		description = "Makes moving the camera vertically with the mouse backwards.",
+		description = "Makes moving the camera vertically with the mouse or a trackpad swipe backwards.",
 		position = 13,
 		section = mouseSettingsSection
 	)
