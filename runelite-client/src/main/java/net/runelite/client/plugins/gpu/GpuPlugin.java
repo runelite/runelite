@@ -170,6 +170,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastCanvasHeight;
 	private int lastStretchedCanvasWidth;
 	private int lastStretchedCanvasHeight;
+	private int lastStretchInputWidth = -1;
+	private int lastStretchInputHeight = -1;
 	private AntiAliasingMode lastAntiAliasingMode;
 	private int lastAnisotropicFilteringLevel = -1;
 
@@ -378,6 +380,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				lastCanvasWidth = lastCanvasHeight = -1;
 				lastStretchedCanvasWidth = lastStretchedCanvasHeight = -1;
+				lastStretchInputWidth = lastStretchInputHeight = -1;
 				lastAntiAliasingMode = null;
 
 				textureArrayId = -1;
@@ -901,6 +904,22 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		final int canvasHeight = client.getCanvasHeight();
 		final int canvasWidth = client.getCanvasWidth();
+
+		// Invalidate after the canvas size changes so stretched dimensions are recalculated
+		// from the dimensions the GPU renderer is using, including delayed Wayland resizes.
+		if (client.isStretchedEnabled())
+		{
+			if (canvasWidth != lastStretchInputWidth || canvasHeight != lastStretchInputHeight)
+			{
+				client.invalidateStretching(false);
+				lastStretchInputWidth = canvasWidth;
+				lastStretchInputHeight = canvasHeight;
+			}
+		}
+		else
+		{
+			lastStretchInputWidth = lastStretchInputHeight = -1;
+		}
 
 		final int viewportHeight = client.getViewportHeight();
 		final int viewportWidth = client.getViewportWidth();
