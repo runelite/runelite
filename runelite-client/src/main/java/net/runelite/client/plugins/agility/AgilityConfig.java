@@ -36,14 +36,7 @@ import net.runelite.client.config.Units;
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
-	@ConfigSection(
-		name = "Hallowed Sepulchre",
-		description = "Settings for Hallowed Sepulchre highlights.",
-		position = 17
-	)
-	String sepulchreSection = "Hallowed Sepulchre";
-
-	@ConfigItem(
+		@ConfigItem(
 		keyName = "showClickboxes",
 		name = "Show clickboxes",
 		description = "Show agility course and other obstacle clickboxes.",
@@ -111,11 +104,23 @@ public interface AgilityConfig extends Config
 		return Color.GREEN;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "highLevelOverlayColor",
+		name = "High level color",
+		description = "Color of agility overlay for obstacles that require a higher level.",
+		position = 6
+	)
+	default Color getHighLevelOverlayColor()
+	{
+		return Color.ORANGE;
+	}
+
 	@ConfigItem(
 		keyName = "highlightMarks",
 		name = "Highlight marks of grace",
 		description = "Enable/disable the highlighting of retrievable marks of grace.",
-		position = 6
+		position = 7
 	)
 	default boolean highlightMarks()
 	{
@@ -127,7 +132,7 @@ public interface AgilityConfig extends Config
 		keyName = "markHighlight",
 		name = "Mark highlight color",
 		description = "Color of highlighted marks of grace.",
-		position = 7
+		position = 8
 	)
 	default Color getMarkColor()
 	{
@@ -138,7 +143,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightPortals",
 		name = "Highlight portals",
 		description = "Enable/disable the highlighting of Prifddinas portals.",
-		position = 8
+		position = 9
 	)
 	default boolean highlightPortals()
 	{
@@ -150,7 +155,7 @@ public interface AgilityConfig extends Config
 		keyName = "portalsHighlight",
 		name = "Portals color",
 		description = "Color of highlighted Prifddinas portals.",
-		position = 9
+		position = 10
 	)
 	default Color getPortalsColor()
 	{
@@ -161,7 +166,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightShortcuts",
 		name = "Highlight agility shortcuts",
 		description = "Enable/disable the highlighting of agility shortcuts.",
-		position = 10
+		position = 11
 	)
 	default boolean highlightShortcuts()
 	{
@@ -172,7 +177,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapOverlay",
 		name = "Show trap overlay",
 		description = "Enable/disable the highlighting of traps on agility courses.",
-		position = 11
+		position = 12
 	)
 	default boolean showTrapOverlay()
 	{
@@ -184,7 +189,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapHighlight",
 		name = "Trap overlay color",
 		description = "Color of agility trap overlay.",
-		position = 12
+		position = 13
 	)
 	default Color getTrapColor()
 	{
@@ -195,7 +200,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena.",
-		position = 13
+		position = 14
 	)
 	default Notification notifyAgilityArena()
 	{
@@ -206,7 +211,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed.",
-		position = 14
+		position = 15
 	)
 	default boolean showAgilityArenaTimer()
 	{
@@ -217,7 +222,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightStick",
 		name = "Highlight stick",
 		description = "Highlight the retrievable stick in the Werewolf Agility Course.",
-		position = 15
+		position = 16
 	)
 	default boolean highlightStick()
 	{
@@ -229,18 +234,25 @@ public interface AgilityConfig extends Config
 		keyName = "stickHighlightColor",
 		name = "Stick highlight color",
 		description = "Color of highlighted stick.",
-		position = 16
+		position = 17
 	)
 	default Color stickHighlightColor()
 	{
 		return Color.RED;
 	}
 
+	@ConfigSection(
+		name = "Hallowed Sepulchre",
+		description = "Settings for Hallowed Sepulchre highlights.",
+		position = 18
+	)
+	String sepulchreSection = "Hallowed Sepulchre";
+
 	@ConfigItem(
 		keyName = "highlightSepulchreNpcs",
 		name = "Highlight projectiles",
 		description = "Highlights arrows and swords in the Sepulchre.",
-		position = 17,
+		position = 18,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreNpcs()
@@ -253,7 +265,7 @@ public interface AgilityConfig extends Config
 		keyName = "sepulchreHighlightColor",
 		name = "Projectile color",
 		description = "Overlay color for arrows and swords.",
-		position = 18,
+		position = 19,
 		section = sepulchreSection
 	)
 	default Color sepulchreHighlightColor()
@@ -265,7 +277,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreObstacles",
 		name = "Highlight obstacles",
 		description = "Highlights pillars and stairs in the Sepulchre.",
-		position = 19,
+		position = 20,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreObstacles()
@@ -277,7 +289,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreSkilling",
 		name = "Highlight skill challenges",
 		description = "Highlights skilling challenges in the Sepulchre.",
-		position = 20,
+		position = 21,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreSkilling()
