@@ -424,6 +424,18 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "panelMiddleClickAutoscroll",
+		name = "Panel autoscroll",
+		description = "Hold the middle mouse button over a scrollable side panel to scroll by moving the cursor.",
+		position = 21,
+		section = windowSettings
+	)
+	default boolean panelMiddleClickAutoscroll()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "sidebarToggleKey",
 		name = "Sidebar toggle key",
 		description = "The key that will toggle the sidebar (accepts modifiers).",

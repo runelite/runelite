@@ -143,6 +143,7 @@ public class ClientUI
 
 	private final RuneLiteConfig config;
 	private final MouseManager mouseManager;
+	private final PanelAutoScroll panelAutoScroll;
 	private final Component client;
 	private final ConfigManager configManager;
 	private final Provider<ClientThread> clientThreadProvider;
@@ -195,6 +196,7 @@ public class ClientUI
 	private ClientUI(
 		RuneLiteConfig config,
 		MouseManager mouseManager,
+		PanelAutoScroll panelAutoScroll,
 		Client client,
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider,
@@ -205,6 +207,7 @@ public class ClientUI
 	{
 		this.config = config;
 		this.mouseManager = mouseManager;
+		this.panelAutoScroll = panelAutoScroll;
 		this.client = (Component) client;
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
@@ -327,6 +330,8 @@ public class ClientUI
 			setupDefaults();
 
 			RuneLiteLAF.setup();
+
+			panelAutoScroll.register();
 
 			// Create main window
 			frame = new ContainableFrame();
