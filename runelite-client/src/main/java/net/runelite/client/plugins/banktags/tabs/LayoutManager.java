@@ -733,6 +733,13 @@ public class LayoutManager
 					}
 					else
 					{
+						int itemDoses = potionStorage.dosesOf(w.getItemId());
+						if (itemDoses > 0 && itemDoses != p.withdrawDoses)
+						{
+							log.debug("Switching potion store dose to {} for {}", itemDoses, w.getItemId());
+							client.menuAction(p.dosesChildId(), InterfaceID.Bankmain.POTIONSTORE_ITEMS,
+								MenuAction.CC_OP, itemDoses + 5, -1, itemDoses + " Dose", "");
+						}
 						menu.setParam0(p.withdrawChildId());
 					}
 				}
