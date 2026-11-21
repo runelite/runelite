@@ -132,6 +132,7 @@ public class ScreenMarkerPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
 
 		navigationButton = NavigationButton.builder()
+			.sidebarId("screen-markers")
 			.tooltip(PLUGIN_NAME)
 			.icon(icon)
 			.priority(5)
