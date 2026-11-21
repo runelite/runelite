@@ -46,6 +46,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
@@ -84,6 +85,7 @@ public class ChatFilterPluginTest
 
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
 		when(client.getFriendsChatManager()).thenReturn(friendsChatManager);
+		when(client.macroExpand(anyString())).thenAnswer(iom -> iom.getArgument(0));
 	}
 
 	private ScriptCallbackEvent createCallbackEvent(final String sender, final String chatMessage, final ChatMessageType messageType)
@@ -195,6 +197,17 @@ public class ChatFilterPluginTest
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertEquals("* <lt>lt<gt> <lt>", chatFilterPlugin.censorMessage("Blue", "<at> <lt>lt<gt> <lt>"));
+	}
+
+	@Test
+	public void testFilterMacro()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(chatFilterConfig.filteredRegex()).thenReturn("^Red message$");
+		when(client.macroExpand("@red@Red message</col>")).thenReturn("<col=0000ff>Red message</col>");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertNull(chatFilterPlugin.censorMessage(null, "@red@Red message</col>"));
 	}
 
 	@Test
