@@ -1383,7 +1383,7 @@ public class ClientUI
 	}
 
 	@Nullable
-	private static TrayIcon createTrayIcon(@Nonnull final Image icon, @Nonnull final String title, @Nonnull final Frame frame)
+	private TrayIcon createTrayIcon(@Nonnull final Image icon, @Nonnull final String title, @Nonnull final Frame frame)
 	{
 		if (!SystemTray.isSupported())
 		{
@@ -1408,20 +1408,22 @@ public class ClientUI
 		trayIcon.addMouseListener(new java.awt.event.MouseAdapter()
 		{
 			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (OSType.getOSType() == OSType.MacOS && e.getButton() == MouseEvent.BUTTON1)
+				{
+					forceFocus();
+				}
+			}
+
+			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (OSType.getOSType() == OSType.MacOS && !frame.isFocused())
+				if (OSType.getOSType() == OSType.MacOS)
 				{
-					// On macOS, frame.setVisible(true) only restores focus when the visibility was previously false.
-					// The frame's visibility is not set to false when the window loses focus, so we set it manually.
-					// Additionally, in order to bring the window to the foreground,
-					// frame.setVisible(true) calls CPlatformWindow::nativePushNSWindowToFront.
-					// However, this native method is not called with activateIgnoringOtherApps:YES,
-					// so any other active window will prevent our window from being brought to the front.
-					// To work around this, use eawt requestForeground() via java.desktop.
-					frame.setVisible(false);
-					Desktop.getDesktop().requestForeground(true);
+					return;
 				}
+
 				frame.setVisible(true);
 				frame.setState(Frame.NORMAL); // Restore
 			}
