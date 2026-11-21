@@ -146,6 +146,17 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "toggleNoteKeybind",
+		name = "Toggle Note shortcut",
+		description = "Keyboard shortcut for toggling 'Enable Notes'",
+		position = 12
+	)
+	default Keybind toggleNoteKeybind()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
 		keyName = "blockJagexAccountAd",
 		name = "Block Jagex Account popup",
 		description = "Blocks the weekly reminder to migrate to a Jagex account.",
