@@ -74,6 +74,8 @@ class PyramidPlunderOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		renderLastGoodEntrance(graphics);
+
 		Widget ppWidget = client.getWidget(InterfaceID.NtkOverlay.CONTENT);
 		if (ppWidget == null)
 		{
@@ -164,5 +166,35 @@ class PyramidPlunderOverlay extends Overlay
 		});
 
 		return null;
+	}
+
+	private void renderLastGoodEntrance(Graphics2D graphics)
+	{
+		if (!config.highlightLastGoodEntrance())
+		{
+			return;
+		}
+
+		GameObject entrance = plugin.getHighlightedEntrance();
+		if (entrance == null)
+		{
+			return;
+		}
+
+		Shape hull = entrance.getConvexHull();
+		if (hull == null)
+		{
+			hull = entrance.getClickbox();
+		}
+
+		renderEntranceShape(graphics, hull);
+	}
+
+	private void renderEntranceShape(Graphics2D graphics, Shape shape)
+	{
+		if (shape != null)
+		{
+			OverlayUtil.renderPolygon(graphics, shape, config.lastGoodEntranceColor());
+		}
 	}
 }
