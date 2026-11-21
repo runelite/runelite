@@ -24,12 +24,15 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import com.google.common.base.Strings;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.LootRecordType;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @AllArgsConstructor
@@ -57,6 +60,42 @@ class LootTrackerRecord
 		}
 
 		return title.equals(id) && this.type == type;
+	}
+
+	/**
+	 * Checks if this record matches the specified search text. The search text matches, ignoring case,
+	 * if it is contained within the title of this record or within the name of any of its items.
+	 *
+	 * @param searchText       text to search for, a null or empty search text matches every record
+	 * @param hideIgnoredItems if ignored items should be excluded from the item name search
+	 * @return true if match is made
+	 */
+	boolean matchesSearch(final String searchText, final boolean hideIgnoredItems)
+	{
+		if (Strings.isNullOrEmpty(searchText))
+		{
+			return true;
+		}
+
+		if (StringUtils.containsIgnoreCase(Text.removeTags(title), searchText))
+		{
+			return true;
+		}
+
+		for (LootTrackerItem item : items)
+		{
+			if (hideIgnoredItems && item.isIgnored())
+			{
+				continue;
+			}
+
+			if (StringUtils.containsIgnoreCase(item.getName(), searchText))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	void merge(LootTrackerRecord record)
