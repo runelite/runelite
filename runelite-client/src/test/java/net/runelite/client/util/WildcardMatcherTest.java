@@ -41,4 +41,22 @@ public class WildcardMatcherTest
 		assertTrue(matches("Abyssal whip", "Abyssal whip"));
 		assertTrue(matches("string $ with special character", "string $ with special character"));
 	}
+
+	@Test
+	public void testCompiledPatterns()
+	{
+		var rune = WildcardMatcher.compile("**rune***");
+		assertTrue(rune.matcher("Rune pouch").matches());
+		assertTrue(rune.matcher("Nature rune").matches());
+		assertFalse(rune.matcher("Abyssal whip").matches());
+		assertTrue(WildcardMatcher.compile("").matcher("").matches());
+		assertTrue(WildcardMatcher.compile("*").matcher("").matches());
+		assertTrue(WildcardMatcher.compile("Rune (*)").matcher("Rune (platebody)").matches());
+		assertTrue(WildcardMatcher.compile("a.b*").matcher("a.b literal").matches());
+		assertFalse(WildcardMatcher.compile("a.b*").matcher("axb literal").matches());
+		assertFalse(WildcardMatcher.compile("I*").matcher("\u0131").matches());
+		assertFalse(WildcardMatcher.compile("line*break").matcher("line\nbreak").matches());
+		assertTrue(WildcardMatcher.compile("line\nbreak").matcher("line\nbreak").matches());
+		assertTrue(WildcardMatcher.compile("\\E*").matcher("\\E literal").matches());
+	}
 }
