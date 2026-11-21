@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -42,6 +41,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
@@ -64,23 +64,14 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class BoostsPlugin extends Plugin
 {
-	private static final Set<Skill> BOOSTABLE_COMBAT_SKILLS = ImmutableSet.of(
-		Skill.ATTACK,
-		Skill.STRENGTH,
-		Skill.DEFENCE,
-		Skill.RANGED,
-		Skill.MAGIC);
-
-	private static final Set<Skill> BOOSTABLE_NON_COMBAT_SKILLS = ImmutableSet.of(
-		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
-		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
-		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER, Skill.SAILING);
-
 	@Inject
 	private Notifier notifier;
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
@@ -220,7 +211,7 @@ public class BoostsPlugin extends Plugin
 	{
 		Skill skill = statChanged.getSkill();
 
-		if (!BOOSTABLE_COMBAT_SKILLS.contains(skill) && !BOOSTABLE_NON_COMBAT_SKILLS.contains(skill))
+		if (!config.displayBoosts().skillsToDisplay.contains(skill))
 		{
 			return;
 		}
@@ -246,7 +237,7 @@ public class BoostsPlugin extends Plugin
 
 		int boostThreshold = config.boostThreshold();
 
-		int real = client.getRealSkillLevel(skill);
+		int real = CombatLevelsProvider.getRealSkillLevel(client, skill);
 		int lastBoost = last - real;
 		int boost = cur - real;
 		if (boost <= boostThreshold && boostThreshold < lastBoost)
@@ -299,25 +290,8 @@ public class BoostsPlugin extends Plugin
 
 	private void updateShownSkills()
 	{
-		switch (config.displayBoosts())
-		{
-			case NONE:
-				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
-				shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
-				break;
-			case COMBAT:
-				shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
-				shownSkills.removeAll(BOOSTABLE_NON_COMBAT_SKILLS);
-				break;
-			case NON_COMBAT:
-				shownSkills.removeAll(BOOSTABLE_COMBAT_SKILLS);
-				shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
-				break;
-			case BOTH:
-				shownSkills.addAll(BOOSTABLE_COMBAT_SKILLS);
-				shownSkills.addAll(BOOSTABLE_NON_COMBAT_SKILLS);
-				break;
-		}
+		shownSkills.clear();
+		shownSkills.addAll(config.displayBoosts().skillsToDisplay);
 		updateBoostedStats();
 	}
 
@@ -337,21 +311,23 @@ public class BoostsPlugin extends Plugin
 			}
 
 			final int boosted = client.getBoostedSkillLevel(skill);
-			final int base = client.getRealSkillLevel(skill);
+			clientThread.invokeLater(() ->
+			{
+				final int base = CombatLevelsProvider.getRealSkillLevel(client, skill);
+				if (boosted > base)
+				{
+					isChangedUp = true;
+				}
+				else if (boosted < base)
+				{
+					isChangedDown = true;
+				}
 
-			if (boosted > base)
-			{
-				isChangedUp = true;
-			}
-			else if (boosted < base)
-			{
-				isChangedDown = true;
-			}
-
-			if (boosted != base)
-			{
-				skillsToDisplay.add(skill);
-			}
+				if (boosted != base)
+				{
+					skillsToDisplay.add(skill);
+				}
+			});
 		}
 	}
 
