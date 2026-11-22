@@ -472,13 +472,13 @@ public class ModelOutlineRenderer
 
 		if (y1 < clipY1)
 		{
-			x3fp -= (long) (y1 - clipY1) * slope3;
-			x1fp -= (long) (y1 - clipY1) * slope1;
+			x3fp -= (y1 - clipY1) * slope3;
+			x1fp -= (y1 - clipY1) * slope1;
 			y1 = clipY1;
 		}
 		if (y2 < clipY1)
 		{
-			x2fp -= (long) (y2 - clipY1) * slope2;
+			x2fp -= (y2 - clipY1) * slope2;
 			y2 = clipY1;
 		}
 

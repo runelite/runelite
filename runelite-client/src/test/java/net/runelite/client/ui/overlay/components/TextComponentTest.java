@@ -30,7 +30,7 @@ import java.awt.Graphics2D;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.InOrder;
 import org.mockito.Mock;
@@ -60,7 +60,7 @@ public class TextComponentTest
 		textComponent.setText("test");
 		textComponent.setColor(Color.RED);
 		textComponent.render(graphics);
-		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
+		verify(graphics, times(2)).drawString(eq("test"), anyFloat(), anyFloat());
 		verify(graphics).setColor(Color.RED);
 	}
 
@@ -70,7 +70,7 @@ public class TextComponentTest
 		TextComponent textComponent = new TextComponent();
 		textComponent.setText("<col=0000ff>test");
 		textComponent.render(graphics);
-		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
+		verify(graphics, times(2)).drawString(eq("test"), anyFloat(), anyFloat());
 		verify(graphics).setColor(Color.BLUE);
 	}
 
@@ -80,8 +80,8 @@ public class TextComponentTest
 		TextComponent textComponent = new TextComponent();
 		textComponent.setText("<col=0000ff>test<col=00ff00> test");
 		textComponent.render(graphics);
-		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
-		verify(graphics, times(2)).drawString(eq(" test"), anyInt(), anyInt());
+		verify(graphics, times(2)).drawString(eq("test"), anyFloat(), anyFloat());
+		verify(graphics, times(2)).drawString(eq(" test"), anyFloat(), anyFloat());
 		verify(graphics).setColor(Color.BLUE);
 		verify(graphics).setColor(Color.GREEN);
 	}
@@ -95,13 +95,13 @@ public class TextComponentTest
 
 		InOrder g = inOrder(graphics);
 		g.verify(graphics).setColor(Color.BLACK);
-		g.verify(graphics).drawString(eq("test"), anyInt(), anyInt());
+		g.verify(graphics).drawString(eq("test"), anyFloat(), anyFloat());
 		g.verify(graphics).setColor(Color.WHITE);
-		g.verify(graphics).drawString(eq("test"), anyInt(), anyInt());
+		g.verify(graphics).drawString(eq("test"), anyFloat(), anyFloat());
 
 		g.verify(graphics).setColor(Color.BLACK);
-		g.verify(graphics).drawString(eq("test2"), anyInt(), anyInt());
+		g.verify(graphics).drawString(eq("test2"), anyFloat(), anyFloat());
 		g.verify(graphics).setColor(Color.BLUE);
-		g.verify(graphics).drawString(eq("test2"), anyInt(), anyInt());
+		g.verify(graphics).drawString(eq("test2"), anyFloat(), anyFloat());
 	}
 }
