@@ -880,6 +880,7 @@ public final class SpriteID
 	public static final int WOTW_SYMBOL_MAIN_RED = 8919;
 	public static final int ICON_GRAVESTONE = 8920;
 	public static final int LOGO_HCMAIN = 8921;
+	public static final int SL_BUTTON9 = 8928;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -4181,6 +4182,12 @@ public final class SpriteID
 		public static final int _12 = 6913;
 		public static final int _13 = 6914;
 		public static final int _14 = 6915;
+		public static final int _15 = 8922;
+		public static final int _16 = 8923;
+		public static final int _17 = 8924;
+		public static final int _18 = 8925;
+		public static final int _19 = 8926;
+		public static final int _20 = 8927;
 
 		public static final int EMPTY = _0;
 		public static final int CROSSED = _1;
