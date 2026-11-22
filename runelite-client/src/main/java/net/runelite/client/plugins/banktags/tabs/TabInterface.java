@@ -59,7 +59,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPostFired;
@@ -68,6 +67,7 @@ import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetDrag;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.SoundEffectID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -630,7 +630,7 @@ public class TabInterface
 					plugin.openTag(tag, layout);
 				}
 
-				client.playSoundEffect(SoundEffectID.UI_BOOP);
+				client.playSoundEffect(SoundEffectID.INTERFACE_SELECT1);
 				break;
 			}
 			case TAB_OP_CHANGE_ICON:

@@ -65,12 +65,12 @@ LABEL50:
    append                
    ostore                 0
    oload                  1
-   sconst                 "|"
+   sconst                 "<int_0="
    iconst                 -1
    invoke                 7698
-   sconst                 ","
-   invoke                 46
-   join_string            2
+   tostring              
+   sconst                 ">|<int_0:spacer>"
+   join_string            3
    append                
    ostore                 1
 LABEL65:

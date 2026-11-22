@@ -29,13 +29,13 @@ import com.google.common.base.Strings;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SoundEffectID;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
@@ -177,12 +177,12 @@ public class QuestListPlugin extends Plugin
 	{
 		chatboxPanelManager.close();
 		redrawQuests();
-		client.playSoundEffect(SoundEffectID.UI_BOOP);
+		client.playSoundEffect(SoundEffectID.INTERFACE_SELECT1);
 	}
 
 	private void openSearch()
 	{
-		client.playSoundEffect(SoundEffectID.UI_BOOP);
+		client.playSoundEffect(SoundEffectID.INTERFACE_SELECT1);
 		questSearchButton.setAction(1, MENU_CLOSE);
 		questSearchButton.setOnOpListener((JavaScriptCallback) e -> closeSearch());
 		searchInput = chatboxPanelManager.openTextInput("Search quest list")
