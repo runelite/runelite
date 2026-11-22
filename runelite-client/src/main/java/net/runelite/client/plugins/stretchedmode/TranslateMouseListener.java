@@ -38,6 +38,9 @@ public class TranslateMouseListener implements MouseListener
 {
 	private final Client client;
 	private final NativeOverlayMenu nativeOverlayMenu;
+	/** Canvas point before menu remapping, from the last {@link #translateEvent}. */
+	private int unmappedX;
+	private int unmappedY;
 
 	@Inject
 	public TranslateMouseListener(Client client, NativeOverlayMenu nativeOverlayMenu)
@@ -55,7 +58,10 @@ public class TranslateMouseListener implements MouseListener
 	@Override
 	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
-		return translateEvent(mouseEvent);
+		final MouseEvent translated = translateEvent(mouseEvent);
+		// Keep the client's click cross under the mouse when the press was remapped onto the menu
+		nativeOverlayMenu.shiftClickCross(unmappedX - translated.getX(), unmappedY - translated.getY());
+		return translated;
 	}
 
 	@Override
@@ -95,6 +101,8 @@ public class TranslateMouseListener implements MouseListener
 
 		int newX = (int) (e.getX() / (stretchedDimensions.width / realDimensions.getWidth()));
 		int newY = (int) (e.getY() / (stretchedDimensions.height / realDimensions.getHeight()));
+		unmappedX = newX;
+		unmappedY = newY;
 
 		final Point remapped = nativeOverlayMenu.remapTranslatedMouse(e.getX(), e.getY(), newX, newY);
 		if (remapped != null)
