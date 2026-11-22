@@ -270,6 +270,16 @@ public class HunterPlugin extends Plugin
 			case ObjectID.HUNTING_OJIBWAY_TRAP_BROKEN: //Empty box trap
 			case ObjectID.HUNTING_DEADFALL_BOULDER: //Empty deadfall trap
 			case ObjectID.HUNTING_SAPLING_FAILED_MOUNTAIN: //Empty net trap
+			case ObjectID.HUNTING_SAPLING_NET_RESET_SWAMP:
+			case ObjectID.HUNTING_SAPLING_NET_RESET_ORANGE:
+			case ObjectID.HUNTING_SAPLING_NET_RESET_RED:
+			case ObjectID.HUNTING_SAPLING_NET_RESET_BLACK:
+			case ObjectID.HUNTING_SAPLING_NET_RESET_MOUNTAIN:
+			case ObjectID.HUNTING_SAPLING_UP_RESET_SWAMP:
+			case ObjectID.HUNTING_SAPLING_UP_RESET_ORANGE:
+			case ObjectID.HUNTING_SAPLING_UP_RESET_RED:
+			case ObjectID.HUNTING_SAPLING_UP_RESET_BLACK:
+			case ObjectID.HUNTING_SAPLING_UP_RESET_MOUNTAIN:
 				if (myTrap != null)
 				{
 					myTrap.setState(HunterTrap.State.EMPTY);
