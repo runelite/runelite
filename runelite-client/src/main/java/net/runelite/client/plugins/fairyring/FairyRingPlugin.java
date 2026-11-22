@@ -37,11 +37,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SoundEffectID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.events.GameTick;
@@ -261,7 +261,7 @@ public class FairyRingPlugin extends Plugin
 	{
 		String code = Text.removeTags(menuEntry.getTarget()).replaceAll(" ", "");
 		String initialValue = Text.toCSV(getConfigTags(code));
-		client.playSoundEffect(SoundEffectID.UI_BOOP);
+		client.playSoundEffect(SoundEffectID.INTERFACE_SELECT1);
 		tagInput = chatboxPanelManager.openTextInput("Code " + code + " tags:")
 			.value(initialValue)
 			.onDone(s ->

@@ -44,7 +44,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +53,7 @@ import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.ItemQuantityMode;
@@ -89,16 +89,6 @@ public class ItemManager
 	private final ItemClient itemClient;
 	private final RuneLiteConfig runeLiteConfig;
 	private final ScheduledExecutorService executor;
-
-	@Inject(optional = true)
-	@Named("activePriceThreshold")
-	@SuppressWarnings("PMD.ImmutableField")
-	private double activePriceThreshold = 5;
-
-	@Inject(optional = true)
-	@Named("lowPriceThreshold")
-	@SuppressWarnings("PMD.ImmutableField")
-	private int lowPriceThreshold = 1000;
 
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Instant itemPricesTime; // last attempted fetch time
@@ -365,24 +355,9 @@ public class ItemManager
 		return price;
 	}
 
-	/**
-	 * Get the wiki price for an item, with checks to try and avoid excessive price manipulation
-	 * @param itemPrice
-	 * @return
-	 */
 	public long getWikiPrice(ItemPrice itemPrice)
 	{
-		final long wikiPrice = itemPrice.getWikiPrice();
-		final long jagPrice = itemPrice.getPrice();
-		if (wikiPrice <= 0)
-		{
-			return jagPrice;
-		}
-		if (wikiPrice <= lowPriceThreshold)
-		{
-			return wikiPrice;
-		}
-		return wikiPrice < jagPrice * activePriceThreshold ? wikiPrice : jagPrice;
+		return client.getWorldType().contains(WorldType.HARDCORE_MAIN) ? itemPrice.getWikiPriceHcm() : itemPrice.getWikiPrice();
 	}
 
 	/**
