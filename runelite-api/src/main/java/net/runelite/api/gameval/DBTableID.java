@@ -428,6 +428,8 @@ public final class DBTableID
 			public static final int QUEST_FALLENFROMGRACE = 7133;
 			public static final int QUEST_LEARNINGTHEROPES = 9643;
 			public static final int QUEST_IDESOFMILK = 9645;
+			public static final int QUEST_NEWLEAF = 13708;
+			public static final int QUEST_RAGANDBONEMAN3 = 13730;
 			public static final int QUEST_BLOODMOONRISES = 16414;
 			public static final int QUEST_RUFFSITUATION = 16971;
 			public static final int QUEST_CRABQUEST = 16972;
@@ -435,6 +437,8 @@ public final class DBTableID
 			public static final int QUEST_DADDYSHOME = 17229;
 			public static final int QUEST_MUDFOOTSBIGADVENTURE = 17230;
 			public static final int QUEST_WRITINGSONTHEWALL = 17231;
+			public static final int QUEST_SHELLOFAFRIEND = 17315;
+			public static final int QUEST_BIRDSANDTHEWASPS = 17316;
 		}
 	}
 
@@ -2517,6 +2521,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_LOC_DRAWERS1_1_40_51_14_62 = 1097;
 			public static final int CLUEHELPER_TARGET_LOC_DRAWERS2_0_48_51_25_13 = 1098;
 			public static final int CLUEHELPER_TARGET_LOC_BOXES2_0_45_53_6_57 = 1099;
+			public static final int CLUEHELPER_TARGET_LOC_CHESTCLOSED_1_50_50_9_18 = 1100;
 			public static final int CLUEHELPER_TARGET_LOC_CHESTCLOSED_1_51_49_37_33 = 1101;
 			public static final int CLUEHELPER_TARGET_LOC_BOXES3_0_41_51_30_35 = 1102;
 			public static final int CLUEHELPER_TARGET_LOC_DRAWERS2_0_27_54_18_34 = 1103;
@@ -2565,7 +2570,6 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_LOC_JUNA = 2305;
 			public static final int CLUEHELPER_TARGET_LOC_HUNTERGUILD_SHELF = 3494;
 			public static final int CLUEHELPER_TARGET_LOC_AUBURN_CRATE = 5174;
-			public static final int CLUEHELPER_TARGET_LOC_CHESTCLOSED_1_50_50_8_18 = 17196;
 		}
 	}
 
@@ -6004,6 +6008,8 @@ public final class DBTableID
 			public static final int MUSIC_SCAPE_SAIL = 7096;
 			public static final int MUSIC_MAD_ANGEL_BOSS = 7132;
 			public static final int MUSIC_BRUTUS_COW_BOSS = 8662;
+			public static final int MUSIC_SEVERED = 13704;
+			public static final int MUSIC_HORROR = 13705;
 			public static final int MUSIC_SAILING_COMBAT = 16223;
 			public static final int MUSIC_RED_ROCK_ISLAND = 16224;
 			public static final int MUSIC_RED_REEFS_UNDERWATER = 16225;
@@ -10814,6 +10820,9 @@ public final class DBTableID
 
 		public static final class Row
 		{
+			public static final int ACTION_COMPLETE_TOMBS_OF_AMASCUT_SOLO_MAX_INVO = 21;
+			public static final int ACTION_DEFEAT_THE_ALCHEMICAL_HYDRA = 1029;
+			public static final int ACTION_DEFEAT_ARAXXOR = 1327;
 			public static final int ACTION_KALPHITE_QUEEN_UNIQUE = 6770;
 			public static final int ACTION_YAMA_UNIQUE = 6771;
 			public static final int ACTION_HUEY_UNIQUE = 6772;
@@ -10908,6 +10917,11 @@ public final class DBTableID
 			public static final int ACTION_DRINK_STEAMFORGE_BREW_INSIDE_SYO_INN = 6861;
 			public static final int ACTION_EAT_CABBAGE_INFRONT_OF_BRASSICAN_MAGE = 6862;
 			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_2376 = 7210;
+			public static final int ACTION_DEFEAT_THE_CORPOREAL_BEAST_150_TIMES = 9525;
+			public static final int ACTION_DEFEAT_THE_CORPOREAL_BEAST_250_TIMES = 9526;
+			public static final int ACTION_DEFEAT_NEX_300_TIMES = 9527;
+			public static final int ACTION_BOSS_KILL_DAGANNOTH_PRIME = 9528;
+			public static final int ACTION_BOSS_KILL_DAGANNOTH_REX = 9529;
 			public static final int LEAGUE_TASK_ALL_EASY_COMBAT_ACHIEVEMENTS = 13323;
 			public static final int LEAGUE_TASK_ALL_MEDIUM_COMBAT_ACHIEVEMENTS = 13324;
 			public static final int LEAGUE_TASK_SCURRIUS_COMBAT_ACHIEVEMENTS = 13325;
@@ -11225,8 +11239,6 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_KILL_A_SNAKE_IN_KARAMJA = 13637;
 			public static final int LEAGUE_TASK_300_ARAXXOR_KILLS = 13638;
 			public static final int LEAGUE_TASK_KILL_A_ROCK_LOBSTER = 13639;
-			public static final int LEAGUE_TASK_1_ALCHEMICAL_HYDRA_KILL = 13640;
-			public static final int LEAGUE_TASK_1_ARAXXOR_KILL = 13641;
 			public static final int LEAGUE_TASK_150_ARAXXOR_KILLS = 13642;
 			public static final int LEAGUE_TASK_1_MIMIC_KILL = 13643;
 			public static final int LEAGUE_TASK_50_ARAXXOR_KILLS = 13644;
@@ -11289,11 +11301,8 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_DEFEAT_A_MAMMOTH = 13701;
 			public static final int LEAGUE_TASK_DEFEAT_A_ZOMBIE_PIRATE = 13702;
 			public static final int LEAGUE_TASK_DEFEAT_CALLISTO_300_TIMES = 13703;
-			public static final int LEAGUE_TASK_DEFEAT_THE_CORPOREAL_BEAST_150_TIMES = 13704;
-			public static final int LEAGUE_TASK_DEFEAT_THE_CORPOREAL_BEAST_250_TIMES = 13705;
 			public static final int LEAGUE_TASK_DEFEAT_VENENATIS_300_TIMES = 13706;
 			public static final int LEAGUE_TASK_DEFEAT_VETION_300_TIMES = 13707;
-			public static final int LEAGUE_TASK_DEFEAT_NEX_300_TIMES = 13708;
 			public static final int LEAGUE_TASK_DEFEAT_THE_NIGHTMARE_150_TIMES = 13709;
 			public static final int LEAGUE_TASK_DEFEAT_AWAKENED_LEVIATHAN = 13710;
 			public static final int LEAGUE_TASK_DEFEAT_300_DEMONIC_GORILLAS = 13711;
@@ -11315,7 +11324,6 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_DEFEAT_THE_NIGHTMARE_50_TIMES = 13727;
 			public static final int LEAGUE_TASK_DEFEAT_A_FOSSIL_ISLAND_WYVERN = 13728;
 			public static final int LEAGUE_TASK_DEFEAT_A_GREATER_DEMON_ON_KARAMJA = 13729;
-			public static final int LEAGUE_TASK_DEFEAT_PHANTOM_MUSPAH_300_TIMES = 13730;
 			public static final int LEAGUE_TASK_DEFEAT_VORKATH_300_TIMES = 13731;
 			public static final int LEAGUE_TASK_DEFEAT_ZALCANO_100_TIMES = 13732;
 			public static final int LEAGUE_TASK_DEFEAT_VORKATH_5_TIMES_WITHOUT_SPECIAL_DAMAGE = 13733;
@@ -11323,7 +11331,6 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_DEFEAT_AWAKENED_WHISPERER = 13735;
 			public static final int LEAGUE_TASK_DEFEAT_A_STEEL_DRAGON_ON_KARAMJA = 13736;
 			public static final int LEAGUE_TASK_DEFEAT_A_TORMENTED_DEMON = 13737;
-			public static final int LEAGUE_TASK_DEFEAT_CERBERUS_300_TIMES = 13738;
 			public static final int LEAGUE_TASK_DEFEAT_A_TZHAAR = 13739;
 			public static final int LEAGUE_TASK_DEFEAT_A_WALL_BEAST = 13740;
 			public static final int LEAGUE_TASK_DEFEAT_ZULRAH_150_TIMES = 13741;
@@ -11331,8 +11338,6 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_DEFEAT_ZULRAH_300_TIMES = 13743;
 			public static final int LEAGUE_TASK_DEFEAT_WHISPERER_300_TIMES = 13744;
 			public static final int LEAGUE_TASK_DEFEAT_BRYOPHYTA = 13745;
-			public static final int LEAGUE_TASK_DEFEAT_CERBERUS_BEFORE_SHE_SUMMONS_SOULS = 13746;
-			public static final int LEAGUE_TASK_DEFEAT_NEX_200_TIMES = 13747;
 			public static final int LEAGUE_TASK_DEFEAT_OBOR = 13748;
 			public static final int LEAGUE_TASK_DEFEAT_ONE_OF_FENKENSTRAINS_EXPERIMENTS = 13749;
 			public static final int LEAGUE_TASK_DEFEAT_SCURRIUS = 13750;
@@ -11342,7 +11347,6 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_KILL_GALVEK = 13754;
 			public static final int LEAGUE_TASK_DEFEAT_THE_LESSER_DEMON_IN_THE_WIZARDS_TOWER = 13755;
 			public static final int LEAGUE_TASK_DEFEAT_THE_THEATRE_OF_BLOOD_HARDMODE = 13756;
-			public static final int LEAGUE_TASK_DEFEAT_PHOSANIS_NIGHTMARE = 13757;
 			public static final int LEAGUE_TASK_DEFEAT_A_URIUM_SHADE = 13758;
 			public static final int LEAGUE_TASK_DEFEAT_THE_THEATRE_OF_BLOOD_HARDMODE_50_TIMES = 13759;
 			public static final int LEAGUE_TASK_DEFEAT_CALLISTO = 13760;
@@ -11354,33 +11358,21 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_DEFEAT_EACH_DAGANNOTH_KING_50_TIMES = 13766;
 			public static final int LEAGUE_TASK_DEFEAT_ANY_GOD_WARS_DUNGEON_BOSS_100_TIMES = 13767;
 			public static final int LEAGUE_TASK_DEFEAT_ANY_GOD_WARS_DUNGEON_BOSS_250_TIMES = 13768;
-			public static final int LEAGUE_TASK_DEFEAT_CERBERUS = 13769;
-			public static final int LEAGUE_TASK_DEFEAT_CERBERUS_150_TIMES = 13770;
 			public static final int LEAGUE_TASK_DEFEAT_CALLISTO_150_TIMES = 13771;
 			public static final int LEAGUE_TASK_DEFEAT_CALLISTO_50_TIMES = 13772;
 			public static final int LEAGUE_TASK_DEFEAT_SCORPIA = 13773;
-			public static final int LEAGUE_TASK_DEFEAT_PHANTOM_MUSPAH = 13774;
 			public static final int LEAGUE_TASK_DEFEAT_THE_CHAOS_ELEMENTAL = 13775;
-			public static final int LEAGUE_TASK_DEFEAT_THE_CORPOREAL_BEAST = 13776;
-			public static final int LEAGUE_TASK_DEFEAT_PHANTOM_MUSPAH_150_TIMES = 13777;
-			public static final int LEAGUE_TASK_DEFEAT_PHANTOM_MUSPAH_50_TIMES = 13778;
 			public static final int LEAGUE_TASK_DEFEAT_SEREN = 13779;
 			public static final int LEAGUE_TASK_DEFEAT_THE_DAGANNOTH_KINGS_WITHOUT_LEAVING = 13780;
-			public static final int LEAGUE_TASK_DEFEAT_NEX_150_TIMES = 13781;
-			public static final int LEAGUE_TASK_DEFEAT_THE_CORPOREAL_BEAST_50_TIMES = 13782;
 			public static final int LEAGUE_TASK_DEFEAT_VORKATH = 13783;
-			public static final int LEAGUE_TASK_DEFEAT_CERBERUS_50_TIMES = 13784;
 			public static final int LEAGUE_TASK_DEFEAT_VORKATH_150_TIMES = 13785;
 			public static final int LEAGUE_TASK_DEFEAT_VORKATH_50_TIMES = 13786;
-			public static final int LEAGUE_TASK_DEFEAT_THE_KING_BLACK_DRAGON = 13787;
 			public static final int LEAGUE_TASK_DEFEAT_AWAKENED_VARDORVIS = 13788;
 			public static final int LEAGUE_TASK_DEFEAT_COMMANDER_ZILYANA = 13789;
 			public static final int LEAGUE_TASK_DEFEAT_GENERAL_GRAARDOR = 13790;
 			public static final int LEAGUE_TASK_DEFEAT_VENENATIS = 13791;
 			public static final int LEAGUE_TASK_DEFEAT_KREEARRA = 13792;
 			public static final int LEAGUE_TASK_DEFEAT_KRIL_TSUTSAROTH = 13793;
-			public static final int LEAGUE_TASK_DEFEAT_NEX = 13794;
-			public static final int LEAGUE_TASK_DEFEAT_NEX_50_TIMES = 13795;
 			public static final int LEAGUE_TASK_DEFEAT_THE_GIANT_MOLE_300_TIMES = 13796;
 			public static final int LEAGUE_TASK_DEFEAT_WHISPERER = 13797;
 			public static final int LEAGUE_TASK_DEFEAT_WHISPERER_150_TIMES = 13798;
@@ -11403,7 +11395,6 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_DEFEAT_VETION_150_TIMES = 13815;
 			public static final int LEAGUE_TASK_DEFEAT_VETION_50_TIMES = 13816;
 			public static final int LEAGUE_TASK_DEFEAT_A_DEMONIC_GORILLA = 13817;
-			public static final int LEAGUE_TASK_DEFEAT_NEX_100_TIMES = 13818;
 			public static final int LEAGUE_TASK_DEFEAT_A_MITHRIL_DRAGON = 13819;
 			public static final int LEAGUE_TASK_DEFEAT_A_SMOKE_DEVIL = 13820;
 			public static final int LEAGUE_TASK_DEFEAT_ROYAL_TITANS_SOLO = 13821;
@@ -11421,7 +11412,6 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_DEFEAT_VARDORVIS_150_TIMES = 13833;
 			public static final int LEAGUE_TASK_DEFEAT_A_KALPHITE_GUARDIAN = 13834;
 			public static final int LEAGUE_TASK_DEFEAT_A_SCARAB_MAGE = 13835;
-			public static final int LEAGUE_TASK_DEFEAT_NEX_SOLO = 13836;
 			public static final int LEAGUE_TASK_DEFEAT_30_BLACK_DRAGONS_IN_ASGARNIA = 13837;
 			public static final int LEAGUE_TASK_DEFEAT_A_DARK_BEAST_IN_TIRANNWN = 13838;
 			public static final int LEAGUE_TASK_DEFEAT_A_NECHRYAEL_IN_TIRANNWN = 13839;
@@ -11475,10 +11465,6 @@ public final class DBTableID
 			public static final int ACTION_KILL_A_CHICKEN = 13887;
 			public static final int ACTION_KILL_A_HILL_GIANT = 13888;
 			public static final int LEAGUE_TASK_DEFEAT_A_SUPERIOR_SLAYER_CREATURE = 13889;
-			public static final int LEAGUE_TASK_DEFEAT_THE_ABYSSAL_SIRE = 13890;
-			public static final int LEAGUE_TASK_DEFEAT_THE_ABYSSAL_SIRE_150_TIMES = 13891;
-			public static final int LEAGUE_TASK_DEFEAT_THE_ABYSSAL_SIRE_300_TIMES = 13892;
-			public static final int LEAGUE_TASK_DEFEAT_THE_ABYSSAL_SIRE_50_TIMES = 13893;
 			public static final int LEAGUE_TASK_1_WINTERTODT_KILL = 13894;
 			public static final int LEAGUE_TASK_KILL_1_UNIQUE_ECHO_BOSS = 13895;
 			public static final int LEAGUE_TASK_KILL_150_ECHO_BOSSES = 13896;
@@ -12242,6 +12228,7 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_FEED_A_GHAST_SOME_SWEETS = 14654;
 			public static final int LEAGUE_TASK_READ_A_PRAYER_BOOK_NEAR_A_LECTERN = 14655;
 			public static final int LEAGUE_TASK_WEAR_MULTIPLE_SNELMS = 14656;
+			public static final int ACTION_BOSS_KILL_DAGANNOTH_SUPREME = 14657;
 			public static final int LEAGUE_TASK_FEED_A_DOG_SOME_BONES = 14658;
 			public static final int LEAGUE_TASK_GET_A_HAIRCUT = 14659;
 			public static final int LEAGUE_TASK_MAKE_SOME_FLOUR = 14660;
@@ -12272,29 +12259,27 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_COMPLETE_A_KINGDOM_DIVIDED = 14685;
 			public static final int LEAGUE_TASK_COMPLETE_A_SOULS_BANE = 14686;
 			public static final int LEAGUE_TASK_COMPLETE_A_TASTE_OF_HOPE = 14687;
-			public static final int LEAGUE_TASK_COMPLETE_BENEATH_CURSED_SANDS = 14688;
 			public static final int LEAGUE_TASK_COMPLETE_DEFENDER_OF_VARROCK = 14689;
 			public static final int LEAGUE_TASK_COMPLETE_DEMON_SLAYER = 14690;
 			public static final int LEAGUE_TASK_COMPLETE_ELEMENTAL_WORKSHOP_I = 14691;
 			public static final int LEAGUE_TASK_COMPLETE_ENAKHRAS_LAMENT = 14692;
 			public static final int LEAGUE_TASK_COMPLETE_GERTRUDES_CAT = 14693;
 			public static final int LEAGUE_TASK_COMPLETE_GHOSTS_AHOY = 14694;
+			public static final int ACTION_BOSS_KILL_CORRUPTED_HUNLLEF = 14695;
 			public static final int LEAGUE_TASK_COMPLETE_ROMEO_JULIET = 14696;
 			public static final int LEAGUE_TASK_COMPLETE_RUNE_MYSTERIES = 14697;
 			public static final int LEAGUE_TASK_COMPLETE_SHADOW_OF_THE_STORM = 14698;
 			public static final int LEAGUE_TASK_COMPLETE_SHEEP_SHEARER = 14699;
-			public static final int LEAGUE_TASK_COMPLETE_SINS_OF_THE_FATHER = 14700;
 			public static final int LEAGUE_TASK_COMPLETE_SLEEPING_GIANTS = 14701;
 			public static final int LEAGUE_TASK_COMPLETE_SPIRITS_OF_THE_ELID = 14702;
 			public static final int LEAGUE_TASK_COMPLETE_THE_GOLEM = 14703;
 			public static final int LEAGUE_TASK_COMPLETE_THE_RESTLESS_GHOST = 14704;
-			public static final int LEAGUE_TASK_COMPLETE_VAMPYRE_SLAYER = 14705;
-			public static final int LEAGUE_TASK_FINISH_CURSE_OF_ARRAV = 14706;
 			public static final int LEAGUE_TASK_COMPLETE_A_PORCINE_OF_INTEREST = 14707;
 			public static final int LEAGUE_TASK_COMPLETE_BELOW_ICE_MOUNTAIN = 14708;
 			public static final int LEAGUE_TASK_COMPLETE_DEATH_TO_THE_DORGESHUUN = 14709;
 			public static final int LEAGUE_TASK_COMPLETE_THE_LOST_TRIBE = 14710;
 			public static final int LEAGUE_TASK_COMPLETE_DEPTHS_OF_DESPAIR = 14711;
+			public static final int ACTION_BOSS_KILL_DUKE_SUCELLUS = 14712;
 			public static final int LEAGUE_TASK_COMPLETE_MEAT_AND_GREET = 14713;
 			public static final int ACTION_COMPLETE_AT_FIRST_LIGHT_QUEST = 14714;
 			public static final int LEAGUE_TASK_COMPLETE_GETTING_AHEAD = 14715;
@@ -12763,65 +12748,42 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_CATCH_50_KARAMBWAN = 15178;
 			public static final int LEAGUE_TASK_STEAL_15_HOUSE_KEYS = 15179;
 			public static final int LEAGUE_TASK_OBTAIN_A_MARK_OF_GRACE = 15180;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_AGILITY = 15181;
 			public static final int LEAGUE_TASK_PICKPOCKET_A_GUARD = 15182;
 			public static final int LEAGUE_TASK_COMPLETE_50_LAPS_OF_THE_PRIFDDINAS_AGILITY_COURSE = 15183;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_ATTACK = 15184;
 			public static final int LEAGUE_TASK_PICKPOCKET_A_RANARR_SEED = 15185;
 			public static final int LEAGUE_TASK_CATCH_A_HERBIBOAR_150_TIMES = 15186;
 			public static final int LEAGUE_TASK_CATCH_A_HERBIBOAR_50_TIMES = 15187;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_CONSTRUCTION = 15188;
 			public static final int LEAGUE_TASK_STEAL_25_VALUABLES = 15189;
 			public static final int LEAGUE_TASK_CATCH_A_KARAMBWANJI = 15190;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_COOKING = 15191;
 			public static final int LEAGUE_TASK_STEAL_A_HOUSE_KEY = 15192;
 			public static final int LEAGUE_TASK_CATCH_A_SALMON = 15193;
 			public static final int LEAGUE_TASK_CATCH_A_SALMON_ON_KARAMJA = 15194;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_CRAFTING = 15195;
 			public static final int LEAGUE_TASK_CATCH_A_SWAMP_LIZARD_IN_MORYTANIA = 15196;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_DEFENCE = 15197;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_FARMING = 15198;
 			public static final int LEAGUE_TASK_CHECK_A_GROWN_CACTUS = 15199;
 			public static final int LEAGUE_TASK_CHECK_A_GROWN_CALQUAT_TREE = 15200;
 			public static final int LEAGUE_TASK_COMPLETE_THE_PRIFDDINAS_AGILITY_COURSE = 15201;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_FIREMAKING = 15202;
 			public static final int LEAGUE_TASK_CHECK_A_GROWN_MAGIC_TREE_IN_LUMBRIDGE = 15203;
 			public static final int LEAGUE_TASK_CHECK_A_GROWN_MAHOGANY_TREE = 15204;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_FISHING = 15205;
 			public static final int LEAGUE_TASK_COMPLETE_THE_PRIFDDINAS_AGILITY_COURSE_IN_110 = 15206;
 			public static final int LEAGUE_TASK_CHECK_A_GROWN_POTATO_CACTUS = 15207;
 			public static final int LEAGUE_TASK_PLANT_100_GOLOVANOVA_SEEDS = 15208;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_FLETCHING = 15209;
 			public static final int LEAGUE_TASK_CRAFT_50_DEATH_RUNES = 15210;
 			public static final int LEAGUE_TASK_STEAL_FROM_THE_FORTIS_SPICE_STALL = 15211;
 			public static final int LEAGUE_TASK_CHOP_100_BLISTERWOOD_LOGS = 15212;
 			public static final int LEAGUE_TASK_CRAFT_A_PIECE_OF_CRYSTAL_ARMOUR = 15213;
 			public static final int LEAGUE_TASK_CREATE_25_DIVINE_SUPER_ATTACK_POTIONS = 15214;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_HERBLORE = 15215;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_HITPOINTS = 15216;
 			public static final int LEAGUE_TASK_RESTORE_14_PRAYER_POINTS_IN_HOSIDIUS = 15217;
 			public static final int LEAGUE_TASK_STORE_SOME_BOWSTRINGS_INSIDE_A_BOWSTRING_SPOOL = 15218;
 			public static final int LEAGUE_TASK_SMELT_A_MITHRIL_BAR_IN_A_VOLCANIC_FISSURE = 15219;
 			public static final int LEAGUE_TASK_SMITH_SHAYZIEN_1 = 15220;
 			public static final int LEAGUE_TASK_CREATE_25_DIVINE_SUPER_STRENGTH_POTIONS = 15221;
 			public static final int LEAGUE_TASK_SMITH_STEEL_IN_KOUREND_CASTLE = 15222;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_HUNTER = 15223;
 			public static final int LEAGUE_TASK_CHOP_A_LOG_FROM_A_POTATO_TREE = 15224;
 			public static final int LEAGUE_TASK_SERVE_20_STEWS_IN_THE_MESS_HALL = 15225;
 			public static final int LEAGUE_TASK_CHOP_A_SULLIUSCEP_CAP = 15226;
 			public static final int LEAGUE_TASK_TELEPORT_TO_CAM_TORUM_USING_A_CALCIFIED_MOTH = 15227;
 			public static final int LEAGUE_TASK_STEAL_A_CHISEL = 15228;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_MAGIC = 15229;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_MINING = 15230;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_PRAYER = 15231;
 			public static final int LEAGUE_TASK_SMITH_A_STEEL_PLATEBODY = 15232;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_RANGED = 15233;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_RUNECRAFT = 15234;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_SLAYER = 15235;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_SMITHING = 15236;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_STRENGTH = 15237;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_THIEVING = 15238;
-			public static final int LEAGUE_TASK_REACH_LEVEL_99_WOODCUTTING = 15239;
 			public static final int LEAGUE_TASK_REACH_TOTAL_LEVEL_100 = 15240;
 			public static final int LEAGUE_TASK_STEAL_1_ARTEFACT = 15241;
 			public static final int LEAGUE_TASK_STEAL_15_ARTEFACTS = 15242;
@@ -12986,6 +12948,7 @@ public final class DBTableID
 			public static final int LEAGUE_TASK_CROSS_PILLAR_SHORTCUT_REVENANT_CAVES = 15401;
 			public static final int LEAGUE_TASK_MINE_RUNITE_DRAGON_PICKAXE_IN_WILDERNESS = 15402;
 			public static final int LEAGUE_TASK_CRAFT_100_AETHER_RUNES = 15403;
+			public static final int ACTION_BOSS_KILL_KRAKEN = 17182;
 			public static final int ACTION_REACH_EASY_COMBAT_TIER = 17198;
 			public static final int ACTION_REACH_MEDIUM_COMBAT_TIER = 17199;
 			public static final int ACTION_REACH_HARD_COMBAT_TIER = 17200;
@@ -13017,6 +12980,89 @@ public final class DBTableID
 			public static final int ACTION_COMPLETE_FAITHFUL_SERVANTS = 17226;
 			public static final int ACTION_COMPLETE_GRIMHANDS_BARCRAWL = 17227;
 			public static final int ACTION_REACH_LEVEL_99_ANY = 17228;
+			public static final int ACTION_BOSS_KILL_LEVIATHAN = 17232;
+			public static final int ACTION_BOSS_KILL_VARDORVIS = 17233;
+			public static final int ACTION_BOSS_KILL_WHISPERER = 17234;
+			public static final int ACTION_BOSS_KILL_YAMA = 17235;
+			public static final int ACTION_BOSS_KILL_YAMA_OATHPLATE = 17236;
+			public static final int ACTION_BOSS_KILL_ZULRAH = 17237;
+			public static final int ACTION_DEFEAT_PHANTOM_MUSPAH_300_TIMES = 17238;
+			public static final int ACTION_DEFEAT_CERBERUS_300_TIMES = 17239;
+			public static final int ACTION_DEFEAT_CERBERUS_BEFORE_SHE_SUMMONS_SOULS = 17240;
+			public static final int ACTION_DEFEAT_NEX_200_TIMES = 17241;
+			public static final int ACTION_DEFEAT_PHOSANIS_NIGHTMARE = 17242;
+			public static final int ACTION_DEFEAT_CERBERUS = 17243;
+			public static final int ACTION_DEFEAT_CERBERUS_150_TIMES = 17244;
+			public static final int ACTION_DEFEAT_PHANTOM_MUSPAH = 17245;
+			public static final int ACTION_DEFEAT_THE_CORPOREAL_BEAST = 17246;
+			public static final int ACTION_DEFEAT_PHANTOM_MUSPAH_150_TIMES = 17247;
+			public static final int ACTION_DEFEAT_PHANTOM_MUSPAH_50_TIMES = 17248;
+			public static final int ACTION_DEFEAT_NEX_150_TIMES = 17249;
+			public static final int ACTION_DEFEAT_THE_CORPOREAL_BEAST_50_TIMES = 17250;
+			public static final int ACTION_DEFEAT_CERBERUS_50_TIMES = 17251;
+			public static final int ACTION_DEFEAT_THE_KING_BLACK_DRAGON = 17252;
+			public static final int ACTION_DEFEAT_NEX = 17253;
+			public static final int ACTION_DEFEAT_NEX_50_TIMES = 17254;
+			public static final int ACTION_DEFEAT_NEX_100_TIMES = 17255;
+			public static final int ACTION_DEFEAT_NEX_SOLO = 17256;
+			public static final int ACTION_DEFEAT_THE_ABYSSAL_SIRE = 17257;
+			public static final int ACTION_DEFEAT_THE_ABYSSAL_SIRE_150_TIMES = 17258;
+			public static final int ACTION_DEFEAT_THE_ABYSSAL_SIRE_300_TIMES = 17259;
+			public static final int ACTION_DEFEAT_THE_ABYSSAL_SIRE_50_TIMES = 17260;
+			public static final int ACTION_EQUIP_STAFF_OF_COLLECTION_MITHRIL = 17261;
+			public static final int ACTION_EQUIP_STAFF_OF_COLLECTION_ADAMANT = 17262;
+			public static final int ACTION_EQUIP_STAFF_OF_COLLECTION_RUNE = 17263;
+			public static final int ACTION_EQUIP_STAFF_OF_COLLECTION_DRAGON = 17264;
+			public static final int ACTION_EQUIP_STAFF_OF_COLLECTION_GILDED = 17265;
+			public static final int ACTION_OBTAIN_TBOW = 17266;
+			public static final int ACTION_OBTAIN_TUMKENS_SHADOW = 17267;
+			public static final int ACTION_OBTAIN_SCYTHE_OF_VITUR = 17268;
+			public static final int ACTION_OBTAIN_OBLIGATOR = 17269;
+			public static final int ACTION_OBTAIN_SRA = 17270;
+			public static final int ACTION_OBTAIN_3RD_AGE = 17271;
+			public static final int ACTION_COMPLETE_BENEATH_CURSED_SANDS = 17272;
+			public static final int ACTION_COMPLETE_CURSE_OF_ARRAV = 17273;
+			public static final int ACTION_COMPLETE_DESERT_TREASURE = 17274;
+			public static final int ACTION_COMPLETE_DESERT_TREASURE_2 = 17275;
+			public static final int ACTION_COMPLETE_DREAM_MENTOR = 17276;
+			public static final int ACTION_COMPLETE_FREMENNIK_EXILES = 17277;
+			public static final int ACTION_COMPLETE_GRIM_TALES = 17278;
+			public static final int ACTION_COMPLETE_LEGENDS_QUEST = 17279;
+			public static final int ACTION_COMPLETE_FRIENDS_WITH_MY_ARM = 17280;
+			public static final int ACTION_COMPLETE_MOURNINGS_END_1 = 17281;
+			public static final int ACTION_COMPLETE_MOURNINGS_END_2 = 17282;
+			public static final int ACTION_COMPLETE_NIGHT_AT_THE_THEATRE = 17283;
+			public static final int ACTION_COMPLETE_SINS_OF_THE_FATHER = 17284;
+			public static final int ACTION_COMPLETE_SWAN_SONG = 17285;
+			public static final int ACTION_COMPLETE_THE_BLOOD_MOON_RISES = 17286;
+			public static final int ACTION_COMPLETE_DRAGON_SLAYER_2 = 17287;
+			public static final int ACTION_COMPLETE_MONKEY_MADNESS_2 = 17288;
+			public static final int ACTION_COMPLETE_SONG_OF_THE_ELVES = 17289;
+			public static final int ACTION_COMPLETE_WHILE_GUTHIX_SLEEPS = 17290;
+			public static final int ACTION_REACH_LEVEL_99_AGILITY = 17291;
+			public static final int ACTION_REACH_LEVEL_99_ATTACK = 17292;
+			public static final int ACTION_REACH_LEVEL_99_CONSTRUCTION = 17293;
+			public static final int ACTION_REACH_LEVEL_99_COOKING = 17294;
+			public static final int ACTION_REACH_LEVEL_99_CRAFTING = 17295;
+			public static final int ACTION_REACH_LEVEL_99_DEFENCE = 17296;
+			public static final int ACTION_REACH_LEVEL_99_FARMING = 17297;
+			public static final int ACTION_REACH_LEVEL_99_FIREMAKING = 17298;
+			public static final int ACTION_REACH_LEVEL_99_FISHING = 17299;
+			public static final int ACTION_REACH_LEVEL_99_FLETCHING = 17300;
+			public static final int ACTION_REACH_LEVEL_99_HERBLORE = 17301;
+			public static final int ACTION_REACH_LEVEL_99_HITPOINTS = 17302;
+			public static final int ACTION_REACH_LEVEL_99_HUNTER = 17303;
+			public static final int ACTION_REACH_LEVEL_99_MAGIC = 17304;
+			public static final int ACTION_REACH_LEVEL_99_MINING = 17305;
+			public static final int ACTION_REACH_LEVEL_99_PRAYER = 17306;
+			public static final int ACTION_REACH_LEVEL_99_RANGED = 17307;
+			public static final int ACTION_REACH_LEVEL_99_RUNECRAFT = 17308;
+			public static final int ACTION_REACH_LEVEL_99_SLAYER = 17309;
+			public static final int ACTION_REACH_LEVEL_99_SMITHING = 17310;
+			public static final int ACTION_REACH_LEVEL_99_STRENGTH = 17311;
+			public static final int ACTION_REACH_LEVEL_99_THIEVING = 17312;
+			public static final int ACTION_REACH_LEVEL_99_WOODCUTTING = 17313;
+			public static final int ACTION_REACH_LEVEL_99_SAILING = 17314;
 		}
 	}
 
@@ -22904,6 +22950,12 @@ public final class DBTableID
 			public static final int SKILL_FEATURE_MINING_ASCENSION_SHARDS = 17167;
 			public static final int SKILL_FEATURE_PRAYER_ZEAL = 17168;
 			public static final int SKILL_FEATURE_RANGED_XBOWS_ASCENSION_CROSSBOWS = 17169;
+			public static final int SKILL_FEATURE_FLETCHING_BAW_WASP_DART = 17322;
+			public static final int SKILL_FEATURE_FLETCHING_BAW_KILLER_WASP_DART = 17323;
+			public static final int SKILL_FEATURE_HUNTER_BAW_HONEY_BUZZARD = 17324;
+			public static final int SKILL_FEATURE_HUNTER_BAW_BLACK_HONEY_BUZZARD = 17325;
+			public static final int SKILL_FEATURE_HUNTER_BAW_WASPS = 17326;
+			public static final int SKILL_FEATURE_HUNTER_BAW_KILLER_WASPS = 17327;
 		}
 	}
 
@@ -23786,6 +23838,8 @@ public final class DBTableID
 			public static final int SANGVESTI = 11968;
 			public static final int SOTFA_FOREST = 12008;
 			public static final int SOTFA_FOREST_UNDERGROUND = 12065;
+			public static final int RAG3_ASYLUM = 13640;
+			public static final int WIZARDS_TOWER_BASEMENT = 13641;
 			public static final int SUGADINTI_HIDEOUT_INNER = 16389;
 			public static final int SUGADINTI_HIDEOUT_OUTER = 16390;
 			public static final int CASTLE_DRAKAN_ROOF = 16391;
@@ -24830,6 +24884,20 @@ public final class DBTableID
 		public static final class Row
 		{
 			public static final int UI_HIGHLIGHTING_FX_PULSE_PING_TFA = 17177;
+		}
+	}
+
+	public static final class SnailquestObjects
+	{
+		public static final int ID = 272;
+
+		public static final class Row
+		{
+			public static final int SNAILQUEST_OBJECTS_FOOD1A = 17317;
+			public static final int SNAILQUEST_OBJECTS_FOOD1B = 17318;
+			public static final int SNAILQUEST_OBJECTS_HEALING = 17319;
+			public static final int SNAILQUEST_OBJECTS_STICKS = 17320;
+			public static final int SNAILQUEST_OBJECTS_FOOD2 = 17321;
 		}
 	}
 /* This file is automatically generated. Do not edit. */

@@ -6762,6 +6762,7 @@ public final class ObjectID extends ObjectID1
 	 * Palm tree
 	 */
 	public static final int ZQQUEST_HIDYTREE = 2237;
+	public static final int QUEST_START_ICON_ASHELLOFAFRIEND = 2238;
 	public static final int MIMIC_WALL_WOOD_01 = 2239;
 
 	/**
@@ -81547,6 +81548,8 @@ public final class ObjectID extends ObjectID1
 	public static final int ROUTE_SWAMPBRIDGE_1 = 26245;
 	public static final int ROUTE_SWAMPBRIDGE_2 = 26246;
 	public static final int ROUTE_SWAMPBRIDGE_3 = 26247;
+	public static final int QUEST_START_ICON_BIRDSANDTHEWASPS = 26248;
+	public static final int BAW_EQUIPMENT_CRATE = 26249;
 	public static final int RCU_OUTER_MULTI8 = 26250;
 	public static final int RCU_OUTER_MULTI9 = 26251;
 	public static final int RCU_OUTER_MULTI10 = 26252;
