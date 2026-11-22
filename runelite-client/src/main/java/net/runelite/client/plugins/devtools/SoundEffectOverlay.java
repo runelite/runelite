@@ -28,9 +28,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import net.runelite.api.AmbientSoundComposition;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.AmbientSoundChanged;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.client.eventbus.Subscribe;
@@ -129,6 +131,25 @@ class SoundEffectOverlay extends OverlayPanel
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(text)
 			.leftColor(textColor)
+			.build());
+
+		checkMaxLines();
+	}
+
+	@Subscribe
+	private void onAmbientSoundChanged(AmbientSoundChanged event)
+	{
+		if (!plugin.getSoundEffects().isActive())
+		{
+			return;
+		}
+
+		AmbientSoundComposition sound = event.getAmbientSound();
+		String text = "Ambient Sound ID: " + sound.getId();
+
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left(text)
+			.leftColor(COLOR_AREA_SOUND_EFFECT)
 			.build());
 
 		checkMaxLines();

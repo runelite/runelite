@@ -49,13 +49,13 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Skill;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.SoundEffectID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -335,7 +335,7 @@ public class PartyPlugin extends Plugin
 				return;
 			}
 
-			clientThread.invoke(() -> client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK));
+			clientThread.invoke(() -> client.playSoundEffect(SoundEffectID.ANVIL_SINGLE_1));
 		}
 	}
 

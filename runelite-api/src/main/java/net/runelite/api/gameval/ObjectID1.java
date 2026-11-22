@@ -2827,6 +2827,57 @@ class ObjectID1
 	 */
 	public static final int DEADMAN_CRYSTAL_SMOKE = 33149;
 	public static final int TUTOR_MAIN_ICON = 33150;
+
+	/**
+	 * Crate
+	 */
+	public static final int BAW_EQUIPMENT_CRATE_PRE_QUEST = 33151;
+
+	/**
+	 * Equipment crate
+	 */
+	public static final int BAW_EQUIPMENT_CRATE_QUEST = 33152;
+
+	/**
+	 * Beehive
+	 */
+	public static final int BAW_BEEHIVE_1 = 33153;
+
+	/**
+	 * Beehive
+	 */
+	public static final int BAW_BEEHIVE_2 = 33154;
+
+	/**
+	 * Gate
+	 */
+	public static final int BAW_FENCEGATE_L = 33155;
+
+	/**
+	 * Gate
+	 */
+	public static final int BAW_FENCEGATE_R = 33156;
+
+	/**
+	 * Gap
+	 */
+	public static final int BAW_FENCING_INVISIBLE_WALL = 33157;
+
+	/**
+	 * Stepping stone
+	 */
+	public static final int SNAILQUEST_STEPPING_STONE = 33158;
+	public static final int SNAILQUEST_TREE_MULTI = 33159;
+
+	/**
+	 * Tree
+	 */
+	public static final int SNAILQUEST_TREE_DEFAULT = 33160;
+
+	/**
+	 * Tree
+	 */
+	public static final int SNAILQUEST_TREE_BUILDABLE = 33161;
 	public static final int TUTOR_DANGER_ICON = 33162;
 	public static final int TUTOR_IRONMAN_ICON = 33163;
 	public static final int TUTOR_DEADMAN_ICON = 33164;
@@ -84212,12 +84263,12 @@ class ObjectID1
 	public static final int TFA_OCELLUS_ARTIFACT_DAMAGE_RANGED_INACTIVE = 62696;
 
 	/**
-	 * Zarosian Censer
+	 * Ancient Censer
 	 */
 	public static final int TFA_OCELLUS_ARTIFACT_SPEC = 62697;
 
 	/**
-	 * Zarosian Censer
+	 * Ancient Censer
 	 */
 	public static final int TFA_OCELLUS_ARTIFACT_SPEC_INACTIVE = 62698;
 
@@ -85875,5 +85926,443 @@ class ObjectID1
 	 * Market stall
 	 */
 	public static final int GE_EVENTS_STALL02 = 63333;
+
+	/**
+	 * Shelter
+	 */
+	public static final int SNAILQUEST_TREE_SHELTER_BUILT = 63334;
+
+	/**
+	 * Bird snare
+	 */
+	public static final int HUNTING_OJIBWAY_TRAP_TRAPPING_HONEY_BUZZARD = 63335;
+
+	/**
+	 * Bird snare
+	 */
+	public static final int HUNTING_OJIBWAY_TRAP_FULL_HONEY_BUZZARD = 63336;
+
+	/**
+	 * Bird snare
+	 */
+	public static final int HUNTING_OJIBWAY_TRAP_TRAPPING_BLACK_HONEY_BUZZARD = 63337;
+
+	/**
+	 * Bird snare
+	 */
+	public static final int HUNTING_OJIBWAY_TRAP_FULL_BLACK_HONEY_BUZZARD = 63338;
+	public static final int QUEST_START_ICON_ANEWLEAF = 63339;
+	public static final int QUEST_START_ICON_RAGANDBONEMAN3 = 63340;
+
+	/**
+	 * Crates
+	 */
+	public static final int ANL_CRATE_STACKED = 63341;
+	public static final int ANL_FIREPLACE_COOKING_POT_MULTI = 63342;
+
+	/**
+	 * Cooking pot
+	 */
+	public static final int ANL_FIREPLACE_COOKING_POT_WATER = 63343;
+
+	/**
+	 * Cooking pot
+	 */
+	public static final int ANL_FIREPLACE_COOKING_POT_STEW = 63344;
+
+	/**
+	 * Hay bale
+	 */
+	public static final int ANL_HAY_BALE_ESCAPE = 63345;
+
+	/**
+	 * Haystack
+	 */
+	public static final int ANL_HAY_BALE_WALL = 63346;
+
+	/**
+	 * Door
+	 */
+	public static final int RAG3_NEWBIE_DOOR1 = 63347;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_NEWBIEGATECLOSEDL2 = 63348;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_NEWBIEGATECLOSEDR2 = 63349;
+	public static final int RAG3_WIZARD_BED = 63350;
+
+	/**
+	 * Bed
+	 */
+	public static final int RAG3_WIZARD_BED_MESSY = 63351;
+
+	/**
+	 * Bed
+	 */
+	public static final int RAG3_WIZARD_BED_MADE = 63352;
+	public static final int RAG3_GATESTONE_1 = 63353;
+	public static final int RAG3_GATESTONE_2 = 63354;
+	public static final int RAG3_GATESTONE_3 = 63355;
+	public static final int RAG3_GATESTONE_4 = 63356;
+
+	/**
+	 * Gatestone
+	 */
+	public static final int RAG3_GATESTONE_VIS = 63357;
+
+	/**
+	 * Plinth
+	 */
+	public static final int RAG3_GATESTONE_GONE = 63358;
+
+	/**
+	 * Desk
+	 */
+	public static final int RAG3_ASYLUM_DESK = 63359;
+
+	/**
+	 * Desk
+	 */
+	public static final int RAG3_INNER_ASYLUM_DESK = 63360;
+
+	/**
+	 * Stairs
+	 */
+	public static final int RAG3_ASYLUM_STAIRS_DOWN = 63361;
+
+	/**
+	 * Stairs
+	 */
+	public static final int RAG3_ASYLUM_STAIRS_UP = 63362;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED = 63363;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED_KEYSTONE = 63364;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED_KEY_1 = 63365;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED_KEY_2 = 63366;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED_CODE = 63367;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_UNLOCKED = 63368;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_OPEN = 63369;
+
+	/**
+	 * Pit
+	 */
+	public static final int RAG3_PIT = 63370;
+
+	/**
+	 * Fire pit
+	 */
+	public static final int RAG3_FIRE_PIT_EMPTY = 63371;
+
+	/**
+	 * Fire pit
+	 */
+	public static final int RAG3_FIRE_PIT_LOGS = 63372;
+
+	/**
+	 * Fire pit
+	 */
+	public static final int RAG3_FIRE_PIT_LOGS_OP = 63373;
+
+	/**
+	 * Ribs
+	 */
+	public static final int RAG3_HUT_RIBS_EMPTY = 63374;
+	public static final int RAG3_BONE_SACK_EMPTY1 = 63375;
+	public static final int RAG3_BONE_SACK_EMPTY2 = 63376;
+	public static final int RAG3_BONE_SACK_EMPTY3 = 63377;
+	public static final int RAG3_BONE_SACK_EMPTY4 = 63378;
+
+	/**
+	 * Bone stile
+	 */
+	public static final int RAG3_ARENA_BONE_ENTRANCE_1 = 63379;
+
+	/**
+	 * Bone stile
+	 */
+	public static final int RAG3_ARENA_BONE_ENTRANCE_2 = 63380;
+	public static final int RAG3_ARENA_BONE_WALL_ENTRANCE = 63381;
+	public static final int RAG3_ARENA_BONE_WALL_ENTRANCE_MIRROR = 63382;
+	public static final int RAG3_ARENA_BONE_WALL_CORNER = 63383;
+	public static final int RAG3_ARENA_BONE_WALL1 = 63384;
+	public static final int RAG3_ARENA_BONE_WALL2 = 63385;
+	public static final int RAG3_ARENA_BONE_WALL3 = 63386;
+	public static final int RAG3_ARENA_BONE_WALL_SMALL1 = 63387;
+	public static final int RAG3_ARENA_BONE_WALL_SMALL2 = 63388;
+	public static final int RAG3_ARENA_BONE_WALL_SMALL3 = 63389;
+	public static final int RAG3_ARENA_BONE_LARGE1 = 63390;
+	public static final int RAG3_ARENA_BONE_SMALL1 = 63391;
+	public static final int RAG3_ARENA_BONE_SMALL2 = 63392;
+	public static final int RAG3_ARENA_DUGUPSOIL1 = 63393;
+	public static final int RAG3_ARENA_DUGUPSOIL2 = 63394;
+	public static final int RAG3_ARENA_DUGUPSOIL3 = 63395;
+	public static final int RAG3_ARENA_BONES1 = 63396;
+	public static final int RAG3_ARENA_BONES2 = 63397;
+	public static final int RAG3_ARENA_BONES3 = 63398;
+	public static final int RAG3_ARENA_BONES4 = 63399;
+	public static final int RAG3_ARENA_BONES5 = 63400;
+	public static final int RAG3_HUT_WALL1 = 63401;
+	public static final int RAG3_HUT_WALL2 = 63402;
+	public static final int RAG3_HUT_WALL2_MIRROR = 63403;
+	public static final int RAG3_HUT_WALL_WINDOW = 63404;
+	public static final int RAG3_HUT_WALL_DOOR1 = 63405;
+	public static final int RAG3_HUT_WALL_DOOR1_MIRROR = 63406;
+	public static final int RAG3_HUT_WALL_DOOR2 = 63407;
+	public static final int RAG3_HUT_WALL_DOOR2_MIRROR = 63408;
+	public static final int RAG3_HUT_WALL_SUPPORT = 63409;
+	public static final int RAG3_HUT_WALL_CORNER = 63410;
+	public static final int RAG3_HUT_ROOF = 63411;
+	public static final int RAG3_HUT_ROOF_TOP = 63412;
+	public static final int RAG3_HUT_ROOF_END = 63413;
+	public static final int RAG3_HUT_ROOF_CORNER = 63414;
+	public static final int RAG3_HUT_ROOF_DOOR = 63415;
+	public static final int RAG3_HUT_ROOF_DOOR_MIRROR = 63416;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_HUT_CRATE = 63417;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_HUT_CRATE_STACKED = 63418;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_HUT_CRATE_OPEN = 63419;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_HUT_CRATE_OPEN_DIARY = 63420;
+	public static final int RAG3_HUT_RUG_FRONT = 63421;
+	public static final int RAG3_HUT_RUG_BACK = 63422;
+
+	/**
+	 * Pelt
+	 */
+	public static final int RAG3_HUT_PELT = 63423;
+
+	/**
+	 * Pelt
+	 */
+	public static final int RAG3_HUT_PELT2 = 63424;
+
+	/**
+	 * Horned skull
+	 */
+	public static final int RAG3_HUT_SKULL = 63425;
+
+	/**
+	 * Bed
+	 */
+	public static final int RAG3_HUT_BED = 63426;
+
+	/**
+	 * Table
+	 */
+	public static final int RAG3_HUT_TABLE = 63427;
+	public static final int RAG3_HUT_BONES1 = 63428;
+	public static final int RAG3_HUT_BONES2 = 63429;
+	public static final int WALLKIT_RAG3_ASYLUM01 = 63430;
+	public static final int WALLKIT_RAG3_ASYLUM01_WALLTOP01 = 63431;
+	public static final int WALLKIT_RAG3_GATE01 = 63432;
+
+	/**
+	 * Gate
+	 */
+	public static final int WALLKIT_RAG3_GATE01_PADLOCK01 = 63433;
+
+	/**
+	 * Wheelchair
+	 */
+	public static final int RAG3_ASYLUM_WHEELCHAIR01 = 63434;
+
+	/**
+	 * Rack
+	 */
+	public static final int RAG3_ASYLUM_RACK01 = 63435;
+
+	/**
+	 * Bucket
+	 */
+	public static final int RAG3_ASYLUM_BUCKET01 = 63436;
+
+	/**
+	 * Chest
+	 */
+	public static final int RAG3_ASYLUM_CHEST01 = 63437;
+
+	/**
+	 * Bed
+	 */
+	public static final int RAG3_ASYLUM_BED01 = 63438;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_ASYLUM_CRATE01 = 63439;
+
+	/**
+	 * Crates
+	 */
+	public static final int RAG3_ASYLUM_CRATE02 = 63440;
+
+	/**
+	 * Brazier
+	 */
+	public static final int RAG3_ASYLUM_BRAZIER01 = 63441;
+	public static final int RAG3_ASYLUM_TORCH01 = 63442;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_STOCKS01 = 63443;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE01 = 63444;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE02 = 63445;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE03 = 63446;
+	public static final int RAG3_SKELETON_WALL01 = 63447;
+
+	/**
+	 * Cage
+	 */
+	public static final int RAG3_ASYLUM_CAGE_SMALL = 63448;
+
+	/**
+	 * Cage
+	 */
+	public static final int RAG3_ASYLUM_CAGE_SMALL_BROKEN = 63449;
+
+	/**
+	 * Cage
+	 */
+	public static final int RAG3_ASYLUM_CAGE_TALL = 63450;
+
+	/**
+	 * Cage
+	 */
+	public static final int RAG3_ASYLUM_CAGE_TALL_BROKEN = 63451;
+
+	/**
+	 * Desk
+	 */
+	public static final int RAG3_ASYLUM_DESK01 = 63452;
+
+	/**
+	 * Desk
+	 */
+	public static final int RAG3_ASYLUM_DESK02 = 63453;
+	public static final int RAG3_ASYLUM_DUGUPSOIL01 = 63454;
+	public static final int RAG3_ASYLUM_DUGUPSOIL02 = 63455;
+	public static final int RAG3_ASYLUM_DUGUPSOIL03 = 63456;
+
+	/**
+	 * Stairs
+	 */
+	public static final int RAG3_ASYLUM_STAIRS01 = 63457;
+
+	/**
+	 * Chair
+	 */
+	public static final int RAG3_ASYLUM_CHAIR01 = 63458;
+	public static final int RAG3_SPIDERWEB01 = 63459;
+	public static final int RAG3_SKELETON_BONES01 = 63460;
+	public static final int RAG3_SKELETON_BONES02 = 63461;
+	public static final int RAG3_SKELETON_BONES03 = 63462;
+	public static final int RAG3_ASYLUM_SHACKLES01 = 63463;
+
+	/**
+	 * Headless skeleton
+	 */
+	public static final int RAG3_SKELETON_SHADOW01 = 63464;
+	public static final int RAG3_SKELETON_SHADOW01_SPIRALS01 = 63465;
+	public static final int RAG3_SKELETON_SHADOW01_SPIRALS02 = 63466;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE04 = 63467;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE04_NOBLOCKING = 63468;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE05 = 63469;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE05_NOBLOCKING = 63470;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE06 = 63471;
+
+	/**
+	 * Massive ribs
+	 */
+	public static final int RAG3_SKELETON_CORPSE07 = 63472;
+
+	/**
+	 * Bones
+	 */
+	public static final int RAG3_SKELETON_CORPSE08 = 63473;
+	public static final int RAG3_SKELETON_WALL02 = 63474;
+
+	/**
+	 * Plank pile
+	 */
+	public static final int RAG3_PLANK01_PILED01 = 63475;
 /* This file is automatically generated. Do not edit. */
 }
