@@ -164,6 +164,6 @@ public class TextComponent implements RenderableEntity
 
 		// actual text
 		graphics.setColor(color);
-		graphics.drawString(text, x, y);
+		graphics.drawString(text, (float) x, (float) y);
 	}
 }
