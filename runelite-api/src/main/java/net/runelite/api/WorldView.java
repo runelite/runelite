@@ -46,6 +46,12 @@ public interface WorldView
 	boolean isTopLevel();
 
 	/**
+	 * Get the ambient sound effects
+	 * @return
+	 */
+	Deque<AmbientSoundEffect> getAmbientSoundEffects();
+
+	/**
 	 * Gets the worldview's scene
 	 */
 	Scene getScene();
