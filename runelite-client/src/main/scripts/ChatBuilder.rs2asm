@@ -1268,6 +1268,8 @@ LABEL1137:
    sconst                 "["
    oload                  2
    activeclansettings_getclanname
+   pop_object                ; pop clan name
+   oload                  20 ; GIM broadcast channel from ChatMessageManager
    sconst                 "</col>]"
    join_string            4
    sconst                 "null"
@@ -1411,6 +1413,8 @@ LABEL1268:
    sconst                 "["
    oload                  2
    activeclanchannel_getclanname
+   pop_object                ; pop clan name
+   oload                  20 ; clan broadcast channel from ChatMessageManager
    sconst                 "</col>]"
    join_string            4
    sconst                 "null"
@@ -1475,6 +1479,8 @@ LABEL1328:
    sconst                 "["
    oload                  2
    activeclanchannel_getclanname
+   pop_object                ; pop clan name
+   oload                  20 ; guest broadcast channel from ChatMessageManager
    sconst                 "</col>]"
    join_string            4
    sconst                 "null"
