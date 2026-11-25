@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.EnumComposition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -49,6 +50,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
+@Slf4j
 class WorldSwitcherPanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);
@@ -78,6 +80,8 @@ class WorldSwitcherPanel extends PluginPanel
 	private Set<RegionFilterMode> regionFilterMode;
 	@Setter(AccessLevel.PACKAGE)
 	private Set<WorldTypeFilter> worldTypeFilters;
+	@Setter(AccessLevel.PACKAGE)
+	private int pingFilterValue;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -151,7 +155,7 @@ class WorldSwitcherPanel extends PluginPanel
 				worldTableRow.setPing(ping);
 
 				// If the panel is sorted by ping, re-sort it
-				if (orderIndex == WorldOrder.PING)
+				if (orderIndex == WorldOrder.PING || pingFilterValue > 0)
 				{
 					updateList();
 				}
@@ -217,6 +221,10 @@ class WorldSwitcherPanel extends PluginPanel
 		for (int i = 0; i < rows.size(); i++)
 		{
 			WorldTableRow row = rows.get(i);
+			if (pingFilterValue > 0 && row.getPing() > pingFilterValue)
+			{
+				continue;
+			}
 			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 			listContainer.add(row);
 		}
