@@ -76,6 +76,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "layoutReorderMode",
+		name = "Layout reorder mode",
+		description = "How items are reordered when dragging in a tag tab layout.",
+		position = 5
+	)
+	default LayoutReorderMode layoutReorderMode()
+	{
+		return LayoutReorderMode.RESPECT_GAME;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",
