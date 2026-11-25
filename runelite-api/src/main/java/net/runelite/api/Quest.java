@@ -250,6 +250,7 @@ public enum Quest
 	THE_WRITINGS_ON_THE_WALL(17231, "The Writing's on the Wall"),
 	A_SHELL_OF_A_FRIEND(17315, "A Shell of a Friend"),
 	THE_BIRDS_AND_THE_WASPS(17316, "The Birds and the Wasps"),
+	THE_GRAVEYARD(17328, "The Graveyard"),
 	;
 
 	@Getter
