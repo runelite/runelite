@@ -459,27 +459,39 @@ public class ChatChannelPlugin extends Plugin
 			rankIcon = chatIconManager.getIconNumber(clanTitle);
 		}
 
-		final Color textColor;
+		final Color textColor, channelColor;
 		// Use configured clan chat info colors if set, otherwise default to the jagex text and fc name colors
 		if (client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1)
 		{
 			textColor = MoreObjects.firstNonNull(
 				chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.transparentClanChatInfo() : chatColorConfig.transparentClanChatGuestInfo(),
 				CHAT_FC_TEXT_TRANSPARENT_BACKGROUND);
+			channelColor = MoreObjects.firstNonNull(
+				chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.transparentClanChannelName() : chatColorConfig.transparentClanChannelGuestName(),
+				CHAT_FC_NAME_TRANSPARENT_BACKGROUND);
 		}
 		else
 		{
 			textColor = MoreObjects.firstNonNull(
 				chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.opaqueClanChatInfo() : chatColorConfig.opaqueClanChatGuestInfo(),
 				CHAT_FC_TEXT_OPAQUE_BACKGROUND);
+			channelColor = MoreObjects.firstNonNull(
+				chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.opaqueClanChannelName() : chatColorConfig.opaqueClanGuestChatChannelName(),
+				CHAT_FC_NAME_OPAQUE_BACKGROUND);
 		}
 
-		ChatMessageBuilder message = new ChatMessageBuilder();
+		ChatMessageBuilder message = new ChatMessageBuilder()
+				.append("[")
+				.append(channelColor, clanSettings.getName());
 		if (rankIcon > -1)
 		{
-			message.img(rankIcon);
+			message
+				.append(" ")
+				.img(rankIcon);
 		}
-		message.append(textColor, member.getName() + (activityType == ActivityType.JOINED ? " has joined." : " has left."));
+		message
+				.append("] ")
+				.append(textColor, member.getName() + (activityType == ActivityType.JOINED ? " has joined." : " has left."));
 
 		final String messageString = message.build();
 		final MessageNode line = client.addChatMessage(
