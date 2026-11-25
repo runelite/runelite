@@ -593,6 +593,7 @@ public final class InterfaceID
 	public static final int KR_ADDRESS_FORM = 586;
 	public static final int KR_SCRAP_PAPER = 587;
 	public static final int KR_PICKLOCK = 588;
+	public static final int RAG3_BOSS_OVERLAY = 589;
 	public static final int POH_JEWELLERY_BOX = 590;
 	public static final int ARAXXOR_SCOREBOARD = 591;
 	public static final int DIZANAS_QUIVER = 592;
@@ -996,6 +997,7 @@ public final class InterfaceID
 	public static final int WOTW_WALL_LANDS_END = 990;
 	public static final int WOTW_WALL_PISCARILIUS = 991;
 	public static final int WOTW_WALL_SHAYZIEN = 992;
+	public static final int POR_STATISTICS = 993;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -14910,170 +14912,107 @@ public final class InterfaceID
 
 	public static final class MiscBothManage
 	{
-		public static final int MISCB_IF_BG = 0x0187_0000;
-		public static final int ROOT_TEXT1 = 0x0187_0001;
-		public static final int MISCB_IF_MINING_RECT0 = 0x0187_0002;
-		public static final int MISCB_IF_MINING = 0x0187_0003;
-		public static final int MISCB_IF_MINING_TEXT = 0x0187_0004;
-		public static final int MISCB_IF_MINING_ICON = 0x0187_0005;
-		public static final int ROOT_RECT3 = 0x0187_0006;
-		public static final int MISCB_IF_HERBS = 0x0187_0007;
-		public static final int MISCB_FLAX_MODEL = 0x0187_0008;
-		public static final int MISCB_IF_HERBS_TEXT = 0x0187_0009;
-		public static final int MISCB_HERBS_ICON = 0x0187_000a;
-		public static final int MISCB_IF_MINING_UP = 0x0187_000b;
-		public static final int MISCB_IF_MINING_DOWN = 0x0187_000c;
-		public static final int MISCB_IF_MINING_BAR1 = 0x0187_000d;
-		public static final int MISCB_IF_MINING_BAR2 = 0x0187_000e;
-		public static final int MISCB_IF_MINING_BAR3 = 0x0187_000f;
-		public static final int MISCB_IF_MINING_BAR4 = 0x0187_0010;
-		public static final int MISCB_IF_MINING_BAR5 = 0x0187_0011;
-		public static final int MISCB_IF_MINING_BAR6 = 0x0187_0012;
-		public static final int MISCB_IF_MINING_BAR7 = 0x0187_0013;
-		public static final int MISCB_IF_MINING_BAR8 = 0x0187_0014;
-		public static final int MISCB_IF_MINING_BAR9 = 0x0187_0015;
-		public static final int MISCB_IF_MINING_BAR10 = 0x0187_0016;
-		public static final int MISCB_IF_NORTH = 0x0187_0017;
-		public static final int MISCB_HERBS_ICONCOPY = 0x0187_0018;
-		public static final int MISCB_IF_COFFERS = 0x0187_0019;
-		public static final int MISCB_IF_COFFERS_TEXT = 0x0187_001a;
-		public static final int MISCB_IF_HERBS_UP = 0x0187_001b;
-		public static final int MISCB_IF_HERBS_DOWN = 0x0187_001c;
-		public static final int MISCB_IF_HERBS_BAR1 = 0x0187_001d;
-		public static final int MISCB_IF_WOOD_RECT0 = 0x0187_001e;
-		public static final int MISCB_IF_WOOD_BAR1 = 0x0187_001f;
-		public static final int MISCB_IF_WOOD_BAR2 = 0x0187_0020;
-		public static final int MISCB_IF_WOOD_BAR3 = 0x0187_0021;
-		public static final int MISCB_IF_WOOD_BAR4 = 0x0187_0022;
-		public static final int MISCB_IF_WOOD_BAR5 = 0x0187_0023;
-		public static final int MISCB_IF_WOOD_BAR6 = 0x0187_0024;
-		public static final int MISCB_IF_WOOD_BAR7 = 0x0187_0025;
-		public static final int MISCB_IF_WOOD_BAR8 = 0x0187_0026;
-		public static final int MISCB_IF_WOOD_ICON1 = 0x0187_0027;
-		public static final int MISCB_IF_WOOD_BAR9 = 0x0187_0028;
-		public static final int MISCB_IF_WOOD_ICON2 = 0x0187_0029;
-		public static final int MISCB_IF_WOOD = 0x0187_002a;
-		public static final int MISCB_IF_WOOD_TEXT = 0x0187_002b;
-		public static final int MISCB_IF_WOOD_ICON = 0x0187_002c;
-		public static final int MISCB_IF_WOOD_UP = 0x0187_002d;
-		public static final int MISCB_IF_WOOD_DOWN = 0x0187_002e;
-		public static final int MISCB_IF_WOOD_BAR10 = 0x0187_002f;
-		public static final int MISCB_IF_HERBS_BAR2 = 0x0187_0030;
-		public static final int MISCB_IF_FISHING_RECT0 = 0x0187_0031;
-		public static final int MISCB_IF_HERBS_BAR3 = 0x0187_0032;
-		public static final int MISCB_IF_HERBS_BAR4 = 0x0187_0033;
-		public static final int MISCB_IF_HERBS_BAR5 = 0x0187_0034;
-		public static final int MISCB_IF_HERBS_BAR6 = 0x0187_0035;
-		public static final int MISCB_IF_HERBS_BAR7 = 0x0187_0036;
-		public static final int MISCB_IF_HERBS_BAR8 = 0x0187_0037;
-		public static final int MISCB_IF_HERBS_BAR9 = 0x0187_0038;
-		public static final int MISCB_IF_HERBS_BAR10 = 0x0187_0039;
-		public static final int MISCB_IF_FISHING = 0x0187_003a;
-		public static final int MISCB_IF_FISHING_TEXT = 0x0187_003b;
-		public static final int MISCB_IF_FISHING_ICON = 0x0187_003c;
-		public static final int MISCB_IF_FISHING_UP = 0x0187_003d;
-		public static final int MISCB_IF_FISHING_DOWN = 0x0187_003e;
-		public static final int MISCB_IF_FISHING_BAR1 = 0x0187_003f;
-		public static final int MISCB_IF_FISHING_BAR2 = 0x0187_0040;
-		public static final int MISCB_IF_FISHING_BAR3 = 0x0187_0041;
-		public static final int MISCB_IF_IDLE_RECT0 = 0x0187_0042;
-		public static final int MISCB_IF_FISHING_BAR4 = 0x0187_0043;
-		public static final int MISCB_IF_FISHING_BAR5 = 0x0187_0044;
-		public static final int MISCB_IF_FISHING_BAR6 = 0x0187_0045;
-		public static final int MISCB_IF_FISHING_BAR7 = 0x0187_0046;
-		public static final int MISCB_IF_FISHING_BAR8 = 0x0187_0047;
-		public static final int MISCB_IF_FISHING_BAR9 = 0x0187_0048;
-		public static final int MISCB_IF_FISHING_BAR10 = 0x0187_0049;
-		public static final int MISCB_IF_IDLE_BAR1 = 0x0187_004a;
-		public static final int MISCB_IF_IDLE_BAR2 = 0x0187_004b;
-		public static final int MISCB_IF_IDLE_BAR3 = 0x0187_004c;
-		public static final int MISCB_IF_IDLE_BAR4 = 0x0187_004d;
-		public static final int MISCB_IF_IDLE = 0x0187_004e;
-		public static final int MISCB_IF_IDLE_TEXT = 0x0187_004f;
-		public static final int MISCB_IF_IDLE_ICON1 = 0x0187_0050;
-		public static final int MISCB_IF_IDLE_BAR5 = 0x0187_0051;
-		public static final int MISCB_IF_IDLE_BAR6 = 0x0187_0052;
-		public static final int MISCB_IF_IDLE_BAR7 = 0x0187_0053;
-		public static final int MISCB_IF_IDLE_BAR8 = 0x0187_0054;
-		public static final int MISCB_IF_IDLE_BAR9 = 0x0187_0055;
-		public static final int MISCB_IF_IDLE_BAR10 = 0x0187_0056;
-		public static final int MISCB_IF_IDLE_BAR11 = 0x0187_0057;
-		public static final int MISCB_IF_IDLE_BAR12 = 0x0187_0058;
-		public static final int MISCB_IF_IDLE_BAR13 = 0x0187_0059;
-		public static final int MISCB_IF_IDLE_BAR14 = 0x0187_005a;
-		public static final int MISCB_IF_IDLE_BAR15 = 0x0187_005b;
-		public static final int MISCB_IF_COFFERS_MONEY = 0x0187_005c;
-		public static final int MISCB_IF_COFFERS_DEPOSIT = 0x0187_005d;
-		public static final int MISCB_IF_COFFERS_WITHDRAW = 0x0187_005e;
-		public static final int ROOT_MODEL15 = 0x0187_005f;
-		public static final int ROOT_MODEL16 = 0x0187_0060;
-		public static final int MISCB_IF_HERBS_MODEL15 = 0x0187_0061;
-		public static final int MISCB_IF_BGCOPY = 0x0187_0062;
-		public static final int MISCB_IF_QUESTIONMARK = 0x0187_0063;
-		public static final int MISCB_IF_TEXT_HELP = 0x0187_0064;
-		public static final int MISCB_HELP_1_TEXT0 = 0x0187_0065;
-		public static final int MISCB_HELP_1_TEXT1 = 0x0187_0066;
-		public static final int MISCB_HELP_1_TEXT2 = 0x0187_0067;
-		public static final int MISCB_HELP_1_TEXT3 = 0x0187_0068;
-		public static final int MISCB_HELP_1_TEXT4 = 0x0187_0069;
-		public static final int MISCB_HELP_2_TEXT0 = 0x0187_006a;
-		public static final int MISCB_HELP_2_TEXT1 = 0x0187_006b;
-		public static final int MISCB_HELP_2_TEXT2 = 0x0187_006c;
-		public static final int MISCB_HELP_2_TEXT3 = 0x0187_006d;
-		public static final int MISCB_HELP_2_TEXT4 = 0x0187_006e;
-		public static final int MISCB_IF_FISHING_COOKEDTEXT = 0x0187_006f;
-		public static final int MISCB_IF_FISHING_COOKED = 0x0187_0070;
-		public static final int MISCC_IF_BGCOPY_1 = 0x0187_0071;
-		public static final int MISCC_SPADE = 0x0187_0072;
-		public static final int MISCB_IF_RAREWOOD_RECT0 = 0x0187_0073;
-		public static final int MISCB_IF_RAREWOOD_UP = 0x0187_0074;
-		public static final int MISCB_IF_RAREWOOD_DOWN = 0x0187_0075;
-		public static final int MISCB_IF_RAREWOOD_BAR1 = 0x0187_0076;
-		public static final int MISCB_IF_RAREWOOD_BAR2 = 0x0187_0077;
-		public static final int MISCB_IF_RAREWOOD_BAR3 = 0x0187_0078;
-		public static final int MISCB_IF_RAREWOOD_BAR4 = 0x0187_0079;
-		public static final int MISCB_IF_RAREWOOD_BAR5 = 0x0187_007a;
-		public static final int MISCB_IF_RAREWOOD_BAR6 = 0x0187_007b;
-		public static final int MISCB_IF_RAREWOOD_BAR7 = 0x0187_007c;
-		public static final int MISCB_IF_RAREWOOD_BAR8 = 0x0187_007d;
-		public static final int MISCB_IF_RAREWOOD_BAR9 = 0x0187_007e;
-		public static final int MISCB_IF_RAREWOOD_BAR10 = 0x0187_007f;
-		public static final int MISCB_IF_RAREWOOD_CHOOSEMAHOGANY = 0x0187_0080;
-		public static final int MISCB_IF_RAREWOOD_CHOOSETEAK = 0x0187_0081;
-		public static final int MISCB_IF_RAREWOOD_CHOOSEBOTH = 0x0187_0082;
-		public static final int MISCB_IF_RAREWOOD_CHOOSEMAHOGANYTEXT = 0x0187_0083;
-		public static final int MISCB_IF_RAREWOOD_CHOOSETEAKTEXT = 0x0187_0084;
-		public static final int MISCB_IF_RAREWOOD_CHOOSEBOTHTEXT = 0x0187_0085;
-		public static final int MISCB_IF_RAREWOOD_TEXT = 0x0187_0086;
-		public static final int MISCC_IF_WOOD_ICON_1_1 = 0x0187_0087;
-		public static final int MISCC_IF_WOOD_ICON2_1 = 0x0187_0088;
-		public static final int MISCC_IF_WOOD_ICON_1 = 0x0187_0089;
-		public static final int MISCC_IF_WOOD_ICON2 = 0x0187_008a;
-		public static final int MISCB_IF_RAREWOOD = 0x0187_008b;
-		public static final int MISCB_IF_FARM_RECT0 = 0x0187_008c;
-		public static final int MISCB_IF_FARM = 0x0187_008d;
-		public static final int MISCB_IF_FARM_TEXT = 0x0187_008e;
-		public static final int MISCB_IF_FARM_UP = 0x0187_008f;
-		public static final int MISCB_IF_FARM_DOWN = 0x0187_0090;
-		public static final int MISCB_IF_FARM_BAR1 = 0x0187_0091;
-		public static final int MISCB_IF_FARM_BAR2 = 0x0187_0092;
-		public static final int MISCB_IF_FARM_BAR3 = 0x0187_0093;
-		public static final int MISCB_IF_FARM_BAR4 = 0x0187_0094;
-		public static final int MISCB_IF_FARM_BAR5 = 0x0187_0095;
-		public static final int MISCB_IF_FARM_BAR6 = 0x0187_0096;
-		public static final int MISCB_IF_FARM_BAR7 = 0x0187_0097;
-		public static final int MISCB_IF_FARM_BAR8 = 0x0187_0098;
-		public static final int MISCB_IF_FARM_BAR9 = 0x0187_0099;
-		public static final int MISCB_IF_FARM_BAR10 = 0x0187_009a;
-		public static final int MISCB_IF_HERBS_CHOOSEHERB = 0x0187_009b;
-		public static final int MISCB_IF_HERBS_CHOOSEHERBTEXT = 0x0187_009c;
-		public static final int MISCB_IF_HERBS_CHOOSEFLAX = 0x0187_009d;
-		public static final int MISCB_IF_HERBS_CHOOSEFLAXTEXT = 0x0187_009e;
-		public static final int MISCB_HELP_1 = 0x0187_009f;
-		public static final int MISCB_HELP_2 = 0x0187_00a0;
-		public static final int ROOT_GRAPHIC30 = 0x0187_00a1;
-		public static final int MISC_BOTH_MANAGE_CLOSE_BUTTON_GRAPHIC0 = 0x0187_00a2;
-		public static final int MISC_BOTH_MANAGE_CLOSE_BUTTON = 0x0187_00a3;
+		public static final int UNIVERSE = 0x0187_0000;
+		public static final int MISCB_IF_BG = 0x0187_0001;
+		public static final int TITLE = 0x0187_0002;
+		public static final int MISCB_IF_NORTH = 0x0187_0003;
+		public static final int MISCB_IF_BGCOPY = 0x0187_0004;
+		public static final int MISCC_IF_BGCOPY_1 = 0x0187_0005;
+		public static final int MISCB_IF_MINING_ICON = 0x0187_0006;
+		public static final int MISCB_IF_WOOD_ICON1 = 0x0187_0007;
+		public static final int MISCB_IF_WOOD_ICON2 = 0x0187_0008;
+		public static final int MISCB_IF_WOOD_ICON = 0x0187_0009;
+		public static final int MISCB_HERB2 = 0x0187_000a;
+		public static final int MISCB_FLAX_MODEL = 0x0187_000b;
+		public static final int MISCB_HERBS_ICON = 0x0187_000c;
+		public static final int MISCC_SPADE = 0x0187_000d;
+		public static final int MISCC_IF_WOOD_ICON_1_1 = 0x0187_000e;
+		public static final int MISCC_IF_WOOD_ICON2_1 = 0x0187_000f;
+		public static final int MISCC_IF_WOOD_ICON_1 = 0x0187_0010;
+		public static final int MISCC_IF_WOOD_ICON2 = 0x0187_0011;
+		public static final int MISCB_IF_FISHING_ICON = 0x0187_0012;
+		public static final int UNIVERSE_MODEL18 = 0x0187_0013;
+		public static final int UNIVERSE_MODEL19 = 0x0187_0014;
+		public static final int COINS = 0x0187_0015;
+		public static final int CLOSE_BUTTON = 0x0187_0016;
+		public static final int MISCB_IF_COFFERS = 0x0187_0017;
+		public static final int MISCB_IF_MINING = 0x0187_0018;
+		public static final int MISCB_IF_HERBS = 0x0187_0019;
+		public static final int MISCB_IF_WOOD = 0x0187_001a;
+		public static final int MISCB_IF_FISHING = 0x0187_001b;
+		public static final int MISCB_IF_RAREWOOD = 0x0187_001c;
+		public static final int MISCB_IF_FARM = 0x0187_001d;
+		public static final int MISCB_IF_IDLE = 0x0187_001e;
+		public static final int HELP_BUTTON = 0x0187_001f;
+		public static final int MISCB_HELP = 0x0187_0020;
+		public static final int MISCB_HELP_GRAPHIC0 = 0x0187_0021;
+		public static final int MISCB_HELP_RECT1 = 0x0187_0022;
+		public static final int MISCB_IF_QUESTIONMARK = 0x0187_0023;
+		public static final int MISCB_IF_TEXT_HELP = 0x0187_0024;
+		public static final int MISCB_IF_MINING_RECT0 = 0x0187_0025;
+		public static final int MISCB_IF_MINING_TEXT = 0x0187_0026;
+		public static final int MISCB_IF_HERBS_RECT0 = 0x0187_0027;
+		public static final int MISCB_IF_HERBS_TEXT = 0x0187_0028;
+		public static final int MISCB_IF_MINING_UP = 0x0187_0029;
+		public static final int MISCB_IF_MINING_DOWN = 0x0187_002a;
+		public static final int MINING_BAR = 0x0187_002b;
+		public static final int MINING_BAR_FILL = 0x0187_002c;
+		public static final int MISCB_IF_COFFERS_TEXT = 0x0187_002d;
+		public static final int MISCB_IF_HERBS_UP = 0x0187_002e;
+		public static final int MISCB_IF_HERBS_DOWN = 0x0187_002f;
+		public static final int HERBS_BAR = 0x0187_0030;
+		public static final int HERBS_BAR_FILL = 0x0187_0031;
+		public static final int MISCB_IF_WOOD_RECT0 = 0x0187_0032;
+		public static final int WOOD_BAR = 0x0187_0033;
+		public static final int WOOD_BAR_FILL = 0x0187_0034;
+		public static final int MISCB_IF_WOOD_TEXT = 0x0187_0035;
+		public static final int MISCB_IF_WOOD_UP = 0x0187_0036;
+		public static final int MISCB_IF_WOOD_DOWN = 0x0187_0037;
+		public static final int MISCB_IF_FISHING_RECT0 = 0x0187_0038;
+		public static final int MISCB_IF_FISHING_TEXT = 0x0187_0039;
+		public static final int MISCB_IF_FISHING_UP = 0x0187_003a;
+		public static final int MISCB_IF_FISHING_DOWN = 0x0187_003b;
+		public static final int FISHING_BAR = 0x0187_003c;
+		public static final int FISHING_BAR_FILL = 0x0187_003d;
+		public static final int MISCB_IF_IDLE_RECT0 = 0x0187_003e;
+		public static final int IDLE_BAR = 0x0187_003f;
+		public static final int IDLE_BAR_FILL = 0x0187_0040;
+		public static final int MISCB_IF_IDLE_TEXT = 0x0187_0041;
+		public static final int MISCB_IF_IDLE_ICON1 = 0x0187_0042;
+		public static final int MISCB_IF_COFFERS_MONEY = 0x0187_0043;
+		public static final int MISCB_IF_COFFERS_DEPOSIT = 0x0187_0044;
+		public static final int MISCB_IF_COFFERS_WITHDRAW = 0x0187_0045;
+		public static final int MISCB_HELP_TEXT2 = 0x0187_0046;
+		public static final int MISCB_IF_FISHING_COOKEDTEXT = 0x0187_0047;
+		public static final int MISCB_IF_FISHING_COOKED = 0x0187_0048;
+		public static final int MISCB_IF_FISHING_COOKED_GRAPHIC = 0x0187_0049;
+		public static final int MISCB_IF_RAREWOOD_RECT0 = 0x0187_004a;
+		public static final int MISCB_IF_RAREWOOD_UP = 0x0187_004b;
+		public static final int MISCB_IF_RAREWOOD_DOWN = 0x0187_004c;
+		public static final int RAREWOOD_BAR = 0x0187_004d;
+		public static final int RAREWOOD_BAR_FILL = 0x0187_004e;
+		public static final int MISCB_IF_RAREWOOD_CHOOSEMAHOGANY = 0x0187_004f;
+		public static final int MISCB_IF_RAREWOOD_CHOOSEMAHOGANY_GRAPHIC = 0x0187_0050;
+		public static final int MISCB_IF_RAREWOOD_CHOOSETEAK = 0x0187_0051;
+		public static final int MISCB_IF_RAREWOOD_CHOOSETEAK_GRAPHIC = 0x0187_0052;
+		public static final int MISCB_IF_RAREWOOD_CHOOSEBOTH = 0x0187_0053;
+		public static final int MISCB_IF_RAREWOOD_CHOOSEBOTH_GRAPHIC = 0x0187_0054;
+		public static final int MISCB_IF_RAREWOOD_CHOOSEMAHOGANYTEXT = 0x0187_0055;
+		public static final int MISCB_IF_RAREWOOD_CHOOSETEAKTEXT = 0x0187_0056;
+		public static final int MISCB_IF_RAREWOOD_CHOOSEBOTHTEXT = 0x0187_0057;
+		public static final int MISCB_IF_RAREWOOD_TEXT = 0x0187_0058;
+		public static final int MISCB_IF_FARM_RECT0 = 0x0187_0059;
+		public static final int MISCB_IF_FARM_TEXT = 0x0187_005a;
+		public static final int MISCB_IF_FARM_UP = 0x0187_005b;
+		public static final int MISCB_IF_FARM_DOWN = 0x0187_005c;
+		public static final int FARM_BAR = 0x0187_005d;
+		public static final int FARM_BAR_FILL = 0x0187_005e;
+		public static final int MISCB_IF_HERBS_CHOOSEHERB = 0x0187_005f;
+		public static final int MISCB_IF_HERBS_CHOOSEHERB_GRAPHIC = 0x0187_0060;
+		public static final int MISCB_IF_HERBS_CHOOSEFLAX = 0x0187_0061;
+		public static final int MISCB_IF_HERBS_CHOOSEFLAX_GRAPHIC = 0x0187_0062;
+		public static final int MISCB_IF_HERBS_CHOOSEHERBTEXT = 0x0187_0063;
+		public static final int MISCB_IF_HERBS_CHOOSEFLAXTEXT = 0x0187_0064;
 	}
 
 	public static final class Book
@@ -20961,6 +20900,14 @@ public final class InterfaceID
 		public static final int KR_KEY_3 = 0x024c_0042;
 	}
 
+	public static final class Rag3BossOverlay
+	{
+		public static final int UNIVERSE = 0x024d_0000;
+		public static final int CONTENTS = 0x024d_0001;
+		public static final int TINT_BOX = 0x024d_0002;
+		public static final int FADER = 0x024d_0003;
+	}
+
 	public static final class PohJewelleryBox
 	{
 		public static final int UNIVERSE = 0x024e_0000;
@@ -21611,8 +21558,9 @@ public final class InterfaceID
 		public static final int CONFIRMATION_RECT0 = 0x025f_000a;
 		public static final int MESSAGE = 0x025f_000b;
 		public static final int CONFIRM_DESTROY = 0x025f_000c;
-		public static final int CONFIRM_BANK = 0x025f_000d;
-		public static final int CANCEL = 0x025f_000e;
+		public static final int CONFIRM_BANK_DONT_ASK = 0x025f_000d;
+		public static final int CONFIRM_BANK = 0x025f_000e;
+		public static final int CANCEL = 0x025f_000f;
 	}
 
 	public static final class FossilMushtrees
@@ -31815,7 +31763,10 @@ public final class InterfaceID
 		public static final int _3 = 0x03d7_0008;
 		public static final int _4 = 0x03d7_0009;
 		public static final int _5 = 0x03d7_000a;
-		public static final int CLOSE = 0x03d7_000b;
+		public static final int TOGGLE = 0x03d7_000b;
+		public static final int TOGGLE_TEXT = 0x03d7_000c;
+		public static final int TOGGLE_ICON = 0x03d7_000d;
+		public static final int CLOSE = 0x03d7_000e;
 	}
 
 	public static final class WotwCertificateHosidius
@@ -32211,6 +32162,25 @@ public final class InterfaceID
 		public static final int CONTENT_TEXT7 = 0x03e0_000b;
 		public static final int CONTENT_TEXT8 = 0x03e0_000c;
 		public static final int CONTENT_TEXT9 = 0x03e0_000d;
+	}
+
+	public static final class PorStatistics
+	{
+		public static final int ROOT_MODEL0 = 0x03e1_0000;
+		public static final int CLOSE = 0x03e1_0001;
+		public static final int MESSAGESCROLL2_CLOSE = 0x03e1_0002;
+		public static final int CONTENT = 0x03e1_0003;
+		public static final int TITLE = 0x03e1_0004;
+		public static final int TITLE_TEXT = 0x03e1_0005;
+		public static final int STATS = 0x03e1_0006;
+		public static final int MS1 = 0x03e1_0007;
+		public static final int MS2 = 0x03e1_0008;
+		public static final int MS3 = 0x03e1_0009;
+		public static final int MS4 = 0x03e1_000a;
+		public static final int MS5 = 0x03e1_000b;
+		public static final int MS6 = 0x03e1_000c;
+		public static final int MS7 = 0x03e1_000d;
+		public static final int MS8 = 0x03e1_000e;
 	}
 /* This file is automatically generated. Do not edit. */
 }

@@ -74,20 +74,6 @@ public interface World
 	void setLocation(int location);
 
 	/**
-	 * Gets the worlds index.
-	 *
-	 * @return the index
-	 */
-	int getIndex();
-
-	/**
-	 *  Sets the worlds index.
-	 *
-	 * @param index the index
-	 */
-	void setIndex(int index);
-
-	/**
 	 * Gets the world number.
 	 *
 	 * @return the world number
