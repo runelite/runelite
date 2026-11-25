@@ -532,4 +532,15 @@ public interface TimersAndBuffsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showDemonicCharge",
+		name = "Demonic charge",
+		description = "Configures whether Demonic charge is shown at Doom of Mokhaiotl.",
+		section = bossesSection
+	)
+	default boolean showDemonicCharge()
+	{
+		return  true;
+	}
 }
