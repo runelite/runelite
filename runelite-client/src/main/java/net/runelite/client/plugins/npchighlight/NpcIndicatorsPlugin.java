@@ -27,6 +27,7 @@ package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;
@@ -110,6 +111,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	@Getter
 	private NpcIndicatorsConfig config;
 
 	@Inject
@@ -214,7 +216,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		npcOverlayService.registerHighlighter(isHighlighted);
+		npcOverlayService.registerHighlighter(isHighlighted, 999);
 		overlayManager.add(npcRespawnOverlay);
 		clientThread.invoke(() ->
 		{
@@ -276,6 +278,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		clientThread.invoke(this::rebuild);
+	}
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(NpcIndicatorService.class).to(NpcIndicatorServiceImpl.class);
 	}
 
 	@Subscribe
