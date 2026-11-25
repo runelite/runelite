@@ -34,7 +34,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 @AllArgsConstructor
-class TransferableBufferedImage implements Transferable
+public class TransferableBufferedImage implements Transferable
 {
 	@NonNull
 	private final BufferedImage image;
