@@ -196,7 +196,7 @@ public class PartyPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.tooltip("Party")
 			.icon(icon)
-			.priority(9)
+			.priority(config.navButtonPriority())
 			.panel(panel)
 			.build();
 
@@ -265,6 +265,25 @@ public class PartyPlugin extends Plugin
 			{
 				requestSync();
 			}
+		}
+
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
+
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
+
+			navButton = NavigationButton.builder()
+					.tooltip("Party")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(panel)
+					.build();
+
+			clientToolbar.addNavigation(navButton);
 		}
 	}
 

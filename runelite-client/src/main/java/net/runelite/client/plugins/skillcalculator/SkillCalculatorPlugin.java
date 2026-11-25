@@ -27,10 +27,13 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.WorldChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -53,8 +56,17 @@ public class SkillCalculatorPlugin extends Plugin
 	@Inject
 	private Provider<SkillCalculatorPanel> uiPanel;
 
+	@Inject
+	private SkillCalculatorConfig config;
+
 	private NavigationButton uiNavigationButton;
 	private boolean lastWorldWasMembers;
+
+	@Provides
+	SkillCalculatorConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SkillCalculatorConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -64,7 +76,7 @@ public class SkillCalculatorPlugin extends Plugin
 		uiNavigationButton = NavigationButton.builder()
 			.tooltip("Skill Calculator")
 			.icon(icon)
-			.priority(6)
+			.priority(config.navButtonPriority())
 			.panel(uiPanel.get())
 			.build();
 
@@ -88,4 +100,33 @@ public class SkillCalculatorPlugin extends Plugin
 		}
 		lastWorldWasMembers = currentWorldIsMembers;
 	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("skillcalculator"))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (uiNavigationButton != null)
+			{
+				clientToolbar.removeNavigation(uiNavigationButton);
+			}
+
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
+
+			uiNavigationButton = NavigationButton.builder()
+					.tooltip("Skill Calculator")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(uiPanel.get())
+					.build();
+
+			clientToolbar.addNavigation(uiNavigationButton);
+		}
+	}
+
 }
