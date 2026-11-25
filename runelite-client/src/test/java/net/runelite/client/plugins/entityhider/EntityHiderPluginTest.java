@@ -34,8 +34,11 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import static org.junit.Assert.assertFalse;
@@ -66,6 +69,18 @@ public class EntityHiderPluginTest
 	@Mock
 	@Bind
 	Hooks hooks;
+
+	@Mock
+	@Bind
+	ClientThread clientThread;
+
+	@Mock
+	@Bind
+	NpcUtil npcUtil;
+
+	@Mock
+	@Bind
+	ClientToolbar clientToolbar;
 
 	@Mock
 	@Bind
