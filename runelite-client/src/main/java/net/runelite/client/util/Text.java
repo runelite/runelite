@@ -81,7 +81,32 @@ public class Text
 	 */
 	public static String removeTags(String str)
 	{
-		return TAG_REGEXP.matcher(str).replaceAll("");
+		int start = str.indexOf('<');
+		if (start == -1)
+		{
+			return str;
+		}
+		int end = str.indexOf('>', start + 1);
+		if (end == -1)
+		{
+			return str;
+		}
+
+		StringBuilder result = new StringBuilder(str.length());
+		int offset = 0;
+		do
+		{
+			result.append(str, offset, start);
+			offset = end + 1;
+			start = str.indexOf('<', offset);
+			if (start == -1)
+			{
+				break;
+			}
+			end = str.indexOf('>', start + 1);
+		}
+		while (end != -1);
+		return result.append(str, offset, str.length()).toString();
 	}
 
 	/**
