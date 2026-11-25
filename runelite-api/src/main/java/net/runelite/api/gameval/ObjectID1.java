@@ -2827,6 +2827,57 @@ class ObjectID1
 	 */
 	public static final int DEADMAN_CRYSTAL_SMOKE = 33149;
 	public static final int TUTOR_MAIN_ICON = 33150;
+
+	/**
+	 * Crate
+	 */
+	public static final int BAW_EQUIPMENT_CRATE_PRE_QUEST = 33151;
+
+	/**
+	 * Equipment crate
+	 */
+	public static final int BAW_EQUIPMENT_CRATE_QUEST = 33152;
+
+	/**
+	 * Beehive
+	 */
+	public static final int BAW_BEEHIVE_1 = 33153;
+
+	/**
+	 * Beehive
+	 */
+	public static final int BAW_BEEHIVE_2 = 33154;
+
+	/**
+	 * Gate
+	 */
+	public static final int BAW_FENCEGATE_L = 33155;
+
+	/**
+	 * Gate
+	 */
+	public static final int BAW_FENCEGATE_R = 33156;
+
+	/**
+	 * Gap
+	 */
+	public static final int BAW_FENCING_INVISIBLE_WALL = 33157;
+
+	/**
+	 * Stepping stone
+	 */
+	public static final int SNAILQUEST_STEPPING_STONE = 33158;
+	public static final int SNAILQUEST_TREE_MULTI = 33159;
+
+	/**
+	 * Tree
+	 */
+	public static final int SNAILQUEST_TREE_DEFAULT = 33160;
+
+	/**
+	 * Tree
+	 */
+	public static final int SNAILQUEST_TREE_BUILDABLE = 33161;
 	public static final int TUTOR_DANGER_ICON = 33162;
 	public static final int TUTOR_IRONMAN_ICON = 33163;
 	public static final int TUTOR_DEADMAN_ICON = 33164;
@@ -84212,12 +84263,12 @@ class ObjectID1
 	public static final int TFA_OCELLUS_ARTIFACT_DAMAGE_RANGED_INACTIVE = 62696;
 
 	/**
-	 * Zarosian Censer
+	 * Ancient Censer
 	 */
 	public static final int TFA_OCELLUS_ARTIFACT_SPEC = 62697;
 
 	/**
-	 * Zarosian Censer
+	 * Ancient Censer
 	 */
 	public static final int TFA_OCELLUS_ARTIFACT_SPEC_INACTIVE = 62698;
 
@@ -85875,5 +85926,1497 @@ class ObjectID1
 	 * Market stall
 	 */
 	public static final int GE_EVENTS_STALL02 = 63333;
+
+	/**
+	 * Shelter
+	 */
+	public static final int SNAILQUEST_TREE_SHELTER_BUILT = 63334;
+
+	/**
+	 * Bird snare
+	 */
+	public static final int HUNTING_OJIBWAY_TRAP_TRAPPING_HONEY_BUZZARD = 63335;
+
+	/**
+	 * Bird snare
+	 */
+	public static final int HUNTING_OJIBWAY_TRAP_FULL_HONEY_BUZZARD = 63336;
+
+	/**
+	 * Bird snare
+	 */
+	public static final int HUNTING_OJIBWAY_TRAP_TRAPPING_BLACK_HONEY_BUZZARD = 63337;
+
+	/**
+	 * Bird snare
+	 */
+	public static final int HUNTING_OJIBWAY_TRAP_FULL_BLACK_HONEY_BUZZARD = 63338;
+	public static final int QUEST_START_ICON_ANEWLEAF = 63339;
+	public static final int QUEST_START_ICON_RAGANDBONEMAN3 = 63340;
+
+	/**
+	 * Crates
+	 */
+	public static final int ANL_CRATE_STACKED = 63341;
+	public static final int ANL_FIREPLACE_COOKING_POT_MULTI = 63342;
+
+	/**
+	 * Cooking pot
+	 */
+	public static final int ANL_FIREPLACE_COOKING_POT_WATER = 63343;
+
+	/**
+	 * Cooking pot
+	 */
+	public static final int ANL_FIREPLACE_COOKING_POT_STEW = 63344;
+
+	/**
+	 * Hay bale
+	 */
+	public static final int ANL_HAY_BALE_ESCAPE = 63345;
+
+	/**
+	 * Haystack
+	 */
+	public static final int ANL_HAY_BALE_WALL = 63346;
+
+	/**
+	 * Door
+	 */
+	public static final int RAG3_NEWBIE_DOOR1 = 63347;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_NEWBIEGATECLOSEDL2 = 63348;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_NEWBIEGATECLOSEDR2 = 63349;
+	public static final int RAG3_WIZARD_BED = 63350;
+
+	/**
+	 * Bed
+	 */
+	public static final int RAG3_WIZARD_BED_MESSY = 63351;
+
+	/**
+	 * Bed
+	 */
+	public static final int RAG3_WIZARD_BED_MADE = 63352;
+	public static final int RAG3_GATESTONE_1 = 63353;
+	public static final int RAG3_GATESTONE_2 = 63354;
+	public static final int RAG3_GATESTONE_3 = 63355;
+	public static final int RAG3_GATESTONE_4 = 63356;
+
+	/**
+	 * Gatestone
+	 */
+	public static final int RAG3_GATESTONE_VIS = 63357;
+
+	/**
+	 * Plinth
+	 */
+	public static final int RAG3_GATESTONE_GONE = 63358;
+
+	/**
+	 * Desk
+	 */
+	public static final int RAG3_ASYLUM_DESK = 63359;
+
+	/**
+	 * Desk
+	 */
+	public static final int RAG3_INNER_ASYLUM_DESK = 63360;
+
+	/**
+	 * Stairs
+	 */
+	public static final int RAG3_ASYLUM_STAIRS_DOWN = 63361;
+
+	/**
+	 * Stairs
+	 */
+	public static final int RAG3_ASYLUM_STAIRS_UP = 63362;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED = 63363;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED_KEYSTONE = 63364;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED_KEY_1 = 63365;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED_KEY_2 = 63366;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_LOCKED_CODE = 63367;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_UNLOCKED = 63368;
+
+	/**
+	 * Gate
+	 */
+	public static final int RAG3_ASYLUM_GATE_OPEN = 63369;
+
+	/**
+	 * Pit
+	 */
+	public static final int RAG3_PIT = 63370;
+
+	/**
+	 * Fire pit
+	 */
+	public static final int RAG3_FIRE_PIT_EMPTY = 63371;
+
+	/**
+	 * Fire pit
+	 */
+	public static final int RAG3_FIRE_PIT_LOGS = 63372;
+
+	/**
+	 * Fire pit
+	 */
+	public static final int RAG3_FIRE_PIT_LOGS_OP = 63373;
+
+	/**
+	 * Ribs
+	 */
+	public static final int RAG3_HUT_RIBS_EMPTY = 63374;
+	public static final int RAG3_BONE_SACK_EMPTY1 = 63375;
+	public static final int RAG3_BONE_SACK_EMPTY2 = 63376;
+	public static final int RAG3_BONE_SACK_EMPTY3 = 63377;
+	public static final int RAG3_BONE_SACK_EMPTY4 = 63378;
+
+	/**
+	 * Bone stile
+	 */
+	public static final int RAG3_ARENA_BONE_ENTRANCE_1 = 63379;
+
+	/**
+	 * Bone stile
+	 */
+	public static final int RAG3_ARENA_BONE_ENTRANCE_2 = 63380;
+	public static final int RAG3_ARENA_BONE_WALL_ENTRANCE = 63381;
+	public static final int RAG3_ARENA_BONE_WALL_ENTRANCE_MIRROR = 63382;
+	public static final int RAG3_ARENA_BONE_WALL_CORNER = 63383;
+	public static final int RAG3_ARENA_BONE_WALL1 = 63384;
+	public static final int RAG3_ARENA_BONE_WALL2 = 63385;
+	public static final int RAG3_ARENA_BONE_WALL3 = 63386;
+	public static final int RAG3_ARENA_BONE_WALL_SMALL1 = 63387;
+	public static final int RAG3_ARENA_BONE_WALL_SMALL2 = 63388;
+	public static final int RAG3_ARENA_BONE_WALL_SMALL3 = 63389;
+	public static final int RAG3_ARENA_BONE_LARGE1 = 63390;
+	public static final int RAG3_ARENA_BONE_SMALL1 = 63391;
+	public static final int RAG3_ARENA_BONE_SMALL2 = 63392;
+	public static final int RAG3_ARENA_DUGUPSOIL1 = 63393;
+	public static final int RAG3_ARENA_DUGUPSOIL2 = 63394;
+	public static final int RAG3_ARENA_DUGUPSOIL3 = 63395;
+	public static final int RAG3_ARENA_BONES1 = 63396;
+	public static final int RAG3_ARENA_BONES2 = 63397;
+	public static final int RAG3_ARENA_BONES3 = 63398;
+	public static final int RAG3_ARENA_BONES4 = 63399;
+	public static final int RAG3_ARENA_BONES5 = 63400;
+	public static final int RAG3_HUT_WALL1 = 63401;
+	public static final int RAG3_HUT_WALL2 = 63402;
+	public static final int RAG3_HUT_WALL2_MIRROR = 63403;
+	public static final int RAG3_HUT_WALL_WINDOW = 63404;
+	public static final int RAG3_HUT_WALL_DOOR1 = 63405;
+	public static final int RAG3_HUT_WALL_DOOR1_MIRROR = 63406;
+	public static final int RAG3_HUT_WALL_DOOR2 = 63407;
+	public static final int RAG3_HUT_WALL_DOOR2_MIRROR = 63408;
+	public static final int RAG3_HUT_WALL_SUPPORT = 63409;
+	public static final int RAG3_HUT_WALL_CORNER = 63410;
+	public static final int RAG3_HUT_ROOF = 63411;
+	public static final int RAG3_HUT_ROOF_TOP = 63412;
+	public static final int RAG3_HUT_ROOF_END = 63413;
+	public static final int RAG3_HUT_ROOF_CORNER = 63414;
+	public static final int RAG3_HUT_ROOF_DOOR = 63415;
+	public static final int RAG3_HUT_ROOF_DOOR_MIRROR = 63416;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_HUT_CRATE = 63417;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_HUT_CRATE_STACKED = 63418;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_HUT_CRATE_OPEN = 63419;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_HUT_CRATE_OPEN_DIARY = 63420;
+	public static final int RAG3_HUT_RUG_FRONT = 63421;
+	public static final int RAG3_HUT_RUG_BACK = 63422;
+
+	/**
+	 * Pelt
+	 */
+	public static final int RAG3_HUT_PELT = 63423;
+
+	/**
+	 * Pelt
+	 */
+	public static final int RAG3_HUT_PELT2 = 63424;
+
+	/**
+	 * Horned skull
+	 */
+	public static final int RAG3_HUT_SKULL = 63425;
+
+	/**
+	 * Bed
+	 */
+	public static final int RAG3_HUT_BED = 63426;
+
+	/**
+	 * Table
+	 */
+	public static final int RAG3_HUT_TABLE = 63427;
+	public static final int RAG3_HUT_BONES1 = 63428;
+	public static final int RAG3_HUT_BONES2 = 63429;
+	public static final int WALLKIT_RAG3_ASYLUM01 = 63430;
+	public static final int WALLKIT_RAG3_ASYLUM01_WALLTOP01 = 63431;
+	public static final int WALLKIT_RAG3_GATE01 = 63432;
+
+	/**
+	 * Gate
+	 */
+	public static final int WALLKIT_RAG3_GATE01_PADLOCK01 = 63433;
+
+	/**
+	 * Wheelchair
+	 */
+	public static final int RAG3_ASYLUM_WHEELCHAIR01 = 63434;
+
+	/**
+	 * Rack
+	 */
+	public static final int RAG3_ASYLUM_RACK01 = 63435;
+
+	/**
+	 * Bucket
+	 */
+	public static final int RAG3_ASYLUM_BUCKET01 = 63436;
+
+	/**
+	 * Chest
+	 */
+	public static final int RAG3_ASYLUM_CHEST01 = 63437;
+
+	/**
+	 * Bed
+	 */
+	public static final int RAG3_ASYLUM_BED01 = 63438;
+
+	/**
+	 * Crate
+	 */
+	public static final int RAG3_ASYLUM_CRATE01 = 63439;
+
+	/**
+	 * Crates
+	 */
+	public static final int RAG3_ASYLUM_CRATE02 = 63440;
+
+	/**
+	 * Brazier
+	 */
+	public static final int RAG3_ASYLUM_BRAZIER01 = 63441;
+	public static final int RAG3_ASYLUM_TORCH01 = 63442;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_STOCKS01 = 63443;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE01 = 63444;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE02 = 63445;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE03 = 63446;
+	public static final int RAG3_SKELETON_WALL01 = 63447;
+
+	/**
+	 * Cage
+	 */
+	public static final int RAG3_ASYLUM_CAGE_SMALL = 63448;
+
+	/**
+	 * Cage
+	 */
+	public static final int RAG3_ASYLUM_CAGE_SMALL_BROKEN = 63449;
+
+	/**
+	 * Cage
+	 */
+	public static final int RAG3_ASYLUM_CAGE_TALL = 63450;
+
+	/**
+	 * Cage
+	 */
+	public static final int RAG3_ASYLUM_CAGE_TALL_BROKEN = 63451;
+
+	/**
+	 * Desk
+	 */
+	public static final int RAG3_ASYLUM_DESK01 = 63452;
+
+	/**
+	 * Desk
+	 */
+	public static final int RAG3_ASYLUM_DESK02 = 63453;
+	public static final int RAG3_ASYLUM_DUGUPSOIL01 = 63454;
+	public static final int RAG3_ASYLUM_DUGUPSOIL02 = 63455;
+	public static final int RAG3_ASYLUM_DUGUPSOIL03 = 63456;
+
+	/**
+	 * Stairs
+	 */
+	public static final int RAG3_ASYLUM_STAIRS01 = 63457;
+
+	/**
+	 * Chair
+	 */
+	public static final int RAG3_ASYLUM_CHAIR01 = 63458;
+	public static final int RAG3_SPIDERWEB01 = 63459;
+	public static final int RAG3_SKELETON_BONES01 = 63460;
+	public static final int RAG3_SKELETON_BONES02 = 63461;
+	public static final int RAG3_SKELETON_BONES03 = 63462;
+	public static final int RAG3_ASYLUM_SHACKLES01 = 63463;
+
+	/**
+	 * Headless skeleton
+	 */
+	public static final int RAG3_SKELETON_SHADOW01 = 63464;
+	public static final int RAG3_SKELETON_SHADOW01_SPIRALS01 = 63465;
+	public static final int RAG3_SKELETON_SHADOW01_SPIRALS02 = 63466;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE04 = 63467;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE04_NOBLOCKING = 63468;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE05 = 63469;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE05_NOBLOCKING = 63470;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int RAG3_SKELETON_CORPSE06 = 63471;
+
+	/**
+	 * Massive ribs
+	 */
+	public static final int RAG3_SKELETON_CORPSE07 = 63472;
+
+	/**
+	 * Bones
+	 */
+	public static final int RAG3_SKELETON_CORPSE08 = 63473;
+	public static final int RAG3_SKELETON_WALL02 = 63474;
+
+	/**
+	 * Plank pile
+	 */
+	public static final int RAG3_PLANK01_PILED01 = 63475;
+	public static final int GRAVEYARD_POR_SCOREBOARD = 63476;
+
+	/**
+	 * Scoreboard
+	 */
+	public static final int GRAVEYARD_POR_SCOREBOARD_VISIBLE = 63477;
+	public static final int GRAVEYARD_GREYBOX_BASIC_TRAVERSABLE = 63478;
+
+	/**
+	 * Chest
+	 */
+	public static final int GRAVEYARD_CHEST = 63479;
+
+	/**
+	 * Chest
+	 */
+	public static final int GRAVEYARD_CHEST_OPEN = 63480;
+	public static final int GRAVEYARD_POR_CHEST_PARENT = 63481;
+
+	/**
+	 * Chest
+	 */
+	public static final int GRAVEYARD_POR_CHEST = 63482;
+
+	/**
+	 * Chest
+	 */
+	public static final int GRAVEYARD_POR_CHEST_OPEN = 63483;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_SAFE = 63484;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_DANGEROUS = 63485;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_0_WEST = 63486;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_0_CENTER = 63487;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_0_EAST = 63488;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_1_WEST = 63489;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_1_CENTER = 63490;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_1_EAST = 63491;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_2_WEST = 63492;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_2_CENTER = 63493;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_2_EAST = 63494;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_3_WEST = 63495;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_3_CENTER = 63496;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_3_EAST = 63497;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_4_WEST = 63498;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_4_CENTER = 63499;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_4_EAST = 63500;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_5_WEST = 63501;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_5_CENTER = 63502;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_5_EAST = 63503;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_6_WEST = 63504;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_6_CENTER = 63505;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_6_EAST = 63506;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_7_WEST = 63507;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_7_CENTER = 63508;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_7_EAST = 63509;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_8_WEST = 63510;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_8_CENTER = 63511;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_8_EAST = 63512;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_9_WEST = 63513;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_9_CENTER = 63514;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_9_EAST = 63515;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_10_WEST = 63516;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_10_CENTER = 63517;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_10_EAST = 63518;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_11_WEST = 63519;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_11_CENTER = 63520;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_11_EAST = 63521;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_12_WEST = 63522;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_12_CENTER = 63523;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_12_EAST = 63524;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_13_WEST = 63525;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_13_CENTER = 63526;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_13_EAST = 63527;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_14_WEST = 63528;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_14_CENTER = 63529;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_14_EAST = 63530;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_15_WEST = 63531;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_15_CENTER = 63532;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_15_EAST = 63533;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_16_WEST = 63534;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_16_CENTER = 63535;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_16_EAST = 63536;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_17_WEST = 63537;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_17_CENTER = 63538;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_17_EAST = 63539;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_18_WEST = 63540;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_18_CENTER = 63541;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_18_EAST = 63542;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_19_WEST = 63543;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_19_CENTER = 63544;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_19_EAST = 63545;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_20_WEST = 63546;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_20_CENTER = 63547;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_20_EAST = 63548;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_21_WEST = 63549;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_21_CENTER = 63550;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_21_EAST = 63551;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_22_WEST = 63552;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_22_CENTER = 63553;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_22_EAST = 63554;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_23_WEST = 63555;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_23_CENTER = 63556;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_23_EAST = 63557;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_24_WEST = 63558;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_24_CENTER = 63559;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_24_EAST = 63560;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_25_WEST = 63561;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_25_CENTER = 63562;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_25_EAST = 63563;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_26_WEST = 63564;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_26_CENTER = 63565;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_26_EAST = 63566;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_27_WEST = 63567;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_27_CENTER = 63568;
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_27_EAST = 63569;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_COURSE_START = 63570;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_1 = 63571;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_2 = 63572;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_3 = 63573;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_4 = 63574;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_5 = 63575;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_6 = 63576;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_7 = 63577;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_8 = 63578;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_9 = 63579;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_10 = 63580;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_11 = 63581;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_12 = 63582;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_COURSE_END = 63583;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_3_FAST = 63584;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_7A_FAST = 63585;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_7B_FAST = 63586;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_7C_FAST = 63587;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_7D_FAST = 63588;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_7_ADVANCED = 63589;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_11A_FAST = 63590;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_11B_FAST = 63591;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_11C_FAST = 63592;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_11_ADVANCED = 63593;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_OBSTACLE_12_FAST = 63594;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_CLICK = 63595;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_STEPPINGSTONE_CLICK_LARGE = 63596;
+
+	/**
+	 * Ghostly markings
+	 */
+	public static final int GRAVEYARD_POR_SECRET_CLICKBOX = 63597;
+	public static final int GRAVEYARD_POR_SECRET_GUIDANCE = 63598;
+	public static final int GRAVEYARD_POR_OBSTACLE_GUIDANCE_PARENT = 63599;
+	public static final int GRAVEYARD_POR_OBSTACLE_SECRET_START = 63600;
+	public static final int GRAVEYARD_POR_OBSTACLE_SECRET_A = 63601;
+	public static final int GRAVEYARD_POR_OBSTACLE_SECRET_B = 63602;
+	public static final int GRAVEYARD_POR_OBSTACLE_SECRET_C = 63603;
+	public static final int GRAVEYARD_POR_OBSTACLE_SECRET_D = 63604;
+	public static final int GRAVEYARD_POR_OBSTACLE_SECRET_E = 63605;
+	public static final int GRAVEYARD_POR_OBSTACLE_SECRET_F = 63606;
+	public static final int GRAVEYARD_POR_OBSTACLE_SECRET_G = 63607;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_QUEST_OBSTACLE_1 = 63608;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_QUEST_OBSTACLE_2_1 = 63609;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_QUEST_OBSTACLE_2_2 = 63610;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_QUEST_OBSTACLE_2_3 = 63611;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_QUEST_OBSTACLE_3_1 = 63612;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_POR_QUEST_OBSTACLE_3_2 = 63613;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_UPPER_STEPPINGSTONE_CLICK_1 = 63614;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_UPPER_STEPPINGSTONE_CLICK_1_OFFSET01 = 63615;
+
+	/**
+	 * Mast
+	 */
+	public static final int GRAVEYARD_MAST_BALANCING_CLICK_1 = 63616;
+
+	/**
+	 * Mast
+	 */
+	public static final int GRAVEYARD_MAST_BALANCING_CLICK_2 = 63617;
+	public static final int FX_SPORE_MINT01 = 63618;
+	public static final int FX_SPORE_MINT02 = 63619;
+	public static final int QUEST_START_ICON_GRAVEYARD = 63620;
+
+	/**
+	 * Ledge
+	 */
+	public static final int GRAVEYARD_BOSS_LEDGE_CLIMB_DOWN = 63621;
+
+	/**
+	 * Ledge
+	 */
+	public static final int GRAVEYARD_RAEUN_EXIT = 63622;
+
+	/**
+	 * Mast
+	 */
+	public static final int GRAVEYARD_MAST_JUMP = 63623;
+
+	/**
+	 * Crate
+	 */
+	public static final int GY_STAGING_POI_1 = 63624;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int GY_STAGING_POI_2 = 63625;
+
+	/**
+	 * Rope
+	 */
+	public static final int GY_STAGING_POI_3 = 63626;
+
+	/**
+	 * Rope
+	 */
+	public static final int GRAVEYARD_ROPE_PILE_2 = 63627;
+
+	/**
+	 * Rope
+	 */
+	public static final int GRAVEYARD_ROPE_PILE_3 = 63628;
+
+	/**
+	 * Rope
+	 */
+	public static final int GRAVEYARD_ROPE_PILE_4 = 63629;
+	public static final int GY_STAGING_DOOR_MULTI = 63630;
+
+	/**
+	 * Prow
+	 */
+	public static final int GY_STAGING_DOOR = 63631;
+
+	/**
+	 * Prow
+	 */
+	public static final int GY_STAGING_DOOR_BLOCKED = 63632;
+
+	/**
+	 * Chest
+	 */
+	public static final int GY_STAGING_LOGBOOK_CHEST_CLOSED = 63633;
+
+	/**
+	 * Chest
+	 */
+	public static final int GY_STAGING_LOGBOOK_CHEST_OPEN = 63634;
+	public static final int GY_STAGING_MAST = 63635;
+
+	/**
+	 * Mast
+	 */
+	public static final int GY_STAGING_MAST_OP = 63636;
+
+	/**
+	 * Mast
+	 */
+	public static final int GY_STAGING_MAST_NOOP = 63637;
+	public static final int GY_RAEUN_STAKE = 63638;
+
+	/**
+	 * Echo of Ræun
+	 */
+	public static final int GY_RAEUN_STAKE_NO_STAKE = 63639;
+
+	/**
+	 * Echo of Ræun
+	 */
+	public static final int GY_RAEUN_STAKE_NOT_DEFEATED = 63640;
+
+	/**
+	 * Echo of Ræun
+	 */
+	public static final int GY_RAEUN_STAKE_DEFEATED = 63641;
+
+	/**
+	 * Echo of Ræun
+	 */
+	public static final int GY_RAEUN_STAKE_INSIDE_FIGHT = 63642;
+	public static final int GY_RAEUN_STAKE_CUTSCENE = 63643;
+	public static final int GY_ECHO_1_STAKE = 63644;
+	public static final int GY_ECHO_2_STAKE = 63645;
+	public static final int GY_ECHO_3_STAKE = 63646;
+	public static final int GY_ECHO_4_STAKE = 63647;
+	public static final int GY_ECHO_5_STAKE = 63648;
+	public static final int GY_ECHO_6_STAKE = 63649;
+
+	/**
+	 * Echo of Ræun
+	 */
+	public static final int GY_ECHO_NO_STAKE = 63650;
+
+	/**
+	 * Echo of Ræun
+	 */
+	public static final int GY_ECHO_STAKED = 63651;
+
+	/**
+	 * Barrel
+	 */
+	public static final int GY_SUPPLY_CRATE_TUNA = 63652;
+
+	/**
+	 * Barrel
+	 */
+	public static final int GY_SUPPLY_CRATE_SWORDFISH = 63653;
+
+	/**
+	 * Chest
+	 */
+	public static final int GY_TREASURE_CHEST_RUBY_CLOSED = 63654;
+
+	/**
+	 * Chest
+	 */
+	public static final int GY_TREASURE_CHEST_RUBY_OPEN = 63655;
+
+	/**
+	 * Chest
+	 */
+	public static final int GY_TREASURE_CHEST_SAPPHIRE_CLOSED = 63656;
+
+	/**
+	 * Chest
+	 */
+	public static final int GY_TREASURE_CHEST_SAPPHIRE_OPEN = 63657;
+
+	/**
+	 * Chest
+	 */
+	public static final int GY_WATERLOGGED_BOOK_CHEST_CLOSED = 63658;
+
+	/**
+	 * Chest
+	 */
+	public static final int GY_WATERLOGGED_BOOK_CHEST_OPEN = 63659;
+
+	/**
+	 * Crate
+	 */
+	public static final int GY_BLIND_SEER_CRATE = 63660;
+
+	/**
+	 * Crate
+	 */
+	public static final int GY_CRATE01_SINGLE01 = 63661;
+
+	/**
+	 * Crate
+	 */
+	public static final int GY_CRATE01_STACKED01 = 63662;
+
+	/**
+	 * Crate
+	 */
+	public static final int GY_CRATE01_STACKED01_SMALL01 = 63663;
+
+	/**
+	 * Crate
+	 */
+	public static final int GY_CRATE02_FLOATING01 = 63664;
+
+	/**
+	 * Water barrel
+	 */
+	public static final int GY_BARREL01_WATER01 = 63665;
+	public static final int GY_PLANKS01_LAYED01 = 63666;
+	public static final int GY_PLANKS01_LAYED02 = 63667;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int GRAVEYARD_CHAINED_SKELETON = 63668;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE01 = 63669;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE01_VISIBLE = 63670;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE02 = 63671;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE02_VISIBLE = 63672;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE03 = 63673;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE03_VISIBLE = 63674;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE04 = 63675;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE04_VISIBLE = 63676;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE05 = 63677;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE05_VISIBLE = 63678;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE06 = 63679;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE06_VISIBLE = 63680;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE07 = 63681;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE07_VISIBLE = 63682;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE08 = 63683;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE08_VISIBLE = 63684;
+	public static final int GRAVEYARD_FREMENNIK_CORPSE09 = 63685;
+
+	/**
+	 * Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CORPSE09_VISIBLE = 63686;
+	public static final int GRAVEYARD_BLOOD01_SPLATTER02_HIDDEN01 = 63687;
+	public static final int GRAVEYARD_BLOOD01_SPLATTER02_HIDDEN02 = 63688;
+	public static final int GRAVEYARD_BLOOD01_SPLATTER02_HIDDEN03 = 63689;
+	public static final int GRAVEYARD_CAVE_WALL_LOW = 63690;
+	public static final int GRAVEYARD_CAVE_WALL_LOW_FILLER = 63691;
+	public static final int GRAVEYARD_CAVE_WALL_LOW_PILLAR01 = 63692;
+	public static final int GRAVEYARD_CAVE_WALL_TALL = 63693;
+	public static final int GRAVEYARD_CAVE_WALL_TALL_LEDGE_MIDDLE = 63694;
+	public static final int GRAVEYARD_CAVE_WALL_TALL_LEDGE_LEFT = 63695;
+	public static final int GRAVEYARD_CAVE_WALL_TALL_LEDGE_RIGHT = 63696;
+	public static final int GRAVEYARD_CAVE_WALL_TALL_WALLTOP = 63697;
+	public static final int GRAVEYARD_CAVE_WALL_TALL_EXIT = 63698;
+
+	/**
+	 * Cave exit
+	 */
+	public static final int GRAVEYARD_CAVE_EXIT = 63699;
+	public static final int GRAVEYARD_CAVE_SHIPWRECK01 = 63700;
+	public static final int GRAVEYARD_CAVE_SHIPWRECK02 = 63701;
+	public static final int GRAVEYARD_CAVE_ROCKS_STEPS01 = 63702;
+
+	/**
+	 * Climbable Rocks
+	 */
+	public static final int GRAVEYARD_CAVE_ROCKS_STEPS01_VISIBLE = 63703;
+	public static final int GRAVEYARD_CAVE_ROCKS_LARGE01 = 63704;
+	public static final int GRAVEYARD_CAVE_ROCKS_MEDIUM01 = 63705;
+	public static final int GRAVEYARD_CAVE_ROCKS_MEDIUM02 = 63706;
+	public static final int GRAVEYARD_CAVE_ROCKS_MEDIUM03 = 63707;
+	public static final int GRAVEYARD_CAVE_ROCKS_MEDIUM03_M = 63708;
+	public static final int GRAVEYARD_CAVE_ROCKS_MEDIUM04 = 63709;
+	public static final int GRAVEYARD_CAVE_ROCKS_MEDIUM05 = 63710;
+	public static final int GRAVEYARD_CAVE_ROCKS_SMALL01 = 63711;
+	public static final int GRAVEYARD_CAVE_ROCKS_SMALL02 = 63712;
+	public static final int GRAVEYARD_CAVE_ROCKS_SMALL03 = 63713;
+	public static final int GRAVEYARD_CAVE_ROCKS_SMALL04 = 63714;
+	public static final int GRAVEYARD_CAVE_ROCKS_SMALL05 = 63715;
+	public static final int GRAVEYARD_CAVE_DUGUPSOIL01 = 63716;
+	public static final int GRAVEYARD_CAVE_DUGUPSOIL02 = 63717;
+	public static final int GRAVEYARD_CAVE_DUGUPSOIL03 = 63718;
+	public static final int GRAVEYARD_CAVE01_DUGUPSOIL01 = 63719;
+	public static final int GRAVEYARD_CAVE01_DUGUPSOIL02 = 63720;
+	public static final int GRAVEYARD_CAVE01_DUGUPSOIL03 = 63721;
+	public static final int GRAVEYARD_CAVE02_DUGUPSOIL01 = 63722;
+	public static final int GRAVEYARD_CAVE02_DUGUPSOIL02 = 63723;
+	public static final int GRAVEYARD_CAVE02_DUGUPSOIL03 = 63724;
+
+	/**
+	 * Wrecked boat
+	 */
+	public static final int GRAVEYARD_CAVE_SHIPWRECK03 = 63725;
+
+	/**
+	 * Wrecked boat
+	 */
+	public static final int GRAVEYARD_CAVE_SHIPWRECK03_OFFSET01 = 63726;
+
+	/**
+	 * Wrecked boat
+	 */
+	public static final int GRAVEYARD_CAVE_SHIPWRECK04 = 63727;
+
+	/**
+	 * Wrecked boat
+	 */
+	public static final int GRAVEYARD_CAVE_SHIPWRECK04_OFFSET01 = 63728;
+
+	/**
+	 * Wrecked boat
+	 */
+	public static final int GRAVEYARD_CAVE_SHIPWRECK05 = 63729;
+
+	/**
+	 * Wrecked boat
+	 */
+	public static final int GRAVEYARD_CAVE_SHIPWRECK06 = 63730;
+
+	/**
+	 * Wrecked boat
+	 */
+	public static final int GRAVEYARD_CAVE_SHIPWRECK07 = 63731;
+	public static final int GRAVEYARD_CAVE_BOAT_HULL01 = 63732;
+	public static final int GRAVEYARD_CAVE_BOAT_HULL02 = 63733;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int GRAVEYARD_CAVE_SKELETON01 = 63734;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int GRAVEYARD_CAVE_SKELETON02 = 63735;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int GRAVEYARD_CAVE_SKELETON03 = 63736;
+
+	/**
+	 * Corpse
+	 */
+	public static final int GRAVEYARD_CAVE_SKELETON04_SEATED01 = 63737;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int GRAVEYARD_CAVE_SKELETON05_FLOATING01 = 63738;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int GRAVEYARD_CAVE_SKELETON06_FLOATING01 = 63739;
+	public static final int GRAVEYARD_CAVE_SKELETON06_FLOATING01_OFFSET01 = 63740;
+
+	/**
+	 * Corpse
+	 */
+	public static final int GRAVEYARD_CAVE_CORPSE01 = 63741;
+	public static final int GRAVEYARD_CAVE_BONES01 = 63742;
+	public static final int GRAVEYARD_CAVE_BONES02 = 63743;
+	public static final int GRAVEYARD_CAVE_BONES03 = 63744;
+	public static final int GRAVEYARD_CAVE_BONES04 = 63745;
+	public static final int GRAVEYARD_CAVE_STALAGTITE01 = 63746;
+	public static final int GRAVEYARD_CAVE_STALAGTITE02 = 63747;
+	public static final int GRAVEYARD_CAVE_PLANK01 = 63748;
+	public static final int GRAVEYARD_CAVE_SHARDS01_ICE01 = 63749;
+	public static final int GRAVEYARD_CAVE_SHARDS01_ICE02 = 63750;
+	public static final int GRAVEYARD_CAVE_SHARDS01_ICE03 = 63751;
+	public static final int GRAVEYARD_CAVE_SHARDS01_ICE04 = 63752;
+	public static final int GRAVEYARD_CAVE_SHARDS01_ICE05 = 63753;
+
+	/**
+	 * Mushroom
+	 */
+	public static final int GRAVEYARD_CAVE_MUSHROOM01 = 63754;
+
+	/**
+	 * Mushroom
+	 */
+	public static final int GRAVEYARD_CAVE_MUSHROOM02 = 63755;
+
+	/**
+	 * Mushroom
+	 */
+	public static final int GRAVEYARD_CAVE_MUSHROOM03 = 63756;
+
+	/**
+	 * Mushroom
+	 */
+	public static final int GRAVEYARD_CAVE_MUSHROOM04 = 63757;
+	public static final int GRAVEYARD_CAVE_TRAIL01 = 63758;
+	public static final int GRAVEYARD_CAVE_TRAIL02 = 63759;
+	public static final int GRAVEYARD_CAVE_TRAIL03 = 63760;
+
+	/**
+	 * Ice trail
+	 */
+	public static final int GRAVEYARD_CAVE_TRAIL04_ICE01 = 63761;
+
+	/**
+	 * Broken Cart
+	 */
+	public static final int GRAVEYARD_CAVE_CART01_BROKEN01 = 63762;
+	public static final int GRAVEYARD_CAVE_WALLTOP01_EDGE04_E = 63763;
+	public static final int GRAVEYARD_CAVE_WALLTOP01_EDGE03_E = 63764;
+	public static final int GRAVEYARD_CAVE_WALLTOP01_EDGE02_2 = 63765;
+	public static final int GRAVEYARD_CAVE_WALLTOP01_BORDER01 = 63766;
+
+	/**
+	 * Drip
+	 */
+	public static final int GRAVEYARD_SMALL_DRIP = 63767;
+	public static final int GY_WRECK_MEDIUM01_DEFAULT01 = 63768;
+	public static final int GY_WRECK_MEDIUM01_DEFAULT01_MIRROR = 63769;
+	public static final int GY_WRECK_MEDIUM01_DEFAULT01_DAMAGED01 = 63770;
+	public static final int GY_WRECK_MEDIUM01_DEFAULT01_DAMAGED01_MIRROR = 63771;
+	public static final int GY_WRECK_MEDIUM01_HORIZONTAL01 = 63772;
+	public static final int GY_WRECK_MEDIUM01_HORIZONTAL01_DIAGONAL01_OFFSET01 = 63773;
+	public static final int GY_WRECK_MEDIUM01_HORIZONTAL01_MIRROR = 63774;
+	public static final int GY_WRECK_MEDIUM01_HORIZONTAL01_MIRROR_OFFSET01 = 63775;
+	public static final int GY_WRECK_MEDIUM01_HORIZONTAL02 = 63776;
+	public static final int GY_WRECK_MEDIUM01_HORIZONTAL02_MIRROR = 63777;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL01 = 63778;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL01_OFFSET01 = 63779;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL01_MIRROR = 63780;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL02 = 63781;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL02_CRASHED01 = 63782;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL02_MIRROR_OFFSET01 = 63783;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL02_OFFSET01 = 63784;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL02_MIRROR = 63785;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL03 = 63786;
+	public static final int GY_WRECK_MEDIUM01_VERTICAL03_MIRROR = 63787;
+	public static final int GY_WRECK_LARGE01_DEFAULT01 = 63788;
+	public static final int GY_WRECK_LARGE01_DEFAULT01_MIRROR = 63789;
+	public static final int GY_WRECK_LARGE01_DEFAULT01_DAMAGED01 = 63790;
+	public static final int GY_WRECK_LARGE01_DEFAULT01_DAMAGED01_MIRROR = 63791;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL01 = 63792;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL01_OFFSET01 = 63793;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL01_MIRROR = 63794;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL02 = 63795;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL02_OFFSET01 = 63796;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL02_MIRROR = 63797;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL03 = 63798;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL03_OFFSET01 = 63799;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL03_MIRROR = 63800;
+	public static final int GY_WRECK_LARGE01_HORIZONTAL04_MIRROR = 63801;
+	public static final int GY_WRECK_LARGE01_VERTICAL01 = 63802;
+	public static final int GY_WRECK_LARGE01_VERTICAL01_MIRROR = 63803;
+	public static final int GY_SHIP_MEDIUM01_DEFAULT01 = 63804;
+	public static final int GY_SHIP_MEDIUM01_DEFAULT01_MIRROR = 63805;
+	public static final int GY_WRECK_BOAT_MID01 = 63806;
+	public static final int GY_WRECK_BOAT_MID02 = 63807;
+	public static final int GY_WRECK_BOAT_MID03_SIDE01 = 63808;
+	public static final int GY_WRECK_BOAT_MID04 = 63809;
+	public static final int GY_WRECK_BOAT_MID05 = 63810;
+	public static final int GY_WRECK_BOAT_MID05_RESIZE01 = 63811;
+	public static final int GY_WRECK_BOAT_MID06 = 63812;
+	public static final int GY_WRECK_BOAT_MID06_RESIZE01 = 63813;
+	public static final int GY_WRECK_BOAT_MID07 = 63814;
+	public static final int GY_WRECK_BOAT_MID08 = 63815;
+	public static final int GY_WRECK_BOAT_MID09 = 63816;
+	public static final int GY_WRECK_BOAT_BACK01 = 63817;
+	public static final int GY_WRECK_BOAT_RIB01 = 63818;
+	public static final int GY_WRECK_MAST01_DAMAGED01 = 63819;
+	public static final int GY_WRECK_MAST01_DAMAGED02 = 63820;
+	public static final int GY_WRECK_MAST02_DAMAGED01 = 63821;
+	public static final int GY_SHIP_MAST01 = 63822;
+	public static final int GY_SHIP_MAST02 = 63823;
+	public static final int GY_PIER_MIDDLE01 = 63824;
+	public static final int GY_PIER_MIDDLE02 = 63825;
+	public static final int GY_PIER_MIDDLE03 = 63826;
+	public static final int GY_PIER_BROKEN01 = 63827;
+	public static final int GY_PIER_BROKEN01_MIRROR = 63828;
+	public static final int GY_PIER_CUTOFF01_CORNER01 = 63829;
+	public static final int GY_PIER_CUTOFF01_CORNER01_MIRROR = 63830;
+	public static final int GY_PIER_CUTOFF02 = 63831;
+	public static final int GY_PIER_CUTOFF02_MIRROR = 63832;
+	public static final int GY_PIER_CUTOFF03 = 63833;
+	public static final int GY_PIER_CUTOFF03_MIRROR = 63834;
+	public static final int GY_PIER_EDGE01 = 63835;
+	public static final int GY_PIER_EDGE01_MIRROR = 63836;
+	public static final int GY_PIER_EDGE02 = 63837;
+	public static final int GY_PIER_EDGE02_MIRROR = 63838;
+	public static final int GY_PIER_SUPPORT01 = 63839;
+	public static final int GY_PIER_GANGPLANK01_TILE01 = 63840;
+	public static final int GY_PIER_GANGPLANK01_TILE01_END = 63841;
+	public static final int GY_BRIDGE01_PLANKS01_DAMAGED01 = 63842;
+	public static final int GY_BRIDGE01_PLANKS01_DAMAGED01_UNBLOCKED = 63843;
+	public static final int GY_BRIDGE01_PLANKS01_DAMAGED01_BLOCKED = 63844;
+	public static final int GY_BRIDGE02_PLANKS01_DAMAGED01 = 63845;
+	public static final int GY_BRIDGE03_PLANKS01_DAMAGED01 = 63846;
+	public static final int GY_WRECK_OBSTACLE01 = 63847;
+
+	/**
+	 * Dead Fremennik
+	 */
+	public static final int GY_WRECK_OBSTACLE01_VISIBLE = 63848;
+
+	/**
+	 * Blockage
+	 */
+	public static final int GY_WRECK_OBSTACLE02 = 63849;
+	public static final int GY_PIER_LOW_PILLAR01 = 63850;
+	public static final int GY_PIER_LOW_PILLAR01_OFFSET01 = 63851;
+	public static final int GY_PIER_LOW_PILLAR01_OFFSET02 = 63852;
+	public static final int GY_PIER_LOW_PILLAR02 = 63853;
+	public static final int GY_PIER_LOW_PILLAR02_OFFSET01 = 63854;
+	public static final int GY_PIER_LOW_PILLAR02_OFFSET02 = 63855;
+
+	/**
+	 * Cave entrance
+	 */
+	public static final int GRAVEYARD_CAVE_ENTRY = 63856;
+	public static final int GY_BRIDGE01_BUILT01 = 63857;
+
+	/**
+	 * Bridge
+	 */
+	public static final int GY_BRIDGE01_FIXED01 = 63858;
+	public static final int GY_BRIDGE01_BUILT02 = 63859;
+
+	/**
+	 * Prow
+	 */
+	public static final int GY_BRIDGE01_FIXED02 = 63860;
+	public static final int GY_BRIDGE01_BUILT03 = 63861;
+
+	/**
+	 * Prow
+	 */
+	public static final int GY_BRIDGE01_BROKEN03 = 63862;
+
+	/**
+	 * Prow
+	 */
+	public static final int GY_BRIDGE01_FIXED03 = 63863;
+	public static final int GY_WRECK_MEDIUM01_CHOPPABLE01 = 63864;
+	public static final int GY_WRECK_MEDIUM01_CHOPPED01 = 63865;
+	public static final int GY_WRECK01_CHOPPABLE01 = 63866;
+	public static final int GY_WRECK_MEDIUM01_CHOPPABLE02 = 63867;
+	public static final int GY_WRECK_MEDIUM01_CHOPPED02 = 63868;
+	public static final int GY_WRECK01_CHOPPABLE02 = 63869;
+
+	/**
+	 * Blockage
+	 */
+	public static final int GY_WRECK_BLOCKING01 = 63870;
+	public static final int GY_AGILITY_MAST01 = 63871;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_1 = 63872;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_1 = 63873;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_2 = 63874;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_3 = 63875;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_4 = 63876;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_5 = 63877;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_6 = 63878;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_7 = 63879;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_8 = 63880;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_9 = 63881;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_10 = 63882;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_11 = 63883;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_12 = 63884;
+
+	/**
+	 * Gap
+	 */
+	public static final int GRAVEYARD_OVERWORLD_QUEST_OBSTACLE_JUMP_13 = 63885;
+
+	/**
+	 * &#60;col=ffff00&#62;Fremennik warrior&#60;/col&#62;
+	 */
+	public static final int GY_VIKING_SHIP01_SOLDIER01 = 63886;
+
+	/**
+	 * &#60;col=ffff00&#62;Fremennik warrior&#60;/col&#62;
+	 */
+	public static final int GY_VIKING_SHIP01_SOLDIER01_MIRROR01 = 63887;
+
+	/**
+	 * Cage
+	 */
+	public static final int GY_CAGE_DAMAGED01 = 63888;
+	public static final int WATERFALL_OVERLAY_1_DEEPOCEAN01 = 63889;
+	public static final int GY_ROCKS01_MEDIUM01_OUTCROP01 = 63890;
+	public static final int GY_ROCKS02_SMALL01_OUTCROP01 = 63891;
+	public static final int GY_ROCKS02_SMALL02_OUTCROP01 = 63892;
+
+	/**
+	 * Dead tree
+	 */
+	public static final int DEADTREE_SMALL01_SNOW01 = 63893;
+
+	/**
+	 * Dead tree
+	 */
+	public static final int DEADTREE_LARGE01_SNOW01 = 63894;
+
+	/**
+	 * Dead tree
+	 */
+	public static final int DEADTREE_LARGE02_SNOW01 = 63895;
+	public static final int SNOW_COLD_SOIL01 = 63896;
+	public static final int SNOW_COLD_SOIL02 = 63897;
+	public static final int SNOW_COLD_SOIL03 = 63898;
+	public static final int SNOW_COLD_SOIL01_DARK01 = 63899;
+	public static final int SNOW_COLD_SOIL02_DARK01 = 63900;
+	public static final int SNOW_COLD_SOIL03_DARK01 = 63901;
+
+	/**
+	 * Hollow log
+	 */
+	public static final int LOG_HOLLOW01_SNOW01 = 63902;
+
+	/**
+	 * Hollow log
+	 */
+	public static final int LOG_HOLLOW02_SNOW01 = 63903;
+	public static final int SNOWY_GRASS_1 = 63904;
+	public static final int SNOWY_GRASS_2 = 63905;
+	public static final int SNOWY_GRASS_3 = 63906;
+	public static final int SNOWY_GRASS_1_DARK01 = 63907;
+	public static final int SNOWY_GRASS_2_DARK01 = 63908;
+	public static final int SNOWY_GRASS_3_DARK01 = 63909;
+	public static final int SNOWY_SPARKLES_01 = 63910;
+	public static final int SNOWY_SPARKLES_02 = 63911;
+	public static final int SNOWY_SPARKLES_03 = 63912;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAILS_GRAVEYARD = 63913;
+	public static final int SAILING_BOAT_MAST_GRAVEYARD = 63914;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_FREMENNIK = 63915;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_GHOST = 63916;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_FREMENNIK = 63917;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_GHOST = 63918;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_FREMENNIK = 63919;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_GHOST = 63920;
+	public static final int SAILING_GRAVEYARD_NAVIGATING = 63921;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_GRAVEYARD_HELM = 63922;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_GRAVEYARD_HELM_NOT_IN_USE = 63923;
+
+	/**
+	 * Buoy
+	 */
+	public static final int SAILING_DOCKING_BUOY_THE_GRAVEYARD = 63924;
+	public static final int SAILING_MOORING_THE_GRAVEYARD = 63925;
 /* This file is automatically generated. Do not edit. */
 }

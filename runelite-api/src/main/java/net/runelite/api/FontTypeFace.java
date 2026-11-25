@@ -41,5 +41,6 @@ public interface FontTypeFace
 		int x, int y, int width, int height,
 		int rgb, int shadowRGB, int alpha,
 		@MagicConstant(valuesFromClass = WidgetTextAlignment.class) int xTextAlignment, @MagicConstant(valuesFromClass = WidgetTextAlignment.class) int yTextAlignment,
-		int lineHeight);
+		int lineHeight,
+		boolean crop);
 }

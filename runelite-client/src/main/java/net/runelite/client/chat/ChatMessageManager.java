@@ -42,6 +42,9 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.annotations.Varp;
+import net.runelite.api.clan.ClanChannel;
+import net.runelite.api.clan.ClanID;
+import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
@@ -111,8 +114,31 @@ public class ChatMessageManager
 
 		String message = (String) objectStack[osize - 2];
 		final String username = (String) objectStack[osize - 3];
-		final String channel = (String) objectStack[osize - 4];
+		String channel = (String) objectStack[osize - 4];
 		final ChatMessageType chatMessageType = messageNode.getType();
+
+		// Clan broadcasts have no channel, ChatBuilder uses the channel set here
+		switch (chatMessageType)
+		{
+			case CLAN_MESSAGE:
+			{
+				ClanChannel clanChannel = client.getClanChannel(ClanID.CLAN);
+				channel = clanChannel == null ? "" : clanChannel.getName();
+				break;
+			}
+			case CLAN_GIM_MESSAGE:
+			{
+				ClanSettings clanSettings = client.getClanSettings(ClanID.GROUP_IRONMAN);
+				channel = clanSettings == null ? "" : clanSettings.getName();
+				break;
+			}
+			case CLAN_GUEST_MESSAGE:
+			{
+				ClanChannel clanChannel = client.getGuestClanChannel();
+				channel = clanChannel == null ? "" : clanChannel.getName();
+				break;
+			}
+		}
 
 		final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1;
 		Color usernameColor = null;
@@ -169,8 +195,10 @@ public class ChatMessageManager
 
 		if (channelColor != null && !Strings.isNullOrEmpty(channel))
 		{
-			objectStack[osize - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
+			channel = ColorUtil.wrapWithColorTag(channel, channelColor);
 		}
+
+		objectStack[osize - 4] = channel;
 
 		String prefix = "";
 		if (chatMessageType == ChatMessageType.CLAN_GIM_CHAT || chatMessageType == ChatMessageType.CLAN_GIM_MESSAGE)

@@ -5971,10 +5971,6 @@ public final class NpcID
 	 * fluffie
 	 */
 	public static final int EYEGLO_FLUFFIE_REVEALED = 1258;
-
-	/**
-	 * Odd Old Man
-	 */
 	public static final int RAG_ODD_OLD_MAN = 1259;
 
 	/**
@@ -15172,6 +15168,58 @@ public final class NpcID
 	 * Frincos
 	 */
 	public static final int FRINCOS = 3215;
+	public static final int BAW_BEA_MULTI = 3216;
+
+	/**
+	 * Farmer Bea
+	 */
+	public static final int BAW_BEA = 3217;
+
+	/**
+	 * Farmer Bea
+	 */
+	public static final int BAW_BEA_3OPS = 3218;
+	public static final int BAW_BEE_DEALER_MULTI = 3219;
+
+	/**
+	 * Bee dealer
+	 */
+	public static final int BAW_BEE_DEALER = 3220;
+
+	/**
+	 * Farmer Bea
+	 */
+	public static final int BAW_BEA_CUTSCENE = 3221;
+
+	/**
+	 * Swarm of wasps
+	 */
+	public static final int BAW_WASP_SWARM_CUTSCENE = 3222;
+
+	/**
+	 * Swarm of killer wasps
+	 */
+	public static final int BAW_KILLER_WASP_SWARM_CUTSCENE = 3223;
+
+	/**
+	 * Honey Buzzard
+	 */
+	public static final int BAW_HONEY_BUZZARD_CUTSCENE = 3224;
+
+	/**
+	 * Black Honey Buzzard
+	 */
+	public static final int BAW_BLACK_HONEY_BUZZARD_CUTSCENE = 3225;
+
+	/**
+	 * Swarm of wasps
+	 */
+	public static final int BAW_WASP_SWARM = 3226;
+
+	/**
+	 * Swarm of wasps (furious)
+	 */
+	public static final int BAW_WASP_SWARM_FURIOUS = 3227;
 	public static final int RCU_ZAMMY_MAGE1 = 3228;
 	public static final int RCU_ZAMMY_MAGE1_EDGE = 3229;
 	public static final int MULTI_SKIPPY = 3230;
@@ -25707,6 +25755,11 @@ public final class NpcID
 	 * Flax keeper
 	 */
 	public static final int DIARY_FLAX_KEEPER = 5522;
+
+	/**
+	 * Swarm of killer wasps
+	 */
+	public static final int BAW_KILLER_WASP_SWARM = 5523;
 
 	/**
 	 * Sir Rebral
@@ -38839,10 +38892,6 @@ public final class NpcID
 	 * Felfiz Yaryus
 	 */
 	public static final int FARMING_GUILD_ANIMA_GARDENER = 8595;
-
-	/**
-	 * Keith
-	 */
 	public static final int KEBOS_FARMER_1 = 8596;
 	public static final int GA_MARY = 8597;
 
@@ -39060,6 +39109,11 @@ public final class NpcID
 	public static final int _3RD_AGE_DRUID_STAFF_TRANSMOG = 8662;
 	public static final int _3RD_AGE_DRUID_CLOAK_TRANSMOG = 8663;
 	public static final int _3RD_AGE_RING_TRANSMOG = 8664;
+
+	/**
+	 * Swarm of killer wasps (furious)
+	 */
+	public static final int BAW_KILLER_WASP_SWARM_FURIOUS = 8665;
 
 	/**
 	 * Banker
@@ -71241,6 +71295,10 @@ public final class NpcID
 	 * Crab
 	 */
 	public static final int CRAB_MAINCRAB_END = 16474;
+	public static final int BAW_WASP_1_MULTI = 16475;
+	public static final int BAW_WASP_2_MULTI = 16476;
+	public static final int BAW_WASP_3_MULTI = 16477;
+	public static final int BAW_KILLER_WASP_1_MULTI = 16478;
 
 	/**
 	 * Crab
@@ -72494,102 +72552,98 @@ public final class NpcID
 	 * Dork
 	 */
 	public static final int POH_BORK_PET = 16771;
-	public static final int HW26_TRICKORTREATER_CHILD_1_MULTI = 16772;
-	public static final int HW26_TRICKORTREATER_CHILD_2_MULTI = 16773;
-	public static final int HW26_TRICKORTREATER_CHILD_3_MULTI = 16774;
-	public static final int HW26_TRICKORTREATER_CHILD_4_MULTI = 16775;
-	public static final int HW26_TRICKORTREATER_CHILD_5_MULTI = 16776;
+	public static final int GRAVEYARD_WARBAND_DOCK_NPC = 16772;
 
 	/**
-	 * none
+	 * Fremennik warrior
 	 */
-	public static final int HW26_TRICKORTREATER_CHILD_INVISIBLE = 16777;
+	public static final int GRAVEYARD_WARBAND_BOARDING_NPC = 16773;
 
 	/**
-	 * Trick or treater
+	 * Fremennik warrior
 	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE01 = 16778;
+	public static final int GRAVEYARD_WARBAND_CUTSCENE_LEADER = 16774;
 
 	/**
-	 * Trick or treater
+	 * Fremennik warrior
 	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE02 = 16779;
+	public static final int GRAVEYARD_WARBAND_CUTSCENE_BACKGROUND = 16775;
 
 	/**
-	 * Trick or treater
+	 * Reflection
 	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE03 = 16780;
+	public static final int GRAVEYARD_VISION_PLAYERCLONE = 16776;
 
 	/**
-	 * Trick or treater
+	 * Olaf Hradson
 	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE04 = 16781;
+	public static final int GRAVEYARD_FEAST_OLAF = 16777;
 
 	/**
-	 * Trick or treater
+	 * Volf Olafson
 	 */
-	public static final int HW26_TRICKORTREATER_CHILD_VISIBLE05 = 16782;
-	public static final int HW26_TRICKORTREATER_CHILD_1_RUNNING = 16783;
-	public static final int HW26_TRICKORTREATER_CHILD_2_RUNNING = 16784;
-	public static final int HW26_TRICKORTREATER_CHILD_3_RUNNING = 16785;
-	public static final int HW26_TRICKORTREATER_CHILD_4_RUNNING = 16786;
-	public static final int HW26_TRICKORTREATER_CHILD_5_RUNNING = 16787;
-	public static final int HW26_TRICKORTREATER_ADULT_1_MULTI = 16788;
-	public static final int HW26_TRICKORTREATER_ADULT_2_MULTI = 16789;
-	public static final int HW26_TRICKORTREATER_ADULT_3_MULTI = 16790;
-	public static final int HW26_TRICKORTREATER_ADULT_4_MULTI = 16791;
-	public static final int HW26_TRICKORTREATER_ADULT_5_MULTI = 16792;
+	public static final int GRAVEYARD_FEAST_VOLF = 16778;
 
 	/**
-	 * none
+	 * Ingrid Hradson
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_INVISIBLE = 16793;
+	public static final int GRAVEYARD_FEAST_INGRID = 16779;
 
 	/**
-	 * Trick or treater
+	 * Ospak
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE = 16794;
+	public static final int GRAVEYARD_FEAST_HECKLER_1 = 16780;
 
 	/**
-	 * Trick or treater
+	 * Styrmir
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE_02 = 16795;
+	public static final int GRAVEYARD_FEAST_HECKLER_2 = 16781;
 
 	/**
-	 * Trick or treater
+	 * Torbrund
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE_03 = 16796;
+	public static final int GRAVEYARD_FEAST_HECKLER_3 = 16782;
 
 	/**
-	 * Trick or treater
+	 * Fridgeir
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE_04 = 16797;
+	public static final int GRAVEYARD_FEAST_HECKLER_4 = 16783;
 
 	/**
-	 * Trick or treater
+	 * Brundt the Chieftain
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_VISIBLE_05 = 16798;
-	public static final int HW26_TRICKORTREATER_ADULT_1_VOMIT = 16799;
+	public static final int GRAVEYARD_BRUNDT_ECHO = 16784;
 
 	/**
-	 * Trick or treater
+	 * Olaf Hradson
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_2_VOMIT = 16800;
+	public static final int GRAVEYARD_OLAF_ECHO = 16785;
 
 	/**
-	 * Trick or treater
+	 * Volf Olafson
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_3_VOMIT = 16801;
+	public static final int GRAVEYARD_VOLF_ECHO = 16786;
 
 	/**
-	 * Trick or treater
+	 * Ræun
 	 */
-	public static final int HW26_TRICKORTREATER_ADULT_4_VOMIT = 16802;
-
-	/**
-	 * Trick or treater
-	 */
-	public static final int HW26_TRICKORTREATER_ADULT_5_VOMIT = 16803;
+	public static final int GRAVEYARD_RAEUN_ECHO = 16787;
+	public static final int GRAVEYARD_ECHO_1_GUARD_CAPTAIN_OVERWORLD = 16788;
+	public static final int GRAVEYARD_ECHO_1_GUARD_MINION_1_OVERWORLD = 16789;
+	public static final int GRAVEYARD_ECHO_1_GUARD_MINION_2_OVERWORLD = 16790;
+	public static final int GRAVEYARD_ECHO_1_GUARD_MINION_3_OVERWORLD = 16791;
+	public static final int GRAVEYARD_ECHO_2_GUARD_CAPTAIN_OVERWORLD = 16792;
+	public static final int GRAVEYARD_ECHO_2_GUARD_MINION_1_OVERWORLD = 16793;
+	public static final int GRAVEYARD_ECHO_2_GUARD_MINION_2_OVERWORLD = 16794;
+	public static final int GRAVEYARD_ECHO_2_GUARD_MINION_3_OVERWORLD = 16795;
+	public static final int GRAVEYARD_ECHO_3_GUARD_CAPTAIN_OVERWORLD = 16796;
+	public static final int GRAVEYARD_ECHO_3_GUARD_MINION_1_OVERWORLD = 16797;
+	public static final int GRAVEYARD_ECHO_3_GUARD_MINION_2_OVERWORLD = 16798;
+	public static final int GRAVEYARD_ECHO_3_GUARD_MINION_3_OVERWORLD = 16799;
+	public static final int GRAVEYARD_ECHO_4_GUARD_CAPTAIN_OVERWORLD = 16800;
+	public static final int GRAVEYARD_ECHO_4_GUARD_MINION_1_OVERWORLD = 16801;
+	public static final int GRAVEYARD_ECHO_4_GUARD_MINION_2_OVERWORLD = 16802;
+	public static final int GRAVEYARD_ECHO_4_GUARD_MINION_3_OVERWORLD = 16803;
 
 	/**
 	 * Mikasi
@@ -72838,5 +72892,525 @@ public final class NpcID
 	 * Kyle
 	 */
 	public static final int WOTW_FORESTER = 16875;
+	public static final int BAW_KILLER_WASP_2_MULTI = 16876;
+	public static final int BAW_KILLER_WASP_3_MULTI = 16877;
+	public static final int BAW_HONEY_BUZZARD_MULTI = 16878;
+
+	/**
+	 * Honey Buzzard
+	 */
+	public static final int BAW_HONEY_BUZZARD = 16879;
+	public static final int BAW_BLACK_HONEY_BUZZARD_MULTI = 16880;
+
+	/**
+	 * Black Honey Buzzard
+	 */
+	public static final int BAW_BLACK_HONEY_BUZZARD = 16881;
+
+	/**
+	 * Juvenile Snail
+	 */
+	public static final int SNAILQUEST_SNAIL = 16882;
+
+	/**
+	 * Leech
+	 */
+	public static final int SNAILQUEST_LEECH = 16883;
+
+	/**
+	 * SnelmLover500
+	 */
+	public static final int SNAILQUEST_SNELMLOVER = 16884;
+
+	/**
+	 * SnelmLover500
+	 */
+	public static final int SNAILQUEST_SNELMLOVER_COMBAT = 16885;
+
+	/**
+	 * Keith
+	 */
+	public static final int KEBOS_FARMER_1_VIS = 16886;
+	public static final int ANL_DISHOP_DENNIS_MULTI = 16887;
+
+	/**
+	 * Dishop Dennis
+	 */
+	public static final int ANL_DISHOP_DENNIS = 16888;
+
+	/**
+	 * Sir Loin
+	 */
+	public static final int ANL_SIR_LOIN = 16889;
+
+	/**
+	 * Fermenter of chaos
+	 */
+	public static final int ANL_FERMENTER_OF_CHAOS = 16890;
+
+	/**
+	 * Goblin meat tenderiser
+	 */
+	public static final int ANL_GOBLIN_MEAT_TENDERISER = 16891;
+
+	/**
+	 * Gardener of Armadyl
+	 */
+	public static final int ANL_GARDENER_OF_ARMADYL = 16892;
+
+	/**
+	 * Bandit cactus cultivator
+	 */
+	public static final int ANL_BANDIT_CACTUS_CULTIVATOR = 16893;
+	public static final int RAG_ODD_OLD_MAN_NOSACK = 16894;
+
+	/**
+	 * Odd Old Man
+	 */
+	public static final int RAG_ODD_OLD_MAN_VIS = 16895;
+
+	/**
+	 * Odd Old Man
+	 */
+	public static final int RAG_ODD_OLD_MAN_NOSACK_VIS = 16896;
+
+	/**
+	 * Death
+	 */
+	public static final int RAG3_DEATH = 16897;
+
+	/**
+	 * Romeo
+	 */
+	public static final int RAG3_ROMEO = 16898;
+
+	/**
+	 * Gielinor Guide
+	 */
+	public static final int RAG3_NEWBIE_BASICS_INSTRUCTOR = 16899;
+
+	/**
+	 * Survival Expert
+	 */
+	public static final int RAG3_NEWBIE_SURVIVAL_INSTRUCTOR = 16900;
+
+	/**
+	 * Fishing spot
+	 */
+	public static final int RAG3_NEWBIEFISHING = 16901;
+
+	/**
+	 * King Roald
+	 */
+	public static final int RAG3_KING_ROALD = 16902;
+
+	/**
+	 * Lost Soul
+	 */
+	public static final int RAG3_GHOST = 16903;
+
+	/**
+	 * Archmage Sedridor
+	 */
+	public static final int RAG3_HEAD_WIZARD = 16904;
+
+	/**
+	 * Archmage Sedridor
+	 */
+	public static final int RAG3_HEAD_WIZARD_COMBAT = 16905;
+
+	/**
+	 * Wizard Traiborn
+	 */
+	public static final int RAG3_TRAIBORN = 16906;
+
+	/**
+	 * Wizard Traiborn
+	 */
+	public static final int RAG3_TRAIBORN_CAMDOZAAL = 16907;
+
+	/**
+	 * Tolna
+	 */
+	public static final int RAG3_TOLNA_CHILD = 16908;
+
+	/**
+	 * Tolna
+	 */
+	public static final int RAG3_TOLNA1 = 16909;
+
+	/**
+	 * Tolna
+	 */
+	public static final int RAG3_TOLNA2 = 16910;
+
+	/**
+	 * Tolna
+	 */
+	public static final int RAG3_TOLNA3 = 16911;
+
+	/**
+	 * Skeletal Horror
+	 */
+	public static final int RAG3_SKELETAL_HORROR = 16912;
+
+	/**
+	 * Skeletal Horror
+	 */
+	public static final int RAG3_SKELETAL_HORROR_CUTSCENE = 16913;
+
+	/**
+	 * Horrifying Creature
+	 */
+	public static final int RAG3_STALKER = 16914;
+
+	/**
+	 * Odd Old Man
+	 */
+	public static final int RAG3_ODD_OLD_MAN_CUTSCENE = 16915;
+
+	/**
+	 * Odd Old Man
+	 */
+	public static final int RAG3_ODD_OLD_MAN_CUTSCENE_TRANCE = 16916;
+
+	/**
+	 * Shade
+	 */
+	public static final int RAG3_SHADE = 16917;
+
+	/**
+	 * Shadow
+	 */
+	public static final int RAG3_SHADOW = 16918;
+
+	/**
+	 * Ancient Banshee
+	 */
+	public static final int RAG3_BANSHEE = 16919;
+	public static final int RAG3_HIDDEN_GHOST = 16920;
+
+	/**
+	 * Ghost
+	 */
+	public static final int RAG3_HIDDEN_GHOST_VIS = 16921;
+
+	/**
+	 * &#60;col=00ffff&#62;Shadow Rift&#60;/col&#62;
+	 */
+	public static final int RAG3_HORROR_RIFT = 16922;
+
+	/**
+	 * Skeletal Hand
+	 */
+	public static final int RAG3_CRAWLING_HAND = 16923;
+	public static final int GRAVEYARD_ECHO_5_GUARD_CAPTAIN_OVERWORLD = 16924;
+	public static final int GRAVEYARD_ECHO_5_GUARD_MINION_1_OVERWORLD = 16925;
+	public static final int GRAVEYARD_ECHO_5_GUARD_MINION_2_OVERWORLD = 16926;
+	public static final int GRAVEYARD_ECHO_5_GUARD_MINION_3_OVERWORLD = 16927;
+	public static final int GRAVEYARD_ECHO_6_GUARD_CAPTAIN_OVERWORLD = 16928;
+	public static final int GRAVEYARD_ECHO_6_GUARD_MINION_1_OVERWORLD = 16929;
+	public static final int GRAVEYARD_ECHO_6_GUARD_MINION_2_OVERWORLD = 16930;
+	public static final int GRAVEYARD_ECHO_6_GUARD_MINION_3_OVERWORLD = 16931;
+
+	/**
+	 * Skeleton captain
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_CAPTAIN_1_COMBAT = 16932;
+
+	/**
+	 * Skeleton captain
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_CAPTAIN_2_COMBAT = 16933;
+
+	/**
+	 * Skeleton captain
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_CAPTAIN_3_COMBAT = 16934;
+
+	/**
+	 * Skeleton captain
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_CAPTAIN_4_COMBAT = 16935;
+
+	/**
+	 * Skeleton captain
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_CAPTAIN_5_COMBAT = 16936;
+
+	/**
+	 * Skeleton captain
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_CAPTAIN_6_COMBAT = 16937;
+
+	/**
+	 * Skeleton Fremennik
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_MINIONS_1_COMBAT = 16938;
+
+	/**
+	 * Skeleton Fremennik
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_MINIONS_2_COMBAT = 16939;
+
+	/**
+	 * Skeleton Fremennik
+	 */
+	public static final int GRAVEYARD_ECHO_GUARD_MINIONS_3_COMBAT = 16940;
+
+	/**
+	 * Dolly
+	 */
+	public static final int GRAVEYARD_CAVE01_DOLLY01 = 16941;
+	public static final int GRAVEYARD_WARBAND_DOCK_NPC_POST = 16942;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int GRAVEYARD_WARBAND_BOARDING_NPC_POST = 16943;
+
+	/**
+	 * Ræun
+	 */
+	public static final int RAEUN = 16944;
+	public static final int RAEUN_FREMENNIK_SAILOR_1_MULTI = 16945;
+	public static final int RAEUN_FREMENNIK_SAILOR_2_MULTI = 16946;
+	public static final int RAEUN_FREMENNIK_SAILOR_3_MULTI = 16947;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_1_CHAINED = 16948;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_2_CHAINED = 16949;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_3_CHAINED = 16950;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_1_FREE_ME = 16951;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_2_FREE_ME = 16952;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_3_FREE_ME = 16953;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_1_COMBAT = 16954;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_2_COMBAT = 16955;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_3_COMBAT = 16956;
+
+	/**
+	 * Soul chains
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_1_CHAINS_TO_ATTACK = 16957;
+
+	/**
+	 * Soul chains
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_2_CHAINS_TO_ATTACK = 16958;
+
+	/**
+	 * Soul chains
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_3_CHAINS_TO_ATTACK = 16959;
+	public static final int RAEUN_CHAIN_SPOT = 16960;
+	public static final int RAEUN_FREMENNIK_SAILOR_1_OVERWORLD = 16961;
+	public static final int RAEUN_FREMENNIK_SAILOR_2_OVERWORLD = 16962;
+	public static final int RAEUN_FREMENNIK_SAILOR_3_OVERWORLD = 16963;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_1_CHAINED_OVERWORLD = 16964;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_2_CHAINED_OVERWORLD = 16965;
+
+	/**
+	 * Fremennik warrior
+	 */
+	public static final int RAEUN_FREMENNIK_SAILOR_3_CHAINED_OVERWORLD = 16966;
+
+	/**
+	 * Volf Olafson
+	 */
+	public static final int GRAVEYARD_VOLF_CAPTAINS_FIGHT = 16967;
+
+	/**
+	 * Fremennik captain
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CAPTAIN_1 = 16968;
+
+	/**
+	 * Fremennik captain
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CAPTAIN_2 = 16969;
+
+	/**
+	 * Fremennik captain
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CAPTAIN_3 = 16970;
+
+	/**
+	 * Skeleton Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CAPTAINS_MINIONS_1 = 16971;
+
+	/**
+	 * Skeleton Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CAPTAINS_MINIONS_2 = 16972;
+
+	/**
+	 * Skeleton Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CAPTAINS_MINIONS_3 = 16973;
+
+	/**
+	 * Skeleton Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CAPTAINS_MINIONS_4 = 16974;
+
+	/**
+	 * Skeleton Fremennik
+	 */
+	public static final int GRAVEYARD_FREMENNIK_CAPTAINS_MINIONS_VOLF = 16975;
+	public static final int OLAF_CAMP = 16976;
+	public static final int OLAF_HOME = 16977;
+	public static final int OLAF_VOLF_MULTI = 16978;
+	public static final int GRAVEYARD_VOLF_LONGHALL_MULTI = 16979;
+	public static final int GRAVEYARD_VOLF_HOME_MULTI = 16980;
+	public static final int GRAVEYARD_VOLF_BOAT = 16981;
+	public static final int GRAVEYARD_VOLF_EXPLORATION = 16982;
+
+	/**
+	 * Volf Olafson
+	 */
+	public static final int OLAF_VOLF_2OP = 16983;
+
+	/**
+	 * Combo Cameron
+	 */
+	public static final int PVPTUT_WHIP_MAUL_COMBO_SPEC = 16984;
+
+	/**
+	 * Kevin
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_EXTRA = 16985;
+
+	/**
+	 * Larry
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_8 = 16986;
+
+	/**
+	 * Joe
+	 */
+	public static final int PVPTUT_SA_NPC_PARTNER_9 = 16987;
+
+	/**
+	 * TankTester
+	 */
+	public static final int PVPTUT_VENG_NPC_PARTNER_1 = 16988;
+
+	/**
+	 * DharokFan
+	 */
+	public static final int PVPTUT_VENG_NPC_PARTNER_2 = 16989;
+
+	/**
+	 * 2Fast4U
+	 */
+	public static final int PVPTUT_VENG_NPC_PARTNER_3 = 16990;
+
+	/**
+	 * 2Fast4U
+	 */
+	public static final int PVPTUT_VENG_NPC_PARTNER_4 = 16991;
+
+	/**
+	 * 2Fast4U
+	 */
+	public static final int PVPTUT_VENG_NPC_PARTNER_5 = 16992;
+
+	/**
+	 * UrSpadeIsMine
+	 */
+	public static final int PVPTUT_VENG_NPC_PARTNER_6 = 16993;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_MAGIC = 16994;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_RANGED = 16995;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_MELEE = 16996;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_SPECIAL = 16997;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_MORE_MAGIC_THAN_MELEE = 16998;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_MORE_MELEE_THAN_MAGIC = 16999;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_MORE_RANGED_THAN_MELEE = 17000;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_MORE_MELEE_THAN_RANGED = 17001;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_MORE_RANGED_THAN_MAGIC = 17002;
+
+	/**
+	 * Kasper
+	 */
+	public static final int PVPTUT_VENGEANCE_EXTENDED_NPC_MORE_MAGIC_THAN_RANGED = 17003;
 /* This file is automatically generated. Do not edit. */
 }

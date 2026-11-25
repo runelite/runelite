@@ -239,6 +239,8 @@ public enum Quest
 	FALLEN_FROM_GRACE(7133, "Fallen From Grace"),
 	LEARNING_THE_ROPES(9643, "Learning the Ropes"),
 	THE_IDES_OF_MILK(9645, "The Ides of Milk"),
+	A_NEW_LEAF(13708, "A New Leaf"),
+	RAG_AND_BONE_MAN_III(13730, "Rag and Bone Man III"),
 	THE_BLOOD_MOON_RISES(16414, "The Blood Moon Rises"),
 	A_RUFF_SITUATION(16971, "A Ruff Situation"),
 	CRAB_QUEST(16972, "Crab Quest"),
@@ -246,6 +248,9 @@ public enum Quest
 	DADDYS_HOME(17229, "Daddy's Home"),
 	MUDFOOTS_BIG_ADVENTURE(17230, "Mudfoot's Big Adventure"),
 	THE_WRITINGS_ON_THE_WALL(17231, "The Writing's on the Wall"),
+	A_SHELL_OF_A_FRIEND(17315, "A Shell of a Friend"),
+	THE_BIRDS_AND_THE_WASPS(17316, "The Birds and the Wasps"),
+	THE_GRAVEYARD(17328, "The Graveyard"),
 	;
 
 	@Getter
