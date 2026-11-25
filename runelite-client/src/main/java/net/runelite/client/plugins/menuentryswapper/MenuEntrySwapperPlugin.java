@@ -1409,6 +1409,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return true;
 		}
 
+		if (ctrlModifier() && config.bankEquipCtrlClick() != CtrlEquipMode.OFF
+				&& type == MenuAction.CC_OP
+				&& menuEntry.getIdentifier() == (isGroupStoragePlayerInventory || isChambersOfXericStorageUnitPlayerInventory ? 1 : 2)
+				&& (menuEntry.getOption().startsWith("Deposit-") || menuEntry.getOption().startsWith("Store") || menuEntry.getOption().startsWith("Donate")))
+		{
+			CtrlEquipMode ctrlEquipMode = config.bankEquipCtrlClick();
+			final int opId = isDepositBoxPlayerInventory ? ctrlEquipMode.getIdentifierDepositBox()
+					: isChambersOfXericStorageUnitPlayerInventory ? ctrlEquipMode.getIdentifierChambersStorageUnit()
+					: isGroupStoragePlayerInventory ? ctrlEquipMode.getIdentifierGroupStorage()
+					: ctrlEquipMode.getIdentifier();
+			final MenuAction action = opId >= 6 ? MenuAction.CC_OP_LOW_PRIORITY : MenuAction.CC_OP;
+			bankModeSwap(menu, action, opId);
+			return true;
+		}
+
 		// Swap to shift-click withdraw behavior
 		// Deposit- op 1 is the current withdraw amount 1/5/10/x
 		if (shiftModifier() && config.bankWithdrawShiftClick() != ShiftWithdrawMode.OFF
@@ -1885,6 +1900,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean shiftModifier()
 	{
 		return client.isKeyPressed(KeyCode.KC_SHIFT);
+	}
+
+	private boolean ctrlModifier()
+	{
+		return client.isKeyPressed(KeyCode.KC_CONTROL);
 	}
 
 	private Integer getObjectSwapConfig(boolean shift, int objectId)
