@@ -28,13 +28,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 import javax.inject.Singleton;
-import lombok.AccessLevel;
 import lombok.Getter;
 
 @Singleton
 public class WorldMapPointManager
 {
-	@Getter(AccessLevel.PACKAGE)
+	@Getter
 	private final List<WorldMapPoint> worldMapPoints = new CopyOnWriteArrayList<>();
 
 	public void add(WorldMapPoint worldMapPoint)
