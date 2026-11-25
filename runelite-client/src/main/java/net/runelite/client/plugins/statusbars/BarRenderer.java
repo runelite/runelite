@@ -41,9 +41,13 @@ class BarRenderer
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
+	private static final int SKILL_ICON_WIDTH = 24;
+	private static final int COUNTER_ICON_WIDTH = 12;
 	private static final int BORDER_SIZE = 1;
 	private static final int MIN_ICON_AND_COUNTER_WIDTH = 16;
+	private static final int MIN_ICON_AND_COUNTER_HEIGHT = 16;
 	static final int DEFAULT_WIDTH = 20;
+	static final int DEFAULT_HEIGHT = 6;
 	static final int MIN_WIDTH = 3;
 	static final int MAX_WIDTH = 40;
 	private final Supplier<Integer> maxValueSupplier;
@@ -68,11 +72,12 @@ class BarRenderer
 	 * @param graphics Graphics.
 	 * @param x The location on the client where it will draw the bar on the x axis starting on the left side.
 	 * @param y The location on the client where it will draw the bar on the y axis starting on the bottom side.
+	 * @param width The width of the bar.
 	 * @param height The height of the bar.
+	 * @param isFixedLayout Whether the client is in Fixed layout.
 	 */
-	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height)
+	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height, boolean isFixedLayout)
 	{
-		final int filledHeight = getBarHeight(maxValue, currentValue, height);
 		final Color fill = colorSupplier.get();
 		refreshSkills();
 
@@ -81,25 +86,44 @@ class BarRenderer
 		graphics.fillRect(x, y, width, height);
 
 		graphics.setColor(fill);
-		graphics.fillRect(x + BORDER_SIZE,
-			y + BORDER_SIZE + (height - filledHeight),
-			width - BORDER_SIZE * 2,
-			filledHeight - BORDER_SIZE * 2);
+		if (config.topBarMode() && !isFixedLayout)
+		{
+			final int filledWidth = getBarHeight(maxValue, currentValue, width);
+			graphics.fillRect(x + BORDER_SIZE,
+				y + BORDER_SIZE,
+				filledWidth - BORDER_SIZE * 2,
+				height - BORDER_SIZE * 2);
+		}
+		else
+		{
+			final int filledHeight = getBarHeight(maxValue, currentValue, height);
+			graphics.fillRect(x + BORDER_SIZE,
+				y + BORDER_SIZE + (height - filledHeight),
+				width - BORDER_SIZE * 2,
+				filledHeight - BORDER_SIZE * 2);
+		}
 
 		if (config.enableRestorationBars())
 		{
-			renderRestore(graphics, x, y, width, height);
+			renderRestore(config, graphics, x, y, width, height, isFixedLayout);
 		}
 
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
-			renderIconsAndCounters(config, graphics, x, y, width);
+			renderIconsAndCounters(config, graphics, x, y, width, height, isFixedLayout);
 		}
 	}
 
-	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width)
+	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height, boolean isFixedLayout)
 	{
-		// Icons and counters overlap the bar at small widths, so they are not drawn when the bars are too small
+		// Icons and counters overlap the bar at small widths/heights, so they are not drawn when the bars are too small
+		if (config.topBarMode())
+		{
+			if (height < MIN_ICON_AND_COUNTER_HEIGHT)
+			{
+				return;
+			}
+		}
 		if (width < MIN_ICON_AND_COUNTER_WIDTH)
 		{
 			return;
@@ -112,27 +136,52 @@ class BarRenderer
 			final Image icon = iconSupplier.get();
 			if (icon != null)
 			{
-				final int xDraw = x + (width / 2) - (icon.getWidth(null) / 2);
-				graphics.drawImage(icon, xDraw, y + 4, null);
+				if (config.topBarMode() && !isFixedLayout)
+				{
+					final int yDraw = y + (height / 2) - (icon.getHeight(null) / 2);
+					graphics.drawImage(icon, x + 4, yDraw, null);
+				}
+				else
+				{
+					final int xDraw = x + (width / 2) - (icon.getWidth(null) / 2);
+					graphics.drawImage(icon, xDraw, y + 4, null);
+				}
 			}
 		}
 
 		if (config.enableCounter())
 		{
-			graphics.setFont(FontManager.getRunescapeSmallFont());
-			final String counterText = Integer.toString(currentValue);
-			final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
-			final int centerText = (width / 2) - (widthOfCounter / 2);
-			final int yOffset = skillIconEnabled ? SKILL_ICON_HEIGHT : COUNTER_ICON_HEIGHT;
+			if (config.topBarMode() && !isFixedLayout)
+			{
+				graphics.setFont(FontManager.getRunescapeSmallFont());
+				final String counterText = Integer.toString(currentValue);
+				final int heightOfCounter = graphics.getFontMetrics().getHeight();
+				final int centerText = (height / 2) + (heightOfCounter / 2);
+				final int xOffset = skillIconEnabled ? SKILL_ICON_WIDTH : COUNTER_ICON_WIDTH;
 
-			final TextComponent textComponent = new TextComponent();
-			textComponent.setText(counterText);
-			textComponent.setPosition(new Point(x + centerText, y + yOffset));
-			textComponent.render(graphics);
+				final TextComponent textComponent = new TextComponent();
+				textComponent.setText(counterText);
+				textComponent.setPosition(new Point(x + xOffset, y + centerText));
+				textComponent.render(graphics);
+			}
+			else
+			{
+				graphics.setFont(FontManager.getRunescapeSmallFont());
+				final String counterText = Integer.toString(currentValue);
+				final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
+				final int centerText = (width / 2) - (widthOfCounter / 2);
+				final int yOffset = skillIconEnabled ? SKILL_ICON_HEIGHT : COUNTER_ICON_HEIGHT;
+
+				final TextComponent textComponent = new TextComponent();
+				textComponent.setText(counterText);
+				textComponent.setPosition(new Point(x + centerText, y + yOffset));
+				textComponent.render(graphics);
+			}
+
 		}
 	}
 
-	private void renderRestore(Graphics2D graphics, int x, int y, int width, int height)
+	private void renderRestore(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height, boolean isFixedLayout)
 	{
 		final int heal = healSupplier.get();
 
@@ -141,28 +190,56 @@ class BarRenderer
 			return;
 		}
 
-		final int filledCurrentHeight = getBarHeight(maxValue, currentValue, height);
-		final int filledHealHeight = getBarHeight(maxValue, heal, height);
-		final int fillY, fillHeight;
-		final Color color = healColorSupplier.get();
-		graphics.setColor(color);
-
-		if (filledHealHeight + filledCurrentHeight > height)
+		if (config.topBarMode() && !isFixedLayout)
 		{
-			graphics.setColor(OVERHEAL_COLOR);
-			fillY = y + BORDER_SIZE;
-			fillHeight = height - filledCurrentHeight - BORDER_SIZE;
+			final int filledCurrentWidth = getBarHeight(maxValue, currentValue, width);
+			final int filledHealWidth = getBarHeight(maxValue, heal, width);
+			final int fillX, fillWidth;
+			final Color color = healColorSupplier.get();
+			graphics.setColor(color);
+
+			if (filledHealWidth + filledCurrentWidth > width)
+			{
+				graphics.setColor(OVERHEAL_COLOR);
+				fillX = x - BORDER_SIZE + filledCurrentWidth;
+				fillWidth = width - filledCurrentWidth;
+			}
+			else
+			{
+				fillX = x - BORDER_SIZE + filledCurrentWidth;
+				fillWidth = filledHealWidth;
+			}
+
+			graphics.fillRect(fillX,
+				y + BORDER_SIZE,
+				fillWidth,
+				height - (BORDER_SIZE * 2));
 		}
 		else
 		{
-			fillY = y + BORDER_SIZE + height - (filledCurrentHeight + filledHealHeight);
-			fillHeight = filledHealHeight;
-		}
+			final int filledCurrentHeight = getBarHeight(maxValue, currentValue, height);
+			final int filledHealHeight = getBarHeight(maxValue, heal, height);
+			final int fillY, fillHeight;
+			final Color color = healColorSupplier.get();
+			graphics.setColor(color);
 
-		graphics.fillRect(x + BORDER_SIZE,
-			fillY,
-			width - BORDER_SIZE * 2,
-			fillHeight);
+			if (filledHealHeight + filledCurrentHeight > height)
+			{
+				graphics.setColor(OVERHEAL_COLOR);
+				fillY = y + BORDER_SIZE;
+				fillHeight = height - filledCurrentHeight - BORDER_SIZE;
+			}
+			else
+			{
+				fillY = y + BORDER_SIZE + height - (filledCurrentHeight + filledHealHeight);
+				fillHeight = filledHealHeight;
+			}
+
+			graphics.fillRect(x + BORDER_SIZE,
+				fillY,
+				width - BORDER_SIZE * 2,
+				fillHeight);
+		}
 	}
 
 	private static int getBarHeight(int base, int current, int size)
