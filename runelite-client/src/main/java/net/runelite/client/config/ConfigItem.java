@@ -48,4 +48,11 @@ public @interface ConfigItem
 	boolean secret() default false;
 
 	String section() default "";
+
+	/**
+	 * Render the control on its own line below the name, rather than to the
+	 * right of it. Useful when the control is wide, for example a dropdown with
+	 * long options, that would otherwise truncate the name.
+	 */
+	boolean below() default false;
 }
