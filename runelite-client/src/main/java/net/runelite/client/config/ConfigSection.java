@@ -40,4 +40,6 @@ public @interface ConfigSection
 	int position();
 
 	boolean closedByDefault() default false;
+
+	String parentSection() default "";
 }
