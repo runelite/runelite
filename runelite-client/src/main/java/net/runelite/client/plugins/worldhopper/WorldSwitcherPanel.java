@@ -29,6 +29,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -36,7 +38,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
@@ -46,6 +50,7 @@ import net.runelite.api.EnumComposition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
@@ -69,6 +74,7 @@ class WorldSwitcherPanel extends PluginPanel
 
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
+	private String filterText = "";
 
 	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private final WorldHopperPlugin plugin;
@@ -214,15 +220,34 @@ class WorldSwitcherPanel extends PluginPanel
 
 		listContainer.removeAll();
 
-		for (int i = 0; i < rows.size(); i++)
+		List<WorldTableRow> filteredRows = rows.stream()
+				.filter(row -> this.rowContainsWorldActivity(row) || this.rowContainsWorldNumber(row) || rowContainsRegion(row))
+				.collect(Collectors.toList());
+
+		for (int i = 0; i < filteredRows.size(); i++)
 		{
-			WorldTableRow row = rows.get(i);
+			WorldTableRow row = filteredRows.get(i);
 			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 			listContainer.add(row);
 		}
 
 		listContainer.revalidate();
 		listContainer.repaint();
+	}
+
+	private boolean rowContainsWorldActivity(WorldTableRow row)
+	{
+		return row.getWorld().getActivity().toLowerCase().contains(filterText.toLowerCase());
+	}
+
+	private boolean rowContainsWorldNumber(WorldTableRow row)
+	{
+		return String.valueOf(row.getWorld().getId()).startsWith(filterText);
+	}
+
+	private boolean rowContainsRegion(WorldTableRow row)
+	{
+		return row.getWorld().getRegion().toString().toLowerCase().contains(filterText.toLowerCase());
 	}
 
 	private int getCompareValue(WorldTableRow row1, WorldTableRow row2, Function<WorldTableRow, Comparable> compareByFn)
@@ -329,6 +354,65 @@ class WorldSwitcherPanel extends PluginPanel
 	 * Builds the entire table header.
 	 */
 	private JPanel buildHeader()
+	{
+		JPanel header = new JPanel();
+		header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+		JPanel sortingHeader = sortingHeader();
+		JPanel filterHeader = searchHeader();
+
+		header.add(filterHeader);
+		header.add(sortingHeader);
+
+		return header;
+	}
+
+	private JPanel searchHeader()
+	{
+		JPanel filterHeader = new JPanel();
+		filterHeader.setLayout(new BoxLayout(filterHeader, BoxLayout.X_AXIS));
+
+		IconTextField searchBar = new IconTextField();
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.setMinimumSize(new Dimension(0, 30));
+
+		searchBar.addKeyListener(new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+				filterText = searchBar.getText();
+				updateList();
+			}
+		});
+
+		searchBar.addClearListener(() ->
+		{
+			searchBar.requestFocusInWindow();
+			filterText = "";
+			updateList();
+		});
+
+		filterHeader.add(searchBar);
+
+		return filterHeader;
+	}
+
+	private JPanel sortingHeader()
 	{
 		JPanel header = new JPanel(new BorderLayout());
 		JPanel leftSide = new JPanel(new BorderLayout());
