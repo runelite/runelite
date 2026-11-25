@@ -38,7 +38,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -50,6 +49,7 @@ import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTAPlugin;
@@ -59,8 +59,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @Slf4j
 public class AlchemyRoom extends MTARoom
 {
-	private static final int MTA_ALCH_REGION = 13462;
-
 	private static final int IMAGE_Z_OFFSET = 150;
 	private static final int NUM_CUPBOARDS = 6;
 	private static final int INFO_ITEM_START = 7;
@@ -245,9 +243,7 @@ public class AlchemyRoom extends MTARoom
 	@Override
 	public boolean inside()
 	{
-		Player player = client.getLocalPlayer();
-		return player != null && player.getWorldLocation().getRegionID() == MTA_ALCH_REGION
-			&& player.getWorldLocation().getPlane() == 2;
+		return GameArea.MTA_ALCHEMISTS_PLAYGROUND.contains(client.getLocalPlayer().getWorldLocation());
 	}
 
 	private AlchemyItem getBest()
