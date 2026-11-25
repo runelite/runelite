@@ -25305,7 +25305,7 @@ public final class ItemID
 	public static final int RAG_GOBLIN_BONE = 7812;
 
 	/**
-	 * Bone in vinegar
+	 * Goblin skull in vinegar
 	 */
 	public static final int RAG_POT_GOBLIN_BONE = 7813;
 
@@ -25320,7 +25320,7 @@ public final class ItemID
 	public static final int RAG_BEAR_BONE = 7815;
 
 	/**
-	 * Bone in vinegar
+	 * Bear ribs in vinegar
 	 */
 	public static final int RAG_POT_BEAR_BONE = 7816;
 
@@ -25335,7 +25335,7 @@ public final class ItemID
 	public static final int RAG_RAM_BONE = 7818;
 
 	/**
-	 * Bone in vinegar
+	 * Ram skull in vinegar
 	 */
 	public static final int RAG_POT_RAM_BONE = 7819;
 
@@ -25350,7 +25350,7 @@ public final class ItemID
 	public static final int RAG_UNICORN_BONE = 7821;
 
 	/**
-	 * Bone in vinegar
+	 * Unicorn bone in vinegar
 	 */
 	public static final int RAG_POT_UNICORN_BONE = 7822;
 
@@ -25365,7 +25365,7 @@ public final class ItemID
 	public static final int RAG_GIANT_RAT_BONE = 7824;
 
 	/**
-	 * Bone in vinegar
+	 * Giant rat bone in vinegar
 	 */
 	public static final int RAG_POT_GIANT_RAT_BONE = 7825;
 
@@ -25380,7 +25380,7 @@ public final class ItemID
 	public static final int RAG_GIANT_BAT_BONE = 7827;
 
 	/**
-	 * Bone in vinegar
+	 * Giant bat wing in vinegar
 	 */
 	public static final int RAG_POT_GIANT_BAT_BONE = 7828;
 
@@ -25395,7 +25395,7 @@ public final class ItemID
 	public static final int RAG_WOLF_BONE = 7830;
 
 	/**
-	 * Bone in vinegar
+	 * Wolf bone in vinegar
 	 */
 	public static final int RAG_POT_WOLF_BONE = 7831;
 
@@ -25410,7 +25410,7 @@ public final class ItemID
 	public static final int RAG_BAT_BONE = 7833;
 
 	/**
-	 * Bone in vinegar
+	 * Bat wing in vinegar
 	 */
 	public static final int RAG_POT_BAT_BONE = 7834;
 
@@ -25425,7 +25425,7 @@ public final class ItemID
 	public static final int RAG_RAT_BONE = 7836;
 
 	/**
-	 * Bone in vinegar
+	 * Rat bone in vinegar
 	 */
 	public static final int RAG_POT_RAT_BONE = 7837;
 
@@ -25440,7 +25440,7 @@ public final class ItemID
 	public static final int RAG_BABY_BLUE_DRAGON_BONE = 7839;
 
 	/**
-	 * Bone in vinegar
+	 * Baby dragon bone in vinegar
 	 */
 	public static final int RAG_POT_BABY_BLUE_DRAGON_BONE = 7840;
 
@@ -25455,7 +25455,7 @@ public final class ItemID
 	public static final int RAG_OGRE_BONE = 7842;
 
 	/**
-	 * Bone in vinegar
+	 * Ogre ribs in vinegar
 	 */
 	public static final int RAG_POT_OGRE_BONE = 7843;
 
@@ -25470,7 +25470,7 @@ public final class ItemID
 	public static final int RAG_JOGRE_BONE = 7845;
 
 	/**
-	 * Bone in vinegar
+	 * Jogre bone in vinegar
 	 */
 	public static final int RAG_POT_JOGRE_BONE = 7846;
 
@@ -25485,7 +25485,7 @@ public final class ItemID
 	public static final int RAG_ZOGRE_BONE = 7848;
 
 	/**
-	 * Bone in vinegar
+	 * Zogre bone in vinegar
 	 */
 	public static final int RAG_POT_ZOGRE_BONE = 7849;
 
@@ -25500,7 +25500,7 @@ public final class ItemID
 	public static final int RAG_MOGRE_BONE = 7851;
 
 	/**
-	 * Bone in vinegar
+	 * Mogre bone in vinegar
 	 */
 	public static final int RAG_POT_MOGRE_BONE = 7852;
 
@@ -25515,7 +25515,7 @@ public final class ItemID
 	public static final int RAG_MONKEY_BONE = 7854;
 
 	/**
-	 * Bone in vinegar
+	 * Monkey paw in vinegar
 	 */
 	public static final int RAG_POT_MONKEY_BONE = 7855;
 
@@ -25530,7 +25530,7 @@ public final class ItemID
 	public static final int RAG_DAGGANOTH_BONE = 7857;
 
 	/**
-	 * Bone in vinegar
+	 * Dagannoth ribs in vinegar
 	 */
 	public static final int RAG_POT_DAGGANOTH_BONE = 7858;
 
@@ -25545,7 +25545,7 @@ public final class ItemID
 	public static final int RAG_SNAKE_BONE = 7860;
 
 	/**
-	 * Bone in vinegar
+	 * Snake spine in vinegar
 	 */
 	public static final int RAG_POT_SNAKE_BONE = 7861;
 
@@ -25560,7 +25560,7 @@ public final class ItemID
 	public static final int RAG_ZOMBIE_BONE = 7863;
 
 	/**
-	 * Bone in vinegar
+	 * Zombie bone in vinegar
 	 */
 	public static final int RAG_POT_ZOMBIE_BONE = 7864;
 
@@ -25575,7 +25575,7 @@ public final class ItemID
 	public static final int RAG_WEREWOLF_BONE = 7866;
 
 	/**
-	 * Bone in vinegar
+	 * Werewolf bone in vinegar
 	 */
 	public static final int RAG_POT_WEREWOLF_BONE = 7867;
 
@@ -25590,7 +25590,7 @@ public final class ItemID
 	public static final int RAG_MOSS_GIANT_BONE = 7869;
 
 	/**
-	 * Bone in vinegar
+	 * Moss giant bone in vinegar
 	 */
 	public static final int RAG_POT_MOSS_GIANT_BONE = 7870;
 
@@ -25605,7 +25605,7 @@ public final class ItemID
 	public static final int RAG_FIRE_GIANT_BONE = 7872;
 
 	/**
-	 * Bone in vinegar
+	 * Fire giant bone in vinegar
 	 */
 	public static final int RAG_POT_FIRE_GIANT_BONE = 7873;
 
@@ -25620,7 +25620,7 @@ public final class ItemID
 	public static final int RAG_ICE_GIANT_BONE = 7875;
 
 	/**
-	 * Bone in vinegar
+	 * Ice giant ribs in vinegar
 	 */
 	public static final int RAG_POT_ICE_GIANT_BONE = 7876;
 
@@ -25635,7 +25635,7 @@ public final class ItemID
 	public static final int RAG_TERRORBIRD_BONE = 7878;
 
 	/**
-	 * Bone in vinegar
+	 * Terrorbird wing in vinegar
 	 */
 	public static final int RAG_POT_TERRORBIRD_BONE = 7879;
 
@@ -25650,7 +25650,7 @@ public final class ItemID
 	public static final int RAG_GHOUL_BONE = 7881;
 
 	/**
-	 * Bone in vinegar
+	 * Ghoul bone in vinegar
 	 */
 	public static final int RAG_POT_GHOUL_BONE = 7882;
 
@@ -25665,7 +25665,7 @@ public final class ItemID
 	public static final int RAG_TROLL_BONE = 7884;
 
 	/**
-	 * Bone in vinegar
+	 * Troll bone in vinegar
 	 */
 	public static final int RAG_POT_TROLL_BONE = 7885;
 
@@ -25680,7 +25680,7 @@ public final class ItemID
 	public static final int RAG_SEAGULL_BONE = 7887;
 
 	/**
-	 * Bone in vinegar
+	 * Seagull wing in vinegar
 	 */
 	public static final int RAG_POT_SEAGULL_BONE = 7888;
 
@@ -25695,7 +25695,7 @@ public final class ItemID
 	public static final int RAG_UNDEAD_COW_BONE = 7890;
 
 	/**
-	 * Bone in vinegar
+	 * Undead cow ribs in vinegar
 	 */
 	public static final int RAG_POT_UNDEAD_COW_BONE = 7891;
 
@@ -25710,7 +25710,7 @@ public final class ItemID
 	public static final int RAG_EXPERIMENT_BONE = 7893;
 
 	/**
-	 * Bone in vinegar
+	 * Experiment bone in vinegar
 	 */
 	public static final int RAG_POT_EXPERIMENT_BONE = 7894;
 
@@ -25725,7 +25725,7 @@ public final class ItemID
 	public static final int RAG_RABBIT_BONE = 7896;
 
 	/**
-	 * Bone in vinegar
+	 * Rabbit bone in vinegar
 	 */
 	public static final int RAG_POT_RABBIT_BONE = 7897;
 
@@ -25740,7 +25740,7 @@ public final class ItemID
 	public static final int RAG_BABY_BASILISK_BONE = 7899;
 
 	/**
-	 * Bone in vinegar
+	 * Basilisk bone in vinegar
 	 */
 	public static final int RAG_POT_BABY_BASILISK_BONE = 7900;
 
@@ -25755,7 +25755,7 @@ public final class ItemID
 	public static final int RAG_DESERT_LIZARD_BONE = 7902;
 
 	/**
-	 * Bone in vinegar
+	 * Desert lizard bone in vinegar
 	 */
 	public static final int RAG_POT_DESERT_LIZARD_BONE = 7903;
 
@@ -25770,7 +25770,7 @@ public final class ItemID
 	public static final int RAG_CAVE_GOBLIN_BONE = 7905;
 
 	/**
-	 * Bone in vinegar
+	 * Cave goblin skull in vinegar
 	 */
 	public static final int RAG_POT_CAVE_GOBLIN_BONE = 7906;
 
@@ -25785,7 +25785,7 @@ public final class ItemID
 	public static final int RAG_MEDIUM_FROG_BONE = 7908;
 
 	/**
-	 * Bone in vinegar
+	 * Big frog leg in vinegar
 	 */
 	public static final int RAG_POT_MEDIUM_FROG_BONE = 7909;
 
@@ -25800,7 +25800,7 @@ public final class ItemID
 	public static final int RAG_VULTURE_BONE = 7911;
 
 	/**
-	 * Bone in vinegar
+	 * Vulture wing in vinegar
 	 */
 	public static final int RAG_POT_VULTURE_BONE = 7912;
 
@@ -25815,7 +25815,7 @@ public final class ItemID
 	public static final int RAG_JACKAL_BONE = 7914;
 
 	/**
-	 * Bone in vinegar
+	 * Jackal bone in vinegar
 	 */
 	public static final int RAG_POT_JACKAL_BONE = 7915;
 
@@ -33121,7 +33121,7 @@ public final class ItemID
 	public static final int CERT_HUNTING_BOX_TRAP = 10009;
 
 	/**
-	 * Butterfly net
+	 * Insect net
 	 */
 	public static final int HUNTING_BUTTERFLY_NET = 10010;
 
@@ -37795,7 +37795,7 @@ public final class ItemID
 	public static final int II_JAR_GENERATOR = 11258;
 
 	/**
-	 * Magic butterfly net
+	 * Magic insect net
 	 */
 	public static final int II_MAGIC_BUTTERFLY_NET = 11259;
 
@@ -90939,24 +90939,44 @@ public final class ItemID
 	public static final int FLETCHING_BOLT_SHAFT_FLIGHTED_ASCENSION = 34731;
 
 	/**
-	 * Candy onion
+	 * Null
 	 */
 	public static final int HW26_CANDY_ONION = 34732;
 
 	/**
-	 * Sugar
+	 * Null
+	 */
+	public static final int PLACEHOLDER_HW26_CANDY_ONION = 34733;
+
+	/**
+	 * Null
 	 */
 	public static final int HW26_SUGAR = 34734;
 
 	/**
-	 * Molten sugar
+	 * Null
+	 */
+	public static final int PLACEHOLDER_HW26_SUGAR = 34735;
+
+	/**
+	 * Null
 	 */
 	public static final int HW26_MOLTEN_SUGAR = 34736;
 
 	/**
-	 * Old onion
+	 * Null
+	 */
+	public static final int PLACEHOLDER_HW26_MOLTEN_SUGAR = 34737;
+
+	/**
+	 * Null
 	 */
 	public static final int HW26_ONION = 34738;
+
+	/**
+	 * Null
+	 */
+	public static final int PLACEHOLDER_HW26_ONION = 34739;
 
 	/**
 	 * Vampyre monocle
@@ -91053,6 +91073,832 @@ public final class ItemID
 	 */
 	public static final int AMULET_OF_SIGHT = 34762;
 	public static final int SPINNING_WHEEL_ICON_DUMMY = 34765;
+
+	/**
+	 * Painted shortsword
+	 */
+	public static final int PAINTED_SHORTSWORD = 34766;
+
+	/**
+	 * Painted kiteshield
+	 */
+	public static final int PAINTED_KITESHIELD = 34769;
+
+	/**
+	 * Painted shortbow
+	 */
+	public static final int PAINTED_SHORTBOW = 34772;
+
+	/**
+	 * Bee box
+	 */
+	public static final int BAW_BEE_BOX = 34775;
+
+	/**
+	 * Bee hunter's hat
+	 */
+	public static final int BAW_BEE_HUNTER_HAT = 34777;
+
+	/**
+	 * Wasp sting
+	 */
+	public static final int BAW_WASP_STING = 34779;
+
+	/**
+	 * Killer wasp sting
+	 */
+	public static final int BAW_KILLER_WASP_STING = 34781;
+
+	/**
+	 * Brown feather
+	 */
+	public static final int BAW_BROWN_FEATHER = 34783;
+
+	/**
+	 * Black feather
+	 */
+	public static final int BAW_BLACK_FEATHER = 34785;
+
+	/**
+	 * Wasp dart
+	 */
+	public static final int BAW_WASP_DART = 34787;
+
+	/**
+	 * Killer wasp dart
+	 */
+	public static final int BAW_KILLER_WASP_DART = 34789;
+
+	/**
+	 * Bea's supplies
+	 */
+	public static final int BAW_SUPPLY_SACK = 34791;
+
+	/**
+	 * Fresh leaves
+	 */
+	public static final int SNAILQUEST_FOOD = 34793;
+
+	/**
+	 * Dew-covered branch
+	 */
+	public static final int SNAILQUEST_HEALING_BRANCH = 34795;
+
+	/**
+	 * Restorative dew
+	 */
+	public static final int SNAILQUEST_HEALING_DEW = 34797;
+
+	/**
+	 * Strong sticks
+	 */
+	public static final int SNAILQUEST_SHELTER = 34799;
+
+	/**
+	 * Pink snelm
+	 */
+	public static final int SNAILQUEST_SNELM = 34801;
+	public static final int FLETCHING_DART_WASP = 34804;
+	public static final int FLETCHING_DART_KILLER_WASP = 34805;
+
+	/**
+	 * Honey buzzard
+	 */
+	public static final int HUNTGUIDE_BAW_HONEY_BUZZARD = 34806;
+
+	/**
+	 * Black honey buzzard
+	 */
+	public static final int HUNTGUIDE_BAW_BLACK_HONEY_BUZZARD = 34807;
+
+	/**
+	 * Communication cabbage
+	 */
+	public static final int ANL_COMMUNICATION_CABBAGE = 34808;
+
+	/**
+	 * The Bib Vol. 1: Seeds of Truth
+	 */
+	public static final int ANL_THE_BIB = 34810;
+
+	/**
+	 * Antique lamp
+	 */
+	public static final int ANL_COMBAT_LAMP = 34812;
+
+	/**
+	 * Seed of growth
+	 */
+	public static final int ANL_SEED_OF_GROWTH = 34813;
+
+	/**
+	 * Cabbage water
+	 */
+	public static final int ANL_CABBAGE_WATER = 34815;
+
+	/**
+	 * Brassican sentience potion
+	 */
+	public static final int ANL_CABBAGE_POTION = 34817;
+
+	/**
+	 * Blessed compost
+	 */
+	public static final int ANL_BLESSED_COMPOST = 34819;
+
+	/**
+	 * All Potions Are Gazpacho Vol. 2: The Cabbage Years
+	 */
+	public static final int ANL_POTION_BOOK = 34821;
+
+	/**
+	 * Sprout spy
+	 */
+	public static final int ANL_SPROUT_SPY = 34823;
+
+	/**
+	 * Perfect cabbage
+	 */
+	public static final int ANL_PERFECT_CABBAGE = 34825;
+
+	/**
+	 * Perfect potato
+	 */
+	public static final int ANL_PERFECT_POTATO = 34827;
+
+	/**
+	 * Perfect rosemary
+	 */
+	public static final int ANL_PERFECT_ROSEMARY = 34829;
+
+	/**
+	 * Perfect cabbage stew
+	 */
+	public static final int ANL_PERFECT_STEW = 34831;
+
+	/**
+	 * Prayer to Brassica
+	 */
+	public static final int ANL_PRAYER = 34833;
+
+	/**
+	 * Sedridor's staff
+	 */
+	public static final int RAG3_STAFF = 34835;
+
+	/**
+	 * Asylum key
+	 */
+	public static final int RAG3_KEY = 34836;
+
+	/**
+	 * Magic lamp (prayer)
+	 */
+	public static final int RAG3_PRAYER_LAMP = 34837;
+
+	/**
+	 * Magic lamp (slayer)
+	 */
+	public static final int RAG3_SLAYER_LAMP = 34838;
+
+	/**
+	 * Condition notes
+	 */
+	public static final int RAG3_BOOK = 34839;
+
+	/**
+	 * Heavy bonesack
+	 */
+	public static final int HEAVY_BONESACK = 34840;
+
+	/**
+	 * Heavy bonesack (open)
+	 */
+	public static final int HEAVY_BONESACK_OPEN = 34842;
+
+	/**
+	 * Gatestone
+	 */
+	public static final int RAG3_GATESTONE = 34844;
+
+	/**
+	 * Gatestone
+	 */
+	public static final int RAG3_GATESTONE_EMPTY = 34845;
+
+	/**
+	 * Angry giant rat bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_ANGRY_GIANT_RAT = 34846;
+
+	/**
+	 * Ankou bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_ANKOU = 34848;
+
+	/**
+	 * Armoured zombie bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_ARMOURED_ZOMBIE = 34850;
+
+	/**
+	 * Aviansie wing in vinegar
+	 */
+	public static final int RAG3_BONEPOT_AVIANSIE = 34852;
+
+	/**
+	 * Blue dragon bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_BLUE_DRAGON = 34854;
+
+	/**
+	 * Boar bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_BOAR = 34856;
+
+	/**
+	 * Catablepon ribs in vinegar
+	 */
+	public static final int RAG3_BONEPOT_CATABLEPON = 34858;
+
+	/**
+	 * Cave horror bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_CAVE_HORROR = 34860;
+
+	/**
+	 * Chicken wing in vinegar
+	 */
+	public static final int RAG3_BONEPOT_CHICKEN = 34862;
+
+	/**
+	 * Colonel radick's bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_COLONEL_RADICK = 34864;
+
+	/**
+	 * Cow bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_COW = 34866;
+
+	/**
+	 * Crawling hand bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_CRAWLING_HAND = 34868;
+
+	/**
+	 * Crocodile bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_CROCODILE = 34870;
+
+	/**
+	 * Cyclops bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_CYCLOPS = 34872;
+
+	/**
+	 * Druid ribs in vinegar
+	 */
+	public static final int RAG3_BONEPOT_DRUID = 34874;
+
+	/**
+	 * Fox bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_FOX = 34876;
+
+	/**
+	 * Frogeel spine in vinegar
+	 */
+	public static final int RAG3_BONEPOT_FROGEEL = 34878;
+
+	/**
+	 * Gnome child bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_GNOME_CHILD = 34880;
+
+	/**
+	 * Goat ribs in vinegar
+	 */
+	public static final int RAG3_BONEPOT_GOAT = 34882;
+
+	/**
+	 * Hill giant bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_HILL_GIANT = 34884;
+
+	/**
+	 * Infernal mage bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_INFERNAL_MAGE = 34886;
+
+	/**
+	 * Lizardman bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_LIZARDMAN = 34888;
+
+	/**
+	 * Lynx bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_LYNX = 34890;
+
+	/**
+	 * Minotaur bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_MINOTAUR = 34892;
+
+	/**
+	 * Ork skull in vinegar
+	 */
+	public static final int RAG3_BONEPOT_ORK = 34894;
+
+	/**
+	 * Sorebones bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_SOREBONEPOTS = 34896;
+
+	/**
+	 * Tortoise bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_TORTOISE = 34898;
+
+	/**
+	 * Turoth leg in vinegar
+	 */
+	public static final int RAG3_BONEPOT_TUROTH = 34900;
+
+	/**
+	 * Ugthanki ribs in vinegar
+	 */
+	public static final int RAG3_BONEPOT_UGTHANKI = 34902;
+
+	/**
+	 * Wallasalki bone in vinegar
+	 */
+	public static final int RAG3_BONEPOT_WALLASALKI = 34904;
+
+	/**
+	 * Angry giant rat bone
+	 */
+	public static final int RAG3_CLEAN_BONE_ANGRY_GIANT_RAT = 34906;
+
+	/**
+	 * Ankou bone
+	 */
+	public static final int RAG3_CLEAN_BONE_ANKOU = 34908;
+
+	/**
+	 * Armoured zombie bone
+	 */
+	public static final int RAG3_CLEAN_BONE_ARMOURED_ZOMBIE = 34910;
+
+	/**
+	 * Aviansie wing
+	 */
+	public static final int RAG3_CLEAN_BONE_AVIANSIE = 34912;
+
+	/**
+	 * Blue dragon bone
+	 */
+	public static final int RAG3_CLEAN_BONE_BLUE_DRAGON = 34914;
+
+	/**
+	 * Boar bone
+	 */
+	public static final int RAG3_CLEAN_BONE_BOAR = 34916;
+
+	/**
+	 * Catablepon ribs
+	 */
+	public static final int RAG3_CLEAN_BONE_CATABLEPON = 34918;
+
+	/**
+	 * Cave horror bone
+	 */
+	public static final int RAG3_CLEAN_BONE_CAVE_HORROR = 34920;
+
+	/**
+	 * Chicken wing
+	 */
+	public static final int RAG3_CLEAN_BONE_CHICKEN = 34922;
+
+	/**
+	 * Colonel radick's bone
+	 */
+	public static final int RAG3_CLEAN_BONE_COLONEL_RADICK = 34924;
+
+	/**
+	 * Cow bone
+	 */
+	public static final int RAG3_CLEAN_BONE_COW = 34926;
+
+	/**
+	 * Crawling hand bone
+	 */
+	public static final int RAG3_CLEAN_BONE_CRAWLING_HAND = 34928;
+
+	/**
+	 * Crocodile bone
+	 */
+	public static final int RAG3_CLEAN_BONE_CROCODILE = 34930;
+
+	/**
+	 * Cyclops bone
+	 */
+	public static final int RAG3_CLEAN_BONE_CYCLOPS = 34932;
+
+	/**
+	 * Druid ribs
+	 */
+	public static final int RAG3_CLEAN_BONE_DRUID = 34934;
+
+	/**
+	 * Fox bone
+	 */
+	public static final int RAG3_CLEAN_BONE_FOX = 34936;
+
+	/**
+	 * Frogeel spine
+	 */
+	public static final int RAG3_CLEAN_BONE_FROGEEL = 34938;
+
+	/**
+	 * Gnome child bone
+	 */
+	public static final int RAG3_CLEAN_BONE_GNOME_CHILD = 34940;
+
+	/**
+	 * Goat ribs
+	 */
+	public static final int RAG3_CLEAN_BONE_GOAT = 34942;
+
+	/**
+	 * Hill giant bone
+	 */
+	public static final int RAG3_CLEAN_BONE_HILL_GIANT = 34944;
+
+	/**
+	 * Infernal mage bone
+	 */
+	public static final int RAG3_CLEAN_BONE_INFERNAL_MAGE = 34946;
+
+	/**
+	 * Lizardman bone
+	 */
+	public static final int RAG3_CLEAN_BONE_LIZARDMAN = 34948;
+
+	/**
+	 * Lynx bone
+	 */
+	public static final int RAG3_CLEAN_BONE_LYNX = 34950;
+
+	/**
+	 * Minotaur bone
+	 */
+	public static final int RAG3_CLEAN_BONE_MINOTAUR = 34952;
+
+	/**
+	 * Ork skull
+	 */
+	public static final int RAG3_CLEAN_BONE_ORK = 34954;
+
+	/**
+	 * Sorebones bone
+	 */
+	public static final int RAG3_CLEAN_BONE_SOREBONES = 34956;
+
+	/**
+	 * Tortoise bone
+	 */
+	public static final int RAG3_CLEAN_BONE_TORTOISE = 34958;
+
+	/**
+	 * Turoth leg
+	 */
+	public static final int RAG3_CLEAN_BONE_TUROTH = 34960;
+
+	/**
+	 * Ugthanki ribs
+	 */
+	public static final int RAG3_CLEAN_BONE_UGTHANKI = 34962;
+
+	/**
+	 * Wallasalki bone
+	 */
+	public static final int RAG3_CLEAN_BONE_WALLASALKI = 34964;
+
+	/**
+	 * Angry giant rat bone
+	 */
+	public static final int RAG3_BONE_ANGRY_GIANT_RAT = 34966;
+
+	/**
+	 * Ankou bone
+	 */
+	public static final int RAG3_BONE_ANKOU = 34968;
+
+	/**
+	 * Armoured zombie bone
+	 */
+	public static final int RAG3_BONE_ARMOURED_ZOMBIE = 34970;
+
+	/**
+	 * Aviansie wing
+	 */
+	public static final int RAG3_BONE_AVIANSIE = 34972;
+
+	/**
+	 * Blue dragon bone
+	 */
+	public static final int RAG3_BONE_BLUE_DRAGON = 34974;
+
+	/**
+	 * Boar bone
+	 */
+	public static final int RAG3_BONE_BOAR = 34976;
+
+	/**
+	 * Catablepon ribs
+	 */
+	public static final int RAG3_BONE_CATABLEPON = 34978;
+
+	/**
+	 * Cave horror bone
+	 */
+	public static final int RAG3_BONE_CAVE_HORROR = 34980;
+
+	/**
+	 * Chicken wing
+	 */
+	public static final int RAG3_BONE_CHICKEN = 34982;
+
+	/**
+	 * Colonel radick's bone
+	 */
+	public static final int RAG3_BONE_COLONEL_RADICK = 34984;
+
+	/**
+	 * Cow bone
+	 */
+	public static final int RAG3_BONE_COW = 34986;
+
+	/**
+	 * Crawling hand bone
+	 */
+	public static final int RAG3_BONE_CRAWLING_HAND = 34988;
+
+	/**
+	 * Crocodile bone
+	 */
+	public static final int RAG3_BONE_CROCODILE = 34990;
+
+	/**
+	 * Cyclops bone
+	 */
+	public static final int RAG3_BONE_CYCLOPS = 34992;
+
+	/**
+	 * Druid ribs
+	 */
+	public static final int RAG3_BONE_DRUID = 34994;
+
+	/**
+	 * Fox bone
+	 */
+	public static final int RAG3_BONE_FOX = 34996;
+
+	/**
+	 * Frogeel spine
+	 */
+	public static final int RAG3_BONE_FROGEEL = 34998;
+
+	/**
+	 * Gnome child bone
+	 */
+	public static final int RAG3_BONE_GNOME_CHILD = 35000;
+
+	/**
+	 * Goat ribs
+	 */
+	public static final int RAG3_BONE_GOAT = 35002;
+
+	/**
+	 * Hill giant bone
+	 */
+	public static final int RAG3_BONE_HILL_GIANT = 35004;
+
+	/**
+	 * Infernal mage bone
+	 */
+	public static final int RAG3_BONE_INFERNAL_MAGE = 35006;
+
+	/**
+	 * Lizardman bone
+	 */
+	public static final int RAG3_BONE_LIZARDMAN = 35008;
+
+	/**
+	 * Lynx bone
+	 */
+	public static final int RAG3_BONE_LYNX = 35010;
+
+	/**
+	 * Minotaur bone
+	 */
+	public static final int RAG3_BONE_MINOTAUR = 35012;
+
+	/**
+	 * Ork skull
+	 */
+	public static final int RAG3_BONE_ORK = 35014;
+
+	/**
+	 * Sorebones bone
+	 */
+	public static final int RAG3_BONE_SOREBONES = 35016;
+
+	/**
+	 * Tortoise bone
+	 */
+	public static final int RAG3_BONE_TORTOISE = 35018;
+
+	/**
+	 * Turoth leg
+	 */
+	public static final int RAG3_BONE_TUROTH = 35020;
+
+	/**
+	 * Ugthanki ribs
+	 */
+	public static final int RAG3_BONE_UGTHANKI = 35022;
+
+	/**
+	 * Wallasalki bone
+	 */
+	public static final int RAG3_BONE_WALLASALKI = 35024;
+
+	/**
+	 * Guthixian root
+	 */
+	public static final int TFA_GUTHIXIAN_ROOT = 35026;
+
+	/**
+	 * Fremennik graceful ornament kit
+	 */
+	public static final int FREMENNIK_GRACEFUL_KIT = 35027;
+
+	/**
+	 * Fremennik sail fabric
+	 */
+	public static final int FREMENNIK_SAIL_KIT = 35029;
+
+	/**
+	 * Ghostly sail fabric
+	 */
+	public static final int GHOSTLY_SAIL_KIT = 35031;
+
+	/**
+	 * Sunken treasure
+	 */
+	public static final int SUNKEN_TREASURE = 35033;
+	public static final int GRAVEYARD_POR_SUNKEN_TREASURE_2 = 35035;
+	public static final int GRAVEYARD_POR_SUNKEN_TREASURE_3 = 35036;
+	public static final int GRAVEYARD_POR_SUNKEN_TREASURE_4 = 35037;
+	public static final int GRAVEYARD_POR_SUNKEN_TREASURE_5 = 35038;
+
+	/**
+	 * Graceful hood
+	 */
+	public static final int GRACEFUL_HOOD_FREMENNIK = 35039;
+
+	/**
+	 * Graceful hood
+	 */
+	public static final int GRACEFUL_HOOD_FREMENNIK_WORN = 35041;
+
+	/**
+	 * Graceful cape
+	 */
+	public static final int GRACEFUL_CAPE_FREMENNIK = 35042;
+
+	/**
+	 * Graceful cape
+	 */
+	public static final int GRACEFUL_CAPE_FREMENNIK_WORN = 35044;
+
+	/**
+	 * Graceful top
+	 */
+	public static final int GRACEFUL_TOP_FREMENNIK = 35045;
+
+	/**
+	 * Graceful top
+	 */
+	public static final int GRACEFUL_TOP_FREMENNIK_WORN = 35047;
+
+	/**
+	 * Graceful legs
+	 */
+	public static final int GRACEFUL_LEGS_FREMENNIK = 35048;
+
+	/**
+	 * Graceful legs
+	 */
+	public static final int GRACEFUL_LEGS_FREMENNIK_WORN = 35050;
+
+	/**
+	 * Graceful gloves
+	 */
+	public static final int GRACEFUL_GLOVES_FREMENNIK = 35051;
+
+	/**
+	 * Graceful gloves
+	 */
+	public static final int GRACEFUL_GLOVES_FREMENNIK_WORN = 35053;
+
+	/**
+	 * Graceful boots
+	 */
+	public static final int GRACEFUL_BOOTS_FREMENNIK = 35054;
+
+	/**
+	 * Graceful boots
+	 */
+	public static final int GRACEFUL_BOOTS_FREMENNIK_WORN = 35056;
+
+	/**
+	 * Torva platebody
+	 */
+	public static final int BR_TORVA_CHEST = 35057;
+
+	/**
+	 * Amethyst arrow
+	 */
+	public static final int FAKE_AMETHYST_ARROW = 35059;
+
+	/**
+	 * Captain's log
+	 */
+	public static final int GRAVEYARD_LOGBOOK_STORMBROW_SHUT = 35060;
+
+	/**
+	 * Captain's log
+	 */
+	public static final int GRAVEYARD_LOGBOOK_STORMBROW = 35061;
+
+	/**
+	 * Captain's log (e)
+	 */
+	public static final int GRAVEYARD_LOGBOOK_STORMBROW_ENCHANTED = 35062;
+
+	/**
+	 * Arctic pine stake
+	 */
+	public static final int GRAVEYARD_BASIC_STAKE = 35063;
+
+	/**
+	 * Infused arctic pine stake
+	 */
+	public static final int GRAVEYARD_INFUSED_STAKE = 35065;
+
+	/**
+	 * Binding stake
+	 */
+	public static final int GRAVEYARD_ENCHANTED_STAKE = 35067;
+
+	/**
+	 * Soul essence
+	 */
+	public static final int GRAVEYARD_SOUL_ESSENCE = 35069;
+
+	/**
+	 * Salt-crusted lamp
+	 */
+	public static final int GRAVEYARD_REWARD_LAMP = 35071;
+
+	/**
+	 * The blind seer
+	 */
+	public static final int GRAVEYARD_EXPLORATION_BOOK_SEER = 35072;
+
+	/**
+	 * Waterlogged book
+	 */
+	public static final int GRAVEYARD_EXPLORATION_BOOK_WATERLOGGED = 35073;
+
+	/**
+	 * Soggy ownership note
+	 */
+	public static final int GRAVEYARD_TREASURE_NOTE_PENGUIN = 35074;
+
+	/**
+	 * Dusty ownership note
+	 */
+	public static final int GRAVEYARD_TREASURE_NOTE_MINE = 35075;
+
+	/**
+	 * Scratched note
+	 */
+	public static final int GRAVEYARD_EXPLORATION_NOTE_SKELETON = 35076;
 
 	public static final class Cert
 	{
@@ -95786,6 +96632,11 @@ public final class ItemID
 		public static final int RONDACHE = 34720;
 		public static final int ZORYAS_TOME_UNCHARGED = 34728;
 		public static final int AMULET_OF_SIGHT = 34763;
+		public static final int PAINTED_SHORTSWORD = 34767;
+		public static final int PAINTED_KITESHIELD = 34770;
+		public static final int PAINTED_SHORTBOW = 34773;
+		public static final int SNAILQUEST_SNELM = 34802;
+		public static final int BR_TORVA_CHEST = 35058;
 	}
 
 	public static final class Placeholder
@@ -105796,15 +106647,147 @@ public final class ItemID
 		public static final int RONDACHE = 34721;
 		public static final int ARCHIVISTS_FOLIO = 34724;
 		public static final int ZORYAS_TOME = 34726;
-		public static final int HW26_CANDY_ONION = 34733;
-		public static final int HW26_SUGAR = 34735;
-		public static final int HW26_MOLTEN_SUGAR = 34737;
-		public static final int HW26_ONION = 34739;
 		public static final int HW26_REWARD_HEAD = 34741;
 		public static final int HW26_REWARD_TOP = 34743;
 		public static final int HW26_REWARD_LEGS = 34745;
 		public static final int HW26_REWARD_CAPE = 34747;
 		public static final int AMULET_OF_SIGHT = 34764;
+		public static final int PAINTED_SHORTSWORD = 34768;
+		public static final int PAINTED_KITESHIELD = 34771;
+		public static final int PAINTED_SHORTBOW = 34774;
+		public static final int BAW_BEE_BOX = 34776;
+		public static final int BAW_BEE_HUNTER_HAT = 34778;
+		public static final int BAW_WASP_STING = 34780;
+		public static final int BAW_KILLER_WASP_STING = 34782;
+		public static final int BAW_BROWN_FEATHER = 34784;
+		public static final int BAW_BLACK_FEATHER = 34786;
+		public static final int BAW_WASP_DART = 34788;
+		public static final int BAW_KILLER_WASP_DART = 34790;
+		public static final int BAW_SUPPLY_SACK = 34792;
+		public static final int SNAILQUEST_FOOD = 34794;
+		public static final int SNAILQUEST_HEALING_BRANCH = 34796;
+		public static final int SNAILQUEST_HEALING_DEW = 34798;
+		public static final int SNAILQUEST_SHELTER = 34800;
+		public static final int SNAILQUEST_SNELM = 34803;
+		public static final int ANL_COMMUNICATION_CABBAGE = 34809;
+		public static final int ANL_THE_BIB = 34811;
+		public static final int ANL_SEED_OF_GROWTH = 34814;
+		public static final int ANL_CABBAGE_WATER = 34816;
+		public static final int ANL_CABBAGE_POTION = 34818;
+		public static final int ANL_BLESSED_COMPOST = 34820;
+		public static final int ANL_POTION_BOOK = 34822;
+		public static final int ANL_SPROUT_SPY = 34824;
+		public static final int ANL_PERFECT_CABBAGE = 34826;
+		public static final int ANL_PERFECT_POTATO = 34828;
+		public static final int ANL_PERFECT_ROSEMARY = 34830;
+		public static final int ANL_PERFECT_STEW = 34832;
+		public static final int ANL_PRAYER = 34834;
+		public static final int HEAVY_BONESACK = 34841;
+		public static final int HEAVY_BONESACK_OPEN = 34843;
+		public static final int RAG3_BONEPOT_ANGRY_GIANT_RAT = 34847;
+		public static final int RAG3_BONEPOT_ANKOU = 34849;
+		public static final int RAG3_BONEPOT_ARMOURED_ZOMBIE = 34851;
+		public static final int RAG3_BONEPOT_AVIANSIE = 34853;
+		public static final int RAG3_BONEPOT_BLUE_DRAGON = 34855;
+		public static final int RAG3_BONEPOT_BOAR = 34857;
+		public static final int RAG3_BONEPOT_CATABLEPON = 34859;
+		public static final int RAG3_BONEPOT_CAVE_HORROR = 34861;
+		public static final int RAG3_BONEPOT_CHICKEN = 34863;
+		public static final int RAG3_BONEPOT_COLONEL_RADICK = 34865;
+		public static final int RAG3_BONEPOT_COW = 34867;
+		public static final int RAG3_BONEPOT_CRAWLING_HAND = 34869;
+		public static final int RAG3_BONEPOT_CROCODILE = 34871;
+		public static final int RAG3_BONEPOT_CYCLOPS = 34873;
+		public static final int RAG3_BONEPOT_DRUID = 34875;
+		public static final int RAG3_BONEPOT_FOX = 34877;
+		public static final int RAG3_BONEPOT_FROGEEL = 34879;
+		public static final int RAG3_BONEPOT_GNOME_CHILD = 34881;
+		public static final int RAG3_BONEPOT_GOAT = 34883;
+		public static final int RAG3_BONEPOT_HILL_GIANT = 34885;
+		public static final int RAG3_BONEPOT_INFERNAL_MAGE = 34887;
+		public static final int RAG3_BONEPOT_LIZARDMAN = 34889;
+		public static final int RAG3_BONEPOT_LYNX = 34891;
+		public static final int RAG3_BONEPOT_MINOTAUR = 34893;
+		public static final int RAG3_BONEPOT_ORK = 34895;
+		public static final int RAG3_BONEPOT_SOREBONEPOTS = 34897;
+		public static final int RAG3_BONEPOT_TORTOISE = 34899;
+		public static final int RAG3_BONEPOT_TUROTH = 34901;
+		public static final int RAG3_BONEPOT_UGTHANKI = 34903;
+		public static final int RAG3_BONEPOT_WALLASALKI = 34905;
+		public static final int RAG3_CLEAN_BONE_ANGRY_GIANT_RAT = 34907;
+		public static final int RAG3_CLEAN_BONE_ANKOU = 34909;
+		public static final int RAG3_CLEAN_BONE_ARMOURED_ZOMBIE = 34911;
+		public static final int RAG3_CLEAN_BONE_AVIANSIE = 34913;
+		public static final int RAG3_CLEAN_BONE_BLUE_DRAGON = 34915;
+		public static final int RAG3_CLEAN_BONE_BOAR = 34917;
+		public static final int RAG3_CLEAN_BONE_CATABLEPON = 34919;
+		public static final int RAG3_CLEAN_BONE_CAVE_HORROR = 34921;
+		public static final int RAG3_CLEAN_BONE_CHICKEN = 34923;
+		public static final int RAG3_CLEAN_BONE_COLONEL_RADICK = 34925;
+		public static final int RAG3_CLEAN_BONE_COW = 34927;
+		public static final int RAG3_CLEAN_BONE_CRAWLING_HAND = 34929;
+		public static final int RAG3_CLEAN_BONE_CROCODILE = 34931;
+		public static final int RAG3_CLEAN_BONE_CYCLOPS = 34933;
+		public static final int RAG3_CLEAN_BONE_DRUID = 34935;
+		public static final int RAG3_CLEAN_BONE_FOX = 34937;
+		public static final int RAG3_CLEAN_BONE_FROGEEL = 34939;
+		public static final int RAG3_CLEAN_BONE_GNOME_CHILD = 34941;
+		public static final int RAG3_CLEAN_BONE_GOAT = 34943;
+		public static final int RAG3_CLEAN_BONE_HILL_GIANT = 34945;
+		public static final int RAG3_CLEAN_BONE_INFERNAL_MAGE = 34947;
+		public static final int RAG3_CLEAN_BONE_LIZARDMAN = 34949;
+		public static final int RAG3_CLEAN_BONE_LYNX = 34951;
+		public static final int RAG3_CLEAN_BONE_MINOTAUR = 34953;
+		public static final int RAG3_CLEAN_BONE_ORK = 34955;
+		public static final int RAG3_CLEAN_BONE_SOREBONES = 34957;
+		public static final int RAG3_CLEAN_BONE_TORTOISE = 34959;
+		public static final int RAG3_CLEAN_BONE_TUROTH = 34961;
+		public static final int RAG3_CLEAN_BONE_UGTHANKI = 34963;
+		public static final int RAG3_CLEAN_BONE_WALLASALKI = 34965;
+		public static final int RAG3_BONE_ANGRY_GIANT_RAT = 34967;
+		public static final int RAG3_BONE_ANKOU = 34969;
+		public static final int RAG3_BONE_ARMOURED_ZOMBIE = 34971;
+		public static final int RAG3_BONE_AVIANSIE = 34973;
+		public static final int RAG3_BONE_BLUE_DRAGON = 34975;
+		public static final int RAG3_BONE_BOAR = 34977;
+		public static final int RAG3_BONE_CATABLEPON = 34979;
+		public static final int RAG3_BONE_CAVE_HORROR = 34981;
+		public static final int RAG3_BONE_CHICKEN = 34983;
+		public static final int RAG3_BONE_COLONEL_RADICK = 34985;
+		public static final int RAG3_BONE_COW = 34987;
+		public static final int RAG3_BONE_CRAWLING_HAND = 34989;
+		public static final int RAG3_BONE_CROCODILE = 34991;
+		public static final int RAG3_BONE_CYCLOPS = 34993;
+		public static final int RAG3_BONE_DRUID = 34995;
+		public static final int RAG3_BONE_FOX = 34997;
+		public static final int RAG3_BONE_FROGEEL = 34999;
+		public static final int RAG3_BONE_GNOME_CHILD = 35001;
+		public static final int RAG3_BONE_GOAT = 35003;
+		public static final int RAG3_BONE_HILL_GIANT = 35005;
+		public static final int RAG3_BONE_INFERNAL_MAGE = 35007;
+		public static final int RAG3_BONE_LIZARDMAN = 35009;
+		public static final int RAG3_BONE_LYNX = 35011;
+		public static final int RAG3_BONE_MINOTAUR = 35013;
+		public static final int RAG3_BONE_ORK = 35015;
+		public static final int RAG3_BONE_SOREBONES = 35017;
+		public static final int RAG3_BONE_TORTOISE = 35019;
+		public static final int RAG3_BONE_TUROTH = 35021;
+		public static final int RAG3_BONE_UGTHANKI = 35023;
+		public static final int RAG3_BONE_WALLASALKI = 35025;
+		public static final int FREMENNIK_GRACEFUL_KIT = 35028;
+		public static final int FREMENNIK_SAIL_KIT = 35030;
+		public static final int GHOSTLY_SAIL_KIT = 35032;
+		public static final int SUNKEN_TREASURE = 35034;
+		public static final int GRACEFUL_HOOD_FREMENNIK = 35040;
+		public static final int GRACEFUL_CAPE_FREMENNIK = 35043;
+		public static final int GRACEFUL_TOP_FREMENNIK = 35046;
+		public static final int GRACEFUL_LEGS_FREMENNIK = 35049;
+		public static final int GRACEFUL_GLOVES_FREMENNIK = 35052;
+		public static final int GRACEFUL_BOOTS_FREMENNIK = 35055;
+		public static final int GRAVEYARD_BASIC_STAKE = 35064;
+		public static final int GRAVEYARD_INFUSED_STAKE = 35066;
+		public static final int GRAVEYARD_ENCHANTED_STAKE = 35068;
+		public static final int GRAVEYARD_SOUL_ESSENCE = 35070;
 	}
 /* This file is automatically generated. Do not edit. */
 }
