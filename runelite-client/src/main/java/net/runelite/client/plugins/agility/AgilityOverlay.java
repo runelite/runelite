@@ -30,15 +30,19 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.CameraFocusableEntity;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -48,7 +52,7 @@ import net.runelite.client.util.ColorUtil;
 
 class AgilityOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
+	private static final int MAX_DISTANCE = 5000;
 	private static final Color SHORTCUT_HIGH_LEVEL_COLOR = Color.ORANGE;
 
 	private final Client client;
@@ -105,6 +109,22 @@ class AgilityOverlay extends Overlay
 					}
 					return;
 				}
+
+				// Prison of Ræun step stones are only highlighted if the multiloc under them is the safe variant
+				if (object.getId() == ObjectID.GRAVEYARD_POR_STEPPINGSTONE_CLICK)
+				{
+					Tile bridge = tile.getBridge();
+					if (Arrays.stream(bridge.getGameObjects())
+						.filter(Objects::nonNull)
+						.map(l -> client.getObjectDefinition(l.getId()))
+						.filter(o -> o.getImpostorIds() != null)
+						.map(ObjectComposition::getImpostor)
+						.noneMatch(o -> o.getId() == ObjectID.GRAVEYARD_POR_STEPPINGSTONE_SAFE))
+					{
+						return;
+					}
+				}
+
 				Shape objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{
@@ -143,7 +163,7 @@ class AgilityOverlay extends Overlay
 			}
 		});
 
-		if (config.highlightMarks() && !marksOfGrace.isEmpty())
+		if (!marksOfGrace.isEmpty() && config.highlightMarks())
 		{
 			for (Tile markOfGraceTile : marksOfGrace)
 			{

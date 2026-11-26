@@ -26,16 +26,14 @@
 package net.runelite.client.plugins.agility;
 
 import javax.annotation.Nullable;
-import lombok.AllArgsConstructor;
 import lombok.Value;
 import net.runelite.api.Tile;
 import net.runelite.client.game.AgilityShortcut;
 
 @Value
-@AllArgsConstructor
 class Obstacle
 {
-	private final Tile tile;
+	Tile tile;
 	@Nullable
-	private final AgilityShortcut shortcut;
+	AgilityShortcut shortcut;
 }
