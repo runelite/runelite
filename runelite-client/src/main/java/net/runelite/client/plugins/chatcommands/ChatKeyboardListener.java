@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.base.Strings;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -55,37 +56,48 @@ public class ChatKeyboardListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (chatCommandsConfig.clearSingleWord().matches(e))
+		boolean clearSingleWord = chatCommandsConfig.clearSingleWord().matches(e);
+		if (!clearSingleWord && !chatCommandsConfig.clearChatBox().matches(e))
 		{
-			int inputTye = client.getVarcIntValue(VarClientID.MESLAYERMODE);
-			String input = inputTye == InputType.NONE.getType()
-				? client.getVarcStrValue(VarClientID.CHATINPUT)
-				: client.getVarcStrValue(VarClientID.MESLAYERINPUT);
+			return;
+		}
 
-			if (input != null)
+		int inputType = client.getVarcIntValue(VarClientID.MESLAYERMODE);
+		String input = inputType == InputType.NONE.getType()
+			? client.getVarcStrValue(VarClientID.CHATINPUT)
+			: client.getVarcStrValue(VarClientID.MESLAYERINPUT);
+
+		// Let Key Remapping close an already empty chatbox on Backspace.
+		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && inputType == InputType.NONE.getType() && Strings.isNullOrEmpty(input))
+		{
+			return;
+		}
+
+		final String replacement;
+		if (clearSingleWord)
+		{
+			if (input == null)
 			{
-				// prevent the keypress from also modifying the chatbox as we alter the text
-				e.consume();
-
-				// remove trailing space
-				while (input.endsWith(" "))
-				{
-					input = input.substring(0, input.length() - 1);
-				}
-
-				// find next word
-				int idx = input.lastIndexOf(' ') + 1;
-				final String replacement = input.substring(0, idx);
-
-				clientThread.invoke(() -> applyText(inputTye, replacement));
+				return;
 			}
+
+			// remove trailing space
+			while (input.endsWith(" "))
+			{
+				input = input.substring(0, input.length() - 1);
+			}
+
+			// find next word
+			int idx = input.lastIndexOf(' ') + 1;
+			replacement = input.substring(0, idx);
 		}
-		else if (chatCommandsConfig.clearChatBox().matches(e))
+		else
 		{
-			e.consume();
-			int inputTye = client.getVarcIntValue(VarClientID.MESLAYERMODE);
-			clientThread.invoke(() -> applyText(inputTye, ""));
+			replacement = "";
 		}
+
+		e.consume();
+		clientThread.invoke(() -> applyText(inputType, replacement));
 	}
 
 	private void applyText(int inputType, String replacement)
