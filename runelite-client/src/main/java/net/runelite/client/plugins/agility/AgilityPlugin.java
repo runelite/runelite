@@ -65,6 +65,7 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -97,6 +98,9 @@ public class AgilityPlugin extends Plugin
 
 	@Getter
 	private final Map<TileObject, Obstacle> obstacles = new HashMap<>();
+
+	@Getter
+	private TileObject raeunChest;
 
 	@Getter
 	private final List<Tile> marksOfGrace = new ArrayList<>();
@@ -165,6 +169,7 @@ public class AgilityPlugin extends Plugin
 		overlayManager.remove(lapCounterOverlay);
 		marksOfGrace.clear();
 		obstacles.clear();
+		raeunChest = null;
 		session = null;
 		agilityLevel = 0;
 		stickTile = null;
@@ -186,6 +191,7 @@ public class AgilityPlugin extends Plugin
 			case LOADING:
 				marksOfGrace.clear();
 				obstacles.clear();
+				raeunChest = null;
 				stickTile = null;
 				break;
 			case LOGGED_IN:
@@ -407,6 +413,15 @@ public class AgilityPlugin extends Plugin
 
 	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
 	{
+		if (oldObject != null && oldObject == raeunChest)
+		{
+			raeunChest = null;
+		}
+		if (newObject != null && newObject.getId() == ObjectID.GRAVEYARD_POR_CHEST_PARENT)
+		{
+			raeunChest = newObject;
+		}
+
 		obstacles.remove(oldObject);
 
 		if (newObject == null)

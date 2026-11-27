@@ -39,7 +39,7 @@ public interface AgilityConfig extends Config
 	@ConfigSection(
 		name = "Hallowed Sepulchre",
 		description = "Settings for Hallowed Sepulchre highlights.",
-		position = 17
+		position = 19
 	)
 	String sepulchreSection = "Hallowed Sepulchre";
 
@@ -237,10 +237,33 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightRaeunChest",
+		name = "Highlight unopened chest",
+		description = "Highlight the chest in the Prison of Ræun course until it has been looted this lap.",
+		position = 17
+	)
+	default boolean highlightRaeunChest()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "raeunChestHighlightColor",
+		name = "Chest highlight color",
+		description = "Color of the highlighted Prison of Ræun chest.",
+		position = 18
+	)
+	default Color raeunChestHighlightColor()
+	{
+		return Color.YELLOW;
+	}
+
+	@ConfigItem(
 		keyName = "highlightSepulchreNpcs",
 		name = "Highlight projectiles",
 		description = "Highlights arrows and swords in the Sepulchre.",
-		position = 17,
+		position = 19,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreNpcs()
@@ -253,7 +276,7 @@ public interface AgilityConfig extends Config
 		keyName = "sepulchreHighlightColor",
 		name = "Projectile color",
 		description = "Overlay color for arrows and swords.",
-		position = 18,
+		position = 20,
 		section = sepulchreSection
 	)
 	default Color sepulchreHighlightColor()
@@ -265,7 +288,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreObstacles",
 		name = "Highlight obstacles",
 		description = "Highlights pillars and stairs in the Sepulchre.",
-		position = 19,
+		position = 21,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreObstacles()
@@ -277,7 +300,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreSkilling",
 		name = "Highlight skill challenges",
 		description = "Highlights skilling challenges in the Sepulchre.",
-		position = 20,
+		position = 22,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreSkilling()
