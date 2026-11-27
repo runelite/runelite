@@ -1870,6 +1870,29 @@ public class LootTrackerPlugin extends Plugin
 		configManager.unsetConfiguration(LootTrackerConfig.GROUP, profile, "drops_" + type + "_" + name);
 	}
 
+	void resetLootItems(LootRecordType type, String name, Map<Integer, Integer> itemQuantities, boolean removeAll)
+	{
+		ConfigLoot loot = getLootConfig(type, name);
+		if (loot == null)
+		{
+			return;
+		}
+
+		for (Map.Entry<Integer, Integer> item : itemQuantities.entrySet())
+		{
+			if (removeAll)
+			{
+				loot.remove(item.getKey());
+			}
+			else
+			{
+				loot.remove(item.getKey(), item.getValue());
+			}
+		}
+
+		setLootConfig(type, name, loot);
+	}
+
 	void removeAllLoot()
 	{
 		String profile = profileKey;

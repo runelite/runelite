@@ -37,8 +37,10 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -569,7 +571,8 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record,
-			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored);
+			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem,
+			this::resetItem, plugin::toggleEvent, isIgnored, groupLoot);
 
 		// Use the existing popup menu or create a new one
 		JPopupMenu popupMenu = box.getComponentPopupMenu();
@@ -659,6 +662,66 @@ class LootTrackerPanel extends PluginPanel
 		}
 
 		return box;
+	}
+
+	private void resetItem(LootTrackerRecord record, int mappedItemId)
+	{
+		Map<Integer, Integer> itemQuantities = new HashMap<>();
+		if (groupLoot)
+		{
+			LootTrackerRecord aggregateRecord = aggregateRecords.get(record);
+			if (aggregateRecord == null)
+			{
+				return;
+			}
+
+			for (LootTrackerItem item : aggregateRecord.getItems())
+			{
+				if (LootTrackerMapping.map(item.getId(), item.getName()) == mappedItemId)
+				{
+					itemQuantities.put(item.getId(), item.getQuantity());
+				}
+			}
+			if (itemQuantities.isEmpty())
+			{
+				return;
+			}
+
+			for (LootTrackerRecord sessionRecord : sessionRecords)
+			{
+				if (sessionRecord.matches(record.getTitle(), record.getType()))
+				{
+					sessionRecord.removeItems(mappedItemId);
+				}
+			}
+			aggregateRecord.removeItems(mappedItemId);
+		}
+		else
+		{
+			for (LootTrackerItem item : record.removeItems(mappedItemId))
+			{
+				itemQuantities.merge(item.getId(), item.getQuantity(), LootTrackerPanel::addQuantities);
+			}
+			if (itemQuantities.isEmpty())
+			{
+				return;
+			}
+
+			LootTrackerRecord aggregateRecord = aggregateRecords.get(record);
+			if (aggregateRecord != null)
+			{
+				itemQuantities.forEach(aggregateRecord::removeItem);
+			}
+		}
+
+		plugin.resetLootItems(record.getType(), record.getTitle(), itemQuantities, groupLoot);
+		rebuild();
+	}
+
+	private static int addQuantities(int first, int second)
+	{
+		int quantity = first + second;
+		return quantity < 0 ? Integer.MAX_VALUE : quantity;
 	}
 
 	private void updateOverall()
