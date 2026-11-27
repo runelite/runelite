@@ -41,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.NPC;
-import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
@@ -410,25 +409,6 @@ public class AgilityPlugin extends Plugin
 	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);
-	}
-
-	/**
-	 * Checks whether the Prison of Ræun chest is still unopened this lap. The chest is a
-	 * multiloc that shows the closed chest until it is looted, then the opened chest.
-	 */
-	boolean isRaeunChestUnopened()
-	{
-		if (raeunChest == null)
-		{
-			return false;
-		}
-
-		ObjectComposition composition = client.getObjectDefinition(raeunChest.getId());
-		if (composition.getImpostorIds() != null)
-		{
-			composition = composition.getImpostor();
-		}
-		return composition != null && composition.getId() == ObjectID.GRAVEYARD_POR_CHEST;
 	}
 
 	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)

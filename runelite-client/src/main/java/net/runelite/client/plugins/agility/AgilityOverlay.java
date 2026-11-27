@@ -44,6 +44,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -177,8 +178,10 @@ class AgilityOverlay extends Overlay
 			highlightTile(graphics, playerLocation, stickTile, config.stickHighlightColor());
 		}
 
+		// Prison of Ræun chest is highlighted until it has been looted this lap
 		final TileObject raeunChest = plugin.getRaeunChest();
-		if (raeunChest != null && config.highlightRaeunChest() && plugin.isRaeunChestUnopened()
+		if (raeunChest != null && config.highlightRaeunChest()
+			&& client.getVarbitValue(VarbitID.POR_AGILITY_CHEST_OPENED) == 0
 			&& raeunChest.getPlane() == client.getPlane()
 			&& raeunChest.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 		{
