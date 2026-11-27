@@ -45,6 +45,7 @@ public interface TimeTrackingConfig extends Config
 	String BIRDHOUSE_NOTIFY = "birdHouseNotification";
 	String COMPOST = "compost";
 	String PROTECTED = "protected";
+	String HIDE_SIDEBAR_ICON = "hideSidebarIcon";
 
 	@ConfigItem(
 		keyName = "timeFormatMode",
@@ -66,6 +67,17 @@ public interface TimeTrackingConfig extends Config
 	default Notification timerNotification()
 	{
 		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = HIDE_SIDEBAR_ICON,
+		name = "Hide sidebar icon",
+		description = "Hide the Time Tracking sidebar icon.",
+		position = 3
+	)
+	default boolean hideSidebarIcon()
+	{
+		return false;
 	}
 
 	@ConfigItem(
