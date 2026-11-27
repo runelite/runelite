@@ -49,6 +49,7 @@ import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.CONFIG_GROUP;
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.HIDE_SIDEBAR_ICON;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.PREFER_SOONEST;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.STOPWATCHES;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.TIMERS;
@@ -106,6 +107,9 @@ public class TimeTrackingPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private TimeTrackingConfig config;
+
 	private ScheduledFuture panelUpdateFuture;
 
 	private ScheduledFuture notifierFuture;
@@ -147,7 +151,7 @@ public class TimeTrackingPlugin extends Plugin
 			.priority(4)
 			.build();
 
-		clientToolbar.addNavigation(navButton);
+		updateNavigationButton();
 
 		panelUpdateFuture = executorService.scheduleAtFixedRate(this::updatePanel, 200, 200, TimeUnit.MILLISECONDS);
 		notifierFuture = executorService.scheduleAtFixedRate(this::checkCompletion, 10, 10, TimeUnit.SECONDS);
@@ -193,6 +197,10 @@ public class TimeTrackingPlugin extends Plugin
 		else if (e.getKey().equals(PREFER_SOONEST))
 		{
 			farmingTracker.loadCompletionTimes();
+		}
+		else if (e.getKey().equals(HIDE_SIDEBAR_ICON))
+		{
+			updateNavigationButton();
 		}
 	}
 
@@ -289,6 +297,18 @@ public class TimeTrackingPlugin extends Plugin
 		if (unitTime % panel.getUpdateInterval() == 0 || clockDataChanged || timerOrderChanged)
 		{
 			panel.update();
+		}
+	}
+
+	private void updateNavigationButton()
+	{
+		if (config.hideSidebarIcon())
+		{
+			clientToolbar.removeNavigation(navButton);
+		}
+		else
+		{
+			clientToolbar.addNavigation(navButton);
 		}
 	}
 }
