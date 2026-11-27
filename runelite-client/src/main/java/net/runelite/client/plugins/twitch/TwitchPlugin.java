@@ -41,13 +41,16 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.TwitchMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.twitch.irc.TwitchIRCClient;
 import net.runelite.client.plugins.twitch.irc.TwitchListener;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Twitch",
@@ -65,6 +68,9 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private EventBus eventBus;
 
 	private TwitchIRCClient twitchIRCClient;
 
@@ -157,11 +163,34 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			return;
 		}
 
-		connect();
+		switch (configChanged.getKey())
+		{
+			case "username":
+			case "oauth":
+			case "channel":
+				connect();
+				break;
+		}
+	}
+
+	private boolean isIgnoredUser(String username)
+	{
+		return username != null && Text.fromCSV(twitchConfig.ignoredUsernames()).stream()
+			.anyMatch(username::equalsIgnoreCase);
 	}
 
 	private void addChatMessage(String sender, String message)
 	{
+		int timestamp = (int) (System.currentTimeMillis() / 1000);
+		if (twitchConfig.overlayIntegration())
+		{
+			eventBus.post(new TwitchMessage(sender, message, timestamp));
+		}
+		if (!twitchConfig.showInChatbox())
+		{
+			return;
+		}
+
 		String chatMessage = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
 			.append(message)
@@ -172,14 +201,14 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			.sender("Twitch")
 			.name(sender)
 			.runeLiteFormattedMessage(chatMessage)
-			.timestamp((int) (System.currentTimeMillis() / 1000))
+			.timestamp(timestamp)
 			.build());
 	}
 
 	@Override
 	public void privmsg(String source, Map<String, String> tags, String message)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || isIgnoredUser(source))
 		{
 			return;
 		}
@@ -200,7 +229,9 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 	{
 		log.debug("Usernotice tags: {} message: {}", tags, message);
 
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN
+			|| !twitchConfig.showNotices()
+			|| isIgnoredUser(tags.get("login")))
 		{
 			return;
 		}
@@ -235,7 +266,10 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			try
 			{
 				twitchIRCClient.privmsg(message);
-				addChatMessage(twitchConfig.username(), message);
+				if (!isIgnoredUser(twitchConfig.username()))
+				{
+					addChatMessage(twitchConfig.username(), message);
+				}
 			}
 			catch (IOException e)
 			{

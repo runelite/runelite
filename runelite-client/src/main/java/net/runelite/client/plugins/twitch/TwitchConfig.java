@@ -55,4 +55,48 @@ public interface TwitchConfig extends Config
 		position = 2
 	)
 	String channel();
+
+	@ConfigItem(
+		keyName = "overlayIntegration",
+		name = "Enable overlay integration",
+		description = "Allow compatible plugins to display Twitch messages in their overlays.",
+		position = 3
+	)
+	default boolean overlayIntegration()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showInChatbox",
+		name = "Show Twitch in game chat",
+		description = "Add Twitch messages to game chat history. Turn off to keep that history free of Twitch messages.",
+		position = 4
+	)
+	default boolean showInChatbox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showNotices",
+		name = "Show Twitch notices",
+		description = "Show subscription, gift and other Twitch system notices.",
+		position = 5
+	)
+	default boolean showNotices()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ignoredUsernames",
+		name = "Ignored Twitch usernames",
+		description = "Comma-separated Twitch usernames to ignore (case-insensitive).",
+		position = 6
+	)
+	default String ignoredUsernames()
+	{
+		return "";
+	}
 }
