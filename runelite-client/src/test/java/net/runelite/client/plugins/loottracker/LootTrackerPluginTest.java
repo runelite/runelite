@@ -404,6 +404,94 @@ public class LootTrackerPluginTest
 	}
 
 	@Test
+	public void testPiratesHideoutChest()
+	{
+		// Arrange: place the player in region 12093
+		Player player = mock(Player.class);
+
+		when(player.getWorldLocation()).thenReturn(
+				new WorldPoint(12093 >> 2, (12093 & 0xff) << 6, 0)
+		);
+
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		// Act: simulate the chest's chat message
+		ChatMessage message = new ChatMessage(
+				null,
+				ChatMessageType.GAMEMESSAGE,
+				"",
+				"You find treasure inside!",
+				"",
+				0
+		);
+
+		lootTrackerPlugin.onChatMessage(message);
+
+		// Simulate receiving 100 coins
+		List<ItemStack> items = Collections.singletonList(
+				new ItemStack(ItemID.COINS, 100)
+		);
+
+		sendInvChange(InventoryID.INV, items);
+
+		// Assert: verify that the correct chest was recorded
+		verify(lootTrackerPlugin).addLoot(
+				"Pirates' Hideout chest",
+				-1,
+				LootRecordType.EVENT,
+				null,
+				items
+		);
+	}
+
+
+	@Test
+	public void testLarransBigChest()
+	{
+		// Arrange: Set player's location to region 12093
+		Player player = mock(Player.class);
+
+		when(player.getWorldLocation()).thenReturn(
+				new WorldPoint(12093 >> 2, (12093 & 0xff) << 6, 0)
+		);
+
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		// Mock the Fishing level used as Slayer chest metadata
+		when(client.getBoostedSkillLevel(Skill.FISHING))
+				.thenReturn(75);
+
+		// Act: Simulate opening Larran's big chest
+		ChatMessage message = new ChatMessage(
+				null,
+				ChatMessageType.GAMEMESSAGE,
+				"",
+				"You have opened Larran's big chest and found loot!",
+				"",
+				0
+		);
+
+		lootTrackerPlugin.onChatMessage(message);
+
+		// Simulate receiving 100 coins
+		List<ItemStack> items = Collections.singletonList(
+				new ItemStack(ItemID.COINS, 100)
+		);
+
+		sendInvChange(InventoryID.INV, items);
+
+		// Assert: Verify loot is recorded as Larran's big chest
+		verify(lootTrackerPlugin).addLoot(
+				"Larran's big chest",
+				-1,
+				LootRecordType.EVENT,
+				75,
+				items
+		);
+	}
+
+
+	@Test
 	public void testTemporossRewardPool()
 	{
 		Player player = mock(Player.class);
