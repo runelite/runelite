@@ -58,7 +58,10 @@ public enum PotionDuration
 	ANTIDOTE_PLUS_MIX(Duration.ofMinutes(9), ItemID.BRUTAL_ANTIDOTE_1, ItemID.BRUTAL_ANTIDOTE_2),
 	EXTENDED_ANTIFIRE_MIX(Duration.ofMinutes(12), ItemID.BRUTAL_1DOSE2ANTIDRAGON, ItemID.BRUTAL_2DOSE2ANTIDRAGON),
 	SUPER_ANTIFIRE_MIX(Duration.ofMinutes(3), ItemID.BRUTAL_1DOSE3ANTIDRAGON, ItemID.BRUTAL_2DOSE3ANTIDRAGON),
-	EXTENDED_SUPER_ANTIFIRE_MIX(Duration.ofMinutes(6), ItemID.BRUTAL_1DOSE4ANTIDRAGON, ItemID.BRUTAL_2DOSE4ANTIDRAGON);
+	EXTENDED_SUPER_ANTIFIRE_MIX(Duration.ofMinutes(6), ItemID.BRUTAL_1DOSE4ANTIDRAGON, ItemID.BRUTAL_2DOSE4ANTIDRAGON),
+	ARAXYTE_VENOM_SAC(new PotionDurationRange[]{
+		new PotionDurationRange("Anti-venom", Duration.ofSeconds(0), Duration.ofSeconds(18)),
+		new PotionDurationRange("Anti-poison", Duration.ofSeconds(684), Duration.ofSeconds(702))}, ItemID.ARAXYTE_VENOM_SACK);
 
 	@Getter
 	private final PotionDurationRange[] durationRanges;
