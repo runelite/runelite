@@ -32,7 +32,9 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.Notifier;
@@ -105,6 +107,10 @@ public class ItemChargePluginTest
 	private static final String USED_BRACELET_OF_CLAY_TRAHAEARN = "You manage to mine some soft clay.";
 
 	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
+
+	private static final String CHECK_QUETZAL_WHISTLE = "Your quetzal whistle has 4 charges remaining.";
+	private static final String CHECK_QUETZAL_WHISTLE_1 = "Your quetzal whistle has 1 charge remaining.";
+	private static final String CHECK_QUETZAL_WHISTLE_0 = "Your quetzal whistle has 0 charges remaining.";
 
 	@Mock
 	@Bind
@@ -583,5 +589,48 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY_TRAHAEARN, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager, Mockito.times(0)).setRSProfileConfiguration(Mockito.anyString(), Mockito.anyString(), Mockito.anyInt());
+	}
+
+	@Test
+	public void testQuetzalWhistleBasic()
+	{
+		useQuetzalWhistle(ItemID.HG_QUETZALWHISTLE_BASIC);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_QUETZAL_WHISTLE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_QUETZAL_WHISTLE_BASIC, 4);
+	}
+
+	@Test
+	public void testQuetzalWhistleEnhanced()
+	{
+		useQuetzalWhistle(ItemID.HG_QUETZALWHISTLE_ENHANCED);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_QUETZAL_WHISTLE_1, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_QUETZAL_WHISTLE_ENHANCED, 1);
+	}
+
+	@Test
+	public void testQuetzalWhistlePerfected()
+	{
+		useQuetzalWhistle(ItemID.HG_QUETZALWHISTLE_PERFECTED);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_QUETZAL_WHISTLE_0, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_QUETZAL_WHISTLE_PERFECTED, 0);
+	}
+
+	@Test
+	public void testQuetzalWhistleUnknown()
+	{
+		// The message does not say which whistle it is for, so it is ignored if no whistle was used
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_QUETZAL_WHISTLE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager, Mockito.times(0)).setRSProfileConfiguration(Mockito.anyString(), Mockito.anyString(), Mockito.anyInt());
+	}
+
+	private void useQuetzalWhistle(int itemId)
+	{
+		MenuEntry menuEntry = mock(MenuEntry.class);
+		when(menuEntry.getItemId()).thenReturn(itemId);
+		itemChargePlugin.onMenuOptionClicked(new MenuOptionClicked(menuEntry));
 	}
 }

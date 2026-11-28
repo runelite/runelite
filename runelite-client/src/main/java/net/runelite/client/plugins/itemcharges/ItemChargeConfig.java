@@ -49,6 +49,9 @@ public interface ItemChargeConfig extends Config
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
 	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
+	String KEY_QUETZAL_WHISTLE_BASIC = "quetzalWhistleBasic";
+	String KEY_QUETZAL_WHISTLE_ENHANCED = "quetzalWhistleEnhanced";
+	String KEY_QUETZAL_WHISTLE_PERFECTED = "quetzalWhistlePerfected";
 
 	@ConfigSection(
 		name = "Charge settings",
