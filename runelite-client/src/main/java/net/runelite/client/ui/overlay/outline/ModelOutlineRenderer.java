@@ -143,13 +143,14 @@ public class ModelOutlineRenderer
 	}
 
 	/**
-	 * Determine if a triangle goes counter clockwise
+	 * Determines whether a projected triangle is back-facing for the canvas orientation.
 	 *
-	 * @return Returns true if the triangle goes counter clockwise and should be culled, otherwise false
+	 * @return true if the triangle is back-facing or degenerate and should be culled
 	 */
-	private static boolean cullFace(int x1, int y1, int x2, int y2, int x3, int y3)
+	private boolean cullFace(int x1, int y1, int x2, int y2, int x3, int y3)
 	{
-		return (y2 - y1) * (x3 - x2) - (x2 - x1) * (y3 - y2) <= 0;
+		int area = (y2 - y1) * (x3 - x2) - (x2 - x1) * (y3 - y2);
+		return Perspective.isCanvasMirrored(client) ? area >= 0 : area <= 0;
 	}
 
 	/**

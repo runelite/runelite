@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
+import net.runelite.api.CanvasTransform;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.FloatProjection;
@@ -67,6 +68,8 @@ import net.runelite.client.callback.RenderCallbackManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.SceneMirrorPicking;
+import net.runelite.client.game.SceneMirrorViewport;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -76,8 +79,13 @@ import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.ui.SceneMirror;
 import net.runelite.rlawt.AWTContext;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLCapabilities;
+import org.lwjgl.opengl.GLUtil;
+import org.lwjgl.system.Callback;
+import org.lwjgl.system.Configuration;
 import static org.lwjgl.opengl.GL33C.*;
 import static org.lwjgl.opengl.GL43C.GL_DEBUG_SOURCE_API;
 import static org.lwjgl.opengl.GL43C.GL_DEBUG_TYPE_OTHER;
@@ -85,10 +93,6 @@ import static org.lwjgl.opengl.GL43C.GL_DEBUG_TYPE_PERFORMANCE;
 import static org.lwjgl.opengl.GL43C.glDebugMessageControl;
 import static org.lwjgl.opengl.GL45C.GL_ZERO_TO_ONE;
 import static org.lwjgl.opengl.GL45C.glClipControl;
-import org.lwjgl.opengl.GLCapabilities;
-import org.lwjgl.opengl.GLUtil;
-import org.lwjgl.system.Callback;
-import org.lwjgl.system.Configuration;
 
 @PluginDescriptor(
 	name = "GPU",
@@ -97,8 +101,29 @@ import org.lwjgl.system.Configuration;
 	loadInSafeMode = false
 )
 @Slf4j
-public class GpuPlugin extends Plugin implements DrawCallbacks
+public class GpuPlugin extends Plugin implements DrawCallbacks, CanvasTransform
 {
+	@Inject
+	private SceneMirrorPicking sceneMirrorPicking;
+
+	@Override
+	public CanvasTransform getCanvasTransform()
+	{
+		return this;
+	}
+
+	@Override
+	public int mapX(Client client, int x, int y)
+	{
+		return sceneMirrorPicking.mapWorldCanvasX(client, x, y);
+	}
+
+	@Override
+	public boolean isMirrored(Client client)
+	{
+		return sceneMirrorPicking.isMirrored(client);
+	}
+
 	static final int MAX_DISTANCE = 184;
 	static final int MAX_FOG_DEPTH = 100;
 	static final int SCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2; // offset for sxy -> msxy
@@ -133,6 +158,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Inject
 	private RenderCallbackManager renderCallbackManager;
 
+	@Inject
+	private SceneMirror sceneMirror;
+
+	private SceneMirrorViewport sceneMirrorViewport;
+	private SceneMirrorPicking.Frame sceneMirrorPickingFrame;
+	private SceneMirrorPicking.Frame pendingSceneMirrorPickingFrame;
+	private boolean sceneMirrorEnabled;
+
 	private Canvas canvas;
 	private AWTContext awtContext;
 	private Callback debugCallback;
@@ -159,6 +192,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int fboScene;
 	private boolean sceneFboValid;
+	private int sceneFramebufferWidth;
+	private int sceneFramebufferHeight;
+	private int sceneMirrorResolveFramebuffer = -1;
+	private int sceneMirrorResolveBuffer;
 	private int rboColorBuffer;
 	private int rboDepthBuffer;
 
@@ -277,6 +314,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	static final float[] IDENTITY = Mat4.identity();
 
 	@Override
+	public boolean supportsSceneMirroring()
+	{
+		return true;
+	}
+
+	@Override
 	protected void startUp()
 	{
 		root = new SceneContext(NUM_ZONES, NUM_ZONES);
@@ -294,6 +337,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			try
 			{
+				sceneMirrorPicking.clear();
+				if (client.isSceneMirroringSupported())
+				{
+					sceneMirrorPicking.setDisplayTransformSupplier(() -> clientUI.getGraphicsConfiguration().getDefaultTransform());
+				}
 				fboScene = -1;
 				lastAnisotropicFilteringLevel = -1;
 
@@ -445,6 +493,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		clientThread.invoke(() ->
 		{
+			sceneMirrorPicking.clear();
+			sceneMirrorPicking.setDisplayTransformSupplier(null);
 			client.setGpuFlags(0);
 			client.setDrawCallbacks(null);
 			client.setUnlockedFps(false);
@@ -809,6 +859,23 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			throw new RuntimeException("FBO is incomplete. status: " + status);
 		}
+		sceneFramebufferWidth = width;
+		sceneFramebufferHeight = height;
+
+		if (client.isSceneMirroringSupported())
+		{
+			sceneMirrorResolveFramebuffer = glGenFramebuffers();
+			glBindFramebuffer(GL_FRAMEBUFFER, sceneMirrorResolveFramebuffer);
+			sceneMirrorResolveBuffer = glGenRenderbuffers();
+			glBindRenderbuffer(GL_RENDERBUFFER, sceneMirrorResolveBuffer);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA, width, height);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, sceneMirrorResolveBuffer);
+			status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+			if (status != GL_FRAMEBUFFER_COMPLETE)
+			{
+				throw new RuntimeException("Mirror resolve FBO is incomplete. status: " + status);
+			}
+		}
 
 		// Reset
 		glBindFramebuffer(GL_FRAMEBUFFER, awtContext.getFramebuffer(false));
@@ -817,6 +884,25 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void shutdownFbo()
 	{
+		sceneMirrorViewport = null;
+		sceneMirrorPickingFrame = null;
+		pendingSceneMirrorPickingFrame = null;
+		sceneMirrorEnabled = false;
+		sceneMirrorPicking.clear();
+		sceneFboValid = false;
+		sceneFramebufferWidth = 0;
+		sceneFramebufferHeight = 0;
+		if (sceneMirrorResolveFramebuffer != -1)
+		{
+			glDeleteFramebuffers(sceneMirrorResolveFramebuffer);
+			sceneMirrorResolveFramebuffer = -1;
+		}
+		if (sceneMirrorResolveBuffer != 0)
+		{
+			glDeleteRenderbuffers(sceneMirrorResolveBuffer);
+			sceneMirrorResolveBuffer = 0;
+		}
+
 		if (fboScene != -1)
 		{
 			glDeleteFramebuffers(fboScene);
@@ -912,10 +998,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			final int stretchedCanvasWidth = client.isStretchedEnabled() ? stretchedDimensions.width : canvasWidth;
 			final int stretchedCanvasHeight = client.isStretchedEnabled() ? stretchedDimensions.height : canvasHeight;
+			final AffineTransform framebufferTransform = clientUI.getGraphicsConfiguration().getDefaultTransform();
+			final int physicalCanvasWidth = getScaledValue(framebufferTransform.getScaleX(), stretchedCanvasWidth);
+			final int physicalCanvasHeight = getScaledValue(framebufferTransform.getScaleY(), stretchedCanvasHeight);
 
 			// Re-create fbo
 			if (lastStretchedCanvasWidth != stretchedCanvasWidth
 				|| lastStretchedCanvasHeight != stretchedCanvasHeight
+				|| sceneFramebufferWidth != physicalCanvasWidth
+				|| sceneFramebufferHeight != physicalCanvasHeight
 				|| lastAntiAliasingMode != antiAliasingMode)
 			{
 				shutdownFbo();
@@ -974,7 +1065,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			renderWidthOff = (int) Math.floor(scaleFactorX * (renderWidthOff)) - padding;
 		}
 
-		glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
+		glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight, true);
 
 		glUseProgram(glProgram);
 
@@ -1097,13 +1188,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		height = getScaledValue(transform.getScaleY(), height);
 
 		int defaultFbo = awtContext.getFramebuffer(false);
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, fboScene);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFbo);
-		glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
-			GL_COLOR_BUFFER_BIT, GL_NEAREST);
-
-		// Reset
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, defaultFbo);
+		// Keep the normal full-canvas background, then reflect only scene color.
+		// UI is composited separately by drawUi() after this method returns.
+		boolean mirrored = sceneMirrorEnabled
+			&& sceneMirrorViewport != null && sceneMirrorViewport.framebufferWidth == width
+			&& sceneMirrorViewport.framebufferHeight == height;
+		SceneMirrorBlit.draw(fboScene, defaultFbo, sceneMirrorResolveFramebuffer, width, height,
+			mirrored ? sceneMirrorViewport : null);
+		pendingSceneMirrorPickingFrame = mirrored ? sceneMirrorPickingFrame : null;
 
 		checkGLErrors();
 	}
@@ -1499,6 +1591,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int canvasHeight = client.getCanvasHeight();
 		final int canvasWidth = client.getCanvasWidth();
 
+		// Do not present a partly reprojected frame if layout/DPI changed during drawing.
+		if (sceneFboValid && sceneMirrorEnabled && !sceneMirrorPicking.isMirrored(client))
+		{
+			return;
+		}
+		pendingSceneMirrorPickingFrame = null;
 		prepareInterfaceTexture(canvasWidth, canvasHeight);
 
 		glClearColor(0, 0, 0, 1);
@@ -1515,9 +1613,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		try
 		{
 			awtContext.swapBuffers();
+			sceneMirrorPicking.presentFrame(client, pendingSceneMirrorPickingFrame);
 		}
 		catch (RuntimeException ex)
 		{
+			sceneMirrorPicking.clear();
 			// this is always fatal
 			if (!canvas.isValid())
 			{
@@ -1652,6 +1752,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// this is to avoid scene fbo blit when going from <loading to >=loading,
 			// but keep it when doing >loading to loading
 			sceneFboValid = false;
+			sceneMirrorEnabled = false;
+			sceneMirrorViewport = null;
+			sceneMirrorPickingFrame = null;
+			pendingSceneMirrorPickingFrame = null;
+			sceneMirrorPicking.clear();
 		}
 		if (state == GameState.STARTING)
 		{
@@ -2148,13 +2253,30 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void glDpiAwareViewport(final int x, final int y, final int width, final int height)
 	{
+		glDpiAwareViewport(x, y, width, height, false);
+	}
+
+	private void glDpiAwareViewport(final int x, final int y, final int width, final int height, boolean captureScene)
+	{
 		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
 		final AffineTransform t = graphicsConfiguration.getDefaultTransform();
-		glViewport(
-			getScaledValue(t.getScaleX(), x),
-			getScaledValue(t.getScaleY(), y),
-			getScaledValue(t.getScaleX(), width),
-			getScaledValue(t.getScaleY(), height));
+		int physicalX = getScaledValue(t.getScaleX(), x);
+		int physicalY = getScaledValue(t.getScaleY(), y);
+		int physicalWidth = getScaledValue(t.getScaleX(), width);
+		int physicalHeight = getScaledValue(t.getScaleY(), height);
+		glViewport(physicalX, physicalY, physicalWidth, physicalHeight);
+		if (captureScene)
+		{
+			sceneMirrorViewport = sceneMirror.isEnabled()
+				? SceneMirrorViewport.capture(physicalX, physicalY, physicalWidth, physicalHeight,
+					sceneFramebufferWidth, sceneFramebufferHeight)
+				: null;
+			sceneMirrorPickingFrame = sceneMirrorViewport != null
+				? SceneMirrorPicking.Frame.capture(client, physicalX, physicalWidth, sceneMirrorViewport)
+				: null;
+			sceneMirrorEnabled = sceneMirrorViewport != null;
+			sceneMirrorPicking.beginFrame(client, sceneMirrorEnabled ? sceneMirrorPickingFrame : null);
+		}
 	}
 
 	private int getDrawDistance()

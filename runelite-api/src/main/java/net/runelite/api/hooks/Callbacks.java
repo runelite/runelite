@@ -79,6 +79,25 @@ public interface Callbacks
 	void drawScene();
 
 	/**
+	 * Maps a viewport-relative pointer for native entity and terrain picking.
+	 * Called after native interface routing, for both hover and saved clicks.
+	 * Global mouse state, widgets, menu placement and minimap input must not use it.
+	 */
+	default int mapSceneMouseX(int x, int y)
+	{
+		return x;
+	}
+
+	/**
+	 * Maps a successful viewport-relative world projection before drawing an
+	 * upright overhead label. Invalid projection sentinels must bypass this hook.
+	 */
+	default int mapSceneCanvasX(int x)
+	{
+		return x;
+	}
+
+	/**
 	 * Called after logic that is drawing 2D objects is processed.
 	 */
 	void drawAboveOverheads();
