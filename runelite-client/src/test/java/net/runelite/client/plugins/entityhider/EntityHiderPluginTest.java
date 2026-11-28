@@ -34,6 +34,9 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
+import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.party.PartyMember;
@@ -284,5 +287,35 @@ public class EntityHiderPluginTest
 
 		assertTrue(plugin.shouldDraw(player, true));
 		assertTrue(plugin.shouldDraw(player, false));
+	}
+
+	@Test
+	public void testHideOthersFrogEventButNotOwn()
+	{
+		when(config.hideRandomEvents()).thenReturn(true);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		NPC herald = mock(NPC.class);
+		when(herald.getId()).thenReturn(NpcID.MACRO_FROG_CRIER);
+
+		NPC princess = mock(NPC.class);
+		when(princess.getComposition()).thenReturn(mock(NPCComposition.class));
+		when(princess.getId()).thenReturn(NpcID.MACRO_FROG_PRIN_SHE);
+
+		// someone else's frog event
+		assertFalse(plugin.shouldDraw(princess, false));
+
+		// your own: the herald talks to you, and the princess (who never does) must show
+		plugin.onInteractingChanged(new InteractingChanged(herald, player));
+		assertTrue(plugin.shouldDraw(princess, false));
+
+		plugin.onNpcDespawned(new NpcDespawned(herald));
+		assertFalse(plugin.shouldDraw(princess, false));
 	}
 }
