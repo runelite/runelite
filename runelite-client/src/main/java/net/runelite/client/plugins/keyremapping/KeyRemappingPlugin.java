@@ -77,7 +77,9 @@ public class KeyRemappingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		typing = false;
-		keyManager.registerKeyListener(inputListener);
+		// Register first so that every other key listener sees the remapped key events, regardless of
+		// the order the plugins were started in
+		keyManager.registerKeyListener(0, inputListener);
 
 		clientThread.invoke(() ->
 		{
