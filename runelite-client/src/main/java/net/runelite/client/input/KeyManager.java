@@ -61,6 +61,20 @@ public class KeyManager
 		}
 	}
 
+	/**
+	 * Registers a key listener at the given position in the listener list. Listeners are invoked in list order,
+	 * so a listener registered at position 0 sees each key event before any other listener, and any changes it
+	 * makes to the event are visible to the listeners after it.
+	 */
+	public void registerKeyListener(int position, KeyListener keyListener)
+	{
+		if (!keyListeners.contains(keyListener))
+		{
+			log.debug("Registering key listener at position {}: {}", position, keyListener);
+			keyListeners.add(position, keyListener);
+		}
+	}
+
 	public void unregisterKeyListener(KeyListener keyListener)
 	{
 		final boolean unregistered = keyListeners.remove(keyListener);
