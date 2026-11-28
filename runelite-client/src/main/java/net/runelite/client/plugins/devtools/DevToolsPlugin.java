@@ -291,6 +291,7 @@ public class DevToolsPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "devtools_icon.png");
 
 		navButton = NavigationButton.builder()
+			.sidebarId("developer-tools")
 			.tooltip("Developer Tools")
 			.icon(icon)
 			.priority(1)

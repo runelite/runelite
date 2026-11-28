@@ -28,7 +28,6 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatNativeWindowBorder;
 import com.formdev.flatlaf.util.SystemInfo;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import java.awt.AWTException;
 import java.awt.Canvas;
@@ -64,9 +63,12 @@ import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -78,9 +80,11 @@ import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -135,6 +139,7 @@ public class ClientUI
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final String CONFIG_CLIENT_SIDEBAR_CLOSED = "clientSidebarClosed";
+	private static final String TAB_SLOT = "runelite.sidebarTab";
 	public static final BufferedImage ICON_128 = ImageUtil.loadImageResource(ClientUI.class, "runelite_128.png");
 	public static final BufferedImage ICON_16 = ImageUtil.loadImageResource(ClientUI.class, "runelite_16.png");
 
@@ -145,6 +150,7 @@ public class ClientUI
 	private final MouseManager mouseManager;
 	private final Component client;
 	private final ConfigManager configManager;
+	private final SidebarFolderManager sidebarFolders;
 	private final Provider<ClientThread> clientThreadProvider;
 	private final EventBus eventBus;
 	private final boolean safeMode;
@@ -156,8 +162,11 @@ public class ClientUI
 
 	private JTabbedPane sidebar;
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
+	private final List<SidebarSlot> sidebarSlots = new ArrayList<>();
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
+	private boolean rebuildingSidebar;
+	private boolean suppressFolderSelection;
 
 	private ClientToolbarPanel toolbarPanel;
 	private boolean withTitleBar;
@@ -197,6 +206,7 @@ public class ClientUI
 		MouseManager mouseManager,
 		Client client,
 		ConfigManager configManager,
+		SidebarFolderManager sidebarFolders,
 		Provider<ClientThread> clientThreadProvider,
 		EventBus eventBus,
 		@Named("safeMode") boolean safeMode,
@@ -207,6 +217,7 @@ public class ClientUI
 		this.mouseManager = mouseManager;
 		this.client = (Component) client;
 		this.configManager = configManager;
+		this.sidebarFolders = sidebarFolders;
 		this.clientThreadProvider = clientThreadProvider;
 		this.eventBus = eventBus;
 		this.safeMode = safeMode;
@@ -219,8 +230,24 @@ public class ClientUI
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals(CONFIG_GROUP) ||
-			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
+		if (!event.getGroup().equals(CONFIG_GROUP))
+		{
+			return;
+		}
+
+		if (SidebarFolderManager.CONFIG_KEY.equals(event.getKey()))
+		{
+			SwingUtilities.invokeLater(this::reloadSidebarFolders);
+			return;
+		}
+
+		if (RuneLiteConfig.SIDEBAR_FOLDERS_ENABLED.equals(event.getKey()))
+		{
+			SwingUtilities.invokeLater(() -> rebuildSidebar(selectedTab));
+			return;
+		}
+
+		if (event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
 			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
 			return;
@@ -242,16 +269,7 @@ public class ClientUI
 			return;
 		}
 
-		final int TAB_SIZE = 16;
-		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
-
-		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-			sidebarEntries.headSet(navBtn).size());
-		// insertTab changes the selected index when the first tab is inserted, avoid this
-		if (sidebar.getTabCount() == 1)
-		{
-			sidebar.setSelectedIndex(-1);
-		}
+		rebuildSidebar(selectedTab);
 	}
 
 	void removeNavigation(NavigationButton navBtn)
@@ -259,23 +277,38 @@ public class ClientUI
 		if (navBtn.getPanel() == null)
 		{
 			toolbarPanel.remove(navBtn);
+			return;
 		}
-		else
-		{
-			boolean closingOpenTab = !selectedTabHistory.isEmpty() && selectedTabHistory.getLast().navBtn == navBtn;
-			selectedTabHistory.removeIf(it -> it.navBtn == navBtn);
-			sidebar.remove(navBtn.getPanel().getWrappedPanel());
-			if (closingOpenTab)
-			{
-				HistoryEntry entry = selectedTabHistory.isEmpty()
-					? new HistoryEntry(true, null)
-					: selectedTabHistory.removeLast();
 
-				openPanel(entry.navBtn, entry.sidebarOpen);
+		boolean closingOpenTab = !selectedTabHistory.isEmpty() && selectedTabHistory.getLast().navBtn == navBtn;
+		selectedTabHistory.removeIf(it -> it.navBtn == navBtn);
+		sidebarEntries.remove(navBtn);
+
+		boolean wasSelected = selectedTab == navBtn;
+		if (wasSelected)
+		{
+			selectedTab = null;
+		}
+
+		rebuildSidebar(selectedTab);
+
+		if (wasSelected)
+		{
+			SwingUtil.deactivate(navBtn.getPanel());
+			if (sidebar != null && sidebar.isVisible())
+			{
+				giveClientFocus();
 			}
 		}
 
-		sidebarEntries.remove(navBtn);
+		if (closingOpenTab)
+		{
+			HistoryEntry entry = selectedTabHistory.isEmpty()
+				? new HistoryEntry(true, null)
+				: selectedTabHistory.removeLast();
+
+			openPanel(entry.navBtn, entry.sidebarOpen);
+		}
 	}
 
 	@Subscribe
@@ -321,6 +354,9 @@ public class ClientUI
 	 */
 	public void init() throws Exception
 	{
+		// ConfigManager.load() has completed by the time the UI is initialized.
+		sidebarFolders.load();
+
 		SwingUtilities.invokeAndWait(() ->
 		{
 			// Set some sensible swing defaults
@@ -406,25 +442,34 @@ public class ClientUI
 			clientPanel = new ClientPanel(this.client);
 			content.add(clientPanel);
 
-			sidebar = new JTabbedPane(JTabbedPane.RIGHT);
+			sidebar = new SidebarPane(sidebarSlots);
 			sidebar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
 			sidebar.addChangeListener(ev ->
 			{
-				NavigationButton oldSelectedTab = selectedTab;
-				NavigationButton newSelectedTab;
+				if (rebuildingSidebar)
+				{
+					return;
+				}
 
 				int index = sidebar.getSelectedIndex();
-				if (index < 0)
+				if (index >= 0 && index < sidebarSlots.size() && sidebarSlots.get(index).isFolder())
 				{
-					newSelectedTab = null;
+					if (!suppressFolderSelection)
+					{
+						requestFolderToggle(sidebarSlots.get(index).getFolder());
+					}
+					return;
 				}
-				else
+
+				NavigationButton oldSelectedTab = selectedTab;
+				NavigationButton newSelectedTab = null;
+
+				if (index >= 0 && index < sidebarSlots.size())
 				{
-					// maybe just include a map component -> navbtn?
-					newSelectedTab = Iterables.get(sidebarEntries, index);
+					newSelectedTab = sidebarSlots.get(index).getButton();
 				}
 
 				if (oldSelectedTab == newSelectedTab)
@@ -460,23 +505,12 @@ public class ClientUI
 				{
 					if (e.getButton() == MouseEvent.BUTTON3)
 					{
-						int index = 0;
-						for (var navBtn : sidebarEntries)
+						for (int i = 0; i < sidebarSlots.size(); i++)
 						{
-							Rectangle bounds = sidebar.getBoundsAt(index++);
+							Rectangle bounds = sidebar.getBoundsAt(i);
 							if (bounds != null && bounds.contains(e.getX(), e.getY()))
 							{
-								if (navBtn.getPopup() != null)
-								{
-									var menu = new JPopupMenu();
-									navBtn.getPopup().forEach((name, cb) ->
-									{
-										var menuItem = new JMenuItem(name);
-										menuItem.addActionListener(ev -> cb.run());
-										menu.add(menuItem);
-									});
-									menu.show(sidebar, e.getX(), e.getY());
-								}
+								showSidebarMenu(sidebarSlots.get(i), e.getX(), e.getY());
 								return;
 							}
 						}
@@ -1060,12 +1094,510 @@ public class ClientUI
 			return;
 		}
 
-		int index = navBtn == null ? -1 : sidebarEntries.headSet(navBtn).size();
+		if (navBtn != null && sidebarFoldersActive() && sidebarFolders.expandIfCollapsed(navBtn))
+		{
+			rebuildSidebar(selectedTab);
+		}
+		else if (navBtn != null && slotIndex(navBtn) < 0)
+		{
+			rebuildSidebar(selectedTab);
+		}
+
+		int index = navBtn == null ? -1 : slotIndex(navBtn);
 		sidebar.setSelectedIndex(index);
 
 		toggleSidebar(showSidebar, false);
 
 		pushHistory();
+	}
+
+	private boolean sidebarFoldersActive()
+	{
+		return !safeMode && config.sidebarFoldersEnabled();
+	}
+
+	private void reloadSidebarFolders()
+	{
+		if (sidebarFolders.reloadFromConfig())
+		{
+			rebuildSidebar(selectedTab);
+		}
+	}
+
+	private void rebuildSidebar(NavigationButton select)
+	{
+		if (sidebar == null)
+		{
+			return;
+		}
+
+		List<SidebarSlot> slots;
+		if (sidebarFoldersActive())
+		{
+			sidebarFolders.reconcile(sidebarEntries);
+			slots = sidebarFolders.buildSlots(sidebarEntries);
+		}
+		else
+		{
+			slots = new ArrayList<>();
+			for (NavigationButton button : sidebarEntries)
+			{
+				slots.add(SidebarSlot.plugin(button, null));
+			}
+		}
+
+		sidebarSlots.clear();
+		sidebarSlots.addAll(slots);
+
+		rebuildingSidebar = true;
+		try
+		{
+			syncTabs(slots);
+			int index = slotIndex(select);
+			if (sidebar.getTabCount() == 0 || index < 0)
+			{
+				sidebar.setSelectedIndex(-1);
+			}
+			else if (sidebar.getSelectedIndex() != index)
+			{
+				sidebar.setSelectedIndex(index);
+			}
+		}
+		finally
+		{
+			rebuildingSidebar = false;
+		}
+
+		sidebar.revalidate();
+		sidebar.repaint();
+	}
+
+	private void syncTabs(List<SidebarSlot> desired)
+	{
+		Set<String> keep = new HashSet<>();
+		for (SidebarSlot slot : desired)
+		{
+			keep.add(SidebarFolders.tabId(slot));
+		}
+
+		for (int i = sidebar.getTabCount() - 1; i >= 0; i--)
+		{
+			if (!keep.contains(tabKey(i)))
+			{
+				sidebar.remove(i);
+			}
+		}
+
+		for (int i = 0; i < desired.size(); i++)
+		{
+			SidebarSlot slot = desired.get(i);
+			String key = SidebarFolders.tabId(slot);
+			if (i < sidebar.getTabCount() && key.equals(tabKey(i)))
+			{
+				if (slot.isFolder())
+				{
+					decorateTab(i, slot);
+				}
+				continue;
+			}
+
+			int found = -1;
+			for (int j = 0; j < sidebar.getTabCount(); j++)
+			{
+				if (key.equals(tabKey(j)))
+				{
+					found = j;
+					break;
+				}
+			}
+
+			if (found >= 0)
+			{
+				Component component = sidebar.getComponentAt(found);
+				sidebar.remove(found);
+				int insertAt = found < i ? i - 1 : i;
+				sidebar.insertTab(null, null, component, null, insertAt);
+				decorateTab(insertAt, slot);
+			}
+			else
+			{
+				insertSidebarSlot(slot, i);
+			}
+		}
+
+		while (sidebar.getTabCount() > desired.size())
+		{
+			sidebar.remove(sidebar.getTabCount() - 1);
+		}
+	}
+
+	private void insertSidebarSlot(SidebarSlot slot, int index)
+	{
+		if (slot.isFolder())
+		{
+			JPanel placeholder = new JPanel();
+			placeholder.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			markSlot(placeholder, SidebarFolders.tabId(slot));
+			sidebar.insertTab(null, null, placeholder, slot.getFolder().getName(), index);
+			decorateTab(index, slot);
+			return;
+		}
+
+		NavigationButton navBtn = slot.getButton();
+		JComponent panel = navBtn.getPanel().getWrappedPanel();
+		markSlot(panel, SidebarFolders.tabId(slot));
+		sidebar.insertTab(null, pluginIcon(navBtn), panel, navBtn.getTooltip(), index);
+	}
+
+	private void decorateTab(int index, SidebarSlot slot)
+	{
+		if (slot.isFolder())
+		{
+			PluginGroup group = slot.getFolder();
+			Icon icon = folderIcon(group);
+			sidebar.setIconAt(index, icon);
+			sidebar.setToolTipTextAt(index, group.getName());
+			sidebar.setTabComponentAt(index, folderButton(group, icon));
+			return;
+		}
+
+		NavigationButton navBtn = slot.getButton();
+		sidebar.setIconAt(index, pluginIcon(navBtn));
+		sidebar.setToolTipTextAt(index, navBtn.getTooltip());
+		sidebar.setTabComponentAt(index, null);
+	}
+
+	private FolderButton folderButton(PluginGroup group, Icon icon)
+	{
+		FolderButton folderButton = new FolderButton(icon, group.getName());
+		folderButton.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (SwingUtilities.isLeftMouseButton(e))
+				{
+					requestFolderToggle(group);
+				}
+				else if (SwingUtilities.isRightMouseButton(e))
+				{
+					Point point = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), sidebar);
+					showSidebarMenu(SidebarSlot.folder(group), point.x, point.y);
+				}
+			}
+		});
+		return folderButton;
+	}
+
+	private Icon folderIcon(PluginGroup group)
+	{
+		NavigationButton iconSource = sidebarFolders.iconSource(group, sidebarEntries);
+		BufferedImage image = iconSource != null && iconSource.getIcon() != null
+			? FolderButton.pluginIcon(iconSource.getIcon(), group.isExpanded())
+			: FolderButton.defaultIcon(group.isExpanded());
+		return new ImageIcon(image);
+	}
+
+	private Icon pluginIcon(NavigationButton navBtn)
+	{
+		final int tabSize = 16;
+		BufferedImage iconImage = navBtn.getIcon();
+		if (iconImage == null)
+		{
+			iconImage = new BufferedImage(tabSize, tabSize, BufferedImage.TYPE_INT_ARGB);
+		}
+		return new ImageIcon(ImageUtil.resizeImage(iconImage, tabSize, tabSize));
+	}
+
+	private String tabKey(int index)
+	{
+		Component component = sidebar.getComponentAt(index);
+		if (!(component instanceof JComponent))
+		{
+			return null;
+		}
+		Object key = ((JComponent) component).getClientProperty(TAB_SLOT);
+		return key instanceof String ? (String) key : null;
+	}
+
+	private static void markSlot(JComponent component, String key)
+	{
+		component.putClientProperty(TAB_SLOT, key);
+	}
+
+	private void requestFolderToggle(PluginGroup group)
+	{
+		if (suppressFolderSelection)
+		{
+			return;
+		}
+
+		suppressFolderSelection = true;
+		PluginGroup openGroup = selectedTab == null ? null : sidebarFolders.groupOf(selectedTab);
+		boolean closingSelected = openGroup != null
+			&& openGroup.isExpanded()
+			&& openGroup.getId().equals(group.getId());
+		NavigationButton previous = selectedTab;
+		sidebarFolders.toggleExpanded(group);
+
+		final NavigationButton keep;
+		if (closingSelected)
+		{
+			selectedTab = null;
+			keep = null;
+			if (sidebar.isVisible())
+			{
+				pushHistory();
+				SwingUtil.deactivate(previous.getPanel());
+				giveClientFocus();
+			}
+			else
+			{
+				SwingUtil.deactivate(previous.getPanel());
+			}
+		}
+		else
+		{
+			keep = selectedTab;
+		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+			try
+			{
+				rebuildSidebar(keep);
+			}
+			finally
+			{
+				suppressFolderSelection = false;
+			}
+		});
+	}
+
+	private int slotIndex(NavigationButton navBtn)
+	{
+		if (navBtn == null)
+		{
+			return -1;
+		}
+
+		for (int i = 0; i < sidebarSlots.size(); i++)
+		{
+			if (navBtn.equals(sidebarSlots.get(i).getButton()))
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private void showSidebarMenu(SidebarSlot slot, int x, int y)
+	{
+		if (slot.isFolder())
+		{
+			showFolderMenu(slot.getFolder(), x, y);
+		}
+		else
+		{
+			showPluginMenu(slot.getButton(), x, y);
+		}
+	}
+
+	private void showFolderMenu(PluginGroup group, int x, int y)
+	{
+		JPopupMenu menu = new JPopupMenu();
+		int index = sidebarFolders.topIndex(group, sidebarEntries);
+		int count = sidebarFolders.topCount(sidebarEntries);
+
+		JMenuItem moveUp = new JMenuItem("Move Up");
+		moveUp.setEnabled(index > 0);
+		moveUp.addActionListener(ev ->
+		{
+			sidebarFolders.moveFolder(group, -1, sidebarEntries);
+			rebuildSidebar(selectedTab);
+		});
+		menu.add(moveUp);
+
+		JMenuItem moveDown = new JMenuItem("Move Down");
+		moveDown.setEnabled(index >= 0 && index < count - 1);
+		moveDown.addActionListener(ev ->
+		{
+			sidebarFolders.moveFolder(group, 1, sidebarEntries);
+			rebuildSidebar(selectedTab);
+		});
+		menu.add(moveDown);
+
+		menu.addSeparator();
+
+		JMenuItem rename = new JMenuItem("Rename");
+		rename.addActionListener(ev -> renameFolder(group));
+		menu.add(rename);
+
+		JMenuItem delete = new JMenuItem("Delete Folder");
+		delete.addActionListener(ev ->
+		{
+			sidebarFolders.deleteFolder(group, sidebarEntries);
+			rebuildSidebar(selectedTab);
+		});
+		menu.add(delete);
+
+		menu.addSeparator();
+
+		JMenuItem reset = new JMenuItem("Reset Sidebar Layout");
+		reset.addActionListener(ev -> resetSidebarFolders());
+		menu.add(reset);
+
+		menu.show(sidebar, x, y);
+	}
+
+	private void showPluginMenu(NavigationButton navBtn, int x, int y)
+	{
+		JPopupMenu menu = new JPopupMenu();
+		boolean foldersEnabled = sidebarFoldersActive();
+		PluginGroup group = foldersEnabled ? sidebarFolders.groupOf(navBtn) : null;
+
+		if (navBtn.getPopup() != null && !navBtn.getPopup().isEmpty())
+		{
+			navBtn.getPopup().forEach((name, cb) ->
+			{
+				JMenuItem menuItem = new JMenuItem(name);
+				menuItem.addActionListener(ev -> cb.run());
+				menu.add(menuItem);
+			});
+			if (foldersEnabled)
+			{
+				menu.addSeparator();
+			}
+		}
+
+		if (!foldersEnabled)
+		{
+			if (menu.getComponentCount() > 0)
+			{
+				menu.show(sidebar, x, y);
+			}
+			return;
+		}
+
+		if (group != null && group.isExpanded())
+		{
+			int index = sidebarFolders.childIndex(navBtn, sidebarEntries);
+			int count = sidebarFolders.childCount(navBtn, sidebarEntries);
+
+			JMenuItem moveUp = new JMenuItem("Move Up");
+			moveUp.setEnabled(index > 0);
+			moveUp.addActionListener(ev ->
+			{
+				sidebarFolders.moveChild(navBtn, -1, sidebarEntries);
+				rebuildSidebar(selectedTab);
+			});
+			menu.add(moveUp);
+
+			JMenuItem moveDown = new JMenuItem("Move Down");
+			moveDown.setEnabled(index >= 0 && index < count - 1);
+			moveDown.addActionListener(ev ->
+			{
+				sidebarFolders.moveChild(navBtn, 1, sidebarEntries);
+				rebuildSidebar(selectedTab);
+			});
+			menu.add(moveDown);
+
+			boolean currentIcon = sidebarFolders.hasFolderIcon(navBtn);
+			JMenuItem iconItem = new JMenuItem(currentIcon ? "Clear Folder Icon" : "Use as Folder Icon");
+			iconItem.addActionListener(ev ->
+			{
+				if (currentIcon)
+				{
+					sidebarFolders.clearFolderIcon(navBtn);
+				}
+				else
+				{
+					sidebarFolders.setFolderIcon(navBtn);
+				}
+				rebuildSidebar(selectedTab);
+			});
+			menu.add(iconItem);
+
+			JMenuItem remove = new JMenuItem("Remove from Folder");
+			remove.addActionListener(ev ->
+			{
+				sidebarFolders.removeFromFolder(navBtn, sidebarEntries);
+				rebuildSidebar(selectedTab);
+			});
+			menu.add(remove);
+		}
+
+		if (sidebarFolders.getGroups().isEmpty())
+		{
+			JMenuItem create = new JMenuItem("Create New Folder...");
+			create.addActionListener(ev -> createFolder(navBtn));
+			menu.add(create);
+		}
+		else
+		{
+			menu.add(folderMenu(navBtn, group));
+		}
+		menu.show(sidebar, x, y);
+	}
+
+	private JMenu folderMenu(NavigationButton navBtn, PluginGroup current)
+	{
+		JMenu moveTo = new JMenu("Move to Folder");
+		for (PluginGroup group : sidebarFolders.getGroups())
+		{
+			if (current != null && current.getId().equals(group.getId()))
+			{
+				continue;
+			}
+
+			JMenuItem item = new JMenuItem(group.getName());
+			item.addActionListener(ev ->
+			{
+				sidebarFolders.moveToFolder(group, navBtn);
+				rebuildSidebar(selectedTab);
+			});
+			moveTo.add(item);
+		}
+
+		JMenuItem create = new JMenuItem("Create New Folder...");
+		create.addActionListener(ev -> createFolder(navBtn));
+		moveTo.add(create);
+		return moveTo;
+	}
+
+	private void createFolder(NavigationButton navBtn)
+	{
+		String name = JOptionPane.showInputDialog(sidebar, "Folder name:", "Create Folder", JOptionPane.PLAIN_MESSAGE);
+		if (sidebarFolders.createFolder(name, navBtn) != null)
+		{
+			rebuildSidebar(selectedTab);
+		}
+	}
+
+	private void renameFolder(PluginGroup group)
+	{
+		String name = JOptionPane.showInputDialog(sidebar, "Folder name:", group.getName());
+		if (name != null && sidebarFolders.rename(group, name))
+		{
+			rebuildSidebar(selectedTab);
+		}
+	}
+
+	private void resetSidebarFolders()
+	{
+		int result = JOptionPane.showConfirmDialog(
+			sidebar,
+			"Remove all sidebar folders and restore the default plugin order?",
+			"Reset Sidebar Layout",
+			JOptionPane.OK_CANCEL_OPTION,
+			JOptionPane.WARNING_MESSAGE);
+		if (result != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		sidebarFolders.reset();
+		rebuildSidebar(selectedTab);
 	}
 
 	private void toggleSidebar()

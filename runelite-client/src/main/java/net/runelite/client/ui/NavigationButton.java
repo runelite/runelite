@@ -71,4 +71,10 @@ public class NavigationButton
 	 * Map of key-value pairs for setting the popup menu
 	 */
 	private final Map<String, Runnable> popup;
+
+	/**
+	 * Stable id used to remember sidebar folder membership across restarts.
+	 * When unset, the panel class name is used instead.
+	 */
+	private final String sidebarId;
 }
