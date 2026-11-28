@@ -115,30 +115,32 @@ class PlayerInfoDropOverlay extends Overlay
 			BufferedImage sprite = infoDrop.getImage();
 			int textHeight = fontMetrics.getHeight() - fontMetrics.getMaxDescent();
 			int textWidth = fontMetrics.stringWidth(text);
-			int textMargin = sprite.getWidth() / 2;
+			Dimension spriteSize = OverlayUtil.getImageLayoutSize(graphics, sprite);
+			int textMargin = spriteSize.width / 2;
 
 			Point imageLocation = new Point(
 				playerLocation.getX() - textMargin - 1,
-				playerLocation.getY() - textHeight / 2 - sprite.getHeight() / 2
+				playerLocation.getY() - textHeight / 2 - spriteSize.height / 2
 			);
 			Point textLocation = new Point(playerLocation.getX() + textMargin, playerLocation.getY());
 
 			BufferedImage backgroundSprite = infoDrop.getTextBackground();
 			if (backgroundSprite != null)
 			{
+				Dimension backgroundSize = OverlayUtil.getImageLayoutSize(graphics, backgroundSprite);
 				int x = textLocation.getX();
 				int y = textLocation.getY();
 
 				y -= textHeight / 2;
-				y -= backgroundSprite.getHeight() / 2;
+				y -= backgroundSize.height / 2;
 
 				x += (textWidth + 1) / 2;
-				x -= backgroundSprite.getWidth() / 2;
+				x -= backgroundSize.width / 2;
 
-				OverlayUtil.renderImageLocation(graphics, new Point(x, y), ImageUtil.alphaOffset(backgroundSprite, alpha - 255));
+				OverlayUtil.renderImageLocationExact(graphics, new Point(x, y), ImageUtil.alphaOffset(backgroundSprite, alpha - 255));
 			}
 
-			OverlayUtil.renderImageLocation(graphics, imageLocation, ImageUtil.alphaOffset(sprite, alpha - 255));
+			OverlayUtil.renderImageLocationExact(graphics, imageLocation, ImageUtil.alphaOffset(sprite, alpha - 255));
 
 			drawText(graphics, textLocation, text, infoDrop.getColor(), alpha);
 		}

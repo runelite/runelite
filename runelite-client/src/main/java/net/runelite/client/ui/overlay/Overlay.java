@@ -101,6 +101,38 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	@Setter(AccessLevel.PROTECTED)
 	private boolean snappable = true;
 
+	/**
+	 * When stretched mode is on, whether this overlay draws into the native
+	 * (display-resolution) buffer. Builtin overlays default to true. Hub and
+	 * sideloaded plugin overlays default to false and must opt in.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean preferNativeResolution = true;
+
+	/**
+	 * When GPU UI scaling is nearest neighbor, draw this overlay on the canvas instead of the
+	 * native buffer so its shapes share the game UI pixel grid. Opt in only for geometry
+	 * overlays (orb rings, arcs); text and panels stay on the native path.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean preferUiPixelGrid;
+
+	/**
+	 * DYNAMIC overlays that should follow Fixed overlay size / aspect ratio like infoboxes
+	 * (e.g. FPS and ping counters), instead of world-overlay scaling. Applies the panel content
+	 * scale to the whole Graphics2D, so positions are in content space.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean preferPanelContentScale;
+
+	/**
+	 * World-anchored DYNAMIC overlays whose glyphs and images should follow Fixed overlay size /
+	 * aspect ratio (e.g. player names, ground item text) without moving canvas positions. Text is
+	 * scaled locally around each draw; polygons stay at full stretch.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean preferPanelGlyphScale;
+
 	protected Overlay()
 	{
 		plugin = null;
@@ -109,6 +141,18 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	protected Overlay(@Nullable Plugin plugin)
 	{
 		this.plugin = plugin;
+		if (plugin != null && !isBuiltinPlugin(plugin))
+		{
+			preferNativeResolution = false;
+		}
+	}
+
+	/**
+	 * Builtin plugins share the client classloader; hub/sideload plugins use a separate loader.
+	 */
+	private static boolean isBuiltinPlugin(Plugin plugin)
+	{
+		return plugin.getClass().getClassLoader() == Plugin.class.getClassLoader();
 	}
 
 	public void setPriority(float priority)

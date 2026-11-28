@@ -54,6 +54,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTAPlugin;
 import net.runelite.client.plugins.mta.MTARoom;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @Slf4j
@@ -353,7 +354,7 @@ public class AlchemyRoom extends MTARoom
 
 			if (canvasLoc != null)
 			{
-				graphics.drawImage(image, canvasLoc.getX(), canvasLoc.getY(), null);
+				OverlayUtil.renderImageLocation(graphics, canvasLoc, image);
 			}
 		}
 

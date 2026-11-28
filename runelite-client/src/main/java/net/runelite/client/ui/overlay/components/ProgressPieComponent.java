@@ -32,6 +32,7 @@ import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import lombok.Setter;
 import net.runelite.api.Point;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
 @Setter
@@ -47,22 +48,39 @@ public class ProgressPieComponent implements RenderableEntity
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		final double sizeFactor = OverlayUtil.getNativeVisualSizeFactor(graphics);
+		final int drawDiameter = Math.max(1, (int) Math.round(diameter * sizeFactor));
+		final int x = position.getX() - drawDiameter / 2;
+		final int y = position.getY() - drawDiameter / 2;
+
 		//Construct the arc
 		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
 		arc.setAngleStart(90);
 		arc.setAngleExtent(progress * 360);
-		arc.setFrame(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
+		arc.setFrame(x, y, drawDiameter, drawDiameter);
 
 		//Draw the inside of the arc
 		graphics.setColor(fill);
 		graphics.fill(arc);
 
 		//Draw the outlines of the arc
-		graphics.setStroke(stroke);
+		graphics.setStroke(scaleStroke(stroke, sizeFactor));
 		graphics.setColor(borderColor);
-		graphics.drawOval(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
+		graphics.drawOval(x, y, drawDiameter, drawDiameter);
 
-		return new Dimension(diameter, diameter);
+		return new Dimension(drawDiameter, drawDiameter);
+	}
+
+	private static Stroke scaleStroke(Stroke stroke, double sizeFactor)
+	{
+		if (sizeFactor == 1.0 || !(stroke instanceof BasicStroke))
+		{
+			return stroke;
+		}
+
+		BasicStroke basic = (BasicStroke) stroke;
+		return new BasicStroke((float) (basic.getLineWidth() * sizeFactor), basic.getEndCap(), basic.getLineJoin(),
+			basic.getMiterLimit(), basic.getDashArray(), basic.getDashPhase());
 	}
 
 	public void setBorder(Color border, int size)

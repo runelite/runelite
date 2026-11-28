@@ -24,6 +24,7 @@
  */
 package net.runelite.client.callback;
 
+import java.awt.AlphaComposite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -81,6 +82,8 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.ui.overlay.NativeOverlayBuffer;
+import net.runelite.client.ui.overlay.NativeOverlayMenu;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -104,6 +107,7 @@ public class Hooks implements Callbacks
 
 	private final Client client;
 	private final OverlayRenderer renderer;
+	private final NativeOverlayMenu nativeOverlayMenu;
 	private final EventBus eventBus;
 	private final DeferredEventBus deferredEventBus;
 	private final Scheduler scheduler;
@@ -179,6 +183,7 @@ public class Hooks implements Callbacks
 	private Hooks(
 		Client client,
 		OverlayRenderer renderer,
+		NativeOverlayMenu nativeOverlayMenu,
 		EventBus eventBus,
 		DeferredEventBus deferredEventBus,
 		Scheduler scheduler,
@@ -199,6 +204,7 @@ public class Hooks implements Callbacks
 	{
 		this.client = client;
 		this.renderer = renderer;
+		this.nativeOverlayMenu = nativeOverlayMenu;
 		this.eventBus = eventBus;
 		this.deferredEventBus = deferredEventBus;
 		this.scheduler = scheduler;
@@ -403,10 +409,26 @@ public class Hooks implements Callbacks
 			log.error("Error during overlay rendering", ex);
 		}
 
-		notifier.processFlash(graphics2d);
+		Graphics2D overlayGraphics = renderer.createNativeOverlayGraphics();
+		try
+		{
+			// Draw the flash and clientUI overlays
+			Graphics2D targetGraphics = overlayGraphics != null ? overlayGraphics : graphics2d;
+			notifier.processFlash(targetGraphics);
+			clientUi.paintOverlays(targetGraphics);
 
-		// Draw clientUI overlays
-		clientUi.paintOverlays(graphics2d);
+			if (overlayGraphics != null)
+			{
+				renderer.getNativeOverlayBuffer().markDirty(NativeOverlayBuffer.Pass.ABOVE_UI);
+			}
+		}
+		finally
+		{
+			if (overlayGraphics != null)
+			{
+				overlayGraphics.dispose();
+			}
+		}
 
 		if (client.isGpu())
 		{
@@ -460,6 +482,27 @@ public class Hooks implements Callbacks
 					? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
 					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
+
+			// Under-UI overlays stay in the canvas on the CPU path so the bank covers them.
+			// Only above-UI overlays are composited here, after the stretch upscale.
+			var nativeBuffer = renderer.getNativeOverlayBuffer();
+			if (nativeBuffer.isActive() && nativeBuffer.isDirty(NativeOverlayBuffer.Pass.ABOVE_UI))
+			{
+				BufferedImage above = nativeBuffer.getImage(NativeOverlayBuffer.Pass.ABOVE_UI);
+				if (above != null)
+				{
+					stretchedGraphics.setComposite(AlphaComposite.SrcOver);
+					stretchedGraphics.drawImage(above, 0, 0, null);
+					nativeBuffer.finishComposite(NativeOverlayBuffer.Pass.ABOVE_UI);
+				}
+			}
+
+			// Deferred translucent menu over the sharp above-UI overlays.
+			if (nativeOverlayMenu.hasDeferredMenu())
+			{
+				stretchedGraphics.setComposite(AlphaComposite.SrcOver);
+				nativeOverlayMenu.compositeOntoStretched(stretchedGraphics);
+			}
 
 			finalImage = stretchedImage;
 		}
@@ -524,6 +567,13 @@ public class Hooks implements Callbacks
 	public void drawAboveOverheads()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		NativeOverlayBuffer nativeBuffer = renderer.getNativeOverlayBuffer();
+		if (nativeBuffer.isActive() && client.isGpu())
+		{
+			nativeBuffer.captureAndClearOverheads(bufferProvider.getPixels(),
+				bufferProvider.getWidth(), bufferProvider.getHeight());
+		}
+
 		Graphics2D graphics2d = getGraphics(bufferProvider);
 
 		try

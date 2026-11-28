@@ -27,6 +27,7 @@ package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -58,6 +59,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
+		setPreferPanelGlyphScale(true);
 	}
 
 	@Override
@@ -121,29 +123,96 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 		if (rankImage != null)
 		{
-			final int imageWidth = rankImage.getWidth();
-			final int imageTextMargin;
-			final int imageNegativeMargin;
-
-			if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
-			{
-				imageTextMargin = imageWidth;
-				imageNegativeMargin = 0;
-			}
-			else
-			{
-				imageTextMargin = imageWidth / 2;
-				imageNegativeMargin = imageWidth / 2;
-			}
-
-			final int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
-			final Point imageLocation = new Point(textLocation.getX() - imageNegativeMargin - 1, textLocation.getY() - textHeight / 2 - rankImage.getHeight() / 2);
-			OverlayUtil.renderImageLocation(graphics, imageLocation, rankImage);
-
-			// move text
-			textLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
+			renderRankAndName(graphics, textLocation, name, rankImage, decorations.getColor(), drawPlayerNamesConfig);
+			return;
 		}
 
+		textLocation = OverlayUtil.adjustLocalTextScaleLocation(graphics, textLocation, name);
 		OverlayUtil.renderTextLocation(graphics, textLocation, name, decorations.getColor());
+	}
+
+	/**
+	 * Packs rank icon + name in unscaled space, then applies panel glyph scale to the
+	 * whole plate about the name center so icon and text stay locked under non-uniform stretch.
+	 */
+	private void renderRankAndName(Graphics2D graphics, Point textLocation, String name, BufferedImage rankImage,
+		java.awt.Color color, PlayerNameLocation drawPlayerNamesConfig)
+	{
+		final boolean localScale = OverlayUtil.isNativeLocalTextScale(graphics);
+		final double fx = OverlayUtil.getNativeVisualSizeFactor(graphics);
+		final double fy = OverlayUtil.getNativeVisualSizeFactorY(graphics);
+		final boolean groupScale = localScale && (fx != 1.0 || fy != 1.0);
+
+		final int imageWidth;
+		final int imageHeight;
+		final int textHeight;
+		if (groupScale)
+		{
+			// Layout with raw bitmap / font metrics; one shared scale is applied below.
+			imageWidth = rankImage.getWidth();
+			imageHeight = rankImage.getHeight();
+			textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
+		}
+		else
+		{
+			final Dimension imageSize = OverlayUtil.getImageLayoutSize(graphics, rankImage);
+			imageWidth = imageSize.width;
+			imageHeight = imageSize.height;
+			textHeight = (int) Math.round(
+				(graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent())
+					* fy);
+		}
+
+		final int imageTextMargin;
+		final int imageNegativeMargin;
+		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
+		{
+			imageTextMargin = imageWidth;
+			imageNegativeMargin = 0;
+		}
+		else
+		{
+			imageTextMargin = imageWidth / 2;
+			imageNegativeMargin = imageWidth / 2;
+		}
+
+		final Point imageLocation = new Point(
+			textLocation.getX() - imageNegativeMargin - 1,
+			textLocation.getY() - textHeight / 2 - imageHeight / 2);
+		final Point nameLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
+
+		if (!groupScale)
+		{
+			OverlayUtil.renderImageLocationExact(graphics, imageLocation, rankImage);
+			OverlayUtil.renderTextLocation(graphics, nameLocation, name, color);
+			return;
+		}
+
+		final int anchorX = textLocation.getX() + graphics.getFontMetrics().stringWidth(name) / 2;
+		final int anchorY = textLocation.getY();
+		final AffineTransform transform = graphics.getTransform();
+		graphics.translate(anchorX, anchorY);
+		graphics.scale(fx, fy);
+		graphics.translate(-anchorX, -anchorY);
+
+		// Factors already applied by the group transform — draw at 1×1 in this space.
+		final Object prevLocal = graphics.getRenderingHint(OverlayUtil.KEY_NATIVE_LOCAL_TEXT_SCALE);
+		final Object prevFx = graphics.getRenderingHint(OverlayUtil.KEY_NATIVE_VISUAL_SIZE_FACTOR);
+		final Object prevFy = graphics.getRenderingHint(OverlayUtil.KEY_NATIVE_VISUAL_SIZE_FACTOR_Y);
+		graphics.setRenderingHint(OverlayUtil.KEY_NATIVE_LOCAL_TEXT_SCALE, false);
+		graphics.setRenderingHint(OverlayUtil.KEY_NATIVE_VISUAL_SIZE_FACTOR, 1.0);
+		graphics.setRenderingHint(OverlayUtil.KEY_NATIVE_VISUAL_SIZE_FACTOR_Y, 1.0);
+		try
+		{
+			graphics.drawImage(rankImage, imageLocation.getX(), imageLocation.getY(), null);
+			OverlayUtil.renderTextLocation(graphics, nameLocation, name, color);
+		}
+		finally
+		{
+			graphics.setRenderingHint(OverlayUtil.KEY_NATIVE_LOCAL_TEXT_SCALE, prevLocal);
+			graphics.setRenderingHint(OverlayUtil.KEY_NATIVE_VISUAL_SIZE_FACTOR, prevFx);
+			graphics.setRenderingHint(OverlayUtil.KEY_NATIVE_VISUAL_SIZE_FACTOR_Y, prevFy);
+			graphics.setTransform(transform);
+		}
 	}
 }

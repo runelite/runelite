@@ -75,6 +75,7 @@ public class ShaderTest
 		Shader[] shaders = {
 			GpuPlugin.PROGRAM,
 			GpuPlugin.UI_PROGRAM,
+			GpuPlugin.OVERLAY_PROGRAM,
 		};
 
 		for (Template t : templates)

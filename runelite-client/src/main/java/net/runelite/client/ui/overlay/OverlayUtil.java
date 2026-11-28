@@ -27,11 +27,15 @@ package net.runelite.client.ui.overlay;
 import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -44,6 +48,49 @@ import net.runelite.client.util.ColorUtil;
 public class OverlayUtil
 {
 	private static final int MINIMAP_DOT_RADIUS = 4;
+
+	/**
+	 * Whether the overlay currently being rendered draws into the native overlay buffer.
+	 * Used by shared helpers (e.g. {@code ModelOutlineRenderer}) that draw outside the
+	 * overlay's {@link Graphics2D}.
+	 */
+	private static final ThreadLocal<Boolean> CURRENT_OVERLAY_NATIVE = ThreadLocal.withInitial(() -> false);
+
+	/**
+	 * Canvas-space scale for decorations (images, text) drawn into the native overlay buffer.
+	 * Defaults to 1.0, meaning sprites grow with stretch like the scene they are anchored to.
+	 */
+	public static final RenderingHints.Key KEY_NATIVE_VISUAL_SIZE_FACTOR = new RenderingHints.Key(0x4e4f5649)
+	{
+		@Override
+		public boolean isCompatibleValue(Object val)
+		{
+			return val instanceof Number;
+		}
+	};
+
+	public static final RenderingHints.Key KEY_NATIVE_VISUAL_SIZE_FACTOR_Y = new RenderingHints.Key(0x4e4f5659)
+	{
+		@Override
+		public boolean isCompatibleValue(Object val)
+		{
+			return val instanceof Number;
+		}
+	};
+
+	/**
+	 * When true, {@link #renderTextLocation} and {@link net.runelite.client.ui.overlay.components.TextComponent}
+	 * apply {@link #KEY_NATIVE_VISUAL_SIZE_FACTOR} locally around each glyph draw, so world-anchored
+	 * text can use panel size/aspect scales without shifting canvas positions.
+	 */
+	public static final RenderingHints.Key KEY_NATIVE_LOCAL_TEXT_SCALE = new RenderingHints.Key(0x4e4f4c54)
+	{
+		@Override
+		public boolean isCompatibleValue(Object val)
+		{
+			return val instanceof Boolean;
+		}
+	};
 
 	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
@@ -74,6 +121,91 @@ public class OverlayUtil
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
 	}
 
+	/**
+	 * Draws a circular ring. With antialiasing on this is a stroked ellipse; with antialiasing
+	 * off (GPU nearest UI pixel grid) it is a symmetric Euclidean annulus, which is slightly
+	 * smaller than a centered {@link BasicStroke} but free of aliasing artifacts.
+	 *
+	 * @param x top-left of the diameter×diameter oval frame, as for {@code drawOval}
+	 * @param thickness stroke width in pixels
+	 */
+	public static void drawPixelRing(Graphics2D graphics, int x, int y, int diameter, int thickness)
+	{
+		drawPixelArc(graphics, x, y, diameter, thickness, 0, -360);
+	}
+
+	/**
+	 * Same as {@link #drawPixelRing} but limited to an arc using {@link Arc2D} angle conventions:
+	 * {@code startAngle} in degrees (0 = 3 o'clock, counter-clockwise positive) and
+	 * {@code extentAngle} in degrees (negative = clockwise).
+	 */
+	public static void drawPixelArc(Graphics2D graphics, int x, int y, int diameter, int thickness,
+		double startAngle, double extentAngle)
+	{
+		if (diameter <= 0 || thickness <= 0 || extentAngle == 0)
+		{
+			return;
+		}
+
+		thickness = Math.min(thickness, diameter);
+		final boolean fullCircle = Math.abs(extentAngle) >= 360;
+
+		if (graphics.getRenderingHint(RenderingHints.KEY_ANTIALIASING) != RenderingHints.VALUE_ANTIALIAS_OFF)
+		{
+			final Stroke originalStroke = graphics.getStroke();
+			graphics.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
+			graphics.draw(fullCircle
+				? new Ellipse2D.Double(x - 0.5, y - 0.5, diameter, diameter)
+				: new Arc2D.Double(x - 0.5, y - 0.5, diameter, diameter, startAngle, extentAngle, Arc2D.OPEN));
+			graphics.setStroke(originalStroke);
+			return;
+		}
+
+		final double cx = x + diameter / 2.0 - 0.5;
+		final double cy = y + diameter / 2.0 - 0.5;
+		final double radius = diameter / 2.0 - 0.5;
+		final double rOuter = radius + thickness / 2.0;
+		final double rInner = Math.max(0, radius - thickness / 2.0);
+		final double outerSq = rOuter * rOuter;
+		final double innerSq = rInner * rInner;
+		final int pad = (int) Math.ceil(thickness / 2.0) + 1;
+
+		for (int py = y - pad; py < y + diameter + pad; py++)
+		{
+			final double dy = py - cy;
+			final double dySq = dy * dy;
+			for (int px = x - pad; px < x + diameter + pad; px++)
+			{
+				final double dx = px - cx;
+				final double distanceSq = dx * dx + dySq;
+				if (distanceSq > outerSq || distanceSq <= innerSq)
+				{
+					continue;
+				}
+				if (!fullCircle && !isAngleOnArc(Math.toDegrees(Math.atan2(cy - py, px - cx)), startAngle, extentAngle))
+				{
+					continue;
+				}
+				graphics.fillRect(px, py, 1, 1);
+			}
+		}
+	}
+
+	private static boolean isAngleOnArc(double degrees, double startAngle, double extentAngle)
+	{
+		final double start = normalizeDegrees(startAngle);
+		final double angle = normalizeDegrees(degrees);
+		return extentAngle < 0
+			? normalizeDegrees(start - angle) <= -extentAngle
+			: normalizeDegrees(angle - start) <= extentAngle;
+	}
+
+	private static double normalizeDegrees(double degrees)
+	{
+		final double normalized = degrees % 360;
+		return normalized < 0 ? normalized + 360 : normalized;
+	}
+
 	@Deprecated
 	public static void renderMinimapRect(Client client, Graphics2D graphics, Point center, int width, int height, Color color)
 	{
@@ -94,11 +226,31 @@ public class OverlayUtil
 
 		int x = txtLoc.getX();
 		int y = txtLoc.getY();
+		final Color textColor = ColorUtil.colorWithAlpha(color, 0xFF);
+
+		double fx = getNativeVisualSizeFactor(graphics);
+		double fy = getNativeVisualSizeFactorY(graphics);
+
+		if (isNativeLocalTextScale(graphics) && (fx != 1.0 || fy != 1.0))
+		{
+			AffineTransform transform = graphics.getTransform();
+			graphics.translate(x, y);
+			graphics.scale(fx, fy);
+			graphics.setColor(Color.BLACK);
+			graphics.drawString(text, screenPixelOffsetX(graphics), screenPixelOffsetY(graphics));
+			graphics.setColor(textColor);
+			graphics.drawString(text, 0, 0);
+			graphics.setTransform(transform);
+			return;
+		}
+
+		// Keep the shadow one display pixel off the glyphs when they are scaled down
+		float shadow = (float) fx;
 
 		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, x + 1, y + 1);
+		graphics.drawString(text, x + shadow, y + shadow);
 
-		graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
+		graphics.setColor(textColor);
 		graphics.drawString(text, x, y);
 	}
 
@@ -111,12 +263,72 @@ public class OverlayUtil
 		}
 	}
 
+	/**
+	 * Canvas-space width/height the image occupies after native overlay size scaling.
+	 * Use this for layout next to text instead of {@link BufferedImage#getWidth()}/{@link BufferedImage#getHeight()}.
+	 */
+	public static Dimension getImageLayoutSize(Graphics2D graphics, BufferedImage image)
+	{
+		double fx = getNativeVisualSizeFactor(graphics);
+		double fy = getNativeVisualSizeFactorY(graphics);
+		if (fx == 1.0 && fy == 1.0)
+		{
+			return new Dimension(image.getWidth(), image.getHeight());
+		}
+		return new Dimension(
+			Math.max(1, (int) Math.round(image.getWidth() * fx)),
+			Math.max(1, (int) Math.round(image.getHeight() * fy)));
+	}
+
+	/**
+	 * Renders an image at a canvas location. {@code imgLoc} is the top-left of the full bitmap
+	 * footprint (as returned by {@link Perspective#getCanvasImageLocation} / actor canvas image
+	 * helpers), so a scaled-down sprite stays centered in that footprint.
+	 */
 	public static void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
 	{
-		int x = imgLoc.getX();
-		int y = imgLoc.getY();
+		Dimension layout = getImageLayoutSize(graphics, image);
+		int x = imgLoc.getX() + (image.getWidth() - layout.width) / 2;
+		int y = imgLoc.getY() + (image.getHeight() - layout.height) / 2;
+		renderImageLocationExact(graphics, x, y, image);
+	}
 
-		graphics.drawImage(image, x, y, null);
+	/**
+	 * Renders an image with {@code (x, y)} as the top-left of the drawn (layout-sized) sprite.
+	 * Use with {@link #getImageLayoutSize} when packing icons next to text.
+	 */
+	public static void renderImageLocationExact(Graphics2D graphics, Point imgLoc, BufferedImage image)
+	{
+		renderImageLocationExact(graphics, imgLoc.getX(), imgLoc.getY(), image);
+	}
+
+	private static void renderImageLocationExact(Graphics2D graphics, int x, int y, BufferedImage image)
+	{
+		double fx = getNativeVisualSizeFactor(graphics);
+		double fy = getNativeVisualSizeFactorY(graphics);
+		if (fx == 1.0 && fy == 1.0)
+		{
+			graphics.drawImage(image, x, y, null);
+			return;
+		}
+
+		AffineTransform transform = graphics.getTransform();
+		graphics.translate(x, y);
+		graphics.scale(fx, fy);
+		graphics.drawImage(image, 0, 0, null);
+		graphics.setTransform(transform);
+	}
+
+	public static double getNativeVisualSizeFactor(Graphics2D graphics)
+	{
+		Object value = graphics.getRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR);
+		return value instanceof Number ? ((Number) value).doubleValue() : 1.0;
+	}
+
+	public static double getNativeVisualSizeFactorY(Graphics2D graphics)
+	{
+		Object value = graphics.getRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR_Y);
+		return value instanceof Number ? ((Number) value).doubleValue() : getNativeVisualSizeFactor(graphics);
 	}
 
 	public static void renderActorOverlay(Graphics2D graphics, Actor actor, String text, Color color)
@@ -202,6 +414,109 @@ public class OverlayUtil
 
 	public static void setGraphicProperties(Graphics2D graphics)
 	{
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		setGraphicProperties(graphics, true);
+	}
+
+	public static void setGraphicProperties(Graphics2D graphics, boolean antialias)
+	{
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+			antialias ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
+	}
+
+	/**
+	 * Sets the canvas-space size factors decorations drawn into the native overlay buffer
+	 * should use, so they can shrink to their unstretched size without moving.
+	 */
+	public static void setNativeOverlayProperties(Graphics2D graphics, double visualSizeFactorX, double visualSizeFactorY)
+	{
+		setNativeOverlayProperties(graphics, visualSizeFactorX, visualSizeFactorY, false);
+	}
+
+	/**
+	 * @param localTextScale see {@link #KEY_NATIVE_LOCAL_TEXT_SCALE}
+	 */
+	public static void setNativeOverlayProperties(Graphics2D graphics, double visualSizeFactorX, double visualSizeFactorY,
+		boolean localTextScale)
+	{
+		setGraphicProperties(graphics);
+		graphics.setRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR, visualSizeFactorX);
+		graphics.setRenderingHint(KEY_NATIVE_VISUAL_SIZE_FACTOR_Y, visualSizeFactorY);
+		graphics.setRenderingHint(KEY_NATIVE_LOCAL_TEXT_SCALE, localTextScale);
+	}
+
+	public static boolean isNativeLocalTextScale(Graphics2D graphics)
+	{
+		return Boolean.TRUE.equals(graphics.getRenderingHint(KEY_NATIVE_LOCAL_TEXT_SCALE));
+	}
+
+	/**
+	 * User-space offset that maps to approximately one device pixel on X after the current
+	 * transform (outer stretch × local content scale).
+	 */
+	public static float screenPixelOffsetX(Graphics2D graphics)
+	{
+		double scale = Math.abs(graphics.getTransform().getScaleX());
+		return scale == 0.0 ? 1f : (float) (1.0 / scale);
+	}
+
+	/**
+	 * User-space offset that maps to approximately one device pixel on Y after the current
+	 * transform (outer stretch × local content scale).
+	 */
+	public static float screenPixelOffsetY(Graphics2D graphics)
+	{
+		double scale = Math.abs(graphics.getTransform().getScaleY());
+		return scale == 0.0 ? 1f : (float) (1.0 / scale);
+	}
+
+	/**
+	 * Shifts a canvas text location so a left-aligned {@code drawString} stays centered when
+	 * {@link #isNativeLocalTextScale} shrinks the glyph width by the X size factor.
+	 */
+	public static Point adjustLocalTextScaleLocation(Graphics2D graphics, Point textLocation, String text)
+	{
+		if (textLocation == null || Strings.isNullOrEmpty(text) || !isNativeLocalTextScale(graphics))
+		{
+			return textLocation;
+		}
+
+		double fx = getNativeVisualSizeFactor(graphics);
+		if (fx == 1.0)
+		{
+			return textLocation;
+		}
+
+		int fullWidth = graphics.getFontMetrics().stringWidth(text);
+		int layoutWidth = Math.max(0, (int) Math.round(fullWidth * fx));
+		return new Point(textLocation.getX() + (fullWidth - layoutWidth) / 2, textLocation.getY());
+	}
+
+	/**
+	 * Width of the drawable area in the current native content-scale user space. Right-aligned HUD
+	 * (FPS/ping) must use this after panel content scale so the right edge stays flush.
+	 */
+	public static int getContentSpaceWidth(Graphics2D graphics, int canvasWidth)
+	{
+		double cx = getNativeVisualSizeFactor(graphics);
+		if (cx == 0.0 || cx == 1.0)
+		{
+			return canvasWidth;
+		}
+		return Math.max(1, (int) Math.round(canvasWidth / cx));
+	}
+
+	/**
+	 * @return previous value
+	 */
+	public static boolean setCurrentOverlayNative(boolean nativePass)
+	{
+		boolean previous = CURRENT_OVERLAY_NATIVE.get();
+		CURRENT_OVERLAY_NATIVE.set(nativePass);
+		return previous;
+	}
+
+	public static boolean isCurrentOverlayNative()
+	{
+		return CURRENT_OVERLAY_NATIVE.get();
 	}
 }

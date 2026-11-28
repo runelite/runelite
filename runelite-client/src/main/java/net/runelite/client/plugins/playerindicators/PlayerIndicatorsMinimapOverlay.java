@@ -48,6 +48,7 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_HIGH);
+		setPreferPanelGlyphScale(true);
 	}
 
 	@Override
@@ -67,6 +68,8 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 
 			if (minimapLocation != null)
 			{
+				// Minimap location is the actor dot (left-align text from it), not a
+				// getCanvasTextLocation-style centered left edge — do not adjustLocalTextScaleLocation.
 				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, decorations.getColor());
 			}
 		}

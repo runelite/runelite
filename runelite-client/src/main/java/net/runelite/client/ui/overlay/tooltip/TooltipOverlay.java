@@ -27,6 +27,7 @@ package net.runelite.client.ui.overlay.tooltip;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.TooltipPositionType;
+import net.runelite.client.ui.overlay.NativeOverlayBuffer;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -49,15 +51,18 @@ public class TooltipOverlay extends Overlay
 	private final TooltipManager tooltipManager;
 	private final Client client;
 	private final RuneLiteConfig runeLiteConfig;
+	private final NativeOverlayBuffer nativeOverlayBuffer;
 
 	private int prevWidth, prevHeight;
 
 	@Inject
-	private TooltipOverlay(Client client, TooltipManager tooltipManager, final RuneLiteConfig runeLiteConfig)
+	private TooltipOverlay(Client client, TooltipManager tooltipManager, final RuneLiteConfig runeLiteConfig,
+		NativeOverlayBuffer nativeOverlayBuffer)
 	{
 		this.client = client;
 		this.tooltipManager = tooltipManager;
 		this.runeLiteConfig = runeLiteConfig;
+		this.nativeOverlayBuffer = nativeOverlayBuffer;
 		setPosition(OverlayPosition.TOOLTIP);
 		setPriority(PRIORITY_HIGHEST);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -92,11 +97,18 @@ public class TooltipOverlay extends Overlay
 		final int canvasHeight = client.getCanvasHeight();
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
 
+		// UNDER_OFFSET is display-space padding; under native stretch the transform would
+		// amplify it while the OS cursor stays display-sized.
+		final int underOffset = nativeOverlayBuffer.isActive()
+			? (int) Math.round(UNDER_OFFSET / nativeOverlayBuffer.getScaleY())
+			: UNDER_OFFSET;
+
 		final int tooltipX = Math.min(canvasWidth - prevWidth, mouseCanvasPosition.getX());
 		final int tooltipY = runeLiteConfig.tooltipPosition() == TooltipPositionType.ABOVE_CURSOR
 			? Math.max(0, mouseCanvasPosition.getY() - prevHeight)
-			: Math.min(canvasHeight - prevHeight, mouseCanvasPosition.getY() + UNDER_OFFSET);
+			: Math.min(canvasHeight - prevHeight, mouseCanvasPosition.getY() + underOffset);
 
+		final AffineTransform transform = graphics.getTransform();
 		int width = 0, height = 0;
 		for (Tooltip tooltip : tooltips)
 		{
@@ -119,12 +131,33 @@ public class TooltipOverlay extends Overlay
 				entity = tooltipComponent;
 			}
 
-			entity.setPreferredLocation(new Point(tooltipX, tooltipY + height));
-			final Dimension dimension = entity.render(graphics);
+			final double cx;
+			final double cy;
+			if (nativeOverlayBuffer.isActive())
+			{
+				cx = nativeOverlayBuffer.getPanelContentScaleX();
+				cy = nativeOverlayBuffer.getPanelContentScaleY();
+			}
+			else
+			{
+				cx = 1.0;
+				cy = 1.0;
+			}
 
-			// Create incremental tooltip newBounds
-			height += dimension.height + PADDING;
-			width = Math.max(width, dimension.width);
+			graphics.translate(tooltipX, tooltipY + height);
+			if (cx != 1.0 || cy != 1.0)
+			{
+				graphics.scale(cx, cy);
+			}
+
+			entity.setPreferredLocation(new Point(0, 0));
+			final Dimension dimension = entity.render(graphics);
+			graphics.setTransform(transform);
+
+			final int visualWidth = (int) Math.round(dimension.width * cx);
+			final int visualHeight = (int) Math.round(dimension.height * cy);
+			height += visualHeight + PADDING;
+			width = Math.max(width, visualWidth);
 		}
 
 		prevWidth = width;

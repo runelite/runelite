@@ -141,18 +141,17 @@ class KourendLibraryOverlay extends Overlay
 					{
 						FontMetrics fm = g.getFontMetrics();
 						Rectangle2D bounds = fm.getStringBounds(book.getShortName(), g);
-						height = (int) bounds.getHeight() + book.getIcon().getHeight() + 6;
+						Dimension iconSize = OverlayUtil.getImageLayoutSize(g, book.getIcon());
+						height = (int) bounds.getHeight() + iconSize.height + 6;
 						Point textLoc = new Point(
 							(int) (screenBookcase.getX() - (bounds.getWidth() / 2)),
 							screenBookcase.getY() - (height / 2) + (int) bounds.getHeight()
 						);
 						OverlayUtil.renderTextLocation(g, textLoc, book.getShortName(), color);
-						g.drawImage(
-							book.getIcon(),
-							screenBookcase.getX() - (book.getIcon().getWidth() / 2),
-							screenBookcase.getY() + (height / 2) - book.getIcon().getHeight(),
-							null
-						);
+						OverlayUtil.renderImageLocationExact(g, new Point(
+							screenBookcase.getX() - iconSize.width / 2,
+							screenBookcase.getY() + (height / 2) - iconSize.height
+						), book.getIcon());
 					}
 				}
 				else
@@ -181,7 +180,11 @@ class KourendLibraryOverlay extends Overlay
 							{
 								x += (BOOK_ICON_SIZE * (books.length % rows)) / 2;
 							}
-							g.drawImage(books[i].getIcon(), xbase + x, ybase + y, null);
+							Dimension iconSize = OverlayUtil.getImageLayoutSize(g, books[i].getIcon());
+							OverlayUtil.renderImageLocationExact(g, new Point(
+								xbase + x + (BOOK_ICON_SIZE - iconSize.width) / 2,
+								ybase + y + (BOOK_ICON_SIZE - iconSize.height) / 2
+							), books[i].getIcon());
 						}
 					}
 				}
@@ -217,7 +220,11 @@ class KourendLibraryOverlay extends Overlay
 				Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
 				if (screen != null)
 				{
-					g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);
+					Dimension iconSize = OverlayUtil.getImageLayoutSize(g, b.getIcon());
+					OverlayUtil.renderImageLocationExact(g, new Point(
+						screen.getX() - iconSize.width / 2,
+						screen.getY() - iconSize.height
+					), b.getIcon());
 				}
 			}
 		}

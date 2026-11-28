@@ -27,19 +27,26 @@ package net.runelite.client.plugins.stretchedmode;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.input.MouseListener;
+import net.runelite.client.ui.overlay.NativeOverlayMenu;
 
 public class TranslateMouseListener implements MouseListener
 {
 	private final Client client;
+	private final NativeOverlayMenu nativeOverlayMenu;
+	/** Canvas point before menu remapping, from the last {@link #translateEvent}. */
+	private int unmappedX;
+	private int unmappedY;
 
 	@Inject
-	public TranslateMouseListener(Client client)
+	public TranslateMouseListener(Client client, NativeOverlayMenu nativeOverlayMenu)
 	{
 		this.client = client;
+		this.nativeOverlayMenu = nativeOverlayMenu;
 	}
 
 	@Override
@@ -51,7 +58,10 @@ public class TranslateMouseListener implements MouseListener
 	@Override
 	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
-		return translateEvent(mouseEvent);
+		final MouseEvent translated = translateEvent(mouseEvent);
+		// Keep the client's click cross under the mouse when the press was remapped onto the menu
+		nativeOverlayMenu.shiftClickCross(unmappedX - translated.getX(), unmappedY - translated.getY());
+		return translated;
 	}
 
 	@Override
@@ -91,6 +101,15 @@ public class TranslateMouseListener implements MouseListener
 
 		int newX = (int) (e.getX() / (stretchedDimensions.width / realDimensions.getWidth()));
 		int newY = (int) (e.getY() / (stretchedDimensions.height / realDimensions.getHeight()));
+		unmappedX = newX;
+		unmappedY = newY;
+
+		final Point remapped = nativeOverlayMenu.remapTranslatedMouse(e.getX(), e.getY(), newX, newY);
+		if (remapped != null)
+		{
+			newX = remapped.x;
+			newY = remapped.y;
+		}
 
 		MouseEvent mouseEvent = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(),
 			newX, newY, e.getClickCount(), e.isPopupTrigger(), e.getButton());

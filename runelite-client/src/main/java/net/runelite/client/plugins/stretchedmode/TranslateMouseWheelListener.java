@@ -31,20 +31,28 @@ import java.awt.event.MouseWheelEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.input.MouseWheelListener;
+import net.runelite.client.ui.overlay.NativeOverlayMenu;
 
 public class TranslateMouseWheelListener implements MouseWheelListener
 {
 	private final Client client;
+	private final NativeOverlayMenu nativeOverlayMenu;
 
 	@Inject
-	public TranslateMouseWheelListener(Client client)
+	public TranslateMouseWheelListener(Client client, NativeOverlayMenu nativeOverlayMenu)
 	{
 		this.client = client;
+		this.nativeOverlayMenu = nativeOverlayMenu;
 	}
 
 	@Override
 	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
+		if (nativeOverlayMenu.scrollExtendedMenu(event.getWheelRotation()))
+		{
+			event.consume();
+			return event;
+		}
 		return translateEvent(event);
 	}
 
