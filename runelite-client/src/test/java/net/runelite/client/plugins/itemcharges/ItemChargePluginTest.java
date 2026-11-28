@@ -106,6 +106,12 @@ public class ItemChargePluginTest
 
 	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
 
+	private static final String CHECK_RING_OF_PURSUIT = "Your ring of pursuit has 7 charges left.";
+	private static final String CHECK_RING_OF_PURSUIT_1 = "Your ring of pursuit has 1 charge left.";
+	private static final String USED_RING_OF_PURSUIT = "Your ring of pursuit reveals the entire trail to you. It has 6 charges left.";
+	private static final String USED_RING_OF_PURSUIT_1 = "Your ring of pursuit reveals the entire trail to you. It has 1 charge left.";
+	private static final String BREAK_RING_OF_PURSUIT = "Your ring of pursuit reveals the entire trail to you. It then crumbles to dust.";
+
 	@Mock
 	@Bind
 	private Client client;
@@ -583,5 +589,45 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY_TRAHAEARN, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager, Mockito.times(0)).setRSProfileConfiguration(Mockito.anyString(), Mockito.anyString(), Mockito.anyInt());
+	}
+
+	@Test
+	public void testRingOfPursuitCheck()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_PURSUIT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_PURSUIT, 7);
+	}
+
+	@Test
+	public void testRingOfPursuitCheckOne()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_PURSUIT_1, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_PURSUIT, 1);
+	}
+
+	@Test
+	public void testRingOfPursuitUsed()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_PURSUIT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_PURSUIT, 6);
+	}
+
+	@Test
+	public void testRingOfPursuitUsedOne()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_PURSUIT_1, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_PURSUIT, 1);
+	}
+
+	@Test
+	public void testRingOfPursuitBreak()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_PURSUIT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_PURSUIT, 10);
 	}
 }
