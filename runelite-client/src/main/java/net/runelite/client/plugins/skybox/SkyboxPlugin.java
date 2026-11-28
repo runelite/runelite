@@ -33,6 +33,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.WorldEntity;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
@@ -109,7 +111,9 @@ public class SkyboxPlugin extends Plugin
 			return;
 		}
 
-		Color overrideColor = WorldPoint.getMirrorPoint(player.getWorldLocation(), true).getY() < Constants.OVERWORLD_MAX_Y
+		LocalPoint mainWorldLocation = toMainWorld(player.getLocalLocation());
+		WorldPoint mainWorldPoint = WorldPoint.fromLocal(client, mainWorldLocation);
+		Color overrideColor = WorldPoint.getMirrorPoint(mainWorldPoint, true).getY() < Constants.OVERWORLD_MAX_Y
 			? config.customOverworldColor() : config.customOtherColor();
 		if (overrideColor != null)
 		{
@@ -125,9 +129,8 @@ public class SkyboxPlugin extends Plugin
 		}
 		else
 		{
-			LocalPoint p = player.getLocalLocation();
-			px = p.getX();
-			py = p.getY();
+			px = mainWorldLocation.getX();
+			py = mainWorldLocation.getY();
 		}
 
 		// Inverse of camera location / 2
@@ -155,5 +158,16 @@ public class SkyboxPlugin extends Plugin
 		{
 			client.setSkyboxColor(0);
 		}
+	}
+
+	private LocalPoint toMainWorld(LocalPoint lp)
+	{
+		if (lp.getWorldView() == WorldView.TOPLEVEL)
+		{
+			return lp;
+		}
+
+		WorldEntity we = client.getTopLevelWorldView().worldEntities().byIndex(lp.getWorldView());
+		return we != null ? we.transformToMainWorld(lp) : lp;
 	}
 }
