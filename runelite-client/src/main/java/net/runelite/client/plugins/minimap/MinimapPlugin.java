@@ -31,6 +31,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.annotations.Component;
@@ -38,10 +39,12 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.MagnificationGesture;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -60,6 +63,16 @@ public class MinimapPlugin extends Plugin
 	private static final int DOT_TEAM = 4;
 	private static final int DOT_FRIENDSCHAT = 5;
 	private static final int DOT_CLAN = 6;
+
+	// The zoom levels the scroll wheel stops at, in pixels per tile
+	private static final double MIN_ZOOM = 2;
+	private static final double MAX_ZOOM = 8;
+
+	private static final int[] MINIMAP_WIDGETS = {
+		InterfaceID.Toplevel.MINIMAP,
+		InterfaceID.ToplevelOsrsStretch.MINIMAP,
+		InterfaceID.ToplevelPreEoc.MINIMAP,
+	};
 
 	@Inject
 	private Client client;
@@ -139,6 +152,30 @@ public class MinimapPlugin extends Plugin
 
 		restoreOriginalDots();
 		replaceMapDots();
+	}
+
+	@Subscribe
+	public void onMagnificationGesture(MagnificationGesture ev)
+	{
+		if (client.isMinimapZoom() && isMouseOverMinimap())
+		{
+			final double zoom = client.getMinimapZoom() * (1 + ev.getMagnification());
+			client.setMinimapZoom(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom)));
+		}
+	}
+
+	private boolean isMouseOverMinimap()
+	{
+		final Point mouse = client.getMouseCanvasPosition();
+		for (int id : MINIMAP_WIDGETS)
+		{
+			final Widget minimap = client.getWidget(id);
+			if (minimap != null && !minimap.isHidden() && minimap.getBounds().contains(mouse.getX(), mouse.getY()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Schedule(period = 11, unit = ChronoUnit.SECONDS, asynchronous = true)

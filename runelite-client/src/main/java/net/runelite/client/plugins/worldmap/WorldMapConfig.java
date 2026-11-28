@@ -339,4 +339,16 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swipeToMove",
+		name = "Swipe to move",
+		description = "Move the map by swiping with 2 fingers on a trackpad, and zoom it by pinching. Only works on macOS.<br>" +
+			"Scrolling over the map then moves it instead of zooming, including with a mouse wheel.",
+		position = 29
+	)
+	default boolean swipeToMove()
+	{
+		return false;
+	}
 }
