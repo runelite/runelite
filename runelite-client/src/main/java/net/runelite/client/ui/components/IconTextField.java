@@ -26,6 +26,7 @@
  */
 package net.runelite.client.ui.components;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -284,6 +285,11 @@ public class IconTextField extends JPanel
 	public void setIcon(ImageIcon imageIcon)
 	{
 		iconWrapperLabel.setIcon(imageIcon);
+	}
+
+	public void setPlaceholder(String placeholder)
+	{
+		textField.getTextField().putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, placeholder);
 	}
 
 	public String getText()
