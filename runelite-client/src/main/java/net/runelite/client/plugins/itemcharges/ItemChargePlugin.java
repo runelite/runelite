@@ -140,6 +140,12 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
 		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
+	private static final Pattern QUETZAL_WHISTLE_CHARGES_PATTERN = Pattern.compile(
+		"Your quetzal whistle has (\\d+) charges? remaining\\."
+	);
+	private static final Pattern ARCHIVISTS_FOLIO_CHARGES_PATTERN = Pattern.compile(
+		"The folio has (\\d+) charges?\\."
+	);
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -265,6 +271,8 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+			Matcher quetzalWhistleMatcher = QUETZAL_WHISTLE_CHARGES_PATTERN.matcher(message);
+			Matcher archivistsFolioCheckMatcher = ARCHIVISTS_FOLIO_CHARGES_PATTERN.matcher(message);
 
 			if (message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -458,7 +466,14 @@ public class ItemChargePlugin extends Plugin
 				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
-
+			else if (quetzalWhistleMatcher.find())
+			{
+				updateQuetzalWhistleCharges(Integer.parseInt(quetzalWhistleMatcher.group(1)));
+			}
+			else if (archivistsFolioCheckMatcher.find())
+			{
+				updateArchivistsFolioCharges(Integer.parseInt(archivistsFolioCheckMatcher.group(1)));
+			}
 			varrockPlatebodySmeltTwo = message.equals(RING_OF_FORGING_VARROCK_PLATEBODY);
 		}
 	}
@@ -583,6 +598,18 @@ public class ItemChargePlugin extends Plugin
 	private void updateBraceletOfClayCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
+
+	private void updateQuetzalWhistleCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_QUETZAL_WHISTLE, value);
+		updateInfoboxes();
+	}
+
+	private void updateArchivistsFolioCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_ARCHIVISTS_FOLIO, value);
 		updateInfoboxes();
 	}
 
